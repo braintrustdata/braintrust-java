@@ -1,6 +1,10 @@
 # Braintrust Java API Library
 
+<!-- x-release-please-start-version -->
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.braintrust.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrust.api/braintrust-java/0.0.1)
+
+<!-- x-release-please-end -->
 
 The Braintrust Java SDK provides convenient access to the Braintrust REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
@@ -18,6 +22,8 @@ The REST API documentation can be found [on www.braintrustdata.com](https://www
 
 #### Gradle
 
+<!-- x-release-please-start-version -->
+
 ```kotlin
 implementation("com.braintrust.api:braintrust-java:0.0.1")
 ```
@@ -31,6 +37,8 @@ implementation("com.braintrust.api:braintrust-java:0.0.1")
     <version>0.0.1</version>
 </dependency>
 ```
+
+<!-- x-release-please-end -->
 
 ### Configure the client
 
