@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2024-02-04)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/braintrustdata/braintrust-java/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* OpenAPI spec update ([#3](https://github.com/braintrustdata/braintrust-java/issues/3)) ([bb49155](https://github.com/braintrustdata/braintrust-java/commit/bb49155cd813dcabc7cf96217e10e7e875eae12b))
+
 ## 0.1.0 (2024-02-03)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/braintrustdata/braintrust-java/compare/v0.0.1...v0.1.0)

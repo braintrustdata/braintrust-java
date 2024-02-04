@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.braintrust.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrust.api/braintrust-java/0.1.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.2.0)
 
 <!-- x-release-please-end -->
 
@@ -25,16 +25,16 @@ The REST API documentation can be found [on www.braintrustdata.com](https://www
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.braintrust.api:braintrust-java:0.1.0")
+implementation("com.braintrustdata.api:braintrust-java:0.2.0")
 ```
 
 #### Maven
 
 ```xml
 <dependency>
-    <groupId>com.braintrust.api</groupId>
+    <groupId>com.braintrustdata.api</groupId>
     <artifactId>braintrust-java</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -45,8 +45,8 @@ implementation("com.braintrust.api:braintrust-java:0.1.0")
 Use `BraintrustOkHttpClient.builder()` to configure the client. At a minimum you need to set `.apiKey()`:
 
 ```java
-import com.braintrust.api.client.BraintrustOkHttpClient;
-import com.braintrust.api.client.okhttp.BraintrustOkHttpClient;
+import com.braintrustdata.api.client.BraintrustOkHttpClient;
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 
 BraintrustClient client = BraintrustOkHttpClient.builder()
     .apiKey("My API Key")
@@ -79,8 +79,8 @@ To create a new project, first use the `ProjectCreateParams` builder to specify 
 then pass that to the `create` method of the `project` service.
 
 ```java
-import com.braintrust.api.models.Project;
-import com.braintrust.api.models.ProjectCreateParams;
+import com.braintrustdata.api.models.Project;
+import com.braintrustdata.api.models.ProjectCreateParams;
 
 ProjectCreateParams params = ProjectCreateParams.builder()
     .bodyparam(true)
@@ -94,8 +94,8 @@ The Braintrust API provides a `list` method to get a paginated list of project.
 You can retrieve the first page by:
 
 ```java
-import com.braintrust.api.models.Page;
-import com.braintrust.api.models.Project;
+import com.braintrustdata.api.models.Page;
+import com.braintrustdata.api.models.Project;
 
 ProjectListPage page = client.project().list();
 for (Project project : page.objects()) {
