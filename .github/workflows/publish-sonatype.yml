@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -30,7 +30,7 @@ jobs:
 
       - name: Publish to Sonatype
         run: |
-          ./gradlew publish --stacktrace
+          ./gradlew --parallel --no-daemon publish
         env:
           SONATYPE_USERNAME: ${{ secrets.BRAINTRUST_SONATYPE_USERNAME || secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.BRAINTRUST_SONATYPE_PASSWORD || secrets.SONATYPE_PASSWORD }}

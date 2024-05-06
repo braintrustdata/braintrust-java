@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.braintrust.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrust.api/braintrust-java/0.2.0)
 
 <!-- x-release-please-end -->
 
@@ -10,9 +10,11 @@ The Braintrust Java SDK provides convenient access to the Braintrust REST API fr
 
 The Braintrust Java SDK is similar to the Braintrust Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
+It is generated with [Stainless](https://www.stainlessapi.com/).
+
 ## Documentation
 
-The REST API documentation can be found [on www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found [on www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec).
 
 ---
 
@@ -25,14 +27,14 @@ The REST API documentation can be found [on www.braintrustdata.com](https://www
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.braintrustdata.api:braintrust-java:0.2.0")
+implementation("com.braintrust.api:braintrust-java:0.2.0")
 ```
 
 #### Maven
 
 ```xml
 <dependency>
-    <groupId>com.braintrustdata.api</groupId>
+    <groupId>com.braintrust.api</groupId>
     <artifactId>braintrust-java</artifactId>
     <version>0.2.0</version>
 </dependency>
@@ -45,8 +47,8 @@ implementation("com.braintrustdata.api:braintrust-java:0.2.0")
 Use `BraintrustOkHttpClient.builder()` to configure the client. At a minimum you need to set `.apiKey()`:
 
 ```java
-import com.braintrustdata.api.client.BraintrustOkHttpClient;
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
+import com.braintrust.api.client.BraintrustClient;
+import com.braintrust.api.client.okhttp.BraintrustOkHttpClient;
 
 BraintrustClient client = BraintrustOkHttpClient.builder()
     .apiKey("My API Key")
@@ -79,8 +81,8 @@ To create a new project, first use the `ProjectCreateParams` builder to specify 
 then pass that to the `create` method of the `project` service.
 
 ```java
-import com.braintrustdata.api.models.Project;
-import com.braintrustdata.api.models.ProjectCreateParams;
+import com.braintrust.api.models.Project;
+import com.braintrust.api.models.ProjectCreateParams;
 
 ProjectCreateParams params = ProjectCreateParams.builder()
     .bodyparam(true)
@@ -94,8 +96,8 @@ The Braintrust API provides a `list` method to get a paginated list of project.
 You can retrieve the first page by:
 
 ```java
-import com.braintrustdata.api.models.Page;
-import com.braintrustdata.api.models.Project;
+import com.braintrust.api.models.Page;
+import com.braintrust.api.models.Project;
 
 ProjectListPage page = client.project().list();
 for (Project project : page.objects()) {
@@ -283,7 +285,31 @@ BraintrustClient client = BraintrustOkHttpClient.builder()
     .build();
 ```
 
-## Semantic Versioning
+## Making custom/undocumented requests
+
+This library is typed for convenient access to the documented API. If you need to access undocumented
+params or response properties, the library can still be used.
+
+### Undocumented request params
+
+To make requests using undocumented parameters, you can provide or override parameters on the params object
+while building it.
+
+```kotlin
+FooCreateParams address = FooCreateParams.builder()
+    .id("my_id")
+    .putAdditionalProperty("secret_prop", JsonValue.from("hello"))
+    .build();
+```
+
+### Undocumented response properties
+
+To access undocumented response properties, you can use `res._additionalProperties()` on a response object to
+get a map of untyped fields of type `Map<String, JsonValue>`. You can then access fields like
+`._additionalProperties().get("secret_prop").asString()` or use other helpers defined on the `JsonValue` class
+to extract it to a desired type.
+
+## Semantic versioning
 
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
 
