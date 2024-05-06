@@ -27,7 +27,7 @@ private constructor(
 
     fun response(): Response = response
 
-    fun objects(): List<PromptListResponse> = response().objects()
+    fun objects(): List<Prompt> = response().objects()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -92,16 +92,16 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val objects: JsonField<List<PromptListResponse>>,
+        private val objects: JsonField<List<Prompt>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun objects(): List<PromptListResponse> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Prompt> = objects.getNullable("objects") ?: listOf()
 
         @JsonProperty("objects")
-        fun _objects(): Optional<JsonField<List<PromptListResponse>>> = Optional.ofNullable(objects)
+        fun _objects(): Optional<JsonField<List<Prompt>>> = Optional.ofNullable(objects)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -140,7 +140,7 @@ private constructor(
 
         class Builder {
 
-            private var objects: JsonField<List<PromptListResponse>> = JsonMissing.of()
+            private var objects: JsonField<List<Prompt>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -149,12 +149,10 @@ private constructor(
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun objects(objects: List<PromptListResponse>) = objects(JsonField.of(objects))
+            fun objects(objects: List<Prompt>) = objects(JsonField.of(objects))
 
             @JsonProperty("objects")
-            fun objects(objects: JsonField<List<PromptListResponse>>) = apply {
-                this.objects = objects
-            }
+            fun objects(objects: JsonField<List<Prompt>>) = apply { this.objects = objects }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
@@ -168,9 +166,9 @@ private constructor(
     class AutoPager
     constructor(
         private val firstPage: PromptListPage,
-    ) : Iterable<PromptListResponse> {
+    ) : Iterable<Prompt> {
 
-        override fun iterator(): Iterator<PromptListResponse> = iterator {
+        override fun iterator(): Iterator<Prompt> = iterator {
             var page = firstPage
             var index = 0
             while (true) {
@@ -182,7 +180,7 @@ private constructor(
             }
         }
 
-        fun stream(): Stream<PromptListResponse> {
+        fun stream(): Stream<Prompt> {
             return StreamSupport.stream(spliterator(), false)
         }
     }

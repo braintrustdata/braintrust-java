@@ -28,9 +28,9 @@ import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = PromptDeleteResponse.Builder::class)
+@JsonDeserialize(builder = Prompt.Builder::class)
 @NoAutoDetect
-class PromptDeleteResponse
+class Prompt
 private constructor(
     private val id: JsonField<String>,
     private val _xactId: JsonField<String>,
@@ -137,7 +137,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): PromptDeleteResponse = apply {
+    fun validate(): Prompt = apply {
         if (!validated) {
             id()
             _xactId()
@@ -162,7 +162,7 @@ private constructor(
             return true
         }
 
-        return other is PromptDeleteResponse &&
+        return other is Prompt &&
             this.id == other.id &&
             this._xactId == other._xactId &&
             this.projectId == other.projectId &&
@@ -201,7 +201,7 @@ private constructor(
     }
 
     override fun toString() =
-        "PromptDeleteResponse{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, additionalProperties=$additionalProperties}"
+        "Prompt{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -225,20 +225,20 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(promptDeleteResponse: PromptDeleteResponse) = apply {
-            this.id = promptDeleteResponse.id
-            this._xactId = promptDeleteResponse._xactId
-            this.projectId = promptDeleteResponse.projectId
-            this.logId = promptDeleteResponse.logId
-            this.orgId = promptDeleteResponse.orgId
-            this.name = promptDeleteResponse.name
-            this.slug = promptDeleteResponse.slug
-            this.description = promptDeleteResponse.description
-            this.created = promptDeleteResponse.created
-            this.promptData = promptDeleteResponse.promptData
-            this.tags = promptDeleteResponse.tags
-            this.metadata = promptDeleteResponse.metadata
-            additionalProperties(promptDeleteResponse.additionalProperties)
+        internal fun from(prompt: Prompt) = apply {
+            this.id = prompt.id
+            this._xactId = prompt._xactId
+            this.projectId = prompt.projectId
+            this.logId = prompt.logId
+            this.orgId = prompt.orgId
+            this.name = prompt.name
+            this.slug = prompt.slug
+            this.description = prompt.description
+            this.created = prompt.created
+            this.promptData = prompt.promptData
+            this.tags = prompt.tags
+            this.metadata = prompt.metadata
+            additionalProperties(prompt.additionalProperties)
         }
 
         /** Unique identifier for the prompt */
@@ -357,8 +357,8 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): PromptDeleteResponse =
-            PromptDeleteResponse(
+        fun build(): Prompt =
+            Prompt(
                 id,
                 _xactId,
                 projectId,
@@ -3964,8 +3964,8 @@ private constructor(
                         class Content
                         private constructor(
                             private val string: String? = null,
-                            private val unnamedSchemaWithArrayParent7s:
-                                List<UnnamedSchemaWithArrayParent7>? =
+                            private val unnamedSchemaWithArrayParent3s:
+                                List<UnnamedSchemaWithArrayParent3>? =
                                 null,
                             private val _json: JsonValue? = null,
                         ) {
@@ -3974,21 +3974,21 @@ private constructor(
 
                             fun string(): Optional<String> = Optional.ofNullable(string)
 
-                            fun unnamedSchemaWithArrayParent7s():
-                                Optional<List<UnnamedSchemaWithArrayParent7>> =
-                                Optional.ofNullable(unnamedSchemaWithArrayParent7s)
+                            fun unnamedSchemaWithArrayParent3s():
+                                Optional<List<UnnamedSchemaWithArrayParent3>> =
+                                Optional.ofNullable(unnamedSchemaWithArrayParent3s)
 
                             fun isString(): Boolean = string != null
 
-                            fun isUnnamedSchemaWithArrayParent7s(): Boolean =
-                                unnamedSchemaWithArrayParent7s != null
+                            fun isUnnamedSchemaWithArrayParent3s(): Boolean =
+                                unnamedSchemaWithArrayParent3s != null
 
                             fun asString(): String = string.getOrThrow("string")
 
-                            fun asUnnamedSchemaWithArrayParent7s():
-                                List<UnnamedSchemaWithArrayParent7> =
-                                unnamedSchemaWithArrayParent7s.getOrThrow(
-                                    "unnamedSchemaWithArrayParent7s"
+                            fun asUnnamedSchemaWithArrayParent3s():
+                                List<UnnamedSchemaWithArrayParent3> =
+                                unnamedSchemaWithArrayParent3s.getOrThrow(
+                                    "unnamedSchemaWithArrayParent3s"
                                 )
 
                             fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
@@ -3996,9 +3996,9 @@ private constructor(
                             fun <T> accept(visitor: Visitor<T>): T {
                                 return when {
                                     string != null -> visitor.visitString(string)
-                                    unnamedSchemaWithArrayParent7s != null ->
-                                        visitor.visitUnnamedSchemaWithArrayParent7s(
-                                            unnamedSchemaWithArrayParent7s
+                                    unnamedSchemaWithArrayParent3s != null ->
+                                        visitor.visitUnnamedSchemaWithArrayParent3s(
+                                            unnamedSchemaWithArrayParent3s
                                         )
                                     else -> visitor.unknown(_json)
                                 }
@@ -4006,7 +4006,7 @@ private constructor(
 
                             fun validate(): Content = apply {
                                 if (!validated) {
-                                    if (string == null && unnamedSchemaWithArrayParent7s == null) {
+                                    if (string == null && unnamedSchemaWithArrayParent3s == null) {
                                         throw BraintrustInvalidDataException(
                                             "Unknown Content: $_json"
                                         )
@@ -4022,19 +4022,19 @@ private constructor(
 
                                 return other is Content &&
                                     this.string == other.string &&
-                                    this.unnamedSchemaWithArrayParent7s ==
-                                        other.unnamedSchemaWithArrayParent7s
+                                    this.unnamedSchemaWithArrayParent3s ==
+                                        other.unnamedSchemaWithArrayParent3s
                             }
 
                             override fun hashCode(): Int {
-                                return Objects.hash(string, unnamedSchemaWithArrayParent7s)
+                                return Objects.hash(string, unnamedSchemaWithArrayParent3s)
                             }
 
                             override fun toString(): String {
                                 return when {
                                     string != null -> "Content{string=$string}"
-                                    unnamedSchemaWithArrayParent7s != null ->
-                                        "Content{unnamedSchemaWithArrayParent7s=$unnamedSchemaWithArrayParent7s}"
+                                    unnamedSchemaWithArrayParent3s != null ->
+                                        "Content{unnamedSchemaWithArrayParent3s=$unnamedSchemaWithArrayParent3s}"
                                     _json != null -> "Content{_unknown=$_json}"
                                     else -> throw IllegalStateException("Invalid Content")
                                 }
@@ -4045,13 +4045,13 @@ private constructor(
                                 @JvmStatic fun ofString(string: String) = Content(string = string)
 
                                 @JvmStatic
-                                fun ofUnnamedSchemaWithArrayParent7s(
-                                    unnamedSchemaWithArrayParent7s:
-                                        List<UnnamedSchemaWithArrayParent7>
+                                fun ofUnnamedSchemaWithArrayParent3s(
+                                    unnamedSchemaWithArrayParent3s:
+                                        List<UnnamedSchemaWithArrayParent3>
                                 ) =
                                     Content(
-                                        unnamedSchemaWithArrayParent7s =
-                                            unnamedSchemaWithArrayParent7s
+                                        unnamedSchemaWithArrayParent3s =
+                                            unnamedSchemaWithArrayParent3s
                                     )
                             }
 
@@ -4059,9 +4059,9 @@ private constructor(
 
                                 fun visitString(string: String): T
 
-                                fun visitUnnamedSchemaWithArrayParent7s(
-                                    unnamedSchemaWithArrayParent7s:
-                                        List<UnnamedSchemaWithArrayParent7>
+                                fun visitUnnamedSchemaWithArrayParent3s(
+                                    unnamedSchemaWithArrayParent3s:
+                                        List<UnnamedSchemaWithArrayParent3>
                                 ): T
 
                                 fun unknown(json: JsonValue?): T {
@@ -4078,11 +4078,11 @@ private constructor(
                                     }
                                     tryDeserialize(
                                             node,
-                                            jacksonTypeRef<List<UnnamedSchemaWithArrayParent7>>()
+                                            jacksonTypeRef<List<UnnamedSchemaWithArrayParent3>>()
                                         )
                                         ?.let {
                                             return Content(
-                                                unnamedSchemaWithArrayParent7s = it,
+                                                unnamedSchemaWithArrayParent3s = it,
                                                 _json = json
                                             )
                                         }
@@ -4100,9 +4100,9 @@ private constructor(
                                 ) {
                                     when {
                                         value.string != null -> generator.writeObject(value.string)
-                                        value.unnamedSchemaWithArrayParent7s != null ->
+                                        value.unnamedSchemaWithArrayParent3s != null ->
                                             generator.writeObject(
-                                                value.unnamedSchemaWithArrayParent7s
+                                                value.unnamedSchemaWithArrayParent3s
                                             )
                                         value._json != null -> generator.writeObject(value._json)
                                         else -> throw IllegalStateException("Invalid Content")
@@ -4111,10 +4111,10 @@ private constructor(
                             }
 
                             @JsonDeserialize(
-                                using = UnnamedSchemaWithArrayParent7.Deserializer::class
+                                using = UnnamedSchemaWithArrayParent3.Deserializer::class
                             )
-                            @JsonSerialize(using = UnnamedSchemaWithArrayParent7.Serializer::class)
-                            class UnnamedSchemaWithArrayParent7
+                            @JsonSerialize(using = UnnamedSchemaWithArrayParent3.Serializer::class)
+                            class UnnamedSchemaWithArrayParent3
                             private constructor(
                                 private val unionMember0: UnionMember0? = null,
                                 private val unionMember1: UnionMember1? = null,
@@ -4151,11 +4151,11 @@ private constructor(
                                     }
                                 }
 
-                                fun validate(): UnnamedSchemaWithArrayParent7 = apply {
+                                fun validate(): UnnamedSchemaWithArrayParent3 = apply {
                                     if (!validated) {
                                         if (unionMember0 == null && unionMember1 == null) {
                                             throw BraintrustInvalidDataException(
-                                                "Unknown UnnamedSchemaWithArrayParent7: $_json"
+                                                "Unknown UnnamedSchemaWithArrayParent3: $_json"
                                             )
                                         }
                                         unionMember0?.validate()
@@ -4169,7 +4169,7 @@ private constructor(
                                         return true
                                     }
 
-                                    return other is UnnamedSchemaWithArrayParent7 &&
+                                    return other is UnnamedSchemaWithArrayParent3 &&
                                         this.unionMember0 == other.unionMember0 &&
                                         this.unionMember1 == other.unionMember1
                                 }
@@ -4181,14 +4181,14 @@ private constructor(
                                 override fun toString(): String {
                                     return when {
                                         unionMember0 != null ->
-                                            "UnnamedSchemaWithArrayParent7{unionMember0=$unionMember0}"
+                                            "UnnamedSchemaWithArrayParent3{unionMember0=$unionMember0}"
                                         unionMember1 != null ->
-                                            "UnnamedSchemaWithArrayParent7{unionMember1=$unionMember1}"
+                                            "UnnamedSchemaWithArrayParent3{unionMember1=$unionMember1}"
                                         _json != null ->
-                                            "UnnamedSchemaWithArrayParent7{_unknown=$_json}"
+                                            "UnnamedSchemaWithArrayParent3{_unknown=$_json}"
                                         else ->
                                             throw IllegalStateException(
-                                                "Invalid UnnamedSchemaWithArrayParent7"
+                                                "Invalid UnnamedSchemaWithArrayParent3"
                                             )
                                     }
                                 }
@@ -4197,11 +4197,11 @@ private constructor(
 
                                     @JvmStatic
                                     fun ofUnionMember0(unionMember0: UnionMember0) =
-                                        UnnamedSchemaWithArrayParent7(unionMember0 = unionMember0)
+                                        UnnamedSchemaWithArrayParent3(unionMember0 = unionMember0)
 
                                     @JvmStatic
                                     fun ofUnionMember1(unionMember1: UnionMember1) =
-                                        UnnamedSchemaWithArrayParent7(unionMember1 = unionMember1)
+                                        UnnamedSchemaWithArrayParent3(unionMember1 = unionMember1)
                                 }
 
                                 interface Visitor<out T> {
@@ -4212,25 +4212,25 @@ private constructor(
 
                                     fun unknown(json: JsonValue?): T {
                                         throw BraintrustInvalidDataException(
-                                            "Unknown UnnamedSchemaWithArrayParent7: $json"
+                                            "Unknown UnnamedSchemaWithArrayParent3: $json"
                                         )
                                     }
                                 }
 
                                 class Deserializer :
-                                    BaseDeserializer<UnnamedSchemaWithArrayParent7>(
-                                        UnnamedSchemaWithArrayParent7::class
+                                    BaseDeserializer<UnnamedSchemaWithArrayParent3>(
+                                        UnnamedSchemaWithArrayParent3::class
                                     ) {
 
                                     override fun ObjectCodec.deserialize(
                                         node: JsonNode
-                                    ): UnnamedSchemaWithArrayParent7 {
+                                    ): UnnamedSchemaWithArrayParent3 {
                                         val json = JsonValue.fromJsonNode(node)
                                         tryDeserialize(node, jacksonTypeRef<UnionMember0>()) {
                                                 it.validate()
                                             }
                                             ?.let {
-                                                return UnnamedSchemaWithArrayParent7(
+                                                return UnnamedSchemaWithArrayParent3(
                                                     unionMember0 = it,
                                                     _json = json
                                                 )
@@ -4239,23 +4239,23 @@ private constructor(
                                                 it.validate()
                                             }
                                             ?.let {
-                                                return UnnamedSchemaWithArrayParent7(
+                                                return UnnamedSchemaWithArrayParent3(
                                                     unionMember1 = it,
                                                     _json = json
                                                 )
                                             }
 
-                                        return UnnamedSchemaWithArrayParent7(_json = json)
+                                        return UnnamedSchemaWithArrayParent3(_json = json)
                                     }
                                 }
 
                                 class Serializer :
-                                    BaseSerializer<UnnamedSchemaWithArrayParent7>(
-                                        UnnamedSchemaWithArrayParent7::class
+                                    BaseSerializer<UnnamedSchemaWithArrayParent3>(
+                                        UnnamedSchemaWithArrayParent3::class
                                     ) {
 
                                     override fun serialize(
-                                        value: UnnamedSchemaWithArrayParent7,
+                                        value: UnnamedSchemaWithArrayParent3,
                                         generator: JsonGenerator,
                                         provider: SerializerProvider
                                     ) {
@@ -4268,7 +4268,7 @@ private constructor(
                                                 generator.writeObject(value._json)
                                             else ->
                                                 throw IllegalStateException(
-                                                    "Invalid UnnamedSchemaWithArrayParent7"
+                                                    "Invalid UnnamedSchemaWithArrayParent3"
                                                 )
                                         }
                                     }
