@@ -6,38 +6,36 @@ import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class PromptListResponseTest {
+class PromptTest {
 
     @Test
-    fun createPromptListResponse() {
-        val promptListResponse =
-            PromptListResponse.builder()
+    fun createPrompt() {
+        val prompt =
+            Prompt.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 ._xactId("string")
-                .logId(PromptListResponse.LogId.P)
+                .logId(Prompt.LogId.P)
                 .name("string")
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .slug("string")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .description("string")
-                .metadata(PromptListResponse.Metadata.builder().build())
+                .metadata(Prompt.Metadata.builder().build())
                 .promptData(
-                    PromptListResponse.PromptData.builder()
+                    Prompt.PromptData.builder()
                         .options(
-                            PromptListResponse.PromptData.Options.builder()
+                            Prompt.PromptData.Options.builder()
                                 .model("string")
                                 .params(
-                                    PromptListResponse.PromptData.Options.Params.ofUnionMember0(
-                                        PromptListResponse.PromptData.Options.Params.UnionMember0
-                                            .builder()
+                                    Prompt.PromptData.Options.Params.ofUnionMember0(
+                                        Prompt.PromptData.Options.Params.UnionMember0.builder()
                                             .frequencyPenalty(42.23)
                                             .functionCall(
-                                                PromptListResponse.PromptData.Options.Params
-                                                    .UnionMember0
+                                                Prompt.PromptData.Options.Params.UnionMember0
                                                     .FunctionCall
                                                     .ofUnionMember0(
-                                                        PromptListResponse.PromptData.Options.Params
+                                                        Prompt.PromptData.Options.Params
                                                             .UnionMember0
                                                             .FunctionCall
                                                             .UnionMember0
@@ -48,12 +46,11 @@ class PromptListResponseTest {
                                             .n(42.23)
                                             .presencePenalty(42.23)
                                             .responseFormat(
-                                                PromptListResponse.PromptData.Options.Params
-                                                    .UnionMember0
+                                                Prompt.PromptData.Options.Params.UnionMember0
                                                     .ResponseFormat
                                                     .builder()
                                                     .type(
-                                                        PromptListResponse.PromptData.Options.Params
+                                                        Prompt.PromptData.Options.Params
                                                             .UnionMember0
                                                             .ResponseFormat
                                                             .Type
@@ -64,11 +61,10 @@ class PromptListResponseTest {
                                             .stop(listOf("string"))
                                             .temperature(42.23)
                                             .toolChoice(
-                                                PromptListResponse.PromptData.Options.Params
-                                                    .UnionMember0
+                                                Prompt.PromptData.Options.Params.UnionMember0
                                                     .ToolChoice
                                                     .ofUnionMember0(
-                                                        PromptListResponse.PromptData.Options.Params
+                                                        Prompt.PromptData.Options.Params
                                                             .UnionMember0
                                                             .ToolChoice
                                                             .UnionMember0
@@ -84,20 +80,17 @@ class PromptListResponseTest {
                                 .build()
                         )
                         .origin(
-                            PromptListResponse.PromptData.Origin.builder()
+                            Prompt.PromptData.Origin.builder()
                                 .projectId("string")
                                 .promptId("string")
                                 .promptVersion("string")
                                 .build()
                         )
                         .prompt(
-                            PromptListResponse.PromptData.Prompt.ofUnionMember0(
-                                PromptListResponse.PromptData.Prompt.UnionMember0.builder()
+                            Prompt.PromptData.Prompt.ofUnionMember0(
+                                Prompt.PromptData.Prompt.UnionMember0.builder()
                                     .content("string")
-                                    .type(
-                                        PromptListResponse.PromptData.Prompt.UnionMember0.Type
-                                            .COMPLETION
-                                    )
+                                    .type(Prompt.PromptData.Prompt.UnionMember0.Type.COMPLETION)
                                     .build()
                             )
                         )
@@ -105,37 +98,32 @@ class PromptListResponseTest {
                 )
                 .tags(listOf("string"))
                 .build()
-        assertThat(promptListResponse).isNotNull
-        assertThat(promptListResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(promptListResponse._xactId()).isEqualTo("string")
-        assertThat(promptListResponse.logId()).isEqualTo(PromptListResponse.LogId.P)
-        assertThat(promptListResponse.name()).isEqualTo("string")
-        assertThat(promptListResponse.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(promptListResponse.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(promptListResponse.slug()).isEqualTo("string")
-        assertThat(promptListResponse.created())
-            .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(promptListResponse.description()).contains("string")
-        assertThat(promptListResponse.metadata())
-            .contains(PromptListResponse.Metadata.builder().build())
-        assertThat(promptListResponse.promptData())
+        assertThat(prompt).isNotNull
+        assertThat(prompt.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(prompt._xactId()).isEqualTo("string")
+        assertThat(prompt.logId()).isEqualTo(Prompt.LogId.P)
+        assertThat(prompt.name()).isEqualTo("string")
+        assertThat(prompt.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(prompt.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(prompt.slug()).isEqualTo("string")
+        assertThat(prompt.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+        assertThat(prompt.description()).contains("string")
+        assertThat(prompt.metadata()).contains(Prompt.Metadata.builder().build())
+        assertThat(prompt.promptData())
             .contains(
-                PromptListResponse.PromptData.builder()
+                Prompt.PromptData.builder()
                     .options(
-                        PromptListResponse.PromptData.Options.builder()
+                        Prompt.PromptData.Options.builder()
                             .model("string")
                             .params(
-                                PromptListResponse.PromptData.Options.Params.ofUnionMember0(
-                                    PromptListResponse.PromptData.Options.Params.UnionMember0
-                                        .builder()
+                                Prompt.PromptData.Options.Params.ofUnionMember0(
+                                    Prompt.PromptData.Options.Params.UnionMember0.builder()
                                         .frequencyPenalty(42.23)
                                         .functionCall(
-                                            PromptListResponse.PromptData.Options.Params
-                                                .UnionMember0
+                                            Prompt.PromptData.Options.Params.UnionMember0
                                                 .FunctionCall
                                                 .ofUnionMember0(
-                                                    PromptListResponse.PromptData.Options.Params
-                                                        .UnionMember0
+                                                    Prompt.PromptData.Options.Params.UnionMember0
                                                         .FunctionCall
                                                         .UnionMember0
                                                         .AUTO
@@ -145,13 +133,11 @@ class PromptListResponseTest {
                                         .n(42.23)
                                         .presencePenalty(42.23)
                                         .responseFormat(
-                                            PromptListResponse.PromptData.Options.Params
-                                                .UnionMember0
+                                            Prompt.PromptData.Options.Params.UnionMember0
                                                 .ResponseFormat
                                                 .builder()
                                                 .type(
-                                                    PromptListResponse.PromptData.Options.Params
-                                                        .UnionMember0
+                                                    Prompt.PromptData.Options.Params.UnionMember0
                                                         .ResponseFormat
                                                         .Type
                                                         .JSON_OBJECT
@@ -161,12 +147,9 @@ class PromptListResponseTest {
                                         .stop(listOf("string"))
                                         .temperature(42.23)
                                         .toolChoice(
-                                            PromptListResponse.PromptData.Options.Params
-                                                .UnionMember0
-                                                .ToolChoice
+                                            Prompt.PromptData.Options.Params.UnionMember0.ToolChoice
                                                 .ofUnionMember0(
-                                                    PromptListResponse.PromptData.Options.Params
-                                                        .UnionMember0
+                                                    Prompt.PromptData.Options.Params.UnionMember0
                                                         .ToolChoice
                                                         .UnionMember0
                                                         .AUTO
@@ -181,25 +164,22 @@ class PromptListResponseTest {
                             .build()
                     )
                     .origin(
-                        PromptListResponse.PromptData.Origin.builder()
+                        Prompt.PromptData.Origin.builder()
                             .projectId("string")
                             .promptId("string")
                             .promptVersion("string")
                             .build()
                     )
                     .prompt(
-                        PromptListResponse.PromptData.Prompt.ofUnionMember0(
-                            PromptListResponse.PromptData.Prompt.UnionMember0.builder()
+                        Prompt.PromptData.Prompt.ofUnionMember0(
+                            Prompt.PromptData.Prompt.UnionMember0.builder()
                                 .content("string")
-                                .type(
-                                    PromptListResponse.PromptData.Prompt.UnionMember0.Type
-                                        .COMPLETION
-                                )
+                                .type(Prompt.PromptData.Prompt.UnionMember0.Type.COMPLETION)
                                 .build()
                         )
                     )
                     .build()
             )
-        assertThat(promptListResponse.tags().get()).containsExactly("string")
+        assertThat(prompt.tags().get()).containsExactly("string")
     }
 }

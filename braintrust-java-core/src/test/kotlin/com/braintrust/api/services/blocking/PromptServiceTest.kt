@@ -20,7 +20,7 @@ class PromptServiceTest {
                 .apiKey("My API Key")
                 .build()
         val promptService = client.prompt()
-        val promptCreateResponse =
+        val prompt =
             promptService.create(
                 PromptCreateParams.builder()
                     .name("string")
@@ -115,8 +115,8 @@ class PromptServiceTest {
                     .tags(listOf("string"))
                     .build()
             )
-        println(promptCreateResponse)
-        promptCreateResponse.validate()
+        println(prompt)
+        prompt.validate()
     }
 
     @Test
@@ -127,14 +127,14 @@ class PromptServiceTest {
                 .apiKey("My API Key")
                 .build()
         val promptService = client.prompt()
-        val promptRetrieveResponse =
+        val prompt =
             promptService.retrieve(
                 PromptRetrieveParams.builder()
                     .promptId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
-        println(promptRetrieveResponse)
-        promptRetrieveResponse.validate()
+        println(prompt)
+        prompt.validate()
     }
 
     @Test
@@ -145,7 +145,7 @@ class PromptServiceTest {
                 .apiKey("My API Key")
                 .build()
         val promptService = client.prompt()
-        val promptUpdateResponse =
+        val prompt =
             promptService.update(
                 PromptUpdateParams.builder()
                     .promptId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -239,8 +239,8 @@ class PromptServiceTest {
                     .tags(listOf("string"))
                     .build()
             )
-        println(promptUpdateResponse)
-        promptUpdateResponse.validate()
+        println(prompt)
+        prompt.validate()
     }
 
     @Test
@@ -264,14 +264,14 @@ class PromptServiceTest {
                 .apiKey("My API Key")
                 .build()
         val promptService = client.prompt()
-        val promptDeleteResponse =
+        val prompt =
             promptService.delete(
                 PromptDeleteParams.builder()
                     .promptId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
-        println(promptDeleteResponse)
-        promptDeleteResponse.validate()
+        println(prompt)
+        prompt.validate()
     }
 
     @Test
@@ -307,7 +307,7 @@ class PromptServiceTest {
                 .apiKey("My API Key")
                 .build()
         val promptService = client.prompt()
-        val promptReplaceResponse =
+        val prompt =
             promptService.replace(
                 PromptReplaceParams.builder()
                     .name("string")
@@ -409,7 +409,7 @@ class PromptServiceTest {
                     .tags(listOf("string"))
                     .build()
             )
-        println(promptReplaceResponse)
-        promptReplaceResponse.validate()
+        println(prompt)
+        prompt.validate()
     }
 }

@@ -28,10 +28,6 @@ constructor(
 
     private val prompt: PromptService by lazy { PromptServiceImpl(clientOptions) }
 
-    private val promptSession: PromptSessionService by lazy {
-        PromptSessionServiceImpl(clientOptions)
-    }
-
     private val role: RoleService by lazy { RoleServiceImpl(clientOptions) }
 
     private val group: GroupService by lazy { GroupServiceImpl(clientOptions) }
@@ -51,8 +47,6 @@ constructor(
     override fun dataset(): DatasetService = dataset
 
     override fun prompt(): PromptService = prompt
-
-    override fun promptSession(): PromptSessionService = promptSession
 
     override fun role(): RoleService = role
 

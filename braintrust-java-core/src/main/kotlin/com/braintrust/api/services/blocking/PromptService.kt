@@ -5,19 +5,15 @@
 package com.braintrust.api.services.blocking
 
 import com.braintrust.api.core.RequestOptions
+import com.braintrust.api.models.Prompt
 import com.braintrust.api.models.PromptCreateParams
-import com.braintrust.api.models.PromptCreateResponse
 import com.braintrust.api.models.PromptDeleteParams
-import com.braintrust.api.models.PromptDeleteResponse
 import com.braintrust.api.models.PromptFeedbackParams
 import com.braintrust.api.models.PromptListPage
 import com.braintrust.api.models.PromptListParams
 import com.braintrust.api.models.PromptReplaceParams
-import com.braintrust.api.models.PromptReplaceResponse
 import com.braintrust.api.models.PromptRetrieveParams
-import com.braintrust.api.models.PromptRetrieveResponse
 import com.braintrust.api.models.PromptUpdateParams
-import com.braintrust.api.models.PromptUpdateResponse
 
 interface PromptService {
 
@@ -29,14 +25,14 @@ interface PromptService {
     fun create(
         params: PromptCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): PromptCreateResponse
+    ): Prompt
 
     /** Get a prompt object by its id */
     @JvmOverloads
     fun retrieve(
         params: PromptRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): PromptRetrieveResponse
+    ): Prompt
 
     /**
      * Partially update a prompt object. Specify the fields to update in the payload. Any
@@ -47,7 +43,7 @@ interface PromptService {
     fun update(
         params: PromptUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): PromptUpdateResponse
+    ): Prompt
 
     /**
      * List out all prompts. The prompts are sorted by creation date, with the most recently-created
@@ -64,7 +60,7 @@ interface PromptService {
     fun delete(
         params: PromptDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): PromptDeleteResponse
+    ): Prompt
 
     /** Log feedback for a set of prompt events */
     @JvmOverloads
@@ -83,5 +79,5 @@ interface PromptService {
     fun replace(
         params: PromptReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): PromptReplaceResponse
+    ): Prompt
 }

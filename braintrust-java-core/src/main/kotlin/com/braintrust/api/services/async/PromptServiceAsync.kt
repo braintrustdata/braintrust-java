@@ -5,19 +5,15 @@
 package com.braintrust.api.services.async
 
 import com.braintrust.api.core.RequestOptions
+import com.braintrust.api.models.Prompt
 import com.braintrust.api.models.PromptCreateParams
-import com.braintrust.api.models.PromptCreateResponse
 import com.braintrust.api.models.PromptDeleteParams
-import com.braintrust.api.models.PromptDeleteResponse
 import com.braintrust.api.models.PromptFeedbackParams
 import com.braintrust.api.models.PromptListPageAsync
 import com.braintrust.api.models.PromptListParams
 import com.braintrust.api.models.PromptReplaceParams
-import com.braintrust.api.models.PromptReplaceResponse
 import com.braintrust.api.models.PromptRetrieveParams
-import com.braintrust.api.models.PromptRetrieveResponse
 import com.braintrust.api.models.PromptUpdateParams
-import com.braintrust.api.models.PromptUpdateResponse
 import java.util.concurrent.CompletableFuture
 
 interface PromptServiceAsync {
@@ -30,14 +26,14 @@ interface PromptServiceAsync {
     fun create(
         params: PromptCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<PromptCreateResponse>
+    ): CompletableFuture<Prompt>
 
     /** Get a prompt object by its id */
     @JvmOverloads
     fun retrieve(
         params: PromptRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<PromptRetrieveResponse>
+    ): CompletableFuture<Prompt>
 
     /**
      * Partially update a prompt object. Specify the fields to update in the payload. Any
@@ -48,7 +44,7 @@ interface PromptServiceAsync {
     fun update(
         params: PromptUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<PromptUpdateResponse>
+    ): CompletableFuture<Prompt>
 
     /**
      * List out all prompts. The prompts are sorted by creation date, with the most recently-created
@@ -65,7 +61,7 @@ interface PromptServiceAsync {
     fun delete(
         params: PromptDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<PromptDeleteResponse>
+    ): CompletableFuture<Prompt>
 
     /** Log feedback for a set of prompt events */
     @JvmOverloads
@@ -84,5 +80,5 @@ interface PromptServiceAsync {
     fun replace(
         params: PromptReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<PromptReplaceResponse>
+    ): CompletableFuture<Prompt>
 }
