@@ -30,10 +30,6 @@ constructor(
 
     private val prompt: PromptServiceAsync by lazy { PromptServiceAsyncImpl(clientOptions) }
 
-    private val promptSession: PromptSessionServiceAsync by lazy {
-        PromptSessionServiceAsyncImpl(clientOptions)
-    }
-
     private val role: RoleServiceAsync by lazy { RoleServiceAsyncImpl(clientOptions) }
 
     private val group: GroupServiceAsync by lazy { GroupServiceAsyncImpl(clientOptions) }
@@ -53,8 +49,6 @@ constructor(
     override fun dataset(): DatasetServiceAsync = dataset
 
     override fun prompt(): PromptServiceAsync = prompt
-
-    override fun promptSession(): PromptSessionServiceAsync = promptSession
 
     override fun role(): RoleServiceAsync = role
 

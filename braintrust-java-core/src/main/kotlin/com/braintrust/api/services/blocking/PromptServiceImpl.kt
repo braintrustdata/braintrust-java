@@ -8,19 +8,15 @@ import com.braintrust.api.core.http.HttpMethod
 import com.braintrust.api.core.http.HttpRequest
 import com.braintrust.api.core.http.HttpResponse.Handler
 import com.braintrust.api.errors.BraintrustError
+import com.braintrust.api.models.Prompt
 import com.braintrust.api.models.PromptCreateParams
-import com.braintrust.api.models.PromptCreateResponse
 import com.braintrust.api.models.PromptDeleteParams
-import com.braintrust.api.models.PromptDeleteResponse
 import com.braintrust.api.models.PromptFeedbackParams
 import com.braintrust.api.models.PromptListPage
 import com.braintrust.api.models.PromptListParams
 import com.braintrust.api.models.PromptReplaceParams
-import com.braintrust.api.models.PromptReplaceResponse
 import com.braintrust.api.models.PromptRetrieveParams
-import com.braintrust.api.models.PromptRetrieveResponse
 import com.braintrust.api.models.PromptUpdateParams
-import com.braintrust.api.models.PromptUpdateResponse
 import com.braintrust.api.services.emptyHandler
 import com.braintrust.api.services.errorHandler
 import com.braintrust.api.services.json
@@ -34,17 +30,14 @@ constructor(
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-    private val createHandler: Handler<PromptCreateResponse> =
-        jsonHandler<PromptCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val createHandler: Handler<Prompt> =
+        jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
      * Create a new prompt. If there is an existing prompt in the project with the same slug as the
      * one specified in the request, will return the existing prompt unmodified
      */
-    override fun create(
-        params: PromptCreateParams,
-        requestOptions: RequestOptions
-    ): PromptCreateResponse {
+    override fun create(params: PromptCreateParams, requestOptions: RequestOptions): Prompt {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -65,14 +58,11 @@ constructor(
         }
     }
 
-    private val retrieveHandler: Handler<PromptRetrieveResponse> =
-        jsonHandler<PromptRetrieveResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val retrieveHandler: Handler<Prompt> =
+        jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Get a prompt object by its id */
-    override fun retrieve(
-        params: PromptRetrieveParams,
-        requestOptions: RequestOptions
-    ): PromptRetrieveResponse {
+    override fun retrieve(params: PromptRetrieveParams, requestOptions: RequestOptions): Prompt {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -92,18 +82,15 @@ constructor(
         }
     }
 
-    private val updateHandler: Handler<PromptUpdateResponse> =
-        jsonHandler<PromptUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val updateHandler: Handler<Prompt> =
+        jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
      * Partially update a prompt object. Specify the fields to update in the payload. Any
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    override fun update(
-        params: PromptUpdateParams,
-        requestOptions: RequestOptions
-    ): PromptUpdateResponse {
+    override fun update(params: PromptUpdateParams, requestOptions: RequestOptions): Prompt {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.PATCH)
@@ -153,14 +140,11 @@ constructor(
         }
     }
 
-    private val deleteHandler: Handler<PromptDeleteResponse> =
-        jsonHandler<PromptDeleteResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val deleteHandler: Handler<Prompt> =
+        jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Delete a prompt object by its id */
-    override fun delete(
-        params: PromptDeleteParams,
-        requestOptions: RequestOptions
-    ): PromptDeleteResponse {
+    override fun delete(params: PromptDeleteParams, requestOptions: RequestOptions): Prompt {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.DELETE)
@@ -199,8 +183,8 @@ constructor(
         }
     }
 
-    private val replaceHandler: Handler<PromptReplaceResponse> =
-        jsonHandler<PromptReplaceResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val replaceHandler: Handler<Prompt> =
+        jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
      * NOTE: This operation is deprecated and will be removed in a future revision of the API.
@@ -208,10 +192,7 @@ constructor(
      * slug as the one specified in the request, will return the existing prompt unmodified, will
      * replace the existing prompt with the provided fields
      */
-    override fun replace(
-        params: PromptReplaceParams,
-        requestOptions: RequestOptions
-    ): PromptReplaceResponse {
+    override fun replace(params: PromptReplaceParams, requestOptions: RequestOptions): Prompt {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.PUT)

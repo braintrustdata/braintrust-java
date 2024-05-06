@@ -21,8 +21,6 @@ interface BraintrustClient {
 
     fun prompt(): PromptService
 
-    fun promptSession(): PromptSessionService
-
     fun role(): RoleService
 
     fun group(): GroupService
