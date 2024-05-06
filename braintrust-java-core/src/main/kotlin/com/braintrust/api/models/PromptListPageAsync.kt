@@ -28,7 +28,7 @@ private constructor(
 
     fun response(): Response = response
 
-    fun objects(): List<PromptListResponse> = response().objects()
+    fun objects(): List<Prompt> = response().objects()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -95,16 +95,16 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val objects: JsonField<List<PromptListResponse>>,
+        private val objects: JsonField<List<Prompt>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun objects(): List<PromptListResponse> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Prompt> = objects.getNullable("objects") ?: listOf()
 
         @JsonProperty("objects")
-        fun _objects(): Optional<JsonField<List<PromptListResponse>>> = Optional.ofNullable(objects)
+        fun _objects(): Optional<JsonField<List<Prompt>>> = Optional.ofNullable(objects)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -143,7 +143,7 @@ private constructor(
 
         class Builder {
 
-            private var objects: JsonField<List<PromptListResponse>> = JsonMissing.of()
+            private var objects: JsonField<List<Prompt>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -152,12 +152,10 @@ private constructor(
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun objects(objects: List<PromptListResponse>) = objects(JsonField.of(objects))
+            fun objects(objects: List<Prompt>) = objects(JsonField.of(objects))
 
             @JsonProperty("objects")
-            fun objects(objects: JsonField<List<PromptListResponse>>) = apply {
-                this.objects = objects
-            }
+            fun objects(objects: JsonField<List<Prompt>>) = apply { this.objects = objects }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
@@ -173,12 +171,9 @@ private constructor(
         private val firstPage: PromptListPageAsync,
     ) {
 
-        fun forEach(
-            action: Predicate<PromptListResponse>,
-            executor: Executor
-        ): CompletableFuture<Void> {
+        fun forEach(action: Predicate<Prompt>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<PromptListPageAsync>>.forEach(
-                action: (PromptListResponse) -> Boolean,
+                action: (Prompt) -> Boolean,
                 executor: Executor
             ): CompletableFuture<Void> =
                 thenComposeAsync(
@@ -194,8 +189,8 @@ private constructor(
                 .forEach(action::test, executor)
         }
 
-        fun toList(executor: Executor): CompletableFuture<List<PromptListResponse>> {
-            val values = mutableListOf<PromptListResponse>()
+        fun toList(executor: Executor): CompletableFuture<List<Prompt>> {
+            val values = mutableListOf<Prompt>()
             return forEach(values::add, executor).thenApply { values }
         }
     }

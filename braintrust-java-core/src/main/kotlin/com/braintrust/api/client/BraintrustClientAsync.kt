@@ -21,8 +21,6 @@ interface BraintrustClientAsync {
 
     fun prompt(): PromptServiceAsync
 
-    fun promptSession(): PromptSessionServiceAsync
-
     fun role(): RoleServiceAsync
 
     fun group(): GroupServiceAsync
