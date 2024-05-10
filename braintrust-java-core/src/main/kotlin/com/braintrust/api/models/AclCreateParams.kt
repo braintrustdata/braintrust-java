@@ -29,31 +29,43 @@ import java.util.Optional
 
 class AclCreateParams
 constructor(
-    private val createUserPermissionAcl: CreateUserPermissionAcl?,
-    private val createUserRoleAcl: CreateUserRoleAcl?,
-    private val createGroupPermissionAcl: CreateGroupPermissionAcl?,
-    private val createGroupRoleAcl: CreateGroupRoleAcl?,
+    private val objectId: String,
+    private val objectType: ObjectType,
+    private val groupId: String?,
+    private val permission: Permission?,
+    private val restrictObjectType: RestrictObjectType?,
+    private val roleId: String?,
+    private val userId: String?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun createUserPermissionAcl(): Optional<CreateUserPermissionAcl> =
-        Optional.ofNullable(createUserPermissionAcl)
+    fun objectId(): String = objectId
 
-    fun createUserRoleAcl(): Optional<CreateUserRoleAcl> = Optional.ofNullable(createUserRoleAcl)
+    fun objectType(): ObjectType = objectType
 
-    fun createGroupPermissionAcl(): Optional<CreateGroupPermissionAcl> =
-        Optional.ofNullable(createGroupPermissionAcl)
+    fun groupId(): Optional<String> = Optional.ofNullable(groupId)
 
-    fun createGroupRoleAcl(): Optional<CreateGroupRoleAcl> = Optional.ofNullable(createGroupRoleAcl)
+    fun permission(): Optional<Permission> = Optional.ofNullable(permission)
+
+    fun restrictObjectType(): Optional<RestrictObjectType> = Optional.ofNullable(restrictObjectType)
+
+    fun roleId(): Optional<String> = Optional.ofNullable(roleId)
+
+    fun userId(): Optional<String> = Optional.ofNullable(userId)
 
     @JvmSynthetic
     internal fun getBody(): AclCreateBody {
         return AclCreateBody(
-            createUserPermissionAcl,
-            createUserRoleAcl,
-            createGroupPermissionAcl,
-            createGroupRoleAcl,
+            objectId,
+            objectType,
+            groupId,
+            permission,
+            restrictObjectType,
+            roleId,
+            userId,
+            additionalBodyProperties,
         )
     }
 
@@ -61,62 +73,67 @@ constructor(
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
-    @JsonDeserialize(using = AclCreateBody.Deserializer::class)
-    @JsonSerialize(using = AclCreateBody.Serializer::class)
+    /**
+     * An ACL grants a certain permission or role to a certain user or group on an object.
+     *
+     * ACLs are inherited across the object hierarchy. So for example, if a user has read
+     * permissions on a project, they will also have read permissions on any experiment, dataset,
+     * etc. created within that project.
+     *
+     * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
+     * ACL.
+     */
+    @JsonDeserialize(builder = AclCreateBody.Builder::class)
+    @NoAutoDetect
     class AclCreateBody
     internal constructor(
-        private val createUserPermissionAcl: CreateUserPermissionAcl? = null,
-        private val createUserRoleAcl: CreateUserRoleAcl? = null,
-        private val createGroupPermissionAcl: CreateGroupPermissionAcl? = null,
-        private val createGroupRoleAcl: CreateGroupRoleAcl? = null,
-        private val _json: JsonValue? = null,
+        private val objectId: String?,
+        private val objectType: ObjectType?,
+        private val groupId: String?,
+        private val permission: Permission?,
+        private val restrictObjectType: RestrictObjectType?,
+        private val roleId: String?,
+        private val userId: String?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        fun createUserPermissionAcl(): Optional<CreateUserPermissionAcl> =
-            Optional.ofNullable(createUserPermissionAcl)
+        private var hashCode: Int = 0
 
-        fun createUserRoleAcl(): Optional<CreateUserRoleAcl> =
-            Optional.ofNullable(createUserRoleAcl)
+        /** The id of the object the ACL applies to */
+        @JsonProperty("object_id") fun objectId(): String? = objectId
 
-        fun createGroupPermissionAcl(): Optional<CreateGroupPermissionAcl> =
-            Optional.ofNullable(createGroupPermissionAcl)
+        /** The object type that the ACL applies to */
+        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
 
-        fun createGroupRoleAcl(): Optional<CreateGroupRoleAcl> =
-            Optional.ofNullable(createGroupRoleAcl)
+        /**
+         * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
+         * provided
+         */
+        @JsonProperty("group_id") fun groupId(): String? = groupId
 
-        fun isCreateUserPermissionAcl(): Boolean = createUserPermissionAcl != null
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        @JsonProperty("permission") fun permission(): Permission? = permission
 
-        fun isCreateUserRoleAcl(): Boolean = createUserRoleAcl != null
+        /** Optionally restricts the permission grant to just the specified object type */
+        @JsonProperty("restrict_object_type")
+        fun restrictObjectType(): RestrictObjectType? = restrictObjectType
 
-        fun isCreateGroupPermissionAcl(): Boolean = createGroupPermissionAcl != null
+        /**
+         * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
+         */
+        @JsonProperty("role_id") fun roleId(): String? = roleId
 
-        fun isCreateGroupRoleAcl(): Boolean = createGroupRoleAcl != null
+        /**
+         * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
+         * provided
+         */
+        @JsonProperty("user_id") fun userId(): String? = userId
 
-        fun asCreateUserPermissionAcl(): CreateUserPermissionAcl =
-            createUserPermissionAcl.getOrThrow("createUserPermissionAcl")
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun asCreateUserRoleAcl(): CreateUserRoleAcl =
-            createUserRoleAcl.getOrThrow("createUserRoleAcl")
-
-        fun asCreateGroupPermissionAcl(): CreateGroupPermissionAcl =
-            createGroupPermissionAcl.getOrThrow("createGroupPermissionAcl")
-
-        fun asCreateGroupRoleAcl(): CreateGroupRoleAcl =
-            createGroupRoleAcl.getOrThrow("createGroupRoleAcl")
-
-        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                createUserPermissionAcl != null ->
-                    visitor.visitCreateUserPermissionAcl(createUserPermissionAcl)
-                createUserRoleAcl != null -> visitor.visitCreateUserRoleAcl(createUserRoleAcl)
-                createGroupPermissionAcl != null ->
-                    visitor.visitCreateGroupPermissionAcl(createGroupPermissionAcl)
-                createGroupRoleAcl != null -> visitor.visitCreateGroupRoleAcl(createGroupRoleAcl)
-                else -> visitor.unknown(_json)
-            }
-        }
+        fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -124,110 +141,128 @@ constructor(
             }
 
             return other is AclCreateBody &&
-                this.createUserPermissionAcl == other.createUserPermissionAcl &&
-                this.createUserRoleAcl == other.createUserRoleAcl &&
-                this.createGroupPermissionAcl == other.createGroupPermissionAcl &&
-                this.createGroupRoleAcl == other.createGroupRoleAcl
+                this.objectId == other.objectId &&
+                this.objectType == other.objectType &&
+                this.groupId == other.groupId &&
+                this.permission == other.permission &&
+                this.restrictObjectType == other.restrictObjectType &&
+                this.roleId == other.roleId &&
+                this.userId == other.userId &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                createUserPermissionAcl,
-                createUserRoleAcl,
-                createGroupPermissionAcl,
-                createGroupRoleAcl,
-            )
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        objectId,
+                        objectType,
+                        groupId,
+                        permission,
+                        restrictObjectType,
+                        roleId,
+                        userId,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString(): String {
-            return when {
-                createUserPermissionAcl != null ->
-                    "AclCreateBody{createUserPermissionAcl=$createUserPermissionAcl}"
-                createUserRoleAcl != null -> "AclCreateBody{createUserRoleAcl=$createUserRoleAcl}"
-                createGroupPermissionAcl != null ->
-                    "AclCreateBody{createGroupPermissionAcl=$createGroupPermissionAcl}"
-                createGroupRoleAcl != null ->
-                    "AclCreateBody{createGroupRoleAcl=$createGroupRoleAcl}"
-                _json != null -> "AclCreateBody{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid AclCreateBody")
-            }
-        }
+        override fun toString() =
+            "AclCreateBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun ofCreateUserPermissionAcl(createUserPermissionAcl: CreateUserPermissionAcl) =
-                AclCreateBody(createUserPermissionAcl = createUserPermissionAcl)
-
-            @JvmStatic
-            fun ofCreateUserRoleAcl(createUserRoleAcl: CreateUserRoleAcl) =
-                AclCreateBody(createUserRoleAcl = createUserRoleAcl)
-
-            @JvmStatic
-            fun ofCreateGroupPermissionAcl(createGroupPermissionAcl: CreateGroupPermissionAcl) =
-                AclCreateBody(createGroupPermissionAcl = createGroupPermissionAcl)
-
-            @JvmStatic
-            fun ofCreateGroupRoleAcl(createGroupRoleAcl: CreateGroupRoleAcl) =
-                AclCreateBody(createGroupRoleAcl = createGroupRoleAcl)
+            @JvmStatic fun builder() = Builder()
         }
 
-        interface Visitor<out T> {
+        class Builder {
 
-            fun visitCreateUserPermissionAcl(createUserPermissionAcl: CreateUserPermissionAcl): T
+            private var objectId: String? = null
+            private var objectType: ObjectType? = null
+            private var groupId: String? = null
+            private var permission: Permission? = null
+            private var restrictObjectType: RestrictObjectType? = null
+            private var roleId: String? = null
+            private var userId: String? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            fun visitCreateUserRoleAcl(createUserRoleAcl: CreateUserRoleAcl): T
-
-            fun visitCreateGroupPermissionAcl(createGroupPermissionAcl: CreateGroupPermissionAcl): T
-
-            fun visitCreateGroupRoleAcl(createGroupRoleAcl: CreateGroupRoleAcl): T
-
-            fun unknown(json: JsonValue?): T {
-                throw BraintrustInvalidDataException("Unknown AclCreateBody: $json")
+            @JvmSynthetic
+            internal fun from(aclCreateBody: AclCreateBody) = apply {
+                this.objectId = aclCreateBody.objectId
+                this.objectType = aclCreateBody.objectType
+                this.groupId = aclCreateBody.groupId
+                this.permission = aclCreateBody.permission
+                this.restrictObjectType = aclCreateBody.restrictObjectType
+                this.roleId = aclCreateBody.roleId
+                this.userId = aclCreateBody.userId
+                additionalProperties(aclCreateBody.additionalProperties)
             }
-        }
 
-        class Deserializer : BaseDeserializer<AclCreateBody>(AclCreateBody::class) {
+            /** The id of the object the ACL applies to */
+            @JsonProperty("object_id")
+            fun objectId(objectId: String) = apply { this.objectId = objectId }
 
-            override fun ObjectCodec.deserialize(node: JsonNode): AclCreateBody {
-                val json = JsonValue.fromJsonNode(node)
-                tryDeserialize(node, jacksonTypeRef<CreateUserPermissionAcl>())?.let {
-                    return AclCreateBody(createUserPermissionAcl = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<CreateUserRoleAcl>())?.let {
-                    return AclCreateBody(createUserRoleAcl = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<CreateGroupPermissionAcl>())?.let {
-                    return AclCreateBody(createGroupPermissionAcl = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<CreateGroupRoleAcl>())?.let {
-                    return AclCreateBody(createGroupRoleAcl = it, _json = json)
-                }
+            /** The object type that the ACL applies to */
+            @JsonProperty("object_type")
+            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
 
-                return AclCreateBody(_json = json)
+            /**
+             * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
+             * provided
+             */
+            @JsonProperty("group_id")
+            fun groupId(groupId: String) = apply { this.groupId = groupId }
+
+            /**
+             * Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided
+             */
+            @JsonProperty("permission")
+            fun permission(permission: Permission) = apply { this.permission = permission }
+
+            /** Optionally restricts the permission grant to just the specified object type */
+            @JsonProperty("restrict_object_type")
+            fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
+                this.restrictObjectType = restrictObjectType
             }
-        }
 
-        class Serializer : BaseSerializer<AclCreateBody>(AclCreateBody::class) {
+            /**
+             * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be
+             * provided
+             */
+            @JsonProperty("role_id") fun roleId(roleId: String) = apply { this.roleId = roleId }
 
-            override fun serialize(
-                value: AclCreateBody,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.createUserPermissionAcl != null ->
-                        generator.writeObject(value.createUserPermissionAcl)
-                    value.createUserRoleAcl != null ->
-                        generator.writeObject(value.createUserRoleAcl)
-                    value.createGroupPermissionAcl != null ->
-                        generator.writeObject(value.createGroupPermissionAcl)
-                    value.createGroupRoleAcl != null ->
-                        generator.writeObject(value.createGroupRoleAcl)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid AclCreateBody")
-                }
+            /**
+             * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
+             * provided
+             */
+            @JsonProperty("user_id") fun userId(userId: String) = apply { this.userId = userId }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
             }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): AclCreateBody =
+                AclCreateBody(
+                    checkNotNull(objectId) { "`objectId` is required but was not set" },
+                    checkNotNull(objectType) { "`objectType` is required but was not set" },
+                    groupId,
+                    permission,
+                    restrictObjectType,
+                    roleId,
+                    userId,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -235,33 +270,43 @@ constructor(
 
     fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
 
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
         return other is AclCreateParams &&
-            this.createUserPermissionAcl == other.createUserPermissionAcl &&
-            this.createUserRoleAcl == other.createUserRoleAcl &&
-            this.createGroupPermissionAcl == other.createGroupPermissionAcl &&
-            this.createGroupRoleAcl == other.createGroupRoleAcl &&
+            this.objectId == other.objectId &&
+            this.objectType == other.objectType &&
+            this.groupId == other.groupId &&
+            this.permission == other.permission &&
+            this.restrictObjectType == other.restrictObjectType &&
+            this.roleId == other.roleId &&
+            this.userId == other.userId &&
             this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            createUserPermissionAcl,
-            createUserRoleAcl,
-            createGroupPermissionAcl,
-            createGroupRoleAcl,
+            objectId,
+            objectType,
+            groupId,
+            permission,
+            restrictObjectType,
+            roleId,
+            userId,
             additionalQueryParams,
             additionalHeaders,
+            additionalBodyProperties,
         )
     }
 
     override fun toString() =
-        "AclCreateParams{createUserPermissionAcl=$createUserPermissionAcl, createUserRoleAcl=$createUserRoleAcl, createGroupPermissionAcl=$createGroupPermissionAcl, createGroupRoleAcl=$createGroupRoleAcl, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
+        "AclCreateParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -273,51 +318,81 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var createUserPermissionAcl: CreateUserPermissionAcl? = null
-        private var createUserRoleAcl: CreateUserRoleAcl? = null
-        private var createGroupPermissionAcl: CreateGroupPermissionAcl? = null
-        private var createGroupRoleAcl: CreateGroupRoleAcl? = null
+        private var objectId: String? = null
+        private var objectType: ObjectType? = null
+        private var groupId: String? = null
+        private var permission: Permission? = null
+        private var restrictObjectType: RestrictObjectType? = null
+        private var roleId: String? = null
+        private var userId: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
+        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(aclCreateParams: AclCreateParams) = apply {
-            this.createUserPermissionAcl = aclCreateParams.createUserPermissionAcl
-            this.createUserRoleAcl = aclCreateParams.createUserRoleAcl
-            this.createGroupPermissionAcl = aclCreateParams.createGroupPermissionAcl
-            this.createGroupRoleAcl = aclCreateParams.createGroupRoleAcl
+            this.objectId = aclCreateParams.objectId
+            this.objectType = aclCreateParams.objectType
+            this.groupId = aclCreateParams.groupId
+            this.permission = aclCreateParams.permission
+            this.restrictObjectType = aclCreateParams.restrictObjectType
+            this.roleId = aclCreateParams.roleId
+            this.userId = aclCreateParams.userId
             additionalQueryParams(aclCreateParams.additionalQueryParams)
             additionalHeaders(aclCreateParams.additionalHeaders)
+            additionalBodyProperties(aclCreateParams.additionalBodyProperties)
         }
 
-        fun forCreateUserPermissionAcl(createUserPermissionAcl: CreateUserPermissionAcl) = apply {
-            this.createUserPermissionAcl = createUserPermissionAcl
-            this.createUserRoleAcl = null
-            this.createGroupPermissionAcl = null
-            this.createGroupRoleAcl = null
+        /** The id of the object the ACL applies to */
+        fun objectId(objectId: String) = apply { this.objectId = objectId }
+
+        /** The object type that the ACL applies to */
+        fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
+
+        /**
+         * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
+         * provided
+         */
+        fun groupId(groupId: String) = apply { this.groupId = groupId }
+
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        fun permission(permission: Permission) = apply { this.permission = permission }
+
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        fun permission(unionMember0: Permission.UnionMember0) = apply {
+            this.permission = Permission.ofUnionMember0(unionMember0)
         }
 
-        fun forCreateUserRoleAcl(createUserRoleAcl: CreateUserRoleAcl) = apply {
-            this.createUserPermissionAcl = null
-            this.createUserRoleAcl = createUserRoleAcl
-            this.createGroupPermissionAcl = null
-            this.createGroupRoleAcl = null
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        fun permission(unionMember1: UnionMember1) = apply {
+            this.permission = Permission.ofUnionMember1(unionMember1)
         }
 
-        fun forCreateGroupPermissionAcl(createGroupPermissionAcl: CreateGroupPermissionAcl) =
-            apply {
-                this.createUserPermissionAcl = null
-                this.createUserRoleAcl = null
-                this.createGroupPermissionAcl = createGroupPermissionAcl
-                this.createGroupRoleAcl = null
-            }
-
-        fun forCreateGroupRoleAcl(createGroupRoleAcl: CreateGroupRoleAcl) = apply {
-            this.createUserPermissionAcl = null
-            this.createUserRoleAcl = null
-            this.createGroupPermissionAcl = null
-            this.createGroupRoleAcl = createGroupRoleAcl
+        /** Optionally restricts the permission grant to just the specified object type */
+        fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
+            this.restrictObjectType = restrictObjectType
         }
+
+        /** Optionally restricts the permission grant to just the specified object type */
+        fun restrictObjectType(unionMember0: RestrictObjectType.UnionMember0) = apply {
+            this.restrictObjectType = RestrictObjectType.ofUnionMember0(unionMember0)
+        }
+
+        /** Optionally restricts the permission grant to just the specified object type */
+        fun restrictObjectType(unionMember1: UnionMember1) = apply {
+            this.restrictObjectType = RestrictObjectType.ofUnionMember1(unionMember1)
+        }
+
+        /**
+         * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
+         */
+        fun roleId(roleId: String) = apply { this.roleId = roleId }
+
+        /**
+         * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
+         * provided
+         */
+        fun userId(userId: String) = apply { this.userId = userId }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -359,156 +434,264 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            this.additionalBodyProperties.clear()
+            this.additionalBodyProperties.putAll(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            this.additionalBodyProperties.put(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
+
         fun build(): AclCreateParams =
             AclCreateParams(
-                createUserPermissionAcl,
-                createUserRoleAcl,
-                createGroupPermissionAcl,
-                createGroupRoleAcl,
+                checkNotNull(objectId) { "`objectId` is required but was not set" },
+                checkNotNull(objectType) { "`objectType` is required but was not set" },
+                groupId,
+                permission,
+                restrictObjectType,
+                roleId,
+                userId,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
             )
     }
 
-    @JsonDeserialize(builder = CreateUserPermissionAcl.Builder::class)
-    @NoAutoDetect
-    class CreateUserPermissionAcl
+    class ObjectType
+    @JsonCreator
     private constructor(
-        private val objectType: ObjectType?,
-        private val objectId: String?,
-        private val restrictObjectType: RestrictObjectType?,
-        private val userId: String?,
-        private val permission: Permission?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        private var hashCode: Int = 0
-
-        /** The object type that the ACL applies to */
-        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
-
-        /** The id of the object the ACL applies to */
-        @JsonProperty("object_id") fun objectId(): String? = objectId
-
-        /** Optionally restricts the permission grant to just the specified object type */
-        @JsonProperty("restrict_object_type")
-        fun restrictObjectType(): RestrictObjectType? = restrictObjectType
-
-        /** Id of the user the ACL applies to */
-        @JsonProperty("user_id") fun userId(): String? = userId
-
-        /** Permission the ACL grants */
-        @JsonProperty("permission") fun permission(): Permission? = permission
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return other is CreateUserPermissionAcl &&
-                this.objectType == other.objectType &&
-                this.objectId == other.objectId &&
-                this.restrictObjectType == other.restrictObjectType &&
-                this.userId == other.userId &&
-                this.permission == other.permission &&
-                this.additionalProperties == other.additionalProperties
+            return other is ObjectType && this.value == other.value
         }
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        objectType,
-                        objectId,
-                        restrictObjectType,
-                        userId,
-                        permission,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
+        override fun hashCode() = value.hashCode()
 
-        override fun toString() =
-            "CreateUserPermissionAcl{objectType=$objectType, objectId=$objectId, restrictObjectType=$restrictObjectType, userId=$userId, permission=$permission, additionalProperties=$additionalProperties}"
+        override fun toString() = value.toString()
 
         companion object {
 
-            @JvmStatic fun builder() = Builder()
+            @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+
+            @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+
+            @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+
+            @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+
+            @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+
+            @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+
+            @JvmField val PROJECT_SCORE = ObjectType(JsonField.of("project_score"))
+
+            @JvmField val PROJECT_TAG = ObjectType(JsonField.of("project_tag"))
+
+            @JvmField val GROUP = ObjectType(JsonField.of("group"))
+
+            @JvmField val ROLE = ObjectType(JsonField.of("role"))
+
+            @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
         }
 
-        class Builder {
-
-            private var objectType: ObjectType? = null
-            private var objectId: String? = null
-            private var restrictObjectType: RestrictObjectType? = null
-            private var userId: String? = null
-            private var permission: Permission? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(createUserPermissionAcl: CreateUserPermissionAcl) = apply {
-                this.objectType = createUserPermissionAcl.objectType
-                this.objectId = createUserPermissionAcl.objectId
-                this.restrictObjectType = createUserPermissionAcl.restrictObjectType
-                this.userId = createUserPermissionAcl.userId
-                this.permission = createUserPermissionAcl.permission
-                additionalProperties(createUserPermissionAcl.additionalProperties)
-            }
-
-            /** The object type that the ACL applies to */
-            @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
-
-            /** The id of the object the ACL applies to */
-            @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply { this.objectId = objectId }
-
-            /** Optionally restricts the permission grant to just the specified object type */
-            @JsonProperty("restrict_object_type")
-            fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
-                this.restrictObjectType = restrictObjectType
-            }
-
-            /** Id of the user the ACL applies to */
-            @JsonProperty("user_id") fun userId(userId: String) = apply { this.userId = userId }
-
-            /** Permission the ACL grants */
-            @JsonProperty("permission")
-            fun permission(permission: Permission) = apply { this.permission = permission }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): CreateUserPermissionAcl =
-                CreateUserPermissionAcl(
-                    checkNotNull(objectType) { "`objectType` is required but was not set" },
-                    checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    restrictObjectType,
-                    checkNotNull(userId) { "`userId` is required but was not set" },
-                    checkNotNull(permission) { "`permission` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
-                )
+        enum class Known {
+            ORGANIZATION,
+            PROJECT,
+            EXPERIMENT,
+            DATASET,
+            PROMPT,
+            PROMPT_SESSION,
+            PROJECT_SCORE,
+            PROJECT_TAG,
+            GROUP,
+            ROLE,
         }
 
-        class ObjectType
+        enum class Value {
+            ORGANIZATION,
+            PROJECT,
+            EXPERIMENT,
+            DATASET,
+            PROMPT,
+            PROMPT_SESSION,
+            PROJECT_SCORE,
+            PROJECT_TAG,
+            GROUP,
+            ROLE,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                ORGANIZATION -> Value.ORGANIZATION
+                PROJECT -> Value.PROJECT
+                EXPERIMENT -> Value.EXPERIMENT
+                DATASET -> Value.DATASET
+                PROMPT -> Value.PROMPT
+                PROMPT_SESSION -> Value.PROMPT_SESSION
+                PROJECT_SCORE -> Value.PROJECT_SCORE
+                PROJECT_TAG -> Value.PROJECT_TAG
+                GROUP -> Value.GROUP
+                ROLE -> Value.ROLE
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                ORGANIZATION -> Known.ORGANIZATION
+                PROJECT -> Known.PROJECT
+                EXPERIMENT -> Known.EXPERIMENT
+                DATASET -> Known.DATASET
+                PROMPT -> Known.PROMPT
+                PROMPT_SESSION -> Known.PROMPT_SESSION
+                PROJECT_SCORE -> Known.PROJECT_SCORE
+                PROJECT_TAG -> Known.PROJECT_TAG
+                GROUP -> Known.GROUP
+                ROLE -> Known.ROLE
+                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
+    @JsonDeserialize(using = Permission.Deserializer::class)
+    @JsonSerialize(using = Permission.Serializer::class)
+    class Permission
+    private constructor(
+        private val unionMember0: UnionMember0? = null,
+        private val unionMember1: UnionMember1? = null,
+        private val _json: JsonValue? = null,
+    ) {
+
+        private var validated: Boolean = false
+
+        /**
+         * Each permission permits a certain type of operation on an object in the system
+         *
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
+         */
+        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+
+        fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+
+        fun isUnionMember0(): Boolean = unionMember0 != null
+
+        fun isUnionMember1(): Boolean = unionMember1 != null
+
+        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+
+        fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
+
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        fun <T> accept(visitor: Visitor<T>): T {
+            return when {
+                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
+                else -> visitor.unknown(_json)
+            }
+        }
+
+        fun validate(): Permission = apply {
+            if (!validated) {
+                if (unionMember0 == null && unionMember1 == null) {
+                    throw BraintrustInvalidDataException("Unknown Permission: $_json")
+                }
+                unionMember1?.validate()
+                validated = true
+            }
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Permission &&
+                this.unionMember0 == other.unionMember0 &&
+                this.unionMember1 == other.unionMember1
+        }
+
+        override fun hashCode(): Int {
+            return Objects.hash(unionMember0, unionMember1)
+        }
+
+        override fun toString(): String {
+            return when {
+                unionMember0 != null -> "Permission{unionMember0=$unionMember0}"
+                unionMember1 != null -> "Permission{unionMember1=$unionMember1}"
+                _json != null -> "Permission{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid Permission")
+            }
+        }
+
+        companion object {
+
+            @JvmStatic
+            fun ofUnionMember0(unionMember0: UnionMember0) = Permission(unionMember0 = unionMember0)
+
+            @JvmStatic
+            fun ofUnionMember1(unionMember1: UnionMember1) = Permission(unionMember1 = unionMember1)
+        }
+
+        interface Visitor<out T> {
+
+            fun visitUnionMember0(unionMember0: UnionMember0): T
+
+            fun visitUnionMember1(unionMember1: UnionMember1): T
+
+            fun unknown(json: JsonValue?): T {
+                throw BraintrustInvalidDataException("Unknown Permission: $json")
+            }
+        }
+
+        class Deserializer : BaseDeserializer<Permission>(Permission::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): Permission {
+                val json = JsonValue.fromJsonNode(node)
+                tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
+                    return Permission(unionMember0 = it, _json = json)
+                }
+                tryDeserialize(node, jacksonTypeRef<UnionMember1>()) { it.validate() }
+                    ?.let {
+                        return Permission(unionMember1 = it, _json = json)
+                    }
+
+                return Permission(_json = json)
+            }
+        }
+
+        class Serializer : BaseSerializer<Permission>(Permission::class) {
+
+            override fun serialize(
+                value: Permission,
+                generator: JsonGenerator,
+                provider: SerializerProvider
+            ) {
+                when {
+                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                    value.unionMember1 != null -> generator.writeObject(value.unionMember1)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid Permission")
+                }
+            }
+        }
+
+        class UnionMember0
         @JsonCreator
         private constructor(
             private val value: JsonField<String>,
@@ -521,7 +704,7 @@ constructor(
                     return true
                 }
 
-                return other is ObjectType && this.value == other.value
+                return other is UnionMember0 && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -530,128 +713,23 @@ constructor(
 
             companion object {
 
-                @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+                @JvmField val CREATE = UnionMember0(JsonField.of("create"))
 
-                @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+                @JvmField val READ = UnionMember0(JsonField.of("read"))
 
-                @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+                @JvmField val UPDATE = UnionMember0(JsonField.of("update"))
 
-                @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+                @JvmField val DELETE = UnionMember0(JsonField.of("delete"))
 
-                @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+                @JvmField val CREATE_ACLS = UnionMember0(JsonField.of("create_acls"))
 
-                @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+                @JvmField val READ_ACLS = UnionMember0(JsonField.of("read_acls"))
 
-                @JvmField val PROJECT_SCORE = ObjectType(JsonField.of("project_score"))
+                @JvmField val UPDATE_ACLS = UnionMember0(JsonField.of("update_acls"))
 
-                @JvmField val PROJECT_TAG = ObjectType(JsonField.of("project_tag"))
+                @JvmField val DELETE_ACLS = UnionMember0(JsonField.of("delete_acls"))
 
-                @JvmField val GROUP = ObjectType(JsonField.of("group"))
-
-                @JvmField val ROLE = ObjectType(JsonField.of("role"))
-
-                @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
-            }
-
-            enum class Known {
-                ORGANIZATION,
-                PROJECT,
-                EXPERIMENT,
-                DATASET,
-                PROMPT,
-                PROMPT_SESSION,
-                PROJECT_SCORE,
-                PROJECT_TAG,
-                GROUP,
-                ROLE,
-            }
-
-            enum class Value {
-                ORGANIZATION,
-                PROJECT,
-                EXPERIMENT,
-                DATASET,
-                PROMPT,
-                PROMPT_SESSION,
-                PROJECT_SCORE,
-                PROJECT_TAG,
-                GROUP,
-                ROLE,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    ORGANIZATION -> Value.ORGANIZATION
-                    PROJECT -> Value.PROJECT
-                    EXPERIMENT -> Value.EXPERIMENT
-                    DATASET -> Value.DATASET
-                    PROMPT -> Value.PROMPT
-                    PROMPT_SESSION -> Value.PROMPT_SESSION
-                    PROJECT_SCORE -> Value.PROJECT_SCORE
-                    PROJECT_TAG -> Value.PROJECT_TAG
-                    GROUP -> Value.GROUP
-                    ROLE -> Value.ROLE
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    ORGANIZATION -> Known.ORGANIZATION
-                    PROJECT -> Known.PROJECT
-                    EXPERIMENT -> Known.EXPERIMENT
-                    DATASET -> Known.DATASET
-                    PROMPT -> Known.PROMPT
-                    PROMPT_SESSION -> Known.PROMPT_SESSION
-                    PROJECT_SCORE -> Known.PROJECT_SCORE
-                    PROJECT_TAG -> Known.PROJECT_TAG
-                    GROUP -> Known.GROUP
-                    ROLE -> Known.ROLE
-                    else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-
-        class Permission
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Permission && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val CREATE = Permission(JsonField.of("create"))
-
-                @JvmField val READ = Permission(JsonField.of("read"))
-
-                @JvmField val UPDATE = Permission(JsonField.of("update"))
-
-                @JvmField val DELETE = Permission(JsonField.of("delete"))
-
-                @JvmField val CREATE_ACLS = Permission(JsonField.of("create_acls"))
-
-                @JvmField val READ_ACLS = Permission(JsonField.of("read_acls"))
-
-                @JvmField val UPDATE_ACLS = Permission(JsonField.of("update_acls"))
-
-                @JvmField val DELETE_ACLS = Permission(JsonField.of("delete_acls"))
-
-                @JvmStatic fun of(value: String) = Permission(JsonField.of(value))
+                @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
             }
 
             enum class Known {
@@ -700,452 +778,209 @@ constructor(
                     READ_ACLS -> Known.READ_ACLS
                     UPDATE_ACLS -> Known.UPDATE_ACLS
                     DELETE_ACLS -> Known.DELETE_ACLS
-                    else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
+                    else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
                 }
 
             fun asString(): String = _value().asStringOrThrow()
         }
 
-        @JsonDeserialize(using = RestrictObjectType.Deserializer::class)
-        @JsonSerialize(using = RestrictObjectType.Serializer::class)
-        class RestrictObjectType
+        @JsonDeserialize(builder = UnionMember1.Builder::class)
+        @NoAutoDetect
+        class UnionMember1
         private constructor(
-            private val unionMember0: UnionMember0? = null,
-            private val unionMember1: UnionMember1? = null,
-            private val _json: JsonValue? = null,
+            private val additionalProperties: Map<String, JsonValue>,
         ) {
 
             private var validated: Boolean = false
 
-            /** The object type that the ACL applies to */
-            fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+            private var hashCode: Int = 0
 
-            fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-            fun isUnionMember0(): Boolean = unionMember0 != null
-
-            fun isUnionMember1(): Boolean = unionMember1 != null
-
-            fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
-
-            fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-            fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-            fun <T> accept(visitor: Visitor<T>): T {
-                return when {
-                    unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
-                    unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                    else -> visitor.unknown(_json)
-                }
-            }
-
-            fun validate(): RestrictObjectType = apply {
+            fun validate(): UnionMember1 = apply {
                 if (!validated) {
-                    if (unionMember0 == null && unionMember1 == null) {
-                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $_json")
-                    }
-                    unionMember1?.validate()
                     validated = true
                 }
             }
+
+            fun toBuilder() = Builder().from(this)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
                 }
 
-                return other is RestrictObjectType &&
-                    this.unionMember0 == other.unionMember0 &&
-                    this.unionMember1 == other.unionMember1
+                return other is UnionMember1 &&
+                    this.additionalProperties == other.additionalProperties
             }
 
             override fun hashCode(): Int {
-                return Objects.hash(unionMember0, unionMember1)
+                if (hashCode == 0) {
+                    hashCode = Objects.hash(additionalProperties)
+                }
+                return hashCode
             }
 
-            override fun toString(): String {
-                return when {
-                    unionMember0 != null -> "RestrictObjectType{unionMember0=$unionMember0}"
-                    unionMember1 != null -> "RestrictObjectType{unionMember1=$unionMember1}"
-                    _json != null -> "RestrictObjectType{_unknown=$_json}"
-                    else -> throw IllegalStateException("Invalid RestrictObjectType")
-                }
-            }
+            override fun toString() = "UnionMember1{additionalProperties=$additionalProperties}"
 
             companion object {
 
-                @JvmStatic
-                fun ofUnionMember0(unionMember0: UnionMember0) =
-                    RestrictObjectType(unionMember0 = unionMember0)
-
-                @JvmStatic
-                fun ofUnionMember1(unionMember1: UnionMember1) =
-                    RestrictObjectType(unionMember1 = unionMember1)
+                @JvmStatic fun builder() = Builder()
             }
 
-            interface Visitor<out T> {
+            class Builder {
 
-                fun visitUnionMember0(unionMember0: UnionMember0): T
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-                fun visitUnionMember1(unionMember1: UnionMember1): T
-
-                fun unknown(json: JsonValue?): T {
-                    throw BraintrustInvalidDataException("Unknown RestrictObjectType: $json")
-                }
-            }
-
-            class Deserializer : BaseDeserializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun ObjectCodec.deserialize(node: JsonNode): RestrictObjectType {
-                    val json = JsonValue.fromJsonNode(node)
-                    tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                        return RestrictObjectType(unionMember0 = it, _json = json)
-                    }
-                    tryDeserialize(node, jacksonTypeRef<UnionMember1>()) { it.validate() }
-                        ?.let {
-                            return RestrictObjectType(unionMember1 = it, _json = json)
-                        }
-
-                    return RestrictObjectType(_json = json)
-                }
-            }
-
-            class Serializer : BaseSerializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun serialize(
-                    value: RestrictObjectType,
-                    generator: JsonGenerator,
-                    provider: SerializerProvider
-                ) {
-                    when {
-                        value.unionMember0 != null -> generator.writeObject(value.unionMember0)
-                        value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                        value._json != null -> generator.writeObject(value._json)
-                        else -> throw IllegalStateException("Invalid RestrictObjectType")
-                    }
-                }
-            }
-
-            class UnionMember0
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
-
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember0 && this.value == other.value
+                @JvmSynthetic
+                internal fun from(unionMember1: UnionMember1) = apply {
+                    additionalProperties(unionMember1.additionalProperties)
                 }
 
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
-                companion object {
-
-                    @JvmField val ORGANIZATION = UnionMember0(JsonField.of("organization"))
-
-                    @JvmField val PROJECT = UnionMember0(JsonField.of("project"))
-
-                    @JvmField val EXPERIMENT = UnionMember0(JsonField.of("experiment"))
-
-                    @JvmField val DATASET = UnionMember0(JsonField.of("dataset"))
-
-                    @JvmField val PROMPT = UnionMember0(JsonField.of("prompt"))
-
-                    @JvmField val PROMPT_SESSION = UnionMember0(JsonField.of("prompt_session"))
-
-                    @JvmField val PROJECT_SCORE = UnionMember0(JsonField.of("project_score"))
-
-                    @JvmField val PROJECT_TAG = UnionMember0(JsonField.of("project_tag"))
-
-                    @JvmField val GROUP = UnionMember0(JsonField.of("group"))
-
-                    @JvmField val ROLE = UnionMember0(JsonField.of("role"))
-
-                    @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    this.additionalProperties.putAll(additionalProperties)
                 }
 
-                enum class Known {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
+                @JsonAnySetter
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    this.additionalProperties.put(key, value)
                 }
 
-                enum class Value {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
-                    _UNKNOWN,
-                }
-
-                fun value(): Value =
-                    when (this) {
-                        ORGANIZATION -> Value.ORGANIZATION
-                        PROJECT -> Value.PROJECT
-                        EXPERIMENT -> Value.EXPERIMENT
-                        DATASET -> Value.DATASET
-                        PROMPT -> Value.PROMPT
-                        PROMPT_SESSION -> Value.PROMPT_SESSION
-                        PROJECT_SCORE -> Value.PROJECT_SCORE
-                        PROJECT_TAG -> Value.PROJECT_TAG
-                        GROUP -> Value.GROUP
-                        ROLE -> Value.ROLE
-                        else -> Value._UNKNOWN
-                    }
-
-                fun known(): Known =
-                    when (this) {
-                        ORGANIZATION -> Known.ORGANIZATION
-                        PROJECT -> Known.PROJECT
-                        EXPERIMENT -> Known.EXPERIMENT
-                        DATASET -> Known.DATASET
-                        PROMPT -> Known.PROMPT
-                        PROMPT_SESSION -> Known.PROMPT_SESSION
-                        PROJECT_SCORE -> Known.PROJECT_SCORE
-                        PROJECT_TAG -> Known.PROJECT_TAG
-                        GROUP -> Known.GROUP
-                        ROLE -> Known.ROLE
-                        else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
-                    }
-
-                fun asString(): String = _value().asStringOrThrow()
-            }
-
-            @JsonDeserialize(builder = UnionMember1.Builder::class)
-            @NoAutoDetect
-            class UnionMember1
-            private constructor(
-                private val additionalProperties: Map<String, JsonValue>,
-            ) {
-
-                private var validated: Boolean = false
-
-                private var hashCode: Int = 0
-
-                @JsonAnyGetter
-                @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                fun validate(): UnionMember1 = apply {
-                    if (!validated) {
-                        validated = true
-                    }
-                }
-
-                fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember1 &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = Objects.hash(additionalProperties)
-                    }
-                    return hashCode
-                }
-
-                override fun toString() = "UnionMember1{additionalProperties=$additionalProperties}"
-
-                companion object {
-
-                    @JvmStatic fun builder() = Builder()
-                }
-
-                class Builder {
-
-                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                    @JvmSynthetic
-                    internal fun from(unionMember1: UnionMember1) = apply {
-                        additionalProperties(unionMember1.additionalProperties)
-                    }
-
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                        this.additionalProperties.clear()
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                    @JsonAnySetter
-                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
-                    }
-
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
-
-                    fun build(): UnionMember1 = UnionMember1(additionalProperties.toUnmodifiable())
-                }
+                fun build(): UnionMember1 = UnionMember1(additionalProperties.toUnmodifiable())
             }
         }
     }
 
-    @JsonDeserialize(builder = CreateUserRoleAcl.Builder::class)
-    @NoAutoDetect
-    class CreateUserRoleAcl
+    @JsonDeserialize(using = RestrictObjectType.Deserializer::class)
+    @JsonSerialize(using = RestrictObjectType.Serializer::class)
+    class RestrictObjectType
     private constructor(
-        private val objectType: ObjectType?,
-        private val objectId: String?,
-        private val restrictObjectType: RestrictObjectType?,
-        private val userId: String?,
-        private val roleId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        private val unionMember0: UnionMember0? = null,
+        private val unionMember1: UnionMember1? = null,
+        private val _json: JsonValue? = null,
     ) {
 
-        private var hashCode: Int = 0
+        private var validated: Boolean = false
 
         /** The object type that the ACL applies to */
-        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
+        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
 
-        /** The id of the object the ACL applies to */
-        @JsonProperty("object_id") fun objectId(): String? = objectId
+        fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
 
-        /** Optionally restricts the permission grant to just the specified object type */
-        @JsonProperty("restrict_object_type")
-        fun restrictObjectType(): RestrictObjectType? = restrictObjectType
+        fun isUnionMember0(): Boolean = unionMember0 != null
 
-        /** Id of the user the ACL applies to */
-        @JsonProperty("user_id") fun userId(): String? = userId
+        fun isUnionMember1(): Boolean = unionMember1 != null
 
-        /** Id of the role the ACL grants */
-        @JsonProperty("role_id") fun roleId(): String? = roleId
+        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
 
-        fun toBuilder() = Builder().from(this)
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        fun <T> accept(visitor: Visitor<T>): T {
+            return when {
+                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
+                else -> visitor.unknown(_json)
+            }
+        }
+
+        fun validate(): RestrictObjectType = apply {
+            if (!validated) {
+                if (unionMember0 == null && unionMember1 == null) {
+                    throw BraintrustInvalidDataException("Unknown RestrictObjectType: $_json")
+                }
+                unionMember1?.validate()
+                validated = true
+            }
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return other is CreateUserRoleAcl &&
-                this.objectType == other.objectType &&
-                this.objectId == other.objectId &&
-                this.restrictObjectType == other.restrictObjectType &&
-                this.userId == other.userId &&
-                this.roleId == other.roleId &&
-                this.additionalProperties == other.additionalProperties
+            return other is RestrictObjectType &&
+                this.unionMember0 == other.unionMember0 &&
+                this.unionMember1 == other.unionMember1
         }
 
         override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        objectType,
-                        objectId,
-                        restrictObjectType,
-                        userId,
-                        roleId,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
+            return Objects.hash(unionMember0, unionMember1)
         }
 
-        override fun toString() =
-            "CreateUserRoleAcl{objectType=$objectType, objectId=$objectId, restrictObjectType=$restrictObjectType, userId=$userId, roleId=$roleId, additionalProperties=$additionalProperties}"
+        override fun toString(): String {
+            return when {
+                unionMember0 != null -> "RestrictObjectType{unionMember0=$unionMember0}"
+                unionMember1 != null -> "RestrictObjectType{unionMember1=$unionMember1}"
+                _json != null -> "RestrictObjectType{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid RestrictObjectType")
+            }
+        }
 
         companion object {
 
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun ofUnionMember0(unionMember0: UnionMember0) =
+                RestrictObjectType(unionMember0 = unionMember0)
+
+            @JvmStatic
+            fun ofUnionMember1(unionMember1: UnionMember1) =
+                RestrictObjectType(unionMember1 = unionMember1)
         }
 
-        class Builder {
+        interface Visitor<out T> {
 
-            private var objectType: ObjectType? = null
-            private var objectId: String? = null
-            private var restrictObjectType: RestrictObjectType? = null
-            private var userId: String? = null
-            private var roleId: String? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+            fun visitUnionMember0(unionMember0: UnionMember0): T
 
-            @JvmSynthetic
-            internal fun from(createUserRoleAcl: CreateUserRoleAcl) = apply {
-                this.objectType = createUserRoleAcl.objectType
-                this.objectId = createUserRoleAcl.objectId
-                this.restrictObjectType = createUserRoleAcl.restrictObjectType
-                this.userId = createUserRoleAcl.userId
-                this.roleId = createUserRoleAcl.roleId
-                additionalProperties(createUserRoleAcl.additionalProperties)
+            fun visitUnionMember1(unionMember1: UnionMember1): T
+
+            fun unknown(json: JsonValue?): T {
+                throw BraintrustInvalidDataException("Unknown RestrictObjectType: $json")
             }
-
-            /** The object type that the ACL applies to */
-            @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
-
-            /** The id of the object the ACL applies to */
-            @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply { this.objectId = objectId }
-
-            /** Optionally restricts the permission grant to just the specified object type */
-            @JsonProperty("restrict_object_type")
-            fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
-                this.restrictObjectType = restrictObjectType
-            }
-
-            /** Id of the user the ACL applies to */
-            @JsonProperty("user_id") fun userId(userId: String) = apply { this.userId = userId }
-
-            /** Id of the role the ACL grants */
-            @JsonProperty("role_id") fun roleId(roleId: String) = apply { this.roleId = roleId }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): CreateUserRoleAcl =
-                CreateUserRoleAcl(
-                    checkNotNull(objectType) { "`objectType` is required but was not set" },
-                    checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    restrictObjectType,
-                    checkNotNull(userId) { "`userId` is required but was not set" },
-                    checkNotNull(roleId) { "`roleId` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
-                )
         }
 
-        class ObjectType
+        class Deserializer : BaseDeserializer<RestrictObjectType>(RestrictObjectType::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): RestrictObjectType {
+                val json = JsonValue.fromJsonNode(node)
+                tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
+                    return RestrictObjectType(unionMember0 = it, _json = json)
+                }
+                tryDeserialize(node, jacksonTypeRef<UnionMember1>()) { it.validate() }
+                    ?.let {
+                        return RestrictObjectType(unionMember1 = it, _json = json)
+                    }
+
+                return RestrictObjectType(_json = json)
+            }
+        }
+
+        class Serializer : BaseSerializer<RestrictObjectType>(RestrictObjectType::class) {
+
+            override fun serialize(
+                value: RestrictObjectType,
+                generator: JsonGenerator,
+                provider: SerializerProvider
+            ) {
+                when {
+                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                    value.unionMember1 != null -> generator.writeObject(value.unionMember1)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid RestrictObjectType")
+                }
+            }
+        }
+
+        class UnionMember0
         @JsonCreator
         private constructor(
             private val value: JsonField<String>,
@@ -1158,7 +993,7 @@ constructor(
                     return true
                 }
 
-                return other is ObjectType && this.value == other.value
+                return other is UnionMember0 && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1167,27 +1002,27 @@ constructor(
 
             companion object {
 
-                @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+                @JvmField val ORGANIZATION = UnionMember0(JsonField.of("organization"))
 
-                @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+                @JvmField val PROJECT = UnionMember0(JsonField.of("project"))
 
-                @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+                @JvmField val EXPERIMENT = UnionMember0(JsonField.of("experiment"))
 
-                @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+                @JvmField val DATASET = UnionMember0(JsonField.of("dataset"))
 
-                @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+                @JvmField val PROMPT = UnionMember0(JsonField.of("prompt"))
 
-                @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+                @JvmField val PROMPT_SESSION = UnionMember0(JsonField.of("prompt_session"))
 
-                @JvmField val PROJECT_SCORE = ObjectType(JsonField.of("project_score"))
+                @JvmField val PROJECT_SCORE = UnionMember0(JsonField.of("project_score"))
 
-                @JvmField val PROJECT_TAG = ObjectType(JsonField.of("project_tag"))
+                @JvmField val PROJECT_TAG = UnionMember0(JsonField.of("project_tag"))
 
-                @JvmField val GROUP = ObjectType(JsonField.of("group"))
+                @JvmField val GROUP = UnionMember0(JsonField.of("group"))
 
-                @JvmField val ROLE = ObjectType(JsonField.of("role"))
+                @JvmField val ROLE = UnionMember0(JsonField.of("role"))
 
-                @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
+                @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
             }
 
             enum class Known {
@@ -1244,1494 +1079,83 @@ constructor(
                     PROJECT_TAG -> Known.PROJECT_TAG
                     GROUP -> Known.GROUP
                     ROLE -> Known.ROLE
-                    else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+                    else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
                 }
 
             fun asString(): String = _value().asStringOrThrow()
         }
 
-        @JsonDeserialize(using = RestrictObjectType.Deserializer::class)
-        @JsonSerialize(using = RestrictObjectType.Serializer::class)
-        class RestrictObjectType
+        @JsonDeserialize(builder = UnionMember1.Builder::class)
+        @NoAutoDetect
+        class UnionMember1
         private constructor(
-            private val unionMember0: UnionMember0? = null,
-            private val unionMember1: UnionMember1? = null,
-            private val _json: JsonValue? = null,
+            private val additionalProperties: Map<String, JsonValue>,
         ) {
 
             private var validated: Boolean = false
 
-            /** The object type that the ACL applies to */
-            fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+            private var hashCode: Int = 0
 
-            fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-            fun isUnionMember0(): Boolean = unionMember0 != null
-
-            fun isUnionMember1(): Boolean = unionMember1 != null
-
-            fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
-
-            fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-            fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-            fun <T> accept(visitor: Visitor<T>): T {
-                return when {
-                    unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
-                    unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                    else -> visitor.unknown(_json)
-                }
-            }
-
-            fun validate(): RestrictObjectType = apply {
+            fun validate(): UnionMember1 = apply {
                 if (!validated) {
-                    if (unionMember0 == null && unionMember1 == null) {
-                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $_json")
-                    }
-                    unionMember1?.validate()
                     validated = true
                 }
             }
 
+            fun toBuilder() = Builder().from(this)
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
                 }
 
-                return other is RestrictObjectType &&
-                    this.unionMember0 == other.unionMember0 &&
-                    this.unionMember1 == other.unionMember1
+                return other is UnionMember1 &&
+                    this.additionalProperties == other.additionalProperties
             }
 
             override fun hashCode(): Int {
-                return Objects.hash(unionMember0, unionMember1)
+                if (hashCode == 0) {
+                    hashCode = Objects.hash(additionalProperties)
+                }
+                return hashCode
             }
 
-            override fun toString(): String {
-                return when {
-                    unionMember0 != null -> "RestrictObjectType{unionMember0=$unionMember0}"
-                    unionMember1 != null -> "RestrictObjectType{unionMember1=$unionMember1}"
-                    _json != null -> "RestrictObjectType{_unknown=$_json}"
-                    else -> throw IllegalStateException("Invalid RestrictObjectType")
-                }
-            }
+            override fun toString() = "UnionMember1{additionalProperties=$additionalProperties}"
 
             companion object {
 
-                @JvmStatic
-                fun ofUnionMember0(unionMember0: UnionMember0) =
-                    RestrictObjectType(unionMember0 = unionMember0)
-
-                @JvmStatic
-                fun ofUnionMember1(unionMember1: UnionMember1) =
-                    RestrictObjectType(unionMember1 = unionMember1)
+                @JvmStatic fun builder() = Builder()
             }
 
-            interface Visitor<out T> {
+            class Builder {
 
-                fun visitUnionMember0(unionMember0: UnionMember0): T
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-                fun visitUnionMember1(unionMember1: UnionMember1): T
-
-                fun unknown(json: JsonValue?): T {
-                    throw BraintrustInvalidDataException("Unknown RestrictObjectType: $json")
-                }
-            }
-
-            class Deserializer : BaseDeserializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun ObjectCodec.deserialize(node: JsonNode): RestrictObjectType {
-                    val json = JsonValue.fromJsonNode(node)
-                    tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                        return RestrictObjectType(unionMember0 = it, _json = json)
-                    }
-                    tryDeserialize(node, jacksonTypeRef<UnionMember1>()) { it.validate() }
-                        ?.let {
-                            return RestrictObjectType(unionMember1 = it, _json = json)
-                        }
-
-                    return RestrictObjectType(_json = json)
-                }
-            }
-
-            class Serializer : BaseSerializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun serialize(
-                    value: RestrictObjectType,
-                    generator: JsonGenerator,
-                    provider: SerializerProvider
-                ) {
-                    when {
-                        value.unionMember0 != null -> generator.writeObject(value.unionMember0)
-                        value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                        value._json != null -> generator.writeObject(value._json)
-                        else -> throw IllegalStateException("Invalid RestrictObjectType")
-                    }
-                }
-            }
-
-            class UnionMember0
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
-
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember0 && this.value == other.value
+                @JvmSynthetic
+                internal fun from(unionMember1: UnionMember1) = apply {
+                    additionalProperties(unionMember1.additionalProperties)
                 }
 
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
-                companion object {
-
-                    @JvmField val ORGANIZATION = UnionMember0(JsonField.of("organization"))
-
-                    @JvmField val PROJECT = UnionMember0(JsonField.of("project"))
-
-                    @JvmField val EXPERIMENT = UnionMember0(JsonField.of("experiment"))
-
-                    @JvmField val DATASET = UnionMember0(JsonField.of("dataset"))
-
-                    @JvmField val PROMPT = UnionMember0(JsonField.of("prompt"))
-
-                    @JvmField val PROMPT_SESSION = UnionMember0(JsonField.of("prompt_session"))
-
-                    @JvmField val PROJECT_SCORE = UnionMember0(JsonField.of("project_score"))
-
-                    @JvmField val PROJECT_TAG = UnionMember0(JsonField.of("project_tag"))
-
-                    @JvmField val GROUP = UnionMember0(JsonField.of("group"))
-
-                    @JvmField val ROLE = UnionMember0(JsonField.of("role"))
-
-                    @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    this.additionalProperties.putAll(additionalProperties)
                 }
 
-                enum class Known {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
+                @JsonAnySetter
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    this.additionalProperties.put(key, value)
                 }
 
-                enum class Value {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
-                    _UNKNOWN,
-                }
-
-                fun value(): Value =
-                    when (this) {
-                        ORGANIZATION -> Value.ORGANIZATION
-                        PROJECT -> Value.PROJECT
-                        EXPERIMENT -> Value.EXPERIMENT
-                        DATASET -> Value.DATASET
-                        PROMPT -> Value.PROMPT
-                        PROMPT_SESSION -> Value.PROMPT_SESSION
-                        PROJECT_SCORE -> Value.PROJECT_SCORE
-                        PROJECT_TAG -> Value.PROJECT_TAG
-                        GROUP -> Value.GROUP
-                        ROLE -> Value.ROLE
-                        else -> Value._UNKNOWN
-                    }
-
-                fun known(): Known =
-                    when (this) {
-                        ORGANIZATION -> Known.ORGANIZATION
-                        PROJECT -> Known.PROJECT
-                        EXPERIMENT -> Known.EXPERIMENT
-                        DATASET -> Known.DATASET
-                        PROMPT -> Known.PROMPT
-                        PROMPT_SESSION -> Known.PROMPT_SESSION
-                        PROJECT_SCORE -> Known.PROJECT_SCORE
-                        PROJECT_TAG -> Known.PROJECT_TAG
-                        GROUP -> Known.GROUP
-                        ROLE -> Known.ROLE
-                        else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
-                    }
-
-                fun asString(): String = _value().asStringOrThrow()
-            }
-
-            @JsonDeserialize(builder = UnionMember1.Builder::class)
-            @NoAutoDetect
-            class UnionMember1
-            private constructor(
-                private val additionalProperties: Map<String, JsonValue>,
-            ) {
-
-                private var validated: Boolean = false
-
-                private var hashCode: Int = 0
-
-                @JsonAnyGetter
-                @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                fun validate(): UnionMember1 = apply {
-                    if (!validated) {
-                        validated = true
-                    }
-                }
-
-                fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember1 &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = Objects.hash(additionalProperties)
-                    }
-                    return hashCode
-                }
-
-                override fun toString() = "UnionMember1{additionalProperties=$additionalProperties}"
-
-                companion object {
-
-                    @JvmStatic fun builder() = Builder()
-                }
-
-                class Builder {
-
-                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                    @JvmSynthetic
-                    internal fun from(unionMember1: UnionMember1) = apply {
-                        additionalProperties(unionMember1.additionalProperties)
-                    }
-
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                        this.additionalProperties.clear()
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                    @JsonAnySetter
-                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
-                    }
-
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
-
-                    fun build(): UnionMember1 = UnionMember1(additionalProperties.toUnmodifiable())
-                }
-            }
-        }
-    }
-
-    @JsonDeserialize(builder = CreateGroupPermissionAcl.Builder::class)
-    @NoAutoDetect
-    class CreateGroupPermissionAcl
-    private constructor(
-        private val objectType: ObjectType?,
-        private val objectId: String?,
-        private val restrictObjectType: RestrictObjectType?,
-        private val groupId: String?,
-        private val permission: Permission?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var hashCode: Int = 0
-
-        /** The object type that the ACL applies to */
-        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
-
-        /** The id of the object the ACL applies to */
-        @JsonProperty("object_id") fun objectId(): String? = objectId
-
-        /** Optionally restricts the permission grant to just the specified object type */
-        @JsonProperty("restrict_object_type")
-        fun restrictObjectType(): RestrictObjectType? = restrictObjectType
-
-        /** Id of the group the ACL applies to */
-        @JsonProperty("group_id") fun groupId(): String? = groupId
-
-        /** Permission the ACL grants */
-        @JsonProperty("permission") fun permission(): Permission? = permission
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is CreateGroupPermissionAcl &&
-                this.objectType == other.objectType &&
-                this.objectId == other.objectId &&
-                this.restrictObjectType == other.restrictObjectType &&
-                this.groupId == other.groupId &&
-                this.permission == other.permission &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        objectType,
-                        objectId,
-                        restrictObjectType,
-                        groupId,
-                        permission,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "CreateGroupPermissionAcl{objectType=$objectType, objectId=$objectId, restrictObjectType=$restrictObjectType, groupId=$groupId, permission=$permission, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var objectType: ObjectType? = null
-            private var objectId: String? = null
-            private var restrictObjectType: RestrictObjectType? = null
-            private var groupId: String? = null
-            private var permission: Permission? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(createGroupPermissionAcl: CreateGroupPermissionAcl) = apply {
-                this.objectType = createGroupPermissionAcl.objectType
-                this.objectId = createGroupPermissionAcl.objectId
-                this.restrictObjectType = createGroupPermissionAcl.restrictObjectType
-                this.groupId = createGroupPermissionAcl.groupId
-                this.permission = createGroupPermissionAcl.permission
-                additionalProperties(createGroupPermissionAcl.additionalProperties)
-            }
-
-            /** The object type that the ACL applies to */
-            @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
-
-            /** The id of the object the ACL applies to */
-            @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply { this.objectId = objectId }
-
-            /** Optionally restricts the permission grant to just the specified object type */
-            @JsonProperty("restrict_object_type")
-            fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
-                this.restrictObjectType = restrictObjectType
-            }
-
-            /** Id of the group the ACL applies to */
-            @JsonProperty("group_id")
-            fun groupId(groupId: String) = apply { this.groupId = groupId }
-
-            /** Permission the ACL grants */
-            @JsonProperty("permission")
-            fun permission(permission: Permission) = apply { this.permission = permission }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): CreateGroupPermissionAcl =
-                CreateGroupPermissionAcl(
-                    checkNotNull(objectType) { "`objectType` is required but was not set" },
-                    checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    restrictObjectType,
-                    checkNotNull(groupId) { "`groupId` is required but was not set" },
-                    checkNotNull(permission) { "`permission` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        class ObjectType
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ObjectType && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
-
-                @JvmField val PROJECT = ObjectType(JsonField.of("project"))
-
-                @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
-
-                @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
-
-                @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
-
-                @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
-
-                @JvmField val PROJECT_SCORE = ObjectType(JsonField.of("project_score"))
-
-                @JvmField val PROJECT_TAG = ObjectType(JsonField.of("project_tag"))
-
-                @JvmField val GROUP = ObjectType(JsonField.of("group"))
-
-                @JvmField val ROLE = ObjectType(JsonField.of("role"))
-
-                @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
-            }
-
-            enum class Known {
-                ORGANIZATION,
-                PROJECT,
-                EXPERIMENT,
-                DATASET,
-                PROMPT,
-                PROMPT_SESSION,
-                PROJECT_SCORE,
-                PROJECT_TAG,
-                GROUP,
-                ROLE,
-            }
-
-            enum class Value {
-                ORGANIZATION,
-                PROJECT,
-                EXPERIMENT,
-                DATASET,
-                PROMPT,
-                PROMPT_SESSION,
-                PROJECT_SCORE,
-                PROJECT_TAG,
-                GROUP,
-                ROLE,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    ORGANIZATION -> Value.ORGANIZATION
-                    PROJECT -> Value.PROJECT
-                    EXPERIMENT -> Value.EXPERIMENT
-                    DATASET -> Value.DATASET
-                    PROMPT -> Value.PROMPT
-                    PROMPT_SESSION -> Value.PROMPT_SESSION
-                    PROJECT_SCORE -> Value.PROJECT_SCORE
-                    PROJECT_TAG -> Value.PROJECT_TAG
-                    GROUP -> Value.GROUP
-                    ROLE -> Value.ROLE
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    ORGANIZATION -> Known.ORGANIZATION
-                    PROJECT -> Known.PROJECT
-                    EXPERIMENT -> Known.EXPERIMENT
-                    DATASET -> Known.DATASET
-                    PROMPT -> Known.PROMPT
-                    PROMPT_SESSION -> Known.PROMPT_SESSION
-                    PROJECT_SCORE -> Known.PROJECT_SCORE
-                    PROJECT_TAG -> Known.PROJECT_TAG
-                    GROUP -> Known.GROUP
-                    ROLE -> Known.ROLE
-                    else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-
-        class Permission
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Permission && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val CREATE = Permission(JsonField.of("create"))
-
-                @JvmField val READ = Permission(JsonField.of("read"))
-
-                @JvmField val UPDATE = Permission(JsonField.of("update"))
-
-                @JvmField val DELETE = Permission(JsonField.of("delete"))
-
-                @JvmField val CREATE_ACLS = Permission(JsonField.of("create_acls"))
-
-                @JvmField val READ_ACLS = Permission(JsonField.of("read_acls"))
-
-                @JvmField val UPDATE_ACLS = Permission(JsonField.of("update_acls"))
-
-                @JvmField val DELETE_ACLS = Permission(JsonField.of("delete_acls"))
-
-                @JvmStatic fun of(value: String) = Permission(JsonField.of(value))
-            }
-
-            enum class Known {
-                CREATE,
-                READ,
-                UPDATE,
-                DELETE,
-                CREATE_ACLS,
-                READ_ACLS,
-                UPDATE_ACLS,
-                DELETE_ACLS,
-            }
-
-            enum class Value {
-                CREATE,
-                READ,
-                UPDATE,
-                DELETE,
-                CREATE_ACLS,
-                READ_ACLS,
-                UPDATE_ACLS,
-                DELETE_ACLS,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    CREATE -> Value.CREATE
-                    READ -> Value.READ
-                    UPDATE -> Value.UPDATE
-                    DELETE -> Value.DELETE
-                    CREATE_ACLS -> Value.CREATE_ACLS
-                    READ_ACLS -> Value.READ_ACLS
-                    UPDATE_ACLS -> Value.UPDATE_ACLS
-                    DELETE_ACLS -> Value.DELETE_ACLS
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    CREATE -> Known.CREATE
-                    READ -> Known.READ
-                    UPDATE -> Known.UPDATE
-                    DELETE -> Known.DELETE
-                    CREATE_ACLS -> Known.CREATE_ACLS
-                    READ_ACLS -> Known.READ_ACLS
-                    UPDATE_ACLS -> Known.UPDATE_ACLS
-                    DELETE_ACLS -> Known.DELETE_ACLS
-                    else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-
-        @JsonDeserialize(using = RestrictObjectType.Deserializer::class)
-        @JsonSerialize(using = RestrictObjectType.Serializer::class)
-        class RestrictObjectType
-        private constructor(
-            private val unionMember0: UnionMember0? = null,
-            private val unionMember1: UnionMember1? = null,
-            private val _json: JsonValue? = null,
-        ) {
-
-            private var validated: Boolean = false
-
-            /** The object type that the ACL applies to */
-            fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
-
-            fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
-
-            fun isUnionMember0(): Boolean = unionMember0 != null
-
-            fun isUnionMember1(): Boolean = unionMember1 != null
-
-            fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
-
-            fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-            fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-            fun <T> accept(visitor: Visitor<T>): T {
-                return when {
-                    unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
-                    unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                    else -> visitor.unknown(_json)
-                }
-            }
-
-            fun validate(): RestrictObjectType = apply {
-                if (!validated) {
-                    if (unionMember0 == null && unionMember1 == null) {
-                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $_json")
-                    }
-                    unionMember1?.validate()
-                    validated = true
-                }
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is RestrictObjectType &&
-                    this.unionMember0 == other.unionMember0 &&
-                    this.unionMember1 == other.unionMember1
-            }
-
-            override fun hashCode(): Int {
-                return Objects.hash(unionMember0, unionMember1)
-            }
-
-            override fun toString(): String {
-                return when {
-                    unionMember0 != null -> "RestrictObjectType{unionMember0=$unionMember0}"
-                    unionMember1 != null -> "RestrictObjectType{unionMember1=$unionMember1}"
-                    _json != null -> "RestrictObjectType{_unknown=$_json}"
-                    else -> throw IllegalStateException("Invalid RestrictObjectType")
-                }
-            }
-
-            companion object {
-
-                @JvmStatic
-                fun ofUnionMember0(unionMember0: UnionMember0) =
-                    RestrictObjectType(unionMember0 = unionMember0)
-
-                @JvmStatic
-                fun ofUnionMember1(unionMember1: UnionMember1) =
-                    RestrictObjectType(unionMember1 = unionMember1)
-            }
-
-            interface Visitor<out T> {
-
-                fun visitUnionMember0(unionMember0: UnionMember0): T
-
-                fun visitUnionMember1(unionMember1: UnionMember1): T
-
-                fun unknown(json: JsonValue?): T {
-                    throw BraintrustInvalidDataException("Unknown RestrictObjectType: $json")
-                }
-            }
-
-            class Deserializer : BaseDeserializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun ObjectCodec.deserialize(node: JsonNode): RestrictObjectType {
-                    val json = JsonValue.fromJsonNode(node)
-                    tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                        return RestrictObjectType(unionMember0 = it, _json = json)
-                    }
-                    tryDeserialize(node, jacksonTypeRef<UnionMember1>()) { it.validate() }
-                        ?.let {
-                            return RestrictObjectType(unionMember1 = it, _json = json)
-                        }
-
-                    return RestrictObjectType(_json = json)
-                }
-            }
-
-            class Serializer : BaseSerializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun serialize(
-                    value: RestrictObjectType,
-                    generator: JsonGenerator,
-                    provider: SerializerProvider
-                ) {
-                    when {
-                        value.unionMember0 != null -> generator.writeObject(value.unionMember0)
-                        value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                        value._json != null -> generator.writeObject(value._json)
-                        else -> throw IllegalStateException("Invalid RestrictObjectType")
-                    }
-                }
-            }
-
-            class UnionMember0
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
-
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember0 && this.value == other.value
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
-                companion object {
-
-                    @JvmField val ORGANIZATION = UnionMember0(JsonField.of("organization"))
-
-                    @JvmField val PROJECT = UnionMember0(JsonField.of("project"))
-
-                    @JvmField val EXPERIMENT = UnionMember0(JsonField.of("experiment"))
-
-                    @JvmField val DATASET = UnionMember0(JsonField.of("dataset"))
-
-                    @JvmField val PROMPT = UnionMember0(JsonField.of("prompt"))
-
-                    @JvmField val PROMPT_SESSION = UnionMember0(JsonField.of("prompt_session"))
-
-                    @JvmField val PROJECT_SCORE = UnionMember0(JsonField.of("project_score"))
-
-                    @JvmField val PROJECT_TAG = UnionMember0(JsonField.of("project_tag"))
-
-                    @JvmField val GROUP = UnionMember0(JsonField.of("group"))
-
-                    @JvmField val ROLE = UnionMember0(JsonField.of("role"))
-
-                    @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
-                }
-
-                enum class Known {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
-                }
-
-                enum class Value {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
-                    _UNKNOWN,
-                }
-
-                fun value(): Value =
-                    when (this) {
-                        ORGANIZATION -> Value.ORGANIZATION
-                        PROJECT -> Value.PROJECT
-                        EXPERIMENT -> Value.EXPERIMENT
-                        DATASET -> Value.DATASET
-                        PROMPT -> Value.PROMPT
-                        PROMPT_SESSION -> Value.PROMPT_SESSION
-                        PROJECT_SCORE -> Value.PROJECT_SCORE
-                        PROJECT_TAG -> Value.PROJECT_TAG
-                        GROUP -> Value.GROUP
-                        ROLE -> Value.ROLE
-                        else -> Value._UNKNOWN
-                    }
-
-                fun known(): Known =
-                    when (this) {
-                        ORGANIZATION -> Known.ORGANIZATION
-                        PROJECT -> Known.PROJECT
-                        EXPERIMENT -> Known.EXPERIMENT
-                        DATASET -> Known.DATASET
-                        PROMPT -> Known.PROMPT
-                        PROMPT_SESSION -> Known.PROMPT_SESSION
-                        PROJECT_SCORE -> Known.PROJECT_SCORE
-                        PROJECT_TAG -> Known.PROJECT_TAG
-                        GROUP -> Known.GROUP
-                        ROLE -> Known.ROLE
-                        else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
-                    }
-
-                fun asString(): String = _value().asStringOrThrow()
-            }
-
-            @JsonDeserialize(builder = UnionMember1.Builder::class)
-            @NoAutoDetect
-            class UnionMember1
-            private constructor(
-                private val additionalProperties: Map<String, JsonValue>,
-            ) {
-
-                private var validated: Boolean = false
-
-                private var hashCode: Int = 0
-
-                @JsonAnyGetter
-                @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                fun validate(): UnionMember1 = apply {
-                    if (!validated) {
-                        validated = true
-                    }
-                }
-
-                fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember1 &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = Objects.hash(additionalProperties)
-                    }
-                    return hashCode
-                }
-
-                override fun toString() = "UnionMember1{additionalProperties=$additionalProperties}"
-
-                companion object {
-
-                    @JvmStatic fun builder() = Builder()
-                }
-
-                class Builder {
-
-                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                    @JvmSynthetic
-                    internal fun from(unionMember1: UnionMember1) = apply {
-                        additionalProperties(unionMember1.additionalProperties)
-                    }
-
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                        this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                    @JsonAnySetter
-                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
-                    }
-
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
-
-                    fun build(): UnionMember1 = UnionMember1(additionalProperties.toUnmodifiable())
-                }
-            }
-        }
-    }
-
-    @JsonDeserialize(builder = CreateGroupRoleAcl.Builder::class)
-    @NoAutoDetect
-    class CreateGroupRoleAcl
-    private constructor(
-        private val objectType: ObjectType?,
-        private val objectId: String?,
-        private val restrictObjectType: RestrictObjectType?,
-        private val groupId: String?,
-        private val roleId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var hashCode: Int = 0
-
-        /** The object type that the ACL applies to */
-        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
-
-        /** The id of the object the ACL applies to */
-        @JsonProperty("object_id") fun objectId(): String? = objectId
-
-        /** Optionally restricts the permission grant to just the specified object type */
-        @JsonProperty("restrict_object_type")
-        fun restrictObjectType(): RestrictObjectType? = restrictObjectType
-
-        /** Id of the group the ACL applies to */
-        @JsonProperty("group_id") fun groupId(): String? = groupId
-
-        /** Id of the role the ACL grants */
-        @JsonProperty("role_id") fun roleId(): String? = roleId
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is CreateGroupRoleAcl &&
-                this.objectType == other.objectType &&
-                this.objectId == other.objectId &&
-                this.restrictObjectType == other.restrictObjectType &&
-                this.groupId == other.groupId &&
-                this.roleId == other.roleId &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        objectType,
-                        objectId,
-                        restrictObjectType,
-                        groupId,
-                        roleId,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "CreateGroupRoleAcl{objectType=$objectType, objectId=$objectId, restrictObjectType=$restrictObjectType, groupId=$groupId, roleId=$roleId, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var objectType: ObjectType? = null
-            private var objectId: String? = null
-            private var restrictObjectType: RestrictObjectType? = null
-            private var groupId: String? = null
-            private var roleId: String? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(createGroupRoleAcl: CreateGroupRoleAcl) = apply {
-                this.objectType = createGroupRoleAcl.objectType
-                this.objectId = createGroupRoleAcl.objectId
-                this.restrictObjectType = createGroupRoleAcl.restrictObjectType
-                this.groupId = createGroupRoleAcl.groupId
-                this.roleId = createGroupRoleAcl.roleId
-                additionalProperties(createGroupRoleAcl.additionalProperties)
-            }
-
-            /** The object type that the ACL applies to */
-            @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
-
-            /** The id of the object the ACL applies to */
-            @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply { this.objectId = objectId }
-
-            /** Optionally restricts the permission grant to just the specified object type */
-            @JsonProperty("restrict_object_type")
-            fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
-                this.restrictObjectType = restrictObjectType
-            }
-
-            /** Id of the group the ACL applies to */
-            @JsonProperty("group_id")
-            fun groupId(groupId: String) = apply { this.groupId = groupId }
-
-            /** Id of the role the ACL grants */
-            @JsonProperty("role_id") fun roleId(roleId: String) = apply { this.roleId = roleId }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): CreateGroupRoleAcl =
-                CreateGroupRoleAcl(
-                    checkNotNull(objectType) { "`objectType` is required but was not set" },
-                    checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    restrictObjectType,
-                    checkNotNull(groupId) { "`groupId` is required but was not set" },
-                    checkNotNull(roleId) { "`roleId` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        class ObjectType
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ObjectType && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
-
-                @JvmField val PROJECT = ObjectType(JsonField.of("project"))
-
-                @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
-
-                @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
-
-                @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
-
-                @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
-
-                @JvmField val PROJECT_SCORE = ObjectType(JsonField.of("project_score"))
-
-                @JvmField val PROJECT_TAG = ObjectType(JsonField.of("project_tag"))
-
-                @JvmField val GROUP = ObjectType(JsonField.of("group"))
-
-                @JvmField val ROLE = ObjectType(JsonField.of("role"))
-
-                @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
-            }
-
-            enum class Known {
-                ORGANIZATION,
-                PROJECT,
-                EXPERIMENT,
-                DATASET,
-                PROMPT,
-                PROMPT_SESSION,
-                PROJECT_SCORE,
-                PROJECT_TAG,
-                GROUP,
-                ROLE,
-            }
-
-            enum class Value {
-                ORGANIZATION,
-                PROJECT,
-                EXPERIMENT,
-                DATASET,
-                PROMPT,
-                PROMPT_SESSION,
-                PROJECT_SCORE,
-                PROJECT_TAG,
-                GROUP,
-                ROLE,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    ORGANIZATION -> Value.ORGANIZATION
-                    PROJECT -> Value.PROJECT
-                    EXPERIMENT -> Value.EXPERIMENT
-                    DATASET -> Value.DATASET
-                    PROMPT -> Value.PROMPT
-                    PROMPT_SESSION -> Value.PROMPT_SESSION
-                    PROJECT_SCORE -> Value.PROJECT_SCORE
-                    PROJECT_TAG -> Value.PROJECT_TAG
-                    GROUP -> Value.GROUP
-                    ROLE -> Value.ROLE
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    ORGANIZATION -> Known.ORGANIZATION
-                    PROJECT -> Known.PROJECT
-                    EXPERIMENT -> Known.EXPERIMENT
-                    DATASET -> Known.DATASET
-                    PROMPT -> Known.PROMPT
-                    PROMPT_SESSION -> Known.PROMPT_SESSION
-                    PROJECT_SCORE -> Known.PROJECT_SCORE
-                    PROJECT_TAG -> Known.PROJECT_TAG
-                    GROUP -> Known.GROUP
-                    ROLE -> Known.ROLE
-                    else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-
-        @JsonDeserialize(using = RestrictObjectType.Deserializer::class)
-        @JsonSerialize(using = RestrictObjectType.Serializer::class)
-        class RestrictObjectType
-        private constructor(
-            private val unionMember0: UnionMember0? = null,
-            private val unionMember1: UnionMember1? = null,
-            private val _json: JsonValue? = null,
-        ) {
-
-            private var validated: Boolean = false
-
-            /** The object type that the ACL applies to */
-            fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
-
-            fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
-
-            fun isUnionMember0(): Boolean = unionMember0 != null
-
-            fun isUnionMember1(): Boolean = unionMember1 != null
-
-            fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
-
-            fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-            fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-            fun <T> accept(visitor: Visitor<T>): T {
-                return when {
-                    unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
-                    unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                    else -> visitor.unknown(_json)
-                }
-            }
-
-            fun validate(): RestrictObjectType = apply {
-                if (!validated) {
-                    if (unionMember0 == null && unionMember1 == null) {
-                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $_json")
-                    }
-                    unionMember1?.validate()
-                    validated = true
-                }
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is RestrictObjectType &&
-                    this.unionMember0 == other.unionMember0 &&
-                    this.unionMember1 == other.unionMember1
-            }
-
-            override fun hashCode(): Int {
-                return Objects.hash(unionMember0, unionMember1)
-            }
-
-            override fun toString(): String {
-                return when {
-                    unionMember0 != null -> "RestrictObjectType{unionMember0=$unionMember0}"
-                    unionMember1 != null -> "RestrictObjectType{unionMember1=$unionMember1}"
-                    _json != null -> "RestrictObjectType{_unknown=$_json}"
-                    else -> throw IllegalStateException("Invalid RestrictObjectType")
-                }
-            }
-
-            companion object {
-
-                @JvmStatic
-                fun ofUnionMember0(unionMember0: UnionMember0) =
-                    RestrictObjectType(unionMember0 = unionMember0)
-
-                @JvmStatic
-                fun ofUnionMember1(unionMember1: UnionMember1) =
-                    RestrictObjectType(unionMember1 = unionMember1)
-            }
-
-            interface Visitor<out T> {
-
-                fun visitUnionMember0(unionMember0: UnionMember0): T
-
-                fun visitUnionMember1(unionMember1: UnionMember1): T
-
-                fun unknown(json: JsonValue?): T {
-                    throw BraintrustInvalidDataException("Unknown RestrictObjectType: $json")
-                }
-            }
-
-            class Deserializer : BaseDeserializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun ObjectCodec.deserialize(node: JsonNode): RestrictObjectType {
-                    val json = JsonValue.fromJsonNode(node)
-                    tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                        return RestrictObjectType(unionMember0 = it, _json = json)
-                    }
-                    tryDeserialize(node, jacksonTypeRef<UnionMember1>()) { it.validate() }
-                        ?.let {
-                            return RestrictObjectType(unionMember1 = it, _json = json)
-                        }
-
-                    return RestrictObjectType(_json = json)
-                }
-            }
-
-            class Serializer : BaseSerializer<RestrictObjectType>(RestrictObjectType::class) {
-
-                override fun serialize(
-                    value: RestrictObjectType,
-                    generator: JsonGenerator,
-                    provider: SerializerProvider
-                ) {
-                    when {
-                        value.unionMember0 != null -> generator.writeObject(value.unionMember0)
-                        value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                        value._json != null -> generator.writeObject(value._json)
-                        else -> throw IllegalStateException("Invalid RestrictObjectType")
-                    }
-                }
-            }
-
-            class UnionMember0
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
-
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember0 && this.value == other.value
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
-                companion object {
-
-                    @JvmField val ORGANIZATION = UnionMember0(JsonField.of("organization"))
-
-                    @JvmField val PROJECT = UnionMember0(JsonField.of("project"))
-
-                    @JvmField val EXPERIMENT = UnionMember0(JsonField.of("experiment"))
-
-                    @JvmField val DATASET = UnionMember0(JsonField.of("dataset"))
-
-                    @JvmField val PROMPT = UnionMember0(JsonField.of("prompt"))
-
-                    @JvmField val PROMPT_SESSION = UnionMember0(JsonField.of("prompt_session"))
-
-                    @JvmField val PROJECT_SCORE = UnionMember0(JsonField.of("project_score"))
-
-                    @JvmField val PROJECT_TAG = UnionMember0(JsonField.of("project_tag"))
-
-                    @JvmField val GROUP = UnionMember0(JsonField.of("group"))
-
-                    @JvmField val ROLE = UnionMember0(JsonField.of("role"))
-
-                    @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
-                }
-
-                enum class Known {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
-                }
-
-                enum class Value {
-                    ORGANIZATION,
-                    PROJECT,
-                    EXPERIMENT,
-                    DATASET,
-                    PROMPT,
-                    PROMPT_SESSION,
-                    PROJECT_SCORE,
-                    PROJECT_TAG,
-                    GROUP,
-                    ROLE,
-                    _UNKNOWN,
-                }
-
-                fun value(): Value =
-                    when (this) {
-                        ORGANIZATION -> Value.ORGANIZATION
-                        PROJECT -> Value.PROJECT
-                        EXPERIMENT -> Value.EXPERIMENT
-                        DATASET -> Value.DATASET
-                        PROMPT -> Value.PROMPT
-                        PROMPT_SESSION -> Value.PROMPT_SESSION
-                        PROJECT_SCORE -> Value.PROJECT_SCORE
-                        PROJECT_TAG -> Value.PROJECT_TAG
-                        GROUP -> Value.GROUP
-                        ROLE -> Value.ROLE
-                        else -> Value._UNKNOWN
-                    }
-
-                fun known(): Known =
-                    when (this) {
-                        ORGANIZATION -> Known.ORGANIZATION
-                        PROJECT -> Known.PROJECT
-                        EXPERIMENT -> Known.EXPERIMENT
-                        DATASET -> Known.DATASET
-                        PROMPT -> Known.PROMPT
-                        PROMPT_SESSION -> Known.PROMPT_SESSION
-                        PROJECT_SCORE -> Known.PROJECT_SCORE
-                        PROJECT_TAG -> Known.PROJECT_TAG
-                        GROUP -> Known.GROUP
-                        ROLE -> Known.ROLE
-                        else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
-                    }
-
-                fun asString(): String = _value().asStringOrThrow()
-            }
-
-            @JsonDeserialize(builder = UnionMember1.Builder::class)
-            @NoAutoDetect
-            class UnionMember1
-            private constructor(
-                private val additionalProperties: Map<String, JsonValue>,
-            ) {
-
-                private var validated: Boolean = false
-
-                private var hashCode: Int = 0
-
-                @JsonAnyGetter
-                @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                fun validate(): UnionMember1 = apply {
-                    if (!validated) {
-                        validated = true
-                    }
-                }
-
-                fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is UnionMember1 &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = Objects.hash(additionalProperties)
-                    }
-                    return hashCode
-                }
-
-                override fun toString() = "UnionMember1{additionalProperties=$additionalProperties}"
-
-                companion object {
-
-                    @JvmStatic fun builder() = Builder()
-                }
-
-                class Builder {
-
-                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                    @JvmSynthetic
-                    internal fun from(unionMember1: UnionMember1) = apply {
-                        additionalProperties(unionMember1.additionalProperties)
-                    }
-
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                        this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                    @JsonAnySetter
-                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
-                    }
-
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
-
-                    fun build(): UnionMember1 = UnionMember1(additionalProperties.toUnmodifiable())
-                }
+                fun build(): UnionMember1 = UnionMember1(additionalProperties.toUnmodifiable())
             }
         }
     }
