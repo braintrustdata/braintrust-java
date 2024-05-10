@@ -18,6 +18,7 @@ class GroupServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val groupService = client.group()
         val group =
@@ -40,6 +41,7 @@ class GroupServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val groupService = client.group()
         val group =
@@ -58,6 +60,7 @@ class GroupServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val groupService = client.group()
         val group =
@@ -80,6 +83,7 @@ class GroupServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val groupService = client.group()
         val response = groupService.list(GroupListParams.builder().build())
@@ -93,6 +97,7 @@ class GroupServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val groupService = client.group()
         val group =
@@ -109,6 +114,7 @@ class GroupServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val groupService = client.group()
         val group =
