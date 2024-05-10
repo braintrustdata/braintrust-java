@@ -22,6 +22,8 @@ import com.braintrust.api.models.ExperimentListPage
 import com.braintrust.api.models.ExperimentListParams
 import com.braintrust.api.models.ExperimentReplaceParams
 import com.braintrust.api.models.ExperimentRetrieveParams
+import com.braintrust.api.models.ExperimentSummarizeParams
+import com.braintrust.api.models.ExperimentSummarizeResponse
 import com.braintrust.api.models.ExperimentUpdateParams
 import com.braintrust.api.services.emptyHandler
 import com.braintrust.api.services.errorHandler
@@ -321,6 +323,34 @@ constructor(
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
                 .use { replaceHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
+
+    private val summarizeHandler: Handler<ExperimentSummarizeResponse> =
+        jsonHandler<ExperimentSummarizeResponse>(clientOptions.jsonMapper)
+            .withErrorHandler(errorHandler)
+
+    /** Summarize experiment */
+    override fun summarize(
+        params: ExperimentSummarizeParams,
+        requestOptions: RequestOptions
+    ): ExperimentSummarizeResponse {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.GET)
+                .addPathSegments("v1", "experiment", params.getPathParam(0), "summarize")
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .build()
+        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
+            response
+                .use { summarizeHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         validate()

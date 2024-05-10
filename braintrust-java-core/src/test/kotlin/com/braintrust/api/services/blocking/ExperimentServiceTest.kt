@@ -200,6 +200,7 @@ class ExperimentServiceTest {
             experimentService.fetchPost(
                 ExperimentFetchPostParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .cursor("string")
                     .filters(
                         listOf(
                             ExperimentFetchPostParams.Filter.builder()
@@ -337,5 +338,25 @@ class ExperimentServiceTest {
             )
         println(experiment)
         experiment.validate()
+    }
+
+    @Test
+    fun callSummarize() {
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val experimentService = client.experiment()
+        val experimentSummarizeResponse =
+            experimentService.summarize(
+                ExperimentSummarizeParams.builder()
+                    .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .comparisonExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .summarizeScores(true)
+                    .build()
+            )
+        println(experimentSummarizeResponse)
+        experimentSummarizeResponse.validate()
     }
 }

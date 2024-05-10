@@ -19,6 +19,8 @@ import com.braintrust.api.models.ExperimentListPageAsync
 import com.braintrust.api.models.ExperimentListParams
 import com.braintrust.api.models.ExperimentReplaceParams
 import com.braintrust.api.models.ExperimentRetrieveParams
+import com.braintrust.api.models.ExperimentSummarizeParams
+import com.braintrust.api.models.ExperimentSummarizeResponse
 import com.braintrust.api.models.ExperimentUpdateParams
 import java.util.concurrent.CompletableFuture
 
@@ -114,4 +116,11 @@ interface ExperimentServiceAsync {
         params: ExperimentReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<Experiment>
+
+    /** Summarize experiment */
+    @JvmOverloads
+    fun summarize(
+        params: ExperimentSummarizeParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<ExperimentSummarizeResponse>
 }
