@@ -23,27 +23,25 @@ class AclServiceTest {
         val acl =
             aclService.create(
                 AclCreateParams.builder()
-                    .forCreateUserPermissionAcl(
-                        AclCreateParams.CreateUserPermissionAcl.builder()
-                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(
-                                AclCreateParams.CreateUserPermissionAcl.ObjectType.ORGANIZATION
-                            )
-                            .permission(AclCreateParams.CreateUserPermissionAcl.Permission.CREATE)
-                            .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .restrictObjectType(
-                                AclCreateParams.CreateUserPermissionAcl.RestrictObjectType
-                                    .ofUnionMember0(
-                                        AclCreateParams.CreateUserPermissionAcl.RestrictObjectType
-                                            .UnionMember0
-                                            .ORGANIZATION
-                                    )
-                            )
-                            .build()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(AclCreateParams.ObjectType.ORGANIZATION)
+                    .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .permission(
+                        AclCreateParams.Permission.ofUnionMember0(
+                            AclCreateParams.Permission.UnionMember0.CREATE
+                        )
                     )
+                    .restrictObjectType(
+                        AclCreateParams.RestrictObjectType.ofUnionMember0(
+                            AclCreateParams.RestrictObjectType.UnionMember0.ORGANIZATION
+                        )
+                    )
+                    .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
         println(acl)
+        acl.validate()
     }
 
     @Test
@@ -59,6 +57,7 @@ class AclServiceTest {
                 AclRetrieveParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
             )
         println(acl)
+        acl.validate()
     }
 
     @Test
@@ -93,6 +92,7 @@ class AclServiceTest {
                 AclDeleteParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
             )
         println(acl)
+        acl.validate()
     }
 
     @Test
@@ -106,26 +106,24 @@ class AclServiceTest {
         val acl =
             aclService.replace(
                 AclReplaceParams.builder()
-                    .forCreateUserPermissionAcl(
-                        AclReplaceParams.CreateUserPermissionAcl.builder()
-                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(
-                                AclReplaceParams.CreateUserPermissionAcl.ObjectType.ORGANIZATION
-                            )
-                            .permission(AclReplaceParams.CreateUserPermissionAcl.Permission.CREATE)
-                            .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .restrictObjectType(
-                                AclReplaceParams.CreateUserPermissionAcl.RestrictObjectType
-                                    .ofUnionMember0(
-                                        AclReplaceParams.CreateUserPermissionAcl.RestrictObjectType
-                                            .UnionMember0
-                                            .ORGANIZATION
-                                    )
-                            )
-                            .build()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(AclReplaceParams.ObjectType.ORGANIZATION)
+                    .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .permission(
+                        AclReplaceParams.Permission.ofUnionMember0(
+                            AclReplaceParams.Permission.UnionMember0.CREATE
+                        )
                     )
+                    .restrictObjectType(
+                        AclReplaceParams.RestrictObjectType.ofUnionMember0(
+                            AclReplaceParams.RestrictObjectType.UnionMember0.ORGANIZATION
+                        )
+                    )
+                    .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
         println(acl)
+        acl.validate()
     }
 }
