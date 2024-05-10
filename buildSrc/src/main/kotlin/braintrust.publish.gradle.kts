@@ -48,33 +48,20 @@ configure<PublishingExtension> {
     }
 }
 
-//signing {
-//    val signingKeyId = System.getenv("GPG_SIGNING_KEY_ID")?.ifBlank { null }
-//    val signingKey = System.getenv("GPG_SIGNING_KEY")?.ifBlank { null }
-//    val signingPassword = System.getenv("GPG_SIGNING_PASSWORD")?.ifBlank { null }
-//    if (signingKey != null && signingPassword != null) {
-//        useInMemoryPgpKeys(
-//            signingKeyId,
-//            signingKey,
-//            signingPassword,
-//        )
-//        sign(publishing.publications["maven"])
-//    }
-//}
-//
-//tasks.publish {
-//    dependsOn(":closeAndReleaseSonatypeStagingRepository")
-//}
-
-publishing {
-  repositories {
-    maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/braintrustdata/braintrust-java")
-      credentials {
-        username = System.getenv("GITHUB_ACTOR")
-        password = System.getenv("GITHUB_TOKEN")
-      }
+signing {
+    val signingKeyId = System.getenv("GPG_SIGNING_KEY_ID")?.ifBlank { null }
+    val signingKey = System.getenv("GPG_SIGNING_KEY")?.ifBlank { null }
+    val signingPassword = System.getenv("GPG_SIGNING_PASSWORD")?.ifBlank { null }
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(
+            signingKeyId,
+            signingKey,
+            signingPassword,
+        )
+        sign(publishing.publications["maven"])
     }
-  }
+}
+
+tasks.named("publish") {
+    dependsOn(":closeAndReleaseSonatypeStagingRepository")
 }
