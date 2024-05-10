@@ -18,7 +18,6 @@ class TopLevelServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val topLevelService = client.topLevel()
         val topLevelHelloWorldResponse =

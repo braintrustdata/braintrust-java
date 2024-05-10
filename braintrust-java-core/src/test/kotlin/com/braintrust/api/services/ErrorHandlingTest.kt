@@ -52,7 +52,6 @@ class ErrorHandlingTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
     }
 

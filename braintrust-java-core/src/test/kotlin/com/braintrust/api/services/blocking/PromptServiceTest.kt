@@ -18,7 +18,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         val prompt =
@@ -126,7 +125,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         val prompt =
@@ -145,7 +143,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         val prompt =
@@ -252,7 +249,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         val response = promptService.list(PromptListParams.builder().build())
@@ -266,7 +262,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         val prompt =
@@ -285,7 +280,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         promptService.feedback(
@@ -311,7 +305,6 @@ class PromptServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val promptService = client.prompt()
         val prompt =
