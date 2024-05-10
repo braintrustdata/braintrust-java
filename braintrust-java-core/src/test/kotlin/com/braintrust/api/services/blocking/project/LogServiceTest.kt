@@ -18,7 +18,6 @@ class LogServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val logService = client.project().logs()
         logService.feedback(
@@ -46,7 +45,6 @@ class LogServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val logService = client.project().logs()
         val projectLogFetchResponse =
@@ -69,7 +67,6 @@ class LogServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val logService = client.project().logs()
         val projectLogFetchPostResponse =
@@ -102,7 +99,6 @@ class LogServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val logService = client.project().logs()
         val projectLogInsertResponse =

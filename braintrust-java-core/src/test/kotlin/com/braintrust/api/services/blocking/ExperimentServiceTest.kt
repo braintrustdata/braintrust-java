@@ -19,7 +19,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experiment =
@@ -59,7 +58,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experiment =
@@ -78,7 +76,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experiment =
@@ -117,7 +114,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val response = experimentService.list(ExperimentListParams.builder().build())
@@ -131,7 +127,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experiment =
@@ -150,7 +145,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         experimentService.feedback(
@@ -178,7 +172,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experimentFetchResponse =
@@ -201,7 +194,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experimentFetchPostResponse =
@@ -234,7 +226,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experimentInsertResponse =
@@ -316,7 +307,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experiment =
@@ -356,7 +346,6 @@ class ExperimentServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val experimentService = client.experiment()
         val experimentSummarizeResponse =
