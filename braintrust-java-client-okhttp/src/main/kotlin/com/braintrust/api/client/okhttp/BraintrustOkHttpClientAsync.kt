@@ -64,8 +64,6 @@ class BraintrustOkHttpClientAsync private constructor() {
 
         fun apiKey(apiKey: String) = apply { clientOptions.apiKey(apiKey) }
 
-        fun baseUrl(baseUrl: String) = apply { clientOptions.baseUrl(baseUrl) }
-
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
         fun build(): BraintrustClientAsync {
