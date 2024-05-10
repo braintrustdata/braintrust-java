@@ -18,6 +18,7 @@ class AclServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val aclService = client.acl()
         val acl =
@@ -50,6 +51,7 @@ class AclServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val aclService = client.acl()
         val acl =
@@ -66,6 +68,7 @@ class AclServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val aclService = client.acl()
         val response =
@@ -85,6 +88,7 @@ class AclServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val aclService = client.acl()
         val acl =
@@ -101,6 +105,7 @@ class AclServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
+                .baseUrl("My Base URL")
                 .build()
         val aclService = client.acl()
         val acl =
