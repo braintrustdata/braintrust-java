@@ -30,6 +30,7 @@ class DatasetFetchResponseTest {
                             .build()
                     )
                 )
+                .cursor("string")
                 .build()
         assertThat(datasetFetchResponse).isNotNull
         assertThat(datasetFetchResponse.events())
@@ -48,5 +49,6 @@ class DatasetFetchResponseTest {
                     .tags(listOf("string"))
                     .build()
             )
+        assertThat(datasetFetchResponse.cursor()).contains("string")
     }
 }

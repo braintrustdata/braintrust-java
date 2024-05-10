@@ -161,6 +161,7 @@ class DatasetServiceTest {
             datasetService.fetchPost(
                 DatasetFetchPostParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .cursor("string")
                     .filters(
                         listOf(
                             DatasetFetchPostParams.Filter.builder()
@@ -236,5 +237,24 @@ class DatasetServiceTest {
             )
         println(dataset)
         dataset.validate()
+    }
+
+    @Test
+    fun callSummarize() {
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val datasetService = client.dataset()
+        val datasetSummarizeResponse =
+            datasetService.summarize(
+                DatasetSummarizeParams.builder()
+                    .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .summarizeData(true)
+                    .build()
+            )
+        println(datasetSummarizeResponse)
+        datasetSummarizeResponse.validate()
     }
 }

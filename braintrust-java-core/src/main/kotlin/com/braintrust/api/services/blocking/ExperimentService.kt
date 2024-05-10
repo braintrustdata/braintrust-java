@@ -19,6 +19,8 @@ import com.braintrust.api.models.ExperimentListPage
 import com.braintrust.api.models.ExperimentListParams
 import com.braintrust.api.models.ExperimentReplaceParams
 import com.braintrust.api.models.ExperimentRetrieveParams
+import com.braintrust.api.models.ExperimentSummarizeParams
+import com.braintrust.api.models.ExperimentSummarizeResponse
 import com.braintrust.api.models.ExperimentUpdateParams
 
 interface ExperimentService {
@@ -113,4 +115,11 @@ interface ExperimentService {
         params: ExperimentReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Experiment
+
+    /** Summarize experiment */
+    @JvmOverloads
+    fun summarize(
+        params: ExperimentSummarizeParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): ExperimentSummarizeResponse
 }
