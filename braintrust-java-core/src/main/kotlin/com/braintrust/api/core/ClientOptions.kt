@@ -16,6 +16,7 @@ private constructor(
     @get:JvmName("clock") val clock: Clock,
     @get:JvmName("baseUrl") val baseUrl: String,
     @get:JvmName("apiKey") val apiKey: String,
+    @get:JvmName("baseUrl") val baseUrl: String,
     @get:JvmName("headers") val headers: ListMultimap<String, String>,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
 ) {
@@ -39,6 +40,7 @@ private constructor(
         private var responseValidation: Boolean = false
         private var maxRetries: Int = 2
         private var apiKey: String? = null
+        private var baseUrl: String? = null
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
 
@@ -75,11 +77,17 @@ private constructor(
 
         fun apiKey(apiKey: String) = apply { this.apiKey = apiKey }
 
-        fun fromEnv() = apply { System.getenv("BRAINTRUST_API_KEY")?.let { apiKey(it) } }
+        fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
+
+        fun fromEnv() = apply {
+            System.getenv("BRAINTRUST_API_KEY")?.let { apiKey(it) }
+            System.getenv("BRAINTRUST_APP_URL")?.let { baseUrl(it) }
+        }
 
         fun build(): ClientOptions {
             checkNotNull(httpClient) { "`httpClient` is required but was not set" }
             checkNotNull(apiKey) { "`apiKey` is required but was not set" }
+            checkNotNull(baseUrl) { "`baseUrl` is required but was not set" }
 
             val headers = ArrayListMultimap.create<String, String>()
             headers.put("X-Stainless-Lang", "java")
@@ -103,6 +111,7 @@ private constructor(
                 clock,
                 baseUrl,
                 apiKey!!,
+                baseUrl!!,
                 headers.toUnmodifiable(),
                 responseValidation,
             )
