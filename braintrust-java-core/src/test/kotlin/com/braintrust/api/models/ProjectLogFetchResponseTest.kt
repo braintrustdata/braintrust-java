@@ -56,6 +56,7 @@ class ProjectLogFetchResponseTest {
                             .build()
                     )
                 )
+                .cursor("string")
                 .build()
         assertThat(projectLogFetchResponse).isNotNull
         assertThat(projectLogFetchResponse.events())
@@ -100,5 +101,6 @@ class ProjectLogFetchResponseTest {
                     .tags(listOf("string"))
                     .build()
             )
+        assertThat(projectLogFetchResponse.cursor()).contains("string")
     }
 }

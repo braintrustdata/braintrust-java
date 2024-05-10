@@ -19,6 +19,8 @@ import com.braintrust.api.models.DatasetListPageAsync
 import com.braintrust.api.models.DatasetListParams
 import com.braintrust.api.models.DatasetReplaceParams
 import com.braintrust.api.models.DatasetRetrieveParams
+import com.braintrust.api.models.DatasetSummarizeParams
+import com.braintrust.api.models.DatasetSummarizeResponse
 import com.braintrust.api.models.DatasetUpdateParams
 import java.util.concurrent.CompletableFuture
 
@@ -114,4 +116,11 @@ interface DatasetServiceAsync {
         params: DatasetReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<Dataset>
+
+    /** Summarize dataset */
+    @JvmOverloads
+    fun summarize(
+        params: DatasetSummarizeParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<DatasetSummarizeResponse>
 }

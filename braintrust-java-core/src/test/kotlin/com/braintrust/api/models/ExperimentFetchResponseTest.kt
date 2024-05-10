@@ -56,6 +56,7 @@ class ExperimentFetchResponseTest {
                             .build()
                     )
                 )
+                .cursor("string")
                 .build()
         assertThat(experimentFetchResponse).isNotNull
         assertThat(experimentFetchResponse.events())
@@ -100,5 +101,6 @@ class ExperimentFetchResponseTest {
                     .tags(listOf("string"))
                     .build()
             )
+        assertThat(experimentFetchResponse.cursor()).contains("string")
     }
 }

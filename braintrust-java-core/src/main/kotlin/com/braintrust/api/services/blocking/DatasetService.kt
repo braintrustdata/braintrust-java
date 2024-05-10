@@ -19,6 +19,8 @@ import com.braintrust.api.models.DatasetListPage
 import com.braintrust.api.models.DatasetListParams
 import com.braintrust.api.models.DatasetReplaceParams
 import com.braintrust.api.models.DatasetRetrieveParams
+import com.braintrust.api.models.DatasetSummarizeParams
+import com.braintrust.api.models.DatasetSummarizeResponse
 import com.braintrust.api.models.DatasetUpdateParams
 
 interface DatasetService {
@@ -113,4 +115,11 @@ interface DatasetService {
         params: DatasetReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Dataset
+
+    /** Summarize dataset */
+    @JvmOverloads
+    fun summarize(
+        params: DatasetSummarizeParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): DatasetSummarizeResponse
 }
