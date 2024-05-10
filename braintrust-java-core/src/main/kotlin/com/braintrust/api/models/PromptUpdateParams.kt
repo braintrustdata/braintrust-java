@@ -2694,7 +2694,7 @@ constructor(
         private constructor(
             private val unionMember0: UnionMember0? = null,
             private val unionMember1: UnionMember1? = null,
-            private val _reservedOnlyAllowNull: _ReservedOnlyAllowNull? = null,
+            private val unionMember2: UnionMember2? = null,
             private val _json: JsonValue? = null,
         ) {
 
@@ -2704,21 +2704,19 @@ constructor(
 
             fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
 
-            fun _reservedOnlyAllowNull(): Optional<_ReservedOnlyAllowNull> =
-                Optional.ofNullable(_reservedOnlyAllowNull)
+            fun unionMember2(): Optional<UnionMember2> = Optional.ofNullable(unionMember2)
 
             fun isUnionMember0(): Boolean = unionMember0 != null
 
             fun isUnionMember1(): Boolean = unionMember1 != null
 
-            fun is_ReservedOnlyAllowNull(): Boolean = _reservedOnlyAllowNull != null
+            fun isUnionMember2(): Boolean = unionMember2 != null
 
             fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
 
             fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
 
-            fun as_ReservedOnlyAllowNull(): _ReservedOnlyAllowNull =
-                _reservedOnlyAllowNull.getOrThrow("_reservedOnlyAllowNull")
+            fun asUnionMember2(): UnionMember2 = unionMember2.getOrThrow("unionMember2")
 
             fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -2726,24 +2724,19 @@ constructor(
                 return when {
                     unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
                     unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                    _reservedOnlyAllowNull != null ->
-                        visitor.visit_ReservedOnlyAllowNull(_reservedOnlyAllowNull)
+                    unionMember2 != null -> visitor.visitUnionMember2(unionMember2)
                     else -> visitor.unknown(_json)
                 }
             }
 
             fun validate(): Prompt = apply {
                 if (!validated) {
-                    if (
-                        unionMember0 == null &&
-                            unionMember1 == null &&
-                            _reservedOnlyAllowNull == null
-                    ) {
+                    if (unionMember0 == null && unionMember1 == null && unionMember2 == null) {
                         throw BraintrustInvalidDataException("Unknown Prompt: $_json")
                     }
                     unionMember0?.validate()
                     unionMember1?.validate()
-                    _reservedOnlyAllowNull?.validate()
+                    unionMember2?.validate()
                     validated = true
                 }
             }
@@ -2756,14 +2749,14 @@ constructor(
                 return other is Prompt &&
                     this.unionMember0 == other.unionMember0 &&
                     this.unionMember1 == other.unionMember1 &&
-                    this._reservedOnlyAllowNull == other._reservedOnlyAllowNull
+                    this.unionMember2 == other.unionMember2
             }
 
             override fun hashCode(): Int {
                 return Objects.hash(
                     unionMember0,
                     unionMember1,
-                    _reservedOnlyAllowNull,
+                    unionMember2,
                 )
             }
 
@@ -2771,8 +2764,7 @@ constructor(
                 return when {
                     unionMember0 != null -> "Prompt{unionMember0=$unionMember0}"
                     unionMember1 != null -> "Prompt{unionMember1=$unionMember1}"
-                    _reservedOnlyAllowNull != null ->
-                        "Prompt{_reservedOnlyAllowNull=$_reservedOnlyAllowNull}"
+                    unionMember2 != null -> "Prompt{unionMember2=$unionMember2}"
                     _json != null -> "Prompt{_unknown=$_json}"
                     else -> throw IllegalStateException("Invalid Prompt")
                 }
@@ -2787,8 +2779,7 @@ constructor(
                 fun ofUnionMember1(unionMember1: UnionMember1) = Prompt(unionMember1 = unionMember1)
 
                 @JvmStatic
-                fun of_ReservedOnlyAllowNull(_reservedOnlyAllowNull: _ReservedOnlyAllowNull) =
-                    Prompt(_reservedOnlyAllowNull = _reservedOnlyAllowNull)
+                fun ofUnionMember2(unionMember2: UnionMember2) = Prompt(unionMember2 = unionMember2)
             }
 
             interface Visitor<out T> {
@@ -2797,7 +2788,7 @@ constructor(
 
                 fun visitUnionMember1(unionMember1: UnionMember1): T
 
-                fun visit_ReservedOnlyAllowNull(_reservedOnlyAllowNull: _ReservedOnlyAllowNull): T
+                fun visitUnionMember2(unionMember2: UnionMember2): T
 
                 fun unknown(json: JsonValue?): T {
                     throw BraintrustInvalidDataException("Unknown Prompt: $json")
@@ -2816,9 +2807,9 @@ constructor(
                         ?.let {
                             return Prompt(unionMember1 = it, _json = json)
                         }
-                    tryDeserialize(node, jacksonTypeRef<_ReservedOnlyAllowNull>()) { it.validate() }
+                    tryDeserialize(node, jacksonTypeRef<UnionMember2>()) { it.validate() }
                         ?.let {
-                            return Prompt(_reservedOnlyAllowNull = it, _json = json)
+                            return Prompt(unionMember2 = it, _json = json)
                         }
 
                     return Prompt(_json = json)
@@ -2835,8 +2826,7 @@ constructor(
                     when {
                         value.unionMember0 != null -> generator.writeObject(value.unionMember0)
                         value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                        value._reservedOnlyAllowNull != null ->
-                            generator.writeObject(value._reservedOnlyAllowNull)
+                        value.unionMember2 != null -> generator.writeObject(value.unionMember2)
                         value._json != null -> generator.writeObject(value._json)
                         else -> throw IllegalStateException("Invalid Prompt")
                     }
@@ -5719,11 +5709,10 @@ constructor(
                 }
             }
 
-            @JsonDeserialize(builder = _ReservedOnlyAllowNull.Builder::class)
+            @JsonDeserialize(builder = UnionMember2.Builder::class)
             @NoAutoDetect
-            class _ReservedOnlyAllowNull
+            class UnionMember2
             private constructor(
-                private val _reservedOnlyAllowNull: JsonField<_ReservedOnlyAllowNull>,
                 private val additionalProperties: Map<String, JsonValue>,
             ) {
 
@@ -5731,26 +5720,12 @@ constructor(
 
                 private var hashCode: Int = 0
 
-                /**
-                 * This is just a placeholder nullable object. Only pass null, not the object itself
-                 */
-                fun _reservedOnlyAllowNull(): _ReservedOnlyAllowNull =
-                    _reservedOnlyAllowNull.getRequired("__reserved_only_allow_null")
-
-                /**
-                 * This is just a placeholder nullable object. Only pass null, not the object itself
-                 */
-                @JsonProperty("__reserved_only_allow_null")
-                @ExcludeMissing
-                fun __reservedOnlyAllowNull() = _reservedOnlyAllowNull
-
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-                fun validate(): _ReservedOnlyAllowNull = apply {
+                fun validate(): UnionMember2 = apply {
                     if (!validated) {
-                        _reservedOnlyAllowNull().validate()
                         validated = true
                     }
                 }
@@ -5762,20 +5737,18 @@ constructor(
                         return true
                     }
 
-                    return other is _ReservedOnlyAllowNull &&
-                        this._reservedOnlyAllowNull == other._reservedOnlyAllowNull &&
+                    return other is UnionMember2 &&
                         this.additionalProperties == other.additionalProperties
                 }
 
                 override fun hashCode(): Int {
                     if (hashCode == 0) {
-                        hashCode = Objects.hash(_reservedOnlyAllowNull, additionalProperties)
+                        hashCode = Objects.hash(additionalProperties)
                     }
                     return hashCode
                 }
 
-                override fun toString() =
-                    "_ReservedOnlyAllowNull{_reservedOnlyAllowNull=$_reservedOnlyAllowNull, additionalProperties=$additionalProperties}"
+                override fun toString() = "UnionMember2{additionalProperties=$additionalProperties}"
 
                 companion object {
 
@@ -5784,32 +5757,12 @@ constructor(
 
                 class Builder {
 
-                    private var _reservedOnlyAllowNull: JsonField<_ReservedOnlyAllowNull> =
-                        JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(_reservedOnlyAllowNull: _ReservedOnlyAllowNull) = apply {
-                        this._reservedOnlyAllowNull = _reservedOnlyAllowNull._reservedOnlyAllowNull
-                        additionalProperties(_reservedOnlyAllowNull.additionalProperties)
+                    internal fun from(unionMember2: UnionMember2) = apply {
+                        additionalProperties(unionMember2.additionalProperties)
                     }
-
-                    /**
-                     * This is just a placeholder nullable object. Only pass null, not the object
-                     * itself
-                     */
-                    fun _reservedOnlyAllowNull(_reservedOnlyAllowNull: _ReservedOnlyAllowNull) =
-                        _reservedOnlyAllowNull(JsonField.of(_reservedOnlyAllowNull))
-
-                    /**
-                     * This is just a placeholder nullable object. Only pass null, not the object
-                     * itself
-                     */
-                    @JsonProperty("__reserved_only_allow_null")
-                    @ExcludeMissing
-                    fun _reservedOnlyAllowNull(
-                        _reservedOnlyAllowNull: JsonField<_ReservedOnlyAllowNull>
-                    ) = apply { this._reservedOnlyAllowNull = _reservedOnlyAllowNull }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -5826,91 +5779,7 @@ constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun build(): _ReservedOnlyAllowNull =
-                        _ReservedOnlyAllowNull(
-                            _reservedOnlyAllowNull,
-                            additionalProperties.toUnmodifiable()
-                        )
-                }
-
-                /**
-                 * This is just a placeholder nullable object. Only pass null, not the object itself
-                 */
-                @JsonDeserialize(builder = _ReservedOnlyAllowNull.Builder::class)
-                @NoAutoDetect
-                class _ReservedOnlyAllowNull
-                private constructor(
-                    private val additionalProperties: Map<String, JsonValue>,
-                ) {
-
-                    private var validated: Boolean = false
-
-                    private var hashCode: Int = 0
-
-                    @JsonAnyGetter
-                    @ExcludeMissing
-                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                    fun validate(): _ReservedOnlyAllowNull = apply {
-                        if (!validated) {
-                            validated = true
-                        }
-                    }
-
-                    fun toBuilder() = Builder().from(this)
-
-                    override fun equals(other: Any?): Boolean {
-                        if (this === other) {
-                            return true
-                        }
-
-                        return other is _ReservedOnlyAllowNull &&
-                            this.additionalProperties == other.additionalProperties
-                    }
-
-                    override fun hashCode(): Int {
-                        if (hashCode == 0) {
-                            hashCode = Objects.hash(additionalProperties)
-                        }
-                        return hashCode
-                    }
-
-                    override fun toString() =
-                        "_ReservedOnlyAllowNull{additionalProperties=$additionalProperties}"
-
-                    companion object {
-
-                        @JvmStatic fun builder() = Builder()
-                    }
-
-                    class Builder {
-
-                        private var additionalProperties: MutableMap<String, JsonValue> =
-                            mutableMapOf()
-
-                        @JvmSynthetic
-                        internal fun from(_reservedOnlyAllowNull: _ReservedOnlyAllowNull) = apply {
-                            additionalProperties(_reservedOnlyAllowNull.additionalProperties)
-                        }
-
-                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.clear()
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
-
-                        @JsonAnySetter
-                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                            this.additionalProperties.put(key, value)
-                        }
-
-                        fun putAllAdditionalProperties(
-                            additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                        fun build(): _ReservedOnlyAllowNull =
-                            _ReservedOnlyAllowNull(additionalProperties.toUnmodifiable())
-                    }
+                    fun build(): UnionMember2 = UnionMember2(additionalProperties.toUnmodifiable())
                 }
             }
         }
