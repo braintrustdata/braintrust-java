@@ -73,6 +73,7 @@ class LogServiceTest {
             logService.fetchPost(
                 ProjectLogFetchPostParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .cursor("string")
                     .filters(
                         listOf(
                             ProjectLogFetchPostParams.Filter.builder()
