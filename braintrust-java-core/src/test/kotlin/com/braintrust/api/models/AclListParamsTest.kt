@@ -41,13 +41,9 @@ class AclListParamsTest {
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params =
-            AclListParams.builder()
-                .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclListParams.ObjectType.ORGANIZATION)
-                .build()
+            AclListParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
         val expected = mutableMapOf<String, List<String>>()
         expected.put("object_id", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        expected.put("object_type", listOf(AclListParams.ObjectType.ORGANIZATION.toString()))
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }
 }
