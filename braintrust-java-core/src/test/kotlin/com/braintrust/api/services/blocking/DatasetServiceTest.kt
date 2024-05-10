@@ -19,7 +19,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val dataset =
@@ -40,7 +39,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val dataset =
@@ -59,7 +57,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val dataset =
@@ -80,7 +77,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val response = datasetService.list(DatasetListParams.builder().build())
@@ -94,7 +90,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val dataset =
@@ -113,7 +108,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         datasetService.feedback(
@@ -139,7 +133,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val datasetFetchResponse =
@@ -162,7 +155,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val datasetFetchPostResponse =
@@ -195,7 +187,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val datasetInsertResponse =
@@ -234,7 +225,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val dataset =
@@ -255,7 +245,6 @@ class DatasetServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val datasetService = client.dataset()
         val datasetSummarizeResponse =

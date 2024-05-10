@@ -18,7 +18,6 @@ class UserServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val userService = client.user()
         val user =
@@ -35,7 +34,6 @@ class UserServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val userService = client.user()
         val response = userService.list(UserListParams.builder().build())

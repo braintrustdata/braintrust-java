@@ -37,7 +37,6 @@ class ServiceParamsTest {
         client =
             BraintrustOkHttpClient.builder()
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
                 .build()
     }

@@ -18,7 +18,6 @@ class ProjectServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val projectService = client.project()
         val project =
@@ -35,7 +34,6 @@ class ProjectServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val projectService = client.project()
         val project =
@@ -54,7 +52,6 @@ class ProjectServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val projectService = client.project()
         val project =
@@ -74,7 +71,6 @@ class ProjectServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val projectService = client.project()
         val response = projectService.list(ProjectListParams.builder().build())
@@ -88,7 +84,6 @@ class ProjectServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val projectService = client.project()
         val project =
@@ -107,7 +102,6 @@ class ProjectServiceTest {
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
-                .baseUrl("My Base URL")
                 .build()
         val projectService = client.project()
         val project =
