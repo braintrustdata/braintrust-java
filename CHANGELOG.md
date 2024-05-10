@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2024-05-10)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/braintrustdata/braintrust-java/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* Publish to github packages instead ([9492b66](https://github.com/braintrustdata/braintrust-java/commit/9492b666c9e1b9ad8bf25f01111ab216d5025422))
+
 ## 0.3.0 (2024-05-10)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/braintrustdata/braintrust-java/compare/v0.2.0...v0.3.0)

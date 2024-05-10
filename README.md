@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.braintrust.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrust.api/braintrust-java/0.3.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.braintrust.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrust.api/braintrust-java/0.4.0)
 
 <!-- x-release-please-end -->
 
@@ -27,7 +27,7 @@ The REST API documentation can be found [on www.braintrustdata.com](https://www
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.braintrust.api:braintrust-java:0.3.0")
+implementation("com.braintrust.api:braintrust-java:0.4.0")
 ```
 
 #### Maven
@@ -36,7 +36,7 @@ implementation("com.braintrust.api:braintrust-java:0.3.0")
 <dependency>
     <groupId>com.braintrust.api</groupId>
     <artifactId>braintrust-java</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
