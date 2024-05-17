@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0 (2024-05-17)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/braintrustdata/braintrust-java/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#27](https://github.com/braintrustdata/braintrust-java/issues/27)) ([c353b7c](https://github.com/braintrustdata/braintrust-java/commit/c353b7c653228759db623634a54694807a883fe6))
+
+
+### Chores
+
+* **internal:** version bump ([#25](https://github.com/braintrustdata/braintrust-java/issues/25)) ([cdc20fe](https://github.com/braintrustdata/braintrust-java/commit/cdc20fea2f8ee2614bb4303687ba4a8964c340fc))
+
 ## 0.4.0 (2024-05-16)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/braintrustdata/braintrust-java/compare/v0.3.0...v0.4.0)
