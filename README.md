@@ -84,9 +84,7 @@ then pass that to the `create` method of the `project` service.
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 
-ProjectCreateParams params = ProjectCreateParams.builder()
-    .bodyparam(true)
-    .build();
+ProjectCreateParams params = ProjectCreateParams.builder().build();
 Project project = client.project().create(params);
 ```
 
