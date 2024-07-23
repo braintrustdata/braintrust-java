@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Organization
 import com.braintrustdata.api.services.blocking.OrganizationService
 
-class OrganizationListPage private constructor(private val organizationService: OrganizationService, private val params: OrganizationListParams, private val response: Response, ) {
+class OrganizationListPage private constructor(private val organizationsService: OrganizationService, private val params: OrganizationListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class OrganizationListPage private constructor(private val organizationService: 
       }
 
       return other is OrganizationListPage &&
-          this.organizationService == other.organizationService &&
+          this.organizationsService == other.organizationsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          organizationService,
+          organizationsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "OrganizationListPage{organizationService=$organizationService, params=$params, response=$response}"
+    override fun toString() = "OrganizationListPage{organizationsService=$organizationsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -74,7 +74,7 @@ class OrganizationListPage private constructor(private val organizationService: 
     }
 
     fun getNextPage(): Optional<OrganizationListPage> {
-      return getNextPageParams().map { organizationService.list(it) }
+      return getNextPageParams().map { organizationsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -82,8 +82,8 @@ class OrganizationListPage private constructor(private val organizationService: 
     companion object {
 
         @JvmStatic
-        fun of(organizationService: OrganizationService, params: OrganizationListParams, response: Response) = OrganizationListPage(
-            organizationService,
+        fun of(organizationsService: OrganizationService, params: OrganizationListParams, response: Response) = OrganizationListPage(
+            organizationsService,
             params,
             response,
         )

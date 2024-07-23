@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Acl
 import com.braintrustdata.api.services.blocking.AclService
 
-class AclListPage private constructor(private val aclService: AclService, private val params: AclListParams, private val response: Response, ) {
+class AclListPage private constructor(private val aclsService: AclService, private val params: AclListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class AclListPage private constructor(private val aclService: AclService, privat
       }
 
       return other is AclListPage &&
-          this.aclService == other.aclService &&
+          this.aclsService == other.aclsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          aclService,
+          aclsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "AclListPage{aclService=$aclService, params=$params, response=$response}"
+    override fun toString() = "AclListPage{aclsService=$aclsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -74,7 +74,7 @@ class AclListPage private constructor(private val aclService: AclService, privat
     }
 
     fun getNextPage(): Optional<AclListPage> {
-      return getNextPageParams().map { aclService.list(it) }
+      return getNextPageParams().map { aclsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -82,8 +82,8 @@ class AclListPage private constructor(private val aclService: AclService, privat
     companion object {
 
         @JvmStatic
-        fun of(aclService: AclService, params: AclListParams, response: Response) = AclListPage(
-            aclService,
+        fun of(aclsService: AclService, params: AclListParams, response: Response) = AclListPage(
+            aclsService,
             params,
             response,
         )

@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.services.async.ProjectServiceAsync
 
-class ProjectListPageAsync private constructor(private val projectService: ProjectServiceAsync, private val params: ProjectListParams, private val response: Response, ) {
+class ProjectListPageAsync private constructor(private val projectsService: ProjectServiceAsync, private val params: ProjectListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class ProjectListPageAsync private constructor(private val projectService: Proje
       }
 
       return other is ProjectListPageAsync &&
-          this.projectService == other.projectService &&
+          this.projectsService == other.projectsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          projectService,
+          projectsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "ProjectListPageAsync{projectService=$projectService, params=$params, response=$response}"
+    override fun toString() = "ProjectListPageAsync{projectsService=$projectsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class ProjectListPageAsync private constructor(private val projectService: Proje
 
     fun getNextPage(): CompletableFuture<Optional<ProjectListPageAsync>> {
       return getNextPageParams().map {
-        projectService.list(it).thenApply { Optional.of(it) }
+        projectsService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class ProjectListPageAsync private constructor(private val projectService: Proje
     companion object {
 
         @JvmStatic
-        fun of(projectService: ProjectServiceAsync, params: ProjectListParams, response: Response) = ProjectListPageAsync(
-            projectService,
+        fun of(projectsService: ProjectServiceAsync, params: ProjectListParams, response: Response) = ProjectListPageAsync(
+            projectsService,
             params,
             response,
         )

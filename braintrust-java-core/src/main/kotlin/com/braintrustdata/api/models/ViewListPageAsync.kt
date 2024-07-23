@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.View
 import com.braintrustdata.api.services.async.ViewServiceAsync
 
-class ViewListPageAsync private constructor(private val viewService: ViewServiceAsync, private val params: ViewListParams, private val response: Response, ) {
+class ViewListPageAsync private constructor(private val viewsService: ViewServiceAsync, private val params: ViewListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class ViewListPageAsync private constructor(private val viewService: ViewService
       }
 
       return other is ViewListPageAsync &&
-          this.viewService == other.viewService &&
+          this.viewsService == other.viewsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          viewService,
+          viewsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "ViewListPageAsync{viewService=$viewService, params=$params, response=$response}"
+    override fun toString() = "ViewListPageAsync{viewsService=$viewsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class ViewListPageAsync private constructor(private val viewService: ViewService
 
     fun getNextPage(): CompletableFuture<Optional<ViewListPageAsync>> {
       return getNextPageParams().map {
-        viewService.list(it).thenApply { Optional.of(it) }
+        viewsService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class ViewListPageAsync private constructor(private val viewService: ViewService
     companion object {
 
         @JvmStatic
-        fun of(viewService: ViewServiceAsync, params: ViewListParams, response: Response) = ViewListPageAsync(
-            viewService,
+        fun of(viewsService: ViewServiceAsync, params: ViewListParams, response: Response) = ViewListPageAsync(
+            viewsService,
             params,
             response,
         )

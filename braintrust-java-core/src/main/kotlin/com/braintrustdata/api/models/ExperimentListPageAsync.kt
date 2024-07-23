@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Experiment
 import com.braintrustdata.api.services.async.ExperimentServiceAsync
 
-class ExperimentListPageAsync private constructor(private val experimentService: ExperimentServiceAsync, private val params: ExperimentListParams, private val response: Response, ) {
+class ExperimentListPageAsync private constructor(private val experimentsService: ExperimentServiceAsync, private val params: ExperimentListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class ExperimentListPageAsync private constructor(private val experimentService:
       }
 
       return other is ExperimentListPageAsync &&
-          this.experimentService == other.experimentService &&
+          this.experimentsService == other.experimentsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          experimentService,
+          experimentsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "ExperimentListPageAsync{experimentService=$experimentService, params=$params, response=$response}"
+    override fun toString() = "ExperimentListPageAsync{experimentsService=$experimentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class ExperimentListPageAsync private constructor(private val experimentService:
 
     fun getNextPage(): CompletableFuture<Optional<ExperimentListPageAsync>> {
       return getNextPageParams().map {
-        experimentService.list(it).thenApply { Optional.of(it) }
+        experimentsService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class ExperimentListPageAsync private constructor(private val experimentService:
     companion object {
 
         @JvmStatic
-        fun of(experimentService: ExperimentServiceAsync, params: ExperimentListParams, response: Response) = ExperimentListPageAsync(
-            experimentService,
+        fun of(experimentsService: ExperimentServiceAsync, params: ExperimentListParams, response: Response) = ExperimentListPageAsync(
+            experimentsService,
             params,
             response,
         )

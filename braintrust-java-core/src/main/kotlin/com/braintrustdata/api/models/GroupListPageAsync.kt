@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Group
 import com.braintrustdata.api.services.async.GroupServiceAsync
 
-class GroupListPageAsync private constructor(private val groupService: GroupServiceAsync, private val params: GroupListParams, private val response: Response, ) {
+class GroupListPageAsync private constructor(private val groupsService: GroupServiceAsync, private val params: GroupListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class GroupListPageAsync private constructor(private val groupService: GroupServ
       }
 
       return other is GroupListPageAsync &&
-          this.groupService == other.groupService &&
+          this.groupsService == other.groupsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          groupService,
+          groupsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "GroupListPageAsync{groupService=$groupService, params=$params, response=$response}"
+    override fun toString() = "GroupListPageAsync{groupsService=$groupsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class GroupListPageAsync private constructor(private val groupService: GroupServ
 
     fun getNextPage(): CompletableFuture<Optional<GroupListPageAsync>> {
       return getNextPageParams().map {
-        groupService.list(it).thenApply { Optional.of(it) }
+        groupsService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class GroupListPageAsync private constructor(private val groupService: GroupServ
     companion object {
 
         @JvmStatic
-        fun of(groupService: GroupServiceAsync, params: GroupListParams, response: Response) = GroupListPageAsync(
-            groupService,
+        fun of(groupsService: GroupServiceAsync, params: GroupListParams, response: Response) = GroupListPageAsync(
+            groupsService,
             params,
             response,
         )

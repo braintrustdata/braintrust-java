@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.ApiKey
 import com.braintrustdata.api.services.async.ApiKeyServiceAsync
 
-class ApiKeyListPageAsync private constructor(private val apiKeyService: ApiKeyServiceAsync, private val params: ApiKeyListParams, private val response: Response, ) {
+class ApiKeyListPageAsync private constructor(private val apiKeysService: ApiKeyServiceAsync, private val params: ApiKeyListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class ApiKeyListPageAsync private constructor(private val apiKeyService: ApiKeyS
       }
 
       return other is ApiKeyListPageAsync &&
-          this.apiKeyService == other.apiKeyService &&
+          this.apiKeysService == other.apiKeysService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          apiKeyService,
+          apiKeysService,
           params,
           response,
       )
     }
 
-    override fun toString() = "ApiKeyListPageAsync{apiKeyService=$apiKeyService, params=$params, response=$response}"
+    override fun toString() = "ApiKeyListPageAsync{apiKeysService=$apiKeysService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class ApiKeyListPageAsync private constructor(private val apiKeyService: ApiKeyS
 
     fun getNextPage(): CompletableFuture<Optional<ApiKeyListPageAsync>> {
       return getNextPageParams().map {
-        apiKeyService.list(it).thenApply { Optional.of(it) }
+        apiKeysService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class ApiKeyListPageAsync private constructor(private val apiKeyService: ApiKeyS
     companion object {
 
         @JvmStatic
-        fun of(apiKeyService: ApiKeyServiceAsync, params: ApiKeyListParams, response: Response) = ApiKeyListPageAsync(
-            apiKeyService,
+        fun of(apiKeysService: ApiKeyServiceAsync, params: ApiKeyListParams, response: Response) = ApiKeyListPageAsync(
+            apiKeysService,
             params,
             response,
         )
