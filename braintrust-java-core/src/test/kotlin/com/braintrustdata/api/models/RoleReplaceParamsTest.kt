@@ -23,48 +23,48 @@ class RoleReplaceParamsTest {
     @Test
     fun createRoleReplaceParams() {
       RoleReplaceParams.builder()
-          .name("string")
-          .description("string")
+          .name("name")
+          .description("description")
           .memberPermissions(listOf(RoleReplaceParams.MemberPermission.builder()
               .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
               .restrictObjectType(RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION)
               .build()))
           .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-          .orgName("string")
+          .orgName("org_name")
           .build()
     }
 
     @Test
     fun getBody() {
       val params = RoleReplaceParams.builder()
-          .name("string")
-          .description("string")
+          .name("name")
+          .description("description")
           .memberPermissions(listOf(RoleReplaceParams.MemberPermission.builder()
               .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
               .restrictObjectType(RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION)
               .build()))
           .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-          .orgName("string")
+          .orgName("org_name")
           .build()
       val body = params.getBody()
       assertThat(body).isNotNull
-      assertThat(body.name()).isEqualTo("string")
-      assertThat(body.description()).isEqualTo("string")
+      assertThat(body.name()).isEqualTo("name")
+      assertThat(body.description()).isEqualTo("description")
       assertThat(body.memberPermissions()).isEqualTo(listOf(RoleReplaceParams.MemberPermission.builder()
           .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
           .restrictObjectType(RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION)
           .build()))
       assertThat(body.memberRoles()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-      assertThat(body.orgName()).isEqualTo("string")
+      assertThat(body.orgName()).isEqualTo("org_name")
     }
 
     @Test
     fun getBodyWithoutOptionalFields() {
       val params = RoleReplaceParams.builder()
-          .name("string")
+          .name("name")
           .build()
       val body = params.getBody()
       assertThat(body).isNotNull
-      assertThat(body.name()).isEqualTo("string")
+      assertThat(body.name()).isEqualTo("name")
     }
 }
