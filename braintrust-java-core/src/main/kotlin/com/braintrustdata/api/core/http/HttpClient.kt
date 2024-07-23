@@ -1,8 +1,8 @@
 package com.braintrustdata.api.core.http
 
-import com.braintrustdata.api.core.RequestOptions
 import java.io.Closeable
 import java.util.concurrent.CompletableFuture
+import com.braintrustdata.api.core.RequestOptions
 
 interface HttpClient : Closeable {
 
