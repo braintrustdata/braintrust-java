@@ -32,31 +32,31 @@ interface BraintrustClient {
 
     fun topLevel(): TopLevelService
 
-    fun project(): ProjectService
+    fun projects(): ProjectService
 
-    fun experiment(): ExperimentService
+    fun experiments(): ExperimentService
 
-    fun dataset(): DatasetService
+    fun datasets(): DatasetService
 
-    fun prompt(): PromptService
+    fun prompts(): PromptService
 
-    fun role(): RoleService
+    fun roles(): RoleService
 
-    fun group(): GroupService
+    fun groups(): GroupService
 
-    fun acl(): AclService
+    fun acls(): AclService
 
-    fun user(): UserService
+    fun users(): UserService
 
-    fun projectScore(): ProjectScoreService
+    fun projectScores(): ProjectScoreService
 
-    fun projectTag(): ProjectTagService
+    fun projectTags(): ProjectTagService
 
-    fun function(): FunctionService
+    fun functions(): FunctionService
 
-    fun view(): ViewService
+    fun views(): ViewService
 
-    fun organization(): OrganizationService
+    fun organizations(): OrganizationService
 
-    fun apiKey(): ApiKeyService
+    fun apiKeys(): ApiKeyService
 }
