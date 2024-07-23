@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.User
 import com.braintrustdata.api.services.async.UserServiceAsync
 
-class UserListPageAsync private constructor(private val userService: UserServiceAsync, private val params: UserListParams, private val response: Response, ) {
+class UserListPageAsync private constructor(private val usersService: UserServiceAsync, private val params: UserListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class UserListPageAsync private constructor(private val userService: UserService
       }
 
       return other is UserListPageAsync &&
-          this.userService == other.userService &&
+          this.usersService == other.usersService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          userService,
+          usersService,
           params,
           response,
       )
     }
 
-    override fun toString() = "UserListPageAsync{userService=$userService, params=$params, response=$response}"
+    override fun toString() = "UserListPageAsync{usersService=$usersService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class UserListPageAsync private constructor(private val userService: UserService
 
     fun getNextPage(): CompletableFuture<Optional<UserListPageAsync>> {
       return getNextPageParams().map {
-        userService.list(it).thenApply { Optional.of(it) }
+        usersService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class UserListPageAsync private constructor(private val userService: UserService
     companion object {
 
         @JvmStatic
-        fun of(userService: UserServiceAsync, params: UserListParams, response: Response) = UserListPageAsync(
-            userService,
+        fun of(usersService: UserServiceAsync, params: UserListParams, response: Response) = UserListPageAsync(
+            usersService,
             params,
             response,
         )

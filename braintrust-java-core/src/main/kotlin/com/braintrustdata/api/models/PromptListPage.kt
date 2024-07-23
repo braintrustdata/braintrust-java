@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Prompt
 import com.braintrustdata.api.services.blocking.PromptService
 
-class PromptListPage private constructor(private val promptService: PromptService, private val params: PromptListParams, private val response: Response, ) {
+class PromptListPage private constructor(private val promptsService: PromptService, private val params: PromptListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class PromptListPage private constructor(private val promptService: PromptServic
       }
 
       return other is PromptListPage &&
-          this.promptService == other.promptService &&
+          this.promptsService == other.promptsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          promptService,
+          promptsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "PromptListPage{promptService=$promptService, params=$params, response=$response}"
+    override fun toString() = "PromptListPage{promptsService=$promptsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -74,7 +74,7 @@ class PromptListPage private constructor(private val promptService: PromptServic
     }
 
     fun getNextPage(): Optional<PromptListPage> {
-      return getNextPageParams().map { promptService.list(it) }
+      return getNextPageParams().map { promptsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -82,8 +82,8 @@ class PromptListPage private constructor(private val promptService: PromptServic
     companion object {
 
         @JvmStatic
-        fun of(promptService: PromptService, params: PromptListParams, response: Response) = PromptListPage(
-            promptService,
+        fun of(promptsService: PromptService, params: PromptListParams, response: Response) = PromptListPage(
+            promptsService,
             params,
             response,
         )

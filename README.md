@@ -78,26 +78,26 @@ Read the documentation for more configuration options.
 ### Example: creating a resource
 
 To create a new project, first use the `ProjectCreateParams` builder to specify attributes,
-then pass that to the `create` method of the `project` service.
+then pass that to the `create` method of the `projects` service.
 
 ```java
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 
 ProjectCreateParams params = ProjectCreateParams.builder().build();
-Project project = client.project().create(params);
+Project project = client.projects().create(params);
 ```
 
 ### Example: listing resources
 
-The Braintrust API provides a `list` method to get a paginated list of project.
+The Braintrust API provides a `list` method to get a paginated list of projects.
 You can retrieve the first page by:
 
 ```java
 import com.braintrustdata.api.models.Page;
 import com.braintrustdata.api.models.Project;
 
-ProjectListPage page = client.project().list();
+ProjectListPage page = client.projects().list();
 for (Project project : page.objects()) {
     System.out.println(project);
 }
@@ -114,7 +114,7 @@ See [Pagination](#pagination) below for more information on transparently workin
 To make a request to the Braintrust API, you generally build an instance of the appropriate `Params` class.
 
 In [Example: creating a resource](#example-creating-a-resource) above, we used the `ProjectCreateParams.builder()` to pass to
-the `create` method of the `project` service.
+the `create` method of the `projects` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
@@ -133,7 +133,7 @@ ProjectCreateParams params = ProjectCreateParams.builder()
 When receiving a response, the Braintrust Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `BraintrustInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-Project project = client.project().create().validate();
+Project project = client.projects().create().validate();
 ```
 
 ### Response properties as JSON
@@ -182,13 +182,13 @@ which automatically handles fetching more pages for you:
 
 ```java
 // As an Iterable:
-ProjectListPage page = client.project().list(params);
+ProjectListPage page = client.projects().list(params);
 for (Project project : page.autoPager()) {
     System.out.println(project);
 };
 
 // As a Stream:
-client.project().list(params).autoPager().stream()
+client.projects().list(params).autoPager().stream()
     .limit(50)
     .forEach(project -> System.out.println(project));
 ```
@@ -197,7 +197,7 @@ client.project().list(params).autoPager().stream()
 
 ```java
 // Using forEach, which returns CompletableFuture<Void>:
-asyncClient.project().list(params).autoPager()
+asyncClient.projects().list(params).autoPager()
     .forEach(project -> System.out.println(project), executor);
 ```
 
@@ -209,7 +209,7 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```java
-ProjectListPage page = client.project().list(params);
+ProjectListPage page = client.projects().list(params);
 while (page != null) {
     for (Project project : page.objects()) {
         System.out.println(project);
