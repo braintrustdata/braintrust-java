@@ -2,31 +2,48 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
+import java.util.UUID
+import com.braintrustdata.api.core.BaseDeserializer
+import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.getOrThrow
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 
 @JsonDeserialize(builder = User.Builder::class)
 @NoAutoDetect
-class User
-private constructor(
-    private val id: JsonField<String>,
-    private val givenName: JsonField<String>,
-    private val familyName: JsonField<String>,
-    private val email: JsonField<String>,
-    private val avatarUrl: JsonField<String>,
-    private val created: JsonField<OffsetDateTime>,
-    private val additionalProperties: Map<String, JsonValue>,
+class User private constructor(
+  private val id: JsonField<String>,
+  private val givenName: JsonField<String>,
+  private val familyName: JsonField<String>,
+  private val email: JsonField<String>,
+  private val avatarUrl: JsonField<String>,
+  private val created: JsonField<OffsetDateTime>,
+  private val additionalProperties: Map<String, JsonValue>,
+
 ) {
 
     private var validated: Boolean = false
@@ -52,22 +69,34 @@ private constructor(
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
     /** Unique identifier for the user */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id")
+    @ExcludeMissing
+    fun _id() = id
 
     /** Given name of the user */
-    @JsonProperty("given_name") @ExcludeMissing fun _givenName() = givenName
+    @JsonProperty("given_name")
+    @ExcludeMissing
+    fun _givenName() = givenName
 
     /** Family name of the user */
-    @JsonProperty("family_name") @ExcludeMissing fun _familyName() = familyName
+    @JsonProperty("family_name")
+    @ExcludeMissing
+    fun _familyName() = familyName
 
     /** The user's email */
-    @JsonProperty("email") @ExcludeMissing fun _email() = email
+    @JsonProperty("email")
+    @ExcludeMissing
+    fun _email() = email
 
     /** URL of the user's Avatar image */
-    @JsonProperty("avatar_url") @ExcludeMissing fun _avatarUrl() = avatarUrl
+    @JsonProperty("avatar_url")
+    @ExcludeMissing
+    fun _avatarUrl() = avatarUrl
 
     /** Date of user creation */
-    @JsonProperty("created") @ExcludeMissing fun _created() = created
+    @JsonProperty("created")
+    @ExcludeMissing
+    fun _created() = created
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -75,55 +104,54 @@ private constructor(
 
     fun validate(): User = apply {
         if (!validated) {
-            id()
-            givenName()
-            familyName()
-            email()
-            avatarUrl()
-            created()
-            validated = true
+          id()
+          givenName()
+          familyName()
+          email()
+          avatarUrl()
+          created()
+          validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return other is User &&
-            this.id == other.id &&
-            this.givenName == other.givenName &&
-            this.familyName == other.familyName &&
-            this.email == other.email &&
-            this.avatarUrl == other.avatarUrl &&
-            this.created == other.created &&
-            this.additionalProperties == other.additionalProperties
+      return other is User &&
+          this.id == other.id &&
+          this.givenName == other.givenName &&
+          this.familyName == other.familyName &&
+          this.email == other.email &&
+          this.avatarUrl == other.avatarUrl &&
+          this.created == other.created &&
+          this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    givenName,
-                    familyName,
-                    email,
-                    avatarUrl,
-                    created,
-                    additionalProperties,
-                )
-        }
-        return hashCode
+      if (hashCode == 0) {
+        hashCode = Objects.hash(
+            id,
+            givenName,
+            familyName,
+            email,
+            avatarUrl,
+            created,
+            additionalProperties,
+        )
+      }
+      return hashCode
     }
 
-    override fun toString() =
-        "User{id=$id, givenName=$givenName, familyName=$familyName, email=$email, avatarUrl=$avatarUrl, created=$created, additionalProperties=$additionalProperties}"
+    override fun toString() = "User{id=$id, givenName=$givenName, familyName=$familyName, email=$email, avatarUrl=$avatarUrl, created=$created, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     class Builder {
@@ -151,7 +179,11 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the user */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        @JsonProperty("id")
+        @ExcludeMissing
+        fun id(id: JsonField<String>) = apply {
+            this.id = id
+        }
 
         /** Given name of the user */
         fun givenName(givenName: String) = givenName(JsonField.of(givenName))
@@ -159,7 +191,9 @@ private constructor(
         /** Given name of the user */
         @JsonProperty("given_name")
         @ExcludeMissing
-        fun givenName(givenName: JsonField<String>) = apply { this.givenName = givenName }
+        fun givenName(givenName: JsonField<String>) = apply {
+            this.givenName = givenName
+        }
 
         /** Family name of the user */
         fun familyName(familyName: String) = familyName(JsonField.of(familyName))
@@ -167,7 +201,9 @@ private constructor(
         /** Family name of the user */
         @JsonProperty("family_name")
         @ExcludeMissing
-        fun familyName(familyName: JsonField<String>) = apply { this.familyName = familyName }
+        fun familyName(familyName: JsonField<String>) = apply {
+            this.familyName = familyName
+        }
 
         /** The user's email */
         fun email(email: String) = email(JsonField.of(email))
@@ -175,7 +211,9 @@ private constructor(
         /** The user's email */
         @JsonProperty("email")
         @ExcludeMissing
-        fun email(email: JsonField<String>) = apply { this.email = email }
+        fun email(email: JsonField<String>) = apply {
+            this.email = email
+        }
 
         /** URL of the user's Avatar image */
         fun avatarUrl(avatarUrl: String) = avatarUrl(JsonField.of(avatarUrl))
@@ -183,7 +221,9 @@ private constructor(
         /** URL of the user's Avatar image */
         @JsonProperty("avatar_url")
         @ExcludeMissing
-        fun avatarUrl(avatarUrl: JsonField<String>) = apply { this.avatarUrl = avatarUrl }
+        fun avatarUrl(avatarUrl: JsonField<String>) = apply {
+            this.avatarUrl = avatarUrl
+        }
 
         /** Date of user creation */
         fun created(created: OffsetDateTime) = created(JsonField.of(created))
@@ -191,7 +231,9 @@ private constructor(
         /** Date of user creation */
         @JsonProperty("created")
         @ExcludeMissing
-        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
+        fun created(created: JsonField<OffsetDateTime>) = apply {
+            this.created = created
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -207,15 +249,14 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): User =
-            User(
-                id,
-                givenName,
-                familyName,
-                email,
-                avatarUrl,
-                created,
-                additionalProperties.toUnmodifiable(),
-            )
+        fun build(): User = User(
+            id,
+            givenName,
+            familyName,
+            email,
+            avatarUrl,
+            created,
+            additionalProperties.toUnmodifiable(),
+        )
     }
 }
