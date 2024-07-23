@@ -24,9 +24,9 @@ class DatasetUpdateParamsTest {
     fun createDatasetUpdateParams() {
       DatasetUpdateParams.builder()
           .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .description("string")
+          .description("description")
           .metadata(DatasetUpdateParams.Metadata.builder().build())
-          .name("string")
+          .name("name")
           .build()
     }
 
@@ -34,15 +34,15 @@ class DatasetUpdateParamsTest {
     fun getBody() {
       val params = DatasetUpdateParams.builder()
           .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .description("string")
+          .description("description")
           .metadata(DatasetUpdateParams.Metadata.builder().build())
-          .name("string")
+          .name("name")
           .build()
       val body = params.getBody()
       assertThat(body).isNotNull
-      assertThat(body.description()).isEqualTo("string")
+      assertThat(body.description()).isEqualTo("description")
       assertThat(body.metadata()).isEqualTo(DatasetUpdateParams.Metadata.builder().build())
-      assertThat(body.name()).isEqualTo("string")
+      assertThat(body.name()).isEqualTo("name")
     }
 
     @Test

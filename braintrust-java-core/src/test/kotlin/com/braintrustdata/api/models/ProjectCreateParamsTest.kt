@@ -23,30 +23,30 @@ class ProjectCreateParamsTest {
     @Test
     fun createProjectCreateParams() {
       ProjectCreateParams.builder()
-          .name("string")
-          .orgName("string")
+          .name("name")
+          .orgName("org_name")
           .build()
     }
 
     @Test
     fun getBody() {
       val params = ProjectCreateParams.builder()
-          .name("string")
-          .orgName("string")
+          .name("name")
+          .orgName("org_name")
           .build()
       val body = params.getBody()
       assertThat(body).isNotNull
-      assertThat(body.name()).isEqualTo("string")
-      assertThat(body.orgName()).isEqualTo("string")
+      assertThat(body.name()).isEqualTo("name")
+      assertThat(body.orgName()).isEqualTo("org_name")
     }
 
     @Test
     fun getBodyWithoutOptionalFields() {
       val params = ProjectCreateParams.builder()
-          .name("string")
+          .name("name")
           .build()
       val body = params.getBody()
       assertThat(body).isNotNull
-      assertThat(body.name()).isEqualTo("string")
+      assertThat(body.name()).isEqualTo("name")
     }
 }
