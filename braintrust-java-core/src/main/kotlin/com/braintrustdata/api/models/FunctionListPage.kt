@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Function
 import com.braintrustdata.api.services.blocking.FunctionService
 
-class FunctionListPage private constructor(private val functionService: FunctionService, private val params: FunctionListParams, private val response: Response, ) {
+class FunctionListPage private constructor(private val functionsService: FunctionService, private val params: FunctionListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class FunctionListPage private constructor(private val functionService: Function
       }
 
       return other is FunctionListPage &&
-          this.functionService == other.functionService &&
+          this.functionsService == other.functionsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          functionService,
+          functionsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "FunctionListPage{functionService=$functionService, params=$params, response=$response}"
+    override fun toString() = "FunctionListPage{functionsService=$functionsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -74,7 +74,7 @@ class FunctionListPage private constructor(private val functionService: Function
     }
 
     fun getNextPage(): Optional<FunctionListPage> {
-      return getNextPageParams().map { functionService.list(it) }
+      return getNextPageParams().map { functionsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -82,8 +82,8 @@ class FunctionListPage private constructor(private val functionService: Function
     companion object {
 
         @JvmStatic
-        fun of(functionService: FunctionService, params: FunctionListParams, response: Response) = FunctionListPage(
-            functionService,
+        fun of(functionsService: FunctionService, params: FunctionListParams, response: Response) = FunctionListPage(
+            functionsService,
             params,
             response,
         )

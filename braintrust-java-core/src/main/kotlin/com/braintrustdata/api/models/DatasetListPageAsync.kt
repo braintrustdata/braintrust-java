@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Dataset
 import com.braintrustdata.api.services.async.DatasetServiceAsync
 
-class DatasetListPageAsync private constructor(private val datasetService: DatasetServiceAsync, private val params: DatasetListParams, private val response: Response, ) {
+class DatasetListPageAsync private constructor(private val datasetsService: DatasetServiceAsync, private val params: DatasetListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class DatasetListPageAsync private constructor(private val datasetService: Datas
       }
 
       return other is DatasetListPageAsync &&
-          this.datasetService == other.datasetService &&
+          this.datasetsService == other.datasetsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          datasetService,
+          datasetsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "DatasetListPageAsync{datasetService=$datasetService, params=$params, response=$response}"
+    override fun toString() = "DatasetListPageAsync{datasetsService=$datasetsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -75,7 +75,7 @@ class DatasetListPageAsync private constructor(private val datasetService: Datas
 
     fun getNextPage(): CompletableFuture<Optional<DatasetListPageAsync>> {
       return getNextPageParams().map {
-        datasetService.list(it).thenApply { Optional.of(it) }
+        datasetsService.list(it).thenApply { Optional.of(it) }
       }.orElseGet {
           CompletableFuture.completedFuture(Optional.empty())
       }
@@ -86,8 +86,8 @@ class DatasetListPageAsync private constructor(private val datasetService: Datas
     companion object {
 
         @JvmStatic
-        fun of(datasetService: DatasetServiceAsync, params: DatasetListParams, response: Response) = DatasetListPageAsync(
-            datasetService,
+        fun of(datasetsService: DatasetServiceAsync, params: DatasetListParams, response: Response) = DatasetListPageAsync(
+            datasetsService,
             params,
             response,
         )

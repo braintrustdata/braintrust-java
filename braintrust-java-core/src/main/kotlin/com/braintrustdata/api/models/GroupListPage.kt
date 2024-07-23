@@ -30,7 +30,7 @@ import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.Group
 import com.braintrustdata.api.services.blocking.GroupService
 
-class GroupListPage private constructor(private val groupService: GroupService, private val params: GroupListParams, private val response: Response, ) {
+class GroupListPage private constructor(private val groupsService: GroupService, private val params: GroupListParams, private val response: Response, ) {
 
     fun response(): Response = response
 
@@ -42,20 +42,20 @@ class GroupListPage private constructor(private val groupService: GroupService, 
       }
 
       return other is GroupListPage &&
-          this.groupService == other.groupService &&
+          this.groupsService == other.groupsService &&
           this.params == other.params &&
           this.response == other.response
     }
 
     override fun hashCode(): Int {
       return Objects.hash(
-          groupService,
+          groupsService,
           params,
           response,
       )
     }
 
-    override fun toString() = "GroupListPage{groupService=$groupService, params=$params, response=$response}"
+    override fun toString() = "GroupListPage{groupsService=$groupsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
       return !objects().isEmpty()
@@ -74,7 +74,7 @@ class GroupListPage private constructor(private val groupService: GroupService, 
     }
 
     fun getNextPage(): Optional<GroupListPage> {
-      return getNextPageParams().map { groupService.list(it) }
+      return getNextPageParams().map { groupsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -82,8 +82,8 @@ class GroupListPage private constructor(private val groupService: GroupService, 
     companion object {
 
         @JvmStatic
-        fun of(groupService: GroupService, params: GroupListParams, response: Response) = GroupListPage(
-            groupService,
+        fun of(groupsService: GroupService, params: GroupListParams, response: Response) = GroupListPage(
+            groupsService,
             params,
             response,
         )

@@ -44,8 +44,8 @@ import com.braintrustdata.api.services.multipartFormData
 import com.braintrustdata.api.services.stringHandler
 import com.braintrustdata.api.services.binaryHandler
 import com.braintrustdata.api.services.withErrorHandler
-import com.braintrustdata.api.services.blocking.project.LogService
-import com.braintrustdata.api.services.blocking.project.LogServiceImpl
+import com.braintrustdata.api.services.blocking.projects.LogService
+import com.braintrustdata.api.services.blocking.projects.LogServiceImpl
 
 interface ProjectService {
 
