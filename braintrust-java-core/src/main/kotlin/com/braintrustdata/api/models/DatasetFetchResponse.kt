@@ -2,28 +2,40 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
+import java.util.UUID
+import com.braintrustdata.api.core.BaseDeserializer
+import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.getOrThrow
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 
 @JsonDeserialize(builder = DatasetFetchResponse.Builder::class)
 @NoAutoDetect
-class DatasetFetchResponse
-private constructor(
-    private val events: JsonField<List<Event>>,
-    private val cursor: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
-) {
+class DatasetFetchResponse private constructor(private val events: JsonField<List<Event>>, private val cursor: JsonField<String>, private val additionalProperties: Map<String, JsonValue>, ) {
 
     private var validated: Boolean = false
 
@@ -35,21 +47,25 @@ private constructor(
     /**
      * Pagination cursor
      *
-     * Pass this string directly as the `cursor` param to your next fetch request to get the next
-     * page of results. Not provided if the returned result set is empty.
+     * Pass this string directly as the `cursor` param to your next fetch request to
+     * get the next page of results. Not provided if the returned result set is empty.
      */
     fun cursor(): Optional<String> = Optional.ofNullable(cursor.getNullable("cursor"))
 
     /** A list of fetched events */
-    @JsonProperty("events") @ExcludeMissing fun _events() = events
+    @JsonProperty("events")
+    @ExcludeMissing
+    fun _events() = events
 
     /**
      * Pagination cursor
      *
-     * Pass this string directly as the `cursor` param to your next fetch request to get the next
-     * page of results. Not provided if the returned result set is empty.
+     * Pass this string directly as the `cursor` param to your next fetch request to
+     * get the next page of results. Not provided if the returned result set is empty.
      */
-    @JsonProperty("cursor") @ExcludeMissing fun _cursor() = cursor
+    @JsonProperty("cursor")
+    @ExcludeMissing
+    fun _cursor() = cursor
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -57,43 +73,42 @@ private constructor(
 
     fun validate(): DatasetFetchResponse = apply {
         if (!validated) {
-            events().forEach { it.validate() }
-            cursor()
-            validated = true
+          events().forEach { it.validate() }
+          cursor()
+          validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return other is DatasetFetchResponse &&
-            this.events == other.events &&
-            this.cursor == other.cursor &&
-            this.additionalProperties == other.additionalProperties
+      return other is DatasetFetchResponse &&
+          this.events == other.events &&
+          this.cursor == other.cursor &&
+          this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    events,
-                    cursor,
-                    additionalProperties,
-                )
-        }
-        return hashCode
+      if (hashCode == 0) {
+        hashCode = Objects.hash(
+            events,
+            cursor,
+            additionalProperties,
+        )
+      }
+      return hashCode
     }
 
-    override fun toString() =
-        "DatasetFetchResponse{events=$events, cursor=$cursor, additionalProperties=$additionalProperties}"
+    override fun toString() = "DatasetFetchResponse{events=$events, cursor=$cursor, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     class Builder {
@@ -115,25 +130,29 @@ private constructor(
         /** A list of fetched events */
         @JsonProperty("events")
         @ExcludeMissing
-        fun events(events: JsonField<List<Event>>) = apply { this.events = events }
+        fun events(events: JsonField<List<Event>>) = apply {
+            this.events = events
+        }
 
         /**
          * Pagination cursor
          *
-         * Pass this string directly as the `cursor` param to your next fetch request to get the
-         * next page of results. Not provided if the returned result set is empty.
+         * Pass this string directly as the `cursor` param to your next fetch request to
+         * get the next page of results. Not provided if the returned result set is empty.
          */
         fun cursor(cursor: String) = cursor(JsonField.of(cursor))
 
         /**
          * Pagination cursor
          *
-         * Pass this string directly as the `cursor` param to your next fetch request to get the
-         * next page of results. Not provided if the returned result set is empty.
+         * Pass this string directly as the `cursor` param to your next fetch request to
+         * get the next page of results. Not provided if the returned result set is empty.
          */
         @JsonProperty("cursor")
         @ExcludeMissing
-        fun cursor(cursor: JsonField<String>) = apply { this.cursor = cursor }
+        fun cursor(cursor: JsonField<String>) = apply {
+            this.cursor = cursor
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -149,30 +168,29 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): DatasetFetchResponse =
-            DatasetFetchResponse(
-                events.map { it.toUnmodifiable() },
-                cursor,
-                additionalProperties.toUnmodifiable(),
-            )
+        fun build(): DatasetFetchResponse = DatasetFetchResponse(
+            events.map { it.toUnmodifiable() },
+            cursor,
+            additionalProperties.toUnmodifiable(),
+        )
     }
 
     @JsonDeserialize(builder = Event.Builder::class)
     @NoAutoDetect
-    class Event
-    private constructor(
-        private val id: JsonField<String>,
-        private val _xactId: JsonField<String>,
-        private val created: JsonField<OffsetDateTime>,
-        private val projectId: JsonField<String>,
-        private val datasetId: JsonField<String>,
-        private val input: JsonValue,
-        private val expected: JsonValue,
-        private val metadata: JsonField<Metadata>,
-        private val tags: JsonField<List<String>>,
-        private val spanId: JsonField<String>,
-        private val rootSpanId: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+    class Event private constructor(
+      private val id: JsonField<String>,
+      private val _xactId: JsonField<String>,
+      private val created: JsonField<OffsetDateTime>,
+      private val projectId: JsonField<String>,
+      private val datasetId: JsonField<String>,
+      private val input: JsonValue,
+      private val expected: JsonValue,
+      private val metadata: JsonField<Metadata>,
+      private val tags: JsonField<List<String>>,
+      private val spanId: JsonField<String>,
+      private val rootSpanId: JsonField<String>,
+      private val additionalProperties: Map<String, JsonValue>,
+
     ) {
 
         private var validated: Boolean = false
@@ -180,15 +198,16 @@ private constructor(
         private var hashCode: Int = 0
 
         /**
-         * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-         * generate one for you
+         * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+         * will generate one for you
          */
         fun id(): String = id.getRequired("id")
 
         /**
-         * The transaction id of an event is unique to the network operation that processed the
-         * event insertion. Transaction ids are monotonically increasing over time and can be used
-         * to retrieve a versioned snapshot of the dataset (see the `version` parameter)
+         * The transaction id of an event is unique to the network operation that processed
+         * the event insertion. Transaction ids are monotonically increasing over time and
+         * can be used to retrieve a versioned snapshot of the dataset (see the `version`
+         * parameter)
          */
         fun _xactId(): String = _xactId.getRequired("_xact_id")
 
@@ -202,7 +221,8 @@ private constructor(
         fun datasetId(): String = datasetId.getRequired("dataset_id")
 
         /**
-         * The argument that uniquely define an input case (an arbitrary, JSON serializable object)
+         * The argument that uniquely define an input case (an arbitrary, JSON serializable
+         * object)
          */
         fun input(): JsonValue = input
 
@@ -213,11 +233,11 @@ private constructor(
         fun expected(): JsonValue = expected
 
         /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
+         * A dictionary with additional data about the test example, model outputs, or just
+         * about anything else that's relevant, that you can use to help find and analyze
+         * examples later. For example, you could log the `prompt`, example's `id`, or
+         * anything else that would be useful to slice/dice later. The values in `metadata`
+         * can be any JSON-serializable type, but its keys must be strings
          */
         fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
@@ -225,9 +245,10 @@ private constructor(
         fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
         /**
-         * A unique identifier used to link different dataset events together as part of a full
-         * trace. See the [tracing guide](https://www.braintrustdata.com/docs/guides/tracing) for
-         * full details on tracing
+         * A unique identifier used to link different dataset events together as part of a
+         * full trace. See the
+         * [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full details
+         * on tracing
          */
         fun spanId(): String = spanId.getRequired("span_id")
 
@@ -235,59 +256,84 @@ private constructor(
         fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
 
         /**
-         * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-         * generate one for you
+         * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+         * will generate one for you
          */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
+        @JsonProperty("id")
+        @ExcludeMissing
+        fun _id() = id
 
         /**
-         * The transaction id of an event is unique to the network operation that processed the
-         * event insertion. Transaction ids are monotonically increasing over time and can be used
-         * to retrieve a versioned snapshot of the dataset (see the `version` parameter)
+         * The transaction id of an event is unique to the network operation that processed
+         * the event insertion. Transaction ids are monotonically increasing over time and
+         * can be used to retrieve a versioned snapshot of the dataset (see the `version`
+         * parameter)
          */
-        @JsonProperty("_xact_id") @ExcludeMissing fun __xactId() = _xactId
+        @JsonProperty("_xact_id")
+        @ExcludeMissing
+        fun __xactId() = _xactId
 
         /** The timestamp the dataset event was created */
-        @JsonProperty("created") @ExcludeMissing fun _created() = created
+        @JsonProperty("created")
+        @ExcludeMissing
+        fun _created() = created
 
         /** Unique identifier for the project that the dataset belongs under */
-        @JsonProperty("project_id") @ExcludeMissing fun _projectId() = projectId
+        @JsonProperty("project_id")
+        @ExcludeMissing
+        fun _projectId() = projectId
 
         /** Unique identifier for the dataset */
-        @JsonProperty("dataset_id") @ExcludeMissing fun _datasetId() = datasetId
+        @JsonProperty("dataset_id")
+        @ExcludeMissing
+        fun _datasetId() = datasetId
 
         /**
-         * The argument that uniquely define an input case (an arbitrary, JSON serializable object)
+         * The argument that uniquely define an input case (an arbitrary, JSON serializable
+         * object)
          */
-        @JsonProperty("input") @ExcludeMissing fun _input() = input
+        @JsonProperty("input")
+        @ExcludeMissing
+        fun _input() = input
 
         /**
          * The output of your application, including post-processing (an arbitrary, JSON
          * serializable object)
          */
-        @JsonProperty("expected") @ExcludeMissing fun _expected() = expected
+        @JsonProperty("expected")
+        @ExcludeMissing
+        fun _expected() = expected
 
         /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
+         * A dictionary with additional data about the test example, model outputs, or just
+         * about anything else that's relevant, that you can use to help find and analyze
+         * examples later. For example, you could log the `prompt`, example's `id`, or
+         * anything else that would be useful to slice/dice later. The values in `metadata`
+         * can be any JSON-serializable type, but its keys must be strings
          */
-        @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        fun _metadata() = metadata
 
         /** A list of tags to log */
-        @JsonProperty("tags") @ExcludeMissing fun _tags() = tags
+        @JsonProperty("tags")
+        @ExcludeMissing
+        fun _tags() = tags
 
         /**
-         * A unique identifier used to link different dataset events together as part of a full
-         * trace. See the [tracing guide](https://www.braintrustdata.com/docs/guides/tracing) for
-         * full details on tracing
+         * A unique identifier used to link different dataset events together as part of a
+         * full trace. See the
+         * [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full details
+         * on tracing
          */
-        @JsonProperty("span_id") @ExcludeMissing fun _spanId() = spanId
+        @JsonProperty("span_id")
+        @ExcludeMissing
+        fun _spanId() = spanId
 
         /** The `span_id` of the root of the trace this dataset event belongs to */
-        @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId() = rootSpanId
+        @JsonProperty("root_span_id")
+        @ExcludeMissing
+        fun _rootSpanId() = rootSpanId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -295,70 +341,69 @@ private constructor(
 
         fun validate(): Event = apply {
             if (!validated) {
-                id()
-                _xactId()
-                created()
-                projectId()
-                datasetId()
-                input()
-                expected()
-                metadata().map { it.validate() }
-                tags()
-                spanId()
-                rootSpanId()
-                validated = true
+              id()
+              _xactId()
+              created()
+              projectId()
+              datasetId()
+              input()
+              expected()
+              metadata().map { it.validate() }
+              tags()
+              spanId()
+              rootSpanId()
+              validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return other is Event &&
-                this.id == other.id &&
-                this._xactId == other._xactId &&
-                this.created == other.created &&
-                this.projectId == other.projectId &&
-                this.datasetId == other.datasetId &&
-                this.input == other.input &&
-                this.expected == other.expected &&
-                this.metadata == other.metadata &&
-                this.tags == other.tags &&
-                this.spanId == other.spanId &&
-                this.rootSpanId == other.rootSpanId &&
-                this.additionalProperties == other.additionalProperties
+          return other is Event &&
+              this.id == other.id &&
+              this._xactId == other._xactId &&
+              this.created == other.created &&
+              this.projectId == other.projectId &&
+              this.datasetId == other.datasetId &&
+              this.input == other.input &&
+              this.expected == other.expected &&
+              this.metadata == other.metadata &&
+              this.tags == other.tags &&
+              this.spanId == other.spanId &&
+              this.rootSpanId == other.rootSpanId &&
+              this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        id,
-                        _xactId,
-                        created,
-                        projectId,
-                        datasetId,
-                        input,
-                        expected,
-                        metadata,
-                        tags,
-                        spanId,
-                        rootSpanId,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
+          if (hashCode == 0) {
+            hashCode = Objects.hash(
+                id,
+                _xactId,
+                created,
+                projectId,
+                datasetId,
+                input,
+                expected,
+                metadata,
+                tags,
+                spanId,
+                rootSpanId,
+                additionalProperties,
+            )
+          }
+          return hashCode
         }
 
-        override fun toString() =
-            "Event{id=$id, _xactId=$_xactId, created=$created, projectId=$projectId, datasetId=$datasetId, input=$input, expected=$expected, metadata=$metadata, tags=$tags, spanId=$spanId, rootSpanId=$rootSpanId, additionalProperties=$additionalProperties}"
+        override fun toString() = "Event{id=$id, _xactId=$_xactId, created=$created, projectId=$projectId, datasetId=$datasetId, input=$input, expected=$expected, metadata=$metadata, tags=$tags, spanId=$spanId, rootSpanId=$rootSpanId, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         class Builder {
@@ -393,34 +438,40 @@ private constructor(
             }
 
             /**
-             * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-             * generate one for you
+             * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+             * will generate one for you
              */
             fun id(id: String) = id(JsonField.of(id))
 
             /**
-             * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-             * generate one for you
+             * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+             * will generate one for you
              */
             @JsonProperty("id")
             @ExcludeMissing
-            fun id(id: JsonField<String>) = apply { this.id = id }
+            fun id(id: JsonField<String>) = apply {
+                this.id = id
+            }
 
             /**
-             * The transaction id of an event is unique to the network operation that processed the
-             * event insertion. Transaction ids are monotonically increasing over time and can be
-             * used to retrieve a versioned snapshot of the dataset (see the `version` parameter)
+             * The transaction id of an event is unique to the network operation that processed
+             * the event insertion. Transaction ids are monotonically increasing over time and
+             * can be used to retrieve a versioned snapshot of the dataset (see the `version`
+             * parameter)
              */
             fun _xactId(_xactId: String) = _xactId(JsonField.of(_xactId))
 
             /**
-             * The transaction id of an event is unique to the network operation that processed the
-             * event insertion. Transaction ids are monotonically increasing over time and can be
-             * used to retrieve a versioned snapshot of the dataset (see the `version` parameter)
+             * The transaction id of an event is unique to the network operation that processed
+             * the event insertion. Transaction ids are monotonically increasing over time and
+             * can be used to retrieve a versioned snapshot of the dataset (see the `version`
+             * parameter)
              */
             @JsonProperty("_xact_id")
             @ExcludeMissing
-            fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
+            fun _xactId(_xactId: JsonField<String>) = apply {
+                this._xactId = _xactId
+            }
 
             /** The timestamp the dataset event was created */
             fun created(created: OffsetDateTime) = created(JsonField.of(created))
@@ -428,7 +479,9 @@ private constructor(
             /** The timestamp the dataset event was created */
             @JsonProperty("created")
             @ExcludeMissing
-            fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
+            fun created(created: JsonField<OffsetDateTime>) = apply {
+                this.created = created
+            }
 
             /** Unique identifier for the project that the dataset belongs under */
             fun projectId(projectId: String) = projectId(JsonField.of(projectId))
@@ -436,7 +489,9 @@ private constructor(
             /** Unique identifier for the project that the dataset belongs under */
             @JsonProperty("project_id")
             @ExcludeMissing
-            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+            fun projectId(projectId: JsonField<String>) = apply {
+                this.projectId = projectId
+            }
 
             /** Unique identifier for the dataset */
             fun datasetId(datasetId: String) = datasetId(JsonField.of(datasetId))
@@ -444,7 +499,9 @@ private constructor(
             /** Unique identifier for the dataset */
             @JsonProperty("dataset_id")
             @ExcludeMissing
-            fun datasetId(datasetId: JsonField<String>) = apply { this.datasetId = datasetId }
+            fun datasetId(datasetId: JsonField<String>) = apply {
+                this.datasetId = datasetId
+            }
 
             /**
              * The argument that uniquely define an input case (an arbitrary, JSON serializable
@@ -452,7 +509,9 @@ private constructor(
              */
             @JsonProperty("input")
             @ExcludeMissing
-            fun input(input: JsonValue) = apply { this.input = input }
+            fun input(input: JsonValue) = apply {
+                this.input = input
+            }
 
             /**
              * The output of your application, including post-processing (an arbitrary, JSON
@@ -460,27 +519,31 @@ private constructor(
              */
             @JsonProperty("expected")
             @ExcludeMissing
-            fun expected(expected: JsonValue) = apply { this.expected = expected }
+            fun expected(expected: JsonValue) = apply {
+                this.expected = expected
+            }
 
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
             fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
             @JsonProperty("metadata")
             @ExcludeMissing
-            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+            fun metadata(metadata: JsonField<Metadata>) = apply {
+                this.metadata = metadata
+            }
 
             /** A list of tags to log */
             fun tags(tags: List<String>) = tags(JsonField.of(tags))
@@ -488,23 +551,29 @@ private constructor(
             /** A list of tags to log */
             @JsonProperty("tags")
             @ExcludeMissing
-            fun tags(tags: JsonField<List<String>>) = apply { this.tags = tags }
+            fun tags(tags: JsonField<List<String>>) = apply {
+                this.tags = tags
+            }
 
             /**
-             * A unique identifier used to link different dataset events together as part of a full
-             * trace. See the [tracing guide](https://www.braintrustdata.com/docs/guides/tracing)
-             * for full details on tracing
+             * A unique identifier used to link different dataset events together as part of a
+             * full trace. See the
+             * [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full details
+             * on tracing
              */
             fun spanId(spanId: String) = spanId(JsonField.of(spanId))
 
             /**
-             * A unique identifier used to link different dataset events together as part of a full
-             * trace. See the [tracing guide](https://www.braintrustdata.com/docs/guides/tracing)
-             * for full details on tracing
+             * A unique identifier used to link different dataset events together as part of a
+             * full trace. See the
+             * [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full details
+             * on tracing
              */
             @JsonProperty("span_id")
             @ExcludeMissing
-            fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
+            fun spanId(spanId: JsonField<String>) = apply {
+                this.spanId = spanId
+            }
 
             /** The `span_id` of the root of the trace this dataset event belongs to */
             fun rootSpanId(rootSpanId: String) = rootSpanId(JsonField.of(rootSpanId))
@@ -512,7 +581,9 @@ private constructor(
             /** The `span_id` of the root of the trace this dataset event belongs to */
             @JsonProperty("root_span_id")
             @ExcludeMissing
-            fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
+            fun rootSpanId(rootSpanId: JsonField<String>) = apply {
+                this.rootSpanId = rootSpanId
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -528,36 +599,32 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Event =
-                Event(
-                    id,
-                    _xactId,
-                    created,
-                    projectId,
-                    datasetId,
-                    input,
-                    expected,
-                    metadata,
-                    tags.map { it.toUnmodifiable() },
-                    spanId,
-                    rootSpanId,
-                    additionalProperties.toUnmodifiable(),
-                )
+            fun build(): Event = Event(
+                id,
+                _xactId,
+                created,
+                projectId,
+                datasetId,
+                input,
+                expected,
+                metadata,
+                tags.map { it.toUnmodifiable() },
+                spanId,
+                rootSpanId,
+                additionalProperties.toUnmodifiable(),
+            )
         }
 
         /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
+         * A dictionary with additional data about the test example, model outputs, or just
+         * about anything else that's relevant, that you can use to help find and analyze
+         * examples later. For example, you could log the `prompt`, example's `id`, or
+         * anything else that would be useful to slice/dice later. The values in `metadata`
+         * can be any JSON-serializable type, but its keys must be strings
          */
         @JsonDeserialize(builder = Metadata.Builder::class)
         @NoAutoDetect
-        class Metadata
-        private constructor(
-            private val additionalProperties: Map<String, JsonValue>,
-        ) {
+        class Metadata private constructor(private val additionalProperties: Map<String, JsonValue>, ) {
 
             private var validated: Boolean = false
 
@@ -569,32 +636,34 @@ private constructor(
 
             fun validate(): Metadata = apply {
                 if (!validated) {
-                    validated = true
+                  validated = true
                 }
             }
 
             fun toBuilder() = Builder().from(this)
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return other is Metadata && this.additionalProperties == other.additionalProperties
+              return other is Metadata &&
+                  this.additionalProperties == other.additionalProperties
             }
 
             override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(additionalProperties)
-                }
-                return hashCode
+              if (hashCode == 0) {
+                hashCode = Objects.hash(additionalProperties)
+              }
+              return hashCode
             }
 
             override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
             companion object {
 
-                @JvmStatic fun builder() = Builder()
+                @JvmStatic
+                fun builder() = Builder()
             }
 
             class Builder {
@@ -616,10 +685,9 @@ private constructor(
                     this.additionalProperties.put(key, value)
                 }
 
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
                 fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
             }

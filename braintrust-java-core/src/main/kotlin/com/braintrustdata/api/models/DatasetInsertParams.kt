@@ -2,37 +2,47 @@
 
 package com.braintrustdata.api.models
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import org.apache.hc.core5.http.ContentType
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Objects
+import java.util.Optional
+import java.util.UUID
 import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.getOrThrow
+import com.braintrustdata.api.core.MultipartFormValue
 import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.ContentTypes
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.util.Objects
-import java.util.Optional
 
-class DatasetInsertParams
-constructor(
-    private val datasetId: String,
-    private val events: List<Event>,
-    private val additionalQueryParams: Map<String, List<String>>,
-    private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
+class DatasetInsertParams constructor(
+  private val datasetId: String,
+  private val events: List<Event>,
+  private val additionalQueryParams: Map<String, List<String>>,
+  private val additionalHeaders: Map<String, List<String>>,
+  private val additionalBodyProperties: Map<String, JsonValue>,
+
 ) {
 
     fun datasetId(): String = datasetId
@@ -41,32 +51,31 @@ constructor(
 
     @JvmSynthetic
     internal fun getBody(): DatasetInsertBody {
-        return DatasetInsertBody(events, additionalBodyProperties)
+      return DatasetInsertBody(events, additionalBodyProperties)
     }
 
-    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic
+    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic
+    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> datasetId
-            else -> ""
-        }
+      return when (index) {
+          0 -> datasetId
+          else -> ""
+      }
     }
 
     @JsonDeserialize(builder = DatasetInsertBody.Builder::class)
     @NoAutoDetect
-    class DatasetInsertBody
-    internal constructor(
-        private val events: List<Event>?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
+    class DatasetInsertBody internal constructor(private val events: List<Event>?, private val additionalProperties: Map<String, JsonValue>, ) {
 
         private var hashCode: Int = 0
 
         /** A list of dataset events to insert */
-        @JsonProperty("events") fun events(): List<Event>? = events
+        @JsonProperty("events")
+        fun events(): List<Event>? = events
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -75,28 +84,28 @@ constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return other is DatasetInsertBody &&
-                this.events == other.events &&
-                this.additionalProperties == other.additionalProperties
+          return other is DatasetInsertBody &&
+              this.events == other.events &&
+              this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(events, additionalProperties)
-            }
-            return hashCode
+          if (hashCode == 0) {
+            hashCode = Objects.hash(events, additionalProperties)
+          }
+          return hashCode
         }
 
-        override fun toString() =
-            "DatasetInsertBody{events=$events, additionalProperties=$additionalProperties}"
+        override fun toString() = "DatasetInsertBody{events=$events, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         class Builder {
@@ -111,7 +120,10 @@ constructor(
             }
 
             /** A list of dataset events to insert */
-            @JsonProperty("events") fun events(events: List<Event>) = apply { this.events = events }
+            @JsonProperty("events")
+            fun events(events: List<Event>) = apply {
+                this.events = events
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -127,12 +139,9 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): DatasetInsertBody =
-                DatasetInsertBody(
-                    checkNotNull(events) { "`events` is required but was not set" }
-                        .toUnmodifiable(),
-                    additionalProperties.toUnmodifiable()
-                )
+            fun build(): DatasetInsertBody = DatasetInsertBody(checkNotNull(events) {
+                "`events` is required but was not set"
+            }.toUnmodifiable(), additionalProperties.toUnmodifiable())
         }
     }
 
@@ -143,36 +152,36 @@ constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return other is DatasetInsertParams &&
-            this.datasetId == other.datasetId &&
-            this.events == other.events &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+      return other is DatasetInsertParams &&
+          this.datasetId == other.datasetId &&
+          this.events == other.events &&
+          this.additionalQueryParams == other.additionalQueryParams &&
+          this.additionalHeaders == other.additionalHeaders &&
+          this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            datasetId,
-            events,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+      return Objects.hash(
+          datasetId,
+          events,
+          additionalQueryParams,
+          additionalHeaders,
+          additionalBodyProperties,
+      )
     }
 
-    override fun toString() =
-        "DatasetInsertParams{datasetId=$datasetId, events=$events, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() = "DatasetInsertParams{datasetId=$datasetId, events=$events, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -194,7 +203,9 @@ constructor(
         }
 
         /** Dataset id */
-        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+        fun datasetId(datasetId: String) = apply {
+            this.datasetId = datasetId
+        }
 
         /** A list of dataset events to insert */
         fun events(events: List<Event>) = apply {
@@ -203,7 +214,9 @@ constructor(
         }
 
         /** A list of dataset events to insert */
-        fun addEvent(event: Event) = apply { this.events.add(event) }
+        fun addEvent(event: Event) = apply {
+            this.events.add(event)
+        }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -243,7 +256,9 @@ constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
+        fun removeHeader(name: String) = apply {
+            this.additionalHeaders.put(name, mutableListOf())
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -254,168 +269,143 @@ constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            this.additionalBodyProperties.putAll(additionalBodyProperties)
+        }
 
-        fun build(): DatasetInsertParams =
-            DatasetInsertParams(
-                checkNotNull(datasetId) { "`datasetId` is required but was not set" },
-                checkNotNull(events) { "`events` is required but was not set" }.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
-            )
+        fun build(): DatasetInsertParams = DatasetInsertParams(
+            checkNotNull(datasetId) {
+                "`datasetId` is required but was not set"
+            },
+            checkNotNull(events) {
+                "`events` is required but was not set"
+            }.toUnmodifiable(),
+            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+            additionalBodyProperties.toUnmodifiable(),
+        )
     }
 
     @JsonDeserialize(using = Event.Deserializer::class)
     @JsonSerialize(using = Event.Serializer::class)
-    class Event
-    private constructor(
-        private val insertDatasetEventReplace: InsertDatasetEventReplace? = null,
-        private val insertDatasetEventMerge: InsertDatasetEventMerge? = null,
-        private val _json: JsonValue? = null,
-    ) {
+    class Event private constructor(private val insertDatasetEventReplace: InsertDatasetEventReplace? = null, private val insertDatasetEventMerge: InsertDatasetEventMerge? = null, private val _json: JsonValue? = null, ) {
 
         private var validated: Boolean = false
 
-        fun insertDatasetEventReplace(): Optional<InsertDatasetEventReplace> =
-            Optional.ofNullable(insertDatasetEventReplace)
-
-        fun insertDatasetEventMerge(): Optional<InsertDatasetEventMerge> =
-            Optional.ofNullable(insertDatasetEventMerge)
+        fun insertDatasetEventReplace(): Optional<InsertDatasetEventReplace> = Optional.ofNullable(insertDatasetEventReplace)
+        fun insertDatasetEventMerge(): Optional<InsertDatasetEventMerge> = Optional.ofNullable(insertDatasetEventMerge)
 
         fun isInsertDatasetEventReplace(): Boolean = insertDatasetEventReplace != null
-
         fun isInsertDatasetEventMerge(): Boolean = insertDatasetEventMerge != null
 
-        fun asInsertDatasetEventReplace(): InsertDatasetEventReplace =
-            insertDatasetEventReplace.getOrThrow("insertDatasetEventReplace")
-
-        fun asInsertDatasetEventMerge(): InsertDatasetEventMerge =
-            insertDatasetEventMerge.getOrThrow("insertDatasetEventMerge")
+        fun asInsertDatasetEventReplace(): InsertDatasetEventReplace = insertDatasetEventReplace.getOrThrow("insertDatasetEventReplace")
+        fun asInsertDatasetEventMerge(): InsertDatasetEventMerge = insertDatasetEventMerge.getOrThrow("insertDatasetEventMerge")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
         fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                insertDatasetEventReplace != null ->
-                    visitor.visitInsertDatasetEventReplace(insertDatasetEventReplace)
-                insertDatasetEventMerge != null ->
-                    visitor.visitInsertDatasetEventMerge(insertDatasetEventMerge)
-                else -> visitor.unknown(_json)
-            }
+          return when {
+              insertDatasetEventReplace != null -> visitor.visitInsertDatasetEventReplace(insertDatasetEventReplace)
+              insertDatasetEventMerge != null -> visitor.visitInsertDatasetEventMerge(insertDatasetEventMerge)
+              else -> visitor.unknown(_json)
+          }
         }
 
         fun validate(): Event = apply {
             if (!validated) {
-                if (insertDatasetEventReplace == null && insertDatasetEventMerge == null) {
-                    throw BraintrustInvalidDataException("Unknown Event: $_json")
-                }
-                insertDatasetEventReplace?.validate()
-                insertDatasetEventMerge?.validate()
-                validated = true
+              if (insertDatasetEventReplace == null && insertDatasetEventMerge == null) {
+                throw BraintrustInvalidDataException("Unknown Event: $_json")
+              }
+              insertDatasetEventReplace?.validate()
+              insertDatasetEventMerge?.validate()
+              validated = true
             }
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return other is Event &&
-                this.insertDatasetEventReplace == other.insertDatasetEventReplace &&
-                this.insertDatasetEventMerge == other.insertDatasetEventMerge
+          return other is Event &&
+              this.insertDatasetEventReplace == other.insertDatasetEventReplace &&
+              this.insertDatasetEventMerge == other.insertDatasetEventMerge
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(insertDatasetEventReplace, insertDatasetEventMerge)
+          return Objects.hash(insertDatasetEventReplace, insertDatasetEventMerge)
         }
 
         override fun toString(): String {
-            return when {
-                insertDatasetEventReplace != null ->
-                    "Event{insertDatasetEventReplace=$insertDatasetEventReplace}"
-                insertDatasetEventMerge != null ->
-                    "Event{insertDatasetEventMerge=$insertDatasetEventMerge}"
-                _json != null -> "Event{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Event")
-            }
+          return when {
+              insertDatasetEventReplace != null -> "Event{insertDatasetEventReplace=$insertDatasetEventReplace}"
+              insertDatasetEventMerge != null -> "Event{insertDatasetEventMerge=$insertDatasetEventMerge}"
+              _json != null -> "Event{_unknown=$_json}"
+              else -> throw IllegalStateException("Invalid Event")
+          }
         }
 
         companion object {
 
             @JvmStatic
-            fun ofInsertDatasetEventReplace(insertDatasetEventReplace: InsertDatasetEventReplace) =
-                Event(insertDatasetEventReplace = insertDatasetEventReplace)
+            fun ofInsertDatasetEventReplace(insertDatasetEventReplace: InsertDatasetEventReplace) = Event(insertDatasetEventReplace = insertDatasetEventReplace)
 
             @JvmStatic
-            fun ofInsertDatasetEventMerge(insertDatasetEventMerge: InsertDatasetEventMerge) =
-                Event(insertDatasetEventMerge = insertDatasetEventMerge)
+            fun ofInsertDatasetEventMerge(insertDatasetEventMerge: InsertDatasetEventMerge) = Event(insertDatasetEventMerge = insertDatasetEventMerge)
         }
 
         interface Visitor<out T> {
 
-            fun visitInsertDatasetEventReplace(
-                insertDatasetEventReplace: InsertDatasetEventReplace
-            ): T
+            fun visitInsertDatasetEventReplace(insertDatasetEventReplace: InsertDatasetEventReplace): T
 
             fun visitInsertDatasetEventMerge(insertDatasetEventMerge: InsertDatasetEventMerge): T
 
             fun unknown(json: JsonValue?): T {
-                throw BraintrustInvalidDataException("Unknown Event: $json")
+              throw BraintrustInvalidDataException("Unknown Event: $json")
             }
         }
 
         class Deserializer : BaseDeserializer<Event>(Event::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Event {
-                val json = JsonValue.fromJsonNode(node)
-                tryDeserialize(node, jacksonTypeRef<InsertDatasetEventReplace>()) { it.validate() }
-                    ?.let {
-                        return Event(insertDatasetEventReplace = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<InsertDatasetEventMerge>()) { it.validate() }
-                    ?.let {
-                        return Event(insertDatasetEventMerge = it, _json = json)
-                    }
+              val json = JsonValue.fromJsonNode(node)
+              tryDeserialize(node, jacksonTypeRef<InsertDatasetEventReplace>()){ it.validate() }?.let {
+                  return Event(insertDatasetEventReplace = it, _json = json)
+              }
+              tryDeserialize(node, jacksonTypeRef<InsertDatasetEventMerge>()){ it.validate() }?.let {
+                  return Event(insertDatasetEventMerge = it, _json = json)
+              }
 
-                return Event(_json = json)
+              return Event(_json = json)
             }
         }
 
         class Serializer : BaseSerializer<Event>(Event::class) {
 
-            override fun serialize(
-                value: Event,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.insertDatasetEventReplace != null ->
-                        generator.writeObject(value.insertDatasetEventReplace)
-                    value.insertDatasetEventMerge != null ->
-                        generator.writeObject(value.insertDatasetEventMerge)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Event")
-                }
+            override fun serialize(value: Event, generator: JsonGenerator, provider: SerializerProvider) {
+              when {
+                  value.insertDatasetEventReplace != null -> generator.writeObject(value.insertDatasetEventReplace)
+                  value.insertDatasetEventMerge != null -> generator.writeObject(value.insertDatasetEventMerge)
+                  value._json != null -> generator.writeObject(value._json)
+                  else -> throw IllegalStateException("Invalid Event")
+              }
             }
         }
 
         @JsonDeserialize(builder = InsertDatasetEventReplace.Builder::class)
         @NoAutoDetect
-        class InsertDatasetEventReplace
-        private constructor(
-            private val input: JsonValue,
-            private val expected: JsonValue,
-            private val metadata: JsonField<Metadata>,
-            private val tags: JsonField<List<String>>,
-            private val id: JsonField<String>,
-            private val _objectDelete: JsonField<Boolean>,
-            private val _isMerge: JsonField<Boolean>,
-            private val _parentId: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+        class InsertDatasetEventReplace private constructor(
+          private val input: JsonValue,
+          private val expected: JsonValue,
+          private val metadata: JsonField<Metadata>,
+          private val tags: JsonField<List<String>>,
+          private val id: JsonField<String>,
+          private val created: JsonField<OffsetDateTime>,
+          private val _objectDelete: JsonField<Boolean>,
+          private val _isMerge: JsonField<Boolean>,
+          private val _parentId: JsonField<String>,
+          private val additionalProperties: Map<String, JsonValue>,
+
         ) {
 
             private var validated: Boolean = false
@@ -437,126 +427,148 @@ constructor(
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
-            fun metadata(): Optional<Metadata> =
-                Optional.ofNullable(metadata.getNullable("metadata"))
+            fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
             /** A list of tags to log */
             fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
             /**
-             * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-             * generate one for you
+             * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+             * will generate one for you
              */
             fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
-            /**
-             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not
-             * show up in subsequent fetches for this dataset
-             */
-            fun _objectDelete(): Optional<Boolean> =
-                Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
+            /** The timestamp the dataset event was created */
+            fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
             /**
-             * The `_is_merge` field controls how the row is merged with any existing row with the
-             * same id in the DB. By default (or when set to `false`), the existing row is
-             * completely replaced by the new row. When set to `true`, the new row is deep-merged
-             * into the existing row
-             *
-             * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5,
-             * "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b":
-             * 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c":
-             * 20}}`. If we replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the
-             * new row will be `{"id": "foo", "input": {"b": 11, "c": 20}}`
+             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+             * will not show up in subsequent fetches for this dataset
              */
-            fun _isMerge(): Optional<Boolean> =
-                Optional.ofNullable(_isMerge.getNullable("_is_merge"))
+            fun _objectDelete(): Optional<Boolean> = Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
 
             /**
-             * Use the `_parent_id` field to create this row as a subspan of an existing row. It
-             * cannot be specified alongside `_is_merge=true`. Tracking hierarchical relationships
-             * are important for tracing (see the
-             * [guide](https://www.braintrustdata.com/docs/guides/tracing) for full details).
+             * The `_is_merge` field controls how the row is merged with any existing row with
+             * the same id in the DB. By default (or when set to `false`), the existing row is
+             * completely replaced by the new row. When set to `true`, the new row is
+             * deep-merged into the existing row
              *
-             * For example, say we have logged a row `{"id": "abc", "input": "foo", "output": "bar",
-             * "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a sub-span of the
-             * parent row by logging `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt":
-             * "What comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp,
-             * only the root span row `"abc"` will show up in the summary view. You can view the
-             * full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the "abc"
-             * row.
+             * For example, say there is an existing row in the DB
+             * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+             * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+             * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+             * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+             * `{"id": "foo", "input": {"b": 11, "c": 20}}`
              */
-            fun _parentId(): Optional<String> =
-                Optional.ofNullable(_parentId.getNullable("_parent_id"))
+            fun _isMerge(): Optional<Boolean> = Optional.ofNullable(_isMerge.getNullable("_is_merge"))
+
+            /**
+             * Use the `_parent_id` field to create this row as a subspan of an existing row.
+             * It cannot be specified alongside `_is_merge=true`. Tracking hierarchical
+             * relationships are important for tracing (see the
+             * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
+             *
+             * For example, say we have logged a row
+             * `{"id": "abc", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness": 0.33}}`.
+             * We can create a sub-span of the parent row by logging
+             * `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`.
+             * In the webapp, only the root span row `"abc"` will show up in the summary view.
+             * You can view the full trace hierarchy (in this case, the `"llm_call"` row) by
+             * clicking on the "abc" row.
+             */
+            fun _parentId(): Optional<String> = Optional.ofNullable(_parentId.getNullable("_parent_id"))
 
             /**
              * The argument that uniquely define an input case (an arbitrary, JSON serializable
              * object)
              */
-            @JsonProperty("input") @ExcludeMissing fun _input() = input
+            @JsonProperty("input")
+            @ExcludeMissing
+            fun _input() = input
 
             /**
              * The output of your application, including post-processing (an arbitrary, JSON
              * serializable object)
              */
-            @JsonProperty("expected") @ExcludeMissing fun _expected() = expected
+            @JsonProperty("expected")
+            @ExcludeMissing
+            fun _expected() = expected
 
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
-            @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
+            @JsonProperty("metadata")
+            @ExcludeMissing
+            fun _metadata() = metadata
 
             /** A list of tags to log */
-            @JsonProperty("tags") @ExcludeMissing fun _tags() = tags
+            @JsonProperty("tags")
+            @ExcludeMissing
+            fun _tags() = tags
 
             /**
-             * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-             * generate one for you
+             * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+             * will generate one for you
              */
-            @JsonProperty("id") @ExcludeMissing fun _id() = id
+            @JsonProperty("id")
+            @ExcludeMissing
+            fun _id() = id
+
+            /** The timestamp the dataset event was created */
+            @JsonProperty("created")
+            @ExcludeMissing
+            fun _created() = created
 
             /**
-             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not
-             * show up in subsequent fetches for this dataset
+             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+             * will not show up in subsequent fetches for this dataset
              */
-            @JsonProperty("_object_delete") @ExcludeMissing fun __objectDelete() = _objectDelete
+            @JsonProperty("_object_delete")
+            @ExcludeMissing
+            fun __objectDelete() = _objectDelete
 
             /**
-             * The `_is_merge` field controls how the row is merged with any existing row with the
-             * same id in the DB. By default (or when set to `false`), the existing row is
-             * completely replaced by the new row. When set to `true`, the new row is deep-merged
-             * into the existing row
+             * The `_is_merge` field controls how the row is merged with any existing row with
+             * the same id in the DB. By default (or when set to `false`), the existing row is
+             * completely replaced by the new row. When set to `true`, the new row is
+             * deep-merged into the existing row
              *
-             * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5,
-             * "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b":
-             * 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c":
-             * 20}}`. If we replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the
-             * new row will be `{"id": "foo", "input": {"b": 11, "c": 20}}`
+             * For example, say there is an existing row in the DB
+             * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+             * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+             * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+             * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+             * `{"id": "foo", "input": {"b": 11, "c": 20}}`
              */
-            @JsonProperty("_is_merge") @ExcludeMissing fun __isMerge() = _isMerge
+            @JsonProperty("_is_merge")
+            @ExcludeMissing
+            fun __isMerge() = _isMerge
 
             /**
-             * Use the `_parent_id` field to create this row as a subspan of an existing row. It
-             * cannot be specified alongside `_is_merge=true`. Tracking hierarchical relationships
-             * are important for tracing (see the
-             * [guide](https://www.braintrustdata.com/docs/guides/tracing) for full details).
+             * Use the `_parent_id` field to create this row as a subspan of an existing row.
+             * It cannot be specified alongside `_is_merge=true`. Tracking hierarchical
+             * relationships are important for tracing (see the
+             * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
              *
-             * For example, say we have logged a row `{"id": "abc", "input": "foo", "output": "bar",
-             * "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a sub-span of the
-             * parent row by logging `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt":
-             * "What comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp,
-             * only the root span row `"abc"` will show up in the summary view. You can view the
-             * full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the "abc"
-             * row.
+             * For example, say we have logged a row
+             * `{"id": "abc", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness": 0.33}}`.
+             * We can create a sub-span of the parent row by logging
+             * `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`.
+             * In the webapp, only the root span row `"abc"` will show up in the summary view.
+             * You can view the full trace hierarchy (in this case, the `"llm_call"` row) by
+             * clicking on the "abc" row.
              */
-            @JsonProperty("_parent_id") @ExcludeMissing fun __parentId() = _parentId
+            @JsonProperty("_parent_id")
+            @ExcludeMissing
+            fun __parentId() = _parentId
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -564,61 +576,63 @@ constructor(
 
             fun validate(): InsertDatasetEventReplace = apply {
                 if (!validated) {
-                    input()
-                    expected()
-                    metadata().map { it.validate() }
-                    tags()
-                    id()
-                    _objectDelete()
-                    _isMerge()
-                    _parentId()
-                    validated = true
+                  input()
+                  expected()
+                  metadata().map { it.validate() }
+                  tags()
+                  id()
+                  created()
+                  _objectDelete()
+                  _isMerge()
+                  _parentId()
+                  validated = true
                 }
             }
 
             fun toBuilder() = Builder().from(this)
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return other is InsertDatasetEventReplace &&
-                    this.input == other.input &&
-                    this.expected == other.expected &&
-                    this.metadata == other.metadata &&
-                    this.tags == other.tags &&
-                    this.id == other.id &&
-                    this._objectDelete == other._objectDelete &&
-                    this._isMerge == other._isMerge &&
-                    this._parentId == other._parentId &&
-                    this.additionalProperties == other.additionalProperties
+              return other is InsertDatasetEventReplace &&
+                  this.input == other.input &&
+                  this.expected == other.expected &&
+                  this.metadata == other.metadata &&
+                  this.tags == other.tags &&
+                  this.id == other.id &&
+                  this.created == other.created &&
+                  this._objectDelete == other._objectDelete &&
+                  this._isMerge == other._isMerge &&
+                  this._parentId == other._parentId &&
+                  this.additionalProperties == other.additionalProperties
             }
 
             override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            input,
-                            expected,
-                            metadata,
-                            tags,
-                            id,
-                            _objectDelete,
-                            _isMerge,
-                            _parentId,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
+              if (hashCode == 0) {
+                hashCode = Objects.hash(
+                    input,
+                    expected,
+                    metadata,
+                    tags,
+                    id,
+                    created,
+                    _objectDelete,
+                    _isMerge,
+                    _parentId,
+                    additionalProperties,
+                )
+              }
+              return hashCode
             }
 
-            override fun toString() =
-                "InsertDatasetEventReplace{input=$input, expected=$expected, metadata=$metadata, tags=$tags, id=$id, _objectDelete=$_objectDelete, _isMerge=$_isMerge, _parentId=$_parentId, additionalProperties=$additionalProperties}"
+            override fun toString() = "InsertDatasetEventReplace{input=$input, expected=$expected, metadata=$metadata, tags=$tags, id=$id, created=$created, _objectDelete=$_objectDelete, _isMerge=$_isMerge, _parentId=$_parentId, additionalProperties=$additionalProperties}"
 
             companion object {
 
-                @JvmStatic fun builder() = Builder()
+                @JvmStatic
+                fun builder() = Builder()
             }
 
             class Builder {
@@ -628,6 +642,7 @@ constructor(
                 private var metadata: JsonField<Metadata> = JsonMissing.of()
                 private var tags: JsonField<List<String>> = JsonMissing.of()
                 private var id: JsonField<String> = JsonMissing.of()
+                private var created: JsonField<OffsetDateTime> = JsonMissing.of()
                 private var _objectDelete: JsonField<Boolean> = JsonMissing.of()
                 private var _isMerge: JsonField<Boolean> = JsonMissing.of()
                 private var _parentId: JsonField<String> = JsonMissing.of()
@@ -640,6 +655,7 @@ constructor(
                     this.metadata = insertDatasetEventReplace.metadata
                     this.tags = insertDatasetEventReplace.tags
                     this.id = insertDatasetEventReplace.id
+                    this.created = insertDatasetEventReplace.created
                     this._objectDelete = insertDatasetEventReplace._objectDelete
                     this._isMerge = insertDatasetEventReplace._isMerge
                     this._parentId = insertDatasetEventReplace._parentId
@@ -652,7 +668,9 @@ constructor(
                  */
                 @JsonProperty("input")
                 @ExcludeMissing
-                fun input(input: JsonValue) = apply { this.input = input }
+                fun input(input: JsonValue) = apply {
+                    this.input = input
+                }
 
                 /**
                  * The output of your application, including post-processing (an arbitrary, JSON
@@ -660,7 +678,9 @@ constructor(
                  */
                 @JsonProperty("expected")
                 @ExcludeMissing
-                fun expected(expected: JsonValue) = apply { this.expected = expected }
+                fun expected(expected: JsonValue) = apply {
+                    this.expected = expected
+                }
 
                 /**
                  * A dictionary with additional data about the test example, model outputs, or just
@@ -680,7 +700,9 @@ constructor(
                  */
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+                fun metadata(metadata: JsonField<Metadata>) = apply {
+                    this.metadata = metadata
+                }
 
                 /** A list of tags to log */
                 fun tags(tags: List<String>) = tags(JsonField.of(tags))
@@ -688,7 +710,9 @@ constructor(
                 /** A list of tags to log */
                 @JsonProperty("tags")
                 @ExcludeMissing
-                fun tags(tags: JsonField<List<String>>) = apply { this.tags = tags }
+                fun tags(tags: JsonField<List<String>>) = apply {
+                    this.tags = tags
+                }
 
                 /**
                  * A unique identifier for the dataset event. If you don't provide one, BrainTrust
@@ -702,18 +726,29 @@ constructor(
                  */
                 @JsonProperty("id")
                 @ExcludeMissing
-                fun id(id: JsonField<String>) = apply { this.id = id }
+                fun id(id: JsonField<String>) = apply {
+                    this.id = id
+                }
+
+                /** The timestamp the dataset event was created */
+                fun created(created: OffsetDateTime) = created(JsonField.of(created))
+
+                /** The timestamp the dataset event was created */
+                @JsonProperty("created")
+                @ExcludeMissing
+                fun created(created: JsonField<OffsetDateTime>) = apply {
+                    this.created = created
+                }
 
                 /**
-                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will
-                 * not show up in subsequent fetches for this dataset
+                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+                 * will not show up in subsequent fetches for this dataset
                  */
-                fun _objectDelete(_objectDelete: Boolean) =
-                    _objectDelete(JsonField.of(_objectDelete))
+                fun _objectDelete(_objectDelete: Boolean) = _objectDelete(JsonField.of(_objectDelete))
 
                 /**
-                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will
-                 * not show up in subsequent fetches for this dataset
+                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+                 * will not show up in subsequent fetches for this dataset
                  */
                 @JsonProperty("_object_delete")
                 @ExcludeMissing
@@ -727,12 +762,12 @@ constructor(
                  * completely replaced by the new row. When set to `true`, the new row is
                  * deep-merged into the existing row
                  *
-                 * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-                 * 5, "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo",
-                 * "input": {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a":
-                 * 5, "b": 11, "c": 20}}`. If we replace the new row as `{"id": "foo", "input":
-                 * {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"b": 11, "c":
-                 * 20}}`
+                 * For example, say there is an existing row in the DB
+                 * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+                 * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+                 * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+                 * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+                 * `{"id": "foo", "input": {"b": 11, "c": 20}}`
                  */
                 fun _isMerge(_isMerge: Boolean) = _isMerge(JsonField.of(_isMerge))
 
@@ -742,50 +777,54 @@ constructor(
                  * completely replaced by the new row. When set to `true`, the new row is
                  * deep-merged into the existing row
                  *
-                 * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-                 * 5, "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo",
-                 * "input": {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a":
-                 * 5, "b": 11, "c": 20}}`. If we replace the new row as `{"id": "foo", "input":
-                 * {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"b": 11, "c":
-                 * 20}}`
+                 * For example, say there is an existing row in the DB
+                 * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+                 * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+                 * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+                 * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+                 * `{"id": "foo", "input": {"b": 11, "c": 20}}`
                  */
                 @JsonProperty("_is_merge")
                 @ExcludeMissing
-                fun _isMerge(_isMerge: JsonField<Boolean>) = apply { this._isMerge = _isMerge }
+                fun _isMerge(_isMerge: JsonField<Boolean>) = apply {
+                    this._isMerge = _isMerge
+                }
 
                 /**
-                 * Use the `_parent_id` field to create this row as a subspan of an existing row. It
-                 * cannot be specified alongside `_is_merge=true`. Tracking hierarchical
+                 * Use the `_parent_id` field to create this row as a subspan of an existing row.
+                 * It cannot be specified alongside `_is_merge=true`. Tracking hierarchical
                  * relationships are important for tracing (see the
-                 * [guide](https://www.braintrustdata.com/docs/guides/tracing) for full details).
+                 * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
                  *
-                 * For example, say we have logged a row `{"id": "abc", "input": "foo", "output":
-                 * "bar", "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a
-                 * sub-span of the parent row by logging `{"_parent_id": "abc", "id": "llm_call",
-                 * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics":
-                 * {"tokens": 1}}`. In the webapp, only the root span row `"abc"` will show up in
-                 * the summary view. You can view the full trace hierarchy (in this case, the
-                 * `"llm_call"` row) by clicking on the "abc" row.
+                 * For example, say we have logged a row
+                 * `{"id": "abc", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness": 0.33}}`.
+                 * We can create a sub-span of the parent row by logging
+                 * `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`.
+                 * In the webapp, only the root span row `"abc"` will show up in the summary view.
+                 * You can view the full trace hierarchy (in this case, the `"llm_call"` row) by
+                 * clicking on the "abc" row.
                  */
                 fun _parentId(_parentId: String) = _parentId(JsonField.of(_parentId))
 
                 /**
-                 * Use the `_parent_id` field to create this row as a subspan of an existing row. It
-                 * cannot be specified alongside `_is_merge=true`. Tracking hierarchical
+                 * Use the `_parent_id` field to create this row as a subspan of an existing row.
+                 * It cannot be specified alongside `_is_merge=true`. Tracking hierarchical
                  * relationships are important for tracing (see the
-                 * [guide](https://www.braintrustdata.com/docs/guides/tracing) for full details).
+                 * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
                  *
-                 * For example, say we have logged a row `{"id": "abc", "input": "foo", "output":
-                 * "bar", "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a
-                 * sub-span of the parent row by logging `{"_parent_id": "abc", "id": "llm_call",
-                 * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics":
-                 * {"tokens": 1}}`. In the webapp, only the root span row `"abc"` will show up in
-                 * the summary view. You can view the full trace hierarchy (in this case, the
-                 * `"llm_call"` row) by clicking on the "abc" row.
+                 * For example, say we have logged a row
+                 * `{"id": "abc", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness": 0.33}}`.
+                 * We can create a sub-span of the parent row by logging
+                 * `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`.
+                 * In the webapp, only the root span row `"abc"` will show up in the summary view.
+                 * You can view the full trace hierarchy (in this case, the `"llm_call"` row) by
+                 * clicking on the "abc" row.
                  */
                 @JsonProperty("_parent_id")
                 @ExcludeMissing
-                fun _parentId(_parentId: JsonField<String>) = apply { this._parentId = _parentId }
+                fun _parentId(_parentId: JsonField<String>) = apply {
+                    this._parentId = _parentId
+                }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -797,38 +836,34 @@ constructor(
                     this.additionalProperties.put(key, value)
                 }
 
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-                fun build(): InsertDatasetEventReplace =
-                    InsertDatasetEventReplace(
-                        input,
-                        expected,
-                        metadata,
-                        tags.map { it.toUnmodifiable() },
-                        id,
-                        _objectDelete,
-                        _isMerge,
-                        _parentId,
-                        additionalProperties.toUnmodifiable(),
-                    )
+                fun build(): InsertDatasetEventReplace = InsertDatasetEventReplace(
+                    input,
+                    expected,
+                    metadata,
+                    tags.map { it.toUnmodifiable() },
+                    id,
+                    created,
+                    _objectDelete,
+                    _isMerge,
+                    _parentId,
+                    additionalProperties.toUnmodifiable(),
+                )
             }
 
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
             @JsonDeserialize(builder = Metadata.Builder::class)
             @NoAutoDetect
-            class Metadata
-            private constructor(
-                private val additionalProperties: Map<String, JsonValue>,
-            ) {
+            class Metadata private constructor(private val additionalProperties: Map<String, JsonValue>, ) {
 
                 private var validated: Boolean = false
 
@@ -840,33 +875,34 @@ constructor(
 
                 fun validate(): Metadata = apply {
                     if (!validated) {
-                        validated = true
+                      validated = true
                     }
                 }
 
                 fun toBuilder() = Builder().from(this)
 
                 override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
+                  if (this === other) {
+                      return true
+                  }
 
-                    return other is Metadata &&
-                        this.additionalProperties == other.additionalProperties
+                  return other is Metadata &&
+                      this.additionalProperties == other.additionalProperties
                 }
 
                 override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = Objects.hash(additionalProperties)
-                    }
-                    return hashCode
+                  if (hashCode == 0) {
+                    hashCode = Objects.hash(additionalProperties)
+                  }
+                  return hashCode
                 }
 
                 override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
                 companion object {
 
-                    @JvmStatic fun builder() = Builder()
+                    @JvmStatic
+                    fun builder() = Builder()
                 }
 
                 class Builder {
@@ -888,10 +924,9 @@ constructor(
                         this.additionalProperties.put(key, value)
                     }
 
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
 
                     fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
                 }
@@ -900,17 +935,18 @@ constructor(
 
         @JsonDeserialize(builder = InsertDatasetEventMerge.Builder::class)
         @NoAutoDetect
-        class InsertDatasetEventMerge
-        private constructor(
-            private val input: JsonValue,
-            private val expected: JsonValue,
-            private val metadata: JsonField<Metadata>,
-            private val tags: JsonField<List<String>>,
-            private val id: JsonField<String>,
-            private val _objectDelete: JsonField<Boolean>,
-            private val _isMerge: JsonField<Boolean>,
-            private val _mergePaths: JsonField<List<List<String>>>,
-            private val additionalProperties: Map<String, JsonValue>,
+        class InsertDatasetEventMerge private constructor(
+          private val input: JsonValue,
+          private val expected: JsonValue,
+          private val metadata: JsonField<Metadata>,
+          private val tags: JsonField<List<String>>,
+          private val id: JsonField<String>,
+          private val created: JsonField<OffsetDateTime>,
+          private val _objectDelete: JsonField<Boolean>,
+          private val _isMerge: JsonField<Boolean>,
+          private val _mergePaths: JsonField<List<List<String>>>,
+          private val additionalProperties: Map<String, JsonValue>,
+
         ) {
 
             private var validated: Boolean = false
@@ -932,125 +968,150 @@ constructor(
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
-            fun metadata(): Optional<Metadata> =
-                Optional.ofNullable(metadata.getNullable("metadata"))
+            fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
             /** A list of tags to log */
             fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
             /**
-             * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-             * generate one for you
+             * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+             * will generate one for you
              */
             fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
-            /**
-             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not
-             * show up in subsequent fetches for this dataset
-             */
-            fun _objectDelete(): Optional<Boolean> =
-                Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
+            /** The timestamp the dataset event was created */
+            fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
             /**
-             * The `_is_merge` field controls how the row is merged with any existing row with the
-             * same id in the DB. By default (or when set to `false`), the existing row is
-             * completely replaced by the new row. When set to `true`, the new row is deep-merged
-             * into the existing row
+             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+             * will not show up in subsequent fetches for this dataset
+             */
+            fun _objectDelete(): Optional<Boolean> = Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
+
+            /**
+             * The `_is_merge` field controls how the row is merged with any existing row with
+             * the same id in the DB. By default (or when set to `false`), the existing row is
+             * completely replaced by the new row. When set to `true`, the new row is
+             * deep-merged into the existing row
              *
-             * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5,
-             * "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b":
-             * 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c":
-             * 20}}`. If we replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the
-             * new row will be `{"id": "foo", "input": {"b": 11, "c": 20}}`
+             * For example, say there is an existing row in the DB
+             * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+             * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+             * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+             * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+             * `{"id": "foo", "input": {"b": 11, "c": 20}}`
              */
             fun _isMerge(): Boolean = _isMerge.getRequired("_is_merge")
 
             /**
-             * The `_merge_paths` field allows controlling the depth of the merge. It can only be
-             * specified alongside `_is_merge=true`. `_merge_paths` is a list of paths, where each
-             * path is a list of field names. The deep merge will not descend below any of the
-             * specified merge paths.
+             * The `_merge_paths` field allows controlling the depth of the merge. It can only
+             * be specified alongside `_is_merge=true`. `_merge_paths` is a list of paths,
+             * where each path is a list of field names. The deep merge will not descend below
+             * any of the specified merge paths.
              *
-             * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-             * {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as
-             * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a":
-             * {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will be
-             * `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"},
-             * "output": {"d": 40}}`. In this case, due to the merge paths, we have replaced
-             * `input.a` and `output`, but have still deep-merged `input` and `input.c`.
+             * For example, say there is an existing row in the DB
+             * `{"id": "foo", "input": {"a": {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`.
+             * If we merge a new row as
+             * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`,
+             * the new row will be
+             * `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`.
+             * In this case, due to the merge paths, we have replaced `input.a` and `output`,
+             * but have still deep-merged `input` and `input.c`.
              */
-            fun _mergePaths(): Optional<List<List<String>>> =
-                Optional.ofNullable(_mergePaths.getNullable("_merge_paths"))
+            fun _mergePaths(): Optional<List<List<String>>> = Optional.ofNullable(_mergePaths.getNullable("_merge_paths"))
 
             /**
              * The argument that uniquely define an input case (an arbitrary, JSON serializable
              * object)
              */
-            @JsonProperty("input") @ExcludeMissing fun _input() = input
+            @JsonProperty("input")
+            @ExcludeMissing
+            fun _input() = input
 
             /**
              * The output of your application, including post-processing (an arbitrary, JSON
              * serializable object)
              */
-            @JsonProperty("expected") @ExcludeMissing fun _expected() = expected
+            @JsonProperty("expected")
+            @ExcludeMissing
+            fun _expected() = expected
 
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
-            @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
+            @JsonProperty("metadata")
+            @ExcludeMissing
+            fun _metadata() = metadata
 
             /** A list of tags to log */
-            @JsonProperty("tags") @ExcludeMissing fun _tags() = tags
+            @JsonProperty("tags")
+            @ExcludeMissing
+            fun _tags() = tags
 
             /**
-             * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-             * generate one for you
+             * A unique identifier for the dataset event. If you don't provide one, BrainTrust
+             * will generate one for you
              */
-            @JsonProperty("id") @ExcludeMissing fun _id() = id
+            @JsonProperty("id")
+            @ExcludeMissing
+            fun _id() = id
+
+            /** The timestamp the dataset event was created */
+            @JsonProperty("created")
+            @ExcludeMissing
+            fun _created() = created
 
             /**
-             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not
-             * show up in subsequent fetches for this dataset
+             * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+             * will not show up in subsequent fetches for this dataset
              */
-            @JsonProperty("_object_delete") @ExcludeMissing fun __objectDelete() = _objectDelete
+            @JsonProperty("_object_delete")
+            @ExcludeMissing
+            fun __objectDelete() = _objectDelete
 
             /**
-             * The `_is_merge` field controls how the row is merged with any existing row with the
-             * same id in the DB. By default (or when set to `false`), the existing row is
-             * completely replaced by the new row. When set to `true`, the new row is deep-merged
-             * into the existing row
+             * The `_is_merge` field controls how the row is merged with any existing row with
+             * the same id in the DB. By default (or when set to `false`), the existing row is
+             * completely replaced by the new row. When set to `true`, the new row is
+             * deep-merged into the existing row
              *
-             * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5,
-             * "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b":
-             * 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c":
-             * 20}}`. If we replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the
-             * new row will be `{"id": "foo", "input": {"b": 11, "c": 20}}`
+             * For example, say there is an existing row in the DB
+             * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+             * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+             * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+             * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+             * `{"id": "foo", "input": {"b": 11, "c": 20}}`
              */
-            @JsonProperty("_is_merge") @ExcludeMissing fun __isMerge() = _isMerge
+            @JsonProperty("_is_merge")
+            @ExcludeMissing
+            fun __isMerge() = _isMerge
 
             /**
-             * The `_merge_paths` field allows controlling the depth of the merge. It can only be
-             * specified alongside `_is_merge=true`. `_merge_paths` is a list of paths, where each
-             * path is a list of field names. The deep merge will not descend below any of the
-             * specified merge paths.
+             * The `_merge_paths` field allows controlling the depth of the merge. It can only
+             * be specified alongside `_is_merge=true`. `_merge_paths` is a list of paths,
+             * where each path is a list of field names. The deep merge will not descend below
+             * any of the specified merge paths.
              *
-             * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-             * {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as
-             * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a":
-             * {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will be
-             * `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"},
-             * "output": {"d": 40}}`. In this case, due to the merge paths, we have replaced
-             * `input.a` and `output`, but have still deep-merged `input` and `input.c`.
+             * For example, say there is an existing row in the DB
+             * `{"id": "foo", "input": {"a": {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`.
+             * If we merge a new row as
+             * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`,
+             * the new row will be
+             * `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`.
+             * In this case, due to the merge paths, we have replaced `input.a` and `output`,
+             * but have still deep-merged `input` and `input.c`.
              */
-            @JsonProperty("_merge_paths") @ExcludeMissing fun __mergePaths() = _mergePaths
+            @JsonProperty("_merge_paths")
+            @ExcludeMissing
+            fun __mergePaths() = _mergePaths
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1058,61 +1119,63 @@ constructor(
 
             fun validate(): InsertDatasetEventMerge = apply {
                 if (!validated) {
-                    input()
-                    expected()
-                    metadata().map { it.validate() }
-                    tags()
-                    id()
-                    _objectDelete()
-                    _isMerge()
-                    _mergePaths()
-                    validated = true
+                  input()
+                  expected()
+                  metadata().map { it.validate() }
+                  tags()
+                  id()
+                  created()
+                  _objectDelete()
+                  _isMerge()
+                  _mergePaths()
+                  validated = true
                 }
             }
 
             fun toBuilder() = Builder().from(this)
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return other is InsertDatasetEventMerge &&
-                    this.input == other.input &&
-                    this.expected == other.expected &&
-                    this.metadata == other.metadata &&
-                    this.tags == other.tags &&
-                    this.id == other.id &&
-                    this._objectDelete == other._objectDelete &&
-                    this._isMerge == other._isMerge &&
-                    this._mergePaths == other._mergePaths &&
-                    this.additionalProperties == other.additionalProperties
+              return other is InsertDatasetEventMerge &&
+                  this.input == other.input &&
+                  this.expected == other.expected &&
+                  this.metadata == other.metadata &&
+                  this.tags == other.tags &&
+                  this.id == other.id &&
+                  this.created == other.created &&
+                  this._objectDelete == other._objectDelete &&
+                  this._isMerge == other._isMerge &&
+                  this._mergePaths == other._mergePaths &&
+                  this.additionalProperties == other.additionalProperties
             }
 
             override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            input,
-                            expected,
-                            metadata,
-                            tags,
-                            id,
-                            _objectDelete,
-                            _isMerge,
-                            _mergePaths,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
+              if (hashCode == 0) {
+                hashCode = Objects.hash(
+                    input,
+                    expected,
+                    metadata,
+                    tags,
+                    id,
+                    created,
+                    _objectDelete,
+                    _isMerge,
+                    _mergePaths,
+                    additionalProperties,
+                )
+              }
+              return hashCode
             }
 
-            override fun toString() =
-                "InsertDatasetEventMerge{input=$input, expected=$expected, metadata=$metadata, tags=$tags, id=$id, _objectDelete=$_objectDelete, _isMerge=$_isMerge, _mergePaths=$_mergePaths, additionalProperties=$additionalProperties}"
+            override fun toString() = "InsertDatasetEventMerge{input=$input, expected=$expected, metadata=$metadata, tags=$tags, id=$id, created=$created, _objectDelete=$_objectDelete, _isMerge=$_isMerge, _mergePaths=$_mergePaths, additionalProperties=$additionalProperties}"
 
             companion object {
 
-                @JvmStatic fun builder() = Builder()
+                @JvmStatic
+                fun builder() = Builder()
             }
 
             class Builder {
@@ -1122,6 +1185,7 @@ constructor(
                 private var metadata: JsonField<Metadata> = JsonMissing.of()
                 private var tags: JsonField<List<String>> = JsonMissing.of()
                 private var id: JsonField<String> = JsonMissing.of()
+                private var created: JsonField<OffsetDateTime> = JsonMissing.of()
                 private var _objectDelete: JsonField<Boolean> = JsonMissing.of()
                 private var _isMerge: JsonField<Boolean> = JsonMissing.of()
                 private var _mergePaths: JsonField<List<List<String>>> = JsonMissing.of()
@@ -1134,6 +1198,7 @@ constructor(
                     this.metadata = insertDatasetEventMerge.metadata
                     this.tags = insertDatasetEventMerge.tags
                     this.id = insertDatasetEventMerge.id
+                    this.created = insertDatasetEventMerge.created
                     this._objectDelete = insertDatasetEventMerge._objectDelete
                     this._isMerge = insertDatasetEventMerge._isMerge
                     this._mergePaths = insertDatasetEventMerge._mergePaths
@@ -1146,7 +1211,9 @@ constructor(
                  */
                 @JsonProperty("input")
                 @ExcludeMissing
-                fun input(input: JsonValue) = apply { this.input = input }
+                fun input(input: JsonValue) = apply {
+                    this.input = input
+                }
 
                 /**
                  * The output of your application, including post-processing (an arbitrary, JSON
@@ -1154,7 +1221,9 @@ constructor(
                  */
                 @JsonProperty("expected")
                 @ExcludeMissing
-                fun expected(expected: JsonValue) = apply { this.expected = expected }
+                fun expected(expected: JsonValue) = apply {
+                    this.expected = expected
+                }
 
                 /**
                  * A dictionary with additional data about the test example, model outputs, or just
@@ -1174,7 +1243,9 @@ constructor(
                  */
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+                fun metadata(metadata: JsonField<Metadata>) = apply {
+                    this.metadata = metadata
+                }
 
                 /** A list of tags to log */
                 fun tags(tags: List<String>) = tags(JsonField.of(tags))
@@ -1182,7 +1253,9 @@ constructor(
                 /** A list of tags to log */
                 @JsonProperty("tags")
                 @ExcludeMissing
-                fun tags(tags: JsonField<List<String>>) = apply { this.tags = tags }
+                fun tags(tags: JsonField<List<String>>) = apply {
+                    this.tags = tags
+                }
 
                 /**
                  * A unique identifier for the dataset event. If you don't provide one, BrainTrust
@@ -1196,18 +1269,29 @@ constructor(
                  */
                 @JsonProperty("id")
                 @ExcludeMissing
-                fun id(id: JsonField<String>) = apply { this.id = id }
+                fun id(id: JsonField<String>) = apply {
+                    this.id = id
+                }
+
+                /** The timestamp the dataset event was created */
+                fun created(created: OffsetDateTime) = created(JsonField.of(created))
+
+                /** The timestamp the dataset event was created */
+                @JsonProperty("created")
+                @ExcludeMissing
+                fun created(created: JsonField<OffsetDateTime>) = apply {
+                    this.created = created
+                }
 
                 /**
-                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will
-                 * not show up in subsequent fetches for this dataset
+                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+                 * will not show up in subsequent fetches for this dataset
                  */
-                fun _objectDelete(_objectDelete: Boolean) =
-                    _objectDelete(JsonField.of(_objectDelete))
+                fun _objectDelete(_objectDelete: Boolean) = _objectDelete(JsonField.of(_objectDelete))
 
                 /**
-                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will
-                 * not show up in subsequent fetches for this dataset
+                 * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events
+                 * will not show up in subsequent fetches for this dataset
                  */
                 @JsonProperty("_object_delete")
                 @ExcludeMissing
@@ -1221,12 +1305,12 @@ constructor(
                  * completely replaced by the new row. When set to `true`, the new row is
                  * deep-merged into the existing row
                  *
-                 * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-                 * 5, "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo",
-                 * "input": {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a":
-                 * 5, "b": 11, "c": 20}}`. If we replace the new row as `{"id": "foo", "input":
-                 * {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"b": 11, "c":
-                 * 20}}`
+                 * For example, say there is an existing row in the DB
+                 * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+                 * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+                 * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+                 * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+                 * `{"id": "foo", "input": {"b": 11, "c": 20}}`
                  */
                 fun _isMerge(_isMerge: Boolean) = _isMerge(JsonField.of(_isMerge))
 
@@ -1236,49 +1320,50 @@ constructor(
                  * completely replaced by the new row. When set to `true`, the new row is
                  * deep-merged into the existing row
                  *
-                 * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-                 * 5, "b": 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo",
-                 * "input": {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"a":
-                 * 5, "b": 11, "c": 20}}`. If we replace the new row as `{"id": "foo", "input":
-                 * {"b": 11, "c": 20}}`, the new row will be `{"id": "foo", "input": {"b": 11, "c":
-                 * 20}}`
+                 * For example, say there is an existing row in the DB
+                 * `{"id": "foo", "input": {"a": 5, "b": 10}}`. If we merge a new row as
+                 * `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c": 20}}`, the new row
+                 * will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we replace the
+                 * new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
+                 * `{"id": "foo", "input": {"b": 11, "c": 20}}`
                  */
                 @JsonProperty("_is_merge")
                 @ExcludeMissing
-                fun _isMerge(_isMerge: JsonField<Boolean>) = apply { this._isMerge = _isMerge }
+                fun _isMerge(_isMerge: JsonField<Boolean>) = apply {
+                    this._isMerge = _isMerge
+                }
 
                 /**
                  * The `_merge_paths` field allows controlling the depth of the merge. It can only
-                 * be specified alongside `_is_merge=true`. `_merge_paths` is a list of paths, where
-                 * each path is a list of field names. The deep merge will not descend below any of
-                 * the specified merge paths.
+                 * be specified alongside `_is_merge=true`. `_merge_paths` is a list of paths,
+                 * where each path is a list of field names. The deep merge will not descend below
+                 * any of the specified merge paths.
                  *
-                 * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-                 * {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as
-                 * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a":
-                 * {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will
-                 * be `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar":
-                 * "baz"}, "output": {"d": 40}}`. In this case, due to the merge paths, we have
-                 * replaced `input.a` and `output`, but have still deep-merged `input` and
-                 * `input.c`.
+                 * For example, say there is an existing row in the DB
+                 * `{"id": "foo", "input": {"a": {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`.
+                 * If we merge a new row as
+                 * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`,
+                 * the new row will be
+                 * `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`.
+                 * In this case, due to the merge paths, we have replaced `input.a` and `output`,
+                 * but have still deep-merged `input` and `input.c`.
                  */
-                fun _mergePaths(_mergePaths: List<List<String>>) =
-                    _mergePaths(JsonField.of(_mergePaths))
+                fun _mergePaths(_mergePaths: List<List<String>>) = _mergePaths(JsonField.of(_mergePaths))
 
                 /**
                  * The `_merge_paths` field allows controlling the depth of the merge. It can only
-                 * be specified alongside `_is_merge=true`. `_merge_paths` is a list of paths, where
-                 * each path is a list of field names. The deep merge will not descend below any of
-                 * the specified merge paths.
+                 * be specified alongside `_is_merge=true`. `_merge_paths` is a list of paths,
+                 * where each path is a list of field names. The deep merge will not descend below
+                 * any of the specified merge paths.
                  *
-                 * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a":
-                 * {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as
-                 * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a":
-                 * {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will
-                 * be `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar":
-                 * "baz"}, "output": {"d": 40}}`. In this case, due to the merge paths, we have
-                 * replaced `input.a` and `output`, but have still deep-merged `input` and
-                 * `input.c`.
+                 * For example, say there is an existing row in the DB
+                 * `{"id": "foo", "input": {"a": {"b": 10}, "c": {"d": 20}}, "output": {"a": 20}}`.
+                 * If we merge a new row as
+                 * `{"_is_merge": true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e": 30}, "bar": "baz"}, "output": {"d": 40}}`,
+                 * the new row will be
+                 * `{"id": "foo": "input": {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`.
+                 * In this case, due to the merge paths, we have replaced `input.a` and `output`,
+                 * but have still deep-merged `input` and `input.c`.
                  */
                 @JsonProperty("_merge_paths")
                 @ExcludeMissing
@@ -1296,38 +1381,34 @@ constructor(
                     this.additionalProperties.put(key, value)
                 }
 
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-                fun build(): InsertDatasetEventMerge =
-                    InsertDatasetEventMerge(
-                        input,
-                        expected,
-                        metadata,
-                        tags.map { it.toUnmodifiable() },
-                        id,
-                        _objectDelete,
-                        _isMerge,
-                        _mergePaths.map { it.toUnmodifiable() },
-                        additionalProperties.toUnmodifiable(),
-                    )
+                fun build(): InsertDatasetEventMerge = InsertDatasetEventMerge(
+                    input,
+                    expected,
+                    metadata,
+                    tags.map { it.toUnmodifiable() },
+                    id,
+                    created,
+                    _objectDelete,
+                    _isMerge,
+                    _mergePaths.map { it.toUnmodifiable() },
+                    additionalProperties.toUnmodifiable(),
+                )
             }
 
             /**
              * A dictionary with additional data about the test example, model outputs, or just
              * about anything else that's relevant, that you can use to help find and analyze
-             * examples later. For example, you could log the `prompt`, example's `id`, or anything
-             * else that would be useful to slice/dice later. The values in `metadata` can be any
-             * JSON-serializable type, but its keys must be strings
+             * examples later. For example, you could log the `prompt`, example's `id`, or
+             * anything else that would be useful to slice/dice later. The values in `metadata`
+             * can be any JSON-serializable type, but its keys must be strings
              */
             @JsonDeserialize(builder = Metadata.Builder::class)
             @NoAutoDetect
-            class Metadata
-            private constructor(
-                private val additionalProperties: Map<String, JsonValue>,
-            ) {
+            class Metadata private constructor(private val additionalProperties: Map<String, JsonValue>, ) {
 
                 private var validated: Boolean = false
 
@@ -1339,33 +1420,34 @@ constructor(
 
                 fun validate(): Metadata = apply {
                     if (!validated) {
-                        validated = true
+                      validated = true
                     }
                 }
 
                 fun toBuilder() = Builder().from(this)
 
                 override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
+                  if (this === other) {
+                      return true
+                  }
 
-                    return other is Metadata &&
-                        this.additionalProperties == other.additionalProperties
+                  return other is Metadata &&
+                      this.additionalProperties == other.additionalProperties
                 }
 
                 override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = Objects.hash(additionalProperties)
-                    }
-                    return hashCode
+                  if (hashCode == 0) {
+                    hashCode = Objects.hash(additionalProperties)
+                  }
+                  return hashCode
                 }
 
                 override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
                 companion object {
 
-                    @JvmStatic fun builder() = Builder()
+                    @JvmStatic
+                    fun builder() = Builder()
                 }
 
                 class Builder {
@@ -1387,10 +1469,9 @@ constructor(
                         this.additionalProperties.put(key, value)
                     }
 
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
 
                     fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
                 }
