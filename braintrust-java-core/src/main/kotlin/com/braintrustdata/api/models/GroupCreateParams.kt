@@ -2,28 +2,50 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import org.apache.hc.core5.http.ContentType
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
+import java.util.UUID
+import com.braintrustdata.api.core.BaseDeserializer
+import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.getOrThrow
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.MultipartFormValue
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.ContentTypes
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.models.*
 
-class GroupCreateParams
-constructor(
-    private val name: String,
-    private val description: String?,
-    private val memberGroups: List<String>?,
-    private val memberUsers: List<String>?,
-    private val orgName: String?,
-    private val additionalQueryParams: Map<String, List<String>>,
-    private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
+class GroupCreateParams constructor(
+  private val name: String,
+  private val description: String?,
+  private val memberGroups: List<String>?,
+  private val memberUsers: List<String>?,
+  private val orgName: String?,
+  private val additionalQueryParams: Map<String, List<String>>,
+  private val additionalHeaders: Map<String, List<String>>,
+  private val additionalBodyProperties: Map<String, JsonValue>,
+
 ) {
 
     fun name(): String = name
@@ -38,57 +60,64 @@ constructor(
 
     @JvmSynthetic
     internal fun getBody(): GroupCreateBody {
-        return GroupCreateBody(
-            name,
-            description,
-            memberGroups,
-            memberUsers,
-            orgName,
-            additionalBodyProperties,
-        )
+      return GroupCreateBody(
+          name,
+          description,
+          memberGroups,
+          memberUsers,
+          orgName,
+          additionalBodyProperties,
+      )
     }
 
-    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic
+    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic
+    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     @JsonDeserialize(builder = GroupCreateBody.Builder::class)
     @NoAutoDetect
-    class GroupCreateBody
-    internal constructor(
-        private val name: String?,
-        private val description: String?,
-        private val memberGroups: List<String>?,
-        private val memberUsers: List<String>?,
-        private val orgName: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+    class GroupCreateBody internal constructor(
+      private val name: String?,
+      private val description: String?,
+      private val memberGroups: List<String>?,
+      private val memberUsers: List<String>?,
+      private val orgName: String?,
+      private val additionalProperties: Map<String, JsonValue>,
+
     ) {
 
         private var hashCode: Int = 0
 
         /** Name of the group */
-        @JsonProperty("name") fun name(): String? = name
+        @JsonProperty("name")
+        fun name(): String? = name
 
         /** Textual description of the group */
-        @JsonProperty("description") fun description(): String? = description
+        @JsonProperty("description")
+        fun description(): String? = description
 
         /**
          * Ids of the groups this group inherits from
          *
-         * An inheriting group has all the users contained in its member groups, as well as all of
-         * their inherited users
+         * An inheriting group has all the users contained in its member groups, as well as
+         * all of their inherited users
          */
-        @JsonProperty("member_groups") fun memberGroups(): List<String>? = memberGroups
+        @JsonProperty("member_groups")
+        fun memberGroups(): List<String>? = memberGroups
 
         /** Ids of users which belong to this group */
-        @JsonProperty("member_users") fun memberUsers(): List<String>? = memberUsers
+        @JsonProperty("member_users")
+        fun memberUsers(): List<String>? = memberUsers
 
         /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the group belongs in.
+         * For nearly all users, this parameter should be unnecessary. But in the rare case
+         * that your API key belongs to multiple organizations, you may specify the name of
+         * the organization the group belongs in.
          */
-        @JsonProperty("org_name") fun orgName(): String? = orgName
+        @JsonProperty("org_name")
+        fun orgName(): String? = orgName
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -97,40 +126,39 @@ constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return other is GroupCreateBody &&
-                this.name == other.name &&
-                this.description == other.description &&
-                this.memberGroups == other.memberGroups &&
-                this.memberUsers == other.memberUsers &&
-                this.orgName == other.orgName &&
-                this.additionalProperties == other.additionalProperties
+          return other is GroupCreateBody &&
+              this.name == other.name &&
+              this.description == other.description &&
+              this.memberGroups == other.memberGroups &&
+              this.memberUsers == other.memberUsers &&
+              this.orgName == other.orgName &&
+              this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        description,
-                        memberGroups,
-                        memberUsers,
-                        orgName,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
+          if (hashCode == 0) {
+            hashCode = Objects.hash(
+                name,
+                description,
+                memberGroups,
+                memberUsers,
+                orgName,
+                additionalProperties,
+            )
+          }
+          return hashCode
         }
 
-        override fun toString() =
-            "GroupCreateBody{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
+        override fun toString() = "GroupCreateBody{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         class Builder {
@@ -153,17 +181,22 @@ constructor(
             }
 
             /** Name of the group */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            @JsonProperty("name")
+            fun name(name: String) = apply {
+                this.name = name
+            }
 
             /** Textual description of the group */
             @JsonProperty("description")
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String) = apply {
+                this.description = description
+            }
 
             /**
              * Ids of the groups this group inherits from
              *
-             * An inheriting group has all the users contained in its member groups, as well as all
-             * of their inherited users
+             * An inheriting group has all the users contained in its member groups, as well as
+             * all of their inherited users
              */
             @JsonProperty("member_groups")
             fun memberGroups(memberGroups: List<String>) = apply {
@@ -172,15 +205,19 @@ constructor(
 
             /** Ids of users which belong to this group */
             @JsonProperty("member_users")
-            fun memberUsers(memberUsers: List<String>) = apply { this.memberUsers = memberUsers }
+            fun memberUsers(memberUsers: List<String>) = apply {
+                this.memberUsers = memberUsers
+            }
 
             /**
-             * For nearly all users, this parameter should be unnecessary. But in the rare case that
-             * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the group belongs in.
+             * For nearly all users, this parameter should be unnecessary. But in the rare case
+             * that your API key belongs to multiple organizations, you may specify the name of
+             * the organization the group belongs in.
              */
             @JsonProperty("org_name")
-            fun orgName(orgName: String) = apply { this.orgName = orgName }
+            fun orgName(orgName: String) = apply {
+                this.orgName = orgName
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -196,15 +233,16 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): GroupCreateBody =
-                GroupCreateBody(
-                    checkNotNull(name) { "`name` is required but was not set" },
-                    description,
-                    memberGroups?.toUnmodifiable(),
-                    memberUsers?.toUnmodifiable(),
-                    orgName,
-                    additionalProperties.toUnmodifiable(),
-                )
+            fun build(): GroupCreateBody = GroupCreateBody(
+                checkNotNull(name) {
+                    "`name` is required but was not set"
+                },
+                description,
+                memberGroups?.toUnmodifiable(),
+                memberUsers?.toUnmodifiable(),
+                orgName,
+                additionalProperties.toUnmodifiable(),
+            )
         }
     }
 
@@ -215,42 +253,42 @@ constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return other is GroupCreateParams &&
-            this.name == other.name &&
-            this.description == other.description &&
-            this.memberGroups == other.memberGroups &&
-            this.memberUsers == other.memberUsers &&
-            this.orgName == other.orgName &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+      return other is GroupCreateParams &&
+          this.name == other.name &&
+          this.description == other.description &&
+          this.memberGroups == other.memberGroups &&
+          this.memberUsers == other.memberUsers &&
+          this.orgName == other.orgName &&
+          this.additionalQueryParams == other.additionalQueryParams &&
+          this.additionalHeaders == other.additionalHeaders &&
+          this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            description,
-            memberGroups,
-            memberUsers,
-            orgName,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+      return Objects.hash(
+          name,
+          description,
+          memberGroups,
+          memberUsers,
+          orgName,
+          additionalQueryParams,
+          additionalHeaders,
+          additionalBodyProperties,
+      )
     }
 
-    override fun toString() =
-        "GroupCreateParams{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() = "GroupCreateParams{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -278,16 +316,20 @@ constructor(
         }
 
         /** Name of the group */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply {
+            this.name = name
+        }
 
         /** Textual description of the group */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String) = apply {
+            this.description = description
+        }
 
         /**
          * Ids of the groups this group inherits from
          *
-         * An inheriting group has all the users contained in its member groups, as well as all of
-         * their inherited users
+         * An inheriting group has all the users contained in its member groups, as well as
+         * all of their inherited users
          */
         fun memberGroups(memberGroups: List<String>) = apply {
             this.memberGroups.clear()
@@ -297,10 +339,12 @@ constructor(
         /**
          * Ids of the groups this group inherits from
          *
-         * An inheriting group has all the users contained in its member groups, as well as all of
-         * their inherited users
+         * An inheriting group has all the users contained in its member groups, as well as
+         * all of their inherited users
          */
-        fun addMemberGroup(memberGroup: String) = apply { this.memberGroups.add(memberGroup) }
+        fun addMemberGroup(memberGroup: String) = apply {
+            this.memberGroups.add(memberGroup)
+        }
 
         /** Ids of users which belong to this group */
         fun memberUsers(memberUsers: List<String>) = apply {
@@ -309,14 +353,18 @@ constructor(
         }
 
         /** Ids of users which belong to this group */
-        fun addMemberUser(memberUser: String) = apply { this.memberUsers.add(memberUser) }
+        fun addMemberUser(memberUser: String) = apply {
+            this.memberUsers.add(memberUser)
+        }
 
         /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the group belongs in.
+         * For nearly all users, this parameter should be unnecessary. But in the rare case
+         * that your API key belongs to multiple organizations, you may specify the name of
+         * the organization the group belongs in.
          */
-        fun orgName(orgName: String) = apply { this.orgName = orgName }
+        fun orgName(orgName: String) = apply {
+            this.orgName = orgName
+        }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -356,7 +404,9 @@ constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
+        fun removeHeader(name: String) = apply {
+            this.additionalHeaders.put(name, mutableListOf())
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -367,21 +417,21 @@ constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            this.additionalBodyProperties.putAll(additionalBodyProperties)
+        }
 
-        fun build(): GroupCreateParams =
-            GroupCreateParams(
-                checkNotNull(name) { "`name` is required but was not set" },
-                description,
-                if (memberGroups.size == 0) null else memberGroups.toUnmodifiable(),
-                if (memberUsers.size == 0) null else memberUsers.toUnmodifiable(),
-                orgName,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
-            )
+        fun build(): GroupCreateParams = GroupCreateParams(
+            checkNotNull(name) {
+                "`name` is required but was not set"
+            },
+            description,
+            if(memberGroups.size == 0) null else memberGroups.toUnmodifiable(),
+            if(memberUsers.size == 0) null else memberUsers.toUnmodifiable(),
+            orgName,
+            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+            additionalBodyProperties.toUnmodifiable(),
+        )
     }
 }

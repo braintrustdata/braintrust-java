@@ -28,8 +28,8 @@ configure<MavenPublishBaseExtension> {
     this.coordinates(project.group.toString(), project.name, project.version.toString())
 
     pom {
-        name.set("Braintrust Data API")
-        description.set("API specification for the backend data server. The API is hosted globally at\nhttps://api.braintrustdata.com or in your own environment. The v1 API is\ncurrently in preview mode and unstable until June 1, 2024. We may make backwards\nincompatible changes before then, as we learn from our users.")
+        name.set("Braintrust API")
+        description.set("API specification for the backend data server. The API is hosted globally at\nhttps://api.braintrustdata.com or in your own environment.\n\nYou can access the OpenAPI spec for this API at\nhttps://github.com/braintrustdata/braintrust-openapi.")
         url.set("https://www.braintrustdata.com/docs/api/spec")
 
         licenses {
