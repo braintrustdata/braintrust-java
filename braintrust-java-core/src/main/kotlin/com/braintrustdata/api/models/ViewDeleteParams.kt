@@ -2,48 +2,30 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class ViewDeleteParams constructor(
-  private val viewId: String,
-  private val objectId: String,
-  private val objectType: ObjectType?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class ViewDeleteParams
+constructor(
+    private val viewId: String,
+    private val objectId: String,
+    private val objectType: ObjectType?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun viewId(): String = viewId
@@ -54,39 +36,40 @@ class ViewDeleteParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): ViewDeleteBody {
-      return ViewDeleteBody(
-          objectId,
-          objectType,
-          additionalBodyProperties,
-      )
+        return ViewDeleteBody(
+            objectId,
+            objectType,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> viewId
-          else -> ""
-      }
+        return when (index) {
+            0 -> viewId
+            else -> ""
+        }
     }
 
     @JsonDeserialize(builder = ViewDeleteBody.Builder::class)
     @NoAutoDetect
-    class ViewDeleteBody internal constructor(private val objectId: String?, private val objectType: ObjectType?, private val additionalProperties: Map<String, JsonValue>, ) {
+    class ViewDeleteBody
+    internal constructor(
+        private val objectId: String?,
+        private val objectType: ObjectType?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
         /** The id of the object the view applies to */
-        @JsonProperty("object_id")
-        fun objectId(): String? = objectId
+        @JsonProperty("object_id") fun objectId(): String? = objectId
 
         /** The object type that the ACL applies to */
-        @JsonProperty("object_type")
-        fun objectType(): ObjectType? = objectType
+        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -95,33 +78,34 @@ class ViewDeleteParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is ViewDeleteBody &&
-              this.objectId == other.objectId &&
-              this.objectType == other.objectType &&
-              this.additionalProperties == other.additionalProperties
+            return other is ViewDeleteBody &&
+                this.objectId == other.objectId &&
+                this.objectType == other.objectType &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                objectId,
-                objectType,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        objectId,
+                        objectType,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "ViewDeleteBody{objectId=$objectId, objectType=$objectType, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "ViewDeleteBody{objectId=$objectId, objectType=$objectType, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -139,15 +123,11 @@ class ViewDeleteParams constructor(
 
             /** The id of the object the view applies to */
             @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply {
-                this.objectId = objectId
-            }
+            fun objectId(objectId: String) = apply { this.objectId = objectId }
 
             /** The object type that the ACL applies to */
             @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply {
-                this.objectType = objectType
-            }
+            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -163,13 +143,12 @@ class ViewDeleteParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): ViewDeleteBody = ViewDeleteBody(
-                checkNotNull(objectId) {
-                    "`objectId` is required but was not set"
-                },
-                objectType,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): ViewDeleteBody =
+                ViewDeleteBody(
+                    checkNotNull(objectId) { "`objectId` is required but was not set" },
+                    objectType,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -180,38 +159,38 @@ class ViewDeleteParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ViewDeleteParams &&
-          this.viewId == other.viewId &&
-          this.objectId == other.objectId &&
-          this.objectType == other.objectType &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is ViewDeleteParams &&
+            this.viewId == other.viewId &&
+            this.objectId == other.objectId &&
+            this.objectType == other.objectType &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          viewId,
-          objectId,
-          objectType,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            viewId,
+            objectId,
+            objectType,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "ViewDeleteParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "ViewDeleteParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -235,19 +214,13 @@ class ViewDeleteParams constructor(
         }
 
         /** View id */
-        fun viewId(viewId: String) = apply {
-            this.viewId = viewId
-        }
+        fun viewId(viewId: String) = apply { this.viewId = viewId }
 
         /** The id of the object the view applies to */
-        fun objectId(objectId: String) = apply {
-            this.objectId = objectId
-        }
+        fun objectId(objectId: String) = apply { this.objectId = objectId }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: ObjectType) = apply {
-            this.objectType = objectType
-        }
+        fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -287,9 +260,7 @@ class ViewDeleteParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -300,36 +271,36 @@ class ViewDeleteParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): ViewDeleteParams = ViewDeleteParams(
-            checkNotNull(viewId) {
-                "`viewId` is required but was not set"
-            },
-            checkNotNull(objectId) {
-                "`objectId` is required but was not set"
-            },
-            objectType,
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): ViewDeleteParams =
+            ViewDeleteParams(
+                checkNotNull(viewId) { "`viewId` is required but was not set" },
+                checkNotNull(objectId) { "`objectId` is required but was not set" },
+                objectType,
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
-    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class ObjectType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is ObjectType &&
-              this.value == other.value
+            return other is ObjectType && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -392,35 +363,37 @@ class ViewDeleteParams constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            ORGANIZATION -> Value.ORGANIZATION
-            PROJECT -> Value.PROJECT
-            EXPERIMENT -> Value.EXPERIMENT
-            DATASET -> Value.DATASET
-            PROMPT -> Value.PROMPT
-            PROMPT_SESSION -> Value.PROMPT_SESSION
-            GROUP -> Value.GROUP
-            ROLE -> Value.ROLE
-            ORG_MEMBER -> Value.ORG_MEMBER
-            PROJECT_LOG -> Value.PROJECT_LOG
-            ORG_PROJECT -> Value.ORG_PROJECT
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                ORGANIZATION -> Value.ORGANIZATION
+                PROJECT -> Value.PROJECT
+                EXPERIMENT -> Value.EXPERIMENT
+                DATASET -> Value.DATASET
+                PROMPT -> Value.PROMPT
+                PROMPT_SESSION -> Value.PROMPT_SESSION
+                GROUP -> Value.GROUP
+                ROLE -> Value.ROLE
+                ORG_MEMBER -> Value.ORG_MEMBER
+                PROJECT_LOG -> Value.PROJECT_LOG
+                ORG_PROJECT -> Value.ORG_PROJECT
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            ORGANIZATION -> Known.ORGANIZATION
-            PROJECT -> Known.PROJECT
-            EXPERIMENT -> Known.EXPERIMENT
-            DATASET -> Known.DATASET
-            PROMPT -> Known.PROMPT
-            PROMPT_SESSION -> Known.PROMPT_SESSION
-            GROUP -> Known.GROUP
-            ROLE -> Known.ROLE
-            ORG_MEMBER -> Known.ORG_MEMBER
-            PROJECT_LOG -> Known.PROJECT_LOG
-            ORG_PROJECT -> Known.ORG_PROJECT
-            else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                ORGANIZATION -> Known.ORGANIZATION
+                PROJECT -> Known.PROJECT
+                EXPERIMENT -> Known.EXPERIMENT
+                DATASET -> Known.DATASET
+                PROMPT -> Known.PROMPT
+                PROMPT_SESSION -> Known.PROMPT_SESSION
+                GROUP -> Known.GROUP
+                ROLE -> Known.ROLE
+                ORG_MEMBER -> Known.ORG_MEMBER
+                PROJECT_LOG -> Known.PROJECT_LOG
+                ORG_PROJECT -> Known.ORG_PROJECT
+                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
