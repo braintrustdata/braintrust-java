@@ -2,29 +2,17 @@
 
 package com.braintrustdata.api.client
 
-import java.time.Duration
-import java.util.Base64
-import java.util.Optional
-import java.util.concurrent.CompletableFuture
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.http.HttpMethod
-import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.errors.BraintrustError
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.services.async.*
-import com.braintrustdata.api.services.emptyHandler
 import com.braintrustdata.api.services.errorHandler
-import com.braintrustdata.api.services.json
-import com.braintrustdata.api.services.jsonHandler
-import com.braintrustdata.api.services.stringHandler
-import com.braintrustdata.api.services.binaryHandler
-import com.braintrustdata.api.services.withErrorHandler
 
-class BraintrustClientAsyncImpl constructor(private val clientOptions: ClientOptions, ) : BraintrustClientAsync {
+class BraintrustClientAsyncImpl
+constructor(
+    private val clientOptions: ClientOptions,
+) : BraintrustClientAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -34,7 +22,9 @@ class BraintrustClientAsyncImpl constructor(private val clientOptions: ClientOpt
 
     private val projects: ProjectServiceAsync by lazy { ProjectServiceAsyncImpl(clientOptions) }
 
-    private val experiments: ExperimentServiceAsync by lazy { ExperimentServiceAsyncImpl(clientOptions) }
+    private val experiments: ExperimentServiceAsync by lazy {
+        ExperimentServiceAsyncImpl(clientOptions)
+    }
 
     private val datasets: DatasetServiceAsync by lazy { DatasetServiceAsyncImpl(clientOptions) }
 
@@ -48,15 +38,21 @@ class BraintrustClientAsyncImpl constructor(private val clientOptions: ClientOpt
 
     private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
 
-    private val projectScores: ProjectScoreServiceAsync by lazy { ProjectScoreServiceAsyncImpl(clientOptions) }
+    private val projectScores: ProjectScoreServiceAsync by lazy {
+        ProjectScoreServiceAsyncImpl(clientOptions)
+    }
 
-    private val projectTags: ProjectTagServiceAsync by lazy { ProjectTagServiceAsyncImpl(clientOptions) }
+    private val projectTags: ProjectTagServiceAsync by lazy {
+        ProjectTagServiceAsyncImpl(clientOptions)
+    }
 
     private val functions: FunctionServiceAsync by lazy { FunctionServiceAsyncImpl(clientOptions) }
 
     private val views: ViewServiceAsync by lazy { ViewServiceAsyncImpl(clientOptions) }
 
-    private val organizations: OrganizationServiceAsync by lazy { OrganizationServiceAsyncImpl(clientOptions) }
+    private val organizations: OrganizationServiceAsync by lazy {
+        OrganizationServiceAsyncImpl(clientOptions)
+    }
 
     private val apiKeys: ApiKeyServiceAsync by lazy { ApiKeyServiceAsyncImpl(clientOptions) }
 

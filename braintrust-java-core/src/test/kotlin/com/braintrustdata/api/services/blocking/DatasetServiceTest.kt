@@ -7,6 +7,7 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.DatasetListParams
+import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,12 +21,12 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val dataset =
             datasetService.create(
                 DatasetCreateParams.builder()
-                    .name("string")
-                    .description("string")
+                    .name("name")
+                    .description("description")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
@@ -40,7 +41,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val dataset =
             datasetService.retrieve(
                 DatasetRetrieveParams.builder()
@@ -58,13 +59,14 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val dataset =
             datasetService.update(
                 DatasetUpdateParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .description("string")
-                    .name("string")
+                    .description("description")
+                    .metadata(DatasetUpdateParams.Metadata.builder().build())
+                    .name("name")
                     .build()
             )
         println(dataset)
@@ -78,7 +80,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val response = datasetService.list(DatasetListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -91,7 +93,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val dataset =
             datasetService.delete(
                 DatasetDeleteParams.builder()
@@ -109,15 +111,15 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         datasetService.feedback(
             DatasetFeedbackParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
                         DatasetFeedbackParams.Feedback.builder()
-                            .id("string")
-                            .comment("string")
+                            .id("id")
+                            .comment("comment")
                             .metadata(DatasetFeedbackParams.Feedback.Metadata.builder().build())
                             .source(DatasetFeedbackParams.Feedback.Source.APP)
                             .build()
@@ -134,15 +136,15 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val datasetFetchResponse =
             datasetService.fetch(
                 DatasetFetchParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(123L)
-                    .maxRootSpanId("string")
-                    .maxXactId("string")
-                    .version("string")
+                    .maxRootSpanId("max_root_span_id")
+                    .maxXactId("max_xact_id")
+                    .version("version")
                     .build()
             )
         println(datasetFetchResponse)
@@ -156,12 +158,12 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val datasetFetchPostResponse =
             datasetService.fetchPost(
                 DatasetFetchPostParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .cursor("string")
+                    .cursor("cursor")
                     .filters(
                         listOf(
                             DatasetFetchPostParams.Filter.builder()
@@ -172,9 +174,9 @@ class DatasetServiceTest {
                         )
                     )
                     .limit(123L)
-                    .maxRootSpanId("string")
-                    .maxXactId("string")
-                    .version("string")
+                    .maxRootSpanId("max_root_span_id")
+                    .maxXactId("max_xact_id")
+                    .version("version")
                     .build()
             )
         println(datasetFetchPostResponse)
@@ -188,7 +190,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val datasetInsertResponse =
             datasetService.insert(
                 DatasetInsertParams.builder()
@@ -197,10 +199,11 @@ class DatasetServiceTest {
                         listOf(
                             DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                                 DatasetInsertParams.Event.InsertDatasetEventReplace.builder()
-                                    .id("string")
+                                    .id("id")
                                     ._isMerge(true)
                                     ._objectDelete(true)
-                                    ._parentId("string")
+                                    ._parentId("_parent_id")
+                                    .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                     .expected(JsonValue.from(mapOf<String, Any>()))
                                     .input(JsonValue.from(mapOf<String, Any>()))
                                     .metadata(
@@ -220,33 +223,13 @@ class DatasetServiceTest {
     }
 
     @Test
-    fun callReplace() {
-        val client =
-            BraintrustOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
-        val datasetService = client.dataset()
-        val dataset =
-            datasetService.replace(
-                DatasetReplaceParams.builder()
-                    .name("string")
-                    .description("string")
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
-        println(dataset)
-        dataset.validate()
-    }
-
-    @Test
     fun callSummarize() {
         val client =
             BraintrustOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.dataset()
+        val datasetService = client.datasets()
         val datasetSummarizeResponse =
             datasetService.summarize(
                 DatasetSummarizeParams.builder()

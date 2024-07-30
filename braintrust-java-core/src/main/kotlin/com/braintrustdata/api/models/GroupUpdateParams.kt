@@ -2,52 +2,30 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class GroupUpdateParams constructor(
-  private val groupId: String,
-  private val addMemberGroups: List<String>?,
-  private val addMemberUsers: List<String>?,
-  private val description: String?,
-  private val name: String?,
-  private val removeMemberGroups: List<String>?,
-  private val removeMemberUsers: List<String>?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class GroupUpdateParams
+constructor(
+    private val groupId: String,
+    private val addMemberGroups: List<String>?,
+    private val addMemberUsers: List<String>?,
+    private val description: String?,
+    private val name: String?,
+    private val removeMemberGroups: List<String>?,
+    private val removeMemberUsers: List<String>?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun groupId(): String = groupId
@@ -66,60 +44,54 @@ class GroupUpdateParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): GroupUpdateBody {
-      return GroupUpdateBody(
-          addMemberGroups,
-          addMemberUsers,
-          description,
-          name,
-          removeMemberGroups,
-          removeMemberUsers,
-          additionalBodyProperties,
-      )
+        return GroupUpdateBody(
+            addMemberGroups,
+            addMemberUsers,
+            description,
+            name,
+            removeMemberGroups,
+            removeMemberUsers,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> groupId
-          else -> ""
-      }
+        return when (index) {
+            0 -> groupId
+            else -> ""
+        }
     }
 
     @JsonDeserialize(builder = GroupUpdateBody.Builder::class)
     @NoAutoDetect
-    class GroupUpdateBody internal constructor(
-      private val addMemberGroups: List<String>?,
-      private val addMemberUsers: List<String>?,
-      private val description: String?,
-      private val name: String?,
-      private val removeMemberGroups: List<String>?,
-      private val removeMemberUsers: List<String>?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class GroupUpdateBody
+    internal constructor(
+        private val addMemberGroups: List<String>?,
+        private val addMemberUsers: List<String>?,
+        private val description: String?,
+        private val name: String?,
+        private val removeMemberGroups: List<String>?,
+        private val removeMemberUsers: List<String>?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         /** A list of group IDs to add to the group's inheriting-from set */
-        @JsonProperty("add_member_groups")
-        fun addMemberGroups(): List<String>? = addMemberGroups
+        @JsonProperty("add_member_groups") fun addMemberGroups(): List<String>? = addMemberGroups
 
         /** A list of user IDs to add to the group */
-        @JsonProperty("add_member_users")
-        fun addMemberUsers(): List<String>? = addMemberUsers
+        @JsonProperty("add_member_users") fun addMemberUsers(): List<String>? = addMemberUsers
 
         /** Textual description of the group */
-        @JsonProperty("description")
-        fun description(): String? = description
+        @JsonProperty("description") fun description(): String? = description
 
         /** Name of the group */
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
         /** A list of group IDs to remove from the group's inheriting-from set */
         @JsonProperty("remove_member_groups")
@@ -136,41 +108,42 @@ class GroupUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is GroupUpdateBody &&
-              this.addMemberGroups == other.addMemberGroups &&
-              this.addMemberUsers == other.addMemberUsers &&
-              this.description == other.description &&
-              this.name == other.name &&
-              this.removeMemberGroups == other.removeMemberGroups &&
-              this.removeMemberUsers == other.removeMemberUsers &&
-              this.additionalProperties == other.additionalProperties
+            return other is GroupUpdateBody &&
+                this.addMemberGroups == other.addMemberGroups &&
+                this.addMemberUsers == other.addMemberUsers &&
+                this.description == other.description &&
+                this.name == other.name &&
+                this.removeMemberGroups == other.removeMemberGroups &&
+                this.removeMemberUsers == other.removeMemberUsers &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                addMemberGroups,
-                addMemberUsers,
-                description,
-                name,
-                removeMemberGroups,
-                removeMemberUsers,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        addMemberGroups,
+                        addMemberUsers,
+                        description,
+                        name,
+                        removeMemberGroups,
+                        removeMemberUsers,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "GroupUpdateBody{addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "GroupUpdateBody{addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -208,15 +181,10 @@ class GroupUpdateParams constructor(
 
             /** Textual description of the group */
             @JsonProperty("description")
-            fun description(description: String) = apply {
-                this.description = description
-            }
+            fun description(description: String) = apply { this.description = description }
 
             /** Name of the group */
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             /** A list of group IDs to remove from the group's inheriting-from set */
             @JsonProperty("remove_member_groups")
@@ -244,15 +212,16 @@ class GroupUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): GroupUpdateBody = GroupUpdateBody(
-                addMemberGroups?.toUnmodifiable(),
-                addMemberUsers?.toUnmodifiable(),
-                description,
-                name,
-                removeMemberGroups?.toUnmodifiable(),
-                removeMemberUsers?.toUnmodifiable(),
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): GroupUpdateBody =
+                GroupUpdateBody(
+                    addMemberGroups?.toUnmodifiable(),
+                    addMemberUsers?.toUnmodifiable(),
+                    description,
+                    name,
+                    removeMemberGroups?.toUnmodifiable(),
+                    removeMemberUsers?.toUnmodifiable(),
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -263,46 +232,46 @@ class GroupUpdateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is GroupUpdateParams &&
-          this.groupId == other.groupId &&
-          this.addMemberGroups == other.addMemberGroups &&
-          this.addMemberUsers == other.addMemberUsers &&
-          this.description == other.description &&
-          this.name == other.name &&
-          this.removeMemberGroups == other.removeMemberGroups &&
-          this.removeMemberUsers == other.removeMemberUsers &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is GroupUpdateParams &&
+            this.groupId == other.groupId &&
+            this.addMemberGroups == other.addMemberGroups &&
+            this.addMemberUsers == other.addMemberUsers &&
+            this.description == other.description &&
+            this.name == other.name &&
+            this.removeMemberGroups == other.removeMemberGroups &&
+            this.removeMemberUsers == other.removeMemberUsers &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          groupId,
-          addMemberGroups,
-          addMemberUsers,
-          description,
-          name,
-          removeMemberGroups,
-          removeMemberUsers,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            groupId,
+            addMemberGroups,
+            addMemberUsers,
+            description,
+            name,
+            removeMemberGroups,
+            removeMemberUsers,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "GroupUpdateParams{groupId=$groupId, addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "GroupUpdateParams{groupId=$groupId, addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -334,9 +303,7 @@ class GroupUpdateParams constructor(
         }
 
         /** Group id */
-        fun groupId(groupId: String) = apply {
-            this.groupId = groupId
-        }
+        fun groupId(groupId: String) = apply { this.groupId = groupId }
 
         /** A list of group IDs to add to the group's inheriting-from set */
         fun addMemberGroups(addMemberGroups: List<String>) = apply {
@@ -361,14 +328,10 @@ class GroupUpdateParams constructor(
         }
 
         /** Textual description of the group */
-        fun description(description: String) = apply {
-            this.description = description
-        }
+        fun description(description: String) = apply { this.description = description }
 
         /** Name of the group */
-        fun name(name: String) = apply {
-            this.name = name
-        }
+        fun name(name: String) = apply { this.name = name }
 
         /** A list of group IDs to remove from the group's inheriting-from set */
         fun removeMemberGroups(removeMemberGroups: List<String>) = apply {
@@ -430,9 +393,7 @@ class GroupUpdateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -443,23 +404,23 @@ class GroupUpdateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): GroupUpdateParams = GroupUpdateParams(
-            checkNotNull(groupId) {
-                "`groupId` is required but was not set"
-            },
-            if(addMemberGroups.size == 0) null else addMemberGroups.toUnmodifiable(),
-            if(addMemberUsers.size == 0) null else addMemberUsers.toUnmodifiable(),
-            description,
-            name,
-            if(removeMemberGroups.size == 0) null else removeMemberGroups.toUnmodifiable(),
-            if(removeMemberUsers.size == 0) null else removeMemberUsers.toUnmodifiable(),
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): GroupUpdateParams =
+            GroupUpdateParams(
+                checkNotNull(groupId) { "`groupId` is required but was not set" },
+                if (addMemberGroups.size == 0) null else addMemberGroups.toUnmodifiable(),
+                if (addMemberUsers.size == 0) null else addMemberUsers.toUnmodifiable(),
+                description,
+                name,
+                if (removeMemberGroups.size == 0) null else removeMemberGroups.toUnmodifiable(),
+                if (removeMemberUsers.size == 0) null else removeMemberUsers.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 }

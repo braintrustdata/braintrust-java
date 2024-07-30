@@ -2,57 +2,42 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 
 /**
  * A role is a collection of permissions which can be granted as part of an ACL
  *
- * Roles can consist of individual permissions, as well as a set of roles they
- * inherit from
+ * Roles can consist of individual permissions, as well as a set of roles they inherit from
  */
 @JsonDeserialize(builder = Role.Builder::class)
 @NoAutoDetect
-class Role private constructor(
-  private val id: JsonField<String>,
-  private val orgId: JsonField<String>,
-  private val userId: JsonField<String>,
-  private val created: JsonField<OffsetDateTime>,
-  private val name: JsonField<String>,
-  private val description: JsonField<String>,
-  private val deletedAt: JsonField<OffsetDateTime>,
-  private val memberPermissions: JsonField<List<MemberPermission>>,
-  private val memberRoles: JsonField<List<String>>,
-  private val additionalProperties: Map<String, JsonValue>,
-
+class Role
+private constructor(
+    private val id: JsonField<String>,
+    private val orgId: JsonField<String>,
+    private val userId: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val name: JsonField<String>,
+    private val description: JsonField<String>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val memberPermissions: JsonField<List<MemberPermission>>,
+    private val memberRoles: JsonField<List<String>>,
+    private val additionalProperties: Map<String, JsonValue>,
 ) {
 
     private var validated: Boolean = false
@@ -65,8 +50,8 @@ class Role private constructor(
     /**
      * Unique id for the organization that the role belongs under
      *
-     * A null org_id indicates a system role, which may be assigned to anybody and
-     * inherited by any other role, but cannot be edited.
+     * A null org_id indicates a system role, which may be assigned to anybody and inherited by any
+     * other role, but cannot be edited.
      *
      * It is forbidden to change the org after creating a role
      */
@@ -82,78 +67,64 @@ class Role private constructor(
     fun name(): String = name.getRequired("name")
 
     /** Textual description of the role */
-    fun description(): Optional<String> = Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> =
+        Optional.ofNullable(description.getNullable("description"))
 
     /** Date of role deletion, or null if the role is still active */
-    fun deletedAt(): Optional<OffsetDateTime> = Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+    fun deletedAt(): Optional<OffsetDateTime> =
+        Optional.ofNullable(deletedAt.getNullable("deleted_at"))
 
     /** (permission, restrict_object_type) tuples which belong to this role */
-    fun memberPermissions(): Optional<List<MemberPermission>> = Optional.ofNullable(memberPermissions.getNullable("member_permissions"))
+    fun memberPermissions(): Optional<List<MemberPermission>> =
+        Optional.ofNullable(memberPermissions.getNullable("member_permissions"))
 
     /**
      * Ids of the roles this role inherits from
      *
-     * An inheriting role has all the permissions contained in its member roles, as
-     * well as all of their inherited permissions
+     * An inheriting role has all the permissions contained in its member roles, as well as all of
+     * their inherited permissions
      */
-    fun memberRoles(): Optional<List<String>> = Optional.ofNullable(memberRoles.getNullable("member_roles"))
+    fun memberRoles(): Optional<List<String>> =
+        Optional.ofNullable(memberRoles.getNullable("member_roles"))
 
     /** Unique identifier for the role */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
 
     /**
      * Unique id for the organization that the role belongs under
      *
-     * A null org_id indicates a system role, which may be assigned to anybody and
-     * inherited by any other role, but cannot be edited.
+     * A null org_id indicates a system role, which may be assigned to anybody and inherited by any
+     * other role, but cannot be edited.
      *
      * It is forbidden to change the org after creating a role
      */
-    @JsonProperty("org_id")
-    @ExcludeMissing
-    fun _orgId() = orgId
+    @JsonProperty("org_id") @ExcludeMissing fun _orgId() = orgId
 
     /** Identifies the user who created the role */
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    fun _userId() = userId
+    @JsonProperty("user_id") @ExcludeMissing fun _userId() = userId
 
     /** Date of role creation */
-    @JsonProperty("created")
-    @ExcludeMissing
-    fun _created() = created
+    @JsonProperty("created") @ExcludeMissing fun _created() = created
 
     /** Name of the role */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name() = name
 
     /** Textual description of the role */
-    @JsonProperty("description")
-    @ExcludeMissing
-    fun _description() = description
+    @JsonProperty("description") @ExcludeMissing fun _description() = description
 
     /** Date of role deletion, or null if the role is still active */
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    fun _deletedAt() = deletedAt
+    @JsonProperty("deleted_at") @ExcludeMissing fun _deletedAt() = deletedAt
 
     /** (permission, restrict_object_type) tuples which belong to this role */
-    @JsonProperty("member_permissions")
-    @ExcludeMissing
-    fun _memberPermissions() = memberPermissions
+    @JsonProperty("member_permissions") @ExcludeMissing fun _memberPermissions() = memberPermissions
 
     /**
      * Ids of the roles this role inherits from
      *
-     * An inheriting role has all the permissions contained in its member roles, as
-     * well as all of their inherited permissions
+     * An inheriting role has all the permissions contained in its member roles, as well as all of
+     * their inherited permissions
      */
-    @JsonProperty("member_roles")
-    @ExcludeMissing
-    fun _memberRoles() = memberRoles
+    @JsonProperty("member_roles") @ExcludeMissing fun _memberRoles() = memberRoles
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -161,63 +132,64 @@ class Role private constructor(
 
     fun validate(): Role = apply {
         if (!validated) {
-          id()
-          orgId()
-          userId()
-          created()
-          name()
-          description()
-          deletedAt()
-          memberPermissions().map { it.forEach { it.validate() } }
-          memberRoles()
-          validated = true
+            id()
+            orgId()
+            userId()
+            created()
+            name()
+            description()
+            deletedAt()
+            memberPermissions().map { it.forEach { it.validate() } }
+            memberRoles()
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is Role &&
-          this.id == other.id &&
-          this.orgId == other.orgId &&
-          this.userId == other.userId &&
-          this.created == other.created &&
-          this.name == other.name &&
-          this.description == other.description &&
-          this.deletedAt == other.deletedAt &&
-          this.memberPermissions == other.memberPermissions &&
-          this.memberRoles == other.memberRoles &&
-          this.additionalProperties == other.additionalProperties
+        return other is Role &&
+            this.id == other.id &&
+            this.orgId == other.orgId &&
+            this.userId == other.userId &&
+            this.created == other.created &&
+            this.name == other.name &&
+            this.description == other.description &&
+            this.deletedAt == other.deletedAt &&
+            this.memberPermissions == other.memberPermissions &&
+            this.memberRoles == other.memberRoles &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            id,
-            orgId,
-            userId,
-            created,
-            name,
-            description,
-            deletedAt,
-            memberPermissions,
-            memberRoles,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    id,
+                    orgId,
+                    userId,
+                    created,
+                    name,
+                    description,
+                    deletedAt,
+                    memberPermissions,
+                    memberRoles,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "Role{id=$id, orgId=$orgId, userId=$userId, created=$created, name=$name, description=$description, deletedAt=$deletedAt, memberPermissions=$memberPermissions, memberRoles=$memberRoles, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "Role{id=$id, orgId=$orgId, userId=$userId, created=$created, name=$name, description=$description, deletedAt=$deletedAt, memberPermissions=$memberPermissions, memberRoles=$memberRoles, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -251,17 +223,13 @@ class Role private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the role */
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
          * Unique id for the organization that the role belongs under
          *
-         * A null org_id indicates a system role, which may be assigned to anybody and
-         * inherited by any other role, but cannot be edited.
+         * A null org_id indicates a system role, which may be assigned to anybody and inherited by
+         * any other role, but cannot be edited.
          *
          * It is forbidden to change the org after creating a role
          */
@@ -270,16 +238,14 @@ class Role private constructor(
         /**
          * Unique id for the organization that the role belongs under
          *
-         * A null org_id indicates a system role, which may be assigned to anybody and
-         * inherited by any other role, but cannot be edited.
+         * A null org_id indicates a system role, which may be assigned to anybody and inherited by
+         * any other role, but cannot be edited.
          *
          * It is forbidden to change the org after creating a role
          */
         @JsonProperty("org_id")
         @ExcludeMissing
-        fun orgId(orgId: JsonField<String>) = apply {
-            this.orgId = orgId
-        }
+        fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         /** Identifies the user who created the role */
         fun userId(userId: String) = userId(JsonField.of(userId))
@@ -287,9 +253,7 @@ class Role private constructor(
         /** Identifies the user who created the role */
         @JsonProperty("user_id")
         @ExcludeMissing
-        fun userId(userId: JsonField<String>) = apply {
-            this.userId = userId
-        }
+        fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
         /** Date of role creation */
         fun created(created: OffsetDateTime) = created(JsonField.of(created))
@@ -297,9 +261,7 @@ class Role private constructor(
         /** Date of role creation */
         @JsonProperty("created")
         @ExcludeMissing
-        fun created(created: JsonField<OffsetDateTime>) = apply {
-            this.created = created
-        }
+        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Name of the role */
         fun name(name: String) = name(JsonField.of(name))
@@ -307,9 +269,7 @@ class Role private constructor(
         /** Name of the role */
         @JsonProperty("name")
         @ExcludeMissing
-        fun name(name: JsonField<String>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Textual description of the role */
         fun description(description: String) = description(JsonField.of(description))
@@ -317,9 +277,7 @@ class Role private constructor(
         /** Textual description of the role */
         @JsonProperty("description")
         @ExcludeMissing
-        fun description(description: JsonField<String>) = apply {
-            this.description = description
-        }
+        fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** Date of role deletion, or null if the role is still active */
         fun deletedAt(deletedAt: OffsetDateTime) = deletedAt(JsonField.of(deletedAt))
@@ -327,12 +285,11 @@ class Role private constructor(
         /** Date of role deletion, or null if the role is still active */
         @JsonProperty("deleted_at")
         @ExcludeMissing
-        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply {
-            this.deletedAt = deletedAt
-        }
+        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
 
         /** (permission, restrict_object_type) tuples which belong to this role */
-        fun memberPermissions(memberPermissions: List<MemberPermission>) = memberPermissions(JsonField.of(memberPermissions))
+        fun memberPermissions(memberPermissions: List<MemberPermission>) =
+            memberPermissions(JsonField.of(memberPermissions))
 
         /** (permission, restrict_object_type) tuples which belong to this role */
         @JsonProperty("member_permissions")
@@ -344,16 +301,16 @@ class Role private constructor(
         /**
          * Ids of the roles this role inherits from
          *
-         * An inheriting role has all the permissions contained in its member roles, as
-         * well as all of their inherited permissions
+         * An inheriting role has all the permissions contained in its member roles, as well as all
+         * of their inherited permissions
          */
         fun memberRoles(memberRoles: List<String>) = memberRoles(JsonField.of(memberRoles))
 
         /**
          * Ids of the roles this role inherits from
          *
-         * An inheriting role has all the permissions contained in its member roles, as
-         * well as all of their inherited permissions
+         * An inheriting role has all the permissions contained in its member roles, as well as all
+         * of their inherited permissions
          */
         @JsonProperty("member_roles")
         @ExcludeMissing
@@ -375,23 +332,29 @@ class Role private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): Role = Role(
-            id,
-            orgId,
-            userId,
-            created,
-            name,
-            description,
-            deletedAt,
-            memberPermissions.map { it.toUnmodifiable() },
-            memberRoles.map { it.toUnmodifiable() },
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): Role =
+            Role(
+                id,
+                orgId,
+                userId,
+                created,
+                name,
+                description,
+                deletedAt,
+                memberPermissions.map { it.toUnmodifiable() },
+                memberRoles.map { it.toUnmodifiable() },
+                additionalProperties.toUnmodifiable(),
+            )
     }
 
     @JsonDeserialize(builder = MemberPermission.Builder::class)
     @NoAutoDetect
-    class MemberPermission private constructor(private val permission: JsonField<Permission>, private val restrictObjectType: JsonField<RestrictObjectType>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class MemberPermission
+    private constructor(
+        private val permission: JsonField<Permission>,
+        private val restrictObjectType: JsonField<RestrictObjectType>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
@@ -400,23 +363,21 @@ class Role private constructor(
         /**
          * Each permission permits a certain type of operation on an object in the system
          *
-         * Permissions can be assigned to to objects on an individual basis, or grouped
-         * into roles
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
          */
-        fun permission(): Optional<Permission> = Optional.ofNullable(permission.getNullable("permission"))
+        fun permission(): Optional<Permission> =
+            Optional.ofNullable(permission.getNullable("permission"))
 
         /** The object type that the ACL applies to */
-        fun restrictObjectType(): Optional<RestrictObjectType> = Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
+        fun restrictObjectType(): Optional<RestrictObjectType> =
+            Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
 
         /**
          * Each permission permits a certain type of operation on an object in the system
          *
-         * Permissions can be assigned to to objects on an individual basis, or grouped
-         * into roles
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
          */
-        @JsonProperty("permission")
-        @ExcludeMissing
-        fun _permission() = permission
+        @JsonProperty("permission") @ExcludeMissing fun _permission() = permission
 
         /** The object type that the ACL applies to */
         @JsonProperty("restrict_object_type")
@@ -429,42 +390,43 @@ class Role private constructor(
 
         fun validate(): MemberPermission = apply {
             if (!validated) {
-              permission()
-              restrictObjectType()
-              validated = true
+                permission()
+                restrictObjectType()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is MemberPermission &&
-              this.permission == other.permission &&
-              this.restrictObjectType == other.restrictObjectType &&
-              this.additionalProperties == other.additionalProperties
+            return other is MemberPermission &&
+                this.permission == other.permission &&
+                this.restrictObjectType == other.restrictObjectType &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                permission,
-                restrictObjectType,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        permission,
+                        restrictObjectType,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "MemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "MemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -483,16 +445,16 @@ class Role private constructor(
             /**
              * Each permission permits a certain type of operation on an object in the system
              *
-             * Permissions can be assigned to to objects on an individual basis, or grouped
-             * into roles
+             * Permissions can be assigned to to objects on an individual basis, or grouped into
+             * roles
              */
             fun permission(permission: Permission) = permission(JsonField.of(permission))
 
             /**
              * Each permission permits a certain type of operation on an object in the system
              *
-             * Permissions can be assigned to to objects on an individual basis, or grouped
-             * into roles
+             * Permissions can be assigned to to objects on an individual basis, or grouped into
+             * roles
              */
             @JsonProperty("permission")
             @ExcludeMissing
@@ -501,7 +463,8 @@ class Role private constructor(
             }
 
             /** The object type that the ACL applies to */
-            fun restrictObjectType(restrictObjectType: RestrictObjectType) = restrictObjectType(JsonField.of(restrictObjectType))
+            fun restrictObjectType(restrictObjectType: RestrictObjectType) =
+                restrictObjectType(JsonField.of(restrictObjectType))
 
             /** The object type that the ACL applies to */
             @JsonProperty("restrict_object_type")
@@ -524,25 +487,28 @@ class Role private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): MemberPermission = MemberPermission(
-                permission,
-                restrictObjectType,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): MemberPermission =
+                MemberPermission(
+                    permission,
+                    restrictObjectType,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
 
-        class Permission @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class Permission
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is Permission &&
-                  this.value == other.value
+                return other is Permission && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -593,45 +559,49 @@ class Role private constructor(
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                CREATE -> Value.CREATE
-                READ -> Value.READ
-                UPDATE -> Value.UPDATE
-                DELETE -> Value.DELETE
-                CREATE_ACLS -> Value.CREATE_ACLS
-                READ_ACLS -> Value.READ_ACLS
-                UPDATE_ACLS -> Value.UPDATE_ACLS
-                DELETE_ACLS -> Value.DELETE_ACLS
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    CREATE -> Value.CREATE
+                    READ -> Value.READ
+                    UPDATE -> Value.UPDATE
+                    DELETE -> Value.DELETE
+                    CREATE_ACLS -> Value.CREATE_ACLS
+                    READ_ACLS -> Value.READ_ACLS
+                    UPDATE_ACLS -> Value.UPDATE_ACLS
+                    DELETE_ACLS -> Value.DELETE_ACLS
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                CREATE -> Known.CREATE
-                READ -> Known.READ
-                UPDATE -> Known.UPDATE
-                DELETE -> Known.DELETE
-                CREATE_ACLS -> Known.CREATE_ACLS
-                READ_ACLS -> Known.READ_ACLS
-                UPDATE_ACLS -> Known.UPDATE_ACLS
-                DELETE_ACLS -> Known.DELETE_ACLS
-                else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    CREATE -> Known.CREATE
+                    READ -> Known.READ
+                    UPDATE -> Known.UPDATE
+                    DELETE -> Known.DELETE
+                    CREATE_ACLS -> Known.CREATE_ACLS
+                    READ_ACLS -> Known.READ_ACLS
+                    UPDATE_ACLS -> Known.UPDATE_ACLS
+                    DELETE_ACLS -> Known.DELETE_ACLS
+                    else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }
 
-        class RestrictObjectType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class RestrictObjectType
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is RestrictObjectType &&
-                  this.value == other.value
+                return other is RestrictObjectType && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -694,35 +664,38 @@ class Role private constructor(
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                ORGANIZATION -> Value.ORGANIZATION
-                PROJECT -> Value.PROJECT
-                EXPERIMENT -> Value.EXPERIMENT
-                DATASET -> Value.DATASET
-                PROMPT -> Value.PROMPT
-                PROMPT_SESSION -> Value.PROMPT_SESSION
-                GROUP -> Value.GROUP
-                ROLE -> Value.ROLE
-                ORG_MEMBER -> Value.ORG_MEMBER
-                PROJECT_LOG -> Value.PROJECT_LOG
-                ORG_PROJECT -> Value.ORG_PROJECT
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    ORGANIZATION -> Value.ORGANIZATION
+                    PROJECT -> Value.PROJECT
+                    EXPERIMENT -> Value.EXPERIMENT
+                    DATASET -> Value.DATASET
+                    PROMPT -> Value.PROMPT
+                    PROMPT_SESSION -> Value.PROMPT_SESSION
+                    GROUP -> Value.GROUP
+                    ROLE -> Value.ROLE
+                    ORG_MEMBER -> Value.ORG_MEMBER
+                    PROJECT_LOG -> Value.PROJECT_LOG
+                    ORG_PROJECT -> Value.ORG_PROJECT
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                ORGANIZATION -> Known.ORGANIZATION
-                PROJECT -> Known.PROJECT
-                EXPERIMENT -> Known.EXPERIMENT
-                DATASET -> Known.DATASET
-                PROMPT -> Known.PROMPT
-                PROMPT_SESSION -> Known.PROMPT_SESSION
-                GROUP -> Known.GROUP
-                ROLE -> Known.ROLE
-                ORG_MEMBER -> Known.ORG_MEMBER
-                PROJECT_LOG -> Known.PROJECT_LOG
-                ORG_PROJECT -> Known.ORG_PROJECT
-                else -> throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    ORGANIZATION -> Known.ORGANIZATION
+                    PROJECT -> Known.PROJECT
+                    EXPERIMENT -> Known.EXPERIMENT
+                    DATASET -> Known.DATASET
+                    PROMPT -> Known.PROMPT
+                    PROMPT_SESSION -> Known.PROMPT_SESSION
+                    GROUP -> Known.GROUP
+                    ROLE -> Known.ROLE
+                    ORG_MEMBER -> Known.ORG_MEMBER
+                    PROJECT_LOG -> Known.PROJECT_LOG
+                    ORG_PROJECT -> Known.ORG_PROJECT
+                    else ->
+                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }

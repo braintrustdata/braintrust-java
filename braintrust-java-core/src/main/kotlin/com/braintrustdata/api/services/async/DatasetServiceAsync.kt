@@ -4,22 +4,7 @@
 
 package com.braintrustdata.api.services.async
 
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import kotlin.LazyThreadSafetyMode.PUBLICATION
-import java.time.LocalDate
-import java.time.Duration
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Base64
-import java.util.Optional
-import java.util.UUID
-import java.util.concurrent.CompletableFuture
-import java.util.stream.Stream
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.Dataset
 import com.braintrustdata.api.models.DatasetCreateParams
 import com.braintrustdata.api.models.DatasetDeleteParams
@@ -36,80 +21,93 @@ import com.braintrustdata.api.models.DatasetRetrieveParams
 import com.braintrustdata.api.models.DatasetSummarizeParams
 import com.braintrustdata.api.models.DatasetSummarizeResponse
 import com.braintrustdata.api.models.DatasetUpdateParams
-import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.http.HttpMethod
-import com.braintrustdata.api.core.http.HttpRequest
-import com.braintrustdata.api.core.http.HttpResponse.Handler
-import com.braintrustdata.api.core.http.BinaryResponseContent
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.RequestOptions
-import com.braintrustdata.api.errors.BraintrustError
-import com.braintrustdata.api.services.emptyHandler
-import com.braintrustdata.api.services.errorHandler
-import com.braintrustdata.api.services.json
-import com.braintrustdata.api.services.jsonHandler
-import com.braintrustdata.api.services.multipartFormData
-import com.braintrustdata.api.services.stringHandler
-import com.braintrustdata.api.services.binaryHandler
-import com.braintrustdata.api.services.withErrorHandler
+import java.util.concurrent.CompletableFuture
 
 interface DatasetServiceAsync {
 
     /**
-     * Create a new dataset. If there is an existing dataset in the project with the
-     * same name as the one specified in the request, will return the existing dataset
-     * unmodified
+     * Create a new dataset. If there is an existing dataset in the project with the same name as
+     * the one specified in the request, will return the existing dataset unmodified
      */
     @JvmOverloads
-    fun create(params: DatasetCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Dataset>
+    fun create(
+        params: DatasetCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<Dataset>
 
     /** Get a dataset object by its id */
     @JvmOverloads
-    fun retrieve(params: DatasetRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Dataset>
+    fun retrieve(
+        params: DatasetRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<Dataset>
 
     /**
-     * Partially update a dataset object. Specify the fields to update in the payload.
-     * Any object-type fields will be deep-merged with existing content. Currently we
-     * do not support removing fields or setting them to null.
+     * Partially update a dataset object. Specify the fields to update in the payload. Any
+     * object-type fields will be deep-merged with existing content. Currently we do not support
+     * removing fields or setting them to null.
      */
     @JvmOverloads
-    fun update(params: DatasetUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Dataset>
+    fun update(
+        params: DatasetUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<Dataset>
 
     /**
      * List out all datasets. The datasets are sorted by creation date, with the most
      * recently-created datasets coming first
      */
     @JvmOverloads
-    fun list(params: DatasetListParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<DatasetListPageAsync>
+    fun list(
+        params: DatasetListParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<DatasetListPageAsync>
 
     /** Delete a dataset object by its id */
     @JvmOverloads
-    fun delete(params: DatasetDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Dataset>
+    fun delete(
+        params: DatasetDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<Dataset>
 
     /** Log feedback for a set of dataset events */
     @JvmOverloads
-    fun feedback(params: DatasetFeedbackParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Void>
+    fun feedback(
+        params: DatasetFeedbackParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<Void>
 
     /**
-     * Fetch the events in a dataset. Equivalent to the POST form of the same path, but
-     * with the parameters in the URL query rather than in the request body
+     * Fetch the events in a dataset. Equivalent to the POST form of the same path, but with the
+     * parameters in the URL query rather than in the request body
      */
     @JvmOverloads
-    fun fetch(params: DatasetFetchParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<DatasetFetchResponse>
+    fun fetch(
+        params: DatasetFetchParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<DatasetFetchResponse>
 
     /**
-     * Fetch the events in a dataset. Equivalent to the GET form of the same path, but
-     * with the parameters in the request body rather than in the URL query
+     * Fetch the events in a dataset. Equivalent to the GET form of the same path, but with the
+     * parameters in the request body rather than in the URL query
      */
     @JvmOverloads
-    fun fetchPost(params: DatasetFetchPostParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<DatasetFetchPostResponse>
+    fun fetchPost(
+        params: DatasetFetchPostParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<DatasetFetchPostResponse>
 
     /** Insert a set of events into the dataset */
     @JvmOverloads
-    fun insert(params: DatasetInsertParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<DatasetInsertResponse>
+    fun insert(
+        params: DatasetInsertParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<DatasetInsertResponse>
 
     /** Summarize dataset */
     @JvmOverloads
-    fun summarize(params: DatasetSummarizeParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<DatasetSummarizeResponse>
+    fun summarize(
+        params: DatasetSummarizeParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<DatasetSummarizeResponse>
 }

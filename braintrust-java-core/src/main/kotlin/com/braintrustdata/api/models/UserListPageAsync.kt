@@ -2,83 +2,80 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.services.async.UserServiceAsync
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.Spliterator
-import java.util.Spliterators
-import java.util.UUID
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.models.User
-import com.braintrustdata.api.services.async.UserServiceAsync
 
-class UserListPageAsync private constructor(private val usersService: UserServiceAsync, private val params: UserListParams, private val response: Response, ) {
+class UserListPageAsync
+private constructor(
+    private val usersService: UserServiceAsync,
+    private val params: UserListParams,
+    private val response: Response,
+) {
 
     fun response(): Response = response
 
     fun objects(): List<User> = response().objects()
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is UserListPageAsync &&
-          this.usersService == other.usersService &&
-          this.params == other.params &&
-          this.response == other.response
+        return other is UserListPageAsync &&
+            this.usersService == other.usersService &&
+            this.params == other.params &&
+            this.response == other.response
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          usersService,
-          params,
-          response,
-      )
+        return Objects.hash(
+            usersService,
+            params,
+            response,
+        )
     }
 
-    override fun toString() = "UserListPageAsync{usersService=$usersService, params=$params, response=$response}"
+    override fun toString() =
+        "UserListPageAsync{usersService=$usersService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-      return !objects().isEmpty()
+        return !objects().isEmpty()
     }
 
     fun getNextPageParams(): Optional<UserListParams> {
-      if (!hasNextPage()) {
-        return Optional.empty()
-      }
+        if (!hasNextPage()) {
+            return Optional.empty()
+        }
 
-      return if (params.endingBefore().isPresent) {
-        Optional.of(UserListParams.builder().from(params).endingBefore(objects().first().id()).build());
-      } else {
-        Optional.of(UserListParams.builder().from(params).startingAfter(objects().last().id()).build());
-      }
+        return if (params.endingBefore().isPresent) {
+            Optional.of(
+                UserListParams.builder().from(params).endingBefore(objects().first().id()).build()
+            )
+        } else {
+            Optional.of(
+                UserListParams.builder().from(params).startingAfter(objects().last().id()).build()
+            )
+        }
     }
 
     fun getNextPage(): CompletableFuture<Optional<UserListPageAsync>> {
-      return getNextPageParams().map {
-        usersService.list(it).thenApply { Optional.of(it) }
-      }.orElseGet {
-          CompletableFuture.completedFuture(Optional.empty())
-      }
+        return getNextPageParams()
+            .map { usersService.list(it).thenApply { Optional.of(it) } }
+            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -86,16 +83,21 @@ class UserListPageAsync private constructor(private val usersService: UserServic
     companion object {
 
         @JvmStatic
-        fun of(usersService: UserServiceAsync, params: UserListParams, response: Response) = UserListPageAsync(
-            usersService,
-            params,
-            response,
-        )
+        fun of(usersService: UserServiceAsync, params: UserListParams, response: Response) =
+            UserListPageAsync(
+                usersService,
+                params,
+                response,
+            )
     }
 
     @JsonDeserialize(builder = Response.Builder::class)
     @NoAutoDetect
-    class Response constructor(private val objects: JsonField<List<User>>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Response
+    constructor(
+        private val objects: JsonField<List<User>>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
@@ -110,33 +112,33 @@ class UserListPageAsync private constructor(private val usersService: UserServic
 
         fun validate(): Response = apply {
             if (!validated) {
-              objects().map { it.validate() }
-              validated = true
+                objects().map { it.validate() }
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Response &&
-              this.objects == other.objects &&
-              this.additionalProperties == other.additionalProperties
+            return other is Response &&
+                this.objects == other.objects &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          return Objects.hash(objects, additionalProperties)
+            return Objects.hash(objects, additionalProperties)
         }
 
-        override fun toString() = "UserListPageAsync.Response{objects=$objects, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "UserListPageAsync.Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -164,31 +166,32 @@ class UserListPageAsync private constructor(private val usersService: UserServic
         }
     }
 
-    class AutoPager constructor(private val firstPage: UserListPageAsync, ) {
+    class AutoPager
+    constructor(
+        private val firstPage: UserListPageAsync,
+    ) {
 
         fun forEach(action: Predicate<User>, executor: Executor): CompletableFuture<Void> {
-          fun CompletableFuture<Optional<UserListPageAsync>>.forEach(action: (User) -> Boolean, executor: Executor): CompletableFuture<Void> = thenComposeAsync({ page -> 
-              page
-              .filter {
-                  it.objects().all(action)
-              }
-              .map {
-                  it.getNextPage().forEach(action, executor)
-              }
-              .orElseGet {
-                  CompletableFuture.completedFuture(null)
-              }
-          }, executor)
-          return CompletableFuture.completedFuture(Optional.of(firstPage))
-          .forEach(action::test, executor)
+            fun CompletableFuture<Optional<UserListPageAsync>>.forEach(
+                action: (User) -> Boolean,
+                executor: Executor
+            ): CompletableFuture<Void> =
+                thenComposeAsync(
+                    { page ->
+                        page
+                            .filter { it.objects().all(action) }
+                            .map { it.getNextPage().forEach(action, executor) }
+                            .orElseGet { CompletableFuture.completedFuture(null) }
+                    },
+                    executor
+                )
+            return CompletableFuture.completedFuture(Optional.of(firstPage))
+                .forEach(action::test, executor)
         }
 
         fun toList(executor: Executor): CompletableFuture<List<User>> {
-          val values = mutableListOf<User>()
-          return forEach(values::add, executor)
-          .thenApply {
-              values
-          }
+            val values = mutableListOf<User>()
+            return forEach(values::add, executor).thenApply { values }
         }
     }
 }

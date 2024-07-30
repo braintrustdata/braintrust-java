@@ -1,10 +1,10 @@
 package com.braintrustdata.api.core.http
 
-import java.io.Closeable
-import java.util.concurrent.CompletableFuture
 import com.braintrustdata.api.core.RequestOptions
+import java.lang.AutoCloseable
+import java.util.concurrent.CompletableFuture
 
-interface HttpClient : Closeable {
+interface HttpClient : AutoCloseable {
 
     fun execute(
         request: HttpRequest,

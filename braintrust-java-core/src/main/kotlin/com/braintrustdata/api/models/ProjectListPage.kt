@@ -2,79 +2,83 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.services.blocking.ProjectService
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.Spliterator
-import java.util.Spliterators
-import java.util.UUID
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executor
-import java.util.function.Predicate
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.models.Project
-import com.braintrustdata.api.services.blocking.ProjectService
 
-class ProjectListPage private constructor(private val projectsService: ProjectService, private val params: ProjectListParams, private val response: Response, ) {
+class ProjectListPage
+private constructor(
+    private val projectsService: ProjectService,
+    private val params: ProjectListParams,
+    private val response: Response,
+) {
 
     fun response(): Response = response
 
     fun objects(): List<Project> = response().objects()
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ProjectListPage &&
-          this.projectsService == other.projectsService &&
-          this.params == other.params &&
-          this.response == other.response
+        return other is ProjectListPage &&
+            this.projectsService == other.projectsService &&
+            this.params == other.params &&
+            this.response == other.response
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          projectsService,
-          params,
-          response,
-      )
+        return Objects.hash(
+            projectsService,
+            params,
+            response,
+        )
     }
 
-    override fun toString() = "ProjectListPage{projectsService=$projectsService, params=$params, response=$response}"
+    override fun toString() =
+        "ProjectListPage{projectsService=$projectsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-      return !objects().isEmpty()
+        return !objects().isEmpty()
     }
 
     fun getNextPageParams(): Optional<ProjectListParams> {
-      if (!hasNextPage()) {
-        return Optional.empty()
-      }
+        if (!hasNextPage()) {
+            return Optional.empty()
+        }
 
-      return if (params.endingBefore().isPresent) {
-        Optional.of(ProjectListParams.builder().from(params).endingBefore(objects().first().id()).build());
-      } else {
-        Optional.of(ProjectListParams.builder().from(params).startingAfter(objects().last().id()).build());
-      }
+        return if (params.endingBefore().isPresent) {
+            Optional.of(
+                ProjectListParams.builder()
+                    .from(params)
+                    .endingBefore(objects().first().id())
+                    .build()
+            )
+        } else {
+            Optional.of(
+                ProjectListParams.builder()
+                    .from(params)
+                    .startingAfter(objects().last().id())
+                    .build()
+            )
+        }
     }
 
     fun getNextPage(): Optional<ProjectListPage> {
-      return getNextPageParams().map { projectsService.list(it) }
+        return getNextPageParams().map { projectsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -82,16 +86,21 @@ class ProjectListPage private constructor(private val projectsService: ProjectSe
     companion object {
 
         @JvmStatic
-        fun of(projectsService: ProjectService, params: ProjectListParams, response: Response) = ProjectListPage(
-            projectsService,
-            params,
-            response,
-        )
+        fun of(projectsService: ProjectService, params: ProjectListParams, response: Response) =
+            ProjectListPage(
+                projectsService,
+                params,
+                response,
+            )
     }
 
     @JsonDeserialize(builder = Response.Builder::class)
     @NoAutoDetect
-    class Response constructor(private val objects: JsonField<List<Project>>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Response
+    constructor(
+        private val objects: JsonField<List<Project>>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
@@ -106,33 +115,33 @@ class ProjectListPage private constructor(private val projectsService: ProjectSe
 
         fun validate(): Response = apply {
             if (!validated) {
-              objects().map { it.validate() }
-              validated = true
+                objects().map { it.validate() }
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Response &&
-              this.objects == other.objects &&
-              this.additionalProperties == other.additionalProperties
+            return other is Response &&
+                this.objects == other.objects &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          return Objects.hash(objects, additionalProperties)
+            return Objects.hash(objects, additionalProperties)
         }
 
-        override fun toString() = "ProjectListPage.Response{objects=$objects, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "ProjectListPage.Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -160,22 +169,25 @@ class ProjectListPage private constructor(private val projectsService: ProjectSe
         }
     }
 
-    class AutoPager constructor(private val firstPage: ProjectListPage, ) : Iterable<Project> {
+    class AutoPager
+    constructor(
+        private val firstPage: ProjectListPage,
+    ) : Iterable<Project> {
 
         override fun iterator(): Iterator<Project> = iterator {
             var page = firstPage
             var index = 0
             while (true) {
-              while (index < page.objects().size) {
-                yield(page.objects()[index++])
-              }
-              page = page.getNextPage().orElse(null) ?: break
-              index = 0
+                while (index < page.objects().size) {
+                    yield(page.objects()[index++])
+                }
+                page = page.getNextPage().orElse(null) ?: break
+                index = 0
             }
         }
 
         fun stream(): Stream<Project> {
-          return StreamSupport.stream(spliterator(), false)
+            return StreamSupport.stream(spliterator(), false)
         }
     }
 }

@@ -2,48 +2,30 @@
 
 package com.braintrustdata.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.core.toUnmodifiable
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import java.util.Objects
+import java.util.Optional
 
 /** Summary of a dataset */
 @JsonDeserialize(builder = DatasetSummarizeResponse.Builder::class)
 @NoAutoDetect
-class DatasetSummarizeResponse private constructor(
-  private val projectName: JsonField<String>,
-  private val datasetName: JsonField<String>,
-  private val projectUrl: JsonField<String>,
-  private val datasetUrl: JsonField<String>,
-  private val dataSummary: JsonField<DataSummary>,
-  private val additionalProperties: Map<String, JsonValue>,
-
+class DatasetSummarizeResponse
+private constructor(
+    private val projectName: JsonField<String>,
+    private val datasetName: JsonField<String>,
+    private val projectUrl: JsonField<String>,
+    private val datasetUrl: JsonField<String>,
+    private val dataSummary: JsonField<DataSummary>,
+    private val additionalProperties: Map<String, JsonValue>,
 ) {
 
     private var validated: Boolean = false
@@ -63,32 +45,23 @@ class DatasetSummarizeResponse private constructor(
     fun datasetUrl(): String = datasetUrl.getRequired("dataset_url")
 
     /** Summary of a dataset's data */
-    fun dataSummary(): Optional<DataSummary> = Optional.ofNullable(dataSummary.getNullable("data_summary"))
+    fun dataSummary(): Optional<DataSummary> =
+        Optional.ofNullable(dataSummary.getNullable("data_summary"))
 
     /** Name of the project that the dataset belongs to */
-    @JsonProperty("project_name")
-    @ExcludeMissing
-    fun _projectName() = projectName
+    @JsonProperty("project_name") @ExcludeMissing fun _projectName() = projectName
 
     /** Name of the dataset */
-    @JsonProperty("dataset_name")
-    @ExcludeMissing
-    fun _datasetName() = datasetName
+    @JsonProperty("dataset_name") @ExcludeMissing fun _datasetName() = datasetName
 
     /** URL to the project's page in the Braintrust app */
-    @JsonProperty("project_url")
-    @ExcludeMissing
-    fun _projectUrl() = projectUrl
+    @JsonProperty("project_url") @ExcludeMissing fun _projectUrl() = projectUrl
 
     /** URL to the dataset's page in the Braintrust app */
-    @JsonProperty("dataset_url")
-    @ExcludeMissing
-    fun _datasetUrl() = datasetUrl
+    @JsonProperty("dataset_url") @ExcludeMissing fun _datasetUrl() = datasetUrl
 
     /** Summary of a dataset's data */
-    @JsonProperty("data_summary")
-    @ExcludeMissing
-    fun _dataSummary() = dataSummary
+    @JsonProperty("data_summary") @ExcludeMissing fun _dataSummary() = dataSummary
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -96,51 +69,52 @@ class DatasetSummarizeResponse private constructor(
 
     fun validate(): DatasetSummarizeResponse = apply {
         if (!validated) {
-          projectName()
-          datasetName()
-          projectUrl()
-          datasetUrl()
-          dataSummary().map { it.validate() }
-          validated = true
+            projectName()
+            datasetName()
+            projectUrl()
+            datasetUrl()
+            dataSummary().map { it.validate() }
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is DatasetSummarizeResponse &&
-          this.projectName == other.projectName &&
-          this.datasetName == other.datasetName &&
-          this.projectUrl == other.projectUrl &&
-          this.datasetUrl == other.datasetUrl &&
-          this.dataSummary == other.dataSummary &&
-          this.additionalProperties == other.additionalProperties
+        return other is DatasetSummarizeResponse &&
+            this.projectName == other.projectName &&
+            this.datasetName == other.datasetName &&
+            this.projectUrl == other.projectUrl &&
+            this.datasetUrl == other.datasetUrl &&
+            this.dataSummary == other.dataSummary &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            projectName,
-            datasetName,
-            projectUrl,
-            datasetUrl,
-            dataSummary,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    projectName,
+                    datasetName,
+                    projectUrl,
+                    datasetUrl,
+                    dataSummary,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "DatasetSummarizeResponse{projectName=$projectName, datasetName=$datasetName, projectUrl=$projectUrl, datasetUrl=$datasetUrl, dataSummary=$dataSummary, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "DatasetSummarizeResponse{projectName=$projectName, datasetName=$datasetName, projectUrl=$projectUrl, datasetUrl=$datasetUrl, dataSummary=$dataSummary, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -168,9 +142,7 @@ class DatasetSummarizeResponse private constructor(
         /** Name of the project that the dataset belongs to */
         @JsonProperty("project_name")
         @ExcludeMissing
-        fun projectName(projectName: JsonField<String>) = apply {
-            this.projectName = projectName
-        }
+        fun projectName(projectName: JsonField<String>) = apply { this.projectName = projectName }
 
         /** Name of the dataset */
         fun datasetName(datasetName: String) = datasetName(JsonField.of(datasetName))
@@ -178,9 +150,7 @@ class DatasetSummarizeResponse private constructor(
         /** Name of the dataset */
         @JsonProperty("dataset_name")
         @ExcludeMissing
-        fun datasetName(datasetName: JsonField<String>) = apply {
-            this.datasetName = datasetName
-        }
+        fun datasetName(datasetName: JsonField<String>) = apply { this.datasetName = datasetName }
 
         /** URL to the project's page in the Braintrust app */
         fun projectUrl(projectUrl: String) = projectUrl(JsonField.of(projectUrl))
@@ -188,9 +158,7 @@ class DatasetSummarizeResponse private constructor(
         /** URL to the project's page in the Braintrust app */
         @JsonProperty("project_url")
         @ExcludeMissing
-        fun projectUrl(projectUrl: JsonField<String>) = apply {
-            this.projectUrl = projectUrl
-        }
+        fun projectUrl(projectUrl: JsonField<String>) = apply { this.projectUrl = projectUrl }
 
         /** URL to the dataset's page in the Braintrust app */
         fun datasetUrl(datasetUrl: String) = datasetUrl(JsonField.of(datasetUrl))
@@ -198,9 +166,7 @@ class DatasetSummarizeResponse private constructor(
         /** URL to the dataset's page in the Braintrust app */
         @JsonProperty("dataset_url")
         @ExcludeMissing
-        fun datasetUrl(datasetUrl: JsonField<String>) = apply {
-            this.datasetUrl = datasetUrl
-        }
+        fun datasetUrl(datasetUrl: JsonField<String>) = apply { this.datasetUrl = datasetUrl }
 
         /** Summary of a dataset's data */
         fun dataSummary(dataSummary: DataSummary) = dataSummary(JsonField.of(dataSummary))
@@ -226,20 +192,25 @@ class DatasetSummarizeResponse private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): DatasetSummarizeResponse = DatasetSummarizeResponse(
-            projectName,
-            datasetName,
-            projectUrl,
-            datasetUrl,
-            dataSummary,
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): DatasetSummarizeResponse =
+            DatasetSummarizeResponse(
+                projectName,
+                datasetName,
+                projectUrl,
+                datasetUrl,
+                dataSummary,
+                additionalProperties.toUnmodifiable(),
+            )
     }
 
     /** Summary of a dataset's data */
     @JsonDeserialize(builder = DataSummary.Builder::class)
     @NoAutoDetect
-    class DataSummary private constructor(private val totalRecords: JsonField<Long>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class DataSummary
+    private constructor(
+        private val totalRecords: JsonField<Long>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
@@ -249,9 +220,7 @@ class DatasetSummarizeResponse private constructor(
         fun totalRecords(): Long = totalRecords.getRequired("total_records")
 
         /** Total number of records in the dataset */
-        @JsonProperty("total_records")
-        @ExcludeMissing
-        fun _totalRecords() = totalRecords
+        @JsonProperty("total_records") @ExcludeMissing fun _totalRecords() = totalRecords
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -259,36 +228,36 @@ class DatasetSummarizeResponse private constructor(
 
         fun validate(): DataSummary = apply {
             if (!validated) {
-              totalRecords()
-              validated = true
+                totalRecords()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is DataSummary &&
-              this.totalRecords == other.totalRecords &&
-              this.additionalProperties == other.additionalProperties
+            return other is DataSummary &&
+                this.totalRecords == other.totalRecords &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(totalRecords, additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(totalRecords, additionalProperties)
+            }
+            return hashCode
         }
 
-        override fun toString() = "DataSummary{totalRecords=$totalRecords, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "DataSummary{totalRecords=$totalRecords, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -326,7 +295,8 @@ class DatasetSummarizeResponse private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): DataSummary = DataSummary(totalRecords, additionalProperties.toUnmodifiable())
+            fun build(): DataSummary =
+                DataSummary(totalRecords, additionalProperties.toUnmodifiable())
         }
     }
 }
