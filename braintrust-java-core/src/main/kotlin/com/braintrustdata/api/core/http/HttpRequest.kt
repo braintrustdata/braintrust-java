@@ -1,11 +1,10 @@
 package com.braintrustdata.api.core.http
 
+import com.braintrustdata.api.core.toUnmodifiable
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
 import com.google.common.collect.Multimap
 import com.google.common.collect.MultimapBuilder
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.RequestOptions
 
 class HttpRequest
 private constructor(

@@ -2,48 +2,26 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class ProjectUpdateParams constructor(
-  private val projectId: String,
-  private val name: String?,
-  private val settings: Settings?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class ProjectUpdateParams
+constructor(
+    private val projectId: String,
+    private val name: String?,
+    private val settings: Settings?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun projectId(): String = projectId
@@ -54,42 +32,43 @@ class ProjectUpdateParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): ProjectUpdateBody {
-      return ProjectUpdateBody(
-          name,
-          settings,
-          additionalBodyProperties,
-      )
+        return ProjectUpdateBody(
+            name,
+            settings,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> projectId
-          else -> ""
-      }
+        return when (index) {
+            0 -> projectId
+            else -> ""
+        }
     }
 
     @JsonDeserialize(builder = ProjectUpdateBody.Builder::class)
     @NoAutoDetect
-    class ProjectUpdateBody internal constructor(private val name: String?, private val settings: Settings?, private val additionalProperties: Map<String, JsonValue>, ) {
+    class ProjectUpdateBody
+    internal constructor(
+        private val name: String?,
+        private val settings: Settings?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
         /** Name of the project */
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
         /**
-         * Project settings. Patch operations replace all settings, so make sure you
-         * include all settings you want to keep.
+         * Project settings. Patch operations replace all settings, so make sure you include all
+         * settings you want to keep.
          */
-        @JsonProperty("settings")
-        fun settings(): Settings? = settings
+        @JsonProperty("settings") fun settings(): Settings? = settings
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -98,33 +77,34 @@ class ProjectUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is ProjectUpdateBody &&
-              this.name == other.name &&
-              this.settings == other.settings &&
-              this.additionalProperties == other.additionalProperties
+            return other is ProjectUpdateBody &&
+                this.name == other.name &&
+                this.settings == other.settings &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                name,
-                settings,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        name,
+                        settings,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "ProjectUpdateBody{name=$name, settings=$settings, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "ProjectUpdateBody{name=$name, settings=$settings, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -141,19 +121,14 @@ class ProjectUpdateParams constructor(
             }
 
             /** Name of the project */
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             /**
-             * Project settings. Patch operations replace all settings, so make sure you
-             * include all settings you want to keep.
+             * Project settings. Patch operations replace all settings, so make sure you include all
+             * settings you want to keep.
              */
             @JsonProperty("settings")
-            fun settings(settings: Settings) = apply {
-                this.settings = settings
-            }
+            fun settings(settings: Settings) = apply { this.settings = settings }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -169,11 +144,12 @@ class ProjectUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): ProjectUpdateBody = ProjectUpdateBody(
-                name,
-                settings,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): ProjectUpdateBody =
+                ProjectUpdateBody(
+                    name,
+                    settings,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -184,38 +160,38 @@ class ProjectUpdateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ProjectUpdateParams &&
-          this.projectId == other.projectId &&
-          this.name == other.name &&
-          this.settings == other.settings &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is ProjectUpdateParams &&
+            this.projectId == other.projectId &&
+            this.name == other.name &&
+            this.settings == other.settings &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          projectId,
-          name,
-          settings,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            projectId,
+            name,
+            settings,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "ProjectUpdateParams{projectId=$projectId, name=$name, settings=$settings, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "ProjectUpdateParams{projectId=$projectId, name=$name, settings=$settings, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -239,22 +215,16 @@ class ProjectUpdateParams constructor(
         }
 
         /** Project id */
-        fun projectId(projectId: String) = apply {
-            this.projectId = projectId
-        }
+        fun projectId(projectId: String) = apply { this.projectId = projectId }
 
         /** Name of the project */
-        fun name(name: String) = apply {
-            this.name = name
-        }
+        fun name(name: String) = apply { this.name = name }
 
         /**
-         * Project settings. Patch operations replace all settings, so make sure you
-         * include all settings you want to keep.
+         * Project settings. Patch operations replace all settings, so make sure you include all
+         * settings you want to keep.
          */
-        fun settings(settings: Settings) = apply {
-            this.settings = settings
-        }
+        fun settings(settings: Settings) = apply { this.settings = settings }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -294,9 +264,7 @@ class ProjectUpdateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -307,35 +275,38 @@ class ProjectUpdateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): ProjectUpdateParams = ProjectUpdateParams(
-            checkNotNull(projectId) {
-                "`projectId` is required but was not set"
-            },
-            name,
-            settings,
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): ProjectUpdateParams =
+            ProjectUpdateParams(
+                checkNotNull(projectId) { "`projectId` is required but was not set" },
+                name,
+                settings,
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
     /**
-     * Project settings. Patch operations replace all settings, so make sure you
-     * include all settings you want to keep.
+     * Project settings. Patch operations replace all settings, so make sure you include all
+     * settings you want to keep.
      */
     @JsonDeserialize(builder = Settings.Builder::class)
     @NoAutoDetect
-    class Settings private constructor(private val comparisonKey: String?, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Settings
+    private constructor(
+        private val comparisonKey: String?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
         /** The key used to join two experiments (defaults to `input`). */
-        @JsonProperty("comparison_key")
-        fun comparisonKey(): String? = comparisonKey
+        @JsonProperty("comparison_key") fun comparisonKey(): String? = comparisonKey
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -344,28 +315,28 @@ class ProjectUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Settings &&
-              this.comparisonKey == other.comparisonKey &&
-              this.additionalProperties == other.additionalProperties
+            return other is Settings &&
+                this.comparisonKey == other.comparisonKey &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(comparisonKey, additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(comparisonKey, additionalProperties)
+            }
+            return hashCode
         }
 
-        override fun toString() = "Settings{comparisonKey=$comparisonKey, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Settings{comparisonKey=$comparisonKey, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -381,9 +352,7 @@ class ProjectUpdateParams constructor(
 
             /** The key used to join two experiments (defaults to `input`). */
             @JsonProperty("comparison_key")
-            fun comparisonKey(comparisonKey: String) = apply {
-                this.comparisonKey = comparisonKey
-            }
+            fun comparisonKey(comparisonKey: String) = apply { this.comparisonKey = comparisonKey }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

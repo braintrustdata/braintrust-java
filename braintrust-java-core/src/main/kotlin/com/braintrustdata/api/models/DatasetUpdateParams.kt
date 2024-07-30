@@ -2,49 +2,27 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class DatasetUpdateParams constructor(
-  private val datasetId: String,
-  private val description: String?,
-  private val metadata: Metadata?,
-  private val name: String?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class DatasetUpdateParams
+constructor(
+    private val datasetId: String,
+    private val description: String?,
+    private val metadata: Metadata?,
+    private val name: String?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun datasetId(): String = datasetId
@@ -57,50 +35,45 @@ class DatasetUpdateParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): DatasetUpdateBody {
-      return DatasetUpdateBody(
-          description,
-          metadata,
-          name,
-          additionalBodyProperties,
-      )
+        return DatasetUpdateBody(
+            description,
+            metadata,
+            name,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> datasetId
-          else -> ""
-      }
+        return when (index) {
+            0 -> datasetId
+            else -> ""
+        }
     }
 
     @JsonDeserialize(builder = DatasetUpdateBody.Builder::class)
     @NoAutoDetect
-    class DatasetUpdateBody internal constructor(
-      private val description: String?,
-      private val metadata: Metadata?,
-      private val name: String?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class DatasetUpdateBody
+    internal constructor(
+        private val description: String?,
+        private val metadata: Metadata?,
+        private val name: String?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         /** Textual description of the dataset */
-        @JsonProperty("description")
-        fun description(): String? = description
+        @JsonProperty("description") fun description(): String? = description
 
         /** User-controlled metadata about the dataset */
-        @JsonProperty("metadata")
-        fun metadata(): Metadata? = metadata
+        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
 
         /** Name of the dataset. Within a project, dataset names are unique */
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -109,35 +82,36 @@ class DatasetUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is DatasetUpdateBody &&
-              this.description == other.description &&
-              this.metadata == other.metadata &&
-              this.name == other.name &&
-              this.additionalProperties == other.additionalProperties
+            return other is DatasetUpdateBody &&
+                this.description == other.description &&
+                this.metadata == other.metadata &&
+                this.name == other.name &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                description,
-                metadata,
-                name,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        description,
+                        metadata,
+                        name,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "DatasetUpdateBody{description=$description, metadata=$metadata, name=$name, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "DatasetUpdateBody{description=$description, metadata=$metadata, name=$name, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -157,21 +131,14 @@ class DatasetUpdateParams constructor(
 
             /** Textual description of the dataset */
             @JsonProperty("description")
-            fun description(description: String) = apply {
-                this.description = description
-            }
+            fun description(description: String) = apply { this.description = description }
 
             /** User-controlled metadata about the dataset */
             @JsonProperty("metadata")
-            fun metadata(metadata: Metadata) = apply {
-                this.metadata = metadata
-            }
+            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
             /** Name of the dataset. Within a project, dataset names are unique */
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -187,12 +154,13 @@ class DatasetUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): DatasetUpdateBody = DatasetUpdateBody(
-                description,
-                metadata,
-                name,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): DatasetUpdateBody =
+                DatasetUpdateBody(
+                    description,
+                    metadata,
+                    name,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -203,40 +171,40 @@ class DatasetUpdateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is DatasetUpdateParams &&
-          this.datasetId == other.datasetId &&
-          this.description == other.description &&
-          this.metadata == other.metadata &&
-          this.name == other.name &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is DatasetUpdateParams &&
+            this.datasetId == other.datasetId &&
+            this.description == other.description &&
+            this.metadata == other.metadata &&
+            this.name == other.name &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          datasetId,
-          description,
-          metadata,
-          name,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            datasetId,
+            description,
+            metadata,
+            name,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "DatasetUpdateParams{datasetId=$datasetId, description=$description, metadata=$metadata, name=$name, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "DatasetUpdateParams{datasetId=$datasetId, description=$description, metadata=$metadata, name=$name, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -262,24 +230,16 @@ class DatasetUpdateParams constructor(
         }
 
         /** Dataset id */
-        fun datasetId(datasetId: String) = apply {
-            this.datasetId = datasetId
-        }
+        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
 
         /** Textual description of the dataset */
-        fun description(description: String) = apply {
-            this.description = description
-        }
+        fun description(description: String) = apply { this.description = description }
 
         /** User-controlled metadata about the dataset */
-        fun metadata(metadata: Metadata) = apply {
-            this.metadata = metadata
-        }
+        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
         /** Name of the dataset. Within a project, dataset names are unique */
-        fun name(name: String) = apply {
-            this.name = name
-        }
+        fun name(name: String) = apply { this.name = name }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -319,9 +279,7 @@ class DatasetUpdateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -332,27 +290,30 @@ class DatasetUpdateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): DatasetUpdateParams = DatasetUpdateParams(
-            checkNotNull(datasetId) {
-                "`datasetId` is required but was not set"
-            },
-            description,
-            metadata,
-            name,
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): DatasetUpdateParams =
+            DatasetUpdateParams(
+                checkNotNull(datasetId) { "`datasetId` is required but was not set" },
+                description,
+                metadata,
+                name,
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
     /** User-controlled metadata about the dataset */
     @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
-    class Metadata private constructor(private val additionalProperties: Map<String, JsonValue>, ) {
+    class Metadata
+    private constructor(
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
@@ -363,27 +324,25 @@ class DatasetUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Metadata &&
-              this.additionalProperties == other.additionalProperties
+            return other is Metadata && this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(additionalProperties)
+            }
+            return hashCode
         }
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {

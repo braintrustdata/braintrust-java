@@ -2,54 +2,32 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class ExperimentUpdateParams constructor(
-  private val experimentId: String,
-  private val baseExpId: String?,
-  private val datasetId: String?,
-  private val datasetVersion: String?,
-  private val description: String?,
-  private val metadata: Metadata?,
-  private val name: String?,
-  private val public_: Boolean?,
-  private val repoInfo: RepoInfo?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class ExperimentUpdateParams
+constructor(
+    private val experimentId: String,
+    private val baseExpId: String?,
+    private val datasetId: String?,
+    private val datasetVersion: String?,
+    private val description: String?,
+    private val metadata: Metadata?,
+    private val name: String?,
+    private val public_: Boolean?,
+    private val repoInfo: RepoInfo?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun experimentId(): String = experimentId
@@ -72,89 +50,78 @@ class ExperimentUpdateParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): ExperimentUpdateBody {
-      return ExperimentUpdateBody(
-          baseExpId,
-          datasetId,
-          datasetVersion,
-          description,
-          metadata,
-          name,
-          public_,
-          repoInfo,
-          additionalBodyProperties,
-      )
+        return ExperimentUpdateBody(
+            baseExpId,
+            datasetId,
+            datasetVersion,
+            description,
+            metadata,
+            name,
+            public_,
+            repoInfo,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> experimentId
-          else -> ""
-      }
+        return when (index) {
+            0 -> experimentId
+            else -> ""
+        }
     }
 
     @JsonDeserialize(builder = ExperimentUpdateBody.Builder::class)
     @NoAutoDetect
-    class ExperimentUpdateBody internal constructor(
-      private val baseExpId: String?,
-      private val datasetId: String?,
-      private val datasetVersion: String?,
-      private val description: String?,
-      private val metadata: Metadata?,
-      private val name: String?,
-      private val public_: Boolean?,
-      private val repoInfo: RepoInfo?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class ExperimentUpdateBody
+    internal constructor(
+        private val baseExpId: String?,
+        private val datasetId: String?,
+        private val datasetVersion: String?,
+        private val description: String?,
+        private val metadata: Metadata?,
+        private val name: String?,
+        private val public_: Boolean?,
+        private val repoInfo: RepoInfo?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         /** Id of default base experiment to compare against when viewing this experiment */
-        @JsonProperty("base_exp_id")
-        fun baseExpId(): String? = baseExpId
+        @JsonProperty("base_exp_id") fun baseExpId(): String? = baseExpId
 
         /**
-         * Identifier of the linked dataset, or null if the experiment is not linked to a
-         * dataset
+         * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
          */
-        @JsonProperty("dataset_id")
-        fun datasetId(): String? = datasetId
+        @JsonProperty("dataset_id") fun datasetId(): String? = datasetId
 
         /**
-         * Version number of the linked dataset the experiment was run against. This can be
-         * used to reproduce the experiment after the dataset has been modified.
+         * Version number of the linked dataset the experiment was run against. This can be used to
+         * reproduce the experiment after the dataset has been modified.
          */
-        @JsonProperty("dataset_version")
-        fun datasetVersion(): String? = datasetVersion
+        @JsonProperty("dataset_version") fun datasetVersion(): String? = datasetVersion
 
         /** Textual description of the experiment */
-        @JsonProperty("description")
-        fun description(): String? = description
+        @JsonProperty("description") fun description(): String? = description
 
         /** User-controlled metadata about the experiment */
-        @JsonProperty("metadata")
-        fun metadata(): Metadata? = metadata
+        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
 
         /** Name of the experiment. Within a project, experiment names are unique */
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
         /**
-         * Whether or not the experiment is public. Public experiments can be viewed by
-         * anybody inside or outside the organization
+         * Whether or not the experiment is public. Public experiments can be viewed by anybody
+         * inside or outside the organization
          */
-        @JsonProperty("public")
-        fun public_(): Boolean? = public_
+        @JsonProperty("public") fun public_(): Boolean? = public_
 
         /** Metadata about the state of the repo when the experiment was created */
-        @JsonProperty("repo_info")
-        fun repoInfo(): RepoInfo? = repoInfo
+        @JsonProperty("repo_info") fun repoInfo(): RepoInfo? = repoInfo
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -163,45 +130,46 @@ class ExperimentUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is ExperimentUpdateBody &&
-              this.baseExpId == other.baseExpId &&
-              this.datasetId == other.datasetId &&
-              this.datasetVersion == other.datasetVersion &&
-              this.description == other.description &&
-              this.metadata == other.metadata &&
-              this.name == other.name &&
-              this.public_ == other.public_ &&
-              this.repoInfo == other.repoInfo &&
-              this.additionalProperties == other.additionalProperties
+            return other is ExperimentUpdateBody &&
+                this.baseExpId == other.baseExpId &&
+                this.datasetId == other.datasetId &&
+                this.datasetVersion == other.datasetVersion &&
+                this.description == other.description &&
+                this.metadata == other.metadata &&
+                this.name == other.name &&
+                this.public_ == other.public_ &&
+                this.repoInfo == other.repoInfo &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                baseExpId,
-                datasetId,
-                datasetVersion,
-                description,
-                metadata,
-                name,
-                public_,
-                repoInfo,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        baseExpId,
+                        datasetId,
+                        datasetVersion,
+                        description,
+                        metadata,
+                        name,
+                        public_,
+                        repoInfo,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "ExperimentUpdateBody{baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "ExperimentUpdateBody{baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -231,22 +199,18 @@ class ExperimentUpdateParams constructor(
 
             /** Id of default base experiment to compare against when viewing this experiment */
             @JsonProperty("base_exp_id")
-            fun baseExpId(baseExpId: String) = apply {
-                this.baseExpId = baseExpId
-            }
+            fun baseExpId(baseExpId: String) = apply { this.baseExpId = baseExpId }
 
             /**
              * Identifier of the linked dataset, or null if the experiment is not linked to a
              * dataset
              */
             @JsonProperty("dataset_id")
-            fun datasetId(datasetId: String) = apply {
-                this.datasetId = datasetId
-            }
+            fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
 
             /**
-             * Version number of the linked dataset the experiment was run against. This can be
-             * used to reproduce the experiment after the dataset has been modified.
+             * Version number of the linked dataset the experiment was run against. This can be used
+             * to reproduce the experiment after the dataset has been modified.
              */
             @JsonProperty("dataset_version")
             fun datasetVersion(datasetVersion: String) = apply {
@@ -255,36 +219,24 @@ class ExperimentUpdateParams constructor(
 
             /** Textual description of the experiment */
             @JsonProperty("description")
-            fun description(description: String) = apply {
-                this.description = description
-            }
+            fun description(description: String) = apply { this.description = description }
 
             /** User-controlled metadata about the experiment */
             @JsonProperty("metadata")
-            fun metadata(metadata: Metadata) = apply {
-                this.metadata = metadata
-            }
+            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
             /** Name of the experiment. Within a project, experiment names are unique */
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             /**
-             * Whether or not the experiment is public. Public experiments can be viewed by
-             * anybody inside or outside the organization
+             * Whether or not the experiment is public. Public experiments can be viewed by anybody
+             * inside or outside the organization
              */
-            @JsonProperty("public")
-            fun public_(public_: Boolean) = apply {
-                this.public_ = public_
-            }
+            @JsonProperty("public") fun public_(public_: Boolean) = apply { this.public_ = public_ }
 
             /** Metadata about the state of the repo when the experiment was created */
             @JsonProperty("repo_info")
-            fun repoInfo(repoInfo: RepoInfo) = apply {
-                this.repoInfo = repoInfo
-            }
+            fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -300,17 +252,18 @@ class ExperimentUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): ExperimentUpdateBody = ExperimentUpdateBody(
-                baseExpId,
-                datasetId,
-                datasetVersion,
-                description,
-                metadata,
-                name,
-                public_,
-                repoInfo,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): ExperimentUpdateBody =
+                ExperimentUpdateBody(
+                    baseExpId,
+                    datasetId,
+                    datasetVersion,
+                    description,
+                    metadata,
+                    name,
+                    public_,
+                    repoInfo,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -321,50 +274,50 @@ class ExperimentUpdateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ExperimentUpdateParams &&
-          this.experimentId == other.experimentId &&
-          this.baseExpId == other.baseExpId &&
-          this.datasetId == other.datasetId &&
-          this.datasetVersion == other.datasetVersion &&
-          this.description == other.description &&
-          this.metadata == other.metadata &&
-          this.name == other.name &&
-          this.public_ == other.public_ &&
-          this.repoInfo == other.repoInfo &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is ExperimentUpdateParams &&
+            this.experimentId == other.experimentId &&
+            this.baseExpId == other.baseExpId &&
+            this.datasetId == other.datasetId &&
+            this.datasetVersion == other.datasetVersion &&
+            this.description == other.description &&
+            this.metadata == other.metadata &&
+            this.name == other.name &&
+            this.public_ == other.public_ &&
+            this.repoInfo == other.repoInfo &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          experimentId,
-          baseExpId,
-          datasetId,
-          datasetVersion,
-          description,
-          metadata,
-          name,
-          public_,
-          repoInfo,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            experimentId,
+            baseExpId,
+            datasetId,
+            datasetVersion,
+            description,
+            metadata,
+            name,
+            public_,
+            repoInfo,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "ExperimentUpdateParams{experimentId=$experimentId, baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "ExperimentUpdateParams{experimentId=$experimentId, baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -400,58 +353,39 @@ class ExperimentUpdateParams constructor(
         }
 
         /** Experiment id */
-        fun experimentId(experimentId: String) = apply {
-            this.experimentId = experimentId
-        }
+        fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
 
         /** Id of default base experiment to compare against when viewing this experiment */
-        fun baseExpId(baseExpId: String) = apply {
-            this.baseExpId = baseExpId
-        }
+        fun baseExpId(baseExpId: String) = apply { this.baseExpId = baseExpId }
 
         /**
-         * Identifier of the linked dataset, or null if the experiment is not linked to a
-         * dataset
+         * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
          */
-        fun datasetId(datasetId: String) = apply {
-            this.datasetId = datasetId
-        }
+        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
 
         /**
-         * Version number of the linked dataset the experiment was run against. This can be
-         * used to reproduce the experiment after the dataset has been modified.
+         * Version number of the linked dataset the experiment was run against. This can be used to
+         * reproduce the experiment after the dataset has been modified.
          */
-        fun datasetVersion(datasetVersion: String) = apply {
-            this.datasetVersion = datasetVersion
-        }
+        fun datasetVersion(datasetVersion: String) = apply { this.datasetVersion = datasetVersion }
 
         /** Textual description of the experiment */
-        fun description(description: String) = apply {
-            this.description = description
-        }
+        fun description(description: String) = apply { this.description = description }
 
         /** User-controlled metadata about the experiment */
-        fun metadata(metadata: Metadata) = apply {
-            this.metadata = metadata
-        }
+        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
         /** Name of the experiment. Within a project, experiment names are unique */
-        fun name(name: String) = apply {
-            this.name = name
-        }
+        fun name(name: String) = apply { this.name = name }
 
         /**
-         * Whether or not the experiment is public. Public experiments can be viewed by
-         * anybody inside or outside the organization
+         * Whether or not the experiment is public. Public experiments can be viewed by anybody
+         * inside or outside the organization
          */
-        fun public_(public_: Boolean) = apply {
-            this.public_ = public_
-        }
+        fun public_(public_: Boolean) = apply { this.public_ = public_ }
 
         /** Metadata about the state of the repo when the experiment was created */
-        fun repoInfo(repoInfo: RepoInfo) = apply {
-            this.repoInfo = repoInfo
-        }
+        fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -491,9 +425,7 @@ class ExperimentUpdateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -504,32 +436,35 @@ class ExperimentUpdateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): ExperimentUpdateParams = ExperimentUpdateParams(
-            checkNotNull(experimentId) {
-                "`experimentId` is required but was not set"
-            },
-            baseExpId,
-            datasetId,
-            datasetVersion,
-            description,
-            metadata,
-            name,
-            public_,
-            repoInfo,
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): ExperimentUpdateParams =
+            ExperimentUpdateParams(
+                checkNotNull(experimentId) { "`experimentId` is required but was not set" },
+                baseExpId,
+                datasetId,
+                datasetVersion,
+                description,
+                metadata,
+                name,
+                public_,
+                repoInfo,
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
     /** User-controlled metadata about the experiment */
     @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
-    class Metadata private constructor(private val additionalProperties: Map<String, JsonValue>, ) {
+    class Metadata
+    private constructor(
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
@@ -540,27 +475,25 @@ class ExperimentUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Metadata &&
-              this.additionalProperties == other.additionalProperties
+            return other is Metadata && this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(additionalProperties)
+            }
+            return hashCode
         }
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -593,60 +526,51 @@ class ExperimentUpdateParams constructor(
     /** Metadata about the state of the repo when the experiment was created */
     @JsonDeserialize(builder = RepoInfo.Builder::class)
     @NoAutoDetect
-    class RepoInfo private constructor(
-      private val commit: String?,
-      private val branch: String?,
-      private val tag: String?,
-      private val dirty: Boolean?,
-      private val authorName: String?,
-      private val authorEmail: String?,
-      private val commitMessage: String?,
-      private val commitTime: String?,
-      private val gitDiff: String?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class RepoInfo
+    private constructor(
+        private val commit: String?,
+        private val branch: String?,
+        private val tag: String?,
+        private val dirty: Boolean?,
+        private val authorName: String?,
+        private val authorEmail: String?,
+        private val commitMessage: String?,
+        private val commitTime: String?,
+        private val gitDiff: String?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         /** SHA of most recent commit */
-        @JsonProperty("commit")
-        fun commit(): String? = commit
+        @JsonProperty("commit") fun commit(): String? = commit
 
         /** Name of the branch the most recent commit belongs to */
-        @JsonProperty("branch")
-        fun branch(): String? = branch
+        @JsonProperty("branch") fun branch(): String? = branch
 
         /** Name of the tag on the most recent commit */
-        @JsonProperty("tag")
-        fun tag(): String? = tag
+        @JsonProperty("tag") fun tag(): String? = tag
 
         /** Whether or not the repo had uncommitted changes when snapshotted */
-        @JsonProperty("dirty")
-        fun dirty(): Boolean? = dirty
+        @JsonProperty("dirty") fun dirty(): Boolean? = dirty
 
         /** Name of the author of the most recent commit */
-        @JsonProperty("author_name")
-        fun authorName(): String? = authorName
+        @JsonProperty("author_name") fun authorName(): String? = authorName
 
         /** Email of the author of the most recent commit */
-        @JsonProperty("author_email")
-        fun authorEmail(): String? = authorEmail
+        @JsonProperty("author_email") fun authorEmail(): String? = authorEmail
 
         /** Most recent commit message */
-        @JsonProperty("commit_message")
-        fun commitMessage(): String? = commitMessage
+        @JsonProperty("commit_message") fun commitMessage(): String? = commitMessage
 
         /** Time of the most recent commit */
-        @JsonProperty("commit_time")
-        fun commitTime(): String? = commitTime
+        @JsonProperty("commit_time") fun commitTime(): String? = commitTime
 
         /**
-         * If the repo was dirty when run, this includes the diff between the current state
-         * of the repo and the most recent commit.
+         * If the repo was dirty when run, this includes the diff between the current state of the
+         * repo and the most recent commit.
          */
-        @JsonProperty("git_diff")
-        fun gitDiff(): String? = gitDiff
+        @JsonProperty("git_diff") fun gitDiff(): String? = gitDiff
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -655,47 +579,48 @@ class ExperimentUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is RepoInfo &&
-              this.commit == other.commit &&
-              this.branch == other.branch &&
-              this.tag == other.tag &&
-              this.dirty == other.dirty &&
-              this.authorName == other.authorName &&
-              this.authorEmail == other.authorEmail &&
-              this.commitMessage == other.commitMessage &&
-              this.commitTime == other.commitTime &&
-              this.gitDiff == other.gitDiff &&
-              this.additionalProperties == other.additionalProperties
+            return other is RepoInfo &&
+                this.commit == other.commit &&
+                this.branch == other.branch &&
+                this.tag == other.tag &&
+                this.dirty == other.dirty &&
+                this.authorName == other.authorName &&
+                this.authorEmail == other.authorEmail &&
+                this.commitMessage == other.commitMessage &&
+                this.commitTime == other.commitTime &&
+                this.gitDiff == other.gitDiff &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                commit,
-                branch,
-                tag,
-                dirty,
-                authorName,
-                authorEmail,
-                commitMessage,
-                commitTime,
-                gitDiff,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        commit,
+                        branch,
+                        tag,
+                        dirty,
+                        authorName,
+                        authorEmail,
+                        commitMessage,
+                        commitTime,
+                        gitDiff,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "RepoInfo{commit=$commit, branch=$branch, tag=$tag, dirty=$dirty, authorName=$authorName, authorEmail=$authorEmail, commitMessage=$commitMessage, commitTime=$commitTime, gitDiff=$gitDiff, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "RepoInfo{commit=$commit, branch=$branch, tag=$tag, dirty=$dirty, authorName=$authorName, authorEmail=$authorEmail, commitMessage=$commitMessage, commitTime=$commitTime, gitDiff=$gitDiff, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -726,61 +651,39 @@ class ExperimentUpdateParams constructor(
             }
 
             /** SHA of most recent commit */
-            @JsonProperty("commit")
-            fun commit(commit: String) = apply {
-                this.commit = commit
-            }
+            @JsonProperty("commit") fun commit(commit: String) = apply { this.commit = commit }
 
             /** Name of the branch the most recent commit belongs to */
-            @JsonProperty("branch")
-            fun branch(branch: String) = apply {
-                this.branch = branch
-            }
+            @JsonProperty("branch") fun branch(branch: String) = apply { this.branch = branch }
 
             /** Name of the tag on the most recent commit */
-            @JsonProperty("tag")
-            fun tag(tag: String) = apply {
-                this.tag = tag
-            }
+            @JsonProperty("tag") fun tag(tag: String) = apply { this.tag = tag }
 
             /** Whether or not the repo had uncommitted changes when snapshotted */
-            @JsonProperty("dirty")
-            fun dirty(dirty: Boolean) = apply {
-                this.dirty = dirty
-            }
+            @JsonProperty("dirty") fun dirty(dirty: Boolean) = apply { this.dirty = dirty }
 
             /** Name of the author of the most recent commit */
             @JsonProperty("author_name")
-            fun authorName(authorName: String) = apply {
-                this.authorName = authorName
-            }
+            fun authorName(authorName: String) = apply { this.authorName = authorName }
 
             /** Email of the author of the most recent commit */
             @JsonProperty("author_email")
-            fun authorEmail(authorEmail: String) = apply {
-                this.authorEmail = authorEmail
-            }
+            fun authorEmail(authorEmail: String) = apply { this.authorEmail = authorEmail }
 
             /** Most recent commit message */
             @JsonProperty("commit_message")
-            fun commitMessage(commitMessage: String) = apply {
-                this.commitMessage = commitMessage
-            }
+            fun commitMessage(commitMessage: String) = apply { this.commitMessage = commitMessage }
 
             /** Time of the most recent commit */
             @JsonProperty("commit_time")
-            fun commitTime(commitTime: String) = apply {
-                this.commitTime = commitTime
-            }
+            fun commitTime(commitTime: String) = apply { this.commitTime = commitTime }
 
             /**
-             * If the repo was dirty when run, this includes the diff between the current state
-             * of the repo and the most recent commit.
+             * If the repo was dirty when run, this includes the diff between the current state of
+             * the repo and the most recent commit.
              */
             @JsonProperty("git_diff")
-            fun gitDiff(gitDiff: String) = apply {
-                this.gitDiff = gitDiff
-            }
+            fun gitDiff(gitDiff: String) = apply { this.gitDiff = gitDiff }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -796,18 +699,19 @@ class ExperimentUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): RepoInfo = RepoInfo(
-                commit,
-                branch,
-                tag,
-                dirty,
-                authorName,
-                authorEmail,
-                commitMessage,
-                commitTime,
-                gitDiff,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): RepoInfo =
+                RepoInfo(
+                    commit,
+                    branch,
+                    tag,
+                    dirty,
+                    authorName,
+                    authorEmail,
+                    commitMessage,
+                    commitTime,
+                    gitDiff,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 }

@@ -2,57 +2,39 @@
 
 package com.braintrustdata.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.core.toUnmodifiable
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.Optional
 
 /**
  * A group is a collection of users which can be assigned an ACL
  *
- * Groups can consist of individual users, as well as a set of groups they inherit
- * from
+ * Groups can consist of individual users, as well as a set of groups they inherit from
  */
 @JsonDeserialize(builder = Group.Builder::class)
 @NoAutoDetect
-class Group private constructor(
-  private val id: JsonField<String>,
-  private val orgId: JsonField<String>,
-  private val userId: JsonField<String>,
-  private val created: JsonField<OffsetDateTime>,
-  private val name: JsonField<String>,
-  private val description: JsonField<String>,
-  private val deletedAt: JsonField<OffsetDateTime>,
-  private val memberUsers: JsonField<List<String>>,
-  private val memberGroups: JsonField<List<String>>,
-  private val additionalProperties: Map<String, JsonValue>,
-
+class Group
+private constructor(
+    private val id: JsonField<String>,
+    private val orgId: JsonField<String>,
+    private val userId: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val name: JsonField<String>,
+    private val description: JsonField<String>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val memberUsers: JsonField<List<String>>,
+    private val memberGroups: JsonField<List<String>>,
+    private val additionalProperties: Map<String, JsonValue>,
 ) {
 
     private var validated: Boolean = false
@@ -79,75 +61,61 @@ class Group private constructor(
     fun name(): String = name.getRequired("name")
 
     /** Textual description of the group */
-    fun description(): Optional<String> = Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> =
+        Optional.ofNullable(description.getNullable("description"))
 
     /** Date of group deletion, or null if the group is still active */
-    fun deletedAt(): Optional<OffsetDateTime> = Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+    fun deletedAt(): Optional<OffsetDateTime> =
+        Optional.ofNullable(deletedAt.getNullable("deleted_at"))
 
     /** Ids of users which belong to this group */
-    fun memberUsers(): Optional<List<String>> = Optional.ofNullable(memberUsers.getNullable("member_users"))
+    fun memberUsers(): Optional<List<String>> =
+        Optional.ofNullable(memberUsers.getNullable("member_users"))
 
     /**
      * Ids of the groups this group inherits from
      *
-     * An inheriting group has all the users contained in its member groups, as well as
-     * all of their inherited users
+     * An inheriting group has all the users contained in its member groups, as well as all of their
+     * inherited users
      */
-    fun memberGroups(): Optional<List<String>> = Optional.ofNullable(memberGroups.getNullable("member_groups"))
+    fun memberGroups(): Optional<List<String>> =
+        Optional.ofNullable(memberGroups.getNullable("member_groups"))
 
     /** Unique identifier for the group */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
 
     /**
      * Unique id for the organization that the group belongs under
      *
      * It is forbidden to change the org after creating a group
      */
-    @JsonProperty("org_id")
-    @ExcludeMissing
-    fun _orgId() = orgId
+    @JsonProperty("org_id") @ExcludeMissing fun _orgId() = orgId
 
     /** Identifies the user who created the group */
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    fun _userId() = userId
+    @JsonProperty("user_id") @ExcludeMissing fun _userId() = userId
 
     /** Date of group creation */
-    @JsonProperty("created")
-    @ExcludeMissing
-    fun _created() = created
+    @JsonProperty("created") @ExcludeMissing fun _created() = created
 
     /** Name of the group */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name() = name
 
     /** Textual description of the group */
-    @JsonProperty("description")
-    @ExcludeMissing
-    fun _description() = description
+    @JsonProperty("description") @ExcludeMissing fun _description() = description
 
     /** Date of group deletion, or null if the group is still active */
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    fun _deletedAt() = deletedAt
+    @JsonProperty("deleted_at") @ExcludeMissing fun _deletedAt() = deletedAt
 
     /** Ids of users which belong to this group */
-    @JsonProperty("member_users")
-    @ExcludeMissing
-    fun _memberUsers() = memberUsers
+    @JsonProperty("member_users") @ExcludeMissing fun _memberUsers() = memberUsers
 
     /**
      * Ids of the groups this group inherits from
      *
-     * An inheriting group has all the users contained in its member groups, as well as
-     * all of their inherited users
+     * An inheriting group has all the users contained in its member groups, as well as all of their
+     * inherited users
      */
-    @JsonProperty("member_groups")
-    @ExcludeMissing
-    fun _memberGroups() = memberGroups
+    @JsonProperty("member_groups") @ExcludeMissing fun _memberGroups() = memberGroups
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -155,63 +123,64 @@ class Group private constructor(
 
     fun validate(): Group = apply {
         if (!validated) {
-          id()
-          orgId()
-          userId()
-          created()
-          name()
-          description()
-          deletedAt()
-          memberUsers()
-          memberGroups()
-          validated = true
+            id()
+            orgId()
+            userId()
+            created()
+            name()
+            description()
+            deletedAt()
+            memberUsers()
+            memberGroups()
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is Group &&
-          this.id == other.id &&
-          this.orgId == other.orgId &&
-          this.userId == other.userId &&
-          this.created == other.created &&
-          this.name == other.name &&
-          this.description == other.description &&
-          this.deletedAt == other.deletedAt &&
-          this.memberUsers == other.memberUsers &&
-          this.memberGroups == other.memberGroups &&
-          this.additionalProperties == other.additionalProperties
+        return other is Group &&
+            this.id == other.id &&
+            this.orgId == other.orgId &&
+            this.userId == other.userId &&
+            this.created == other.created &&
+            this.name == other.name &&
+            this.description == other.description &&
+            this.deletedAt == other.deletedAt &&
+            this.memberUsers == other.memberUsers &&
+            this.memberGroups == other.memberGroups &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            id,
-            orgId,
-            userId,
-            created,
-            name,
-            description,
-            deletedAt,
-            memberUsers,
-            memberGroups,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    id,
+                    orgId,
+                    userId,
+                    created,
+                    name,
+                    description,
+                    deletedAt,
+                    memberUsers,
+                    memberGroups,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "Group{id=$id, orgId=$orgId, userId=$userId, created=$created, name=$name, description=$description, deletedAt=$deletedAt, memberUsers=$memberUsers, memberGroups=$memberGroups, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "Group{id=$id, orgId=$orgId, userId=$userId, created=$created, name=$name, description=$description, deletedAt=$deletedAt, memberUsers=$memberUsers, memberGroups=$memberGroups, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -245,11 +214,7 @@ class Group private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the group */
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
          * Unique id for the organization that the group belongs under
@@ -265,9 +230,7 @@ class Group private constructor(
          */
         @JsonProperty("org_id")
         @ExcludeMissing
-        fun orgId(orgId: JsonField<String>) = apply {
-            this.orgId = orgId
-        }
+        fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         /** Identifies the user who created the group */
         fun userId(userId: String) = userId(JsonField.of(userId))
@@ -275,9 +238,7 @@ class Group private constructor(
         /** Identifies the user who created the group */
         @JsonProperty("user_id")
         @ExcludeMissing
-        fun userId(userId: JsonField<String>) = apply {
-            this.userId = userId
-        }
+        fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
         /** Date of group creation */
         fun created(created: OffsetDateTime) = created(JsonField.of(created))
@@ -285,9 +246,7 @@ class Group private constructor(
         /** Date of group creation */
         @JsonProperty("created")
         @ExcludeMissing
-        fun created(created: JsonField<OffsetDateTime>) = apply {
-            this.created = created
-        }
+        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Name of the group */
         fun name(name: String) = name(JsonField.of(name))
@@ -295,9 +254,7 @@ class Group private constructor(
         /** Name of the group */
         @JsonProperty("name")
         @ExcludeMissing
-        fun name(name: JsonField<String>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Textual description of the group */
         fun description(description: String) = description(JsonField.of(description))
@@ -305,9 +262,7 @@ class Group private constructor(
         /** Textual description of the group */
         @JsonProperty("description")
         @ExcludeMissing
-        fun description(description: JsonField<String>) = apply {
-            this.description = description
-        }
+        fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** Date of group deletion, or null if the group is still active */
         fun deletedAt(deletedAt: OffsetDateTime) = deletedAt(JsonField.of(deletedAt))
@@ -315,9 +270,7 @@ class Group private constructor(
         /** Date of group deletion, or null if the group is still active */
         @JsonProperty("deleted_at")
         @ExcludeMissing
-        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply {
-            this.deletedAt = deletedAt
-        }
+        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
 
         /** Ids of users which belong to this group */
         fun memberUsers(memberUsers: List<String>) = memberUsers(JsonField.of(memberUsers))
@@ -332,16 +285,16 @@ class Group private constructor(
         /**
          * Ids of the groups this group inherits from
          *
-         * An inheriting group has all the users contained in its member groups, as well as
-         * all of their inherited users
+         * An inheriting group has all the users contained in its member groups, as well as all of
+         * their inherited users
          */
         fun memberGroups(memberGroups: List<String>) = memberGroups(JsonField.of(memberGroups))
 
         /**
          * Ids of the groups this group inherits from
          *
-         * An inheriting group has all the users contained in its member groups, as well as
-         * all of their inherited users
+         * An inheriting group has all the users contained in its member groups, as well as all of
+         * their inherited users
          */
         @JsonProperty("member_groups")
         @ExcludeMissing
@@ -363,17 +316,18 @@ class Group private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): Group = Group(
-            id,
-            orgId,
-            userId,
-            created,
-            name,
-            description,
-            deletedAt,
-            memberUsers.map { it.toUnmodifiable() },
-            memberGroups.map { it.toUnmodifiable() },
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): Group =
+            Group(
+                id,
+                orgId,
+                userId,
+                created,
+                name,
+                description,
+                deletedAt,
+                memberUsers.map { it.toUnmodifiable() },
+                memberGroups.map { it.toUnmodifiable() },
+                additionalProperties.toUnmodifiable(),
+            )
     }
 }
