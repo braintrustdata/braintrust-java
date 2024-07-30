@@ -19,15 +19,25 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.role()
+        val roleService = client.roles()
         val role =
             roleService.create(
                 RoleCreateParams.builder()
-                    .name("string")
-                    .description("string")
-                    .memberPermissions(listOf(RoleCreateParams.MemberPermission.CREATE))
+                    .name("name")
+                    .description("description")
+                    .memberPermissions(
+                        listOf(
+                            RoleCreateParams.MemberPermission.builder()
+                                .permission(RoleCreateParams.MemberPermission.Permission.CREATE)
+                                .restrictObjectType(
+                                    RoleCreateParams.MemberPermission.RestrictObjectType
+                                        .ORGANIZATION
+                                )
+                                .build()
+                        )
+                    )
                     .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .orgName("string")
+                    .orgName("org_name")
                     .build()
             )
         println(role)
@@ -41,7 +51,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.role()
+        val roleService = client.roles()
         val role =
             roleService.retrieve(
                 RoleRetrieveParams.builder().roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -57,15 +67,39 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.role()
+        val roleService = client.roles()
         val role =
             roleService.update(
                 RoleUpdateParams.builder()
                     .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .description("string")
-                    .memberPermissions(listOf(RoleUpdateParams.MemberPermission.CREATE))
-                    .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .name("string")
+                    .addMemberPermissions(
+                        listOf(
+                            RoleUpdateParams.AddMemberPermission.builder()
+                                .permission(RoleUpdateParams.AddMemberPermission.Permission.CREATE)
+                                .restrictObjectType(
+                                    RoleUpdateParams.AddMemberPermission.RestrictObjectType
+                                        .ORGANIZATION
+                                )
+                                .build()
+                        )
+                    )
+                    .addMemberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                    .description("description")
+                    .name("name")
+                    .removeMemberPermissions(
+                        listOf(
+                            RoleUpdateParams.RemoveMemberPermission.builder()
+                                .permission(
+                                    RoleUpdateParams.RemoveMemberPermission.Permission.CREATE
+                                )
+                                .restrictObjectType(
+                                    RoleUpdateParams.RemoveMemberPermission.RestrictObjectType
+                                        .ORGANIZATION
+                                )
+                                .build()
+                        )
+                    )
+                    .removeMemberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .build()
             )
         println(role)
@@ -79,7 +113,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.role()
+        val roleService = client.roles()
         val response = roleService.list(RoleListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -92,7 +126,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.role()
+        val roleService = client.roles()
         val role =
             roleService.delete(
                 RoleDeleteParams.builder().roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -108,15 +142,25 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.role()
+        val roleService = client.roles()
         val role =
             roleService.replace(
                 RoleReplaceParams.builder()
-                    .name("string")
-                    .description("string")
-                    .memberPermissions(listOf(RoleReplaceParams.MemberPermission.CREATE))
+                    .name("name")
+                    .description("description")
+                    .memberPermissions(
+                        listOf(
+                            RoleReplaceParams.MemberPermission.builder()
+                                .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
+                                .restrictObjectType(
+                                    RoleReplaceParams.MemberPermission.RestrictObjectType
+                                        .ORGANIZATION
+                                )
+                                .build()
+                        )
+                    )
                     .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .orgName("string")
+                    .orgName("org_name")
                     .build()
             )
         println(role)

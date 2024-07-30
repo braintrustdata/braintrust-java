@@ -13,32 +13,32 @@ class PromptTest {
         val prompt =
             Prompt.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                ._xactId("string")
+                ._xactId("_xact_id")
                 .logId(Prompt.LogId.P)
-                .name("string")
+                .name("name")
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .slug("string")
+                .slug("slug")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .description("string")
+                .description("description")
                 .metadata(Prompt.Metadata.builder().build())
                 .promptData(
                     Prompt.PromptData.builder()
                         .options(
                             Prompt.PromptData.Options.builder()
-                                .model("string")
+                                .model("model")
                                 .params(
-                                    Prompt.PromptData.Options.Params.ofUnionMember0(
-                                        Prompt.PromptData.Options.Params.UnionMember0.builder()
+                                    Prompt.PromptData.Options.Params.ofOpenAIModelParams(
+                                        Prompt.PromptData.Options.Params.OpenAIModelParams.builder()
                                             .frequencyPenalty(42.23)
                                             .functionCall(
-                                                Prompt.PromptData.Options.Params.UnionMember0
+                                                Prompt.PromptData.Options.Params.OpenAIModelParams
                                                     .FunctionCall
-                                                    .ofUnionMember0(
+                                                    .ofAuto(
                                                         Prompt.PromptData.Options.Params
-                                                            .UnionMember0
+                                                            .OpenAIModelParams
                                                             .FunctionCall
-                                                            .UnionMember0
+                                                            .Auto
                                                             .AUTO
                                                     )
                                             )
@@ -46,12 +46,12 @@ class PromptTest {
                                             .n(42.23)
                                             .presencePenalty(42.23)
                                             .responseFormat(
-                                                Prompt.PromptData.Options.Params.UnionMember0
+                                                Prompt.PromptData.Options.Params.OpenAIModelParams
                                                     .ResponseFormat
                                                     .builder()
                                                     .type(
                                                         Prompt.PromptData.Options.Params
-                                                            .UnionMember0
+                                                            .OpenAIModelParams
                                                             .ResponseFormat
                                                             .Type
                                                             .JSON_OBJECT
@@ -61,13 +61,13 @@ class PromptTest {
                                             .stop(listOf("string"))
                                             .temperature(42.23)
                                             .toolChoice(
-                                                Prompt.PromptData.Options.Params.UnionMember0
+                                                Prompt.PromptData.Options.Params.OpenAIModelParams
                                                     .ToolChoice
-                                                    .ofUnionMember0(
+                                                    .ofAuto(
                                                         Prompt.PromptData.Options.Params
-                                                            .UnionMember0
+                                                            .OpenAIModelParams
                                                             .ToolChoice
-                                                            .UnionMember0
+                                                            .Auto
                                                             .AUTO
                                                     )
                                             )
@@ -76,21 +76,21 @@ class PromptTest {
                                             .build()
                                     )
                                 )
-                                .position("string")
+                                .position("position")
                                 .build()
                         )
                         .origin(
                             Prompt.PromptData.Origin.builder()
-                                .projectId("string")
-                                .promptId("string")
-                                .promptVersion("string")
+                                .projectId("project_id")
+                                .promptId("prompt_id")
+                                .promptVersion("prompt_version")
                                 .build()
                         )
                         .prompt(
-                            Prompt.PromptData.Prompt.ofUnionMember0(
-                                Prompt.PromptData.Prompt.UnionMember0.builder()
-                                    .content("string")
-                                    .type(Prompt.PromptData.Prompt.UnionMember0.Type.COMPLETION)
+                            Prompt.PromptData.Prompt.ofCompletion(
+                                Prompt.PromptData.Prompt.Completion.builder()
+                                    .content("content")
+                                    .type(Prompt.PromptData.Prompt.Completion.Type.COMPLETION)
                                     .build()
                             )
                         )
@@ -100,32 +100,33 @@ class PromptTest {
                 .build()
         assertThat(prompt).isNotNull
         assertThat(prompt.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(prompt._xactId()).isEqualTo("string")
+        assertThat(prompt._xactId()).isEqualTo("_xact_id")
         assertThat(prompt.logId()).isEqualTo(Prompt.LogId.P)
-        assertThat(prompt.name()).isEqualTo("string")
+        assertThat(prompt.name()).isEqualTo("name")
         assertThat(prompt.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(prompt.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(prompt.slug()).isEqualTo("string")
+        assertThat(prompt.slug()).isEqualTo("slug")
         assertThat(prompt.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(prompt.description()).contains("string")
+        assertThat(prompt.description()).contains("description")
         assertThat(prompt.metadata()).contains(Prompt.Metadata.builder().build())
         assertThat(prompt.promptData())
             .contains(
                 Prompt.PromptData.builder()
                     .options(
                         Prompt.PromptData.Options.builder()
-                            .model("string")
+                            .model("model")
                             .params(
-                                Prompt.PromptData.Options.Params.ofUnionMember0(
-                                    Prompt.PromptData.Options.Params.UnionMember0.builder()
+                                Prompt.PromptData.Options.Params.ofOpenAIModelParams(
+                                    Prompt.PromptData.Options.Params.OpenAIModelParams.builder()
                                         .frequencyPenalty(42.23)
                                         .functionCall(
-                                            Prompt.PromptData.Options.Params.UnionMember0
+                                            Prompt.PromptData.Options.Params.OpenAIModelParams
                                                 .FunctionCall
-                                                .ofUnionMember0(
-                                                    Prompt.PromptData.Options.Params.UnionMember0
+                                                .ofAuto(
+                                                    Prompt.PromptData.Options.Params
+                                                        .OpenAIModelParams
                                                         .FunctionCall
-                                                        .UnionMember0
+                                                        .Auto
                                                         .AUTO
                                                 )
                                         )
@@ -133,11 +134,12 @@ class PromptTest {
                                         .n(42.23)
                                         .presencePenalty(42.23)
                                         .responseFormat(
-                                            Prompt.PromptData.Options.Params.UnionMember0
+                                            Prompt.PromptData.Options.Params.OpenAIModelParams
                                                 .ResponseFormat
                                                 .builder()
                                                 .type(
-                                                    Prompt.PromptData.Options.Params.UnionMember0
+                                                    Prompt.PromptData.Options.Params
+                                                        .OpenAIModelParams
                                                         .ResponseFormat
                                                         .Type
                                                         .JSON_OBJECT
@@ -147,11 +149,13 @@ class PromptTest {
                                         .stop(listOf("string"))
                                         .temperature(42.23)
                                         .toolChoice(
-                                            Prompt.PromptData.Options.Params.UnionMember0.ToolChoice
-                                                .ofUnionMember0(
-                                                    Prompt.PromptData.Options.Params.UnionMember0
+                                            Prompt.PromptData.Options.Params.OpenAIModelParams
+                                                .ToolChoice
+                                                .ofAuto(
+                                                    Prompt.PromptData.Options.Params
+                                                        .OpenAIModelParams
                                                         .ToolChoice
-                                                        .UnionMember0
+                                                        .Auto
                                                         .AUTO
                                                 )
                                         )
@@ -160,21 +164,21 @@ class PromptTest {
                                         .build()
                                 )
                             )
-                            .position("string")
+                            .position("position")
                             .build()
                     )
                     .origin(
                         Prompt.PromptData.Origin.builder()
-                            .projectId("string")
-                            .promptId("string")
-                            .promptVersion("string")
+                            .projectId("project_id")
+                            .promptId("prompt_id")
+                            .promptVersion("prompt_version")
                             .build()
                     )
                     .prompt(
-                        Prompt.PromptData.Prompt.ofUnionMember0(
-                            Prompt.PromptData.Prompt.UnionMember0.builder()
-                                .content("string")
-                                .type(Prompt.PromptData.Prompt.UnionMember0.Type.COMPLETION)
+                        Prompt.PromptData.Prompt.ofCompletion(
+                            Prompt.PromptData.Prompt.Completion.builder()
+                                .content("content")
+                                .type(Prompt.PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
                         )
                     )

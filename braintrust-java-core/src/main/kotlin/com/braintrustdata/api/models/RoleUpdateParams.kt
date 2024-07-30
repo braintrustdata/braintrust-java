@@ -2,57 +2,40 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class RoleUpdateParams constructor(
-  private val roleId: String,
-  private val addMemberPermissions: List<AddMemberPermission>?,
-  private val addMemberRoles: List<String>?,
-  private val description: String?,
-  private val name: String?,
-  private val removeMemberPermissions: List<RemoveMemberPermission>?,
-  private val removeMemberRoles: List<String>?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class RoleUpdateParams
+constructor(
+    private val roleId: String,
+    private val addMemberPermissions: List<AddMemberPermission>?,
+    private val addMemberRoles: List<String>?,
+    private val description: String?,
+    private val name: String?,
+    private val removeMemberPermissions: List<RemoveMemberPermission>?,
+    private val removeMemberRoles: List<String>?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun roleId(): String = roleId
 
-    fun addMemberPermissions(): Optional<List<AddMemberPermission>> = Optional.ofNullable(addMemberPermissions)
+    fun addMemberPermissions(): Optional<List<AddMemberPermission>> =
+        Optional.ofNullable(addMemberPermissions)
 
     fun addMemberRoles(): Optional<List<String>> = Optional.ofNullable(addMemberRoles)
 
@@ -60,47 +43,46 @@ class RoleUpdateParams constructor(
 
     fun name(): Optional<String> = Optional.ofNullable(name)
 
-    fun removeMemberPermissions(): Optional<List<RemoveMemberPermission>> = Optional.ofNullable(removeMemberPermissions)
+    fun removeMemberPermissions(): Optional<List<RemoveMemberPermission>> =
+        Optional.ofNullable(removeMemberPermissions)
 
     fun removeMemberRoles(): Optional<List<String>> = Optional.ofNullable(removeMemberRoles)
 
     @JvmSynthetic
     internal fun getBody(): RoleUpdateBody {
-      return RoleUpdateBody(
-          addMemberPermissions,
-          addMemberRoles,
-          description,
-          name,
-          removeMemberPermissions,
-          removeMemberRoles,
-          additionalBodyProperties,
-      )
+        return RoleUpdateBody(
+            addMemberPermissions,
+            addMemberRoles,
+            description,
+            name,
+            removeMemberPermissions,
+            removeMemberRoles,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> roleId
-          else -> ""
-      }
+        return when (index) {
+            0 -> roleId
+            else -> ""
+        }
     }
 
     @JsonDeserialize(builder = RoleUpdateBody.Builder::class)
     @NoAutoDetect
-    class RoleUpdateBody internal constructor(
-      private val addMemberPermissions: List<AddMemberPermission>?,
-      private val addMemberRoles: List<String>?,
-      private val description: String?,
-      private val name: String?,
-      private val removeMemberPermissions: List<RemoveMemberPermission>?,
-      private val removeMemberRoles: List<String>?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class RoleUpdateBody
+    internal constructor(
+        private val addMemberPermissions: List<AddMemberPermission>?,
+        private val addMemberRoles: List<String>?,
+        private val description: String?,
+        private val name: String?,
+        private val removeMemberPermissions: List<RemoveMemberPermission>?,
+        private val removeMemberRoles: List<String>?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
@@ -110,16 +92,13 @@ class RoleUpdateParams constructor(
         fun addMemberPermissions(): List<AddMemberPermission>? = addMemberPermissions
 
         /** A list of role IDs to add to the role's inheriting-from set */
-        @JsonProperty("add_member_roles")
-        fun addMemberRoles(): List<String>? = addMemberRoles
+        @JsonProperty("add_member_roles") fun addMemberRoles(): List<String>? = addMemberRoles
 
         /** Textual description of the role */
-        @JsonProperty("description")
-        fun description(): String? = description
+        @JsonProperty("description") fun description(): String? = description
 
         /** Name of the role */
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
         /** A list of permissions to remove from the role */
         @JsonProperty("remove_member_permissions")
@@ -136,41 +115,42 @@ class RoleUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is RoleUpdateBody &&
-              this.addMemberPermissions == other.addMemberPermissions &&
-              this.addMemberRoles == other.addMemberRoles &&
-              this.description == other.description &&
-              this.name == other.name &&
-              this.removeMemberPermissions == other.removeMemberPermissions &&
-              this.removeMemberRoles == other.removeMemberRoles &&
-              this.additionalProperties == other.additionalProperties
+            return other is RoleUpdateBody &&
+                this.addMemberPermissions == other.addMemberPermissions &&
+                this.addMemberRoles == other.addMemberRoles &&
+                this.description == other.description &&
+                this.name == other.name &&
+                this.removeMemberPermissions == other.removeMemberPermissions &&
+                this.removeMemberRoles == other.removeMemberRoles &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                addMemberPermissions,
-                addMemberRoles,
-                description,
-                name,
-                removeMemberPermissions,
-                removeMemberRoles,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        addMemberPermissions,
+                        addMemberRoles,
+                        description,
+                        name,
+                        removeMemberPermissions,
+                        removeMemberRoles,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "RoleUpdateBody{addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "RoleUpdateBody{addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -208,21 +188,17 @@ class RoleUpdateParams constructor(
 
             /** Textual description of the role */
             @JsonProperty("description")
-            fun description(description: String) = apply {
-                this.description = description
-            }
+            fun description(description: String) = apply { this.description = description }
 
             /** Name of the role */
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             /** A list of permissions to remove from the role */
             @JsonProperty("remove_member_permissions")
-            fun removeMemberPermissions(removeMemberPermissions: List<RemoveMemberPermission>) = apply {
-                this.removeMemberPermissions = removeMemberPermissions
-            }
+            fun removeMemberPermissions(removeMemberPermissions: List<RemoveMemberPermission>) =
+                apply {
+                    this.removeMemberPermissions = removeMemberPermissions
+                }
 
             /** A list of role IDs to remove from the role's inheriting-from set */
             @JsonProperty("remove_member_roles")
@@ -244,15 +220,16 @@ class RoleUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): RoleUpdateBody = RoleUpdateBody(
-                addMemberPermissions?.toUnmodifiable(),
-                addMemberRoles?.toUnmodifiable(),
-                description,
-                name,
-                removeMemberPermissions?.toUnmodifiable(),
-                removeMemberRoles?.toUnmodifiable(),
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): RoleUpdateBody =
+                RoleUpdateBody(
+                    addMemberPermissions?.toUnmodifiable(),
+                    addMemberRoles?.toUnmodifiable(),
+                    description,
+                    name,
+                    removeMemberPermissions?.toUnmodifiable(),
+                    removeMemberRoles?.toUnmodifiable(),
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -263,46 +240,46 @@ class RoleUpdateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is RoleUpdateParams &&
-          this.roleId == other.roleId &&
-          this.addMemberPermissions == other.addMemberPermissions &&
-          this.addMemberRoles == other.addMemberRoles &&
-          this.description == other.description &&
-          this.name == other.name &&
-          this.removeMemberPermissions == other.removeMemberPermissions &&
-          this.removeMemberRoles == other.removeMemberRoles &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is RoleUpdateParams &&
+            this.roleId == other.roleId &&
+            this.addMemberPermissions == other.addMemberPermissions &&
+            this.addMemberRoles == other.addMemberRoles &&
+            this.description == other.description &&
+            this.name == other.name &&
+            this.removeMemberPermissions == other.removeMemberPermissions &&
+            this.removeMemberRoles == other.removeMemberRoles &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          roleId,
-          addMemberPermissions,
-          addMemberRoles,
-          description,
-          name,
-          removeMemberPermissions,
-          removeMemberRoles,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            roleId,
+            addMemberPermissions,
+            addMemberRoles,
+            description,
+            name,
+            removeMemberPermissions,
+            removeMemberRoles,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "RoleUpdateParams{roleId=$roleId, addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "RoleUpdateParams{roleId=$roleId, addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -334,9 +311,7 @@ class RoleUpdateParams constructor(
         }
 
         /** Role id */
-        fun roleId(roleId: String) = apply {
-            this.roleId = roleId
-        }
+        fun roleId(roleId: String) = apply { this.roleId = roleId }
 
         /** A list of permissions to add to the role */
         fun addMemberPermissions(addMemberPermissions: List<AddMemberPermission>) = apply {
@@ -361,14 +336,10 @@ class RoleUpdateParams constructor(
         }
 
         /** Textual description of the role */
-        fun description(description: String) = apply {
-            this.description = description
-        }
+        fun description(description: String) = apply { this.description = description }
 
         /** Name of the role */
-        fun name(name: String) = apply {
-            this.name = name
-        }
+        fun name(name: String) = apply { this.name = name }
 
         /** A list of permissions to remove from the role */
         fun removeMemberPermissions(removeMemberPermissions: List<RemoveMemberPermission>) = apply {
@@ -430,9 +401,7 @@ class RoleUpdateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -443,40 +412,44 @@ class RoleUpdateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): RoleUpdateParams = RoleUpdateParams(
-            checkNotNull(roleId) {
-                "`roleId` is required but was not set"
-            },
-            if(addMemberPermissions.size == 0) null else addMemberPermissions.toUnmodifiable(),
-            if(addMemberRoles.size == 0) null else addMemberRoles.toUnmodifiable(),
-            description,
-            name,
-            if(removeMemberPermissions.size == 0) null else removeMemberPermissions.toUnmodifiable(),
-            if(removeMemberRoles.size == 0) null else removeMemberRoles.toUnmodifiable(),
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): RoleUpdateParams =
+            RoleUpdateParams(
+                checkNotNull(roleId) { "`roleId` is required but was not set" },
+                if (addMemberPermissions.size == 0) null else addMemberPermissions.toUnmodifiable(),
+                if (addMemberRoles.size == 0) null else addMemberRoles.toUnmodifiable(),
+                description,
+                name,
+                if (removeMemberPermissions.size == 0) null
+                else removeMemberPermissions.toUnmodifiable(),
+                if (removeMemberRoles.size == 0) null else removeMemberRoles.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
     @JsonDeserialize(builder = AddMemberPermission.Builder::class)
     @NoAutoDetect
-    class AddMemberPermission private constructor(private val permission: Permission?, private val restrictObjectType: RestrictObjectType?, private val additionalProperties: Map<String, JsonValue>, ) {
+    class AddMemberPermission
+    private constructor(
+        private val permission: Permission?,
+        private val restrictObjectType: RestrictObjectType?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
         /**
          * Each permission permits a certain type of operation on an object in the system
          *
-         * Permissions can be assigned to to objects on an individual basis, or grouped
-         * into roles
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
          */
-        @JsonProperty("permission")
-        fun permission(): Permission? = permission
+        @JsonProperty("permission") fun permission(): Permission? = permission
 
         /** The object type that the ACL applies to */
         @JsonProperty("restrict_object_type")
@@ -489,33 +462,34 @@ class RoleUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is AddMemberPermission &&
-              this.permission == other.permission &&
-              this.restrictObjectType == other.restrictObjectType &&
-              this.additionalProperties == other.additionalProperties
+            return other is AddMemberPermission &&
+                this.permission == other.permission &&
+                this.restrictObjectType == other.restrictObjectType &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                permission,
-                restrictObjectType,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        permission,
+                        restrictObjectType,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "AddMemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "AddMemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -534,13 +508,11 @@ class RoleUpdateParams constructor(
             /**
              * Each permission permits a certain type of operation on an object in the system
              *
-             * Permissions can be assigned to to objects on an individual basis, or grouped
-             * into roles
+             * Permissions can be assigned to to objects on an individual basis, or grouped into
+             * roles
              */
             @JsonProperty("permission")
-            fun permission(permission: Permission) = apply {
-                this.permission = permission
-            }
+            fun permission(permission: Permission) = apply { this.permission = permission }
 
             /** The object type that the ACL applies to */
             @JsonProperty("restrict_object_type")
@@ -562,25 +534,28 @@ class RoleUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): AddMemberPermission = AddMemberPermission(
-                permission,
-                restrictObjectType,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): AddMemberPermission =
+                AddMemberPermission(
+                    permission,
+                    restrictObjectType,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
 
-        class Permission @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class Permission
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is Permission &&
-                  this.value == other.value
+                return other is Permission && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -631,45 +606,49 @@ class RoleUpdateParams constructor(
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                CREATE -> Value.CREATE
-                READ -> Value.READ
-                UPDATE -> Value.UPDATE
-                DELETE -> Value.DELETE
-                CREATE_ACLS -> Value.CREATE_ACLS
-                READ_ACLS -> Value.READ_ACLS
-                UPDATE_ACLS -> Value.UPDATE_ACLS
-                DELETE_ACLS -> Value.DELETE_ACLS
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    CREATE -> Value.CREATE
+                    READ -> Value.READ
+                    UPDATE -> Value.UPDATE
+                    DELETE -> Value.DELETE
+                    CREATE_ACLS -> Value.CREATE_ACLS
+                    READ_ACLS -> Value.READ_ACLS
+                    UPDATE_ACLS -> Value.UPDATE_ACLS
+                    DELETE_ACLS -> Value.DELETE_ACLS
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                CREATE -> Known.CREATE
-                READ -> Known.READ
-                UPDATE -> Known.UPDATE
-                DELETE -> Known.DELETE
-                CREATE_ACLS -> Known.CREATE_ACLS
-                READ_ACLS -> Known.READ_ACLS
-                UPDATE_ACLS -> Known.UPDATE_ACLS
-                DELETE_ACLS -> Known.DELETE_ACLS
-                else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    CREATE -> Known.CREATE
+                    READ -> Known.READ
+                    UPDATE -> Known.UPDATE
+                    DELETE -> Known.DELETE
+                    CREATE_ACLS -> Known.CREATE_ACLS
+                    READ_ACLS -> Known.READ_ACLS
+                    UPDATE_ACLS -> Known.UPDATE_ACLS
+                    DELETE_ACLS -> Known.DELETE_ACLS
+                    else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }
 
-        class RestrictObjectType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class RestrictObjectType
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is RestrictObjectType &&
-                  this.value == other.value
+                return other is RestrictObjectType && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -732,35 +711,38 @@ class RoleUpdateParams constructor(
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                ORGANIZATION -> Value.ORGANIZATION
-                PROJECT -> Value.PROJECT
-                EXPERIMENT -> Value.EXPERIMENT
-                DATASET -> Value.DATASET
-                PROMPT -> Value.PROMPT
-                PROMPT_SESSION -> Value.PROMPT_SESSION
-                GROUP -> Value.GROUP
-                ROLE -> Value.ROLE
-                ORG_MEMBER -> Value.ORG_MEMBER
-                PROJECT_LOG -> Value.PROJECT_LOG
-                ORG_PROJECT -> Value.ORG_PROJECT
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    ORGANIZATION -> Value.ORGANIZATION
+                    PROJECT -> Value.PROJECT
+                    EXPERIMENT -> Value.EXPERIMENT
+                    DATASET -> Value.DATASET
+                    PROMPT -> Value.PROMPT
+                    PROMPT_SESSION -> Value.PROMPT_SESSION
+                    GROUP -> Value.GROUP
+                    ROLE -> Value.ROLE
+                    ORG_MEMBER -> Value.ORG_MEMBER
+                    PROJECT_LOG -> Value.PROJECT_LOG
+                    ORG_PROJECT -> Value.ORG_PROJECT
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                ORGANIZATION -> Known.ORGANIZATION
-                PROJECT -> Known.PROJECT
-                EXPERIMENT -> Known.EXPERIMENT
-                DATASET -> Known.DATASET
-                PROMPT -> Known.PROMPT
-                PROMPT_SESSION -> Known.PROMPT_SESSION
-                GROUP -> Known.GROUP
-                ROLE -> Known.ROLE
-                ORG_MEMBER -> Known.ORG_MEMBER
-                PROJECT_LOG -> Known.PROJECT_LOG
-                ORG_PROJECT -> Known.ORG_PROJECT
-                else -> throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    ORGANIZATION -> Known.ORGANIZATION
+                    PROJECT -> Known.PROJECT
+                    EXPERIMENT -> Known.EXPERIMENT
+                    DATASET -> Known.DATASET
+                    PROMPT -> Known.PROMPT
+                    PROMPT_SESSION -> Known.PROMPT_SESSION
+                    GROUP -> Known.GROUP
+                    ROLE -> Known.ROLE
+                    ORG_MEMBER -> Known.ORG_MEMBER
+                    PROJECT_LOG -> Known.PROJECT_LOG
+                    ORG_PROJECT -> Known.ORG_PROJECT
+                    else ->
+                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }
@@ -768,18 +750,21 @@ class RoleUpdateParams constructor(
 
     @JsonDeserialize(builder = RemoveMemberPermission.Builder::class)
     @NoAutoDetect
-    class RemoveMemberPermission private constructor(private val permission: Permission?, private val restrictObjectType: RestrictObjectType?, private val additionalProperties: Map<String, JsonValue>, ) {
+    class RemoveMemberPermission
+    private constructor(
+        private val permission: Permission?,
+        private val restrictObjectType: RestrictObjectType?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
         /**
          * Each permission permits a certain type of operation on an object in the system
          *
-         * Permissions can be assigned to to objects on an individual basis, or grouped
-         * into roles
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
          */
-        @JsonProperty("permission")
-        fun permission(): Permission? = permission
+        @JsonProperty("permission") fun permission(): Permission? = permission
 
         /** The object type that the ACL applies to */
         @JsonProperty("restrict_object_type")
@@ -792,33 +777,34 @@ class RoleUpdateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is RemoveMemberPermission &&
-              this.permission == other.permission &&
-              this.restrictObjectType == other.restrictObjectType &&
-              this.additionalProperties == other.additionalProperties
+            return other is RemoveMemberPermission &&
+                this.permission == other.permission &&
+                this.restrictObjectType == other.restrictObjectType &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                permission,
-                restrictObjectType,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        permission,
+                        restrictObjectType,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "RemoveMemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "RemoveMemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -837,13 +823,11 @@ class RoleUpdateParams constructor(
             /**
              * Each permission permits a certain type of operation on an object in the system
              *
-             * Permissions can be assigned to to objects on an individual basis, or grouped
-             * into roles
+             * Permissions can be assigned to to objects on an individual basis, or grouped into
+             * roles
              */
             @JsonProperty("permission")
-            fun permission(permission: Permission) = apply {
-                this.permission = permission
-            }
+            fun permission(permission: Permission) = apply { this.permission = permission }
 
             /** The object type that the ACL applies to */
             @JsonProperty("restrict_object_type")
@@ -865,25 +849,28 @@ class RoleUpdateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): RemoveMemberPermission = RemoveMemberPermission(
-                permission,
-                restrictObjectType,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): RemoveMemberPermission =
+                RemoveMemberPermission(
+                    permission,
+                    restrictObjectType,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
 
-        class Permission @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class Permission
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is Permission &&
-                  this.value == other.value
+                return other is Permission && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -934,45 +921,49 @@ class RoleUpdateParams constructor(
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                CREATE -> Value.CREATE
-                READ -> Value.READ
-                UPDATE -> Value.UPDATE
-                DELETE -> Value.DELETE
-                CREATE_ACLS -> Value.CREATE_ACLS
-                READ_ACLS -> Value.READ_ACLS
-                UPDATE_ACLS -> Value.UPDATE_ACLS
-                DELETE_ACLS -> Value.DELETE_ACLS
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    CREATE -> Value.CREATE
+                    READ -> Value.READ
+                    UPDATE -> Value.UPDATE
+                    DELETE -> Value.DELETE
+                    CREATE_ACLS -> Value.CREATE_ACLS
+                    READ_ACLS -> Value.READ_ACLS
+                    UPDATE_ACLS -> Value.UPDATE_ACLS
+                    DELETE_ACLS -> Value.DELETE_ACLS
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                CREATE -> Known.CREATE
-                READ -> Known.READ
-                UPDATE -> Known.UPDATE
-                DELETE -> Known.DELETE
-                CREATE_ACLS -> Known.CREATE_ACLS
-                READ_ACLS -> Known.READ_ACLS
-                UPDATE_ACLS -> Known.UPDATE_ACLS
-                DELETE_ACLS -> Known.DELETE_ACLS
-                else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    CREATE -> Known.CREATE
+                    READ -> Known.READ
+                    UPDATE -> Known.UPDATE
+                    DELETE -> Known.DELETE
+                    CREATE_ACLS -> Known.CREATE_ACLS
+                    READ_ACLS -> Known.READ_ACLS
+                    UPDATE_ACLS -> Known.UPDATE_ACLS
+                    DELETE_ACLS -> Known.DELETE_ACLS
+                    else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }
 
-        class RestrictObjectType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class RestrictObjectType
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is RestrictObjectType &&
-                  this.value == other.value
+                return other is RestrictObjectType && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1035,35 +1026,38 @@ class RoleUpdateParams constructor(
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                ORGANIZATION -> Value.ORGANIZATION
-                PROJECT -> Value.PROJECT
-                EXPERIMENT -> Value.EXPERIMENT
-                DATASET -> Value.DATASET
-                PROMPT -> Value.PROMPT
-                PROMPT_SESSION -> Value.PROMPT_SESSION
-                GROUP -> Value.GROUP
-                ROLE -> Value.ROLE
-                ORG_MEMBER -> Value.ORG_MEMBER
-                PROJECT_LOG -> Value.PROJECT_LOG
-                ORG_PROJECT -> Value.ORG_PROJECT
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    ORGANIZATION -> Value.ORGANIZATION
+                    PROJECT -> Value.PROJECT
+                    EXPERIMENT -> Value.EXPERIMENT
+                    DATASET -> Value.DATASET
+                    PROMPT -> Value.PROMPT
+                    PROMPT_SESSION -> Value.PROMPT_SESSION
+                    GROUP -> Value.GROUP
+                    ROLE -> Value.ROLE
+                    ORG_MEMBER -> Value.ORG_MEMBER
+                    PROJECT_LOG -> Value.PROJECT_LOG
+                    ORG_PROJECT -> Value.ORG_PROJECT
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                ORGANIZATION -> Known.ORGANIZATION
-                PROJECT -> Known.PROJECT
-                EXPERIMENT -> Known.EXPERIMENT
-                DATASET -> Known.DATASET
-                PROMPT -> Known.PROMPT
-                PROMPT_SESSION -> Known.PROMPT_SESSION
-                GROUP -> Known.GROUP
-                ROLE -> Known.ROLE
-                ORG_MEMBER -> Known.ORG_MEMBER
-                PROJECT_LOG -> Known.PROJECT_LOG
-                ORG_PROJECT -> Known.ORG_PROJECT
-                else -> throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    ORGANIZATION -> Known.ORGANIZATION
+                    PROJECT -> Known.PROJECT
+                    EXPERIMENT -> Known.EXPERIMENT
+                    DATASET -> Known.DATASET
+                    PROMPT -> Known.PROMPT
+                    PROMPT_SESSION -> Known.PROMPT_SESSION
+                    GROUP -> Known.GROUP
+                    ROLE -> Known.ROLE
+                    ORG_MEMBER -> Known.ORG_MEMBER
+                    PROJECT_LOG -> Known.PROJECT_LOG
+                    ORG_PROJECT -> Known.ORG_PROJECT
+                    else ->
+                        throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }
