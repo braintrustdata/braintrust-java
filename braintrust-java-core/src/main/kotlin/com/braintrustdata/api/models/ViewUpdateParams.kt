@@ -24,7 +24,7 @@ constructor(
     private val objectId: String,
     private val objectType: ObjectType?,
     private val name: String?,
-    private val options: Options?,
+    private val options: ViewOptions?,
     private val userId: String?,
     private val viewData: ViewData?,
     private val viewType: ViewType?,
@@ -41,7 +41,7 @@ constructor(
 
     fun name(): Optional<String> = Optional.ofNullable(name)
 
-    fun options(): Optional<Options> = Optional.ofNullable(options)
+    fun options(): Optional<ViewOptions> = Optional.ofNullable(options)
 
     fun userId(): Optional<String> = Optional.ofNullable(userId)
 
@@ -81,7 +81,7 @@ constructor(
         private val objectId: String?,
         private val objectType: ObjectType?,
         private val name: String?,
-        private val options: Options?,
+        private val options: ViewOptions?,
         private val userId: String?,
         private val viewData: ViewData?,
         private val viewType: ViewType?,
@@ -100,7 +100,7 @@ constructor(
         @JsonProperty("name") fun name(): String? = name
 
         /** Options for the view in the app */
-        @JsonProperty("options") fun options(): Options? = options
+        @JsonProperty("options") fun options(): ViewOptions? = options
 
         /** Identifies the user who created the view */
         @JsonProperty("user_id") fun userId(): String? = userId
@@ -163,7 +163,7 @@ constructor(
             private var objectId: String? = null
             private var objectType: ObjectType? = null
             private var name: String? = null
-            private var options: Options? = null
+            private var options: ViewOptions? = null
             private var userId: String? = null
             private var viewData: ViewData? = null
             private var viewType: ViewType? = null
@@ -194,7 +194,7 @@ constructor(
 
             /** Options for the view in the app */
             @JsonProperty("options")
-            fun options(options: Options) = apply { this.options = options }
+            fun options(options: ViewOptions) = apply { this.options = options }
 
             /** Identifies the user who created the view */
             @JsonProperty("user_id") fun userId(userId: String) = apply { this.userId = userId }
@@ -293,7 +293,7 @@ constructor(
         private var objectId: String? = null
         private var objectType: ObjectType? = null
         private var name: String? = null
-        private var options: Options? = null
+        private var options: ViewOptions? = null
         private var userId: String? = null
         private var viewData: ViewData? = null
         private var viewType: ViewType? = null
@@ -329,7 +329,7 @@ constructor(
         fun name(name: String) = apply { this.name = name }
 
         /** Options for the view in the app */
-        fun options(options: Options) = apply { this.options = options }
+        fun options(options: ViewOptions) = apply { this.options = options }
 
         /** Identifies the user who created the view */
         fun userId(userId: String) = apply { this.userId = userId }
@@ -519,440 +519,6 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
-    }
-
-    /** Options for the view in the app */
-    @JsonDeserialize(builder = Options.Builder::class)
-    @NoAutoDetect
-    class Options
-    private constructor(
-        private val columnVisibility: ColumnVisibility?,
-        private val columnOrder: List<String>?,
-        private val columnSizing: ColumnSizing?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var hashCode: Int = 0
-
-        @JsonProperty("columnVisibility")
-        fun columnVisibility(): ColumnVisibility? = columnVisibility
-
-        @JsonProperty("columnOrder") fun columnOrder(): List<String>? = columnOrder
-
-        @JsonProperty("columnSizing") fun columnSizing(): ColumnSizing? = columnSizing
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Options &&
-                this.columnVisibility == other.columnVisibility &&
-                this.columnOrder == other.columnOrder &&
-                this.columnSizing == other.columnSizing &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        columnVisibility,
-                        columnOrder,
-                        columnSizing,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Options{columnVisibility=$columnVisibility, columnOrder=$columnOrder, columnSizing=$columnSizing, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var columnVisibility: ColumnVisibility? = null
-            private var columnOrder: List<String>? = null
-            private var columnSizing: ColumnSizing? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(options: Options) = apply {
-                this.columnVisibility = options.columnVisibility
-                this.columnOrder = options.columnOrder
-                this.columnSizing = options.columnSizing
-                additionalProperties(options.additionalProperties)
-            }
-
-            @JsonProperty("columnVisibility")
-            fun columnVisibility(columnVisibility: ColumnVisibility) = apply {
-                this.columnVisibility = columnVisibility
-            }
-
-            @JsonProperty("columnOrder")
-            fun columnOrder(columnOrder: List<String>) = apply { this.columnOrder = columnOrder }
-
-            @JsonProperty("columnSizing")
-            fun columnSizing(columnSizing: ColumnSizing) = apply {
-                this.columnSizing = columnSizing
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Options =
-                Options(
-                    columnVisibility,
-                    columnOrder?.toUnmodifiable(),
-                    columnSizing,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        @JsonDeserialize(builder = ColumnSizing.Builder::class)
-        @NoAutoDetect
-        class ColumnSizing
-        private constructor(
-            private val additionalProperties: Map<String, JsonValue>,
-        ) {
-
-            private var hashCode: Int = 0
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ColumnSizing &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() = "ColumnSizing{additionalProperties=$additionalProperties}"
-
-            companion object {
-
-                @JvmStatic fun builder() = Builder()
-            }
-
-            class Builder {
-
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(columnSizing: ColumnSizing) = apply {
-                    additionalProperties(columnSizing.additionalProperties)
-                }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
-                }
-
-                @JsonAnySetter
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun build(): ColumnSizing = ColumnSizing(additionalProperties.toUnmodifiable())
-            }
-        }
-
-        @JsonDeserialize(builder = ColumnVisibility.Builder::class)
-        @NoAutoDetect
-        class ColumnVisibility
-        private constructor(
-            private val additionalProperties: Map<String, JsonValue>,
-        ) {
-
-            private var hashCode: Int = 0
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ColumnVisibility &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() = "ColumnVisibility{additionalProperties=$additionalProperties}"
-
-            companion object {
-
-                @JvmStatic fun builder() = Builder()
-            }
-
-            class Builder {
-
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(columnVisibility: ColumnVisibility) = apply {
-                    additionalProperties(columnVisibility.additionalProperties)
-                }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
-                }
-
-                @JsonAnySetter
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun build(): ColumnVisibility =
-                    ColumnVisibility(additionalProperties.toUnmodifiable())
-            }
-        }
-    }
-
-    /** The view definition */
-    @JsonDeserialize(builder = ViewData.Builder::class)
-    @NoAutoDetect
-    class ViewData
-    private constructor(
-        private val search: Search?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var hashCode: Int = 0
-
-        @JsonProperty("search") fun search(): Search? = search
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ViewData &&
-                this.search == other.search &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(search, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ViewData{search=$search, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var search: Search? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(viewData: ViewData) = apply {
-                this.search = viewData.search
-                additionalProperties(viewData.additionalProperties)
-            }
-
-            @JsonProperty("search") fun search(search: Search) = apply { this.search = search }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): ViewData = ViewData(search, additionalProperties.toUnmodifiable())
-        }
-
-        @JsonDeserialize(builder = Search.Builder::class)
-        @NoAutoDetect
-        class Search
-        private constructor(
-            private val filter: List<JsonValue>?,
-            private val tag: List<JsonValue>?,
-            private val match: List<JsonValue>?,
-            private val sort: List<JsonValue>?,
-            private val additionalProperties: Map<String, JsonValue>,
-        ) {
-
-            private var hashCode: Int = 0
-
-            @JsonProperty("filter") fun filter(): List<JsonValue>? = filter
-
-            @JsonProperty("tag") fun tag(): List<JsonValue>? = tag
-
-            @JsonProperty("match") fun match(): List<JsonValue>? = match
-
-            @JsonProperty("sort") fun sort(): List<JsonValue>? = sort
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Search &&
-                    this.filter == other.filter &&
-                    this.tag == other.tag &&
-                    this.match == other.match &&
-                    this.sort == other.sort &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            filter,
-                            tag,
-                            match,
-                            sort,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "Search{filter=$filter, tag=$tag, match=$match, sort=$sort, additionalProperties=$additionalProperties}"
-
-            companion object {
-
-                @JvmStatic fun builder() = Builder()
-            }
-
-            class Builder {
-
-                private var filter: List<JsonValue>? = null
-                private var tag: List<JsonValue>? = null
-                private var match: List<JsonValue>? = null
-                private var sort: List<JsonValue>? = null
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(search: Search) = apply {
-                    this.filter = search.filter
-                    this.tag = search.tag
-                    this.match = search.match
-                    this.sort = search.sort
-                    additionalProperties(search.additionalProperties)
-                }
-
-                @JsonProperty("filter")
-                fun filter(filter: List<JsonValue>) = apply { this.filter = filter }
-
-                @JsonProperty("tag") fun tag(tag: List<JsonValue>) = apply { this.tag = tag }
-
-                @JsonProperty("match")
-                fun match(match: List<JsonValue>) = apply { this.match = match }
-
-                @JsonProperty("sort") fun sort(sort: List<JsonValue>) = apply { this.sort = sort }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
-                }
-
-                @JsonAnySetter
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun build(): Search =
-                    Search(
-                        filter?.toUnmodifiable(),
-                        tag?.toUnmodifiable(),
-                        match?.toUnmodifiable(),
-                        sort?.toUnmodifiable(),
-                        additionalProperties.toUnmodifiable(),
-                    )
-            }
-        }
     }
 
     class ViewType

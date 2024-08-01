@@ -20,7 +20,7 @@ class ExperimentUpdateParamsTest {
             .name("name")
             .public_(true)
             .repoInfo(
-                ExperimentUpdateParams.RepoInfo.builder()
+                RepoInfo.builder()
                     .authorEmail("author_email")
                     .authorName("author_name")
                     .branch("branch")
@@ -48,7 +48,7 @@ class ExperimentUpdateParamsTest {
                 .name("name")
                 .public_(true)
                 .repoInfo(
-                    ExperimentUpdateParams.RepoInfo.builder()
+                    RepoInfo.builder()
                         .authorEmail("author_email")
                         .authorName("author_name")
                         .branch("branch")
@@ -72,7 +72,7 @@ class ExperimentUpdateParamsTest {
         assertThat(body.public_()).isEqualTo(true)
         assertThat(body.repoInfo())
             .isEqualTo(
-                ExperimentUpdateParams.RepoInfo.builder()
+                RepoInfo.builder()
                     .authorEmail("author_email")
                     .authorName("author_name")
                     .branch("branch")

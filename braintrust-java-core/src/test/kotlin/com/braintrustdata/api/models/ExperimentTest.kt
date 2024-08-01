@@ -25,7 +25,7 @@ class ExperimentTest {
                 .description("description")
                 .metadata(Experiment.Metadata.builder().build())
                 .repoInfo(
-                    Experiment.RepoInfo.builder()
+                    RepoInfo.builder()
                         .authorEmail("author_email")
                         .authorName("author_name")
                         .branch("branch")
@@ -55,7 +55,7 @@ class ExperimentTest {
         assertThat(experiment.metadata()).contains(Experiment.Metadata.builder().build())
         assertThat(experiment.repoInfo())
             .contains(
-                Experiment.RepoInfo.builder()
+                RepoInfo.builder()
                     .authorEmail("author_email")
                     .authorName("author_name")
                     .branch("branch")
