@@ -28,74 +28,89 @@ class PromptServiceTest {
                     .slug("slug")
                     .description("description")
                     .promptData(
-                        PromptData.builder()
+                        PromptCreateParams.PromptData.builder()
                             .options(
-                                PromptData.Options.builder()
+                                PromptCreateParams.PromptData.Options.builder()
                                     .model("model")
                                     .params(
-                                        PromptData.Options.Params.ofOpenAIModelParams(
-                                            PromptData.Options.Params.OpenAIModelParams.builder()
-                                                .frequencyPenalty(42.23)
-                                                .functionCall(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .FunctionCall
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .FunctionCall
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .maxTokens(42.23)
-                                                .n(42.23)
-                                                .presencePenalty(42.23)
-                                                .responseFormat(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .builder()
-                                                        .type(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ResponseFormat
-                                                                .Type
-                                                                .JSON_OBJECT
-                                                        )
-                                                        .build()
-                                                )
-                                                .stop(listOf("string"))
-                                                .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .topP(42.23)
-                                                .useCache(true)
-                                                .build()
-                                        )
+                                        PromptCreateParams.PromptData.Options.Params
+                                            .ofOpenAIModelParams(
+                                                PromptCreateParams.PromptData.Options.Params
+                                                    .OpenAIModelParams
+                                                    .builder()
+                                                    .frequencyPenalty(42.23)
+                                                    .functionCall(
+                                                        PromptCreateParams.PromptData.Options.Params
+                                                            .OpenAIModelParams
+                                                            .FunctionCall
+                                                            .ofAuto(
+                                                                PromptCreateParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .FunctionCall
+                                                                    .Auto
+                                                                    .AUTO
+                                                            )
+                                                    )
+                                                    .maxTokens(42.23)
+                                                    .n(42.23)
+                                                    .presencePenalty(42.23)
+                                                    .responseFormat(
+                                                        PromptCreateParams.PromptData.Options.Params
+                                                            .OpenAIModelParams
+                                                            .ResponseFormat
+                                                            .builder()
+                                                            .type(
+                                                                PromptCreateParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .ResponseFormat
+                                                                    .Type
+                                                                    .JSON_OBJECT
+                                                            )
+                                                            .build()
+                                                    )
+                                                    .stop(listOf("string"))
+                                                    .temperature(42.23)
+                                                    .toolChoice(
+                                                        PromptCreateParams.PromptData.Options.Params
+                                                            .OpenAIModelParams
+                                                            .ToolChoice
+                                                            .ofAuto(
+                                                                PromptCreateParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .ToolChoice
+                                                                    .Auto
+                                                                    .AUTO
+                                                            )
+                                                    )
+                                                    .topP(42.23)
+                                                    .useCache(true)
+                                                    .build()
+                                            )
                                     )
                                     .position("position")
                                     .build()
                             )
                             .origin(
-                                PromptData.Origin.builder()
+                                PromptCreateParams.PromptData.Origin.builder()
                                     .projectId("project_id")
                                     .promptId("prompt_id")
                                     .promptVersion("prompt_version")
                                     .build()
                             )
                             .prompt(
-                                PromptData.Prompt.ofCompletion(
-                                    PromptData.Prompt.Completion.builder()
+                                PromptCreateParams.PromptData.Prompt.ofCompletion(
+                                    PromptCreateParams.PromptData.Prompt.Completion.builder()
                                         .content("content")
-                                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                                        .type(
+                                            PromptCreateParams.PromptData.Prompt.Completion.Type
+                                                .COMPLETION
+                                        )
                                         .build()
                                 )
                             )
@@ -141,74 +156,89 @@ class PromptServiceTest {
                     .description("description")
                     .name("name")
                     .promptData(
-                        PromptData.builder()
+                        PromptUpdateParams.PromptData.builder()
                             .options(
-                                PromptData.Options.builder()
+                                PromptUpdateParams.PromptData.Options.builder()
                                     .model("model")
                                     .params(
-                                        PromptData.Options.Params.ofOpenAIModelParams(
-                                            PromptData.Options.Params.OpenAIModelParams.builder()
-                                                .frequencyPenalty(42.23)
-                                                .functionCall(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .FunctionCall
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .FunctionCall
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .maxTokens(42.23)
-                                                .n(42.23)
-                                                .presencePenalty(42.23)
-                                                .responseFormat(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .builder()
-                                                        .type(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ResponseFormat
-                                                                .Type
-                                                                .JSON_OBJECT
-                                                        )
-                                                        .build()
-                                                )
-                                                .stop(listOf("string"))
-                                                .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .topP(42.23)
-                                                .useCache(true)
-                                                .build()
-                                        )
+                                        PromptUpdateParams.PromptData.Options.Params
+                                            .ofOpenAIModelParams(
+                                                PromptUpdateParams.PromptData.Options.Params
+                                                    .OpenAIModelParams
+                                                    .builder()
+                                                    .frequencyPenalty(42.23)
+                                                    .functionCall(
+                                                        PromptUpdateParams.PromptData.Options.Params
+                                                            .OpenAIModelParams
+                                                            .FunctionCall
+                                                            .ofAuto(
+                                                                PromptUpdateParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .FunctionCall
+                                                                    .Auto
+                                                                    .AUTO
+                                                            )
+                                                    )
+                                                    .maxTokens(42.23)
+                                                    .n(42.23)
+                                                    .presencePenalty(42.23)
+                                                    .responseFormat(
+                                                        PromptUpdateParams.PromptData.Options.Params
+                                                            .OpenAIModelParams
+                                                            .ResponseFormat
+                                                            .builder()
+                                                            .type(
+                                                                PromptUpdateParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .ResponseFormat
+                                                                    .Type
+                                                                    .JSON_OBJECT
+                                                            )
+                                                            .build()
+                                                    )
+                                                    .stop(listOf("string"))
+                                                    .temperature(42.23)
+                                                    .toolChoice(
+                                                        PromptUpdateParams.PromptData.Options.Params
+                                                            .OpenAIModelParams
+                                                            .ToolChoice
+                                                            .ofAuto(
+                                                                PromptUpdateParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .ToolChoice
+                                                                    .Auto
+                                                                    .AUTO
+                                                            )
+                                                    )
+                                                    .topP(42.23)
+                                                    .useCache(true)
+                                                    .build()
+                                            )
                                     )
                                     .position("position")
                                     .build()
                             )
                             .origin(
-                                PromptData.Origin.builder()
+                                PromptUpdateParams.PromptData.Origin.builder()
                                     .projectId("project_id")
                                     .promptId("prompt_id")
                                     .promptVersion("prompt_version")
                                     .build()
                             )
                             .prompt(
-                                PromptData.Prompt.ofCompletion(
-                                    PromptData.Prompt.Completion.builder()
+                                PromptUpdateParams.PromptData.Prompt.ofCompletion(
+                                    PromptUpdateParams.PromptData.Prompt.Completion.builder()
                                         .content("content")
-                                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                                        .type(
+                                            PromptUpdateParams.PromptData.Prompt.Completion.Type
+                                                .COMPLETION
+                                        )
                                         .build()
                                 )
                             )
@@ -268,74 +298,92 @@ class PromptServiceTest {
                     .slug("slug")
                     .description("description")
                     .promptData(
-                        PromptData.builder()
+                        PromptReplaceParams.PromptData.builder()
                             .options(
-                                PromptData.Options.builder()
+                                PromptReplaceParams.PromptData.Options.builder()
                                     .model("model")
                                     .params(
-                                        PromptData.Options.Params.ofOpenAIModelParams(
-                                            PromptData.Options.Params.OpenAIModelParams.builder()
-                                                .frequencyPenalty(42.23)
-                                                .functionCall(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .FunctionCall
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .FunctionCall
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .maxTokens(42.23)
-                                                .n(42.23)
-                                                .presencePenalty(42.23)
-                                                .responseFormat(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .builder()
-                                                        .type(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ResponseFormat
-                                                                .Type
-                                                                .JSON_OBJECT
-                                                        )
-                                                        .build()
-                                                )
-                                                .stop(listOf("string"))
-                                                .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .topP(42.23)
-                                                .useCache(true)
-                                                .build()
-                                        )
+                                        PromptReplaceParams.PromptData.Options.Params
+                                            .ofOpenAIModelParams(
+                                                PromptReplaceParams.PromptData.Options.Params
+                                                    .OpenAIModelParams
+                                                    .builder()
+                                                    .frequencyPenalty(42.23)
+                                                    .functionCall(
+                                                        PromptReplaceParams.PromptData.Options
+                                                            .Params
+                                                            .OpenAIModelParams
+                                                            .FunctionCall
+                                                            .ofAuto(
+                                                                PromptReplaceParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .FunctionCall
+                                                                    .Auto
+                                                                    .AUTO
+                                                            )
+                                                    )
+                                                    .maxTokens(42.23)
+                                                    .n(42.23)
+                                                    .presencePenalty(42.23)
+                                                    .responseFormat(
+                                                        PromptReplaceParams.PromptData.Options
+                                                            .Params
+                                                            .OpenAIModelParams
+                                                            .ResponseFormat
+                                                            .builder()
+                                                            .type(
+                                                                PromptReplaceParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .ResponseFormat
+                                                                    .Type
+                                                                    .JSON_OBJECT
+                                                            )
+                                                            .build()
+                                                    )
+                                                    .stop(listOf("string"))
+                                                    .temperature(42.23)
+                                                    .toolChoice(
+                                                        PromptReplaceParams.PromptData.Options
+                                                            .Params
+                                                            .OpenAIModelParams
+                                                            .ToolChoice
+                                                            .ofAuto(
+                                                                PromptReplaceParams.PromptData
+                                                                    .Options
+                                                                    .Params
+                                                                    .OpenAIModelParams
+                                                                    .ToolChoice
+                                                                    .Auto
+                                                                    .AUTO
+                                                            )
+                                                    )
+                                                    .topP(42.23)
+                                                    .useCache(true)
+                                                    .build()
+                                            )
                                     )
                                     .position("position")
                                     .build()
                             )
                             .origin(
-                                PromptData.Origin.builder()
+                                PromptReplaceParams.PromptData.Origin.builder()
                                     .projectId("project_id")
                                     .promptId("prompt_id")
                                     .promptVersion("prompt_version")
                                     .build()
                             )
                             .prompt(
-                                PromptData.Prompt.ofCompletion(
-                                    PromptData.Prompt.Completion.builder()
+                                PromptReplaceParams.PromptData.Prompt.ofCompletion(
+                                    PromptReplaceParams.PromptData.Prompt.Completion.builder()
                                         .content("content")
-                                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                                        .type(
+                                            PromptReplaceParams.PromptData.Prompt.Completion.Type
+                                                .COMPLETION
+                                        )
                                         .build()
                                 )
                             )
