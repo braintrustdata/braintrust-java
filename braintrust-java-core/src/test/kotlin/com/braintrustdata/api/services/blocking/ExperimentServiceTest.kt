@@ -35,7 +35,7 @@ class ExperimentServiceTest {
                     .name("name")
                     .public_(true)
                     .repoInfo(
-                        ExperimentCreateParams.RepoInfo.builder()
+                        RepoInfo.builder()
                             .authorEmail("author_email")
                             .authorName("author_name")
                             .branch("branch")
@@ -91,7 +91,7 @@ class ExperimentServiceTest {
                     .name("name")
                     .public_(true)
                     .repoInfo(
-                        ExperimentUpdateParams.RepoInfo.builder()
+                        RepoInfo.builder()
                             .authorEmail("author_email")
                             .authorName("author_name")
                             .branch("branch")
