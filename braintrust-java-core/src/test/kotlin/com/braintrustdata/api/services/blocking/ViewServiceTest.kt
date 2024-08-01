@@ -31,19 +31,17 @@ class ViewServiceTest {
                     .viewType(ViewCreateParams.ViewType.PROJECTS)
                     .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .options(
-                        ViewCreateParams.Options.builder()
+                        ViewOptions.builder()
                             .columnOrder(listOf("string"))
-                            .columnSizing(ViewCreateParams.Options.ColumnSizing.builder().build())
-                            .columnVisibility(
-                                ViewCreateParams.Options.ColumnVisibility.builder().build()
-                            )
+                            .columnSizing(ViewOptions.ColumnSizing.builder().build())
+                            .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
                             .build()
                     )
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .viewData(
-                        ViewCreateParams.ViewData.builder()
+                        ViewData.builder()
                             .search(
-                                ViewCreateParams.ViewData.Search.builder()
+                                ViewDataSearch.builder()
                                     .filter(listOf(JsonValue.from(mapOf<String, Any>())))
                                     .match(listOf(JsonValue.from(mapOf<String, Any>())))
                                     .sort(listOf(JsonValue.from(mapOf<String, Any>())))
@@ -94,19 +92,17 @@ class ViewServiceTest {
                     .objectType(ViewUpdateParams.ObjectType.ORGANIZATION)
                     .name("name")
                     .options(
-                        ViewUpdateParams.Options.builder()
+                        ViewOptions.builder()
                             .columnOrder(listOf("string"))
-                            .columnSizing(ViewUpdateParams.Options.ColumnSizing.builder().build())
-                            .columnVisibility(
-                                ViewUpdateParams.Options.ColumnVisibility.builder().build()
-                            )
+                            .columnSizing(ViewOptions.ColumnSizing.builder().build())
+                            .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
                             .build()
                     )
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .viewData(
-                        ViewUpdateParams.ViewData.builder()
+                        ViewData.builder()
                             .search(
-                                ViewUpdateParams.ViewData.Search.builder()
+                                ViewDataSearch.builder()
                                     .filter(listOf(JsonValue.from(mapOf<String, Any>())))
                                     .match(listOf(JsonValue.from(mapOf<String, Any>())))
                                     .sort(listOf(JsonValue.from(mapOf<String, Any>())))
@@ -175,19 +171,17 @@ class ViewServiceTest {
                     .viewType(ViewReplaceParams.ViewType.PROJECTS)
                     .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .options(
-                        ViewReplaceParams.Options.builder()
+                        ViewOptions.builder()
                             .columnOrder(listOf("string"))
-                            .columnSizing(ViewReplaceParams.Options.ColumnSizing.builder().build())
-                            .columnVisibility(
-                                ViewReplaceParams.Options.ColumnVisibility.builder().build()
-                            )
+                            .columnSizing(ViewOptions.ColumnSizing.builder().build())
+                            .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
                             .build()
                     )
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .viewData(
-                        ViewReplaceParams.ViewData.builder()
+                        ViewData.builder()
                             .search(
-                                ViewReplaceParams.ViewData.Search.builder()
+                                ViewDataSearch.builder()
                                     .filter(listOf(JsonValue.from(mapOf<String, Any>())))
                                     .match(listOf(JsonValue.from(mapOf<String, Any>())))
                                     .sort(listOf(JsonValue.from(mapOf<String, Any>())))

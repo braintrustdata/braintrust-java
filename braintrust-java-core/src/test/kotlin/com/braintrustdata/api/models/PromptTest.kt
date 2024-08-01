@@ -23,20 +23,19 @@ class PromptTest {
                 .description("description")
                 .metadata(Prompt.Metadata.builder().build())
                 .promptData(
-                    Prompt.PromptData.builder()
+                    PromptData.builder()
                         .options(
-                            Prompt.PromptData.Options.builder()
+                            PromptData.Options.builder()
                                 .model("model")
                                 .params(
-                                    Prompt.PromptData.Options.Params.ofOpenAIModelParams(
-                                        Prompt.PromptData.Options.Params.OpenAIModelParams.builder()
+                                    PromptData.Options.Params.ofOpenAIModelParams(
+                                        PromptData.Options.Params.OpenAIModelParams.builder()
                                             .frequencyPenalty(42.23)
                                             .functionCall(
-                                                Prompt.PromptData.Options.Params.OpenAIModelParams
+                                                PromptData.Options.Params.OpenAIModelParams
                                                     .FunctionCall
                                                     .ofAuto(
-                                                        Prompt.PromptData.Options.Params
-                                                            .OpenAIModelParams
+                                                        PromptData.Options.Params.OpenAIModelParams
                                                             .FunctionCall
                                                             .Auto
                                                             .AUTO
@@ -46,12 +45,11 @@ class PromptTest {
                                             .n(42.23)
                                             .presencePenalty(42.23)
                                             .responseFormat(
-                                                Prompt.PromptData.Options.Params.OpenAIModelParams
+                                                PromptData.Options.Params.OpenAIModelParams
                                                     .ResponseFormat
                                                     .builder()
                                                     .type(
-                                                        Prompt.PromptData.Options.Params
-                                                            .OpenAIModelParams
+                                                        PromptData.Options.Params.OpenAIModelParams
                                                             .ResponseFormat
                                                             .Type
                                                             .JSON_OBJECT
@@ -61,11 +59,10 @@ class PromptTest {
                                             .stop(listOf("string"))
                                             .temperature(42.23)
                                             .toolChoice(
-                                                Prompt.PromptData.Options.Params.OpenAIModelParams
+                                                PromptData.Options.Params.OpenAIModelParams
                                                     .ToolChoice
                                                     .ofAuto(
-                                                        Prompt.PromptData.Options.Params
-                                                            .OpenAIModelParams
+                                                        PromptData.Options.Params.OpenAIModelParams
                                                             .ToolChoice
                                                             .Auto
                                                             .AUTO
@@ -80,17 +77,17 @@ class PromptTest {
                                 .build()
                         )
                         .origin(
-                            Prompt.PromptData.Origin.builder()
+                            PromptData.Origin.builder()
                                 .projectId("project_id")
                                 .promptId("prompt_id")
                                 .promptVersion("prompt_version")
                                 .build()
                         )
                         .prompt(
-                            Prompt.PromptData.Prompt.ofCompletion(
-                                Prompt.PromptData.Prompt.Completion.builder()
+                            PromptData.Prompt.ofCompletion(
+                                PromptData.Prompt.Completion.builder()
                                     .content("content")
-                                    .type(Prompt.PromptData.Prompt.Completion.Type.COMPLETION)
+                                    .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                     .build()
                             )
                         )
@@ -111,20 +108,18 @@ class PromptTest {
         assertThat(prompt.metadata()).contains(Prompt.Metadata.builder().build())
         assertThat(prompt.promptData())
             .contains(
-                Prompt.PromptData.builder()
+                PromptData.builder()
                     .options(
-                        Prompt.PromptData.Options.builder()
+                        PromptData.Options.builder()
                             .model("model")
                             .params(
-                                Prompt.PromptData.Options.Params.ofOpenAIModelParams(
-                                    Prompt.PromptData.Options.Params.OpenAIModelParams.builder()
+                                PromptData.Options.Params.ofOpenAIModelParams(
+                                    PromptData.Options.Params.OpenAIModelParams.builder()
                                         .frequencyPenalty(42.23)
                                         .functionCall(
-                                            Prompt.PromptData.Options.Params.OpenAIModelParams
-                                                .FunctionCall
+                                            PromptData.Options.Params.OpenAIModelParams.FunctionCall
                                                 .ofAuto(
-                                                    Prompt.PromptData.Options.Params
-                                                        .OpenAIModelParams
+                                                    PromptData.Options.Params.OpenAIModelParams
                                                         .FunctionCall
                                                         .Auto
                                                         .AUTO
@@ -134,12 +129,11 @@ class PromptTest {
                                         .n(42.23)
                                         .presencePenalty(42.23)
                                         .responseFormat(
-                                            Prompt.PromptData.Options.Params.OpenAIModelParams
+                                            PromptData.Options.Params.OpenAIModelParams
                                                 .ResponseFormat
                                                 .builder()
                                                 .type(
-                                                    Prompt.PromptData.Options.Params
-                                                        .OpenAIModelParams
+                                                    PromptData.Options.Params.OpenAIModelParams
                                                         .ResponseFormat
                                                         .Type
                                                         .JSON_OBJECT
@@ -149,11 +143,9 @@ class PromptTest {
                                         .stop(listOf("string"))
                                         .temperature(42.23)
                                         .toolChoice(
-                                            Prompt.PromptData.Options.Params.OpenAIModelParams
-                                                .ToolChoice
+                                            PromptData.Options.Params.OpenAIModelParams.ToolChoice
                                                 .ofAuto(
-                                                    Prompt.PromptData.Options.Params
-                                                        .OpenAIModelParams
+                                                    PromptData.Options.Params.OpenAIModelParams
                                                         .ToolChoice
                                                         .Auto
                                                         .AUTO
@@ -168,17 +160,17 @@ class PromptTest {
                             .build()
                     )
                     .origin(
-                        Prompt.PromptData.Origin.builder()
+                        PromptData.Origin.builder()
                             .projectId("project_id")
                             .promptId("prompt_id")
                             .promptVersion("prompt_version")
                             .build()
                     )
                     .prompt(
-                        Prompt.PromptData.Prompt.ofCompletion(
-                            Prompt.PromptData.Prompt.Completion.builder()
+                        PromptData.Prompt.ofCompletion(
+                            PromptData.Prompt.Completion.builder()
                                 .content("content")
-                                .type(Prompt.PromptData.Prompt.Completion.Type.COMPLETION)
+                                .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
                         )
                     )
