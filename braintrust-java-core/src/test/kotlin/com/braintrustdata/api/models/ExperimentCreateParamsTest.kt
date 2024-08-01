@@ -21,7 +21,7 @@ class ExperimentCreateParamsTest {
             .name("name")
             .public_(true)
             .repoInfo(
-                ExperimentCreateParams.RepoInfo.builder()
+                RepoInfo.builder()
                     .authorEmail("author_email")
                     .authorName("author_name")
                     .branch("branch")
@@ -50,7 +50,7 @@ class ExperimentCreateParamsTest {
                 .name("name")
                 .public_(true)
                 .repoInfo(
-                    ExperimentCreateParams.RepoInfo.builder()
+                    RepoInfo.builder()
                         .authorEmail("author_email")
                         .authorName("author_name")
                         .branch("branch")
@@ -76,7 +76,7 @@ class ExperimentCreateParamsTest {
         assertThat(body.public_()).isEqualTo(true)
         assertThat(body.repoInfo())
             .isEqualTo(
-                ExperimentCreateParams.RepoInfo.builder()
+                RepoInfo.builder()
                     .authorEmail("author_email")
                     .authorName("author_name")
                     .branch("branch")
