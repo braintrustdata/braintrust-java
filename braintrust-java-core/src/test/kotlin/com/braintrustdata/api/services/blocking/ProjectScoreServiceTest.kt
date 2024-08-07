@@ -28,12 +28,7 @@ class ProjectScoreServiceTest {
                     .scoreType(ProjectScoreCreateParams.ScoreType.SLIDER)
                     .categories(
                         ProjectScoreCreateParams.Categories.ofList<ProjectScoreCategory>(
-                            listOf(
-                                ProjectScoreCreateParams.Categories.ProjectScoreCategory.builder()
-                                    .name("name")
-                                    .value(42.23)
-                                    .build()
-                            )
+                            listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )
                     .description("description")
@@ -75,12 +70,7 @@ class ProjectScoreServiceTest {
                     .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .categories(
                         ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
-                            listOf(
-                                ProjectScoreUpdateParams.Categories.ProjectScoreCategory.builder()
-                                    .name("name")
-                                    .value(42.23)
-                                    .build()
-                            )
+                            listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )
                     .description("description")
@@ -139,12 +129,7 @@ class ProjectScoreServiceTest {
                     .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
                     .categories(
                         ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                            listOf(
-                                ProjectScoreReplaceParams.Categories.ProjectScoreCategory.builder()
-                                    .name("name")
-                                    .value(42.23)
-                                    .build()
-                            )
+                            listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )
                     .description("description")
