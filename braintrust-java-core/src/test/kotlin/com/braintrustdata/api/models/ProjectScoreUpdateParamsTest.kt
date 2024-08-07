@@ -14,12 +14,7 @@ class ProjectScoreUpdateParamsTest {
             .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .categories(
                 ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScoreUpdateParams.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
             .description("description")
@@ -35,12 +30,7 @@ class ProjectScoreUpdateParamsTest {
                 .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .categories(
                     ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
-                        listOf(
-                            ProjectScoreUpdateParams.Categories.ProjectScoreCategory.builder()
-                                .name("name")
-                                .value(42.23)
-                                .build()
-                        )
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
                 .description("description")
@@ -52,12 +42,7 @@ class ProjectScoreUpdateParamsTest {
         assertThat(body.categories())
             .isEqualTo(
                 ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScoreUpdateParams.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
         assertThat(body.description()).isEqualTo("description")

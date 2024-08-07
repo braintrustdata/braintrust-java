@@ -19,12 +19,7 @@ class ProjectScoreTest {
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .categories(
                     ProjectScore.Categories.ofList<ProjectScoreCategory>(
-                        listOf(
-                            ProjectScore.Categories.ProjectScoreCategory.builder()
-                                .name("name")
-                                .value(42.23)
-                                .build()
-                        )
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
                 .config(
@@ -46,12 +41,7 @@ class ProjectScoreTest {
         assertThat(projectScore.categories())
             .contains(
                 ProjectScore.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScore.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
         assertThat(projectScore.config())

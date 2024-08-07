@@ -16,12 +16,7 @@ class ProjectScoreReplaceParamsTest {
             .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
             .categories(
                 ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScoreReplaceParams.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
             .description("description")
@@ -37,12 +32,7 @@ class ProjectScoreReplaceParamsTest {
                 .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
                 .categories(
                     ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                        listOf(
-                            ProjectScoreReplaceParams.Categories.ProjectScoreCategory.builder()
-                                .name("name")
-                                .value(42.23)
-                                .build()
-                        )
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
                 .description("description")
@@ -55,12 +45,7 @@ class ProjectScoreReplaceParamsTest {
         assertThat(body.categories())
             .isEqualTo(
                 ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScoreReplaceParams.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
         assertThat(body.description()).isEqualTo("description")
