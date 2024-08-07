@@ -16,12 +16,7 @@ class ProjectScoreCreateParamsTest {
             .scoreType(ProjectScoreCreateParams.ScoreType.SLIDER)
             .categories(
                 ProjectScoreCreateParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScoreCreateParams.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
             .description("description")
@@ -37,12 +32,7 @@ class ProjectScoreCreateParamsTest {
                 .scoreType(ProjectScoreCreateParams.ScoreType.SLIDER)
                 .categories(
                     ProjectScoreCreateParams.Categories.ofList<ProjectScoreCategory>(
-                        listOf(
-                            ProjectScoreCreateParams.Categories.ProjectScoreCategory.builder()
-                                .name("name")
-                                .value(42.23)
-                                .build()
-                        )
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
                 .description("description")
@@ -55,12 +45,7 @@ class ProjectScoreCreateParamsTest {
         assertThat(body.categories())
             .isEqualTo(
                 ProjectScoreCreateParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(
-                        ProjectScoreCreateParams.Categories.ProjectScoreCategory.builder()
-                            .name("name")
-                            .value(42.23)
-                            .build()
-                    )
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
         assertThat(body.description()).isEqualTo("description")
