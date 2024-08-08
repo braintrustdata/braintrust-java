@@ -14,11 +14,11 @@ class DatasetFeedbackParamsTest {
             .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .feedback(
                 listOf(
-                    DatasetFeedbackParams.Feedback.builder()
+                    FeedbackDatasetItem.builder()
                         .id("id")
                         .comment("comment")
-                        .metadata(DatasetFeedbackParams.Feedback.Metadata.builder().build())
-                        .source(DatasetFeedbackParams.Feedback.Source.APP)
+                        .metadata(FeedbackDatasetItem.Metadata.builder().build())
+                        .source(FeedbackDatasetItem.Source.APP)
                         .build()
                 )
             )
@@ -32,11 +32,11 @@ class DatasetFeedbackParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        DatasetFeedbackParams.Feedback.builder()
+                        FeedbackDatasetItem.builder()
                             .id("id")
                             .comment("comment")
-                            .metadata(DatasetFeedbackParams.Feedback.Metadata.builder().build())
-                            .source(DatasetFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackDatasetItem.Metadata.builder().build())
+                            .source(FeedbackDatasetItem.Source.APP)
                             .build()
                     )
                 )
@@ -46,11 +46,11 @@ class DatasetFeedbackParamsTest {
         assertThat(body.feedback())
             .isEqualTo(
                 listOf(
-                    DatasetFeedbackParams.Feedback.builder()
+                    FeedbackDatasetItem.builder()
                         .id("id")
                         .comment("comment")
-                        .metadata(DatasetFeedbackParams.Feedback.Metadata.builder().build())
-                        .source(DatasetFeedbackParams.Feedback.Source.APP)
+                        .metadata(FeedbackDatasetItem.Metadata.builder().build())
+                        .source(FeedbackDatasetItem.Source.APP)
                         .build()
                 )
             )
@@ -61,12 +61,12 @@ class DatasetFeedbackParamsTest {
         val params =
             DatasetFeedbackParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(DatasetFeedbackParams.Feedback.builder().id("id").build()))
+                .feedback(listOf(FeedbackDatasetItem.builder().id("id").build()))
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.feedback())
-            .isEqualTo(listOf(DatasetFeedbackParams.Feedback.builder().id("id").build()))
+            .isEqualTo(listOf(FeedbackDatasetItem.builder().id("id").build()))
     }
 
     @Test
@@ -74,7 +74,7 @@ class DatasetFeedbackParamsTest {
         val params =
             DatasetFeedbackParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(DatasetFeedbackParams.Feedback.builder().id("id").build()))
+                .feedback(listOf(FeedbackDatasetItem.builder().id("id").build()))
                 .build()
         assertThat(params).isNotNull
         // path param "datasetId"

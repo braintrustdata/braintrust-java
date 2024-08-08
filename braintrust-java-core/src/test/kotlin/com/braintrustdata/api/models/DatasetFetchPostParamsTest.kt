@@ -16,9 +16,9 @@ class DatasetFetchPostParamsTest {
             .cursor("cursor")
             .filters(
                 listOf(
-                    DatasetFetchPostParams.Filter.builder()
+                    PathLookupFilter.builder()
                         .path(listOf("string"))
-                        .type(DatasetFetchPostParams.Filter.Type.PATH_LOOKUP)
+                        .type(PathLookupFilter.Type.PATH_LOOKUP)
                         .value(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )
@@ -38,9 +38,9 @@ class DatasetFetchPostParamsTest {
                 .cursor("cursor")
                 .filters(
                     listOf(
-                        DatasetFetchPostParams.Filter.builder()
+                        PathLookupFilter.builder()
                             .path(listOf("string"))
-                            .type(DatasetFetchPostParams.Filter.Type.PATH_LOOKUP)
+                            .type(PathLookupFilter.Type.PATH_LOOKUP)
                             .value(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
@@ -56,9 +56,9 @@ class DatasetFetchPostParamsTest {
         assertThat(body.filters())
             .isEqualTo(
                 listOf(
-                    DatasetFetchPostParams.Filter.builder()
+                    PathLookupFilter.builder()
                         .path(listOf("string"))
-                        .type(DatasetFetchPostParams.Filter.Type.PATH_LOOKUP)
+                        .type(PathLookupFilter.Type.PATH_LOOKUP)
                         .value(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )

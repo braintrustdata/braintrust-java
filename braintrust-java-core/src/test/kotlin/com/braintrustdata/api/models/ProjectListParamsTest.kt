@@ -12,7 +12,7 @@ class ProjectListParamsTest {
     fun createProjectListParams() {
         ProjectListParams.builder()
             .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .ids(ProjectListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .limit(123L)
             .orgName("org_name")
             .projectName("project_name")
@@ -25,7 +25,7 @@ class ProjectListParamsTest {
         val params =
             ProjectListParams.builder()
                 .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .ids(ProjectListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .limit(123L)
                 .orgName("org_name")
                 .projectName("project_name")

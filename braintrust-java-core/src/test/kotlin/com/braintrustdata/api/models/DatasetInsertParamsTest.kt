@@ -16,8 +16,8 @@ class DatasetInsertParamsTest {
             .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .events(
                 listOf(
-                    DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                        DatasetInsertParams.Event.InsertDatasetEventReplace.builder()
+                    InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        InsertDatasetEventReplace.builder()
                             .id("id")
                             ._isMerge(true)
                             ._objectDelete(true)
@@ -25,11 +25,7 @@ class DatasetInsertParamsTest {
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .expected(JsonValue.from(mapOf<String, Any>()))
                             .input(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(
-                                DatasetInsertParams.Event.InsertDatasetEventReplace.Metadata
-                                    .builder()
-                                    .build()
-                            )
+                            .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                             .tags(listOf("string"))
                             .build()
                     )
@@ -45,8 +41,8 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                            DatasetInsertParams.Event.InsertDatasetEventReplace.builder()
+                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                            InsertDatasetEventReplace.builder()
                                 .id("id")
                                 ._isMerge(true)
                                 ._objectDelete(true)
@@ -54,11 +50,7 @@ class DatasetInsertParamsTest {
                                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                 .expected(JsonValue.from(mapOf<String, Any>()))
                                 .input(JsonValue.from(mapOf<String, Any>()))
-                                .metadata(
-                                    DatasetInsertParams.Event.InsertDatasetEventReplace.Metadata
-                                        .builder()
-                                        .build()
-                                )
+                                .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                                 .tags(listOf("string"))
                                 .build()
                         )
@@ -70,8 +62,8 @@ class DatasetInsertParamsTest {
         assertThat(body.events())
             .isEqualTo(
                 listOf(
-                    DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                        DatasetInsertParams.Event.InsertDatasetEventReplace.builder()
+                    InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        InsertDatasetEventReplace.builder()
                             .id("id")
                             ._isMerge(true)
                             ._objectDelete(true)
@@ -79,11 +71,7 @@ class DatasetInsertParamsTest {
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .expected(JsonValue.from(mapOf<String, Any>()))
                             .input(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(
-                                DatasetInsertParams.Event.InsertDatasetEventReplace.Metadata
-                                    .builder()
-                                    .build()
-                            )
+                            .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                             .tags(listOf("string"))
                             .build()
                     )
@@ -98,8 +86,8 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                            DatasetInsertParams.Event.InsertDatasetEventReplace.builder().build()
+                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                            InsertDatasetEventReplace.builder().build()
                         )
                     )
                 )
@@ -109,8 +97,8 @@ class DatasetInsertParamsTest {
         assertThat(body.events())
             .isEqualTo(
                 listOf(
-                    DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                        DatasetInsertParams.Event.InsertDatasetEventReplace.builder().build()
+                    InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        InsertDatasetEventReplace.builder().build()
                     )
                 )
             )
@@ -123,8 +111,8 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                            DatasetInsertParams.Event.InsertDatasetEventReplace.builder().build()
+                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                            InsertDatasetEventReplace.builder().build()
                         )
                     )
                 )

@@ -10,11 +10,11 @@ import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.ApiKey
 import com.braintrustdata.api.models.ApiKeyCreateParams
-import com.braintrustdata.api.models.ApiKeyCreateResponse
 import com.braintrustdata.api.models.ApiKeyDeleteParams
 import com.braintrustdata.api.models.ApiKeyListPage
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
+import com.braintrustdata.api.models.CreateApiKeyOutput
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
@@ -27,8 +27,8 @@ constructor(
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-    private val createHandler: Handler<ApiKeyCreateResponse> =
-        jsonHandler<ApiKeyCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val createHandler: Handler<CreateApiKeyOutput> =
+        jsonHandler<CreateApiKeyOutput>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
      * Create a new api_key. It is possible to have multiple API keys with the same name. There is
@@ -37,7 +37,7 @@ constructor(
     override fun create(
         params: ApiKeyCreateParams,
         requestOptions: RequestOptions
-    ): ApiKeyCreateResponse {
+    ): CreateApiKeyOutput {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
