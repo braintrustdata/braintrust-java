@@ -17,8 +17,8 @@ import com.braintrustdata.api.models.ViewUpdateParams
 interface ViewService {
 
     /**
-     * Create a new view. If there is an existing view in the project with the same name as the one
-     * specified in the request, will return the existing view unmodified
+     * Create a new view. If there is an existing view with the same name as the one specified in
+     * the request, will return the existing view unmodified
      */
     @JvmOverloads
     fun create(
@@ -62,8 +62,8 @@ interface ViewService {
     ): View
 
     /**
-     * Create or replace view. If there is an existing view in the project with the same name as the
-     * one specified in the request, will replace the existing view with the provided fields
+     * Create or replace view. If there is an existing view with the same name as the one specified
+     * in the request, will replace the existing view with the provided fields
      */
     @JvmOverloads
     fun replace(

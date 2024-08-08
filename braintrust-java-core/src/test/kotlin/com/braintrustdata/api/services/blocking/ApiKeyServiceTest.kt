@@ -20,12 +20,12 @@ class ApiKeyServiceTest {
                 .apiKey("My API Key")
                 .build()
         val apiKeyService = client.apiKeys()
-        val apiKeyCreateResponse =
+        val createApiKeyOutput =
             apiKeyService.create(
                 ApiKeyCreateParams.builder().name("name").orgName("org_name").build()
             )
-        println(apiKeyCreateResponse)
-        apiKeyCreateResponse.validate()
+        println(createApiKeyOutput)
+        createApiKeyOutput.validate()
     }
 
     @Test

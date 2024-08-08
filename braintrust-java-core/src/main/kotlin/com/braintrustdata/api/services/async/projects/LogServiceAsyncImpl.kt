@@ -8,13 +8,12 @@ import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.errors.BraintrustError
+import com.braintrustdata.api.models.FetchProjectLogsEventsResponse
+import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
-import com.braintrustdata.api.models.ProjectLogFetchPostResponse
-import com.braintrustdata.api.models.ProjectLogFetchResponse
 import com.braintrustdata.api.models.ProjectLogInsertParams
-import com.braintrustdata.api.models.ProjectLogInsertResponse
 import com.braintrustdata.api.services.emptyHandler
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
@@ -52,8 +51,8 @@ constructor(
         }
     }
 
-    private val fetchHandler: Handler<ProjectLogFetchResponse> =
-        jsonHandler<ProjectLogFetchResponse>(clientOptions.jsonMapper)
+    private val fetchHandler: Handler<FetchProjectLogsEventsResponse> =
+        jsonHandler<FetchProjectLogsEventsResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -63,7 +62,7 @@ constructor(
     override fun fetch(
         params: ProjectLogFetchParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ProjectLogFetchResponse> {
+    ): CompletableFuture<FetchProjectLogsEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -85,8 +84,8 @@ constructor(
         }
     }
 
-    private val fetchPostHandler: Handler<ProjectLogFetchPostResponse> =
-        jsonHandler<ProjectLogFetchPostResponse>(clientOptions.jsonMapper)
+    private val fetchPostHandler: Handler<FetchProjectLogsEventsResponse> =
+        jsonHandler<FetchProjectLogsEventsResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -96,7 +95,7 @@ constructor(
     override fun fetchPost(
         params: ProjectLogFetchPostParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ProjectLogFetchPostResponse> {
+    ): CompletableFuture<FetchProjectLogsEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -119,15 +118,14 @@ constructor(
         }
     }
 
-    private val insertHandler: Handler<ProjectLogInsertResponse> =
-        jsonHandler<ProjectLogInsertResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    private val insertHandler: Handler<InsertEventsResponse> =
+        jsonHandler<InsertEventsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Insert a set of events into the project logs */
     override fun insert(
         params: ProjectLogInsertParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ProjectLogInsertResponse> {
+    ): CompletableFuture<InsertEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)

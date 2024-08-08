@@ -2,17 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
@@ -22,7 +18,7 @@ class ProjectLogFetchPostParams
 constructor(
     private val projectId: String,
     private val cursor: String?,
-    private val filters: List<Filter>?,
+    private val filters: List<PathLookupFilter>?,
     private val limit: Long?,
     private val maxRootSpanId: String?,
     private val maxXactId: String?,
@@ -36,7 +32,7 @@ constructor(
 
     fun cursor(): Optional<String> = Optional.ofNullable(cursor)
 
-    fun filters(): Optional<List<Filter>> = Optional.ofNullable(filters)
+    fun filters(): Optional<List<PathLookupFilter>> = Optional.ofNullable(filters)
 
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
@@ -75,7 +71,7 @@ constructor(
     class ProjectLogFetchPostBody
     internal constructor(
         private val cursor: String?,
-        private val filters: List<Filter>?,
+        private val filters: List<PathLookupFilter>?,
         private val limit: Long?,
         private val maxRootSpanId: String?,
         private val maxXactId: String?,
@@ -98,7 +94,7 @@ constructor(
          * A list of filters on the events to fetch. Currently, only path-lookup type filters are
          * supported, but we may add more in the future
          */
-        @JsonProperty("filters") fun filters(): List<Filter>? = filters
+        @JsonProperty("filters") fun filters(): List<PathLookupFilter>? = filters
 
         /**
          * limit the number of traces fetched
@@ -201,7 +197,7 @@ constructor(
         class Builder {
 
             private var cursor: String? = null
-            private var filters: List<Filter>? = null
+            private var filters: List<PathLookupFilter>? = null
             private var limit: Long? = null
             private var maxRootSpanId: String? = null
             private var maxXactId: String? = null
@@ -233,7 +229,7 @@ constructor(
              * are supported, but we may add more in the future
              */
             @JsonProperty("filters")
-            fun filters(filters: List<Filter>) = apply { this.filters = filters }
+            fun filters(filters: List<PathLookupFilter>) = apply { this.filters = filters }
 
             /**
              * limit the number of traces fetched
@@ -372,7 +368,7 @@ constructor(
 
         private var projectId: String? = null
         private var cursor: String? = null
-        private var filters: MutableList<Filter> = mutableListOf()
+        private var filters: MutableList<PathLookupFilter> = mutableListOf()
         private var limit: Long? = null
         private var maxRootSpanId: String? = null
         private var maxXactId: String? = null
@@ -411,7 +407,7 @@ constructor(
          * A list of filters on the events to fetch. Currently, only path-lookup type filters are
          * supported, but we may add more in the future
          */
-        fun filters(filters: List<Filter>) = apply {
+        fun filters(filters: List<PathLookupFilter>) = apply {
             this.filters.clear()
             this.filters.addAll(filters)
         }
@@ -420,7 +416,7 @@ constructor(
          * A list of filters on the events to fetch. Currently, only path-lookup type filters are
          * supported, but we may add more in the future
          */
-        fun addFilter(filter: Filter) = apply { this.filters.add(filter) }
+        fun addFilter(filter: PathLookupFilter) = apply { this.filters.add(filter) }
 
         /**
          * limit the number of traces fetched
@@ -542,187 +538,5 @@ constructor(
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
             )
-    }
-
-    /**
-     * A path-lookup filter describes an equality comparison against a specific sub-field in the
-     * event row. For instance, if you wish to filter on the value of `c` in `{"input": {"a": {"b":
-     * {"c": "hello"}}}}`, pass `path=["input", "a", "b", "c"]` and `value="hello"`
-     */
-    @JsonDeserialize(builder = Filter.Builder::class)
-    @NoAutoDetect
-    class Filter
-    private constructor(
-        private val type: Type?,
-        private val path: List<String>?,
-        private val value: JsonValue?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var hashCode: Int = 0
-
-        /** Denotes the type of filter as a path-lookup filter */
-        @JsonProperty("type") fun type(): Type? = type
-
-        /**
-         * List of fields describing the path to the value to be checked against. For instance, if
-         * you wish to filter on the value of `c` in `{"input": {"a": {"b": {"c": "hello"}}}}`, pass
-         * `path=["input", "a", "b", "c"]`
-         */
-        @JsonProperty("path") fun path(): List<String>? = path
-
-        /**
-         * The value to compare equality-wise against the event value at the specified `path`. The
-         * value must be a "primitive", that is, any JSON-serializable object except for objects and
-         * arrays. For instance, if you wish to filter on the value of "input.a.b.c" in the object
-         * `{"input": {"a": {"b": {"c": "hello"}}}}`, pass `value="hello"`
-         */
-        @JsonProperty("value") fun value(): JsonValue? = value
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Filter &&
-                this.type == other.type &&
-                this.path == other.path &&
-                this.value == other.value &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        path,
-                        value,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Filter{type=$type, path=$path, value=$value, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var type: Type? = null
-            private var path: List<String>? = null
-            private var value: JsonValue? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(filter: Filter) = apply {
-                this.type = filter.type
-                this.path = filter.path
-                this.value = filter.value
-                additionalProperties(filter.additionalProperties)
-            }
-
-            /** Denotes the type of filter as a path-lookup filter */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
-
-            /**
-             * List of fields describing the path to the value to be checked against. For instance,
-             * if you wish to filter on the value of `c` in `{"input": {"a": {"b": {"c":
-             * "hello"}}}}`, pass `path=["input", "a", "b", "c"]`
-             */
-            @JsonProperty("path") fun path(path: List<String>) = apply { this.path = path }
-
-            /**
-             * The value to compare equality-wise against the event value at the specified `path`.
-             * The value must be a "primitive", that is, any JSON-serializable object except for
-             * objects and arrays. For instance, if you wish to filter on the value of "input.a.b.c"
-             * in the object `{"input": {"a": {"b": {"c": "hello"}}}}`, pass `value="hello"`
-             */
-            @JsonProperty("value") fun value(value: JsonValue) = apply { this.value = value }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Filter =
-                Filter(
-                    checkNotNull(type) { "`type` is required but was not set" },
-                    checkNotNull(path) { "`path` is required but was not set" }.toUnmodifiable(),
-                    value,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Type && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val PATH_LOOKUP = Type(JsonField.of("path_lookup"))
-
-                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            enum class Known {
-                PATH_LOOKUP,
-            }
-
-            enum class Value {
-                PATH_LOOKUP,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    PATH_LOOKUP -> Value.PATH_LOOKUP
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    PATH_LOOKUP -> Known.PATH_LOOKUP
-                    else -> throw BraintrustInvalidDataException("Unknown Type: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
     }
 }

@@ -16,9 +16,9 @@ class ExperimentFetchPostParamsTest {
             .cursor("cursor")
             .filters(
                 listOf(
-                    ExperimentFetchPostParams.Filter.builder()
+                    PathLookupFilter.builder()
                         .path(listOf("string"))
-                        .type(ExperimentFetchPostParams.Filter.Type.PATH_LOOKUP)
+                        .type(PathLookupFilter.Type.PATH_LOOKUP)
                         .value(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )
@@ -38,9 +38,9 @@ class ExperimentFetchPostParamsTest {
                 .cursor("cursor")
                 .filters(
                     listOf(
-                        ExperimentFetchPostParams.Filter.builder()
+                        PathLookupFilter.builder()
                             .path(listOf("string"))
-                            .type(ExperimentFetchPostParams.Filter.Type.PATH_LOOKUP)
+                            .type(PathLookupFilter.Type.PATH_LOOKUP)
                             .value(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
@@ -56,9 +56,9 @@ class ExperimentFetchPostParamsTest {
         assertThat(body.filters())
             .isEqualTo(
                 listOf(
-                    ExperimentFetchPostParams.Filter.builder()
+                    PathLookupFilter.builder()
                         .path(listOf("string"))
-                        .type(ExperimentFetchPostParams.Filter.Type.PATH_LOOKUP)
+                        .type(PathLookupFilter.Type.PATH_LOOKUP)
                         .value(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )

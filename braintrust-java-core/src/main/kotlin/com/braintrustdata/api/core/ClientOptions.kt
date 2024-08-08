@@ -15,7 +15,7 @@ private constructor(
     @get:JvmName("jsonMapper") val jsonMapper: JsonMapper,
     @get:JvmName("clock") val clock: Clock,
     @get:JvmName("baseUrl") val baseUrl: String,
-    @get:JvmName("apiKey") val apiKey: String,
+    @get:JvmName("apiKey") val apiKey: String?,
     @get:JvmName("headers") val headers: ListMultimap<String, String>,
     @get:JvmName("queryParams") val queryParams: ListMultimap<String, String>,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
@@ -94,13 +94,12 @@ private constructor(
 
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun apiKey(apiKey: String) = apply { this.apiKey = apiKey }
+        fun apiKey(apiKey: String?) = apply { this.apiKey = apiKey }
 
         fun fromEnv() = apply { System.getenv("BRAINTRUST_API_KEY")?.let { apiKey(it) } }
 
         fun build(): ClientOptions {
             checkNotNull(httpClient) { "`httpClient` is required but was not set" }
-            checkNotNull(apiKey) { "`apiKey` is required but was not set" }
 
             val headers = ArrayListMultimap.create<String, String>()
             val queryParams = ArrayListMultimap.create<String, String>()
@@ -125,7 +124,7 @@ private constructor(
                 jsonMapper ?: jsonMapper(),
                 clock,
                 baseUrl,
-                apiKey!!,
+                apiKey,
                 headers.toUnmodifiable(),
                 queryParams.toUnmodifiable(),
                 responseValidation,
