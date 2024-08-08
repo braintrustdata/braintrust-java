@@ -15,13 +15,13 @@ class ProjectLogFeedbackParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .feedback(
                 listOf(
-                    ProjectLogFeedbackParams.Feedback.builder()
+                    FeedbackProjectLogsItem.builder()
                         .id("id")
                         .comment("comment")
                         .expected(JsonValue.from(mapOf<String, Any>()))
-                        .metadata(ProjectLogFeedbackParams.Feedback.Metadata.builder().build())
-                        .scores(ProjectLogFeedbackParams.Feedback.Scores.builder().build())
-                        .source(ProjectLogFeedbackParams.Feedback.Source.APP)
+                        .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
+                        .scores(FeedbackProjectLogsItem.Scores.builder().build())
+                        .source(FeedbackProjectLogsItem.Source.APP)
                         .build()
                 )
             )
@@ -35,13 +35,13 @@ class ProjectLogFeedbackParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        ProjectLogFeedbackParams.Feedback.builder()
+                        FeedbackProjectLogsItem.builder()
                             .id("id")
                             .comment("comment")
                             .expected(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(ProjectLogFeedbackParams.Feedback.Metadata.builder().build())
-                            .scores(ProjectLogFeedbackParams.Feedback.Scores.builder().build())
-                            .source(ProjectLogFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
+                            .scores(FeedbackProjectLogsItem.Scores.builder().build())
+                            .source(FeedbackProjectLogsItem.Source.APP)
                             .build()
                     )
                 )
@@ -51,13 +51,13 @@ class ProjectLogFeedbackParamsTest {
         assertThat(body.feedback())
             .isEqualTo(
                 listOf(
-                    ProjectLogFeedbackParams.Feedback.builder()
+                    FeedbackProjectLogsItem.builder()
                         .id("id")
                         .comment("comment")
                         .expected(JsonValue.from(mapOf<String, Any>()))
-                        .metadata(ProjectLogFeedbackParams.Feedback.Metadata.builder().build())
-                        .scores(ProjectLogFeedbackParams.Feedback.Scores.builder().build())
-                        .source(ProjectLogFeedbackParams.Feedback.Source.APP)
+                        .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
+                        .scores(FeedbackProjectLogsItem.Scores.builder().build())
+                        .source(FeedbackProjectLogsItem.Source.APP)
                         .build()
                 )
             )
@@ -68,12 +68,12 @@ class ProjectLogFeedbackParamsTest {
         val params =
             ProjectLogFeedbackParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(ProjectLogFeedbackParams.Feedback.builder().id("id").build()))
+                .feedback(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.feedback())
-            .isEqualTo(listOf(ProjectLogFeedbackParams.Feedback.builder().id("id").build()))
+            .isEqualTo(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
     }
 
     @Test
@@ -81,7 +81,7 @@ class ProjectLogFeedbackParamsTest {
         val params =
             ProjectLogFeedbackParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(ProjectLogFeedbackParams.Feedback.builder().id("id").build()))
+                .feedback(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
                 .build()
         assertThat(params).isNotNull
         // path param "projectId"

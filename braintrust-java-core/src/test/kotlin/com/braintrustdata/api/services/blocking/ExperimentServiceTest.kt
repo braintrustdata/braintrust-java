@@ -153,13 +153,13 @@ class ExperimentServiceTest {
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        ExperimentFeedbackParams.Feedback.builder()
+                        FeedbackExperimentItem.builder()
                             .id("id")
                             .comment("comment")
                             .expected(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(ExperimentFeedbackParams.Feedback.Metadata.builder().build())
-                            .scores(ExperimentFeedbackParams.Feedback.Scores.builder().build())
-                            .source(ExperimentFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackExperimentItem.Metadata.builder().build())
+                            .scores(FeedbackExperimentItem.Scores.builder().build())
+                            .source(FeedbackExperimentItem.Source.APP)
                             .build()
                     )
                 )
@@ -175,7 +175,7 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val experimentFetchResponse =
+        val fetchExperimentEventsResponse =
             experimentService.fetch(
                 ExperimentFetchParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -185,8 +185,8 @@ class ExperimentServiceTest {
                     .version("version")
                     .build()
             )
-        println(experimentFetchResponse)
-        experimentFetchResponse.validate()
+        println(fetchExperimentEventsResponse)
+        fetchExperimentEventsResponse.validate()
     }
 
     @Test
@@ -197,16 +197,16 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val experimentFetchPostResponse =
+        val fetchExperimentEventsResponse =
             experimentService.fetchPost(
                 ExperimentFetchPostParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
                     .filters(
                         listOf(
-                            ExperimentFetchPostParams.Filter.builder()
+                            PathLookupFilter.builder()
                                 .path(listOf("string"))
-                                .type(ExperimentFetchPostParams.Filter.Type.PATH_LOOKUP)
+                                .type(PathLookupFilter.Type.PATH_LOOKUP)
                                 .value(JsonValue.from(mapOf<String, Any>()))
                                 .build()
                         )
@@ -217,8 +217,8 @@ class ExperimentServiceTest {
                     .version("version")
                     .build()
             )
-        println(experimentFetchPostResponse)
-        experimentFetchPostResponse.validate()
+        println(fetchExperimentEventsResponse)
+        fetchExperimentEventsResponse.validate()
     }
 
     @Test
@@ -229,22 +229,20 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val experimentInsertResponse =
+        val insertEventsResponse =
             experimentService.insert(
                 ExperimentInsertParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .events(
                         listOf(
-                            ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
-                                ExperimentInsertParams.Event.InsertExperimentEventReplace.builder()
+                            InsertExperimentEvent.ofInsertExperimentEventReplace(
+                                InsertExperimentEventReplace.builder()
                                     .id("id")
                                     ._isMerge(true)
                                     ._objectDelete(true)
                                     ._parentId("_parent_id")
                                     .context(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Context
-                                            .builder()
+                                        InsertExperimentEventReplace.Context.builder()
                                             .callerFilename("caller_filename")
                                             .callerFunctionname("caller_functionname")
                                             .callerLineno(123L)
@@ -252,18 +250,14 @@ class ExperimentServiceTest {
                                     )
                                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                     .datasetRecordId("dataset_record_id")
+                                    .error(JsonValue.from(mapOf<String, Any>()))
                                     .expected(JsonValue.from(mapOf<String, Any>()))
                                     .input(JsonValue.from(mapOf<String, Any>()))
                                     .metadata(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Metadata
-                                            .builder()
-                                            .build()
+                                        InsertExperimentEventReplace.Metadata.builder().build()
                                     )
                                     .metrics(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Metrics
-                                            .builder()
+                                        InsertExperimentEventReplace.Metrics.builder()
                                             .completionTokens(123L)
                                             .end(42.23)
                                             .promptTokens(123L)
@@ -272,23 +266,12 @@ class ExperimentServiceTest {
                                             .build()
                                     )
                                     .output(JsonValue.from(mapOf<String, Any>()))
-                                    .scores(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Scores
-                                            .builder()
-                                            .build()
-                                    )
+                                    .scores(InsertExperimentEventReplace.Scores.builder().build())
                                     .spanAttributes(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .SpanAttributes
-                                            .builder()
+                                        InsertExperimentEventReplace.SpanAttributes.builder()
                                             .name("name")
                                             .type(
-                                                ExperimentInsertParams.Event
-                                                    .InsertExperimentEventReplace
-                                                    .SpanAttributes
-                                                    .Type
-                                                    .LLM
+                                                InsertExperimentEventReplace.SpanAttributes.Type.LLM
                                             )
                                             .build()
                                     )
@@ -299,8 +282,8 @@ class ExperimentServiceTest {
                     )
                     .build()
             )
-        println(experimentInsertResponse)
-        experimentInsertResponse.validate()
+        println(insertEventsResponse)
+        insertEventsResponse.validate()
     }
 
     @Test
@@ -311,7 +294,7 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val experimentSummarizeResponse =
+        val summarizeExperimentResponse =
             experimentService.summarize(
                 ExperimentSummarizeParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -319,7 +302,7 @@ class ExperimentServiceTest {
                     .summarizeScores(true)
                     .build()
             )
-        println(experimentSummarizeResponse)
-        experimentSummarizeResponse.validate()
+        println(summarizeExperimentResponse)
+        summarizeExperimentResponse.validate()
     }
 }

@@ -14,16 +14,15 @@ import com.braintrustdata.api.models.ExperimentDeleteParams
 import com.braintrustdata.api.models.ExperimentFeedbackParams
 import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
-import com.braintrustdata.api.models.ExperimentFetchPostResponse
-import com.braintrustdata.api.models.ExperimentFetchResponse
 import com.braintrustdata.api.models.ExperimentInsertParams
-import com.braintrustdata.api.models.ExperimentInsertResponse
 import com.braintrustdata.api.models.ExperimentListPageAsync
 import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
-import com.braintrustdata.api.models.ExperimentSummarizeResponse
 import com.braintrustdata.api.models.ExperimentUpdateParams
+import com.braintrustdata.api.models.FetchExperimentEventsResponse
+import com.braintrustdata.api.models.InsertEventsResponse
+import com.braintrustdata.api.models.SummarizeExperimentResponse
 import com.braintrustdata.api.services.emptyHandler
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
@@ -221,8 +220,8 @@ constructor(
         }
     }
 
-    private val fetchHandler: Handler<ExperimentFetchResponse> =
-        jsonHandler<ExperimentFetchResponse>(clientOptions.jsonMapper)
+    private val fetchHandler: Handler<FetchExperimentEventsResponse> =
+        jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -232,7 +231,7 @@ constructor(
     override fun fetch(
         params: ExperimentFetchParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ExperimentFetchResponse> {
+    ): CompletableFuture<FetchExperimentEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -254,8 +253,8 @@ constructor(
         }
     }
 
-    private val fetchPostHandler: Handler<ExperimentFetchPostResponse> =
-        jsonHandler<ExperimentFetchPostResponse>(clientOptions.jsonMapper)
+    private val fetchPostHandler: Handler<FetchExperimentEventsResponse> =
+        jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -265,7 +264,7 @@ constructor(
     override fun fetchPost(
         params: ExperimentFetchPostParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ExperimentFetchPostResponse> {
+    ): CompletableFuture<FetchExperimentEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -288,15 +287,14 @@ constructor(
         }
     }
 
-    private val insertHandler: Handler<ExperimentInsertResponse> =
-        jsonHandler<ExperimentInsertResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    private val insertHandler: Handler<InsertEventsResponse> =
+        jsonHandler<InsertEventsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Insert a set of events into the experiment */
     override fun insert(
         params: ExperimentInsertParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ExperimentInsertResponse> {
+    ): CompletableFuture<InsertEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -319,15 +317,15 @@ constructor(
         }
     }
 
-    private val summarizeHandler: Handler<ExperimentSummarizeResponse> =
-        jsonHandler<ExperimentSummarizeResponse>(clientOptions.jsonMapper)
+    private val summarizeHandler: Handler<SummarizeExperimentResponse> =
+        jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Summarize experiment */
     override fun summarize(
         params: ExperimentSummarizeParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ExperimentSummarizeResponse> {
+    ): CompletableFuture<SummarizeExperimentResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)

@@ -15,13 +15,13 @@ class ExperimentFeedbackParamsTest {
             .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .feedback(
                 listOf(
-                    ExperimentFeedbackParams.Feedback.builder()
+                    FeedbackExperimentItem.builder()
                         .id("id")
                         .comment("comment")
                         .expected(JsonValue.from(mapOf<String, Any>()))
-                        .metadata(ExperimentFeedbackParams.Feedback.Metadata.builder().build())
-                        .scores(ExperimentFeedbackParams.Feedback.Scores.builder().build())
-                        .source(ExperimentFeedbackParams.Feedback.Source.APP)
+                        .metadata(FeedbackExperimentItem.Metadata.builder().build())
+                        .scores(FeedbackExperimentItem.Scores.builder().build())
+                        .source(FeedbackExperimentItem.Source.APP)
                         .build()
                 )
             )
@@ -35,13 +35,13 @@ class ExperimentFeedbackParamsTest {
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        ExperimentFeedbackParams.Feedback.builder()
+                        FeedbackExperimentItem.builder()
                             .id("id")
                             .comment("comment")
                             .expected(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(ExperimentFeedbackParams.Feedback.Metadata.builder().build())
-                            .scores(ExperimentFeedbackParams.Feedback.Scores.builder().build())
-                            .source(ExperimentFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackExperimentItem.Metadata.builder().build())
+                            .scores(FeedbackExperimentItem.Scores.builder().build())
+                            .source(FeedbackExperimentItem.Source.APP)
                             .build()
                     )
                 )
@@ -51,13 +51,13 @@ class ExperimentFeedbackParamsTest {
         assertThat(body.feedback())
             .isEqualTo(
                 listOf(
-                    ExperimentFeedbackParams.Feedback.builder()
+                    FeedbackExperimentItem.builder()
                         .id("id")
                         .comment("comment")
                         .expected(JsonValue.from(mapOf<String, Any>()))
-                        .metadata(ExperimentFeedbackParams.Feedback.Metadata.builder().build())
-                        .scores(ExperimentFeedbackParams.Feedback.Scores.builder().build())
-                        .source(ExperimentFeedbackParams.Feedback.Source.APP)
+                        .metadata(FeedbackExperimentItem.Metadata.builder().build())
+                        .scores(FeedbackExperimentItem.Scores.builder().build())
+                        .source(FeedbackExperimentItem.Source.APP)
                         .build()
                 )
             )
@@ -68,12 +68,12 @@ class ExperimentFeedbackParamsTest {
         val params =
             ExperimentFeedbackParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(ExperimentFeedbackParams.Feedback.builder().id("id").build()))
+                .feedback(listOf(FeedbackExperimentItem.builder().id("id").build()))
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.feedback())
-            .isEqualTo(listOf(ExperimentFeedbackParams.Feedback.builder().id("id").build()))
+            .isEqualTo(listOf(FeedbackExperimentItem.builder().id("id").build()))
     }
 
     @Test
@@ -81,7 +81,7 @@ class ExperimentFeedbackParamsTest {
         val params =
             ExperimentFeedbackParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(ExperimentFeedbackParams.Feedback.builder().id("id").build()))
+                .feedback(listOf(FeedbackExperimentItem.builder().id("id").build()))
                 .build()
         assertThat(params).isNotNull
         // path param "experimentId"

@@ -5,13 +5,12 @@
 package com.braintrustdata.api.services.async.projects
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.models.FetchProjectLogsEventsResponse
+import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
-import com.braintrustdata.api.models.ProjectLogFetchPostResponse
-import com.braintrustdata.api.models.ProjectLogFetchResponse
 import com.braintrustdata.api.models.ProjectLogInsertParams
-import com.braintrustdata.api.models.ProjectLogInsertResponse
 import java.util.concurrent.CompletableFuture
 
 interface LogServiceAsync {
@@ -31,7 +30,7 @@ interface LogServiceAsync {
     fun fetch(
         params: ProjectLogFetchParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectLogFetchResponse>
+    ): CompletableFuture<FetchProjectLogsEventsResponse>
 
     /**
      * Fetch the events in a project logs. Equivalent to the GET form of the same path, but with the
@@ -41,12 +40,12 @@ interface LogServiceAsync {
     fun fetchPost(
         params: ProjectLogFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectLogFetchPostResponse>
+    ): CompletableFuture<FetchProjectLogsEventsResponse>
 
     /** Insert a set of events into the project logs */
     @JvmOverloads
     fun insert(
         params: ProjectLogInsertParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectLogInsertResponse>
+    ): CompletableFuture<InsertEventsResponse>
 }

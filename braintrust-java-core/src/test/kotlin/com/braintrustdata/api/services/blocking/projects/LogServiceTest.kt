@@ -26,13 +26,13 @@ class LogServiceTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        ProjectLogFeedbackParams.Feedback.builder()
+                        FeedbackProjectLogsItem.builder()
                             .id("id")
                             .comment("comment")
                             .expected(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(ProjectLogFeedbackParams.Feedback.Metadata.builder().build())
-                            .scores(ProjectLogFeedbackParams.Feedback.Scores.builder().build())
-                            .source(ProjectLogFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
+                            .scores(FeedbackProjectLogsItem.Scores.builder().build())
+                            .source(FeedbackProjectLogsItem.Source.APP)
                             .build()
                     )
                 )
@@ -48,7 +48,7 @@ class LogServiceTest {
                 .apiKey("My API Key")
                 .build()
         val logService = client.projects().logs()
-        val projectLogFetchResponse =
+        val fetchProjectLogsEventsResponse =
             logService.fetch(
                 ProjectLogFetchParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -58,8 +58,8 @@ class LogServiceTest {
                     .version("version")
                     .build()
             )
-        println(projectLogFetchResponse)
-        projectLogFetchResponse.validate()
+        println(fetchProjectLogsEventsResponse)
+        fetchProjectLogsEventsResponse.validate()
     }
 
     @Test
@@ -70,16 +70,16 @@ class LogServiceTest {
                 .apiKey("My API Key")
                 .build()
         val logService = client.projects().logs()
-        val projectLogFetchPostResponse =
+        val fetchProjectLogsEventsResponse =
             logService.fetchPost(
                 ProjectLogFetchPostParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
                     .filters(
                         listOf(
-                            ProjectLogFetchPostParams.Filter.builder()
+                            PathLookupFilter.builder()
                                 .path(listOf("string"))
-                                .type(ProjectLogFetchPostParams.Filter.Type.PATH_LOOKUP)
+                                .type(PathLookupFilter.Type.PATH_LOOKUP)
                                 .value(JsonValue.from(mapOf<String, Any>()))
                                 .build()
                         )
@@ -90,8 +90,8 @@ class LogServiceTest {
                     .version("version")
                     .build()
             )
-        println(projectLogFetchPostResponse)
-        projectLogFetchPostResponse.validate()
+        println(fetchProjectLogsEventsResponse)
+        fetchProjectLogsEventsResponse.validate()
     }
 
     @Test
@@ -102,40 +102,34 @@ class LogServiceTest {
                 .apiKey("My API Key")
                 .build()
         val logService = client.projects().logs()
-        val projectLogInsertResponse =
+        val insertEventsResponse =
             logService.insert(
                 ProjectLogInsertParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .events(
                         listOf(
-                            ProjectLogInsertParams.Event.ofInsertProjectLogsEventReplace(
-                                ProjectLogInsertParams.Event.InsertProjectLogsEventReplace.builder()
+                            InsertProjectLogsEvent.ofInsertProjectLogsEventReplace(
+                                InsertProjectLogsEventReplace.builder()
                                     .id("id")
                                     ._isMerge(true)
                                     ._objectDelete(true)
                                     ._parentId("_parent_id")
                                     .context(
-                                        ProjectLogInsertParams.Event.InsertProjectLogsEventReplace
-                                            .Context
-                                            .builder()
+                                        InsertProjectLogsEventReplace.Context.builder()
                                             .callerFilename("caller_filename")
                                             .callerFunctionname("caller_functionname")
                                             .callerLineno(123L)
                                             .build()
                                     )
                                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                    .error(JsonValue.from(mapOf<String, Any>()))
                                     .expected(JsonValue.from(mapOf<String, Any>()))
                                     .input(JsonValue.from(mapOf<String, Any>()))
                                     .metadata(
-                                        ProjectLogInsertParams.Event.InsertProjectLogsEventReplace
-                                            .Metadata
-                                            .builder()
-                                            .build()
+                                        InsertProjectLogsEventReplace.Metadata.builder().build()
                                     )
                                     .metrics(
-                                        ProjectLogInsertParams.Event.InsertProjectLogsEventReplace
-                                            .Metrics
-                                            .builder()
+                                        InsertProjectLogsEventReplace.Metrics.builder()
                                             .completionTokens(123L)
                                             .end(42.23)
                                             .promptTokens(123L)
@@ -144,22 +138,12 @@ class LogServiceTest {
                                             .build()
                                     )
                                     .output(JsonValue.from(mapOf<String, Any>()))
-                                    .scores(
-                                        ProjectLogInsertParams.Event.InsertProjectLogsEventReplace
-                                            .Scores
-                                            .builder()
-                                            .build()
-                                    )
+                                    .scores(InsertProjectLogsEventReplace.Scores.builder().build())
                                     .spanAttributes(
-                                        ProjectLogInsertParams.Event.InsertProjectLogsEventReplace
-                                            .SpanAttributes
-                                            .builder()
+                                        InsertProjectLogsEventReplace.SpanAttributes.builder()
                                             .name("name")
                                             .type(
-                                                ProjectLogInsertParams.Event
-                                                    .InsertProjectLogsEventReplace
-                                                    .SpanAttributes
-                                                    .Type
+                                                InsertProjectLogsEventReplace.SpanAttributes.Type
                                                     .LLM
                                             )
                                             .build()
@@ -171,7 +155,7 @@ class LogServiceTest {
                     )
                     .build()
             )
-        println(projectLogInsertResponse)
-        projectLogInsertResponse.validate()
+        println(insertEventsResponse)
+        insertEventsResponse.validate()
     }
 }
