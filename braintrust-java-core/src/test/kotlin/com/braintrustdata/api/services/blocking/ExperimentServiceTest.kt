@@ -7,6 +7,7 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.ExperimentListParams
+import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,30 +21,30 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
+        val experimentService = client.experiments()
         val experiment =
             experimentService.create(
                 ExperimentCreateParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .baseExpId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .datasetVersion("string")
-                    .description("string")
+                    .datasetVersion("dataset_version")
+                    .description("description")
                     .ensureNew(true)
                     .metadata(ExperimentCreateParams.Metadata.builder().build())
-                    .name("string")
+                    .name("name")
                     .public_(true)
                     .repoInfo(
-                        ExperimentCreateParams.RepoInfo.builder()
-                            .authorEmail("string")
-                            .authorName("string")
-                            .branch("string")
-                            .commit("string")
-                            .commitMessage("string")
-                            .commitTime("string")
+                        RepoInfo.builder()
+                            .authorEmail("author_email")
+                            .authorName("author_name")
+                            .branch("branch")
+                            .commit("commit")
+                            .commitMessage("commit_message")
+                            .commitTime("commit_time")
                             .dirty(true)
-                            .gitDiff("string")
-                            .tag("string")
+                            .gitDiff("git_diff")
+                            .tag("tag")
                             .build()
                     )
                     .build()
@@ -59,7 +60,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
+        val experimentService = client.experiments()
         val experiment =
             experimentService.retrieve(
                 ExperimentRetrieveParams.builder()
@@ -77,29 +78,29 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
+        val experimentService = client.experiments()
         val experiment =
             experimentService.update(
                 ExperimentUpdateParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .baseExpId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .datasetVersion("string")
-                    .description("string")
+                    .datasetVersion("dataset_version")
+                    .description("description")
                     .metadata(ExperimentUpdateParams.Metadata.builder().build())
-                    .name("string")
+                    .name("name")
                     .public_(true)
                     .repoInfo(
-                        ExperimentUpdateParams.RepoInfo.builder()
-                            .authorEmail("string")
-                            .authorName("string")
-                            .branch("string")
-                            .commit("string")
-                            .commitMessage("string")
-                            .commitTime("string")
+                        RepoInfo.builder()
+                            .authorEmail("author_email")
+                            .authorName("author_name")
+                            .branch("branch")
+                            .commit("commit")
+                            .commitMessage("commit_message")
+                            .commitTime("commit_time")
                             .dirty(true)
-                            .gitDiff("string")
-                            .tag("string")
+                            .gitDiff("git_diff")
+                            .tag("tag")
                             .build()
                     )
                     .build()
@@ -115,7 +116,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
+        val experimentService = client.experiments()
         val response = experimentService.list(ExperimentListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -128,7 +129,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
+        val experimentService = client.experiments()
         val experiment =
             experimentService.delete(
                 ExperimentDeleteParams.builder()
@@ -146,19 +147,19 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
+        val experimentService = client.experiments()
         experimentService.feedback(
             ExperimentFeedbackParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        ExperimentFeedbackParams.Feedback.builder()
-                            .id("string")
-                            .comment("string")
+                        FeedbackExperimentItem.builder()
+                            .id("id")
+                            .comment("comment")
                             .expected(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(ExperimentFeedbackParams.Feedback.Metadata.builder().build())
-                            .scores(ExperimentFeedbackParams.Feedback.Scores.builder().build())
-                            .source(ExperimentFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackExperimentItem.Metadata.builder().build())
+                            .scores(FeedbackExperimentItem.Scores.builder().build())
+                            .source(FeedbackExperimentItem.Source.APP)
                             .build()
                     )
                 )
@@ -173,19 +174,19 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
-        val experimentFetchResponse =
+        val experimentService = client.experiments()
+        val fetchExperimentEventsResponse =
             experimentService.fetch(
                 ExperimentFetchParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(123L)
-                    .maxRootSpanId("string")
-                    .maxXactId("string")
-                    .version("string")
+                    .maxRootSpanId("max_root_span_id")
+                    .maxXactId("max_xact_id")
+                    .version("version")
                     .build()
             )
-        println(experimentFetchResponse)
-        experimentFetchResponse.validate()
+        println(fetchExperimentEventsResponse)
+        fetchExperimentEventsResponse.validate()
     }
 
     @Test
@@ -195,29 +196,29 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
-        val experimentFetchPostResponse =
+        val experimentService = client.experiments()
+        val fetchExperimentEventsResponse =
             experimentService.fetchPost(
                 ExperimentFetchPostParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .cursor("string")
+                    .cursor("cursor")
                     .filters(
                         listOf(
-                            ExperimentFetchPostParams.Filter.builder()
+                            PathLookupFilter.builder()
                                 .path(listOf("string"))
-                                .type(ExperimentFetchPostParams.Filter.Type.PATH_LOOKUP)
+                                .type(PathLookupFilter.Type.PATH_LOOKUP)
                                 .value(JsonValue.from(mapOf<String, Any>()))
                                 .build()
                         )
                     )
                     .limit(123L)
-                    .maxRootSpanId("string")
-                    .maxXactId("string")
-                    .version("string")
+                    .maxRootSpanId("max_root_span_id")
+                    .maxXactId("max_xact_id")
+                    .version("version")
                     .build()
             )
-        println(experimentFetchPostResponse)
-        experimentFetchPostResponse.validate()
+        println(fetchExperimentEventsResponse)
+        fetchExperimentEventsResponse.validate()
     }
 
     @Test
@@ -227,41 +228,36 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
-        val experimentInsertResponse =
+        val experimentService = client.experiments()
+        val insertEventsResponse =
             experimentService.insert(
                 ExperimentInsertParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .events(
                         listOf(
-                            ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
-                                ExperimentInsertParams.Event.InsertExperimentEventReplace.builder()
-                                    .id("string")
+                            InsertExperimentEvent.ofInsertExperimentEventReplace(
+                                InsertExperimentEventReplace.builder()
+                                    .id("id")
                                     ._isMerge(true)
                                     ._objectDelete(true)
-                                    ._parentId("string")
+                                    ._parentId("_parent_id")
                                     .context(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Context
-                                            .builder()
-                                            .callerFilename("string")
-                                            .callerFunctionname("string")
+                                        InsertExperimentEventReplace.Context.builder()
+                                            .callerFilename("caller_filename")
+                                            .callerFunctionname("caller_functionname")
                                             .callerLineno(123L)
                                             .build()
                                     )
-                                    .datasetRecordId("string")
+                                    .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                    .datasetRecordId("dataset_record_id")
+                                    .error(JsonValue.from(mapOf<String, Any>()))
                                     .expected(JsonValue.from(mapOf<String, Any>()))
                                     .input(JsonValue.from(mapOf<String, Any>()))
                                     .metadata(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Metadata
-                                            .builder()
-                                            .build()
+                                        InsertExperimentEventReplace.Metadata.builder().build()
                                     )
                                     .metrics(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Metrics
-                                            .builder()
+                                        InsertExperimentEventReplace.Metrics.builder()
                                             .completionTokens(123L)
                                             .end(42.23)
                                             .promptTokens(123L)
@@ -270,23 +266,12 @@ class ExperimentServiceTest {
                                             .build()
                                     )
                                     .output(JsonValue.from(mapOf<String, Any>()))
-                                    .scores(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .Scores
-                                            .builder()
-                                            .build()
-                                    )
+                                    .scores(InsertExperimentEventReplace.Scores.builder().build())
                                     .spanAttributes(
-                                        ExperimentInsertParams.Event.InsertExperimentEventReplace
-                                            .SpanAttributes
-                                            .builder()
-                                            .name("string")
+                                        InsertExperimentEventReplace.SpanAttributes.builder()
+                                            .name("name")
                                             .type(
-                                                ExperimentInsertParams.Event
-                                                    .InsertExperimentEventReplace
-                                                    .SpanAttributes
-                                                    .Type
-                                                    .LLM
+                                                InsertExperimentEventReplace.SpanAttributes.Type.LLM
                                             )
                                             .build()
                                     )
@@ -297,47 +282,8 @@ class ExperimentServiceTest {
                     )
                     .build()
             )
-        println(experimentInsertResponse)
-        experimentInsertResponse.validate()
-    }
-
-    @Test
-    fun callReplace() {
-        val client =
-            BraintrustOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
-        val experimentService = client.experiment()
-        val experiment =
-            experimentService.replace(
-                ExperimentReplaceParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .baseExpId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .datasetVersion("string")
-                    .description("string")
-                    .ensureNew(true)
-                    .metadata(ExperimentReplaceParams.Metadata.builder().build())
-                    .name("string")
-                    .public_(true)
-                    .repoInfo(
-                        ExperimentReplaceParams.RepoInfo.builder()
-                            .authorEmail("string")
-                            .authorName("string")
-                            .branch("string")
-                            .commit("string")
-                            .commitMessage("string")
-                            .commitTime("string")
-                            .dirty(true)
-                            .gitDiff("string")
-                            .tag("string")
-                            .build()
-                    )
-                    .build()
-            )
-        println(experiment)
-        experiment.validate()
+        println(insertEventsResponse)
+        insertEventsResponse.validate()
     }
 
     @Test
@@ -347,8 +293,8 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiment()
-        val experimentSummarizeResponse =
+        val experimentService = client.experiments()
+        val summarizeExperimentResponse =
             experimentService.summarize(
                 ExperimentSummarizeParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -356,7 +302,7 @@ class ExperimentServiceTest {
                     .summarizeScores(true)
                     .build()
             )
-        println(experimentSummarizeResponse)
-        experimentSummarizeResponse.validate()
+        println(summarizeExperimentResponse)
+        summarizeExperimentResponse.validate()
     }
 }

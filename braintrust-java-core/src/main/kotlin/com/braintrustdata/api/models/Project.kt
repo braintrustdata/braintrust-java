@@ -2,49 +2,32 @@
 
 package com.braintrustdata.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.core.toUnmodifiable
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.Optional
 
 @JsonDeserialize(builder = Project.Builder::class)
 @NoAutoDetect
-class Project private constructor(
-  private val id: JsonField<String>,
-  private val orgId: JsonField<String>,
-  private val name: JsonField<String>,
-  private val created: JsonField<OffsetDateTime>,
-  private val deletedAt: JsonField<OffsetDateTime>,
-  private val userId: JsonField<String>,
-  private val settings: JsonField<Settings>,
-  private val additionalProperties: Map<String, JsonValue>,
-
+class Project
+private constructor(
+    private val id: JsonField<String>,
+    private val orgId: JsonField<String>,
+    private val name: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val userId: JsonField<String>,
+    private val settings: JsonField<Settings>,
+    private val additionalProperties: Map<String, JsonValue>,
 ) {
 
     private var validated: Boolean = false
@@ -64,7 +47,8 @@ class Project private constructor(
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
     /** Date of project deletion, or null if the project is still active */
-    fun deletedAt(): Optional<OffsetDateTime> = Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+    fun deletedAt(): Optional<OffsetDateTime> =
+        Optional.ofNullable(deletedAt.getNullable("deleted_at"))
 
     /** Identifies the user who created the project */
     fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
@@ -72,38 +56,24 @@ class Project private constructor(
     fun settings(): Optional<Settings> = Optional.ofNullable(settings.getNullable("settings"))
 
     /** Unique identifier for the project */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
 
     /** Unique id for the organization that the project belongs under */
-    @JsonProperty("org_id")
-    @ExcludeMissing
-    fun _orgId() = orgId
+    @JsonProperty("org_id") @ExcludeMissing fun _orgId() = orgId
 
     /** Name of the project */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name() = name
 
     /** Date of project creation */
-    @JsonProperty("created")
-    @ExcludeMissing
-    fun _created() = created
+    @JsonProperty("created") @ExcludeMissing fun _created() = created
 
     /** Date of project deletion, or null if the project is still active */
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    fun _deletedAt() = deletedAt
+    @JsonProperty("deleted_at") @ExcludeMissing fun _deletedAt() = deletedAt
 
     /** Identifies the user who created the project */
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    fun _userId() = userId
+    @JsonProperty("user_id") @ExcludeMissing fun _userId() = userId
 
-    @JsonProperty("settings")
-    @ExcludeMissing
-    fun _settings() = settings
+    @JsonProperty("settings") @ExcludeMissing fun _settings() = settings
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -111,57 +81,58 @@ class Project private constructor(
 
     fun validate(): Project = apply {
         if (!validated) {
-          id()
-          orgId()
-          name()
-          created()
-          deletedAt()
-          userId()
-          settings().map { it.validate() }
-          validated = true
+            id()
+            orgId()
+            name()
+            created()
+            deletedAt()
+            userId()
+            settings().map { it.validate() }
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is Project &&
-          this.id == other.id &&
-          this.orgId == other.orgId &&
-          this.name == other.name &&
-          this.created == other.created &&
-          this.deletedAt == other.deletedAt &&
-          this.userId == other.userId &&
-          this.settings == other.settings &&
-          this.additionalProperties == other.additionalProperties
+        return other is Project &&
+            this.id == other.id &&
+            this.orgId == other.orgId &&
+            this.name == other.name &&
+            this.created == other.created &&
+            this.deletedAt == other.deletedAt &&
+            this.userId == other.userId &&
+            this.settings == other.settings &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            id,
-            orgId,
-            name,
-            created,
-            deletedAt,
-            userId,
-            settings,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    id,
+                    orgId,
+                    name,
+                    created,
+                    deletedAt,
+                    userId,
+                    settings,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "Project{id=$id, orgId=$orgId, name=$name, created=$created, deletedAt=$deletedAt, userId=$userId, settings=$settings, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "Project{id=$id, orgId=$orgId, name=$name, created=$created, deletedAt=$deletedAt, userId=$userId, settings=$settings, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -191,11 +162,7 @@ class Project private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the project */
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Unique id for the organization that the project belongs under */
         fun orgId(orgId: String) = orgId(JsonField.of(orgId))
@@ -203,9 +170,7 @@ class Project private constructor(
         /** Unique id for the organization that the project belongs under */
         @JsonProperty("org_id")
         @ExcludeMissing
-        fun orgId(orgId: JsonField<String>) = apply {
-            this.orgId = orgId
-        }
+        fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         /** Name of the project */
         fun name(name: String) = name(JsonField.of(name))
@@ -213,9 +178,7 @@ class Project private constructor(
         /** Name of the project */
         @JsonProperty("name")
         @ExcludeMissing
-        fun name(name: JsonField<String>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Date of project creation */
         fun created(created: OffsetDateTime) = created(JsonField.of(created))
@@ -223,9 +186,7 @@ class Project private constructor(
         /** Date of project creation */
         @JsonProperty("created")
         @ExcludeMissing
-        fun created(created: JsonField<OffsetDateTime>) = apply {
-            this.created = created
-        }
+        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Date of project deletion, or null if the project is still active */
         fun deletedAt(deletedAt: OffsetDateTime) = deletedAt(JsonField.of(deletedAt))
@@ -233,9 +194,7 @@ class Project private constructor(
         /** Date of project deletion, or null if the project is still active */
         @JsonProperty("deleted_at")
         @ExcludeMissing
-        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply {
-            this.deletedAt = deletedAt
-        }
+        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
 
         /** Identifies the user who created the project */
         fun userId(userId: String) = userId(JsonField.of(userId))
@@ -243,17 +202,13 @@ class Project private constructor(
         /** Identifies the user who created the project */
         @JsonProperty("user_id")
         @ExcludeMissing
-        fun userId(userId: JsonField<String>) = apply {
-            this.userId = userId
-        }
+        fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
         fun settings(settings: Settings) = settings(JsonField.of(settings))
 
         @JsonProperty("settings")
         @ExcludeMissing
-        fun settings(settings: JsonField<Settings>) = apply {
-            this.settings = settings
-        }
+        fun settings(settings: JsonField<Settings>) = apply { this.settings = settings }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -269,33 +224,37 @@ class Project private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): Project = Project(
-            id,
-            orgId,
-            name,
-            created,
-            deletedAt,
-            userId,
-            settings,
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): Project =
+            Project(
+                id,
+                orgId,
+                name,
+                created,
+                deletedAt,
+                userId,
+                settings,
+                additionalProperties.toUnmodifiable(),
+            )
     }
 
     @JsonDeserialize(builder = Settings.Builder::class)
     @NoAutoDetect
-    class Settings private constructor(private val comparisonKey: JsonField<String>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Settings
+    private constructor(
+        private val comparisonKey: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
         private var hashCode: Int = 0
 
         /** The key used to join two experiments (defaults to `input`). */
-        fun comparisonKey(): Optional<String> = Optional.ofNullable(comparisonKey.getNullable("comparison_key"))
+        fun comparisonKey(): Optional<String> =
+            Optional.ofNullable(comparisonKey.getNullable("comparison_key"))
 
         /** The key used to join two experiments (defaults to `input`). */
-        @JsonProperty("comparison_key")
-        @ExcludeMissing
-        fun _comparisonKey() = comparisonKey
+        @JsonProperty("comparison_key") @ExcludeMissing fun _comparisonKey() = comparisonKey
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -303,36 +262,36 @@ class Project private constructor(
 
         fun validate(): Settings = apply {
             if (!validated) {
-              comparisonKey()
-              validated = true
+                comparisonKey()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Settings &&
-              this.comparisonKey == other.comparisonKey &&
-              this.additionalProperties == other.additionalProperties
+            return other is Settings &&
+                this.comparisonKey == other.comparisonKey &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(comparisonKey, additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(comparisonKey, additionalProperties)
+            }
+            return hashCode
         }
 
-        override fun toString() = "Settings{comparisonKey=$comparisonKey, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Settings{comparisonKey=$comparisonKey, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {

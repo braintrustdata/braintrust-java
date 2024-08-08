@@ -62,7 +62,7 @@ class BraintrustOkHttpClient private constructor() {
             clientOptions.responseValidation(responseValidation)
         }
 
-        fun apiKey(apiKey: String) = apply { clientOptions.apiKey(apiKey) }
+        fun apiKey(apiKey: String?) = apply { clientOptions.apiKey(apiKey) }
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 

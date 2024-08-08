@@ -16,12 +16,12 @@ class DatasetFetchResponseTest {
                 .events(
                     listOf(
                         DatasetFetchResponse.Event.builder()
-                            .id("string")
-                            ._xactId("string")
+                            .id("id")
+                            ._xactId("_xact_id")
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .rootSpanId("string")
-                            .spanId("string")
+                            .rootSpanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .spanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .expected(JsonValue.from(mapOf<String, Any>()))
                             .input(JsonValue.from(mapOf<String, Any>()))
                             .metadata(DatasetFetchResponse.Event.Metadata.builder().build())
@@ -30,18 +30,18 @@ class DatasetFetchResponseTest {
                             .build()
                     )
                 )
-                .cursor("string")
+                .cursor("cursor")
                 .build()
         assertThat(datasetFetchResponse).isNotNull
         assertThat(datasetFetchResponse.events())
             .containsExactly(
                 DatasetFetchResponse.Event.builder()
-                    .id("string")
-                    ._xactId("string")
+                    .id("id")
+                    ._xactId("_xact_id")
                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .rootSpanId("string")
-                    .spanId("string")
+                    .rootSpanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .spanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .expected(JsonValue.from(mapOf<String, Any>()))
                     .input(JsonValue.from(mapOf<String, Any>()))
                     .metadata(DatasetFetchResponse.Event.Metadata.builder().build())
@@ -49,6 +49,6 @@ class DatasetFetchResponseTest {
                     .tags(listOf("string"))
                     .build()
             )
-        assertThat(datasetFetchResponse.cursor()).contains("string")
+        assertThat(datasetFetchResponse.cursor()).contains("cursor")
     }
 }

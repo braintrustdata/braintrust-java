@@ -57,33 +57,34 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate200() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         val expected =
             Project.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .name("string")
+                .name("name")
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .settings(Project.Settings.builder().comparisonKey("comparison_key").build())
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         stubFor(post(anyUrl()).willReturn(ok().withBody(toJson(expected))))
 
-        assertThat(client.project().create(params)).isEqualTo(expected)
+        assertThat(client.projects().create(params)).isEqualTo(expected)
     }
 
     @Test
     fun projectsCreate400() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(400).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -91,14 +92,14 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate401() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(401).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertUnauthorized(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -106,14 +107,14 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate403() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(403).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertPermissionDenied(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -121,14 +122,14 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate404() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(404).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertNotFound(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -136,14 +137,14 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate422() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(422).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertUnprocessableEntity(
                     e,
@@ -155,14 +156,14 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate429() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(429).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertRateLimit(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -170,14 +171,14 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate500() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(500).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertInternalServer(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -185,14 +186,14 @@ class ErrorHandlingTest {
 
     @Test
     fun unexpectedStatusCode() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
                 .willReturn(status(999).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertUnexpectedStatusCodeException(
                     e,
@@ -205,11 +206,11 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidBody() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(post(anyUrl()).willReturn(status(200).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertThat(e)
                     .isInstanceOf(BraintrustException::class.java)
@@ -219,11 +220,11 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidErrorBody() {
-        val params = ProjectCreateParams.builder().name("string").orgName("string").build()
+        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
 
         stubFor(post(anyUrl()).willReturn(status(400).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.project().create(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of(), BraintrustError.builder().build())
             })

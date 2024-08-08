@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.6.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.7.0)
 
 <!-- x-release-please-end -->
 
@@ -14,7 +14,7 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Documentation
 
-The REST API documentation can be found [on www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec).
+The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec).
 
 ---
 
@@ -27,7 +27,7 @@ The REST API documentation can be found [on www.braintrustdata.com](https://www
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.braintrustdata.api:braintrust-java:0.6.0")
+implementation("com.braintrustdata.api:braintrust-java:0.7.0")
 ```
 
 #### Maven
@@ -36,7 +36,7 @@ implementation("com.braintrustdata.api:braintrust-java:0.6.0")
 <dependency>
     <groupId>com.braintrustdata.api</groupId>
     <artifactId>braintrust-java</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
 </dependency>
 ```
 
@@ -44,16 +44,7 @@ implementation("com.braintrustdata.api:braintrust-java:0.6.0")
 
 ### Configure the client
 
-Use `BraintrustOkHttpClient.builder()` to configure the client. At a minimum you need to set `.apiKey()`:
-
-```java
-import com.braintrustdata.api.client.BraintrustClient;
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
-
-BraintrustClient client = BraintrustOkHttpClient.builder()
-    .apiKey("My API Key")
-    .build();
-```
+Use `BraintrustOkHttpClient.builder()` to configure the client.
 
 Alternately, set the environment with `BRAINTRUST_API_KEY`, and use `BraintrustOkHttpClient.fromEnv()` to read from the environment.
 
@@ -69,7 +60,7 @@ BraintrustClient client = BraintrustOkHttpClient.builder()
 
 | Property | Environment variable | Required | Default value |
 | -------- | -------------------- | -------- | ------------- |
-| apiKey   | `BRAINTRUST_API_KEY` | true     | —             |
+| apiKey   | `BRAINTRUST_API_KEY` | false    | —             |
 
 Read the documentation for more configuration options.
 
@@ -84,7 +75,9 @@ then pass that to the `create` method of the `projects` service.
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 
-ProjectCreateParams params = ProjectCreateParams.builder().build();
+ProjectCreateParams params = ProjectCreateParams.builder()
+    .name("foobar")
+    .build();
 Project project = client.projects().create(params);
 ```
 

@@ -29,7 +29,7 @@ configure<MavenPublishBaseExtension> {
 
     pom {
         name.set("Braintrust API")
-        description.set("API specification for the backend data server. The API is hosted globally at\nhttps://api.braintrustdata.com or in your own environment.\n\nYou can access the OpenAPI spec for this API at\nhttps://github.com/braintrustdata/braintrust-openapi.")
+        description.set("API specification for the backend data server. The API is hosted globally at\nhttps://api.braintrust.dev or in your own environment.\n\nYou can access the OpenAPI spec for this API at\nhttps://github.com/braintrustdata/braintrust-openapi.")
         url.set("https://www.braintrustdata.com/docs/api/spec")
 
         licenses {

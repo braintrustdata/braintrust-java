@@ -57,8 +57,8 @@ class ServiceParamsTest {
 
         val params =
             ProjectCreateParams.builder()
-                .name("string")
-                .orgName("string")
+                .name("name")
+                .orgName("org_name")
                 .additionalHeaders(additionalHeaders)
                 .additionalBodyProperties(additionalBodyProperties)
                 .additionalQueryParams(additionalQueryParams)
@@ -67,10 +67,11 @@ class ServiceParamsTest {
         val apiResponse =
             Project.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .name("string")
+                .name("name")
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .settings(Project.Settings.builder().comparisonKey("comparison_key").build())
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
@@ -82,7 +83,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.project().create(params)
+        client.projects().create(params)
 
         verify(postRequestedFor(anyUrl()))
     }

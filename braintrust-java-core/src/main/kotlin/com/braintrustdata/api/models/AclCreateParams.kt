@@ -2,52 +2,34 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
+import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
-import java.util.UUID
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.MultipartFormValue
-import com.braintrustdata.api.core.toUnmodifiable
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.Enum
-import com.braintrustdata.api.core.ContentTypes
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 
-class AclCreateParams constructor(
-  private val objectId: String,
-  private val objectType: ObjectType?,
-  private val groupId: String?,
-  private val permission: Permission?,
-  private val restrictObjectType: RestrictObjectType?,
-  private val roleId: String?,
-  private val userId: String?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class AclCreateParams
+constructor(
+    private val objectId: String,
+    private val objectType: ObjectType?,
+    private val groupId: String?,
+    private val permission: Permission?,
+    private val restrictObjectType: RestrictObjectType?,
+    private val roleId: String?,
+    private val userId: String?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun objectId(): String = objectId
@@ -66,94 +48,80 @@ class AclCreateParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): AclCreateBody {
-      return AclCreateBody(
-          objectId,
-          objectType,
-          groupId,
-          permission,
-          restrictObjectType,
-          roleId,
-          userId,
-          additionalBodyProperties,
-      )
+        return AclCreateBody(
+            objectId,
+            objectType,
+            groupId,
+            permission,
+            restrictObjectType,
+            roleId,
+            userId,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     /**
-     * An ACL grants a certain permission or role to a certain user or group on an
-     * object.
+     * An ACL grants a certain permission or role to a certain user or group on an object.
      *
-     * ACLs are inherited across the object hierarchy. So for example, if a user has
-     * read permissions on a project, they will also have read permissions on any
-     * experiment, dataset, etc. created within that project.
+     * ACLs are inherited across the object hierarchy. So for example, if a user has read
+     * permissions on a project, they will also have read permissions on any experiment, dataset,
+     * etc. created within that project.
      *
-     * To restrict a grant to a particular sub-object, you may specify
-     * `restrict_object_type` in the ACL, as part of a direct permission grant or as
-     * part of a role.
+     * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
+     * ACL, as part of a direct permission grant or as part of a role.
      */
     @JsonDeserialize(builder = AclCreateBody.Builder::class)
     @NoAutoDetect
-    class AclCreateBody internal constructor(
-      private val objectId: String?,
-      private val objectType: ObjectType?,
-      private val groupId: String?,
-      private val permission: Permission?,
-      private val restrictObjectType: RestrictObjectType?,
-      private val roleId: String?,
-      private val userId: String?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class AclCreateBody
+    internal constructor(
+        private val objectId: String?,
+        private val objectType: ObjectType?,
+        private val groupId: String?,
+        private val permission: Permission?,
+        private val restrictObjectType: RestrictObjectType?,
+        private val roleId: String?,
+        private val userId: String?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         /** The id of the object the ACL applies to */
-        @JsonProperty("object_id")
-        fun objectId(): String? = objectId
+        @JsonProperty("object_id") fun objectId(): String? = objectId
 
         /** The object type that the ACL applies to */
-        @JsonProperty("object_type")
-        fun objectType(): ObjectType? = objectType
+        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
 
         /**
-         * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will
-         * be provided
-         */
-        @JsonProperty("group_id")
-        fun groupId(): String? = groupId
-
-        /**
-         * Permission the ACL grants. Exactly one of `permission` and `role_id` will be
+         * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
          * provided
          */
-        @JsonProperty("permission")
-        fun permission(): Permission? = permission
+        @JsonProperty("group_id") fun groupId(): String? = groupId
+
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        @JsonProperty("permission") fun permission(): Permission? = permission
 
         /**
-         * When setting a permission directly, optionally restricts the permission grant to
-         * just the specified object type. Cannot be set alongside a `role_id`.
+         * When setting a permission directly, optionally restricts the permission grant to just the
+         * specified object type. Cannot be set alongside a `role_id`.
          */
         @JsonProperty("restrict_object_type")
         fun restrictObjectType(): RestrictObjectType? = restrictObjectType
 
         /**
-         * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be
-         * provided
+         * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
          */
-        @JsonProperty("role_id")
-        fun roleId(): String? = roleId
+        @JsonProperty("role_id") fun roleId(): String? = roleId
 
         /**
-         * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will
-         * be provided
+         * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
+         * provided
          */
-        @JsonProperty("user_id")
-        fun userId(): String? = userId
+        @JsonProperty("user_id") fun userId(): String? = userId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -162,43 +130,44 @@ class AclCreateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is AclCreateBody &&
-              this.objectId == other.objectId &&
-              this.objectType == other.objectType &&
-              this.groupId == other.groupId &&
-              this.permission == other.permission &&
-              this.restrictObjectType == other.restrictObjectType &&
-              this.roleId == other.roleId &&
-              this.userId == other.userId &&
-              this.additionalProperties == other.additionalProperties
+            return other is AclCreateBody &&
+                this.objectId == other.objectId &&
+                this.objectType == other.objectType &&
+                this.groupId == other.groupId &&
+                this.permission == other.permission &&
+                this.restrictObjectType == other.restrictObjectType &&
+                this.roleId == other.roleId &&
+                this.userId == other.userId &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                objectId,
-                objectType,
-                groupId,
-                permission,
-                restrictObjectType,
-                roleId,
-                userId,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        objectId,
+                        objectType,
+                        groupId,
+                        permission,
+                        restrictObjectType,
+                        roleId,
+                        userId,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "AclCreateBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "AclCreateBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -226,37 +195,28 @@ class AclCreateParams constructor(
 
             /** The id of the object the ACL applies to */
             @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply {
-                this.objectId = objectId
-            }
+            fun objectId(objectId: String) = apply { this.objectId = objectId }
 
             /** The object type that the ACL applies to */
             @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply {
-                this.objectType = objectType
-            }
+            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
 
             /**
-             * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will
-             * be provided
-             */
-            @JsonProperty("group_id")
-            fun groupId(groupId: String) = apply {
-                this.groupId = groupId
-            }
-
-            /**
-             * Permission the ACL grants. Exactly one of `permission` and `role_id` will be
+             * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
              * provided
              */
-            @JsonProperty("permission")
-            fun permission(permission: Permission) = apply {
-                this.permission = permission
-            }
+            @JsonProperty("group_id")
+            fun groupId(groupId: String) = apply { this.groupId = groupId }
 
             /**
-             * When setting a permission directly, optionally restricts the permission grant to
-             * just the specified object type. Cannot be set alongside a `role_id`.
+             * Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided
+             */
+            @JsonProperty("permission")
+            fun permission(permission: Permission) = apply { this.permission = permission }
+
+            /**
+             * When setting a permission directly, optionally restricts the permission grant to just
+             * the specified object type. Cannot be set alongside a `role_id`.
              */
             @JsonProperty("restrict_object_type")
             fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
@@ -267,19 +227,13 @@ class AclCreateParams constructor(
              * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be
              * provided
              */
-            @JsonProperty("role_id")
-            fun roleId(roleId: String) = apply {
-                this.roleId = roleId
-            }
+            @JsonProperty("role_id") fun roleId(roleId: String) = apply { this.roleId = roleId }
 
             /**
-             * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will
-             * be provided
+             * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
+             * provided
              */
-            @JsonProperty("user_id")
-            fun userId(userId: String) = apply {
-                this.userId = userId
-            }
+            @JsonProperty("user_id") fun userId(userId: String) = apply { this.userId = userId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -295,18 +249,17 @@ class AclCreateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): AclCreateBody = AclCreateBody(
-                checkNotNull(objectId) {
-                    "`objectId` is required but was not set"
-                },
-                objectType,
-                groupId,
-                permission,
-                restrictObjectType,
-                roleId,
-                userId,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): AclCreateBody =
+                AclCreateBody(
+                    checkNotNull(objectId) { "`objectId` is required but was not set" },
+                    objectType,
+                    groupId,
+                    permission,
+                    restrictObjectType,
+                    roleId,
+                    userId,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -317,46 +270,46 @@ class AclCreateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is AclCreateParams &&
-          this.objectId == other.objectId &&
-          this.objectType == other.objectType &&
-          this.groupId == other.groupId &&
-          this.permission == other.permission &&
-          this.restrictObjectType == other.restrictObjectType &&
-          this.roleId == other.roleId &&
-          this.userId == other.userId &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is AclCreateParams &&
+            this.objectId == other.objectId &&
+            this.objectType == other.objectType &&
+            this.groupId == other.groupId &&
+            this.permission == other.permission &&
+            this.restrictObjectType == other.restrictObjectType &&
+            this.roleId == other.roleId &&
+            this.userId == other.userId &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          objectId,
-          objectType,
-          groupId,
-          permission,
-          restrictObjectType,
-          roleId,
-          userId,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            objectId,
+            objectType,
+            groupId,
+            permission,
+            restrictObjectType,
+            roleId,
+            userId,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "AclCreateParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "AclCreateParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -388,54 +341,38 @@ class AclCreateParams constructor(
         }
 
         /** The id of the object the ACL applies to */
-        fun objectId(objectId: String) = apply {
-            this.objectId = objectId
-        }
+        fun objectId(objectId: String) = apply { this.objectId = objectId }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: ObjectType) = apply {
-            this.objectType = objectType
-        }
+        fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
 
         /**
-         * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will
-         * be provided
-         */
-        fun groupId(groupId: String) = apply {
-            this.groupId = groupId
-        }
-
-        /**
-         * Permission the ACL grants. Exactly one of `permission` and `role_id` will be
+         * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
          * provided
          */
-        fun permission(permission: Permission) = apply {
-            this.permission = permission
-        }
+        fun groupId(groupId: String) = apply { this.groupId = groupId }
+
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        fun permission(permission: Permission) = apply { this.permission = permission }
 
         /**
-         * When setting a permission directly, optionally restricts the permission grant to
-         * just the specified object type. Cannot be set alongside a `role_id`.
+         * When setting a permission directly, optionally restricts the permission grant to just the
+         * specified object type. Cannot be set alongside a `role_id`.
          */
         fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
             this.restrictObjectType = restrictObjectType
         }
 
         /**
-         * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be
-         * provided
+         * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
          */
-        fun roleId(roleId: String) = apply {
-            this.roleId = roleId
-        }
+        fun roleId(roleId: String) = apply { this.roleId = roleId }
 
         /**
-         * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will
-         * be provided
+         * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
+         * provided
          */
-        fun userId(userId: String) = apply {
-            this.userId = userId
-        }
+        fun userId(userId: String) = apply { this.userId = userId }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -475,9 +412,7 @@ class AclCreateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -488,38 +423,40 @@ class AclCreateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): AclCreateParams = AclCreateParams(
-            checkNotNull(objectId) {
-                "`objectId` is required but was not set"
-            },
-            objectType,
-            groupId,
-            permission,
-            restrictObjectType,
-            roleId,
-            userId,
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): AclCreateParams =
+            AclCreateParams(
+                checkNotNull(objectId) { "`objectId` is required but was not set" },
+                objectType,
+                groupId,
+                permission,
+                restrictObjectType,
+                roleId,
+                userId,
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
-    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class ObjectType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is ObjectType &&
-              this.value == other.value
+            return other is ObjectType && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -582,51 +519,55 @@ class AclCreateParams constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            ORGANIZATION -> Value.ORGANIZATION
-            PROJECT -> Value.PROJECT
-            EXPERIMENT -> Value.EXPERIMENT
-            DATASET -> Value.DATASET
-            PROMPT -> Value.PROMPT
-            PROMPT_SESSION -> Value.PROMPT_SESSION
-            GROUP -> Value.GROUP
-            ROLE -> Value.ROLE
-            ORG_MEMBER -> Value.ORG_MEMBER
-            PROJECT_LOG -> Value.PROJECT_LOG
-            ORG_PROJECT -> Value.ORG_PROJECT
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                ORGANIZATION -> Value.ORGANIZATION
+                PROJECT -> Value.PROJECT
+                EXPERIMENT -> Value.EXPERIMENT
+                DATASET -> Value.DATASET
+                PROMPT -> Value.PROMPT
+                PROMPT_SESSION -> Value.PROMPT_SESSION
+                GROUP -> Value.GROUP
+                ROLE -> Value.ROLE
+                ORG_MEMBER -> Value.ORG_MEMBER
+                PROJECT_LOG -> Value.PROJECT_LOG
+                ORG_PROJECT -> Value.ORG_PROJECT
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            ORGANIZATION -> Known.ORGANIZATION
-            PROJECT -> Known.PROJECT
-            EXPERIMENT -> Known.EXPERIMENT
-            DATASET -> Known.DATASET
-            PROMPT -> Known.PROMPT
-            PROMPT_SESSION -> Known.PROMPT_SESSION
-            GROUP -> Known.GROUP
-            ROLE -> Known.ROLE
-            ORG_MEMBER -> Known.ORG_MEMBER
-            PROJECT_LOG -> Known.PROJECT_LOG
-            ORG_PROJECT -> Known.ORG_PROJECT
-            else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                ORGANIZATION -> Known.ORGANIZATION
+                PROJECT -> Known.PROJECT
+                EXPERIMENT -> Known.EXPERIMENT
+                DATASET -> Known.DATASET
+                PROMPT -> Known.PROMPT
+                PROMPT_SESSION -> Known.PROMPT_SESSION
+                GROUP -> Known.GROUP
+                ROLE -> Known.ROLE
+                ORG_MEMBER -> Known.ORG_MEMBER
+                PROJECT_LOG -> Known.PROJECT_LOG
+                ORG_PROJECT -> Known.ORG_PROJECT
+                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
 
-    class Permission @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class Permission
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Permission &&
-              this.value == other.value
+            return other is Permission && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -677,45 +618,49 @@ class AclCreateParams constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            CREATE -> Value.CREATE
-            READ -> Value.READ
-            UPDATE -> Value.UPDATE
-            DELETE -> Value.DELETE
-            CREATE_ACLS -> Value.CREATE_ACLS
-            READ_ACLS -> Value.READ_ACLS
-            UPDATE_ACLS -> Value.UPDATE_ACLS
-            DELETE_ACLS -> Value.DELETE_ACLS
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                CREATE -> Value.CREATE
+                READ -> Value.READ
+                UPDATE -> Value.UPDATE
+                DELETE -> Value.DELETE
+                CREATE_ACLS -> Value.CREATE_ACLS
+                READ_ACLS -> Value.READ_ACLS
+                UPDATE_ACLS -> Value.UPDATE_ACLS
+                DELETE_ACLS -> Value.DELETE_ACLS
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            CREATE -> Known.CREATE
-            READ -> Known.READ
-            UPDATE -> Known.UPDATE
-            DELETE -> Known.DELETE
-            CREATE_ACLS -> Known.CREATE_ACLS
-            READ_ACLS -> Known.READ_ACLS
-            UPDATE_ACLS -> Known.UPDATE_ACLS
-            DELETE_ACLS -> Known.DELETE_ACLS
-            else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                CREATE -> Known.CREATE
+                READ -> Known.READ
+                UPDATE -> Known.UPDATE
+                DELETE -> Known.DELETE
+                CREATE_ACLS -> Known.CREATE_ACLS
+                READ_ACLS -> Known.READ_ACLS
+                UPDATE_ACLS -> Known.UPDATE_ACLS
+                DELETE_ACLS -> Known.DELETE_ACLS
+                else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
 
-    class RestrictObjectType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class RestrictObjectType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is RestrictObjectType &&
-              this.value == other.value
+            return other is RestrictObjectType && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -778,35 +723,37 @@ class AclCreateParams constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            ORGANIZATION -> Value.ORGANIZATION
-            PROJECT -> Value.PROJECT
-            EXPERIMENT -> Value.EXPERIMENT
-            DATASET -> Value.DATASET
-            PROMPT -> Value.PROMPT
-            PROMPT_SESSION -> Value.PROMPT_SESSION
-            GROUP -> Value.GROUP
-            ROLE -> Value.ROLE
-            ORG_MEMBER -> Value.ORG_MEMBER
-            PROJECT_LOG -> Value.PROJECT_LOG
-            ORG_PROJECT -> Value.ORG_PROJECT
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                ORGANIZATION -> Value.ORGANIZATION
+                PROJECT -> Value.PROJECT
+                EXPERIMENT -> Value.EXPERIMENT
+                DATASET -> Value.DATASET
+                PROMPT -> Value.PROMPT
+                PROMPT_SESSION -> Value.PROMPT_SESSION
+                GROUP -> Value.GROUP
+                ROLE -> Value.ROLE
+                ORG_MEMBER -> Value.ORG_MEMBER
+                PROJECT_LOG -> Value.PROJECT_LOG
+                ORG_PROJECT -> Value.ORG_PROJECT
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            ORGANIZATION -> Known.ORGANIZATION
-            PROJECT -> Known.PROJECT
-            EXPERIMENT -> Known.EXPERIMENT
-            DATASET -> Known.DATASET
-            PROMPT -> Known.PROMPT
-            PROMPT_SESSION -> Known.PROMPT_SESSION
-            GROUP -> Known.GROUP
-            ROLE -> Known.ROLE
-            ORG_MEMBER -> Known.ORG_MEMBER
-            PROJECT_LOG -> Known.PROJECT_LOG
-            ORG_PROJECT -> Known.ORG_PROJECT
-            else -> throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                ORGANIZATION -> Known.ORGANIZATION
+                PROJECT -> Known.PROJECT
+                EXPERIMENT -> Known.EXPERIMENT
+                DATASET -> Known.DATASET
+                PROMPT -> Known.PROMPT
+                PROMPT_SESSION -> Known.PROMPT_SESSION
+                GROUP -> Known.GROUP
+                ROLE -> Known.ROLE
+                ORG_MEMBER -> Known.ORG_MEMBER
+                PROJECT_LOG -> Known.PROJECT_LOG
+                ORG_PROJECT -> Known.ORG_PROJECT
+                else -> throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
