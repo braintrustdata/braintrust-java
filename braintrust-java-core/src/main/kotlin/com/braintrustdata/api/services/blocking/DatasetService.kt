@@ -11,16 +11,15 @@ import com.braintrustdata.api.models.DatasetDeleteParams
 import com.braintrustdata.api.models.DatasetFeedbackParams
 import com.braintrustdata.api.models.DatasetFetchParams
 import com.braintrustdata.api.models.DatasetFetchPostParams
-import com.braintrustdata.api.models.DatasetFetchPostResponse
-import com.braintrustdata.api.models.DatasetFetchResponse
 import com.braintrustdata.api.models.DatasetInsertParams
-import com.braintrustdata.api.models.DatasetInsertResponse
 import com.braintrustdata.api.models.DatasetListPage
 import com.braintrustdata.api.models.DatasetListParams
 import com.braintrustdata.api.models.DatasetRetrieveParams
 import com.braintrustdata.api.models.DatasetSummarizeParams
-import com.braintrustdata.api.models.DatasetSummarizeResponse
 import com.braintrustdata.api.models.DatasetUpdateParams
+import com.braintrustdata.api.models.FetchDatasetEventsResponse
+import com.braintrustdata.api.models.InsertEventsResponse
+import com.braintrustdata.api.models.SummarizeDatasetResponse
 
 interface DatasetService {
 
@@ -84,7 +83,7 @@ interface DatasetService {
     fun fetch(
         params: DatasetFetchParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): DatasetFetchResponse
+    ): FetchDatasetEventsResponse
 
     /**
      * Fetch the events in a dataset. Equivalent to the GET form of the same path, but with the
@@ -94,19 +93,19 @@ interface DatasetService {
     fun fetchPost(
         params: DatasetFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): DatasetFetchPostResponse
+    ): FetchDatasetEventsResponse
 
     /** Insert a set of events into the dataset */
     @JvmOverloads
     fun insert(
         params: DatasetInsertParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): DatasetInsertResponse
+    ): InsertEventsResponse
 
     /** Summarize dataset */
     @JvmOverloads
     fun summarize(
         params: DatasetSummarizeParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): DatasetSummarizeResponse
+    ): SummarizeDatasetResponse
 }

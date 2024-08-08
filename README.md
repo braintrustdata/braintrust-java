@@ -44,16 +44,7 @@ implementation("com.braintrustdata.api:braintrust-java:0.6.0")
 
 ### Configure the client
 
-Use `BraintrustOkHttpClient.builder()` to configure the client. At a minimum you need to set `.apiKey()`:
-
-```java
-import com.braintrustdata.api.client.BraintrustClient;
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
-
-BraintrustClient client = BraintrustOkHttpClient.builder()
-    .apiKey("My API Key")
-    .build();
-```
+Use `BraintrustOkHttpClient.builder()` to configure the client.
 
 Alternately, set the environment with `BRAINTRUST_API_KEY`, and use `BraintrustOkHttpClient.fromEnv()` to read from the environment.
 
@@ -69,7 +60,7 @@ BraintrustClient client = BraintrustOkHttpClient.builder()
 
 | Property | Environment variable | Required | Default value |
 | -------- | -------------------- | -------- | ------------- |
-| apiKey   | `BRAINTRUST_API_KEY` | true     | —             |
+| apiKey   | `BRAINTRUST_API_KEY` | false    | —             |
 
 Read the documentation for more configuration options.
 

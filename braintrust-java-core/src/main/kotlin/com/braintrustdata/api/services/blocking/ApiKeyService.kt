@@ -7,11 +7,11 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.ApiKey
 import com.braintrustdata.api.models.ApiKeyCreateParams
-import com.braintrustdata.api.models.ApiKeyCreateResponse
 import com.braintrustdata.api.models.ApiKeyDeleteParams
 import com.braintrustdata.api.models.ApiKeyListPage
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
+import com.braintrustdata.api.models.CreateApiKeyOutput
 
 interface ApiKeyService {
 
@@ -23,7 +23,7 @@ interface ApiKeyService {
     fun create(
         params: ApiKeyCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): ApiKeyCreateResponse
+    ): CreateApiKeyOutput
 
     /** Get an api_key object by its id */
     @JvmOverloads

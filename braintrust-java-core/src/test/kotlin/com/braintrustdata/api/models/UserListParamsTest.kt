@@ -11,11 +11,11 @@ class UserListParamsTest {
     @Test
     fun createUserListParams() {
         UserListParams.builder()
-            .email(UserListParams.Email.ofString("string"))
+            .email(UserEmail.ofString("string"))
             .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .familyName(UserListParams.FamilyName.ofString("string"))
-            .givenName(UserListParams.GivenName.ofString("string"))
-            .ids(UserListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .familyName(UserFamilyName.ofString("string"))
+            .givenName(UserGivenName.ofString("string"))
+            .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .limit(123L)
             .orgName("org_name")
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -26,20 +26,26 @@ class UserListParamsTest {
     fun getQueryParams() {
         val params =
             UserListParams.builder()
-                .email(UserListParams.Email.ofString("string"))
+                .email(UserEmail.ofString("string"))
                 .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .familyName(UserListParams.FamilyName.ofString("string"))
-                .givenName(UserListParams.GivenName.ofString("string"))
-                .ids(UserListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .familyName(UserFamilyName.ofString("string"))
+                .givenName(UserGivenName.ofString("string"))
+                .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .limit(123L)
                 .orgName("org_name")
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = mutableMapOf<String, List<String>>()
-        expected.put("email", listOf(UserListParams.Email.ofString("string").toString()))
+        expected.put("email", listOf(UserListParams.UserEmail.ofString("string").toString()))
         expected.put("ending_before", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        expected.put("family_name", listOf(UserListParams.FamilyName.ofString("string").toString()))
-        expected.put("given_name", listOf(UserListParams.GivenName.ofString("string").toString()))
+        expected.put(
+            "family_name",
+            listOf(UserListParams.UserFamilyName.ofString("string").toString())
+        )
+        expected.put(
+            "given_name",
+            listOf(UserListParams.UserGivenName.ofString("string").toString())
+        )
         expected.put(
             "ids",
             listOf(UserListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString())

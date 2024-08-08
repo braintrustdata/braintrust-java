@@ -7,11 +7,11 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.ApiKey
 import com.braintrustdata.api.models.ApiKeyCreateParams
-import com.braintrustdata.api.models.ApiKeyCreateResponse
 import com.braintrustdata.api.models.ApiKeyDeleteParams
 import com.braintrustdata.api.models.ApiKeyListPageAsync
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
+import com.braintrustdata.api.models.CreateApiKeyOutput
 import java.util.concurrent.CompletableFuture
 
 interface ApiKeyServiceAsync {
@@ -24,7 +24,7 @@ interface ApiKeyServiceAsync {
     fun create(
         params: ApiKeyCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ApiKeyCreateResponse>
+    ): CompletableFuture<CreateApiKeyOutput>
 
     /** Get an api_key object by its id */
     @JvmOverloads

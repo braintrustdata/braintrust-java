@@ -16,9 +16,9 @@ class ProjectLogFetchPostParamsTest {
             .cursor("cursor")
             .filters(
                 listOf(
-                    ProjectLogFetchPostParams.Filter.builder()
+                    PathLookupFilter.builder()
                         .path(listOf("string"))
-                        .type(ProjectLogFetchPostParams.Filter.Type.PATH_LOOKUP)
+                        .type(PathLookupFilter.Type.PATH_LOOKUP)
                         .value(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )
@@ -38,9 +38,9 @@ class ProjectLogFetchPostParamsTest {
                 .cursor("cursor")
                 .filters(
                     listOf(
-                        ProjectLogFetchPostParams.Filter.builder()
+                        PathLookupFilter.builder()
                             .path(listOf("string"))
-                            .type(ProjectLogFetchPostParams.Filter.Type.PATH_LOOKUP)
+                            .type(PathLookupFilter.Type.PATH_LOOKUP)
                             .value(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
@@ -56,9 +56,9 @@ class ProjectLogFetchPostParamsTest {
         assertThat(body.filters())
             .isEqualTo(
                 listOf(
-                    ProjectLogFetchPostParams.Filter.builder()
+                    PathLookupFilter.builder()
                         .path(listOf("string"))
-                        .type(ProjectLogFetchPostParams.Filter.Type.PATH_LOOKUP)
+                        .type(PathLookupFilter.Type.PATH_LOOKUP)
                         .value(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )

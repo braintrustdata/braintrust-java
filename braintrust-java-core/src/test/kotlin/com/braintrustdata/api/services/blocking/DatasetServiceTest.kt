@@ -117,11 +117,11 @@ class DatasetServiceTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .feedback(
                     listOf(
-                        DatasetFeedbackParams.Feedback.builder()
+                        FeedbackDatasetItem.builder()
                             .id("id")
                             .comment("comment")
-                            .metadata(DatasetFeedbackParams.Feedback.Metadata.builder().build())
-                            .source(DatasetFeedbackParams.Feedback.Source.APP)
+                            .metadata(FeedbackDatasetItem.Metadata.builder().build())
+                            .source(FeedbackDatasetItem.Source.APP)
                             .build()
                     )
                 )
@@ -137,7 +137,7 @@ class DatasetServiceTest {
                 .apiKey("My API Key")
                 .build()
         val datasetService = client.datasets()
-        val datasetFetchResponse =
+        val fetchDatasetEventsResponse =
             datasetService.fetch(
                 DatasetFetchParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -147,8 +147,8 @@ class DatasetServiceTest {
                     .version("version")
                     .build()
             )
-        println(datasetFetchResponse)
-        datasetFetchResponse.validate()
+        println(fetchDatasetEventsResponse)
+        fetchDatasetEventsResponse.validate()
     }
 
     @Test
@@ -159,16 +159,16 @@ class DatasetServiceTest {
                 .apiKey("My API Key")
                 .build()
         val datasetService = client.datasets()
-        val datasetFetchPostResponse =
+        val fetchDatasetEventsResponse =
             datasetService.fetchPost(
                 DatasetFetchPostParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
                     .filters(
                         listOf(
-                            DatasetFetchPostParams.Filter.builder()
+                            PathLookupFilter.builder()
                                 .path(listOf("string"))
-                                .type(DatasetFetchPostParams.Filter.Type.PATH_LOOKUP)
+                                .type(PathLookupFilter.Type.PATH_LOOKUP)
                                 .value(JsonValue.from(mapOf<String, Any>()))
                                 .build()
                         )
@@ -179,8 +179,8 @@ class DatasetServiceTest {
                     .version("version")
                     .build()
             )
-        println(datasetFetchPostResponse)
-        datasetFetchPostResponse.validate()
+        println(fetchDatasetEventsResponse)
+        fetchDatasetEventsResponse.validate()
     }
 
     @Test
@@ -191,14 +191,14 @@ class DatasetServiceTest {
                 .apiKey("My API Key")
                 .build()
         val datasetService = client.datasets()
-        val datasetInsertResponse =
+        val insertEventsResponse =
             datasetService.insert(
                 DatasetInsertParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .events(
                         listOf(
-                            DatasetInsertParams.Event.ofInsertDatasetEventReplace(
-                                DatasetInsertParams.Event.InsertDatasetEventReplace.builder()
+                            InsertDatasetEvent.ofInsertDatasetEventReplace(
+                                InsertDatasetEventReplace.builder()
                                     .id("id")
                                     ._isMerge(true)
                                     ._objectDelete(true)
@@ -206,11 +206,7 @@ class DatasetServiceTest {
                                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                     .expected(JsonValue.from(mapOf<String, Any>()))
                                     .input(JsonValue.from(mapOf<String, Any>()))
-                                    .metadata(
-                                        DatasetInsertParams.Event.InsertDatasetEventReplace.Metadata
-                                            .builder()
-                                            .build()
-                                    )
+                                    .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                                     .tags(listOf("string"))
                                     .build()
                             )
@@ -218,8 +214,8 @@ class DatasetServiceTest {
                     )
                     .build()
             )
-        println(datasetInsertResponse)
-        datasetInsertResponse.validate()
+        println(insertEventsResponse)
+        insertEventsResponse.validate()
     }
 
     @Test
@@ -230,14 +226,14 @@ class DatasetServiceTest {
                 .apiKey("My API Key")
                 .build()
         val datasetService = client.datasets()
-        val datasetSummarizeResponse =
+        val summarizeDatasetResponse =
             datasetService.summarize(
                 DatasetSummarizeParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .summarizeData(true)
                     .build()
             )
-        println(datasetSummarizeResponse)
-        datasetSummarizeResponse.validate()
+        println(summarizeDatasetResponse)
+        summarizeDatasetResponse.validate()
     }
 }
