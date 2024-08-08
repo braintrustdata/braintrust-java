@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.7.0 (2024-08-08)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/braintrustdata/braintrust-java/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* add model ProjectScoreCategory ([#42](https://github.com/braintrustdata/braintrust-java/issues/42)) ([1609ae3](https://github.com/braintrustdata/braintrust-java/commit/1609ae37c474698aa6e0d416974a105af25d7df2))
+* **api:** manual updates ([#43](https://github.com/braintrustdata/braintrust-java/issues/43)) ([fbe2ed0](https://github.com/braintrustdata/braintrust-java/commit/fbe2ed03ffa376b2ca64225852c9d64b8550a664))
+* **api:** manual updates ([#44](https://github.com/braintrustdata/braintrust-java/issues/44)) ([324bff1](https://github.com/braintrustdata/braintrust-java/commit/324bff18fe4bef1ac4e44b3020a45955e06f4571))
+* **api:** update via SDK Studio ([#39](https://github.com/braintrustdata/braintrust-java/issues/39)) ([d03930e](https://github.com/braintrustdata/braintrust-java/commit/d03930e4f8fe411250bc25c85873ab2ef1a2e9b3))
+* **api:** update via SDK Studio ([#40](https://github.com/braintrustdata/braintrust-java/issues/40)) ([8dd13cc](https://github.com/braintrustdata/braintrust-java/commit/8dd13ccebd653af4d69f42179fa69ea13fbf9074))
+* **api:** update via SDK Studio ([#41](https://github.com/braintrustdata/braintrust-java/issues/41)) ([50ccd19](https://github.com/braintrustdata/braintrust-java/commit/50ccd1973a6e4e3c1f14c39922bd8a9d77accc5e))
+
+
+### Chores
+
+* update SDK settings ([#37](https://github.com/braintrustdata/braintrust-java/issues/37)) ([2cc773b](https://github.com/braintrustdata/braintrust-java/commit/2cc773b2fbab5fb6c29f5c6b96c04bdef21c2880))
+
 ## 0.6.0 (2024-07-23)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/braintrustdata/braintrust-java/compare/v0.5.0...v0.6.0)
