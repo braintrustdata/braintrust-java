@@ -12,13 +12,13 @@ class ViewListParamsTest {
     fun createViewListParams() {
         ViewListParams.builder()
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .objectType(AclObjectType.ORGANIZATION)
+            .objectType(ViewListParams.ObjectType.ORGANIZATION)
             .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .ids(ViewListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .limit(123L)
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .viewName("view_name")
-            .viewType(ViewType.PROJECTS)
+            .viewType(ViewListParams.ViewType.PROJECTS)
             .build()
     }
 
@@ -27,17 +27,17 @@ class ViewListParamsTest {
         val params =
             ViewListParams.builder()
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclObjectType.ORGANIZATION)
+                .objectType(ViewListParams.ObjectType.ORGANIZATION)
                 .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .ids(ViewListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .limit(123L)
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .viewName("view_name")
-                .viewType(ViewType.PROJECTS)
+                .viewType(ViewListParams.ViewType.PROJECTS)
                 .build()
         val expected = mutableMapOf<String, List<String>>()
         expected.put("object_id", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        expected.put("object_type", listOf(AclObjectType.ORGANIZATION.toString()))
+        expected.put("object_type", listOf(ViewListParams.ObjectType.ORGANIZATION.toString()))
         expected.put("ending_before", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         expected.put(
             "ids",
@@ -46,7 +46,7 @@ class ViewListParamsTest {
         expected.put("limit", listOf("123"))
         expected.put("starting_after", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         expected.put("view_name", listOf("view_name"))
-        expected.put("view_type", listOf(ViewType.PROJECTS.toString()))
+        expected.put("view_type", listOf(ViewListParams.ViewType.PROJECTS.toString()))
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }
 
