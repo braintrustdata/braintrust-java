@@ -235,7 +235,7 @@ class ExperimentServiceTest {
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .events(
                         listOf(
-                            InsertExperimentEvent.ofInsertExperimentEventReplace(
+                            ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                                 InsertExperimentEventReplace.builder()
                                     .id("id")
                                     ._isMerge(true)

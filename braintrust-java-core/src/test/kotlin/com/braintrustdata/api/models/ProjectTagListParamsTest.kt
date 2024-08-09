@@ -12,7 +12,7 @@ class ProjectTagListParamsTest {
     fun createProjectTagListParams() {
         ProjectTagListParams.builder()
             .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .ids(ProjectTagListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .limit(123L)
             .orgName("org_name")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -27,7 +27,7 @@ class ProjectTagListParamsTest {
         val params =
             ProjectTagListParams.builder()
                 .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .ids(Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .ids(ProjectTagListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .limit(123L)
                 .orgName("org_name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

@@ -16,7 +16,7 @@ class DatasetInsertParamsTest {
             .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .events(
                 listOf(
-                    InsertDatasetEvent.ofInsertDatasetEventReplace(
+                    DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                         InsertDatasetEventReplace.builder()
                             .id("id")
                             ._isMerge(true)
@@ -41,7 +41,7 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                             InsertDatasetEventReplace.builder()
                                 .id("id")
                                 ._isMerge(true)
@@ -62,7 +62,7 @@ class DatasetInsertParamsTest {
         assertThat(body.events())
             .isEqualTo(
                 listOf(
-                    InsertDatasetEvent.ofInsertDatasetEventReplace(
+                    DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                         InsertDatasetEventReplace.builder()
                             .id("id")
                             ._isMerge(true)
@@ -86,7 +86,7 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                             InsertDatasetEventReplace.builder().build()
                         )
                     )
@@ -97,7 +97,7 @@ class DatasetInsertParamsTest {
         assertThat(body.events())
             .isEqualTo(
                 listOf(
-                    InsertDatasetEvent.ofInsertDatasetEventReplace(
+                    DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                         InsertDatasetEventReplace.builder().build()
                     )
                 )
@@ -111,7 +111,7 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        DatasetInsertParams.Event.ofInsertDatasetEventReplace(
                             InsertDatasetEventReplace.builder().build()
                         )
                     )
