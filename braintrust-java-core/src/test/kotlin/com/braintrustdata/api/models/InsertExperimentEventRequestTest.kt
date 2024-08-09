@@ -15,7 +15,7 @@ class InsertExperimentEventRequestTest {
             InsertExperimentEventRequest.builder()
                 .events(
                     listOf(
-                        InsertExperimentEvent.ofInsertExperimentEventReplace(
+                        InsertExperimentEventRequest.Event.ofInsertExperimentEventReplace(
                             InsertExperimentEventReplace.builder()
                                 .id("id")
                                 ._isMerge(true)
@@ -60,7 +60,7 @@ class InsertExperimentEventRequestTest {
         assertThat(insertExperimentEventRequest).isNotNull
         assertThat(insertExperimentEventRequest.events())
             .containsExactly(
-                InsertExperimentEvent.ofInsertExperimentEventReplace(
+                InsertExperimentEventRequest.Event.ofInsertExperimentEventReplace(
                     InsertExperimentEventReplace.builder()
                         .id("id")
                         ._isMerge(true)
