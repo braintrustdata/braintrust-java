@@ -15,7 +15,7 @@ class InsertProjectLogsEventRequestTest {
             InsertProjectLogsEventRequest.builder()
                 .events(
                     listOf(
-                        InsertProjectLogsEvent.ofInsertProjectLogsEventReplace(
+                        InsertProjectLogsEventRequest.Event.ofInsertProjectLogsEventReplace(
                             InsertProjectLogsEventReplace.builder()
                                 .id("id")
                                 ._isMerge(true)
@@ -59,7 +59,7 @@ class InsertProjectLogsEventRequestTest {
         assertThat(insertProjectLogsEventRequest).isNotNull
         assertThat(insertProjectLogsEventRequest.events())
             .containsExactly(
-                InsertProjectLogsEvent.ofInsertProjectLogsEventReplace(
+                InsertProjectLogsEventRequest.Event.ofInsertProjectLogsEventReplace(
                     InsertProjectLogsEventReplace.builder()
                         .id("id")
                         ._isMerge(true)

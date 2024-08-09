@@ -16,7 +16,7 @@ class ExperimentInsertParamsTest {
             .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .events(
                 listOf(
-                    InsertExperimentEvent.ofInsertExperimentEventReplace(
+                    ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                         InsertExperimentEventReplace.builder()
                             .id("id")
                             ._isMerge(true)
@@ -67,7 +67,7 @@ class ExperimentInsertParamsTest {
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        InsertExperimentEvent.ofInsertExperimentEventReplace(
+                        ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                             InsertExperimentEventReplace.builder()
                                 .id("id")
                                 ._isMerge(true)
@@ -114,7 +114,7 @@ class ExperimentInsertParamsTest {
         assertThat(body.events())
             .isEqualTo(
                 listOf(
-                    InsertExperimentEvent.ofInsertExperimentEventReplace(
+                    ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                         InsertExperimentEventReplace.builder()
                             .id("id")
                             ._isMerge(true)
@@ -164,7 +164,7 @@ class ExperimentInsertParamsTest {
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        InsertExperimentEvent.ofInsertExperimentEventReplace(
+                        ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                             InsertExperimentEventReplace.builder().build()
                         )
                     )
@@ -175,7 +175,7 @@ class ExperimentInsertParamsTest {
         assertThat(body.events())
             .isEqualTo(
                 listOf(
-                    InsertExperimentEvent.ofInsertExperimentEventReplace(
+                    ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                         InsertExperimentEventReplace.builder().build()
                     )
                 )
@@ -189,7 +189,7 @@ class ExperimentInsertParamsTest {
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .events(
                     listOf(
-                        InsertExperimentEvent.ofInsertExperimentEventReplace(
+                        ExperimentInsertParams.Event.ofInsertExperimentEventReplace(
                             InsertExperimentEventReplace.builder().build()
                         )
                     )

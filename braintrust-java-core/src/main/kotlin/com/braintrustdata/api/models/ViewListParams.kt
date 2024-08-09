@@ -2,17 +2,31 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.BaseDeserializer
+import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
 
 class ViewListParams
 constructor(
     private val objectId: String,
-    private val objectType: AclObjectType?,
+    private val objectType: ObjectType?,
     private val endingBefore: String?,
     private val ids: Ids?,
     private val limit: Long?,
@@ -26,7 +40,7 @@ constructor(
 
     fun objectId(): String = objectId
 
-    fun objectType(): Optional<AclObjectType> = Optional.ofNullable(objectType)
+    fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
 
     fun endingBefore(): Optional<String> = Optional.ofNullable(endingBefore)
 
@@ -112,7 +126,7 @@ constructor(
     class Builder {
 
         private var objectId: String? = null
-        private var objectType: AclObjectType? = null
+        private var objectType: ObjectType? = null
         private var endingBefore: String? = null
         private var ids: Ids? = null
         private var limit: Long? = null
@@ -142,7 +156,7 @@ constructor(
         fun objectId(objectId: String) = apply { this.objectId = objectId }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: AclObjectType) = apply { this.objectType = objectType }
+        fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
 
         /**
          * Pagination cursor id.
@@ -257,5 +271,322 @@ constructor(
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
             )
+    }
+
+    class ObjectType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ObjectType && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+
+            @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+
+            @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+
+            @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+
+            @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+
+            @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+
+            @JvmField val GROUP = ObjectType(JsonField.of("group"))
+
+            @JvmField val ROLE = ObjectType(JsonField.of("role"))
+
+            @JvmField val ORG_MEMBER = ObjectType(JsonField.of("org_member"))
+
+            @JvmField val PROJECT_LOG = ObjectType(JsonField.of("project_log"))
+
+            @JvmField val ORG_PROJECT = ObjectType(JsonField.of("org_project"))
+
+            @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
+        }
+
+        enum class Known {
+            ORGANIZATION,
+            PROJECT,
+            EXPERIMENT,
+            DATASET,
+            PROMPT,
+            PROMPT_SESSION,
+            GROUP,
+            ROLE,
+            ORG_MEMBER,
+            PROJECT_LOG,
+            ORG_PROJECT,
+        }
+
+        enum class Value {
+            ORGANIZATION,
+            PROJECT,
+            EXPERIMENT,
+            DATASET,
+            PROMPT,
+            PROMPT_SESSION,
+            GROUP,
+            ROLE,
+            ORG_MEMBER,
+            PROJECT_LOG,
+            ORG_PROJECT,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                ORGANIZATION -> Value.ORGANIZATION
+                PROJECT -> Value.PROJECT
+                EXPERIMENT -> Value.EXPERIMENT
+                DATASET -> Value.DATASET
+                PROMPT -> Value.PROMPT
+                PROMPT_SESSION -> Value.PROMPT_SESSION
+                GROUP -> Value.GROUP
+                ROLE -> Value.ROLE
+                ORG_MEMBER -> Value.ORG_MEMBER
+                PROJECT_LOG -> Value.PROJECT_LOG
+                ORG_PROJECT -> Value.ORG_PROJECT
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                ORGANIZATION -> Known.ORGANIZATION
+                PROJECT -> Known.PROJECT
+                EXPERIMENT -> Known.EXPERIMENT
+                DATASET -> Known.DATASET
+                PROMPT -> Known.PROMPT
+                PROMPT_SESSION -> Known.PROMPT_SESSION
+                GROUP -> Known.GROUP
+                ROLE -> Known.ROLE
+                ORG_MEMBER -> Known.ORG_MEMBER
+                PROJECT_LOG -> Known.PROJECT_LOG
+                ORG_PROJECT -> Known.ORG_PROJECT
+                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
+    @JsonDeserialize(using = Ids.Deserializer::class)
+    @JsonSerialize(using = Ids.Serializer::class)
+    class Ids
+    private constructor(
+        private val string: String? = null,
+        private val strings: List<String>? = null,
+        private val _json: JsonValue? = null,
+    ) {
+
+        private var validated: Boolean = false
+
+        fun string(): Optional<String> = Optional.ofNullable(string)
+
+        fun strings(): Optional<List<String>> = Optional.ofNullable(strings)
+
+        fun isString(): Boolean = string != null
+
+        fun isStrings(): Boolean = strings != null
+
+        fun asString(): String = string.getOrThrow("string")
+
+        fun asStrings(): List<String> = strings.getOrThrow("strings")
+
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        fun <T> accept(visitor: Visitor<T>): T {
+            return when {
+                string != null -> visitor.visitString(string)
+                strings != null -> visitor.visitStrings(strings)
+                else -> visitor.unknown(_json)
+            }
+        }
+
+        fun validate(): Ids = apply {
+            if (!validated) {
+                if (string == null && strings == null) {
+                    throw BraintrustInvalidDataException("Unknown Ids: $_json")
+                }
+                validated = true
+            }
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Ids && this.string == other.string && this.strings == other.strings
+        }
+
+        override fun hashCode(): Int {
+            return Objects.hash(string, strings)
+        }
+
+        override fun toString(): String {
+            return when {
+                string != null -> "Ids{string=$string}"
+                strings != null -> "Ids{strings=$strings}"
+                _json != null -> "Ids{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid Ids")
+            }
+        }
+
+        companion object {
+
+            @JvmStatic fun ofString(string: String) = Ids(string = string)
+
+            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
+        }
+
+        interface Visitor<out T> {
+
+            fun visitString(string: String): T
+
+            fun visitStrings(strings: List<String>): T
+
+            fun unknown(json: JsonValue?): T {
+                throw BraintrustInvalidDataException("Unknown Ids: $json")
+            }
+        }
+
+        class Deserializer : BaseDeserializer<Ids>(Ids::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): Ids {
+                val json = JsonValue.fromJsonNode(node)
+                tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                    return Ids(string = it, _json = json)
+                }
+                tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
+                    return Ids(strings = it, _json = json)
+                }
+
+                return Ids(_json = json)
+            }
+        }
+
+        class Serializer : BaseSerializer<Ids>(Ids::class) {
+
+            override fun serialize(
+                value: Ids,
+                generator: JsonGenerator,
+                provider: SerializerProvider
+            ) {
+                when {
+                    value.string != null -> generator.writeObject(value.string)
+                    value.strings != null -> generator.writeObject(value.strings)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid Ids")
+                }
+            }
+        }
+    }
+
+    class ViewType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ViewType && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val PROJECTS = ViewType(JsonField.of("projects"))
+
+            @JvmField val LOGS = ViewType(JsonField.of("logs"))
+
+            @JvmField val EXPERIMENTS = ViewType(JsonField.of("experiments"))
+
+            @JvmField val DATASETS = ViewType(JsonField.of("datasets"))
+
+            @JvmField val PROMPTS = ViewType(JsonField.of("prompts"))
+
+            @JvmField val PLAYGROUNDS = ViewType(JsonField.of("playgrounds"))
+
+            @JvmField val EXPERIMENT = ViewType(JsonField.of("experiment"))
+
+            @JvmField val DATASET = ViewType(JsonField.of("dataset"))
+
+            @JvmStatic fun of(value: String) = ViewType(JsonField.of(value))
+        }
+
+        enum class Known {
+            PROJECTS,
+            LOGS,
+            EXPERIMENTS,
+            DATASETS,
+            PROMPTS,
+            PLAYGROUNDS,
+            EXPERIMENT,
+            DATASET,
+        }
+
+        enum class Value {
+            PROJECTS,
+            LOGS,
+            EXPERIMENTS,
+            DATASETS,
+            PROMPTS,
+            PLAYGROUNDS,
+            EXPERIMENT,
+            DATASET,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                PROJECTS -> Value.PROJECTS
+                LOGS -> Value.LOGS
+                EXPERIMENTS -> Value.EXPERIMENTS
+                DATASETS -> Value.DATASETS
+                PROMPTS -> Value.PROMPTS
+                PLAYGROUNDS -> Value.PLAYGROUNDS
+                EXPERIMENT -> Value.EXPERIMENT
+                DATASET -> Value.DATASET
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                PROJECTS -> Known.PROJECTS
+                LOGS -> Known.LOGS
+                EXPERIMENTS -> Known.EXPERIMENTS
+                DATASETS -> Known.DATASETS
+                PROMPTS -> Known.PROMPTS
+                PLAYGROUNDS -> Known.PLAYGROUNDS
+                EXPERIMENT -> Known.EXPERIMENT
+                DATASET -> Known.DATASET
+                else -> throw BraintrustInvalidDataException("Unknown ViewType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 }

@@ -15,7 +15,7 @@ class InsertDatasetEventRequestTest {
             InsertDatasetEventRequest.builder()
                 .events(
                     listOf(
-                        InsertDatasetEvent.ofInsertDatasetEventReplace(
+                        InsertDatasetEventRequest.Event.ofInsertDatasetEventReplace(
                             InsertDatasetEventReplace.builder()
                                 .id("id")
                                 ._isMerge(true)
@@ -34,7 +34,7 @@ class InsertDatasetEventRequestTest {
         assertThat(insertDatasetEventRequest).isNotNull
         assertThat(insertDatasetEventRequest.events())
             .containsExactly(
-                InsertDatasetEvent.ofInsertDatasetEventReplace(
+                InsertDatasetEventRequest.Event.ofInsertDatasetEventReplace(
                     InsertDatasetEventReplace.builder()
                         .id("id")
                         ._isMerge(true)
