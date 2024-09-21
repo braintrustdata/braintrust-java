@@ -336,6 +336,8 @@ private constructor(
 
             @JvmField val MINIMUM = ScoreType(JsonField.of("minimum"))
 
+            @JvmField val ONLINE = ScoreType(JsonField.of("online"))
+
             @JvmStatic fun of(value: String) = ScoreType(JsonField.of(value))
         }
 
@@ -344,6 +346,7 @@ private constructor(
             CATEGORICAL,
             WEIGHTED,
             MINIMUM,
+            ONLINE,
         }
 
         enum class Value {
@@ -351,6 +354,7 @@ private constructor(
             CATEGORICAL,
             WEIGHTED,
             MINIMUM,
+            ONLINE,
             _UNKNOWN,
         }
 
@@ -360,6 +364,7 @@ private constructor(
                 CATEGORICAL -> Value.CATEGORICAL
                 WEIGHTED -> Value.WEIGHTED
                 MINIMUM -> Value.MINIMUM
+                ONLINE -> Value.ONLINE
                 else -> Value._UNKNOWN
             }
 
@@ -369,6 +374,7 @@ private constructor(
                 CATEGORICAL -> Known.CATEGORICAL
                 WEIGHTED -> Known.WEIGHTED
                 MINIMUM -> Known.MINIMUM
+                ONLINE -> Known.ONLINE
                 else -> throw BraintrustInvalidDataException("Unknown ScoreType: $value")
             }
 
@@ -709,6 +715,7 @@ private constructor(
     private constructor(
         private val multiSelect: JsonField<Boolean>,
         private val destination: JsonField<Destination>,
+        private val online: JsonField<Online>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -722,9 +729,13 @@ private constructor(
         fun destination(): Optional<Destination> =
             Optional.ofNullable(destination.getNullable("destination"))
 
+        fun online(): Optional<Online> = Optional.ofNullable(online.getNullable("online"))
+
         @JsonProperty("multi_select") @ExcludeMissing fun _multiSelect() = multiSelect
 
         @JsonProperty("destination") @ExcludeMissing fun _destination() = destination
+
+        @JsonProperty("online") @ExcludeMissing fun _online() = online
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -734,6 +745,7 @@ private constructor(
             if (!validated) {
                 multiSelect()
                 destination()
+                online().map { it.validate() }
                 validated = true
             }
         }
@@ -748,6 +760,7 @@ private constructor(
             return other is Config &&
                 this.multiSelect == other.multiSelect &&
                 this.destination == other.destination &&
+                this.online == other.online &&
                 this.additionalProperties == other.additionalProperties
         }
 
@@ -757,6 +770,7 @@ private constructor(
                     Objects.hash(
                         multiSelect,
                         destination,
+                        online,
                         additionalProperties,
                     )
             }
@@ -764,7 +778,7 @@ private constructor(
         }
 
         override fun toString() =
-            "Config{multiSelect=$multiSelect, destination=$destination, additionalProperties=$additionalProperties}"
+            "Config{multiSelect=$multiSelect, destination=$destination, online=$online, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -775,12 +789,14 @@ private constructor(
 
             private var multiSelect: JsonField<Boolean> = JsonMissing.of()
             private var destination: JsonField<Destination> = JsonMissing.of()
+            private var online: JsonField<Online> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(config: Config) = apply {
                 this.multiSelect = config.multiSelect
                 this.destination = config.destination
+                this.online = config.online
                 additionalProperties(config.additionalProperties)
             }
 
@@ -800,6 +816,12 @@ private constructor(
                 this.destination = destination
             }
 
+            fun online(online: Online) = online(JsonField.of(online))
+
+            @JsonProperty("online")
+            @ExcludeMissing
+            fun online(online: JsonField<Online>) = apply { this.online = online }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 this.additionalProperties.putAll(additionalProperties)
@@ -818,6 +840,7 @@ private constructor(
                 Config(
                     multiSelect,
                     destination,
+                    online,
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -871,6 +894,640 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+        }
+
+        @JsonDeserialize(builder = Online.Builder::class)
+        @NoAutoDetect
+        class Online
+        private constructor(
+            private val samplingRate: JsonField<Double>,
+            private val scorers: JsonField<List<Scorer>>,
+            private val applyToRootSpan: JsonField<Boolean>,
+            private val applyToSpanNames: JsonField<List<String>>,
+            private val additionalProperties: Map<String, JsonValue>,
+        ) {
+
+            private var validated: Boolean = false
+
+            private var hashCode: Int = 0
+
+            /** The sampling rate for online scoring */
+            fun samplingRate(): Double = samplingRate.getRequired("sampling_rate")
+
+            /** The list of scorers to use for online scoring */
+            fun scorers(): List<Scorer> = scorers.getRequired("scorers")
+
+            /** Whether to trigger online scoring on the root span of each trace */
+            fun applyToRootSpan(): Optional<Boolean> =
+                Optional.ofNullable(applyToRootSpan.getNullable("apply_to_root_span"))
+
+            /** Trigger online scoring on any spans with a name in this list */
+            fun applyToSpanNames(): Optional<List<String>> =
+                Optional.ofNullable(applyToSpanNames.getNullable("apply_to_span_names"))
+
+            /** The sampling rate for online scoring */
+            @JsonProperty("sampling_rate") @ExcludeMissing fun _samplingRate() = samplingRate
+
+            /** The list of scorers to use for online scoring */
+            @JsonProperty("scorers") @ExcludeMissing fun _scorers() = scorers
+
+            /** Whether to trigger online scoring on the root span of each trace */
+            @JsonProperty("apply_to_root_span")
+            @ExcludeMissing
+            fun _applyToRootSpan() = applyToRootSpan
+
+            /** Trigger online scoring on any spans with a name in this list */
+            @JsonProperty("apply_to_span_names")
+            @ExcludeMissing
+            fun _applyToSpanNames() = applyToSpanNames
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            fun validate(): Online = apply {
+                if (!validated) {
+                    samplingRate()
+                    scorers()
+                    applyToRootSpan()
+                    applyToSpanNames()
+                    validated = true
+                }
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Online &&
+                    this.samplingRate == other.samplingRate &&
+                    this.scorers == other.scorers &&
+                    this.applyToRootSpan == other.applyToRootSpan &&
+                    this.applyToSpanNames == other.applyToSpanNames &&
+                    this.additionalProperties == other.additionalProperties
+            }
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode =
+                        Objects.hash(
+                            samplingRate,
+                            scorers,
+                            applyToRootSpan,
+                            applyToSpanNames,
+                            additionalProperties,
+                        )
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "Online{samplingRate=$samplingRate, scorers=$scorers, applyToRootSpan=$applyToRootSpan, applyToSpanNames=$applyToSpanNames, additionalProperties=$additionalProperties}"
+
+            companion object {
+
+                @JvmStatic fun builder() = Builder()
+            }
+
+            class Builder {
+
+                private var samplingRate: JsonField<Double> = JsonMissing.of()
+                private var scorers: JsonField<List<Scorer>> = JsonMissing.of()
+                private var applyToRootSpan: JsonField<Boolean> = JsonMissing.of()
+                private var applyToSpanNames: JsonField<List<String>> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(online: Online) = apply {
+                    this.samplingRate = online.samplingRate
+                    this.scorers = online.scorers
+                    this.applyToRootSpan = online.applyToRootSpan
+                    this.applyToSpanNames = online.applyToSpanNames
+                    additionalProperties(online.additionalProperties)
+                }
+
+                /** The sampling rate for online scoring */
+                fun samplingRate(samplingRate: Double) = samplingRate(JsonField.of(samplingRate))
+
+                /** The sampling rate for online scoring */
+                @JsonProperty("sampling_rate")
+                @ExcludeMissing
+                fun samplingRate(samplingRate: JsonField<Double>) = apply {
+                    this.samplingRate = samplingRate
+                }
+
+                /** The list of scorers to use for online scoring */
+                fun scorers(scorers: List<Scorer>) = scorers(JsonField.of(scorers))
+
+                /** The list of scorers to use for online scoring */
+                @JsonProperty("scorers")
+                @ExcludeMissing
+                fun scorers(scorers: JsonField<List<Scorer>>) = apply { this.scorers = scorers }
+
+                /** Whether to trigger online scoring on the root span of each trace */
+                fun applyToRootSpan(applyToRootSpan: Boolean) =
+                    applyToRootSpan(JsonField.of(applyToRootSpan))
+
+                /** Whether to trigger online scoring on the root span of each trace */
+                @JsonProperty("apply_to_root_span")
+                @ExcludeMissing
+                fun applyToRootSpan(applyToRootSpan: JsonField<Boolean>) = apply {
+                    this.applyToRootSpan = applyToRootSpan
+                }
+
+                /** Trigger online scoring on any spans with a name in this list */
+                fun applyToSpanNames(applyToSpanNames: List<String>) =
+                    applyToSpanNames(JsonField.of(applyToSpanNames))
+
+                /** Trigger online scoring on any spans with a name in this list */
+                @JsonProperty("apply_to_span_names")
+                @ExcludeMissing
+                fun applyToSpanNames(applyToSpanNames: JsonField<List<String>>) = apply {
+                    this.applyToSpanNames = applyToSpanNames
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    this.additionalProperties.putAll(additionalProperties)
+                }
+
+                @JsonAnySetter
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    this.additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun build(): Online =
+                    Online(
+                        samplingRate,
+                        scorers.map { it.toUnmodifiable() },
+                        applyToRootSpan,
+                        applyToSpanNames.map { it.toUnmodifiable() },
+                        additionalProperties.toUnmodifiable(),
+                    )
+            }
+
+            @JsonDeserialize(using = Scorer.Deserializer::class)
+            @JsonSerialize(using = Scorer.Serializer::class)
+            class Scorer
+            private constructor(
+                private val function: Function? = null,
+                private val global: Global? = null,
+                private val _json: JsonValue? = null,
+            ) {
+
+                private var validated: Boolean = false
+
+                fun function(): Optional<Function> = Optional.ofNullable(function)
+
+                fun global(): Optional<Global> = Optional.ofNullable(global)
+
+                fun isFunction(): Boolean = function != null
+
+                fun isGlobal(): Boolean = global != null
+
+                fun asFunction(): Function = function.getOrThrow("function")
+
+                fun asGlobal(): Global = global.getOrThrow("global")
+
+                fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+                fun <T> accept(visitor: Visitor<T>): T {
+                    return when {
+                        function != null -> visitor.visitFunction(function)
+                        global != null -> visitor.visitGlobal(global)
+                        else -> visitor.unknown(_json)
+                    }
+                }
+
+                fun validate(): Scorer = apply {
+                    if (!validated) {
+                        if (function == null && global == null) {
+                            throw BraintrustInvalidDataException("Unknown Scorer: $_json")
+                        }
+                        function?.validate()
+                        global?.validate()
+                        validated = true
+                    }
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Scorer &&
+                        this.function == other.function &&
+                        this.global == other.global
+                }
+
+                override fun hashCode(): Int {
+                    return Objects.hash(function, global)
+                }
+
+                override fun toString(): String {
+                    return when {
+                        function != null -> "Scorer{function=$function}"
+                        global != null -> "Scorer{global=$global}"
+                        _json != null -> "Scorer{_unknown=$_json}"
+                        else -> throw IllegalStateException("Invalid Scorer")
+                    }
+                }
+
+                companion object {
+
+                    @JvmStatic fun ofFunction(function: Function) = Scorer(function = function)
+
+                    @JvmStatic fun ofGlobal(global: Global) = Scorer(global = global)
+                }
+
+                interface Visitor<out T> {
+
+                    fun visitFunction(function: Function): T
+
+                    fun visitGlobal(global: Global): T
+
+                    fun unknown(json: JsonValue?): T {
+                        throw BraintrustInvalidDataException("Unknown Scorer: $json")
+                    }
+                }
+
+                class Deserializer : BaseDeserializer<Scorer>(Scorer::class) {
+
+                    override fun ObjectCodec.deserialize(node: JsonNode): Scorer {
+                        val json = JsonValue.fromJsonNode(node)
+                        tryDeserialize(node, jacksonTypeRef<Function>()) { it.validate() }
+                            ?.let {
+                                return Scorer(function = it, _json = json)
+                            }
+                        tryDeserialize(node, jacksonTypeRef<Global>()) { it.validate() }
+                            ?.let {
+                                return Scorer(global = it, _json = json)
+                            }
+
+                        return Scorer(_json = json)
+                    }
+                }
+
+                class Serializer : BaseSerializer<Scorer>(Scorer::class) {
+
+                    override fun serialize(
+                        value: Scorer,
+                        generator: JsonGenerator,
+                        provider: SerializerProvider
+                    ) {
+                        when {
+                            value.function != null -> generator.writeObject(value.function)
+                            value.global != null -> generator.writeObject(value.global)
+                            value._json != null -> generator.writeObject(value._json)
+                            else -> throw IllegalStateException("Invalid Scorer")
+                        }
+                    }
+                }
+
+                @JsonDeserialize(builder = Function.Builder::class)
+                @NoAutoDetect
+                class Function
+                private constructor(
+                    private val type: JsonField<Type>,
+                    private val id: JsonField<String>,
+                    private val additionalProperties: Map<String, JsonValue>,
+                ) {
+
+                    private var validated: Boolean = false
+
+                    private var hashCode: Int = 0
+
+                    fun type(): Type = type.getRequired("type")
+
+                    fun id(): String = id.getRequired("id")
+
+                    @JsonProperty("type") @ExcludeMissing fun _type() = type
+
+                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                    fun validate(): Function = apply {
+                        if (!validated) {
+                            type()
+                            id()
+                            validated = true
+                        }
+                    }
+
+                    fun toBuilder() = Builder().from(this)
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is Function &&
+                            this.type == other.type &&
+                            this.id == other.id &&
+                            this.additionalProperties == other.additionalProperties
+                    }
+
+                    override fun hashCode(): Int {
+                        if (hashCode == 0) {
+                            hashCode =
+                                Objects.hash(
+                                    type,
+                                    id,
+                                    additionalProperties,
+                                )
+                        }
+                        return hashCode
+                    }
+
+                    override fun toString() =
+                        "Function{type=$type, id=$id, additionalProperties=$additionalProperties}"
+
+                    companion object {
+
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    class Builder {
+
+                        private var type: JsonField<Type> = JsonMissing.of()
+                        private var id: JsonField<String> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(function: Function) = apply {
+                            this.type = function.type
+                            this.id = function.id
+                            additionalProperties(function.additionalProperties)
+                        }
+
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun id(id: String) = id(JsonField.of(id))
+
+                        @JsonProperty("id")
+                        @ExcludeMissing
+                        fun id(id: JsonField<String>) = apply { this.id = id }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                this.additionalProperties.putAll(additionalProperties)
+                            }
+
+                        @JsonAnySetter
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            this.additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun build(): Function =
+                            Function(
+                                type,
+                                id,
+                                additionalProperties.toUnmodifiable(),
+                            )
+                    }
+
+                    class Type
+                    @JsonCreator
+                    private constructor(
+                        private val value: JsonField<String>,
+                    ) : Enum {
+
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && this.value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+
+                        companion object {
+
+                            @JvmField val FUNCTION = Type(JsonField.of("function"))
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        enum class Known {
+                            FUNCTION,
+                        }
+
+                        enum class Value {
+                            FUNCTION,
+                            _UNKNOWN,
+                        }
+
+                        fun value(): Value =
+                            when (this) {
+                                FUNCTION -> Value.FUNCTION
+                                else -> Value._UNKNOWN
+                            }
+
+                        fun known(): Known =
+                            when (this) {
+                                FUNCTION -> Known.FUNCTION
+                                else -> throw BraintrustInvalidDataException("Unknown Type: $value")
+                            }
+
+                        fun asString(): String = _value().asStringOrThrow()
+                    }
+                }
+
+                @JsonDeserialize(builder = Global.Builder::class)
+                @NoAutoDetect
+                class Global
+                private constructor(
+                    private val type: JsonField<Type>,
+                    private val name: JsonField<String>,
+                    private val additionalProperties: Map<String, JsonValue>,
+                ) {
+
+                    private var validated: Boolean = false
+
+                    private var hashCode: Int = 0
+
+                    fun type(): Type = type.getRequired("type")
+
+                    fun name(): String = name.getRequired("name")
+
+                    @JsonProperty("type") @ExcludeMissing fun _type() = type
+
+                    @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                    fun validate(): Global = apply {
+                        if (!validated) {
+                            type()
+                            name()
+                            validated = true
+                        }
+                    }
+
+                    fun toBuilder() = Builder().from(this)
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is Global &&
+                            this.type == other.type &&
+                            this.name == other.name &&
+                            this.additionalProperties == other.additionalProperties
+                    }
+
+                    override fun hashCode(): Int {
+                        if (hashCode == 0) {
+                            hashCode =
+                                Objects.hash(
+                                    type,
+                                    name,
+                                    additionalProperties,
+                                )
+                        }
+                        return hashCode
+                    }
+
+                    override fun toString() =
+                        "Global{type=$type, name=$name, additionalProperties=$additionalProperties}"
+
+                    companion object {
+
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    class Builder {
+
+                        private var type: JsonField<Type> = JsonMissing.of()
+                        private var name: JsonField<String> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(global: Global) = apply {
+                            this.type = global.type
+                            this.name = global.name
+                            additionalProperties(global.additionalProperties)
+                        }
+
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun name(name: String) = name(JsonField.of(name))
+
+                        @JsonProperty("name")
+                        @ExcludeMissing
+                        fun name(name: JsonField<String>) = apply { this.name = name }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                this.additionalProperties.putAll(additionalProperties)
+                            }
+
+                        @JsonAnySetter
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            this.additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun build(): Global =
+                            Global(
+                                type,
+                                name,
+                                additionalProperties.toUnmodifiable(),
+                            )
+                    }
+
+                    class Type
+                    @JsonCreator
+                    private constructor(
+                        private val value: JsonField<String>,
+                    ) : Enum {
+
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && this.value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+
+                        companion object {
+
+                            @JvmField val GLOBAL = Type(JsonField.of("global"))
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        enum class Known {
+                            GLOBAL,
+                        }
+
+                        enum class Value {
+                            GLOBAL,
+                            _UNKNOWN,
+                        }
+
+                        fun value(): Value =
+                            when (this) {
+                                GLOBAL -> Value.GLOBAL
+                                else -> Value._UNKNOWN
+                            }
+
+                        fun known(): Known =
+                            when (this) {
+                                GLOBAL -> Known.GLOBAL
+                                else -> throw BraintrustInvalidDataException("Unknown Type: $value")
+                            }
+
+                        fun asString(): String = _value().asStringOrThrow()
+                    }
+                }
+            }
         }
     }
 }

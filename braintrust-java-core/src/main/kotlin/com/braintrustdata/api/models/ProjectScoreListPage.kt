@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class ProjectScoreListPage
 private constructor(
-    private val projectScoresService: ProjectScoreService,
+    private val projectScoreService: ProjectScoreService,
     private val params: ProjectScoreListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is ProjectScoreListPage &&
-            this.projectScoresService == other.projectScoresService &&
+            this.projectScoreService == other.projectScoreService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            projectScoresService,
+            projectScoreService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ProjectScoreListPage{projectScoresService=$projectScoresService, params=$params, response=$response}"
+        "ProjectScoreListPage{projectScoreService=$projectScoreService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<ProjectScoreListPage> {
-        return getNextPageParams().map { projectScoresService.list(it) }
+        return getNextPageParams().map { projectScoreService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -87,12 +87,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            projectScoresService: ProjectScoreService,
+            projectScoreService: ProjectScoreService,
             params: ProjectScoreListParams,
             response: Response
         ) =
             ProjectScoreListPage(
-                projectScoresService,
+                projectScoreService,
                 params,
                 response,
             )

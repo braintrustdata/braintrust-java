@@ -13,31 +13,33 @@ interface BraintrustClientAsync {
 
     fun topLevel(): TopLevelServiceAsync
 
-    fun projects(): ProjectServiceAsync
+    fun project(): ProjectServiceAsync
 
-    fun experiments(): ExperimentServiceAsync
+    fun experiment(): ExperimentServiceAsync
 
-    fun datasets(): DatasetServiceAsync
+    fun dataset(): DatasetServiceAsync
 
-    fun prompts(): PromptServiceAsync
+    fun prompt(): PromptServiceAsync
 
-    fun roles(): RoleServiceAsync
+    fun role(): RoleServiceAsync
 
-    fun groups(): GroupServiceAsync
+    fun group(): GroupServiceAsync
 
-    fun acls(): AclServiceAsync
+    fun acl(): AclServiceAsync
 
-    fun users(): UserServiceAsync
+    fun user(): UserServiceAsync
 
-    fun projectScores(): ProjectScoreServiceAsync
+    fun projectScore(): ProjectScoreServiceAsync
 
-    fun projectTags(): ProjectTagServiceAsync
+    fun projectTag(): ProjectTagServiceAsync
 
-    fun functions(): FunctionServiceAsync
+    fun function(): FunctionServiceAsync
 
-    fun views(): ViewServiceAsync
+    fun view(): ViewServiceAsync
 
-    fun organizations(): OrganizationServiceAsync
+    fun organization(): OrganizationServiceAsync
 
-    fun apiKeys(): ApiKeyServiceAsync
+    fun apiKeyResource(): ApiKeyResourceServiceAsync
+
+    fun orgSecret(): OrgSecretServiceAsync
 }

@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class ExperimentListPage
 private constructor(
-    private val experimentsService: ExperimentService,
+    private val experimentService: ExperimentService,
     private val params: ExperimentListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is ExperimentListPage &&
-            this.experimentsService == other.experimentsService &&
+            this.experimentService == other.experimentService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            experimentsService,
+            experimentService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ExperimentListPage{experimentsService=$experimentsService, params=$params, response=$response}"
+        "ExperimentListPage{experimentService=$experimentService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<ExperimentListPage> {
-        return getNextPageParams().map { experimentsService.list(it) }
+        return getNextPageParams().map { experimentService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -87,12 +87,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            experimentsService: ExperimentService,
+            experimentService: ExperimentService,
             params: ExperimentListParams,
             response: Response
         ) =
             ExperimentListPage(
-                experimentsService,
+                experimentService,
                 params,
                 response,
             )

@@ -22,6 +22,14 @@ class FunctionReplaceParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .slug("slug")
             .description("description")
+            .functionType(FunctionReplaceParams.FunctionType.TASK)
+            .origin(
+                FunctionReplaceParams.Origin.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                    .internal_(true)
+                    .build()
+            )
             .promptData(
                 PromptData.builder()
                     .options(
@@ -81,6 +89,13 @@ class FunctionReplaceParamsTest {
                             .promptVersion("prompt_version")
                             .build()
                     )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
+                            .build()
+                    )
                     .prompt(
                         PromptData.Prompt.ofCompletion(
                             PromptData.Prompt.Completion.builder()
@@ -110,6 +125,14 @@ class FunctionReplaceParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .slug("slug")
                 .description("description")
+                .functionType(FunctionReplaceParams.FunctionType.TASK)
+                .origin(
+                    FunctionReplaceParams.Origin.builder()
+                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                        .internal_(true)
+                        .build()
+                )
                 .promptData(
                     PromptData.builder()
                         .options(
@@ -171,6 +194,13 @@ class FunctionReplaceParamsTest {
                                 .promptVersion("prompt_version")
                                 .build()
                         )
+                        .parser(
+                            PromptData.Parser.builder()
+                                .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                .useCot(true)
+                                .build()
+                        )
                         .prompt(
                             PromptData.Prompt.ofCompletion(
                                 PromptData.Prompt.Completion.builder()
@@ -197,6 +227,15 @@ class FunctionReplaceParamsTest {
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.slug()).isEqualTo("slug")
         assertThat(body.description()).isEqualTo("description")
+        assertThat(body.functionType()).isEqualTo(FunctionReplaceParams.FunctionType.TASK)
+        assertThat(body.origin())
+            .isEqualTo(
+                FunctionReplaceParams.Origin.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                    .internal_(true)
+                    .build()
+            )
         assertThat(body.promptData())
             .isEqualTo(
                 PromptData.builder()
@@ -255,6 +294,13 @@ class FunctionReplaceParamsTest {
                             .projectId("project_id")
                             .promptId("prompt_id")
                             .promptVersion("prompt_version")
+                            .build()
+                    )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
                             .build()
                     )
                     .prompt(

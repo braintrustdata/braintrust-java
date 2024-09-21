@@ -20,10 +20,10 @@ import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
+import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchExperimentEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
-import com.braintrustdata.api.services.emptyHandler
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
@@ -191,10 +191,14 @@ constructor(
         }
     }
 
-    private val feedbackHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
+    private val feedbackHandler: Handler<FeedbackResponseSchema> =
+        jsonHandler<FeedbackResponseSchema>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Log feedback for a set of experiment events */
-    override fun feedback(params: ExperimentFeedbackParams, requestOptions: RequestOptions) {
+    override fun feedback(
+        params: ExperimentFeedbackParams,
+        requestOptions: RequestOptions
+    ): FeedbackResponseSchema {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -205,8 +209,14 @@ constructor(
                 .putAllHeaders(params.getHeaders())
                 .body(json(clientOptions.jsonMapper, params.getBody()))
                 .build()
-        clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response.use { feedbackHandler.handle(it) }
+        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
+            response
+                .use { feedbackHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
         }
     }
 

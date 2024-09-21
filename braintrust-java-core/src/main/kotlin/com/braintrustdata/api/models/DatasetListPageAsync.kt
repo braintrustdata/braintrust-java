@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class DatasetListPageAsync
 private constructor(
-    private val datasetsService: DatasetServiceAsync,
+    private val datasetService: DatasetServiceAsync,
     private val params: DatasetListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is DatasetListPageAsync &&
-            this.datasetsService == other.datasetsService &&
+            this.datasetService == other.datasetService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            datasetsService,
+            datasetService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "DatasetListPageAsync{datasetsService=$datasetsService, params=$params, response=$response}"
+        "DatasetListPageAsync{datasetService=$datasetService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -80,7 +80,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<DatasetListPageAsync>> {
         return getNextPageParams()
-            .map { datasetsService.list(it).thenApply { Optional.of(it) } }
+            .map { datasetService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -89,13 +89,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(
-            datasetsService: DatasetServiceAsync,
-            params: DatasetListParams,
-            response: Response
-        ) =
+        fun of(datasetService: DatasetServiceAsync, params: DatasetListParams, response: Response) =
             DatasetListPageAsync(
-                datasetsService,
+                datasetService,
                 params,
                 response,
             )

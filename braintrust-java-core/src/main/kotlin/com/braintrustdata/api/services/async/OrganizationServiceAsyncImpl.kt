@@ -14,8 +14,8 @@ import com.braintrustdata.api.models.OrganizationListPageAsync
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
-import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
-import com.braintrustdata.api.services.async.organizations.MemberServiceAsyncImpl
+import com.braintrustdata.api.services.async.organization.MemberServiceAsync
+import com.braintrustdata.api.services.async.organization.MemberServiceAsyncImpl
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
@@ -36,7 +36,7 @@ constructor(
     private val retrieveHandler: Handler<Organization> =
         jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /** Get a organization object by its id */
+    /** Get an organization object by its id */
     override fun retrieve(
         params: OrganizationRetrieveParams,
         requestOptions: RequestOptions
@@ -66,7 +66,7 @@ constructor(
         jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
-     * Partially update a organization object. Specify the fields to update in the payload. Any
+     * Partially update an organization object. Specify the fields to update in the payload. Any
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
@@ -133,7 +133,7 @@ constructor(
     private val deleteHandler: Handler<Organization> =
         jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /** Delete a organization object by its id */
+    /** Delete an organization object by its id */
     override fun delete(
         params: OrganizationDeleteParams,
         requestOptions: RequestOptions

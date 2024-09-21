@@ -15,6 +15,7 @@ class PromptCreateParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .slug("slug")
             .description("description")
+            .functionType(PromptCreateParams.FunctionType.TASK)
             .promptData(
                 PromptData.builder()
                     .options(
@@ -74,6 +75,13 @@ class PromptCreateParamsTest {
                             .promptVersion("prompt_version")
                             .build()
                     )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
+                            .build()
+                    )
                     .prompt(
                         PromptData.Prompt.ofCompletion(
                             PromptData.Prompt.Completion.builder()
@@ -96,6 +104,7 @@ class PromptCreateParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .slug("slug")
                 .description("description")
+                .functionType(PromptCreateParams.FunctionType.TASK)
                 .promptData(
                     PromptData.builder()
                         .options(
@@ -157,6 +166,13 @@ class PromptCreateParamsTest {
                                 .promptVersion("prompt_version")
                                 .build()
                         )
+                        .parser(
+                            PromptData.Parser.builder()
+                                .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                .useCot(true)
+                                .build()
+                        )
                         .prompt(
                             PromptData.Prompt.ofCompletion(
                                 PromptData.Prompt.Completion.builder()
@@ -175,6 +191,7 @@ class PromptCreateParamsTest {
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.slug()).isEqualTo("slug")
         assertThat(body.description()).isEqualTo("description")
+        assertThat(body.functionType()).isEqualTo(PromptCreateParams.FunctionType.TASK)
         assertThat(body.promptData())
             .isEqualTo(
                 PromptData.builder()
@@ -233,6 +250,13 @@ class PromptCreateParamsTest {
                             .projectId("project_id")
                             .promptId("prompt_id")
                             .promptVersion("prompt_version")
+                            .build()
+                    )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
                             .build()
                     )
                     .prompt(

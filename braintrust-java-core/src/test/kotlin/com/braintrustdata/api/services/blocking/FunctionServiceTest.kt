@@ -19,7 +19,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.functions()
+        val functionService = client.function()
         val function =
             functionService.create(
                 FunctionCreateParams.builder()
@@ -34,6 +34,14 @@ class FunctionServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .slug("slug")
                     .description("description")
+                    .functionType(FunctionCreateParams.FunctionType.TASK)
+                    .origin(
+                        FunctionCreateParams.Origin.builder()
+                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .objectType(FunctionCreateParams.Origin.ObjectType.ORGANIZATION)
+                            .internal_(true)
+                            .build()
+                    )
                     .promptData(
                         PromptData.builder()
                             .options(
@@ -98,6 +106,13 @@ class FunctionServiceTest {
                                     .promptVersion("prompt_version")
                                     .build()
                             )
+                            .parser(
+                                PromptData.Parser.builder()
+                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                    .useCot(true)
+                                    .build()
+                            )
                             .prompt(
                                 PromptData.Prompt.ofCompletion(
                                     PromptData.Prompt.Completion.builder()
@@ -122,7 +137,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.functions()
+        val functionService = client.function()
         val function =
             functionService.retrieve(
                 FunctionRetrieveParams.builder()
@@ -140,7 +155,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.functions()
+        val functionService = client.function()
         val function =
             functionService.update(
                 FunctionUpdateParams.builder()
@@ -218,6 +233,13 @@ class FunctionServiceTest {
                                     .promptVersion("prompt_version")
                                     .build()
                             )
+                            .parser(
+                                PromptData.Parser.builder()
+                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                    .useCot(true)
+                                    .build()
+                            )
                             .prompt(
                                 PromptData.Prompt.ofCompletion(
                                     PromptData.Prompt.Completion.builder()
@@ -242,7 +264,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.functions()
+        val functionService = client.function()
         val response = functionService.list(FunctionListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -255,7 +277,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.functions()
+        val functionService = client.function()
         val function =
             functionService.delete(
                 FunctionDeleteParams.builder()
@@ -273,7 +295,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.functions()
+        val functionService = client.function()
         val function =
             functionService.replace(
                 FunctionReplaceParams.builder()
@@ -288,6 +310,14 @@ class FunctionServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .slug("slug")
                     .description("description")
+                    .functionType(FunctionReplaceParams.FunctionType.TASK)
+                    .origin(
+                        FunctionReplaceParams.Origin.builder()
+                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                            .internal_(true)
+                            .build()
+                    )
                     .promptData(
                         PromptData.builder()
                             .options(
@@ -350,6 +380,13 @@ class FunctionServiceTest {
                                     .projectId("project_id")
                                     .promptId("prompt_id")
                                     .promptVersion("prompt_version")
+                                    .build()
+                            )
+                            .parser(
+                                PromptData.Parser.builder()
+                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                    .useCot(true)
                                     .build()
                             )
                             .prompt(

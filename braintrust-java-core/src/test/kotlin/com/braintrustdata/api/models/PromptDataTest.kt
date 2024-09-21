@@ -67,6 +67,13 @@ class PromptDataTest {
                         .promptVersion("prompt_version")
                         .build()
                 )
+                .parser(
+                    PromptData.Parser.builder()
+                        .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                        .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                        .useCot(true)
+                        .build()
+                )
                 .prompt(
                     PromptData.Prompt.ofCompletion(
                         PromptData.Prompt.Completion.builder()
@@ -128,6 +135,14 @@ class PromptDataTest {
                     .projectId("project_id")
                     .promptId("prompt_id")
                     .promptVersion("prompt_version")
+                    .build()
+            )
+        assertThat(promptData.parser())
+            .contains(
+                PromptData.Parser.builder()
+                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                    .useCot(true)
                     .build()
             )
         assertThat(promptData.prompt())
