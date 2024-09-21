@@ -80,6 +80,13 @@ class FunctionUpdateParamsTest {
                             .promptVersion("prompt_version")
                             .build()
                     )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
+                            .build()
+                    )
                     .prompt(
                         PromptData.Prompt.ofCompletion(
                             PromptData.Prompt.Completion.builder()
@@ -169,6 +176,13 @@ class FunctionUpdateParamsTest {
                                 .promptVersion("prompt_version")
                                 .build()
                         )
+                        .parser(
+                            PromptData.Parser.builder()
+                                .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                .useCot(true)
+                                .build()
+                        )
                         .prompt(
                             PromptData.Prompt.ofCompletion(
                                 PromptData.Prompt.Completion.builder()
@@ -251,6 +265,13 @@ class FunctionUpdateParamsTest {
                             .projectId("project_id")
                             .promptId("prompt_id")
                             .promptVersion("prompt_version")
+                            .build()
+                    )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
                             .build()
                     )
                     .prompt(

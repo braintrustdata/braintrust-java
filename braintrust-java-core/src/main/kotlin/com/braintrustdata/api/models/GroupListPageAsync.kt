@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class GroupListPageAsync
 private constructor(
-    private val groupsService: GroupServiceAsync,
+    private val groupService: GroupServiceAsync,
     private val params: GroupListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is GroupListPageAsync &&
-            this.groupsService == other.groupsService &&
+            this.groupService == other.groupService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            groupsService,
+            groupService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "GroupListPageAsync{groupsService=$groupsService, params=$params, response=$response}"
+        "GroupListPageAsync{groupService=$groupService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -74,7 +74,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<GroupListPageAsync>> {
         return getNextPageParams()
-            .map { groupsService.list(it).thenApply { Optional.of(it) } }
+            .map { groupService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -83,9 +83,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(groupsService: GroupServiceAsync, params: GroupListParams, response: Response) =
+        fun of(groupService: GroupServiceAsync, params: GroupListParams, response: Response) =
             GroupListPageAsync(
-                groupsService,
+                groupService,
                 params,
                 response,
             )

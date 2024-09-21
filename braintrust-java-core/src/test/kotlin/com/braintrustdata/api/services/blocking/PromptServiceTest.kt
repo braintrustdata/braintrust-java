@@ -19,7 +19,7 @@ class PromptServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val promptService = client.prompts()
+        val promptService = client.prompt()
         val prompt =
             promptService.create(
                 PromptCreateParams.builder()
@@ -27,6 +27,7 @@ class PromptServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .slug("slug")
                     .description("description")
+                    .functionType(PromptCreateParams.FunctionType.TASK)
                     .promptData(
                         PromptData.builder()
                             .options(
@@ -91,6 +92,13 @@ class PromptServiceTest {
                                     .promptVersion("prompt_version")
                                     .build()
                             )
+                            .parser(
+                                PromptData.Parser.builder()
+                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                    .useCot(true)
+                                    .build()
+                            )
                             .prompt(
                                 PromptData.Prompt.ofCompletion(
                                     PromptData.Prompt.Completion.builder()
@@ -115,7 +123,7 @@ class PromptServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val promptService = client.prompts()
+        val promptService = client.prompt()
         val prompt =
             promptService.retrieve(
                 PromptRetrieveParams.builder()
@@ -133,7 +141,7 @@ class PromptServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val promptService = client.prompts()
+        val promptService = client.prompt()
         val prompt =
             promptService.update(
                 PromptUpdateParams.builder()
@@ -204,6 +212,13 @@ class PromptServiceTest {
                                     .promptVersion("prompt_version")
                                     .build()
                             )
+                            .parser(
+                                PromptData.Parser.builder()
+                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                    .useCot(true)
+                                    .build()
+                            )
                             .prompt(
                                 PromptData.Prompt.ofCompletion(
                                     PromptData.Prompt.Completion.builder()
@@ -214,6 +229,7 @@ class PromptServiceTest {
                             )
                             .build()
                     )
+                    .slug("slug")
                     .tags(listOf("string"))
                     .build()
             )
@@ -228,7 +244,7 @@ class PromptServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val promptService = client.prompts()
+        val promptService = client.prompt()
         val response = promptService.list(PromptListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -241,7 +257,7 @@ class PromptServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val promptService = client.prompts()
+        val promptService = client.prompt()
         val prompt =
             promptService.delete(
                 PromptDeleteParams.builder()
@@ -259,7 +275,7 @@ class PromptServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val promptService = client.prompts()
+        val promptService = client.prompt()
         val prompt =
             promptService.replace(
                 PromptReplaceParams.builder()
@@ -267,6 +283,7 @@ class PromptServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .slug("slug")
                     .description("description")
+                    .functionType(PromptReplaceParams.FunctionType.TASK)
                     .promptData(
                         PromptData.builder()
                             .options(
@@ -329,6 +346,13 @@ class PromptServiceTest {
                                     .projectId("project_id")
                                     .promptId("prompt_id")
                                     .promptVersion("prompt_version")
+                                    .build()
+                            )
+                            .parser(
+                                PromptData.Parser.builder()
+                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                    .useCot(true)
                                     .build()
                             )
                             .prompt(

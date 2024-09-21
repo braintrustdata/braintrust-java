@@ -91,8 +91,12 @@ constructor(
         @JsonProperty("cursor") fun cursor(): String? = cursor
 
         /**
+         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+         * advanced filtering.
+         *
          * A list of filters on the events to fetch. Currently, only path-lookup type filters are
-         * supported, but we may add more in the future
+         * supported.
          */
         @JsonProperty("filters") fun filters(): List<PathLookupFilter>? = filters
 
@@ -225,8 +229,12 @@ constructor(
             @JsonProperty("cursor") fun cursor(cursor: String) = apply { this.cursor = cursor }
 
             /**
+             * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+             * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+             * advanced filtering.
+             *
              * A list of filters on the events to fetch. Currently, only path-lookup type filters
-             * are supported, but we may add more in the future
+             * are supported.
              */
             @JsonProperty("filters")
             fun filters(filters: List<PathLookupFilter>) = apply { this.filters = filters }
@@ -404,8 +412,12 @@ constructor(
         fun cursor(cursor: String) = apply { this.cursor = cursor }
 
         /**
+         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+         * advanced filtering.
+         *
          * A list of filters on the events to fetch. Currently, only path-lookup type filters are
-         * supported, but we may add more in the future
+         * supported.
          */
         fun filters(filters: List<PathLookupFilter>) = apply {
             this.filters.clear()
@@ -413,8 +425,12 @@ constructor(
         }
 
         /**
+         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+         * advanced filtering.
+         *
          * A list of filters on the events to fetch. Currently, only path-lookup type filters are
-         * supported, but we may add more in the future
+         * supported.
          */
         fun addFilter(filter: PathLookupFilter) = apply { this.filters.add(filter) }
 

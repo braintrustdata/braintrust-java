@@ -21,7 +21,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val dataset =
             datasetService.create(
                 DatasetCreateParams.builder()
@@ -41,7 +41,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val dataset =
             datasetService.retrieve(
                 DatasetRetrieveParams.builder()
@@ -59,7 +59,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val dataset =
             datasetService.update(
                 DatasetUpdateParams.builder()
@@ -80,7 +80,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val response = datasetService.list(DatasetListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -93,7 +93,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val dataset =
             datasetService.delete(
                 DatasetDeleteParams.builder()
@@ -111,22 +111,25 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
-        datasetService.feedback(
-            DatasetFeedbackParams.builder()
-                .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(
-                    listOf(
-                        FeedbackDatasetItem.builder()
-                            .id("id")
-                            .comment("comment")
-                            .metadata(FeedbackDatasetItem.Metadata.builder().build())
-                            .source(FeedbackDatasetItem.Source.APP)
-                            .build()
+        val datasetService = client.dataset()
+        val feedbackResponseSchema =
+            datasetService.feedback(
+                DatasetFeedbackParams.builder()
+                    .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .feedback(
+                        listOf(
+                            FeedbackDatasetItem.builder()
+                                .id("id")
+                                .comment("comment")
+                                .metadata(FeedbackDatasetItem.Metadata.builder().build())
+                                .source(FeedbackDatasetItem.Source.APP)
+                                .build()
+                        )
                     )
-                )
-                .build()
-        )
+                    .build()
+            )
+        println(feedbackResponseSchema)
+        feedbackResponseSchema.validate()
     }
 
     @Test
@@ -136,7 +139,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val fetchDatasetEventsResponse =
             datasetService.fetch(
                 DatasetFetchParams.builder()
@@ -158,7 +161,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val fetchDatasetEventsResponse =
             datasetService.fetchPost(
                 DatasetFetchPostParams.builder()
@@ -190,7 +193,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val insertEventsResponse =
             datasetService.insert(
                 DatasetInsertParams.builder()
@@ -225,7 +228,7 @@ class DatasetServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetService = client.dataset()
         val summarizeDatasetResponse =
             datasetService.summarize(
                 DatasetSummarizeParams.builder()

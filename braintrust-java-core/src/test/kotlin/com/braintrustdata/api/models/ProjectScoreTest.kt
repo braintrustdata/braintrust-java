@@ -26,6 +26,26 @@ class ProjectScoreTest {
                     ProjectScore.Config.builder()
                         .destination(ProjectScore.Config.Destination.EXPECTED)
                         .multiSelect(true)
+                        .online(
+                            ProjectScore.Config.Online.builder()
+                                .samplingRate(1.0)
+                                .scorers(
+                                    listOf(
+                                        ProjectScore.Config.Online.Scorer.ofFunction(
+                                            ProjectScore.Config.Online.Scorer.Function.builder()
+                                                .id("id")
+                                                .type(
+                                                    ProjectScore.Config.Online.Scorer.Function.Type
+                                                        .FUNCTION
+                                                )
+                                                .build()
+                                        )
+                                    )
+                                )
+                                .applyToRootSpan(true)
+                                .applyToSpanNames(listOf("string"))
+                                .build()
+                        )
                         .build()
                 )
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -49,6 +69,26 @@ class ProjectScoreTest {
                 ProjectScore.Config.builder()
                     .destination(ProjectScore.Config.Destination.EXPECTED)
                     .multiSelect(true)
+                    .online(
+                        ProjectScore.Config.Online.builder()
+                            .samplingRate(1.0)
+                            .scorers(
+                                listOf(
+                                    ProjectScore.Config.Online.Scorer.ofFunction(
+                                        ProjectScore.Config.Online.Scorer.Function.builder()
+                                            .id("id")
+                                            .type(
+                                                ProjectScore.Config.Online.Scorer.Function.Type
+                                                    .FUNCTION
+                                            )
+                                            .build()
+                                    )
+                                )
+                            )
+                            .applyToRootSpan(true)
+                            .applyToSpanNames(listOf("string"))
+                            .build()
+                    )
                     .build()
             )
         assertThat(projectScore.created())

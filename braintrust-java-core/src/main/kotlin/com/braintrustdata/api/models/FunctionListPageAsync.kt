@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class FunctionListPageAsync
 private constructor(
-    private val functionsService: FunctionServiceAsync,
+    private val functionService: FunctionServiceAsync,
     private val params: FunctionListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is FunctionListPageAsync &&
-            this.functionsService == other.functionsService &&
+            this.functionService == other.functionService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            functionsService,
+            functionService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "FunctionListPageAsync{functionsService=$functionsService, params=$params, response=$response}"
+        "FunctionListPageAsync{functionService=$functionService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -80,7 +80,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<FunctionListPageAsync>> {
         return getNextPageParams()
-            .map { functionsService.list(it).thenApply { Optional.of(it) } }
+            .map { functionService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -90,12 +90,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            functionsService: FunctionServiceAsync,
+            functionService: FunctionServiceAsync,
             params: FunctionListParams,
             response: Response
         ) =
             FunctionListPageAsync(
-                functionsService,
+                functionService,
                 params,
                 response,
             )

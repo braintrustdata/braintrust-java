@@ -34,6 +34,7 @@ class PromptData
 private constructor(
     private val prompt: JsonField<Prompt>,
     private val options: JsonField<Options>,
+    private val parser: JsonField<Parser>,
     private val origin: JsonField<Origin>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
@@ -46,11 +47,15 @@ private constructor(
 
     fun options(): Optional<Options> = Optional.ofNullable(options.getNullable("options"))
 
+    fun parser(): Optional<Parser> = Optional.ofNullable(parser.getNullable("parser"))
+
     fun origin(): Optional<Origin> = Optional.ofNullable(origin.getNullable("origin"))
 
     @JsonProperty("prompt") @ExcludeMissing fun _prompt() = prompt
 
     @JsonProperty("options") @ExcludeMissing fun _options() = options
+
+    @JsonProperty("parser") @ExcludeMissing fun _parser() = parser
 
     @JsonProperty("origin") @ExcludeMissing fun _origin() = origin
 
@@ -62,6 +67,7 @@ private constructor(
         if (!validated) {
             prompt()
             options().map { it.validate() }
+            parser().map { it.validate() }
             origin().map { it.validate() }
             validated = true
         }
@@ -77,6 +83,7 @@ private constructor(
         return other is PromptData &&
             this.prompt == other.prompt &&
             this.options == other.options &&
+            this.parser == other.parser &&
             this.origin == other.origin &&
             this.additionalProperties == other.additionalProperties
     }
@@ -87,6 +94,7 @@ private constructor(
                 Objects.hash(
                     prompt,
                     options,
+                    parser,
                     origin,
                     additionalProperties,
                 )
@@ -95,7 +103,7 @@ private constructor(
     }
 
     override fun toString() =
-        "PromptData{prompt=$prompt, options=$options, origin=$origin, additionalProperties=$additionalProperties}"
+        "PromptData{prompt=$prompt, options=$options, parser=$parser, origin=$origin, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -106,6 +114,7 @@ private constructor(
 
         private var prompt: JsonField<Prompt> = JsonMissing.of()
         private var options: JsonField<Options> = JsonMissing.of()
+        private var parser: JsonField<Parser> = JsonMissing.of()
         private var origin: JsonField<Origin> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -113,6 +122,7 @@ private constructor(
         internal fun from(promptData: PromptData) = apply {
             this.prompt = promptData.prompt
             this.options = promptData.options
+            this.parser = promptData.parser
             this.origin = promptData.origin
             additionalProperties(promptData.additionalProperties)
         }
@@ -128,6 +138,12 @@ private constructor(
         @JsonProperty("options")
         @ExcludeMissing
         fun options(options: JsonField<Options>) = apply { this.options = options }
+
+        fun parser(parser: Parser) = parser(JsonField.of(parser))
+
+        @JsonProperty("parser")
+        @ExcludeMissing
+        fun parser(parser: JsonField<Parser>) = apply { this.parser = parser }
 
         fun origin(origin: Origin) = origin(JsonField.of(origin))
 
@@ -153,6 +169,7 @@ private constructor(
             PromptData(
                 prompt,
                 options,
+                parser,
                 origin,
                 additionalProperties.toUnmodifiable(),
             )
@@ -2556,6 +2573,264 @@ private constructor(
         }
     }
 
+    @JsonDeserialize(builder = Parser.Builder::class)
+    @NoAutoDetect
+    class Parser
+    private constructor(
+        private val type: JsonField<Type>,
+        private val useCot: JsonField<Boolean>,
+        private val choiceScores: JsonField<ChoiceScores>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        private var hashCode: Int = 0
+
+        fun type(): Type = type.getRequired("type")
+
+        fun useCot(): Boolean = useCot.getRequired("use_cot")
+
+        fun choiceScores(): ChoiceScores = choiceScores.getRequired("choice_scores")
+
+        @JsonProperty("type") @ExcludeMissing fun _type() = type
+
+        @JsonProperty("use_cot") @ExcludeMissing fun _useCot() = useCot
+
+        @JsonProperty("choice_scores") @ExcludeMissing fun _choiceScores() = choiceScores
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): Parser = apply {
+            if (!validated) {
+                type()
+                useCot()
+                choiceScores().validate()
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Parser &&
+                this.type == other.type &&
+                this.useCot == other.useCot &&
+                this.choiceScores == other.choiceScores &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        type,
+                        useCot,
+                        choiceScores,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Parser{type=$type, useCot=$useCot, choiceScores=$choiceScores, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var type: JsonField<Type> = JsonMissing.of()
+            private var useCot: JsonField<Boolean> = JsonMissing.of()
+            private var choiceScores: JsonField<ChoiceScores> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(parser: Parser) = apply {
+                this.type = parser.type
+                this.useCot = parser.useCot
+                this.choiceScores = parser.choiceScores
+                additionalProperties(parser.additionalProperties)
+            }
+
+            fun type(type: Type) = type(JsonField.of(type))
+
+            @JsonProperty("type")
+            @ExcludeMissing
+            fun type(type: JsonField<Type>) = apply { this.type = type }
+
+            fun useCot(useCot: Boolean) = useCot(JsonField.of(useCot))
+
+            @JsonProperty("use_cot")
+            @ExcludeMissing
+            fun useCot(useCot: JsonField<Boolean>) = apply { this.useCot = useCot }
+
+            fun choiceScores(choiceScores: ChoiceScores) = choiceScores(JsonField.of(choiceScores))
+
+            @JsonProperty("choice_scores")
+            @ExcludeMissing
+            fun choiceScores(choiceScores: JsonField<ChoiceScores>) = apply {
+                this.choiceScores = choiceScores
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Parser =
+                Parser(
+                    type,
+                    useCot,
+                    choiceScores,
+                    additionalProperties.toUnmodifiable(),
+                )
+        }
+
+        @JsonDeserialize(builder = ChoiceScores.Builder::class)
+        @NoAutoDetect
+        class ChoiceScores
+        private constructor(
+            private val additionalProperties: Map<String, JsonValue>,
+        ) {
+
+            private var validated: Boolean = false
+
+            private var hashCode: Int = 0
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            fun validate(): ChoiceScores = apply {
+                if (!validated) {
+                    validated = true
+                }
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is ChoiceScores &&
+                    this.additionalProperties == other.additionalProperties
+            }
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = Objects.hash(additionalProperties)
+                }
+                return hashCode
+            }
+
+            override fun toString() = "ChoiceScores{additionalProperties=$additionalProperties}"
+
+            companion object {
+
+                @JvmStatic fun builder() = Builder()
+            }
+
+            class Builder {
+
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(choiceScores: ChoiceScores) = apply {
+                    additionalProperties(choiceScores.additionalProperties)
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    this.additionalProperties.putAll(additionalProperties)
+                }
+
+                @JsonAnySetter
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    this.additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun build(): ChoiceScores = ChoiceScores(additionalProperties.toUnmodifiable())
+            }
+        }
+
+        class Type
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Type && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val LLM_CLASSIFIER = Type(JsonField.of("llm_classifier"))
+
+                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            enum class Known {
+                LLM_CLASSIFIER,
+            }
+
+            enum class Value {
+                LLM_CLASSIFIER,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    LLM_CLASSIFIER -> Value.LLM_CLASSIFIER
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    LLM_CLASSIFIER -> Known.LLM_CLASSIFIER
+                    else -> throw BraintrustInvalidDataException("Unknown Type: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+    }
+
     @JsonDeserialize(using = Prompt.Deserializer::class)
     @JsonSerialize(using = Prompt.Serializer::class)
     class Prompt
@@ -3588,8 +3863,8 @@ private constructor(
                     class Content
                     private constructor(
                         private val string: String? = null,
-                        private val unnamedSchemaWithArrayParent0s:
-                            List<UnnamedSchemaWithArrayParent0>? =
+                        private val unnamedSchemaWithArrayParent2s:
+                            List<UnnamedSchemaWithArrayParent2>? =
                             null,
                         private val _json: JsonValue? = null,
                     ) {
@@ -3598,21 +3873,21 @@ private constructor(
 
                         fun string(): Optional<String> = Optional.ofNullable(string)
 
-                        fun unnamedSchemaWithArrayParent0s():
-                            Optional<List<UnnamedSchemaWithArrayParent0>> =
-                            Optional.ofNullable(unnamedSchemaWithArrayParent0s)
+                        fun unnamedSchemaWithArrayParent2s():
+                            Optional<List<UnnamedSchemaWithArrayParent2>> =
+                            Optional.ofNullable(unnamedSchemaWithArrayParent2s)
 
                         fun isString(): Boolean = string != null
 
-                        fun isUnnamedSchemaWithArrayParent0s(): Boolean =
-                            unnamedSchemaWithArrayParent0s != null
+                        fun isUnnamedSchemaWithArrayParent2s(): Boolean =
+                            unnamedSchemaWithArrayParent2s != null
 
                         fun asString(): String = string.getOrThrow("string")
 
-                        fun asUnnamedSchemaWithArrayParent0s():
-                            List<UnnamedSchemaWithArrayParent0> =
-                            unnamedSchemaWithArrayParent0s.getOrThrow(
-                                "unnamedSchemaWithArrayParent0s"
+                        fun asUnnamedSchemaWithArrayParent2s():
+                            List<UnnamedSchemaWithArrayParent2> =
+                            unnamedSchemaWithArrayParent2s.getOrThrow(
+                                "unnamedSchemaWithArrayParent2s"
                             )
 
                         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
@@ -3620,9 +3895,9 @@ private constructor(
                         fun <T> accept(visitor: Visitor<T>): T {
                             return when {
                                 string != null -> visitor.visitString(string)
-                                unnamedSchemaWithArrayParent0s != null ->
-                                    visitor.visitUnnamedSchemaWithArrayParent0s(
-                                        unnamedSchemaWithArrayParent0s
+                                unnamedSchemaWithArrayParent2s != null ->
+                                    visitor.visitUnnamedSchemaWithArrayParent2s(
+                                        unnamedSchemaWithArrayParent2s
                                     )
                                 else -> visitor.unknown(_json)
                             }
@@ -3630,7 +3905,7 @@ private constructor(
 
                         fun validate(): Content = apply {
                             if (!validated) {
-                                if (string == null && unnamedSchemaWithArrayParent0s == null) {
+                                if (string == null && unnamedSchemaWithArrayParent2s == null) {
                                     throw BraintrustInvalidDataException("Unknown Content: $_json")
                                 }
                                 validated = true
@@ -3644,19 +3919,19 @@ private constructor(
 
                             return other is Content &&
                                 this.string == other.string &&
-                                this.unnamedSchemaWithArrayParent0s ==
-                                    other.unnamedSchemaWithArrayParent0s
+                                this.unnamedSchemaWithArrayParent2s ==
+                                    other.unnamedSchemaWithArrayParent2s
                         }
 
                         override fun hashCode(): Int {
-                            return Objects.hash(string, unnamedSchemaWithArrayParent0s)
+                            return Objects.hash(string, unnamedSchemaWithArrayParent2s)
                         }
 
                         override fun toString(): String {
                             return when {
                                 string != null -> "Content{string=$string}"
-                                unnamedSchemaWithArrayParent0s != null ->
-                                    "Content{unnamedSchemaWithArrayParent0s=$unnamedSchemaWithArrayParent0s}"
+                                unnamedSchemaWithArrayParent2s != null ->
+                                    "Content{unnamedSchemaWithArrayParent2s=$unnamedSchemaWithArrayParent2s}"
                                 _json != null -> "Content{_unknown=$_json}"
                                 else -> throw IllegalStateException("Invalid Content")
                             }
@@ -3667,11 +3942,11 @@ private constructor(
                             @JvmStatic fun ofString(string: String) = Content(string = string)
 
                             @JvmStatic
-                            fun ofUnnamedSchemaWithArrayParent0s(
-                                unnamedSchemaWithArrayParent0s: List<UnnamedSchemaWithArrayParent0>
+                            fun ofUnnamedSchemaWithArrayParent2s(
+                                unnamedSchemaWithArrayParent2s: List<UnnamedSchemaWithArrayParent2>
                             ) =
                                 Content(
-                                    unnamedSchemaWithArrayParent0s = unnamedSchemaWithArrayParent0s
+                                    unnamedSchemaWithArrayParent2s = unnamedSchemaWithArrayParent2s
                                 )
                         }
 
@@ -3679,8 +3954,8 @@ private constructor(
 
                             fun visitString(string: String): T
 
-                            fun visitUnnamedSchemaWithArrayParent0s(
-                                unnamedSchemaWithArrayParent0s: List<UnnamedSchemaWithArrayParent0>
+                            fun visitUnnamedSchemaWithArrayParent2s(
+                                unnamedSchemaWithArrayParent2s: List<UnnamedSchemaWithArrayParent2>
                             ): T
 
                             fun unknown(json: JsonValue?): T {
@@ -3697,11 +3972,11 @@ private constructor(
                                 }
                                 tryDeserialize(
                                         node,
-                                        jacksonTypeRef<List<UnnamedSchemaWithArrayParent0>>()
+                                        jacksonTypeRef<List<UnnamedSchemaWithArrayParent2>>()
                                     )
                                     ?.let {
                                         return Content(
-                                            unnamedSchemaWithArrayParent0s = it,
+                                            unnamedSchemaWithArrayParent2s = it,
                                             _json = json
                                         )
                                     }
@@ -3719,17 +3994,17 @@ private constructor(
                             ) {
                                 when {
                                     value.string != null -> generator.writeObject(value.string)
-                                    value.unnamedSchemaWithArrayParent0s != null ->
-                                        generator.writeObject(value.unnamedSchemaWithArrayParent0s)
+                                    value.unnamedSchemaWithArrayParent2s != null ->
+                                        generator.writeObject(value.unnamedSchemaWithArrayParent2s)
                                     value._json != null -> generator.writeObject(value._json)
                                     else -> throw IllegalStateException("Invalid Content")
                                 }
                             }
                         }
 
-                        @JsonDeserialize(using = UnnamedSchemaWithArrayParent0.Deserializer::class)
-                        @JsonSerialize(using = UnnamedSchemaWithArrayParent0.Serializer::class)
-                        class UnnamedSchemaWithArrayParent0
+                        @JsonDeserialize(using = UnnamedSchemaWithArrayParent2.Deserializer::class)
+                        @JsonSerialize(using = UnnamedSchemaWithArrayParent2.Serializer::class)
+                        class UnnamedSchemaWithArrayParent2
                         private constructor(
                             private val text: Text? = null,
                             private val imageUrl: ImageUrl? = null,
@@ -3760,11 +4035,11 @@ private constructor(
                                 }
                             }
 
-                            fun validate(): UnnamedSchemaWithArrayParent0 = apply {
+                            fun validate(): UnnamedSchemaWithArrayParent2 = apply {
                                 if (!validated) {
                                     if (text == null && imageUrl == null) {
                                         throw BraintrustInvalidDataException(
-                                            "Unknown UnnamedSchemaWithArrayParent0: $_json"
+                                            "Unknown UnnamedSchemaWithArrayParent2: $_json"
                                         )
                                     }
                                     text?.validate()
@@ -3778,7 +4053,7 @@ private constructor(
                                     return true
                                 }
 
-                                return other is UnnamedSchemaWithArrayParent0 &&
+                                return other is UnnamedSchemaWithArrayParent2 &&
                                     this.text == other.text &&
                                     this.imageUrl == other.imageUrl
                             }
@@ -3789,14 +4064,14 @@ private constructor(
 
                             override fun toString(): String {
                                 return when {
-                                    text != null -> "UnnamedSchemaWithArrayParent0{text=$text}"
+                                    text != null -> "UnnamedSchemaWithArrayParent2{text=$text}"
                                     imageUrl != null ->
-                                        "UnnamedSchemaWithArrayParent0{imageUrl=$imageUrl}"
+                                        "UnnamedSchemaWithArrayParent2{imageUrl=$imageUrl}"
                                     _json != null ->
-                                        "UnnamedSchemaWithArrayParent0{_unknown=$_json}"
+                                        "UnnamedSchemaWithArrayParent2{_unknown=$_json}"
                                     else ->
                                         throw IllegalStateException(
-                                            "Invalid UnnamedSchemaWithArrayParent0"
+                                            "Invalid UnnamedSchemaWithArrayParent2"
                                         )
                                 }
                             }
@@ -3804,11 +4079,11 @@ private constructor(
                             companion object {
 
                                 @JvmStatic
-                                fun ofText(text: Text) = UnnamedSchemaWithArrayParent0(text = text)
+                                fun ofText(text: Text) = UnnamedSchemaWithArrayParent2(text = text)
 
                                 @JvmStatic
                                 fun ofImageUrl(imageUrl: ImageUrl) =
-                                    UnnamedSchemaWithArrayParent0(imageUrl = imageUrl)
+                                    UnnamedSchemaWithArrayParent2(imageUrl = imageUrl)
                             }
 
                             interface Visitor<out T> {
@@ -3819,23 +4094,23 @@ private constructor(
 
                                 fun unknown(json: JsonValue?): T {
                                     throw BraintrustInvalidDataException(
-                                        "Unknown UnnamedSchemaWithArrayParent0: $json"
+                                        "Unknown UnnamedSchemaWithArrayParent2: $json"
                                     )
                                 }
                             }
 
                             class Deserializer :
-                                BaseDeserializer<UnnamedSchemaWithArrayParent0>(
-                                    UnnamedSchemaWithArrayParent0::class
+                                BaseDeserializer<UnnamedSchemaWithArrayParent2>(
+                                    UnnamedSchemaWithArrayParent2::class
                                 ) {
 
                                 override fun ObjectCodec.deserialize(
                                     node: JsonNode
-                                ): UnnamedSchemaWithArrayParent0 {
+                                ): UnnamedSchemaWithArrayParent2 {
                                     val json = JsonValue.fromJsonNode(node)
                                     tryDeserialize(node, jacksonTypeRef<Text>()) { it.validate() }
                                         ?.let {
-                                            return UnnamedSchemaWithArrayParent0(
+                                            return UnnamedSchemaWithArrayParent2(
                                                 text = it,
                                                 _json = json
                                             )
@@ -3844,23 +4119,23 @@ private constructor(
                                             it.validate()
                                         }
                                         ?.let {
-                                            return UnnamedSchemaWithArrayParent0(
+                                            return UnnamedSchemaWithArrayParent2(
                                                 imageUrl = it,
                                                 _json = json
                                             )
                                         }
 
-                                    return UnnamedSchemaWithArrayParent0(_json = json)
+                                    return UnnamedSchemaWithArrayParent2(_json = json)
                                 }
                             }
 
                             class Serializer :
-                                BaseSerializer<UnnamedSchemaWithArrayParent0>(
-                                    UnnamedSchemaWithArrayParent0::class
+                                BaseSerializer<UnnamedSchemaWithArrayParent2>(
+                                    UnnamedSchemaWithArrayParent2::class
                                 ) {
 
                                 override fun serialize(
-                                    value: UnnamedSchemaWithArrayParent0,
+                                    value: UnnamedSchemaWithArrayParent2,
                                     generator: JsonGenerator,
                                     provider: SerializerProvider
                                 ) {
@@ -3871,7 +4146,7 @@ private constructor(
                                         value._json != null -> generator.writeObject(value._json)
                                         else ->
                                             throw IllegalStateException(
-                                                "Invalid UnnamedSchemaWithArrayParent0"
+                                                "Invalid UnnamedSchemaWithArrayParent2"
                                             )
                                     }
                                 }
