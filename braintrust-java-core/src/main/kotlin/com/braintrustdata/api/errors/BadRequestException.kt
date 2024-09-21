@@ -2,12 +2,8 @@ package com.braintrustdata.api.errors
 
 import com.google.common.collect.ListMultimap
 
-class BadRequestException
-constructor(
+class BadRequestException(
     headers: ListMultimap<String, String>,
-    private val error: BraintrustError,
-) : BraintrustServiceException(headers, "${error}") {
-    override fun statusCode(): Int = 400
-
-    fun error(): BraintrustError = error
-}
+    body: String,
+    error: BraintrustError,
+) : BraintrustServiceException(400, headers, body, error)
