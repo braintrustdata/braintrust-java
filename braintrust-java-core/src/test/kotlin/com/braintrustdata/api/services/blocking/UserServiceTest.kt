@@ -19,7 +19,7 @@ class UserServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val userService = client.users()
+        val userService = client.user()
         val user =
             userService.retrieve(
                 UserRetrieveParams.builder().userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -35,7 +35,7 @@ class UserServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val userService = client.users()
+        val userService = client.user()
         val response = userService.list(UserListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }

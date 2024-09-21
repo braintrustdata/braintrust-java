@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class ExperimentListPageAsync
 private constructor(
-    private val experimentsService: ExperimentServiceAsync,
+    private val experimentService: ExperimentServiceAsync,
     private val params: ExperimentListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is ExperimentListPageAsync &&
-            this.experimentsService == other.experimentsService &&
+            this.experimentService == other.experimentService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            experimentsService,
+            experimentService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ExperimentListPageAsync{experimentsService=$experimentsService, params=$params, response=$response}"
+        "ExperimentListPageAsync{experimentService=$experimentService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -80,7 +80,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<ExperimentListPageAsync>> {
         return getNextPageParams()
-            .map { experimentsService.list(it).thenApply { Optional.of(it) } }
+            .map { experimentService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -90,12 +90,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            experimentsService: ExperimentServiceAsync,
+            experimentService: ExperimentServiceAsync,
             params: ExperimentListParams,
             response: Response
         ) =
             ExperimentListPageAsync(
-                experimentsService,
+                experimentService,
                 params,
                 response,
             )

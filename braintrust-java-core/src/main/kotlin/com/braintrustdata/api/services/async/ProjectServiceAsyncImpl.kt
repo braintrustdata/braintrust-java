@@ -15,8 +15,8 @@ import com.braintrustdata.api.models.ProjectListPageAsync
 import com.braintrustdata.api.models.ProjectListParams
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
-import com.braintrustdata.api.services.async.projects.LogServiceAsync
-import com.braintrustdata.api.services.async.projects.LogServiceAsyncImpl
+import com.braintrustdata.api.services.async.project.LogServiceAsync
+import com.braintrustdata.api.services.async.project.LogServiceAsyncImpl
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler

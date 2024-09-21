@@ -17,6 +17,7 @@ import com.braintrustdata.api.models.DatasetListParams
 import com.braintrustdata.api.models.DatasetRetrieveParams
 import com.braintrustdata.api.models.DatasetSummarizeParams
 import com.braintrustdata.api.models.DatasetUpdateParams
+import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchDatasetEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeDatasetResponse
@@ -74,7 +75,7 @@ interface DatasetServiceAsync {
     fun feedback(
         params: DatasetFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<Void>
+    ): CompletableFuture<FeedbackResponseSchema>
 
     /**
      * Fetch the events in a dataset. Equivalent to the POST form of the same path, but with the

@@ -28,7 +28,15 @@ class FunctionTest {
                 .slug("slug")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .description("description")
+                .functionType(Function.FunctionType.TASK)
                 .metadata(Function.Metadata.builder().build())
+                .origin(
+                    Function.Origin.builder()
+                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .objectType(Function.Origin.ObjectType.ORGANIZATION)
+                        .internal_(true)
+                        .build()
+                )
                 .promptData(
                     PromptData.builder()
                         .options(
@@ -90,6 +98,13 @@ class FunctionTest {
                                 .promptVersion("prompt_version")
                                 .build()
                         )
+                        .parser(
+                            PromptData.Parser.builder()
+                                .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                .useCot(true)
+                                .build()
+                        )
                         .prompt(
                             PromptData.Prompt.ofCompletion(
                                 PromptData.Prompt.Completion.builder()
@@ -120,7 +135,16 @@ class FunctionTest {
         assertThat(function.slug()).isEqualTo("slug")
         assertThat(function.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(function.description()).contains("description")
+        assertThat(function.functionType()).contains(Function.FunctionType.TASK)
         assertThat(function.metadata()).contains(Function.Metadata.builder().build())
+        assertThat(function.origin())
+            .contains(
+                Function.Origin.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(Function.Origin.ObjectType.ORGANIZATION)
+                    .internal_(true)
+                    .build()
+            )
         assertThat(function.promptData())
             .contains(
                 PromptData.builder()
@@ -179,6 +203,13 @@ class FunctionTest {
                             .projectId("project_id")
                             .promptId("prompt_id")
                             .promptVersion("prompt_version")
+                            .build()
+                    )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
                             .build()
                     )
                     .prompt(

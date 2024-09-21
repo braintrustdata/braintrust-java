@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class ProjectListPage
 private constructor(
-    private val projectsService: ProjectService,
+    private val projectService: ProjectService,
     private val params: ProjectListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is ProjectListPage &&
-            this.projectsService == other.projectsService &&
+            this.projectService == other.projectService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            projectsService,
+            projectService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ProjectListPage{projectsService=$projectsService, params=$params, response=$response}"
+        "ProjectListPage{projectService=$projectService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<ProjectListPage> {
-        return getNextPageParams().map { projectsService.list(it) }
+        return getNextPageParams().map { projectService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -86,9 +86,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(projectsService: ProjectService, params: ProjectListParams, response: Response) =
+        fun of(projectService: ProjectService, params: ProjectListParams, response: Response) =
             ProjectListPage(
-                projectsService,
+                projectService,
                 params,
                 response,
             )

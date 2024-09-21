@@ -19,7 +19,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.roles()
+        val roleService = client.role()
         val role =
             roleService.create(
                 RoleCreateParams.builder()
@@ -51,7 +51,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.roles()
+        val roleService = client.role()
         val role =
             roleService.retrieve(
                 RoleRetrieveParams.builder().roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -67,7 +67,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.roles()
+        val roleService = client.role()
         val role =
             roleService.update(
                 RoleUpdateParams.builder()
@@ -113,7 +113,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.roles()
+        val roleService = client.role()
         val response = roleService.list(RoleListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -126,7 +126,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.roles()
+        val roleService = client.role()
         val role =
             roleService.delete(
                 RoleDeleteParams.builder().roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -142,7 +142,7 @@ class RoleServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val roleService = client.roles()
+        val roleService = client.role()
         val role =
             roleService.replace(
                 RoleReplaceParams.builder()

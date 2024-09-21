@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class ProjectTagListPageAsync
 private constructor(
-    private val projectTagsService: ProjectTagServiceAsync,
+    private val projectTagService: ProjectTagServiceAsync,
     private val params: ProjectTagListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is ProjectTagListPageAsync &&
-            this.projectTagsService == other.projectTagsService &&
+            this.projectTagService == other.projectTagService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            projectTagsService,
+            projectTagService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ProjectTagListPageAsync{projectTagsService=$projectTagsService, params=$params, response=$response}"
+        "ProjectTagListPageAsync{projectTagService=$projectTagService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -80,7 +80,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<ProjectTagListPageAsync>> {
         return getNextPageParams()
-            .map { projectTagsService.list(it).thenApply { Optional.of(it) } }
+            .map { projectTagService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -90,12 +90,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            projectTagsService: ProjectTagServiceAsync,
+            projectTagService: ProjectTagServiceAsync,
             params: ProjectTagListParams,
             response: Response
         ) =
             ProjectTagListPageAsync(
-                projectTagsService,
+                projectTagService,
                 params,
                 response,
             )

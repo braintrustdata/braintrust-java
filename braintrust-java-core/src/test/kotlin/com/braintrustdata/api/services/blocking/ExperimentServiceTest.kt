@@ -21,7 +21,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val experiment =
             experimentService.create(
                 ExperimentCreateParams.builder()
@@ -60,7 +60,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val experiment =
             experimentService.retrieve(
                 ExperimentRetrieveParams.builder()
@@ -78,7 +78,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val experiment =
             experimentService.update(
                 ExperimentUpdateParams.builder()
@@ -116,7 +116,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val response = experimentService.list(ExperimentListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -129,7 +129,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val experiment =
             experimentService.delete(
                 ExperimentDeleteParams.builder()
@@ -147,24 +147,27 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
-        experimentService.feedback(
-            ExperimentFeedbackParams.builder()
-                .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(
-                    listOf(
-                        FeedbackExperimentItem.builder()
-                            .id("id")
-                            .comment("comment")
-                            .expected(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(FeedbackExperimentItem.Metadata.builder().build())
-                            .scores(FeedbackExperimentItem.Scores.builder().build())
-                            .source(FeedbackExperimentItem.Source.APP)
-                            .build()
+        val experimentService = client.experiment()
+        val feedbackResponseSchema =
+            experimentService.feedback(
+                ExperimentFeedbackParams.builder()
+                    .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .feedback(
+                        listOf(
+                            FeedbackExperimentItem.builder()
+                                .id("id")
+                                .comment("comment")
+                                .expected(JsonValue.from(mapOf<String, Any>()))
+                                .metadata(FeedbackExperimentItem.Metadata.builder().build())
+                                .scores(FeedbackExperimentItem.Scores.builder().build())
+                                .source(FeedbackExperimentItem.Source.APP)
+                                .build()
+                        )
                     )
-                )
-                .build()
-        )
+                    .build()
+            )
+        println(feedbackResponseSchema)
+        feedbackResponseSchema.validate()
     }
 
     @Test
@@ -174,7 +177,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val fetchExperimentEventsResponse =
             experimentService.fetch(
                 ExperimentFetchParams.builder()
@@ -196,7 +199,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val fetchExperimentEventsResponse =
             experimentService.fetchPost(
                 ExperimentFetchPostParams.builder()
@@ -228,7 +231,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val insertEventsResponse =
             experimentService.insert(
                 ExperimentInsertParams.builder()
@@ -293,7 +296,7 @@ class ExperimentServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentService = client.experiment()
         val summarizeExperimentResponse =
             experimentService.summarize(
                 ExperimentSummarizeParams.builder()

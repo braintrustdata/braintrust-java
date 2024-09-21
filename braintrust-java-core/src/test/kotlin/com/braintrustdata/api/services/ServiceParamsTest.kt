@@ -83,7 +83,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.projects().create(params)
+        client.project().create(params)
 
         verify(postRequestedFor(anyUrl()))
     }

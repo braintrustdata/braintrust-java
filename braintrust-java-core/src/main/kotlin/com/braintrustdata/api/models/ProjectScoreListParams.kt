@@ -4,12 +4,15 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.Enum
+import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.JsonNode
@@ -29,6 +32,7 @@ constructor(
     private val projectId: String?,
     private val projectName: String?,
     private val projectScoreName: String?,
+    private val scoreType: ScoreType?,
     private val startingAfter: String?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
@@ -49,6 +53,8 @@ constructor(
 
     fun projectScoreName(): Optional<String> = Optional.ofNullable(projectScoreName)
 
+    fun scoreType(): Optional<ScoreType> = Optional.ofNullable(scoreType)
+
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
     @JvmSynthetic
@@ -61,6 +67,7 @@ constructor(
         this.projectId?.let { params.put("project_id", listOf(it.toString())) }
         this.projectName?.let { params.put("project_name", listOf(it.toString())) }
         this.projectScoreName?.let { params.put("project_score_name", listOf(it.toString())) }
+        this.scoreType?.let { params.put("score_type", listOf(it.toString())) }
         this.startingAfter?.let { params.put("starting_after", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
         return params.toUnmodifiable()
@@ -87,6 +94,7 @@ constructor(
             this.projectId == other.projectId &&
             this.projectName == other.projectName &&
             this.projectScoreName == other.projectScoreName &&
+            this.scoreType == other.scoreType &&
             this.startingAfter == other.startingAfter &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
@@ -102,6 +110,7 @@ constructor(
             projectId,
             projectName,
             projectScoreName,
+            scoreType,
             startingAfter,
             additionalQueryParams,
             additionalHeaders,
@@ -110,7 +119,7 @@ constructor(
     }
 
     override fun toString() =
-        "ProjectScoreListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, projectScoreName=$projectScoreName, startingAfter=$startingAfter, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectScoreListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, projectScoreName=$projectScoreName, scoreType=$scoreType, startingAfter=$startingAfter, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -129,6 +138,7 @@ constructor(
         private var projectId: String? = null
         private var projectName: String? = null
         private var projectScoreName: String? = null
+        private var scoreType: ScoreType? = null
         private var startingAfter: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -143,6 +153,7 @@ constructor(
             this.projectId = projectScoreListParams.projectId
             this.projectName = projectScoreListParams.projectName
             this.projectScoreName = projectScoreListParams.projectScoreName
+            this.scoreType = projectScoreListParams.scoreType
             this.startingAfter = projectScoreListParams.startingAfter
             additionalQueryParams(projectScoreListParams.additionalQueryParams)
             additionalHeaders(projectScoreListParams.additionalHeaders)
@@ -192,6 +203,21 @@ constructor(
         fun projectScoreName(projectScoreName: String) = apply {
             this.projectScoreName = projectScoreName
         }
+
+        /** The type of the configured score */
+        fun scoreType(scoreType: ScoreType) = apply { this.scoreType = scoreType }
+
+        /** The type of the configured score */
+        fun scoreType(unionMember0: ScoreType.UnionMember0) = apply {
+            this.scoreType = ScoreType.ofUnionMember0(unionMember0)
+        }
+
+        /** The type of the configured score */
+        fun scoreType(unnamedSchemaWithArrayParent0s: List<UnnamedSchemaWithArrayParent0?>) =
+            apply {
+                this.scoreType =
+                    ScoreType.ofUnnamedSchemaWithArrayParent0s(unnamedSchemaWithArrayParent0s)
+            }
 
         /**
          * Pagination cursor id.
@@ -265,6 +291,7 @@ constructor(
                 projectId,
                 projectName,
                 projectScoreName,
+                scoreType,
                 startingAfter,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
@@ -382,6 +409,288 @@ constructor(
                     else -> throw IllegalStateException("Invalid Ids")
                 }
             }
+        }
+    }
+
+    @JsonDeserialize(using = ScoreType.Deserializer::class)
+    @JsonSerialize(using = ScoreType.Serializer::class)
+    class ScoreType
+    private constructor(
+        private val unionMember0: UnionMember0? = null,
+        private val unnamedSchemaWithArrayParent1s: List<UnnamedSchemaWithArrayParent1?>? = null,
+        private val _json: JsonValue? = null,
+    ) {
+
+        private var validated: Boolean = false
+
+        /** The type of the configured score */
+        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+        /** The type of the configured score */
+        fun unnamedSchemaWithArrayParent1s(): Optional<List<UnnamedSchemaWithArrayParent1?>> =
+            Optional.ofNullable(unnamedSchemaWithArrayParent1s)
+
+        fun isUnionMember0(): Boolean = unionMember0 != null
+
+        fun isUnnamedSchemaWithArrayParent1s(): Boolean = unnamedSchemaWithArrayParent1s != null
+
+        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+
+        fun asUnnamedSchemaWithArrayParent1s(): List<UnnamedSchemaWithArrayParent1?> =
+            unnamedSchemaWithArrayParent1s.getOrThrow("unnamedSchemaWithArrayParent1s")
+
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        fun <T> accept(visitor: Visitor<T>): T {
+            return when {
+                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                unnamedSchemaWithArrayParent1s != null ->
+                    visitor.visitUnnamedSchemaWithArrayParent1s(unnamedSchemaWithArrayParent1s)
+                else -> visitor.unknown(_json)
+            }
+        }
+
+        fun validate(): ScoreType = apply {
+            if (!validated) {
+                if (unionMember0 == null && unnamedSchemaWithArrayParent1s == null) {
+                    throw BraintrustInvalidDataException("Unknown ScoreType: $_json")
+                }
+                validated = true
+            }
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ScoreType &&
+                this.unionMember0 == other.unionMember0 &&
+                this.unnamedSchemaWithArrayParent1s == other.unnamedSchemaWithArrayParent1s
+        }
+
+        override fun hashCode(): Int {
+            return Objects.hash(unionMember0, unnamedSchemaWithArrayParent1s)
+        }
+
+        override fun toString(): String {
+            return when {
+                unionMember0 != null -> "ScoreType{unionMember0=$unionMember0}"
+                unnamedSchemaWithArrayParent1s != null ->
+                    "ScoreType{unnamedSchemaWithArrayParent1s=$unnamedSchemaWithArrayParent1s}"
+                _json != null -> "ScoreType{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid ScoreType")
+            }
+        }
+
+        companion object {
+
+            @JvmStatic
+            fun ofUnionMember0(unionMember0: UnionMember0) = ScoreType(unionMember0 = unionMember0)
+
+            @JvmStatic
+            fun ofUnnamedSchemaWithArrayParent1s(
+                unnamedSchemaWithArrayParent1s: List<UnnamedSchemaWithArrayParent1?>
+            ) = ScoreType(unnamedSchemaWithArrayParent1s = unnamedSchemaWithArrayParent1s)
+        }
+
+        interface Visitor<out T> {
+
+            fun visitUnionMember0(unionMember0: UnionMember0): T
+
+            fun visitUnnamedSchemaWithArrayParent1s(
+                unnamedSchemaWithArrayParent1s: List<UnnamedSchemaWithArrayParent1?>
+            ): T
+
+            fun unknown(json: JsonValue?): T {
+                throw BraintrustInvalidDataException("Unknown ScoreType: $json")
+            }
+        }
+
+        class Deserializer : BaseDeserializer<ScoreType>(ScoreType::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): ScoreType {
+                val json = JsonValue.fromJsonNode(node)
+                tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
+                    return ScoreType(unionMember0 = it, _json = json)
+                }
+                tryDeserialize(node, jacksonTypeRef<List<UnnamedSchemaWithArrayParent1?>>())?.let {
+                    return ScoreType(unnamedSchemaWithArrayParent1s = it, _json = json)
+                }
+
+                return ScoreType(_json = json)
+            }
+        }
+
+        class Serializer : BaseSerializer<ScoreType>(ScoreType::class) {
+
+            override fun serialize(
+                value: ScoreType,
+                generator: JsonGenerator,
+                provider: SerializerProvider
+            ) {
+                when {
+                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                    value.unnamedSchemaWithArrayParent1s != null ->
+                        generator.writeObject(value.unnamedSchemaWithArrayParent1s)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid ScoreType")
+                }
+            }
+        }
+
+        class UnionMember0
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember0 && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val SLIDER = UnionMember0(JsonField.of("slider"))
+
+                @JvmField val CATEGORICAL = UnionMember0(JsonField.of("categorical"))
+
+                @JvmField val WEIGHTED = UnionMember0(JsonField.of("weighted"))
+
+                @JvmField val MINIMUM = UnionMember0(JsonField.of("minimum"))
+
+                @JvmField val ONLINE = UnionMember0(JsonField.of("online"))
+
+                @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
+            }
+
+            enum class Known {
+                SLIDER,
+                CATEGORICAL,
+                WEIGHTED,
+                MINIMUM,
+                ONLINE,
+            }
+
+            enum class Value {
+                SLIDER,
+                CATEGORICAL,
+                WEIGHTED,
+                MINIMUM,
+                ONLINE,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    SLIDER -> Value.SLIDER
+                    CATEGORICAL -> Value.CATEGORICAL
+                    WEIGHTED -> Value.WEIGHTED
+                    MINIMUM -> Value.MINIMUM
+                    ONLINE -> Value.ONLINE
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    SLIDER -> Known.SLIDER
+                    CATEGORICAL -> Known.CATEGORICAL
+                    WEIGHTED -> Known.WEIGHTED
+                    MINIMUM -> Known.MINIMUM
+                    ONLINE -> Known.ONLINE
+                    else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+
+        class UnnamedSchemaWithArrayParent1
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnnamedSchemaWithArrayParent1 && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val SLIDER = UnnamedSchemaWithArrayParent1(JsonField.of("slider"))
+
+                @JvmField
+                val CATEGORICAL = UnnamedSchemaWithArrayParent1(JsonField.of("categorical"))
+
+                @JvmField val WEIGHTED = UnnamedSchemaWithArrayParent1(JsonField.of("weighted"))
+
+                @JvmField val MINIMUM = UnnamedSchemaWithArrayParent1(JsonField.of("minimum"))
+
+                @JvmField val ONLINE = UnnamedSchemaWithArrayParent1(JsonField.of("online"))
+
+                @JvmStatic
+                fun of(value: String) = UnnamedSchemaWithArrayParent1(JsonField.of(value))
+            }
+
+            enum class Known {
+                SLIDER,
+                CATEGORICAL,
+                WEIGHTED,
+                MINIMUM,
+                ONLINE,
+            }
+
+            enum class Value {
+                SLIDER,
+                CATEGORICAL,
+                WEIGHTED,
+                MINIMUM,
+                ONLINE,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    SLIDER -> Value.SLIDER
+                    CATEGORICAL -> Value.CATEGORICAL
+                    WEIGHTED -> Value.WEIGHTED
+                    MINIMUM -> Value.MINIMUM
+                    ONLINE -> Value.ONLINE
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    SLIDER -> Known.SLIDER
+                    CATEGORICAL -> Known.CATEGORICAL
+                    WEIGHTED -> Known.WEIGHTED
+                    MINIMUM -> Known.MINIMUM
+                    ONLINE -> Known.ONLINE
+                    else ->
+                        throw BraintrustInvalidDataException(
+                            "Unknown UnnamedSchemaWithArrayParent1: $value"
+                        )
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
         }
     }
 }

@@ -73,6 +73,13 @@ class PromptUpdateParamsTest {
                             .promptVersion("prompt_version")
                             .build()
                     )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
+                            .build()
+                    )
                     .prompt(
                         PromptData.Prompt.ofCompletion(
                             PromptData.Prompt.Completion.builder()
@@ -83,6 +90,7 @@ class PromptUpdateParamsTest {
                     )
                     .build()
             )
+            .slug("slug")
             .tags(listOf("string"))
             .build()
     }
@@ -155,6 +163,13 @@ class PromptUpdateParamsTest {
                                 .promptVersion("prompt_version")
                                 .build()
                         )
+                        .parser(
+                            PromptData.Parser.builder()
+                                .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                                .useCot(true)
+                                .build()
+                        )
                         .prompt(
                             PromptData.Prompt.ofCompletion(
                                 PromptData.Prompt.Completion.builder()
@@ -165,6 +180,7 @@ class PromptUpdateParamsTest {
                         )
                         .build()
                 )
+                .slug("slug")
                 .tags(listOf("string"))
                 .build()
         val body = params.getBody()
@@ -231,6 +247,13 @@ class PromptUpdateParamsTest {
                             .promptVersion("prompt_version")
                             .build()
                     )
+                    .parser(
+                        PromptData.Parser.builder()
+                            .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                            .type(PromptData.Parser.Type.LLM_CLASSIFIER)
+                            .useCot(true)
+                            .build()
+                    )
                     .prompt(
                         PromptData.Prompt.ofCompletion(
                             PromptData.Prompt.Completion.builder()
@@ -241,6 +264,7 @@ class PromptUpdateParamsTest {
                     )
                     .build()
             )
+        assertThat(body.slug()).isEqualTo("slug")
         assertThat(body.tags()).isEqualTo(listOf("string"))
     }
 
