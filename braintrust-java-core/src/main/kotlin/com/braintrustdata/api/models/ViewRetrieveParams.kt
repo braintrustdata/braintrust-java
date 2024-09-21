@@ -20,7 +20,6 @@ constructor(
     private val objectType: ObjectType?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun viewId(): String = viewId
@@ -51,8 +50,6 @@ constructor(
 
     fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
@@ -63,8 +60,7 @@ constructor(
             this.objectId == other.objectId &&
             this.objectType == other.objectType &&
             this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+            this.additionalHeaders == other.additionalHeaders
     }
 
     override fun hashCode(): Int {
@@ -74,12 +70,11 @@ constructor(
             objectType,
             additionalQueryParams,
             additionalHeaders,
-            additionalBodyProperties,
         )
     }
 
     override fun toString() =
-        "ViewRetrieveParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ViewRetrieveParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -96,7 +91,6 @@ constructor(
         private var objectType: ObjectType? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(viewRetrieveParams: ViewRetrieveParams) = apply {
@@ -105,7 +99,6 @@ constructor(
             this.objectType = viewRetrieveParams.objectType
             additionalQueryParams(viewRetrieveParams.additionalQueryParams)
             additionalHeaders(viewRetrieveParams.additionalHeaders)
-            additionalBodyProperties(viewRetrieveParams.additionalBodyProperties)
         }
 
         /** View id */
@@ -157,20 +150,6 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
         fun build(): ViewRetrieveParams =
             ViewRetrieveParams(
                 checkNotNull(viewId) { "`viewId` is required but was not set" },
@@ -178,7 +157,6 @@ constructor(
                 objectType,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
             )
     }
 
