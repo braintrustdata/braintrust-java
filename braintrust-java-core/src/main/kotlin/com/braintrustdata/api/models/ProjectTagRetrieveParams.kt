@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.*
@@ -13,7 +12,6 @@ constructor(
     private val projectTagId: String,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun projectTagId(): String = projectTagId
@@ -33,8 +31,6 @@ constructor(
 
     fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
@@ -43,8 +39,7 @@ constructor(
         return other is ProjectTagRetrieveParams &&
             this.projectTagId == other.projectTagId &&
             this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+            this.additionalHeaders == other.additionalHeaders
     }
 
     override fun hashCode(): Int {
@@ -52,12 +47,11 @@ constructor(
             projectTagId,
             additionalQueryParams,
             additionalHeaders,
-            additionalBodyProperties,
         )
     }
 
     override fun toString() =
-        "ProjectTagRetrieveParams{projectTagId=$projectTagId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectTagRetrieveParams{projectTagId=$projectTagId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -72,14 +66,12 @@ constructor(
         private var projectTagId: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectTagRetrieveParams: ProjectTagRetrieveParams) = apply {
             this.projectTagId = projectTagRetrieveParams.projectTagId
             additionalQueryParams(projectTagRetrieveParams.additionalQueryParams)
             additionalHeaders(projectTagRetrieveParams.additionalHeaders)
-            additionalBodyProperties(projectTagRetrieveParams.additionalBodyProperties)
         }
 
         /** ProjectTag id */
@@ -125,26 +117,11 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
         fun build(): ProjectTagRetrieveParams =
             ProjectTagRetrieveParams(
                 checkNotNull(projectTagId) { "`projectTagId` is required but was not set" },
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
             )
     }
 }
