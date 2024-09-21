@@ -72,7 +72,7 @@ class ErrorHandlingTest {
 
         stubFor(post(anyUrl()).willReturn(ok().withBody(toJson(expected))))
 
-        assertThat(client.projects().create(params)).isEqualTo(expected)
+        assertThat(client.project().create(params)).isEqualTo(expected)
     }
 
     @Test
@@ -84,7 +84,7 @@ class ErrorHandlingTest {
                 .willReturn(status(400).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -99,7 +99,7 @@ class ErrorHandlingTest {
                 .willReturn(status(401).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertUnauthorized(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -114,7 +114,7 @@ class ErrorHandlingTest {
                 .willReturn(status(403).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertPermissionDenied(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -129,7 +129,7 @@ class ErrorHandlingTest {
                 .willReturn(status(404).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertNotFound(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -144,7 +144,7 @@ class ErrorHandlingTest {
                 .willReturn(status(422).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertUnprocessableEntity(
                     e,
@@ -163,7 +163,7 @@ class ErrorHandlingTest {
                 .willReturn(status(429).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertRateLimit(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -178,7 +178,7 @@ class ErrorHandlingTest {
                 .willReturn(status(500).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertInternalServer(e, ImmutableListMultimap.of("Foo", "Bar"), BRAINTRUST_ERROR)
             })
@@ -193,7 +193,7 @@ class ErrorHandlingTest {
                 .willReturn(status(999).withHeader("Foo", "Bar").withBody(toJson(BRAINTRUST_ERROR)))
         )
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertUnexpectedStatusCodeException(
                     e,
@@ -210,7 +210,7 @@ class ErrorHandlingTest {
 
         stubFor(post(anyUrl()).willReturn(status(200).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertThat(e)
                     .isInstanceOf(BraintrustException::class.java)
@@ -224,7 +224,7 @@ class ErrorHandlingTest {
 
         stubFor(post(anyUrl()).willReturn(status(400).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.projects().create(params) })
+        assertThatThrownBy({ client.project().create(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of(), BraintrustError.builder().build())
             })

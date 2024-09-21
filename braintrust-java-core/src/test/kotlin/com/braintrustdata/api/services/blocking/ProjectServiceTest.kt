@@ -19,7 +19,7 @@ class ProjectServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectService = client.projects()
+        val projectService = client.project()
         val project =
             projectService.create(
                 ProjectCreateParams.builder().name("name").orgName("org_name").build()
@@ -35,7 +35,7 @@ class ProjectServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectService = client.projects()
+        val projectService = client.project()
         val project =
             projectService.retrieve(
                 ProjectRetrieveParams.builder()
@@ -53,7 +53,7 @@ class ProjectServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectService = client.projects()
+        val projectService = client.project()
         val project =
             projectService.update(
                 ProjectUpdateParams.builder()
@@ -77,7 +77,7 @@ class ProjectServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectService = client.projects()
+        val projectService = client.project()
         val response = projectService.list(ProjectListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -90,7 +90,7 @@ class ProjectServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectService = client.projects()
+        val projectService = client.project()
         val project =
             projectService.delete(
                 ProjectDeleteParams.builder()

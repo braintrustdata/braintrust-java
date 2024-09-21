@@ -15,7 +15,6 @@ class OrganizationListParamsTest {
             .ids(OrganizationListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .limit(123L)
             .orgName("org_name")
-            .organizationName("organization_name")
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
     }
@@ -28,7 +27,6 @@ class OrganizationListParamsTest {
                 .ids(OrganizationListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .limit(123L)
                 .orgName("org_name")
-                .organizationName("organization_name")
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = mutableMapOf<String, List<String>>()
@@ -42,7 +40,6 @@ class OrganizationListParamsTest {
         )
         expected.put("limit", listOf("123"))
         expected.put("org_name", listOf("org_name"))
-        expected.put("organization_name", listOf("organization_name"))
         expected.put("starting_after", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }

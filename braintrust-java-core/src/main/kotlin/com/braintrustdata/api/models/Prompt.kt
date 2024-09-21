@@ -35,6 +35,7 @@ private constructor(
     private val promptData: JsonField<PromptData>,
     private val tags: JsonField<List<String>>,
     private val metadata: JsonField<Metadata>,
+    private val functionType: JsonField<FunctionType>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -84,6 +85,9 @@ private constructor(
     /** User-controlled metadata about the prompt */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
+    fun functionType(): Optional<FunctionType> =
+        Optional.ofNullable(functionType.getNullable("function_type"))
+
     /** Unique identifier for the prompt */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
@@ -124,6 +128,8 @@ private constructor(
     /** User-controlled metadata about the prompt */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
 
+    @JsonProperty("function_type") @ExcludeMissing fun _functionType() = functionType
+
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -142,6 +148,7 @@ private constructor(
             promptData().map { it.validate() }
             tags()
             metadata().map { it.validate() }
+            functionType()
             validated = true
         }
     }
@@ -166,6 +173,7 @@ private constructor(
             this.promptData == other.promptData &&
             this.tags == other.tags &&
             this.metadata == other.metadata &&
+            this.functionType == other.functionType &&
             this.additionalProperties == other.additionalProperties
     }
 
@@ -185,6 +193,7 @@ private constructor(
                     promptData,
                     tags,
                     metadata,
+                    functionType,
                     additionalProperties,
                 )
         }
@@ -192,7 +201,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Prompt{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, additionalProperties=$additionalProperties}"
+        "Prompt{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, functionType=$functionType, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -213,6 +222,7 @@ private constructor(
         private var promptData: JsonField<PromptData> = JsonMissing.of()
         private var tags: JsonField<List<String>> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
+        private var functionType: JsonField<FunctionType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -229,6 +239,7 @@ private constructor(
             this.promptData = prompt.promptData
             this.tags = prompt.tags
             this.metadata = prompt.metadata
+            this.functionType = prompt.functionType
             additionalProperties(prompt.additionalProperties)
         }
 
@@ -334,6 +345,14 @@ private constructor(
         @ExcludeMissing
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
+        fun functionType(functionType: FunctionType) = functionType(JsonField.of(functionType))
+
+        @JsonProperty("function_type")
+        @ExcludeMissing
+        fun functionType(functionType: JsonField<FunctionType>) = apply {
+            this.functionType = functionType
+        }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             this.additionalProperties.putAll(additionalProperties)
@@ -362,6 +381,7 @@ private constructor(
                 promptData,
                 tags.map { it.toUnmodifiable() },
                 metadata,
+                functionType,
                 additionalProperties.toUnmodifiable(),
             )
     }
@@ -412,6 +432,69 @@ private constructor(
             when (this) {
                 P -> Known.P
                 else -> throw BraintrustInvalidDataException("Unknown LogId: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
+    class FunctionType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is FunctionType && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val TASK = FunctionType(JsonField.of("task"))
+
+            @JvmField val LLM = FunctionType(JsonField.of("llm"))
+
+            @JvmField val SCORER = FunctionType(JsonField.of("scorer"))
+
+            @JvmStatic fun of(value: String) = FunctionType(JsonField.of(value))
+        }
+
+        enum class Known {
+            TASK,
+            LLM,
+            SCORER,
+        }
+
+        enum class Value {
+            TASK,
+            LLM,
+            SCORER,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                TASK -> Value.TASK
+                LLM -> Value.LLM
+                SCORER -> Value.SCORER
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                TASK -> Known.TASK
+                LLM -> Known.LLM
+                SCORER -> Known.SCORER
+                else -> throw BraintrustInvalidDataException("Unknown FunctionType: $value")
             }
 
         fun asString(): String = _value().asStringOrThrow()

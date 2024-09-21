@@ -18,6 +18,11 @@ class ProjectScoreListParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .projectName("project_name")
             .projectScoreName("project_score_name")
+            .scoreType(
+                ProjectScoreListParams.ScoreType.ofUnionMember0(
+                    ProjectScoreListParams.ScoreType.UnionMember0.SLIDER
+                )
+            )
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
     }
@@ -33,6 +38,11 @@ class ProjectScoreListParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .projectName("project_name")
                 .projectScoreName("project_score_name")
+                .scoreType(
+                    ProjectScoreListParams.ScoreType.ofUnionMember0(
+                        ProjectScoreListParams.ScoreType.UnionMember0.SLIDER
+                    )
+                )
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = mutableMapOf<String, List<String>>()
@@ -49,6 +59,15 @@ class ProjectScoreListParamsTest {
         expected.put("project_id", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         expected.put("project_name", listOf("project_name"))
         expected.put("project_score_name", listOf("project_score_name"))
+        expected.put(
+            "score_type",
+            listOf(
+                ProjectScoreListParams.ScoreType.ofUnionMember0(
+                        ProjectScoreListParams.UnionMember0.SLIDER.toString()
+                    )
+                    .toString()
+            )
+        )
         expected.put("starting_after", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }

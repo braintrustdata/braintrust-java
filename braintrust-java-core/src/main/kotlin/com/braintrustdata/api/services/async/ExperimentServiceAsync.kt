@@ -17,6 +17,7 @@ import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
+import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchExperimentEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
@@ -74,7 +75,7 @@ interface ExperimentServiceAsync {
     fun feedback(
         params: ExperimentFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<Void>
+    ): CompletableFuture<FeedbackResponseSchema>
 
     /**
      * Fetch the events in an experiment. Equivalent to the POST form of the same path, but with the

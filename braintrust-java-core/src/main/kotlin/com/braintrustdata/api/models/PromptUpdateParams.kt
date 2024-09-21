@@ -20,6 +20,7 @@ constructor(
     private val description: String?,
     private val name: String?,
     private val promptData: PromptData?,
+    private val slug: String?,
     private val tags: List<String>?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
@@ -34,6 +35,8 @@ constructor(
 
     fun promptData(): Optional<PromptData> = Optional.ofNullable(promptData)
 
+    fun slug(): Optional<String> = Optional.ofNullable(slug)
+
     fun tags(): Optional<List<String>> = Optional.ofNullable(tags)
 
     @JvmSynthetic
@@ -42,6 +45,7 @@ constructor(
             description,
             name,
             promptData,
+            slug,
             tags,
             additionalBodyProperties,
         )
@@ -65,6 +69,7 @@ constructor(
         private val description: String?,
         private val name: String?,
         private val promptData: PromptData?,
+        private val slug: String?,
         private val tags: List<String>?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
@@ -79,6 +84,9 @@ constructor(
 
         /** The prompt, model, and its parameters */
         @JsonProperty("prompt_data") fun promptData(): PromptData? = promptData
+
+        /** Unique identifier for the prompt */
+        @JsonProperty("slug") fun slug(): String? = slug
 
         /** A list of tags for the prompt */
         @JsonProperty("tags") fun tags(): List<String>? = tags
@@ -98,6 +106,7 @@ constructor(
                 this.description == other.description &&
                 this.name == other.name &&
                 this.promptData == other.promptData &&
+                this.slug == other.slug &&
                 this.tags == other.tags &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -109,6 +118,7 @@ constructor(
                         description,
                         name,
                         promptData,
+                        slug,
                         tags,
                         additionalProperties,
                     )
@@ -117,7 +127,7 @@ constructor(
         }
 
         override fun toString() =
-            "PromptUpdateBody{description=$description, name=$name, promptData=$promptData, tags=$tags, additionalProperties=$additionalProperties}"
+            "PromptUpdateBody{description=$description, name=$name, promptData=$promptData, slug=$slug, tags=$tags, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -129,6 +139,7 @@ constructor(
             private var description: String? = null
             private var name: String? = null
             private var promptData: PromptData? = null
+            private var slug: String? = null
             private var tags: List<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -137,6 +148,7 @@ constructor(
                 this.description = promptUpdateBody.description
                 this.name = promptUpdateBody.name
                 this.promptData = promptUpdateBody.promptData
+                this.slug = promptUpdateBody.slug
                 this.tags = promptUpdateBody.tags
                 additionalProperties(promptUpdateBody.additionalProperties)
             }
@@ -151,6 +163,9 @@ constructor(
             /** The prompt, model, and its parameters */
             @JsonProperty("prompt_data")
             fun promptData(promptData: PromptData) = apply { this.promptData = promptData }
+
+            /** Unique identifier for the prompt */
+            @JsonProperty("slug") fun slug(slug: String) = apply { this.slug = slug }
 
             /** A list of tags for the prompt */
             @JsonProperty("tags") fun tags(tags: List<String>) = apply { this.tags = tags }
@@ -174,6 +189,7 @@ constructor(
                     description,
                     name,
                     promptData,
+                    slug,
                     tags?.toUnmodifiable(),
                     additionalProperties.toUnmodifiable(),
                 )
@@ -196,6 +212,7 @@ constructor(
             this.description == other.description &&
             this.name == other.name &&
             this.promptData == other.promptData &&
+            this.slug == other.slug &&
             this.tags == other.tags &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
@@ -208,6 +225,7 @@ constructor(
             description,
             name,
             promptData,
+            slug,
             tags,
             additionalQueryParams,
             additionalHeaders,
@@ -216,7 +234,7 @@ constructor(
     }
 
     override fun toString() =
-        "PromptUpdateParams{promptId=$promptId, description=$description, name=$name, promptData=$promptData, tags=$tags, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "PromptUpdateParams{promptId=$promptId, description=$description, name=$name, promptData=$promptData, slug=$slug, tags=$tags, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -232,6 +250,7 @@ constructor(
         private var description: String? = null
         private var name: String? = null
         private var promptData: PromptData? = null
+        private var slug: String? = null
         private var tags: MutableList<String> = mutableListOf()
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -243,6 +262,7 @@ constructor(
             this.description = promptUpdateParams.description
             this.name = promptUpdateParams.name
             this.promptData = promptUpdateParams.promptData
+            this.slug = promptUpdateParams.slug
             this.tags(promptUpdateParams.tags ?: listOf())
             additionalQueryParams(promptUpdateParams.additionalQueryParams)
             additionalHeaders(promptUpdateParams.additionalHeaders)
@@ -260,6 +280,9 @@ constructor(
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: PromptData) = apply { this.promptData = promptData }
+
+        /** Unique identifier for the prompt */
+        fun slug(slug: String) = apply { this.slug = slug }
 
         /** A list of tags for the prompt */
         fun tags(tags: List<String>) = apply {
@@ -330,6 +353,7 @@ constructor(
                 description,
                 name,
                 promptData,
+                slug,
                 if (tags.size == 0) null else tags.toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),

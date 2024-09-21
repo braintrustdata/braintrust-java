@@ -20,67 +20,69 @@ constructor(
 
     private val topLevel: TopLevelService by lazy { TopLevelServiceImpl(clientOptions) }
 
-    private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptions) }
+    private val project: ProjectService by lazy { ProjectServiceImpl(clientOptions) }
 
-    private val experiments: ExperimentService by lazy { ExperimentServiceImpl(clientOptions) }
+    private val experiment: ExperimentService by lazy { ExperimentServiceImpl(clientOptions) }
 
-    private val datasets: DatasetService by lazy { DatasetServiceImpl(clientOptions) }
+    private val dataset: DatasetService by lazy { DatasetServiceImpl(clientOptions) }
 
-    private val prompts: PromptService by lazy { PromptServiceImpl(clientOptions) }
+    private val prompt: PromptService by lazy { PromptServiceImpl(clientOptions) }
 
-    private val roles: RoleService by lazy { RoleServiceImpl(clientOptions) }
+    private val role: RoleService by lazy { RoleServiceImpl(clientOptions) }
 
-    private val groups: GroupService by lazy { GroupServiceImpl(clientOptions) }
+    private val group: GroupService by lazy { GroupServiceImpl(clientOptions) }
 
-    private val acls: AclService by lazy { AclServiceImpl(clientOptions) }
+    private val acl: AclService by lazy { AclServiceImpl(clientOptions) }
 
-    private val users: UserService by lazy { UserServiceImpl(clientOptions) }
+    private val user: UserService by lazy { UserServiceImpl(clientOptions) }
 
-    private val projectScores: ProjectScoreService by lazy {
-        ProjectScoreServiceImpl(clientOptions)
+    private val projectScore: ProjectScoreService by lazy { ProjectScoreServiceImpl(clientOptions) }
+
+    private val projectTag: ProjectTagService by lazy { ProjectTagServiceImpl(clientOptions) }
+
+    private val function: FunctionService by lazy { FunctionServiceImpl(clientOptions) }
+
+    private val view: ViewService by lazy { ViewServiceImpl(clientOptions) }
+
+    private val organization: OrganizationService by lazy { OrganizationServiceImpl(clientOptions) }
+
+    private val apiKeyResource: ApiKeyResourceService by lazy {
+        ApiKeyResourceServiceImpl(clientOptions)
     }
 
-    private val projectTags: ProjectTagService by lazy { ProjectTagServiceImpl(clientOptions) }
-
-    private val functions: FunctionService by lazy { FunctionServiceImpl(clientOptions) }
-
-    private val views: ViewService by lazy { ViewServiceImpl(clientOptions) }
-
-    private val organizations: OrganizationService by lazy {
-        OrganizationServiceImpl(clientOptions)
-    }
-
-    private val apiKeys: ApiKeyService by lazy { ApiKeyServiceImpl(clientOptions) }
+    private val orgSecret: OrgSecretService by lazy { OrgSecretServiceImpl(clientOptions) }
 
     override fun async(): BraintrustClientAsync = async
 
     override fun topLevel(): TopLevelService = topLevel
 
-    override fun projects(): ProjectService = projects
+    override fun project(): ProjectService = project
 
-    override fun experiments(): ExperimentService = experiments
+    override fun experiment(): ExperimentService = experiment
 
-    override fun datasets(): DatasetService = datasets
+    override fun dataset(): DatasetService = dataset
 
-    override fun prompts(): PromptService = prompts
+    override fun prompt(): PromptService = prompt
 
-    override fun roles(): RoleService = roles
+    override fun role(): RoleService = role
 
-    override fun groups(): GroupService = groups
+    override fun group(): GroupService = group
 
-    override fun acls(): AclService = acls
+    override fun acl(): AclService = acl
 
-    override fun users(): UserService = users
+    override fun user(): UserService = user
 
-    override fun projectScores(): ProjectScoreService = projectScores
+    override fun projectScore(): ProjectScoreService = projectScore
 
-    override fun projectTags(): ProjectTagService = projectTags
+    override fun projectTag(): ProjectTagService = projectTag
 
-    override fun functions(): FunctionService = functions
+    override fun function(): FunctionService = function
 
-    override fun views(): ViewService = views
+    override fun view(): ViewService = view
 
-    override fun organizations(): OrganizationService = organizations
+    override fun organization(): OrganizationService = organization
 
-    override fun apiKeys(): ApiKeyService = apiKeys
+    override fun apiKeyResource(): ApiKeyResourceService = apiKeyResource
+
+    override fun orgSecret(): OrgSecretService = orgSecret
 }

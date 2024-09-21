@@ -19,7 +19,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acls()
+        val aclService = client.acl()
         val acl =
             aclService.create(
                 AclCreateParams.builder()
@@ -43,7 +43,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acls()
+        val aclService = client.acl()
         val acl =
             aclService.retrieve(
                 AclRetrieveParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -59,7 +59,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acls()
+        val aclService = client.acl()
         val response =
             aclService.list(
                 AclListParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -75,7 +75,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acls()
+        val aclService = client.acl()
         val acl =
             aclService.delete(
                 AclDeleteParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()

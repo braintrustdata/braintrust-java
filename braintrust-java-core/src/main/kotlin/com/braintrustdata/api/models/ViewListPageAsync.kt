@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class ViewListPageAsync
 private constructor(
-    private val viewsService: ViewServiceAsync,
+    private val viewService: ViewServiceAsync,
     private val params: ViewListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is ViewListPageAsync &&
-            this.viewsService == other.viewsService &&
+            this.viewService == other.viewService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            viewsService,
+            viewService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ViewListPageAsync{viewsService=$viewsService, params=$params, response=$response}"
+        "ViewListPageAsync{viewService=$viewService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -74,7 +74,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<ViewListPageAsync>> {
         return getNextPageParams()
-            .map { viewsService.list(it).thenApply { Optional.of(it) } }
+            .map { viewService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -83,9 +83,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(viewsService: ViewServiceAsync, params: ViewListParams, response: Response) =
+        fun of(viewService: ViewServiceAsync, params: ViewListParams, response: Response) =
             ViewListPageAsync(
-                viewsService,
+                viewService,
                 params,
                 response,
             )
