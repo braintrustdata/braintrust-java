@@ -201,8 +201,8 @@ constructor(
         fun scoreType(scoreType: ScoreType) = apply { this.scoreType = scoreType }
 
         /** The type of the configured score */
-        fun scoreType(unionMember0: ScoreType.UnionMember0) = apply {
-            this.scoreType = ScoreType.ofUnionMember0(unionMember0)
+        fun scoreType(projectScoreSingle: ScoreType.ProjectScoreSingle) = apply {
+            this.scoreType = ScoreType.ofProjectScoreSingle(projectScoreSingle)
         }
 
         /** The type of the configured score */
@@ -394,7 +394,7 @@ constructor(
     @JsonSerialize(using = ScoreType.Serializer::class)
     class ScoreType
     private constructor(
-        private val unionMember0: UnionMember0? = null,
+        private val projectScoreSingle: ProjectScoreSingle? = null,
         private val unnamedSchemaWithArrayParent1s: List<UnnamedSchemaWithArrayParent1?>? = null,
         private val _json: JsonValue? = null,
     ) {
@@ -402,16 +402,18 @@ constructor(
         private var validated: Boolean = false
 
         /** The type of the configured score */
-        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+        fun projectScoreSingle(): Optional<ProjectScoreSingle> =
+            Optional.ofNullable(projectScoreSingle)
         /** The type of the configured score */
         fun unnamedSchemaWithArrayParent1s(): Optional<List<UnnamedSchemaWithArrayParent1?>> =
             Optional.ofNullable(unnamedSchemaWithArrayParent1s)
 
-        fun isUnionMember0(): Boolean = unionMember0 != null
+        fun isProjectScoreSingle(): Boolean = projectScoreSingle != null
 
         fun isUnnamedSchemaWithArrayParent1s(): Boolean = unnamedSchemaWithArrayParent1s != null
 
-        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+        fun asProjectScoreSingle(): ProjectScoreSingle =
+            projectScoreSingle.getOrThrow("projectScoreSingle")
 
         fun asUnnamedSchemaWithArrayParent1s(): List<UnnamedSchemaWithArrayParent1?> =
             unnamedSchemaWithArrayParent1s.getOrThrow("unnamedSchemaWithArrayParent1s")
@@ -420,7 +422,7 @@ constructor(
 
         fun <T> accept(visitor: Visitor<T>): T {
             return when {
-                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                projectScoreSingle != null -> visitor.visitProjectScoreSingle(projectScoreSingle)
                 unnamedSchemaWithArrayParent1s != null ->
                     visitor.visitUnnamedSchemaWithArrayParent1s(unnamedSchemaWithArrayParent1s)
                 else -> visitor.unknown(_json)
@@ -429,7 +431,7 @@ constructor(
 
         fun validate(): ScoreType = apply {
             if (!validated) {
-                if (unionMember0 == null && unnamedSchemaWithArrayParent1s == null) {
+                if (projectScoreSingle == null && unnamedSchemaWithArrayParent1s == null) {
                     throw BraintrustInvalidDataException("Unknown ScoreType: $_json")
                 }
                 validated = true
@@ -442,17 +444,17 @@ constructor(
             }
 
             return other is ScoreType &&
-                this.unionMember0 == other.unionMember0 &&
+                this.projectScoreSingle == other.projectScoreSingle &&
                 this.unnamedSchemaWithArrayParent1s == other.unnamedSchemaWithArrayParent1s
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(unionMember0, unnamedSchemaWithArrayParent1s)
+            return Objects.hash(projectScoreSingle, unnamedSchemaWithArrayParent1s)
         }
 
         override fun toString(): String {
             return when {
-                unionMember0 != null -> "ScoreType{unionMember0=$unionMember0}"
+                projectScoreSingle != null -> "ScoreType{projectScoreSingle=$projectScoreSingle}"
                 unnamedSchemaWithArrayParent1s != null ->
                     "ScoreType{unnamedSchemaWithArrayParent1s=$unnamedSchemaWithArrayParent1s}"
                 _json != null -> "ScoreType{_unknown=$_json}"
@@ -463,7 +465,8 @@ constructor(
         companion object {
 
             @JvmStatic
-            fun ofUnionMember0(unionMember0: UnionMember0) = ScoreType(unionMember0 = unionMember0)
+            fun ofProjectScoreSingle(projectScoreSingle: ProjectScoreSingle) =
+                ScoreType(projectScoreSingle = projectScoreSingle)
 
             @JvmStatic
             fun ofUnnamedSchemaWithArrayParent1s(
@@ -473,7 +476,7 @@ constructor(
 
         interface Visitor<out T> {
 
-            fun visitUnionMember0(unionMember0: UnionMember0): T
+            fun visitProjectScoreSingle(projectScoreSingle: ProjectScoreSingle): T
 
             fun visitUnnamedSchemaWithArrayParent1s(
                 unnamedSchemaWithArrayParent1s: List<UnnamedSchemaWithArrayParent1?>
@@ -488,8 +491,8 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): ScoreType {
                 val json = JsonValue.fromJsonNode(node)
-                tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                    return ScoreType(unionMember0 = it, _json = json)
+                tryDeserialize(node, jacksonTypeRef<ProjectScoreSingle>())?.let {
+                    return ScoreType(projectScoreSingle = it, _json = json)
                 }
                 tryDeserialize(node, jacksonTypeRef<List<UnnamedSchemaWithArrayParent1?>>())?.let {
                     return ScoreType(unnamedSchemaWithArrayParent1s = it, _json = json)
@@ -507,7 +510,8 @@ constructor(
                 provider: SerializerProvider
             ) {
                 when {
-                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                    value.projectScoreSingle != null ->
+                        generator.writeObject(value.projectScoreSingle)
                     value.unnamedSchemaWithArrayParent1s != null ->
                         generator.writeObject(value.unnamedSchemaWithArrayParent1s)
                     value._json != null -> generator.writeObject(value._json)
@@ -516,7 +520,7 @@ constructor(
             }
         }
 
-        class UnionMember0
+        class ProjectScoreSingle
         @JsonCreator
         private constructor(
             private val value: JsonField<String>,
@@ -529,7 +533,7 @@ constructor(
                     return true
                 }
 
-                return other is UnionMember0 && this.value == other.value
+                return other is ProjectScoreSingle && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -538,17 +542,17 @@ constructor(
 
             companion object {
 
-                @JvmField val SLIDER = UnionMember0(JsonField.of("slider"))
+                @JvmField val SLIDER = ProjectScoreSingle(JsonField.of("slider"))
 
-                @JvmField val CATEGORICAL = UnionMember0(JsonField.of("categorical"))
+                @JvmField val CATEGORICAL = ProjectScoreSingle(JsonField.of("categorical"))
 
-                @JvmField val WEIGHTED = UnionMember0(JsonField.of("weighted"))
+                @JvmField val WEIGHTED = ProjectScoreSingle(JsonField.of("weighted"))
 
-                @JvmField val MINIMUM = UnionMember0(JsonField.of("minimum"))
+                @JvmField val MINIMUM = ProjectScoreSingle(JsonField.of("minimum"))
 
-                @JvmField val ONLINE = UnionMember0(JsonField.of("online"))
+                @JvmField val ONLINE = ProjectScoreSingle(JsonField.of("online"))
 
-                @JvmStatic fun of(value: String) = UnionMember0(JsonField.of(value))
+                @JvmStatic fun of(value: String) = ProjectScoreSingle(JsonField.of(value))
             }
 
             enum class Known {
@@ -585,7 +589,8 @@ constructor(
                     WEIGHTED -> Known.WEIGHTED
                     MINIMUM -> Known.MINIMUM
                     ONLINE -> Known.ONLINE
-                    else -> throw BraintrustInvalidDataException("Unknown UnionMember0: $value")
+                    else ->
+                        throw BraintrustInvalidDataException("Unknown ProjectScoreSingle: $value")
                 }
 
             fun asString(): String = _value().asStringOrThrow()
