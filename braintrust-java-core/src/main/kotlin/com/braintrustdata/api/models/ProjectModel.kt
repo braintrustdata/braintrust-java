@@ -16,9 +16,9 @@ import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Project.Builder::class)
+@JsonDeserialize(builder = ProjectModel.Builder::class)
 @NoAutoDetect
-class Project
+class ProjectModel
 private constructor(
     private val id: JsonField<String>,
     private val orgId: JsonField<String>,
@@ -79,7 +79,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): Project = apply {
+    fun validate(): ProjectModel = apply {
         if (!validated) {
             id()
             orgId()
@@ -99,7 +99,7 @@ private constructor(
             return true
         }
 
-        return other is Project &&
+        return other is ProjectModel &&
             this.id == other.id &&
             this.orgId == other.orgId &&
             this.name == other.name &&
@@ -128,7 +128,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Project{id=$id, orgId=$orgId, name=$name, created=$created, deletedAt=$deletedAt, userId=$userId, settings=$settings, additionalProperties=$additionalProperties}"
+        "ProjectModel{id=$id, orgId=$orgId, name=$name, created=$created, deletedAt=$deletedAt, userId=$userId, settings=$settings, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -147,15 +147,15 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(project: Project) = apply {
-            this.id = project.id
-            this.orgId = project.orgId
-            this.name = project.name
-            this.created = project.created
-            this.deletedAt = project.deletedAt
-            this.userId = project.userId
-            this.settings = project.settings
-            additionalProperties(project.additionalProperties)
+        internal fun from(projectModel: ProjectModel) = apply {
+            this.id = projectModel.id
+            this.orgId = projectModel.orgId
+            this.name = projectModel.name
+            this.created = projectModel.created
+            this.deletedAt = projectModel.deletedAt
+            this.userId = projectModel.userId
+            this.settings = projectModel.settings
+            additionalProperties(projectModel.additionalProperties)
         }
 
         /** Unique identifier for the project */
@@ -224,8 +224,8 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): Project =
-            Project(
+        fun build(): ProjectModel =
+            ProjectModel(
                 id,
                 orgId,
                 name,
