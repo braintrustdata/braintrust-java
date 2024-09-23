@@ -11,6 +11,7 @@ import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.OrgSecret
 import com.braintrustdata.api.models.OrgSecretCreateParams
 import com.braintrustdata.api.models.OrgSecretDeleteParams
+import com.braintrustdata.api.models.OrgSecretFindAndDeleteParams
 import com.braintrustdata.api.models.OrgSecretListPageAsync
 import com.braintrustdata.api.models.OrgSecretListParams
 import com.braintrustdata.api.models.OrgSecretReplaceParams
@@ -181,6 +182,36 @@ constructor(
             ->
             response
                 .use { deleteHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
+
+    private val findAndDeleteHandler: Handler<OrgSecret> =
+        jsonHandler<OrgSecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+    /** Delete a single org_secret */
+    override fun findAndDelete(
+        params: OrgSecretFindAndDeleteParams,
+        requestOptions: RequestOptions
+    ): CompletableFuture<OrgSecret> {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.DELETE)
+                .addPathSegments("v1", "org_secret")
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .build()
+        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
+            ->
+            response
+                .use { findAndDeleteHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         validate()

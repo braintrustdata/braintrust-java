@@ -9,8 +9,11 @@ import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.Acl
+import com.braintrustdata.api.models.AclBatchUpdateParams
+import com.braintrustdata.api.models.AclBatchUpdateResponse
 import com.braintrustdata.api.models.AclCreateParams
 import com.braintrustdata.api.models.AclDeleteParams
+import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListPageAsync
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
@@ -145,6 +148,69 @@ constructor(
             ->
             response
                 .use { deleteHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
+
+    private val batchUpdateHandler: Handler<AclBatchUpdateResponse> =
+        jsonHandler<AclBatchUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+    /**
+     * Batch update acls. This operation is idempotent, so adding acls which already exist will have
+     * no effect, and removing acls which do not exist will have no effect.
+     */
+    override fun batchUpdate(
+        params: AclBatchUpdateParams,
+        requestOptions: RequestOptions
+    ): CompletableFuture<AclBatchUpdateResponse> {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.POST)
+                .addPathSegments("v1", "acl", "batch-update")
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .build()
+        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
+            ->
+            response
+                .use { batchUpdateHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
+
+    private val findAndDeleteHandler: Handler<Acl> =
+        jsonHandler<Acl>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+    /** Delete a single acl */
+    override fun findAndDelete(
+        params: AclFindAndDeleteParams,
+        requestOptions: RequestOptions
+    ): CompletableFuture<Acl> {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.DELETE)
+                .addPathSegments("v1", "acl")
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .build()
+        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
+            ->
+            response
+                .use { findAndDeleteHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         validate()

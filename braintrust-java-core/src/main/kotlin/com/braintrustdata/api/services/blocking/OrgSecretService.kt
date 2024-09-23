@@ -8,6 +8,7 @@ import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.OrgSecret
 import com.braintrustdata.api.models.OrgSecretCreateParams
 import com.braintrustdata.api.models.OrgSecretDeleteParams
+import com.braintrustdata.api.models.OrgSecretFindAndDeleteParams
 import com.braintrustdata.api.models.OrgSecretListPage
 import com.braintrustdata.api.models.OrgSecretListParams
 import com.braintrustdata.api.models.OrgSecretReplaceParams
@@ -58,6 +59,13 @@ interface OrgSecretService {
     @JvmOverloads
     fun delete(
         params: OrgSecretDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): OrgSecret
+
+    /** Delete a single org_secret */
+    @JvmOverloads
+    fun findAndDelete(
+        params: OrgSecretFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): OrgSecret
 
