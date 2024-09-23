@@ -6,13 +6,13 @@ import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class OrgSecretUpdateParamsTest {
+class AiSecretUpdateParamsTest {
 
     @Test
-    fun createOrgSecretUpdateParams() {
-        OrgSecretUpdateParams.builder()
-            .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .metadata(OrgSecretUpdateParams.Metadata.builder().build())
+    fun createAiSecretUpdateParams() {
+        AiSecretUpdateParams.builder()
+            .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .metadata(AiSecretUpdateParams.Metadata.builder().build())
             .name("name")
             .secret("secret")
             .type("type")
@@ -22,16 +22,16 @@ class OrgSecretUpdateParamsTest {
     @Test
     fun getBody() {
         val params =
-            OrgSecretUpdateParams.builder()
-                .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .metadata(OrgSecretUpdateParams.Metadata.builder().build())
+            AiSecretUpdateParams.builder()
+                .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .metadata(AiSecretUpdateParams.Metadata.builder().build())
                 .name("name")
                 .secret("secret")
                 .type("type")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.metadata()).isEqualTo(OrgSecretUpdateParams.Metadata.builder().build())
+        assertThat(body.metadata()).isEqualTo(AiSecretUpdateParams.Metadata.builder().build())
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.secret()).isEqualTo("secret")
         assertThat(body.type()).isEqualTo("type")
@@ -40,8 +40,8 @@ class OrgSecretUpdateParamsTest {
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            OrgSecretUpdateParams.builder()
-                .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            AiSecretUpdateParams.builder()
+                .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -50,11 +50,11 @@ class OrgSecretUpdateParamsTest {
     @Test
     fun getPathParam() {
         val params =
-            OrgSecretUpdateParams.builder()
-                .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            AiSecretUpdateParams.builder()
+                .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         assertThat(params).isNotNull
-        // path param "orgSecretId"
+        // path param "aiSecretId"
         assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")

@@ -6,16 +6,16 @@ import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class OrgSecretFindAndDeleteParamsTest {
+class AiSecretFindAndDeleteParamsTest {
 
     @Test
-    fun createOrgSecretFindAndDeleteParams() {
-        OrgSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
+    fun createAiSecretFindAndDeleteParams() {
+        AiSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
     }
 
     @Test
     fun getBody() {
-        val params = OrgSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
+        val params = AiSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
@@ -24,7 +24,7 @@ class OrgSecretFindAndDeleteParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = OrgSecretFindAndDeleteParams.builder().name("name").build()
+        val params = AiSecretFindAndDeleteParams.builder().name("name").build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")

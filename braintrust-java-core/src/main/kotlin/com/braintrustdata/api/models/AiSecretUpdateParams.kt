@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
-class OrgSecretUpdateParams
+class AiSecretUpdateParams
 constructor(
-    private val orgSecretId: String,
+    private val aiSecretId: String,
     private val metadata: Metadata?,
     private val name: String?,
     private val secret: String?,
@@ -26,7 +26,7 @@ constructor(
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun orgSecretId(): String = orgSecretId
+    fun aiSecretId(): String = aiSecretId
 
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
 
@@ -37,8 +37,8 @@ constructor(
     fun type(): Optional<String> = Optional.ofNullable(type)
 
     @JvmSynthetic
-    internal fun getBody(): OrgSecretUpdateBody {
-        return OrgSecretUpdateBody(
+    internal fun getBody(): AiSecretUpdateBody {
+        return AiSecretUpdateBody(
             metadata,
             name,
             secret,
@@ -53,14 +53,14 @@ constructor(
 
     fun getPathParam(index: Int): String {
         return when (index) {
-            0 -> orgSecretId
+            0 -> aiSecretId
             else -> ""
         }
     }
 
-    @JsonDeserialize(builder = OrgSecretUpdateBody.Builder::class)
+    @JsonDeserialize(builder = AiSecretUpdateBody.Builder::class)
     @NoAutoDetect
-    class OrgSecretUpdateBody
+    class AiSecretUpdateBody
     internal constructor(
         private val metadata: Metadata?,
         private val name: String?,
@@ -73,7 +73,7 @@ constructor(
 
         @JsonProperty("metadata") fun metadata(): Metadata? = metadata
 
-        /** Name of the org secret */
+        /** Name of the AI secret */
         @JsonProperty("name") fun name(): String? = name
 
         @JsonProperty("secret") fun secret(): String? = secret
@@ -91,7 +91,7 @@ constructor(
                 return true
             }
 
-            return other is OrgSecretUpdateBody &&
+            return other is AiSecretUpdateBody &&
                 this.metadata == other.metadata &&
                 this.name == other.name &&
                 this.secret == other.secret &&
@@ -114,7 +114,7 @@ constructor(
         }
 
         override fun toString() =
-            "OrgSecretUpdateBody{metadata=$metadata, name=$name, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
+            "AiSecretUpdateBody{metadata=$metadata, name=$name, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -130,18 +130,18 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(orgSecretUpdateBody: OrgSecretUpdateBody) = apply {
-                this.metadata = orgSecretUpdateBody.metadata
-                this.name = orgSecretUpdateBody.name
-                this.secret = orgSecretUpdateBody.secret
-                this.type = orgSecretUpdateBody.type
-                additionalProperties(orgSecretUpdateBody.additionalProperties)
+            internal fun from(aiSecretUpdateBody: AiSecretUpdateBody) = apply {
+                this.metadata = aiSecretUpdateBody.metadata
+                this.name = aiSecretUpdateBody.name
+                this.secret = aiSecretUpdateBody.secret
+                this.type = aiSecretUpdateBody.type
+                additionalProperties(aiSecretUpdateBody.additionalProperties)
             }
 
             @JsonProperty("metadata")
             fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
-            /** Name of the org secret */
+            /** Name of the AI secret */
             @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             @JsonProperty("secret") fun secret(secret: String) = apply { this.secret = secret }
@@ -162,8 +162,8 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): OrgSecretUpdateBody =
-                OrgSecretUpdateBody(
+            fun build(): AiSecretUpdateBody =
+                AiSecretUpdateBody(
                     metadata,
                     name,
                     secret,
@@ -184,8 +184,8 @@ constructor(
             return true
         }
 
-        return other is OrgSecretUpdateParams &&
-            this.orgSecretId == other.orgSecretId &&
+        return other is AiSecretUpdateParams &&
+            this.aiSecretId == other.aiSecretId &&
             this.metadata == other.metadata &&
             this.name == other.name &&
             this.secret == other.secret &&
@@ -197,7 +197,7 @@ constructor(
 
     override fun hashCode(): Int {
         return Objects.hash(
-            orgSecretId,
+            aiSecretId,
             metadata,
             name,
             secret,
@@ -209,7 +209,7 @@ constructor(
     }
 
     override fun toString() =
-        "OrgSecretUpdateParams{orgSecretId=$orgSecretId, metadata=$metadata, name=$name, secret=$secret, type=$type, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "AiSecretUpdateParams{aiSecretId=$aiSecretId, metadata=$metadata, name=$name, secret=$secret, type=$type, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -221,7 +221,7 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var orgSecretId: String? = null
+        private var aiSecretId: String? = null
         private var metadata: Metadata? = null
         private var name: String? = null
         private var secret: String? = null
@@ -231,23 +231,23 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(orgSecretUpdateParams: OrgSecretUpdateParams) = apply {
-            this.orgSecretId = orgSecretUpdateParams.orgSecretId
-            this.metadata = orgSecretUpdateParams.metadata
-            this.name = orgSecretUpdateParams.name
-            this.secret = orgSecretUpdateParams.secret
-            this.type = orgSecretUpdateParams.type
-            additionalQueryParams(orgSecretUpdateParams.additionalQueryParams)
-            additionalHeaders(orgSecretUpdateParams.additionalHeaders)
-            additionalBodyProperties(orgSecretUpdateParams.additionalBodyProperties)
+        internal fun from(aiSecretUpdateParams: AiSecretUpdateParams) = apply {
+            this.aiSecretId = aiSecretUpdateParams.aiSecretId
+            this.metadata = aiSecretUpdateParams.metadata
+            this.name = aiSecretUpdateParams.name
+            this.secret = aiSecretUpdateParams.secret
+            this.type = aiSecretUpdateParams.type
+            additionalQueryParams(aiSecretUpdateParams.additionalQueryParams)
+            additionalHeaders(aiSecretUpdateParams.additionalHeaders)
+            additionalBodyProperties(aiSecretUpdateParams.additionalBodyProperties)
         }
 
-        /** OrgSecret id */
-        fun orgSecretId(orgSecretId: String) = apply { this.orgSecretId = orgSecretId }
+        /** AiSecret id */
+        fun aiSecretId(aiSecretId: String) = apply { this.aiSecretId = aiSecretId }
 
         fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
-        /** Name of the org secret */
+        /** Name of the AI secret */
         fun name(name: String) = apply { this.name = name }
 
         fun secret(secret: String) = apply { this.secret = secret }
@@ -308,9 +308,9 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
-        fun build(): OrgSecretUpdateParams =
-            OrgSecretUpdateParams(
-                checkNotNull(orgSecretId) { "`orgSecretId` is required but was not set" },
+        fun build(): AiSecretUpdateParams =
+            AiSecretUpdateParams(
+                checkNotNull(aiSecretId) { "`aiSecretId` is required but was not set" },
                 metadata,
                 name,
                 secret,

@@ -14,10 +14,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
-class OrgSecretFindAndDeleteParams
+class AiSecretReplaceParams
 constructor(
     private val name: String,
+    private val metadata: Metadata?,
     private val orgName: String?,
+    private val secret: String?,
+    private val type: String?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -25,13 +28,22 @@ constructor(
 
     fun name(): String = name
 
+    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
+
     fun orgName(): Optional<String> = Optional.ofNullable(orgName)
 
+    fun secret(): Optional<String> = Optional.ofNullable(secret)
+
+    fun type(): Optional<String> = Optional.ofNullable(type)
+
     @JvmSynthetic
-    internal fun getBody(): OrgSecretFindAndDeleteBody {
-        return OrgSecretFindAndDeleteBody(
+    internal fun getBody(): AiSecretReplaceBody {
+        return AiSecretReplaceBody(
             name,
+            metadata,
             orgName,
+            secret,
+            type,
             additionalBodyProperties,
         )
     }
@@ -40,26 +52,39 @@ constructor(
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
-    @JsonDeserialize(builder = OrgSecretFindAndDeleteBody.Builder::class)
+    @JsonDeserialize(builder = AiSecretReplaceBody.Builder::class)
     @NoAutoDetect
-    class OrgSecretFindAndDeleteBody
+    class AiSecretReplaceBody
     internal constructor(
         private val name: String?,
+        private val metadata: Metadata?,
         private val orgName: String?,
+        private val secret: String?,
+        private val type: String?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
-        /** Name of the org secret */
+        /** Name of the AI secret */
         @JsonProperty("name") fun name(): String? = name
+
+        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the Org Secret belongs in.
+         * organization the AI Secret belongs in.
          */
         @JsonProperty("org_name") fun orgName(): String? = orgName
+
+        /**
+         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
+         * not replaced with null.
+         */
+        @JsonProperty("secret") fun secret(): String? = secret
+
+        @JsonProperty("type") fun type(): String? = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -72,9 +97,12 @@ constructor(
                 return true
             }
 
-            return other is OrgSecretFindAndDeleteBody &&
+            return other is AiSecretReplaceBody &&
                 this.name == other.name &&
+                this.metadata == other.metadata &&
                 this.orgName == other.orgName &&
+                this.secret == other.secret &&
+                this.type == other.type &&
                 this.additionalProperties == other.additionalProperties
         }
 
@@ -83,7 +111,10 @@ constructor(
                 hashCode =
                     Objects.hash(
                         name,
+                        metadata,
                         orgName,
+                        secret,
+                        type,
                         additionalProperties,
                     )
             }
@@ -91,7 +122,7 @@ constructor(
         }
 
         override fun toString() =
-            "OrgSecretFindAndDeleteBody{name=$name, orgName=$orgName, additionalProperties=$additionalProperties}"
+            "AiSecretReplaceBody{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -101,26 +132,43 @@ constructor(
         class Builder {
 
             private var name: String? = null
+            private var metadata: Metadata? = null
             private var orgName: String? = null
+            private var secret: String? = null
+            private var type: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(orgSecretFindAndDeleteBody: OrgSecretFindAndDeleteBody) = apply {
-                this.name = orgSecretFindAndDeleteBody.name
-                this.orgName = orgSecretFindAndDeleteBody.orgName
-                additionalProperties(orgSecretFindAndDeleteBody.additionalProperties)
+            internal fun from(aiSecretReplaceBody: AiSecretReplaceBody) = apply {
+                this.name = aiSecretReplaceBody.name
+                this.metadata = aiSecretReplaceBody.metadata
+                this.orgName = aiSecretReplaceBody.orgName
+                this.secret = aiSecretReplaceBody.secret
+                this.type = aiSecretReplaceBody.type
+                additionalProperties(aiSecretReplaceBody.additionalProperties)
             }
 
-            /** Name of the org secret */
+            /** Name of the AI secret */
             @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+
+            @JsonProperty("metadata")
+            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
              * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the Org Secret belongs in.
+             * organization the AI Secret belongs in.
              */
             @JsonProperty("org_name")
             fun orgName(orgName: String) = apply { this.orgName = orgName }
+
+            /**
+             * Secret value. If omitted in a PUT request, the existing secret value will be left
+             * intact, not replaced with null.
+             */
+            @JsonProperty("secret") fun secret(secret: String) = apply { this.secret = secret }
+
+            @JsonProperty("type") fun type(type: String) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -136,10 +184,13 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): OrgSecretFindAndDeleteBody =
-                OrgSecretFindAndDeleteBody(
+            fun build(): AiSecretReplaceBody =
+                AiSecretReplaceBody(
                     checkNotNull(name) { "`name` is required but was not set" },
+                    metadata,
                     orgName,
+                    secret,
+                    type,
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -156,9 +207,12 @@ constructor(
             return true
         }
 
-        return other is OrgSecretFindAndDeleteParams &&
+        return other is AiSecretReplaceParams &&
             this.name == other.name &&
+            this.metadata == other.metadata &&
             this.orgName == other.orgName &&
+            this.secret == other.secret &&
+            this.type == other.type &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
             this.additionalBodyProperties == other.additionalBodyProperties
@@ -167,7 +221,10 @@ constructor(
     override fun hashCode(): Int {
         return Objects.hash(
             name,
+            metadata,
             orgName,
+            secret,
+            type,
             additionalQueryParams,
             additionalHeaders,
             additionalBodyProperties,
@@ -175,7 +232,7 @@ constructor(
     }
 
     override fun toString() =
-        "OrgSecretFindAndDeleteParams{name=$name, orgName=$orgName, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "AiSecretReplaceParams{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -188,29 +245,45 @@ constructor(
     class Builder {
 
         private var name: String? = null
+        private var metadata: Metadata? = null
         private var orgName: String? = null
+        private var secret: String? = null
+        private var type: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(orgSecretFindAndDeleteParams: OrgSecretFindAndDeleteParams) = apply {
-            this.name = orgSecretFindAndDeleteParams.name
-            this.orgName = orgSecretFindAndDeleteParams.orgName
-            additionalQueryParams(orgSecretFindAndDeleteParams.additionalQueryParams)
-            additionalHeaders(orgSecretFindAndDeleteParams.additionalHeaders)
-            additionalBodyProperties(orgSecretFindAndDeleteParams.additionalBodyProperties)
+        internal fun from(aiSecretReplaceParams: AiSecretReplaceParams) = apply {
+            this.name = aiSecretReplaceParams.name
+            this.metadata = aiSecretReplaceParams.metadata
+            this.orgName = aiSecretReplaceParams.orgName
+            this.secret = aiSecretReplaceParams.secret
+            this.type = aiSecretReplaceParams.type
+            additionalQueryParams(aiSecretReplaceParams.additionalQueryParams)
+            additionalHeaders(aiSecretReplaceParams.additionalHeaders)
+            additionalBodyProperties(aiSecretReplaceParams.additionalBodyProperties)
         }
 
-        /** Name of the org secret */
+        /** Name of the AI secret */
         fun name(name: String) = apply { this.name = name }
+
+        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the Org Secret belongs in.
+         * organization the AI Secret belongs in.
          */
         fun orgName(orgName: String) = apply { this.orgName = orgName }
+
+        /**
+         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
+         * not replaced with null.
+         */
+        fun secret(secret: String) = apply { this.secret = secret }
+
+        fun type(type: String) = apply { this.type = type }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -266,13 +339,80 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
-        fun build(): OrgSecretFindAndDeleteParams =
-            OrgSecretFindAndDeleteParams(
+        fun build(): AiSecretReplaceParams =
+            AiSecretReplaceParams(
                 checkNotNull(name) { "`name` is required but was not set" },
+                metadata,
                 orgName,
+                secret,
+                type,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
             )
+    }
+
+    @JsonDeserialize(builder = Metadata.Builder::class)
+    @NoAutoDetect
+    class Metadata
+    private constructor(
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var hashCode: Int = 0
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Metadata && this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = Objects.hash(additionalProperties)
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(metadata: Metadata) = apply {
+                additionalProperties(metadata.additionalProperties)
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
+        }
     }
 }
