@@ -20,12 +20,12 @@ class ProjectServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectService = client.project()
-        val project =
+        val projectModel =
             projectService.create(
                 ProjectCreateParams.builder().name("name").orgName("org_name").build()
             )
-        println(project)
-        project.validate()
+        println(projectModel)
+        projectModel.validate()
     }
 
     @Test
@@ -36,14 +36,14 @@ class ProjectServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectService = client.project()
-        val project =
+        val projectModel =
             projectService.retrieve(
                 ProjectRetrieveParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
-        println(project)
-        project.validate()
+        println(projectModel)
+        projectModel.validate()
     }
 
     @Test
@@ -54,7 +54,7 @@ class ProjectServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectService = client.project()
-        val project =
+        val projectModel =
             projectService.update(
                 ProjectUpdateParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -66,8 +66,8 @@ class ProjectServiceTest {
                     )
                     .build()
             )
-        println(project)
-        project.validate()
+        println(projectModel)
+        projectModel.validate()
     }
 
     @Test
@@ -91,13 +91,13 @@ class ProjectServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectService = client.project()
-        val project =
+        val projectModel =
             projectService.delete(
                 ProjectDeleteParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
-        println(project)
-        project.validate()
+        println(projectModel)
+        projectModel.validate()
     }
 }
