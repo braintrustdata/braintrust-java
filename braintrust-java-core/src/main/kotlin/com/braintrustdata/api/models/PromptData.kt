@@ -3863,8 +3863,7 @@ private constructor(
                     class Content
                     private constructor(
                         private val string: String? = null,
-                        private val unnamedSchemaWithArrayParent2s:
-                            List<UnnamedSchemaWithArrayParent2>? =
+                        private val chatCompletionContentParts: List<ChatCompletionContentPart>? =
                             null,
                         private val _json: JsonValue? = null,
                     ) {
@@ -3873,31 +3872,28 @@ private constructor(
 
                         fun string(): Optional<String> = Optional.ofNullable(string)
 
-                        fun unnamedSchemaWithArrayParent2s():
-                            Optional<List<UnnamedSchemaWithArrayParent2>> =
-                            Optional.ofNullable(unnamedSchemaWithArrayParent2s)
+                        fun chatCompletionContentParts():
+                            Optional<List<ChatCompletionContentPart>> =
+                            Optional.ofNullable(chatCompletionContentParts)
 
                         fun isString(): Boolean = string != null
 
-                        fun isUnnamedSchemaWithArrayParent2s(): Boolean =
-                            unnamedSchemaWithArrayParent2s != null
+                        fun isChatCompletionContentParts(): Boolean =
+                            chatCompletionContentParts != null
 
                         fun asString(): String = string.getOrThrow("string")
 
-                        fun asUnnamedSchemaWithArrayParent2s():
-                            List<UnnamedSchemaWithArrayParent2> =
-                            unnamedSchemaWithArrayParent2s.getOrThrow(
-                                "unnamedSchemaWithArrayParent2s"
-                            )
+                        fun asChatCompletionContentParts(): List<ChatCompletionContentPart> =
+                            chatCompletionContentParts.getOrThrow("chatCompletionContentParts")
 
                         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
                         fun <T> accept(visitor: Visitor<T>): T {
                             return when {
                                 string != null -> visitor.visitString(string)
-                                unnamedSchemaWithArrayParent2s != null ->
-                                    visitor.visitUnnamedSchemaWithArrayParent2s(
-                                        unnamedSchemaWithArrayParent2s
+                                chatCompletionContentParts != null ->
+                                    visitor.visitChatCompletionContentParts(
+                                        chatCompletionContentParts
                                     )
                                 else -> visitor.unknown(_json)
                             }
@@ -3905,7 +3901,7 @@ private constructor(
 
                         fun validate(): Content = apply {
                             if (!validated) {
-                                if (string == null && unnamedSchemaWithArrayParent2s == null) {
+                                if (string == null && chatCompletionContentParts == null) {
                                     throw BraintrustInvalidDataException("Unknown Content: $_json")
                                 }
                                 validated = true
@@ -3919,19 +3915,18 @@ private constructor(
 
                             return other is Content &&
                                 this.string == other.string &&
-                                this.unnamedSchemaWithArrayParent2s ==
-                                    other.unnamedSchemaWithArrayParent2s
+                                this.chatCompletionContentParts == other.chatCompletionContentParts
                         }
 
                         override fun hashCode(): Int {
-                            return Objects.hash(string, unnamedSchemaWithArrayParent2s)
+                            return Objects.hash(string, chatCompletionContentParts)
                         }
 
                         override fun toString(): String {
                             return when {
                                 string != null -> "Content{string=$string}"
-                                unnamedSchemaWithArrayParent2s != null ->
-                                    "Content{unnamedSchemaWithArrayParent2s=$unnamedSchemaWithArrayParent2s}"
+                                chatCompletionContentParts != null ->
+                                    "Content{chatCompletionContentParts=$chatCompletionContentParts}"
                                 _json != null -> "Content{_unknown=$_json}"
                                 else -> throw IllegalStateException("Invalid Content")
                             }
@@ -3942,20 +3937,17 @@ private constructor(
                             @JvmStatic fun ofString(string: String) = Content(string = string)
 
                             @JvmStatic
-                            fun ofUnnamedSchemaWithArrayParent2s(
-                                unnamedSchemaWithArrayParent2s: List<UnnamedSchemaWithArrayParent2>
-                            ) =
-                                Content(
-                                    unnamedSchemaWithArrayParent2s = unnamedSchemaWithArrayParent2s
-                                )
+                            fun ofChatCompletionContentParts(
+                                chatCompletionContentParts: List<ChatCompletionContentPart>
+                            ) = Content(chatCompletionContentParts = chatCompletionContentParts)
                         }
 
                         interface Visitor<out T> {
 
                             fun visitString(string: String): T
 
-                            fun visitUnnamedSchemaWithArrayParent2s(
-                                unnamedSchemaWithArrayParent2s: List<UnnamedSchemaWithArrayParent2>
+                            fun visitChatCompletionContentParts(
+                                chatCompletionContentParts: List<ChatCompletionContentPart>
                             ): T
 
                             fun unknown(json: JsonValue?): T {
@@ -3972,11 +3964,11 @@ private constructor(
                                 }
                                 tryDeserialize(
                                         node,
-                                        jacksonTypeRef<List<UnnamedSchemaWithArrayParent2>>()
+                                        jacksonTypeRef<List<ChatCompletionContentPart>>()
                                     )
                                     ?.let {
                                         return Content(
-                                            unnamedSchemaWithArrayParent2s = it,
+                                            chatCompletionContentParts = it,
                                             _json = json
                                         )
                                     }
@@ -3994,17 +3986,17 @@ private constructor(
                             ) {
                                 when {
                                     value.string != null -> generator.writeObject(value.string)
-                                    value.unnamedSchemaWithArrayParent2s != null ->
-                                        generator.writeObject(value.unnamedSchemaWithArrayParent2s)
+                                    value.chatCompletionContentParts != null ->
+                                        generator.writeObject(value.chatCompletionContentParts)
                                     value._json != null -> generator.writeObject(value._json)
                                     else -> throw IllegalStateException("Invalid Content")
                                 }
                             }
                         }
 
-                        @JsonDeserialize(using = UnnamedSchemaWithArrayParent2.Deserializer::class)
-                        @JsonSerialize(using = UnnamedSchemaWithArrayParent2.Serializer::class)
-                        class UnnamedSchemaWithArrayParent2
+                        @JsonDeserialize(using = ChatCompletionContentPart.Deserializer::class)
+                        @JsonSerialize(using = ChatCompletionContentPart.Serializer::class)
+                        class ChatCompletionContentPart
                         private constructor(
                             private val text: Text? = null,
                             private val imageUrl: ImageUrl? = null,
@@ -4035,11 +4027,11 @@ private constructor(
                                 }
                             }
 
-                            fun validate(): UnnamedSchemaWithArrayParent2 = apply {
+                            fun validate(): ChatCompletionContentPart = apply {
                                 if (!validated) {
                                     if (text == null && imageUrl == null) {
                                         throw BraintrustInvalidDataException(
-                                            "Unknown UnnamedSchemaWithArrayParent2: $_json"
+                                            "Unknown ChatCompletionContentPart: $_json"
                                         )
                                     }
                                     text?.validate()
@@ -4053,7 +4045,7 @@ private constructor(
                                     return true
                                 }
 
-                                return other is UnnamedSchemaWithArrayParent2 &&
+                                return other is ChatCompletionContentPart &&
                                     this.text == other.text &&
                                     this.imageUrl == other.imageUrl
                             }
@@ -4064,14 +4056,13 @@ private constructor(
 
                             override fun toString(): String {
                                 return when {
-                                    text != null -> "UnnamedSchemaWithArrayParent2{text=$text}"
+                                    text != null -> "ChatCompletionContentPart{text=$text}"
                                     imageUrl != null ->
-                                        "UnnamedSchemaWithArrayParent2{imageUrl=$imageUrl}"
-                                    _json != null ->
-                                        "UnnamedSchemaWithArrayParent2{_unknown=$_json}"
+                                        "ChatCompletionContentPart{imageUrl=$imageUrl}"
+                                    _json != null -> "ChatCompletionContentPart{_unknown=$_json}"
                                     else ->
                                         throw IllegalStateException(
-                                            "Invalid UnnamedSchemaWithArrayParent2"
+                                            "Invalid ChatCompletionContentPart"
                                         )
                                 }
                             }
@@ -4079,11 +4070,11 @@ private constructor(
                             companion object {
 
                                 @JvmStatic
-                                fun ofText(text: Text) = UnnamedSchemaWithArrayParent2(text = text)
+                                fun ofText(text: Text) = ChatCompletionContentPart(text = text)
 
                                 @JvmStatic
                                 fun ofImageUrl(imageUrl: ImageUrl) =
-                                    UnnamedSchemaWithArrayParent2(imageUrl = imageUrl)
+                                    ChatCompletionContentPart(imageUrl = imageUrl)
                             }
 
                             interface Visitor<out T> {
@@ -4094,23 +4085,23 @@ private constructor(
 
                                 fun unknown(json: JsonValue?): T {
                                     throw BraintrustInvalidDataException(
-                                        "Unknown UnnamedSchemaWithArrayParent2: $json"
+                                        "Unknown ChatCompletionContentPart: $json"
                                     )
                                 }
                             }
 
                             class Deserializer :
-                                BaseDeserializer<UnnamedSchemaWithArrayParent2>(
-                                    UnnamedSchemaWithArrayParent2::class
+                                BaseDeserializer<ChatCompletionContentPart>(
+                                    ChatCompletionContentPart::class
                                 ) {
 
                                 override fun ObjectCodec.deserialize(
                                     node: JsonNode
-                                ): UnnamedSchemaWithArrayParent2 {
+                                ): ChatCompletionContentPart {
                                     val json = JsonValue.fromJsonNode(node)
                                     tryDeserialize(node, jacksonTypeRef<Text>()) { it.validate() }
                                         ?.let {
-                                            return UnnamedSchemaWithArrayParent2(
+                                            return ChatCompletionContentPart(
                                                 text = it,
                                                 _json = json
                                             )
@@ -4119,23 +4110,23 @@ private constructor(
                                             it.validate()
                                         }
                                         ?.let {
-                                            return UnnamedSchemaWithArrayParent2(
+                                            return ChatCompletionContentPart(
                                                 imageUrl = it,
                                                 _json = json
                                             )
                                         }
 
-                                    return UnnamedSchemaWithArrayParent2(_json = json)
+                                    return ChatCompletionContentPart(_json = json)
                                 }
                             }
 
                             class Serializer :
-                                BaseSerializer<UnnamedSchemaWithArrayParent2>(
-                                    UnnamedSchemaWithArrayParent2::class
+                                BaseSerializer<ChatCompletionContentPart>(
+                                    ChatCompletionContentPart::class
                                 ) {
 
                                 override fun serialize(
-                                    value: UnnamedSchemaWithArrayParent2,
+                                    value: ChatCompletionContentPart,
                                     generator: JsonGenerator,
                                     provider: SerializerProvider
                                 ) {
@@ -4146,7 +4137,7 @@ private constructor(
                                         value._json != null -> generator.writeObject(value._json)
                                         else ->
                                             throw IllegalStateException(
-                                                "Invalid UnnamedSchemaWithArrayParent2"
+                                                "Invalid ChatCompletionContentPart"
                                             )
                                     }
                                 }
