@@ -6,8 +6,11 @@ package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.Acl
+import com.braintrustdata.api.models.AclBatchUpdateParams
+import com.braintrustdata.api.models.AclBatchUpdateResponse
 import com.braintrustdata.api.models.AclCreateParams
 import com.braintrustdata.api.models.AclDeleteParams
+import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListPageAsync
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
@@ -46,6 +49,23 @@ interface AclServiceAsync {
     @JvmOverloads
     fun delete(
         params: AclDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<Acl>
+
+    /**
+     * Batch update acls. This operation is idempotent, so adding acls which already exist will have
+     * no effect, and removing acls which do not exist will have no effect.
+     */
+    @JvmOverloads
+    fun batchUpdate(
+        params: AclBatchUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<AclBatchUpdateResponse>
+
+    /** Delete a single acl */
+    @JvmOverloads
+    fun findAndDelete(
+        params: AclFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<Acl>
 }

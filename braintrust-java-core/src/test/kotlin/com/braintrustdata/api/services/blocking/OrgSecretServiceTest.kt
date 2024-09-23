@@ -106,6 +106,22 @@ class OrgSecretServiceTest {
     }
 
     @Test
+    fun callFindAndDelete() {
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val orgSecretService = client.orgSecret()
+        val orgSecret =
+            orgSecretService.findAndDelete(
+                OrgSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
+            )
+        println(orgSecret)
+        orgSecret.validate()
+    }
+
+    @Test
     fun callReplace() {
         val client =
             BraintrustOkHttpClient.builder()
