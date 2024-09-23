@@ -41,7 +41,7 @@ configure<MavenPublishBaseExtension> {
         developers {
             developer {
                 name.set("Braintrust")
-                email.set("info@braintrustdata.com")
+                email.set("infotest@braintrustdata.com")
             }
         }
 
