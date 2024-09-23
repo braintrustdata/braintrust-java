@@ -8,6 +8,8 @@ import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.Function
 import com.braintrustdata.api.models.FunctionCreateParams
 import com.braintrustdata.api.models.FunctionDeleteParams
+import com.braintrustdata.api.models.FunctionInvokeParams
+import com.braintrustdata.api.models.FunctionInvokeResponse
 import com.braintrustdata.api.models.FunctionListPage
 import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
@@ -60,6 +62,13 @@ interface FunctionService {
         params: FunctionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Function
+
+    /** Invoke a function. */
+    @JvmOverloads
+    fun invoke(
+        params: FunctionInvokeParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): FunctionInvokeResponse
 
     /**
      * Create or replace function. If there is an existing function in the project with the same

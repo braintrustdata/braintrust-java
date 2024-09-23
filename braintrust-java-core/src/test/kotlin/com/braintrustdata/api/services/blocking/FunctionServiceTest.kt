@@ -4,6 +4,7 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.FunctionListParams
 import org.junit.jupiter.api.Test
@@ -286,6 +287,49 @@ class FunctionServiceTest {
             )
         println(function)
         function.validate()
+    }
+
+    @Test
+    fun callInvoke() {
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val functionService = client.function()
+        val functionInvokeResponse =
+            functionService.invoke(
+                FunctionInvokeParams.builder()
+                    .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .input(JsonValue.from(mapOf<String, Any>()))
+                    .parent(
+                        FunctionInvokeParams.Parent.ofSpanParentStruct(
+                            FunctionInvokeParams.Parent.SpanParentStruct.builder()
+                                .objectId("object_id")
+                                .objectType(
+                                    FunctionInvokeParams.Parent.SpanParentStruct.ObjectType
+                                        .PROJECT_LOGS
+                                )
+                                .propagatedEvent(
+                                    FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent
+                                        .builder()
+                                        .build()
+                                )
+                                .rowIds(
+                                    FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
+                                        .id("id")
+                                        .rootSpanId("root_span_id")
+                                        .spanId("span_id")
+                                        .build()
+                                )
+                                .build()
+                        )
+                    )
+                    .stream(true)
+                    .version("version")
+                    .build()
+            )
+        println(functionInvokeResponse)
     }
 
     @Test
