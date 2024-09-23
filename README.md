@@ -72,13 +72,13 @@ To create a new project, first use the `ProjectCreateParams` builder to specify 
 then pass that to the `create` method of the `project` service.
 
 ```java
-import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
+import com.braintrustdata.api.models.ProjectModel;
 
 ProjectCreateParams params = ProjectCreateParams.builder()
     .name("foobar")
     .build();
-Project project = client.project().create(params);
+ProjectModel projectModel = client.project().create(params);
 ```
 
 ### Example: listing resources
@@ -88,10 +88,10 @@ You can retrieve the first page by:
 
 ```java
 import com.braintrustdata.api.models.Page;
-import com.braintrustdata.api.models.Project;
+import com.braintrustdata.api.models.ProjectModel;
 
 ProjectListPage page = client.project().list();
-for (Project project : page.objects()) {
+for (ProjectModel project : page.objects()) {
     System.out.println(project);
 }
 ```
@@ -127,7 +127,7 @@ ProjectCreateParams params = ProjectCreateParams.builder()
 When receiving a response, the Braintrust Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `BraintrustInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-Project project = client.project().create().validate();
+ProjectModel projectModel = client.project().create().validate();
 ```
 
 ### Response properties as JSON
@@ -177,7 +177,7 @@ which automatically handles fetching more pages for you:
 ```java
 // As an Iterable:
 ProjectListPage page = client.project().list(params);
-for (Project project : page.autoPager()) {
+for (ProjectModel project : page.autoPager()) {
     System.out.println(project);
 };
 
@@ -205,7 +205,7 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 ```java
 ProjectListPage page = client.project().list(params);
 while (page != null) {
-    for (Project project : page.objects()) {
+    for (ProjectModel project : page.objects()) {
         System.out.println(project);
     }
 
