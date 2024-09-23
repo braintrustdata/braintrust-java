@@ -5,12 +5,12 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.*
-import com.braintrustdata.api.models.OrgSecretListParams
+import com.braintrustdata.api.models.AiSecretListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class OrgSecretServiceTest {
+class AiSecretServiceTest {
 
     @Test
     fun callCreate() {
@@ -19,19 +19,19 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val orgSecret =
-            orgSecretService.create(
-                OrgSecretCreateParams.builder()
+        val aiSecretService = client.aiSecret()
+        val aISecret =
+            aiSecretService.create(
+                AiSecretCreateParams.builder()
                     .name("name")
-                    .metadata(OrgSecretCreateParams.Metadata.builder().build())
+                    .metadata(AiSecretCreateParams.Metadata.builder().build())
                     .orgName("org_name")
                     .secret("secret")
                     .type("type")
                     .build()
             )
-        println(orgSecret)
-        orgSecret.validate()
+        println(aISecret)
+        aISecret.validate()
     }
 
     @Test
@@ -41,15 +41,15 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val orgSecret =
-            orgSecretService.retrieve(
-                OrgSecretRetrieveParams.builder()
-                    .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        val aiSecretService = client.aiSecret()
+        val aISecret =
+            aiSecretService.retrieve(
+                AiSecretRetrieveParams.builder()
+                    .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
-        println(orgSecret)
-        orgSecret.validate()
+        println(aISecret)
+        aISecret.validate()
     }
 
     @Test
@@ -59,19 +59,19 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val orgSecret =
-            orgSecretService.update(
-                OrgSecretUpdateParams.builder()
-                    .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .metadata(OrgSecretUpdateParams.Metadata.builder().build())
+        val aiSecretService = client.aiSecret()
+        val aISecret =
+            aiSecretService.update(
+                AiSecretUpdateParams.builder()
+                    .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .metadata(AiSecretUpdateParams.Metadata.builder().build())
                     .name("name")
                     .secret("secret")
                     .type("type")
                     .build()
             )
-        println(orgSecret)
-        orgSecret.validate()
+        println(aISecret)
+        aISecret.validate()
     }
 
     @Test
@@ -81,8 +81,8 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val response = orgSecretService.list(OrgSecretListParams.builder().build())
+        val aiSecretService = client.aiSecret()
+        val response = aiSecretService.list(AiSecretListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
     }
@@ -94,15 +94,15 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val orgSecret =
-            orgSecretService.delete(
-                OrgSecretDeleteParams.builder()
-                    .orgSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        val aiSecretService = client.aiSecret()
+        val aISecret =
+            aiSecretService.delete(
+                AiSecretDeleteParams.builder()
+                    .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
-        println(orgSecret)
-        orgSecret.validate()
+        println(aISecret)
+        aISecret.validate()
     }
 
     @Test
@@ -112,13 +112,13 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val orgSecret =
-            orgSecretService.findAndDelete(
-                OrgSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
+        val aiSecretService = client.aiSecret()
+        val aISecret =
+            aiSecretService.findAndDelete(
+                AiSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
             )
-        println(orgSecret)
-        orgSecret.validate()
+        println(aISecret)
+        aISecret.validate()
     }
 
     @Test
@@ -128,18 +128,18 @@ class OrgSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val orgSecretService = client.orgSecret()
-        val orgSecret =
-            orgSecretService.replace(
-                OrgSecretReplaceParams.builder()
+        val aiSecretService = client.aiSecret()
+        val aISecret =
+            aiSecretService.replace(
+                AiSecretReplaceParams.builder()
                     .name("name")
-                    .metadata(OrgSecretReplaceParams.Metadata.builder().build())
+                    .metadata(AiSecretReplaceParams.Metadata.builder().build())
                     .orgName("org_name")
                     .secret("secret")
                     .type("type")
                     .build()
             )
-        println(orgSecret)
-        orgSecret.validate()
+        println(aISecret)
+        aISecret.validate()
     }
 }

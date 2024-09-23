@@ -41,5 +41,5 @@ interface BraintrustClient {
 
     fun apiKeyResource(): ApiKeyResourceService
 
-    fun orgSecret(): OrgSecretService
+    fun aiSecret(): AiSecretService
 }

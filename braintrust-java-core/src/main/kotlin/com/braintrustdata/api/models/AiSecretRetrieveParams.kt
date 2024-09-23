@@ -2,27 +2,19 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.models.*
 import java.util.Objects
-import java.util.Optional
 
-class OrgSecretDeleteParams
+class AiSecretRetrieveParams
 constructor(
-    private val orgSecretId: String,
+    private val aiSecretId: String,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun orgSecretId(): String = orgSecretId
-
-    @JvmSynthetic
-    internal fun getBody(): Optional<Map<String, JsonValue>> {
-        return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
-    }
+    fun aiSecretId(): String = aiSecretId
 
     @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
@@ -30,7 +22,7 @@ constructor(
 
     fun getPathParam(index: Int): String {
         return when (index) {
-            0 -> orgSecretId
+            0 -> aiSecretId
             else -> ""
         }
     }
@@ -39,31 +31,27 @@ constructor(
 
     fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return other is OrgSecretDeleteParams &&
-            this.orgSecretId == other.orgSecretId &&
+        return other is AiSecretRetrieveParams &&
+            this.aiSecretId == other.aiSecretId &&
             this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+            this.additionalHeaders == other.additionalHeaders
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            orgSecretId,
+            aiSecretId,
             additionalQueryParams,
             additionalHeaders,
-            additionalBodyProperties,
         )
     }
 
     override fun toString() =
-        "OrgSecretDeleteParams{orgSecretId=$orgSecretId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "AiSecretRetrieveParams{aiSecretId=$aiSecretId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -75,21 +63,19 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var orgSecretId: String? = null
+        private var aiSecretId: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(orgSecretDeleteParams: OrgSecretDeleteParams) = apply {
-            this.orgSecretId = orgSecretDeleteParams.orgSecretId
-            additionalQueryParams(orgSecretDeleteParams.additionalQueryParams)
-            additionalHeaders(orgSecretDeleteParams.additionalHeaders)
-            additionalBodyProperties(orgSecretDeleteParams.additionalBodyProperties)
+        internal fun from(aiSecretRetrieveParams: AiSecretRetrieveParams) = apply {
+            this.aiSecretId = aiSecretRetrieveParams.aiSecretId
+            additionalQueryParams(aiSecretRetrieveParams.additionalQueryParams)
+            additionalHeaders(aiSecretRetrieveParams.additionalHeaders)
         }
 
-        /** OrgSecret id */
-        fun orgSecretId(orgSecretId: String) = apply { this.orgSecretId = orgSecretId }
+        /** AiSecret id */
+        fun aiSecretId(aiSecretId: String) = apply { this.aiSecretId = aiSecretId }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -131,26 +117,11 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun build(): OrgSecretDeleteParams =
-            OrgSecretDeleteParams(
-                checkNotNull(orgSecretId) { "`orgSecretId` is required but was not set" },
+        fun build(): AiSecretRetrieveParams =
+            AiSecretRetrieveParams(
+                checkNotNull(aiSecretId) { "`aiSecretId` is required but was not set" },
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
             )
     }
 }
