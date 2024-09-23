@@ -6,13 +6,13 @@ import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class OrgSecretCreateParamsTest {
+class AiSecretReplaceParamsTest {
 
     @Test
-    fun createOrgSecretCreateParams() {
-        OrgSecretCreateParams.builder()
+    fun createAiSecretReplaceParams() {
+        AiSecretReplaceParams.builder()
             .name("name")
-            .metadata(OrgSecretCreateParams.Metadata.builder().build())
+            .metadata(AiSecretReplaceParams.Metadata.builder().build())
             .orgName("org_name")
             .secret("secret")
             .type("type")
@@ -22,9 +22,9 @@ class OrgSecretCreateParamsTest {
     @Test
     fun getBody() {
         val params =
-            OrgSecretCreateParams.builder()
+            AiSecretReplaceParams.builder()
                 .name("name")
-                .metadata(OrgSecretCreateParams.Metadata.builder().build())
+                .metadata(AiSecretReplaceParams.Metadata.builder().build())
                 .orgName("org_name")
                 .secret("secret")
                 .type("type")
@@ -32,7 +32,7 @@ class OrgSecretCreateParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
-        assertThat(body.metadata()).isEqualTo(OrgSecretCreateParams.Metadata.builder().build())
+        assertThat(body.metadata()).isEqualTo(AiSecretReplaceParams.Metadata.builder().build())
         assertThat(body.orgName()).isEqualTo("org_name")
         assertThat(body.secret()).isEqualTo("secret")
         assertThat(body.type()).isEqualTo("type")
@@ -40,7 +40,7 @@ class OrgSecretCreateParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = OrgSecretCreateParams.builder().name("name").build()
+        val params = AiSecretReplaceParams.builder().name("name").build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")

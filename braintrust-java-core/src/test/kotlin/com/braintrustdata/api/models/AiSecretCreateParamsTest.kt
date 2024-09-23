@@ -6,13 +6,13 @@ import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class OrgSecretReplaceParamsTest {
+class AiSecretCreateParamsTest {
 
     @Test
-    fun createOrgSecretReplaceParams() {
-        OrgSecretReplaceParams.builder()
+    fun createAiSecretCreateParams() {
+        AiSecretCreateParams.builder()
             .name("name")
-            .metadata(OrgSecretReplaceParams.Metadata.builder().build())
+            .metadata(AiSecretCreateParams.Metadata.builder().build())
             .orgName("org_name")
             .secret("secret")
             .type("type")
@@ -22,9 +22,9 @@ class OrgSecretReplaceParamsTest {
     @Test
     fun getBody() {
         val params =
-            OrgSecretReplaceParams.builder()
+            AiSecretCreateParams.builder()
                 .name("name")
-                .metadata(OrgSecretReplaceParams.Metadata.builder().build())
+                .metadata(AiSecretCreateParams.Metadata.builder().build())
                 .orgName("org_name")
                 .secret("secret")
                 .type("type")
@@ -32,7 +32,7 @@ class OrgSecretReplaceParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
-        assertThat(body.metadata()).isEqualTo(OrgSecretReplaceParams.Metadata.builder().build())
+        assertThat(body.metadata()).isEqualTo(AiSecretCreateParams.Metadata.builder().build())
         assertThat(body.orgName()).isEqualTo("org_name")
         assertThat(body.secret()).isEqualTo("secret")
         assertThat(body.type()).isEqualTo("type")
@@ -40,7 +40,7 @@ class OrgSecretReplaceParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = OrgSecretReplaceParams.builder().name("name").build()
+        val params = AiSecretCreateParams.builder().name("name").build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")

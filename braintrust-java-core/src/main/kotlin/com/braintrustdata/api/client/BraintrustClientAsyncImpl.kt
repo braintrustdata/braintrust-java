@@ -58,9 +58,7 @@ constructor(
         ApiKeyResourceServiceAsyncImpl(clientOptions)
     }
 
-    private val orgSecret: OrgSecretServiceAsync by lazy {
-        OrgSecretServiceAsyncImpl(clientOptions)
-    }
+    private val aiSecret: AiSecretServiceAsync by lazy { AiSecretServiceAsyncImpl(clientOptions) }
 
     override fun sync(): BraintrustClient = sync
 
@@ -94,5 +92,5 @@ constructor(
 
     override fun apiKeyResource(): ApiKeyResourceServiceAsync = apiKeyResource
 
-    override fun orgSecret(): OrgSecretServiceAsync = orgSecret
+    override fun aiSecret(): AiSecretServiceAsync = aiSecret
 }

@@ -41,5 +41,5 @@ interface BraintrustClientAsync {
 
     fun apiKeyResource(): ApiKeyResourceServiceAsync
 
-    fun orgSecret(): OrgSecretServiceAsync
+    fun aiSecret(): AiSecretServiceAsync
 }

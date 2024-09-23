@@ -11,6 +11,8 @@ import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.Function
 import com.braintrustdata.api.models.FunctionCreateParams
 import com.braintrustdata.api.models.FunctionDeleteParams
+import com.braintrustdata.api.models.FunctionInvokeParams
+import com.braintrustdata.api.models.FunctionInvokeResponse
 import com.braintrustdata.api.models.FunctionListPage
 import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
@@ -171,6 +173,29 @@ constructor(
                         validate()
                     }
                 }
+        }
+    }
+
+    private val invokeHandler: Handler<FunctionInvokeResponse> =
+        jsonHandler<FunctionInvokeResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+    /** Invoke a function. */
+    override fun invoke(
+        params: FunctionInvokeParams,
+        requestOptions: RequestOptions
+    ): FunctionInvokeResponse {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.POST)
+                .addPathSegments("v1", "function", params.getPathParam(0), "invoke")
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .build()
+        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
+            response.use { invokeHandler.handle(it) }
         }
     }
 
