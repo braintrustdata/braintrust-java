@@ -11,7 +11,7 @@ import com.braintrustdata.api.models.OrganizationListPageAsync
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
-import com.braintrustdata.api.services.async.organization.MemberServiceAsync
+import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
 import java.util.concurrent.CompletableFuture
 
 interface OrganizationServiceAsync {

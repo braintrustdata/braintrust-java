@@ -5,14 +5,14 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
 import com.braintrustdata.api.models.ProjectListPage
 import com.braintrustdata.api.models.ProjectListParams
-import com.braintrustdata.api.models.ProjectModel
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
-import com.braintrustdata.api.services.blocking.project.LogService
+import com.braintrustdata.api.services.blocking.projects.LogService
 
 interface ProjectService {
 
@@ -26,14 +26,14 @@ interface ProjectService {
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): ProjectModel
+    ): Project
 
     /** Get a project object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): ProjectModel
+    ): Project
 
     /**
      * Partially update a project object. Specify the fields to update in the payload. Any
@@ -44,7 +44,7 @@ interface ProjectService {
     fun update(
         params: ProjectUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): ProjectModel
+    ): Project
 
     /**
      * List out all projects. The projects are sorted by creation date, with the most
@@ -61,5 +61,5 @@ interface ProjectService {
     fun delete(
         params: ProjectDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): ProjectModel
+    ): Project
 }

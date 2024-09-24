@@ -14,6 +14,18 @@ class FunctionInvokeParamsTest {
         FunctionInvokeParams.builder()
             .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .input(JsonValue.from(mapOf<String, Any>()))
+            .messages(
+                listOf(
+                    FunctionInvokeParams.Message.ofSystem(
+                        FunctionInvokeParams.Message.System.builder()
+                            .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                            .content("content")
+                            .name("name")
+                            .build()
+                    )
+                )
+            )
+            .mode(FunctionInvokeParams.Mode.AUTO)
             .parent(
                 FunctionInvokeParams.Parent.ofSpanParentStruct(
                     FunctionInvokeParams.Parent.SpanParentStruct.builder()
@@ -46,6 +58,18 @@ class FunctionInvokeParamsTest {
             FunctionInvokeParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .input(JsonValue.from(mapOf<String, Any>()))
+                .messages(
+                    listOf(
+                        FunctionInvokeParams.Message.ofSystem(
+                            FunctionInvokeParams.Message.System.builder()
+                                .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                                .content("content")
+                                .name("name")
+                                .build()
+                        )
+                    )
+                )
+                .mode(FunctionInvokeParams.Mode.AUTO)
                 .parent(
                     FunctionInvokeParams.Parent.ofSpanParentStruct(
                         FunctionInvokeParams.Parent.SpanParentStruct.builder()
@@ -74,6 +98,19 @@ class FunctionInvokeParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(body.messages())
+            .isEqualTo(
+                listOf(
+                    FunctionInvokeParams.Message.ofSystem(
+                        FunctionInvokeParams.Message.System.builder()
+                            .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                            .content("content")
+                            .name("name")
+                            .build()
+                    )
+                )
+            )
+        assertThat(body.mode()).isEqualTo(FunctionInvokeParams.Mode.AUTO)
         assertThat(body.parent())
             .isEqualTo(
                 FunctionInvokeParams.Parent.ofSpanParentStruct(

@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class AiSecretListPageAsync
 private constructor(
-    private val aiSecretService: AiSecretServiceAsync,
+    private val aiSecretsService: AiSecretServiceAsync,
     private val params: AiSecretListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is AiSecretListPageAsync &&
-            this.aiSecretService == other.aiSecretService &&
+            this.aiSecretsService == other.aiSecretsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            aiSecretService,
+            aiSecretsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "AiSecretListPageAsync{aiSecretService=$aiSecretService, params=$params, response=$response}"
+        "AiSecretListPageAsync{aiSecretsService=$aiSecretsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -80,7 +80,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<AiSecretListPageAsync>> {
         return getNextPageParams()
-            .map { aiSecretService.list(it).thenApply { Optional.of(it) } }
+            .map { aiSecretsService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -90,12 +90,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            aiSecretService: AiSecretServiceAsync,
+            aiSecretsService: AiSecretServiceAsync,
             params: AiSecretListParams,
             response: Response
         ) =
             AiSecretListPageAsync(
-                aiSecretService,
+                aiSecretsService,
                 params,
                 response,
             )

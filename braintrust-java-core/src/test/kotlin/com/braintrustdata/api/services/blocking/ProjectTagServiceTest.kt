@@ -19,7 +19,7 @@ class ProjectTagServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTag()
+        val projectTagService = client.projectTags()
         val projectTag =
             projectTagService.create(
                 ProjectTagCreateParams.builder()
@@ -40,7 +40,7 @@ class ProjectTagServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTag()
+        val projectTagService = client.projectTags()
         val projectTag =
             projectTagService.retrieve(
                 ProjectTagRetrieveParams.builder()
@@ -58,7 +58,7 @@ class ProjectTagServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTag()
+        val projectTagService = client.projectTags()
         val projectTag =
             projectTagService.update(
                 ProjectTagUpdateParams.builder()
@@ -79,7 +79,7 @@ class ProjectTagServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTag()
+        val projectTagService = client.projectTags()
         val response = projectTagService.list(ProjectTagListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -92,7 +92,7 @@ class ProjectTagServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTag()
+        val projectTagService = client.projectTags()
         val projectTag =
             projectTagService.delete(
                 ProjectTagDeleteParams.builder()
@@ -110,7 +110,7 @@ class ProjectTagServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTag()
+        val projectTagService = client.projectTags()
         val projectTag =
             projectTagService.replace(
                 ProjectTagReplaceParams.builder()

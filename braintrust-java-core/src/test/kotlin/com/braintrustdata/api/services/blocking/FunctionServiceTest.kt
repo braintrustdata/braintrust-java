@@ -20,7 +20,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val function =
             functionService.create(
                 FunctionCreateParams.builder()
@@ -35,7 +35,13 @@ class FunctionServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .slug("slug")
                     .description("description")
-                    .functionType(FunctionCreateParams.FunctionType.TASK)
+                    .functionSchema(
+                        FunctionCreateParams.FunctionSchema.builder()
+                            .parameters(JsonValue.from(mapOf<String, Any>()))
+                            .returns(JsonValue.from(mapOf<String, Any>()))
+                            .build()
+                    )
+                    .functionType(FunctionCreateParams.FunctionType.LLM)
                     .origin(
                         FunctionCreateParams.Origin.builder()
                             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -122,6 +128,16 @@ class FunctionServiceTest {
                                         .build()
                                 )
                             )
+                            .toolFunctions(
+                                listOf(
+                                    PromptData.ToolFunction.ofFunction(
+                                        PromptData.ToolFunction.Function.builder()
+                                            .id("id")
+                                            .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                            .build()
+                                    )
+                                )
+                            )
                             .build()
                     )
                     .tags(listOf("string"))
@@ -138,7 +154,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val function =
             functionService.retrieve(
                 FunctionRetrieveParams.builder()
@@ -156,7 +172,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val function =
             functionService.update(
                 FunctionUpdateParams.builder()
@@ -249,6 +265,16 @@ class FunctionServiceTest {
                                         .build()
                                 )
                             )
+                            .toolFunctions(
+                                listOf(
+                                    PromptData.ToolFunction.ofFunction(
+                                        PromptData.ToolFunction.Function.builder()
+                                            .id("id")
+                                            .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                            .build()
+                                    )
+                                )
+                            )
                             .build()
                     )
                     .tags(listOf("string"))
@@ -265,7 +291,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val response = functionService.list(FunctionListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -278,7 +304,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val function =
             functionService.delete(
                 FunctionDeleteParams.builder()
@@ -296,12 +322,24 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val functionInvokeResponse =
             functionService.invoke(
                 FunctionInvokeParams.builder()
                     .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .input(JsonValue.from(mapOf<String, Any>()))
+                    .messages(
+                        listOf(
+                            FunctionInvokeParams.Message.ofSystem(
+                                FunctionInvokeParams.Message.System.builder()
+                                    .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                                    .content("content")
+                                    .name("name")
+                                    .build()
+                            )
+                        )
+                    )
+                    .mode(FunctionInvokeParams.Mode.AUTO)
                     .parent(
                         FunctionInvokeParams.Parent.ofSpanParentStruct(
                             FunctionInvokeParams.Parent.SpanParentStruct.builder()
@@ -339,7 +377,7 @@ class FunctionServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val functionService = client.function()
+        val functionService = client.functions()
         val function =
             functionService.replace(
                 FunctionReplaceParams.builder()
@@ -354,7 +392,13 @@ class FunctionServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .slug("slug")
                     .description("description")
-                    .functionType(FunctionReplaceParams.FunctionType.TASK)
+                    .functionSchema(
+                        FunctionReplaceParams.FunctionSchema.builder()
+                            .parameters(JsonValue.from(mapOf<String, Any>()))
+                            .returns(JsonValue.from(mapOf<String, Any>()))
+                            .build()
+                    )
+                    .functionType(FunctionReplaceParams.FunctionType.LLM)
                     .origin(
                         FunctionReplaceParams.Origin.builder()
                             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -439,6 +483,16 @@ class FunctionServiceTest {
                                         .content("content")
                                         .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                         .build()
+                                )
+                            )
+                            .toolFunctions(
+                                listOf(
+                                    PromptData.ToolFunction.ofFunction(
+                                        PromptData.ToolFunction.Function.builder()
+                                            .id("id")
+                                            .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                            .build()
+                                    )
                                 )
                             )
                             .build()

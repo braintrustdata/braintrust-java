@@ -82,6 +82,16 @@ class PromptDataTest {
                             .build()
                     )
                 )
+                .toolFunctions(
+                    listOf(
+                        PromptData.ToolFunction.ofFunction(
+                            PromptData.ToolFunction.Function.builder()
+                                .id("id")
+                                .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                .build()
+                        )
+                    )
+                )
                 .build()
         assertThat(promptData).isNotNull
         assertThat(promptData.options())
@@ -151,6 +161,15 @@ class PromptDataTest {
                     PromptData.Prompt.Completion.builder()
                         .content("content")
                         .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                        .build()
+                )
+            )
+        assertThat(promptData.toolFunctions().get())
+            .containsExactly(
+                PromptData.ToolFunction.ofFunction(
+                    PromptData.ToolFunction.Function.builder()
+                        .id("id")
+                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
                         .build()
                 )
             )

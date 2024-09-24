@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class RoleListPageAsync
 private constructor(
-    private val roleService: RoleServiceAsync,
+    private val rolesService: RoleServiceAsync,
     private val params: RoleListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is RoleListPageAsync &&
-            this.roleService == other.roleService &&
+            this.rolesService == other.rolesService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            roleService,
+            rolesService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "RoleListPageAsync{roleService=$roleService, params=$params, response=$response}"
+        "RoleListPageAsync{rolesService=$rolesService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -74,7 +74,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<RoleListPageAsync>> {
         return getNextPageParams()
-            .map { roleService.list(it).thenApply { Optional.of(it) } }
+            .map { rolesService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -83,9 +83,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(roleService: RoleServiceAsync, params: RoleListParams, response: Response) =
+        fun of(rolesService: RoleServiceAsync, params: RoleListParams, response: Response) =
             RoleListPageAsync(
-                roleService,
+                rolesService,
                 params,
                 response,
             )

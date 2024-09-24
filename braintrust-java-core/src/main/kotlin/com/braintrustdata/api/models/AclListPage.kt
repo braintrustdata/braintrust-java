@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class AclListPage
 private constructor(
-    private val aclService: AclService,
+    private val aclsService: AclService,
     private val params: AclListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is AclListPage &&
-            this.aclService == other.aclService &&
+            this.aclsService == other.aclsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            aclService,
+            aclsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "AclListPage{aclService=$aclService, params=$params, response=$response}"
+        "AclListPage{aclsService=$aclsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -72,7 +72,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<AclListPage> {
-        return getNextPageParams().map { aclService.list(it) }
+        return getNextPageParams().map { aclsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -80,9 +80,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(aclService: AclService, params: AclListParams, response: Response) =
+        fun of(aclsService: AclService, params: AclListParams, response: Response) =
             AclListPage(
-                aclService,
+                aclsService,
                 params,
                 response,
             )
