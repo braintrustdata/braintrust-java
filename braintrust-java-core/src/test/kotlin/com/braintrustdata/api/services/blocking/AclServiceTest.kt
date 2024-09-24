@@ -19,7 +19,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acl()
+        val aclService = client.acls()
         val acl =
             aclService.create(
                 AclCreateParams.builder()
@@ -43,7 +43,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acl()
+        val aclService = client.acls()
         val acl =
             aclService.retrieve(
                 AclRetrieveParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -59,7 +59,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acl()
+        val aclService = client.acls()
         val response =
             aclService.list(
                 AclListParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -75,7 +75,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acl()
+        val aclService = client.acls()
         val acl =
             aclService.delete(
                 AclDeleteParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -91,7 +91,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acl()
+        val aclService = client.acls()
         val aclBatchUpdateResponse =
             aclService.batchUpdate(
                 AclBatchUpdateParams.builder()
@@ -138,7 +138,7 @@ class AclServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aclService = client.acl()
+        val aclService = client.acls()
         val acl =
             aclService.findAndDelete(
                 AclFindAndDeleteParams.builder()

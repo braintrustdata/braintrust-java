@@ -418,41 +418,47 @@ constructor(
 
         companion object {
 
-            @JvmField val TASK = FunctionType(JsonField.of("task"))
-
             @JvmField val LLM = FunctionType(JsonField.of("llm"))
 
             @JvmField val SCORER = FunctionType(JsonField.of("scorer"))
+
+            @JvmField val TASK = FunctionType(JsonField.of("task"))
+
+            @JvmField val TOOL = FunctionType(JsonField.of("tool"))
 
             @JvmStatic fun of(value: String) = FunctionType(JsonField.of(value))
         }
 
         enum class Known {
-            TASK,
             LLM,
             SCORER,
+            TASK,
+            TOOL,
         }
 
         enum class Value {
-            TASK,
             LLM,
             SCORER,
+            TASK,
+            TOOL,
             _UNKNOWN,
         }
 
         fun value(): Value =
             when (this) {
-                TASK -> Value.TASK
                 LLM -> Value.LLM
                 SCORER -> Value.SCORER
+                TASK -> Value.TASK
+                TOOL -> Value.TOOL
                 else -> Value._UNKNOWN
             }
 
         fun known(): Known =
             when (this) {
-                TASK -> Known.TASK
                 LLM -> Known.LLM
                 SCORER -> Known.SCORER
+                TASK -> Known.TASK
+                TOOL -> Known.TOOL
                 else -> throw BraintrustInvalidDataException("Unknown FunctionType: $value")
             }
 

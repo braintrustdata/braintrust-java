@@ -88,6 +88,16 @@ class PromptUpdateParamsTest {
                                 .build()
                         )
                     )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
+                        )
+                    )
                     .build()
             )
             .slug("slug")
@@ -178,6 +188,16 @@ class PromptUpdateParamsTest {
                                     .build()
                             )
                         )
+                        .toolFunctions(
+                            listOf(
+                                PromptData.ToolFunction.ofFunction(
+                                    PromptData.ToolFunction.Function.builder()
+                                        .id("id")
+                                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                        .build()
+                                )
+                            )
+                        )
                         .build()
                 )
                 .slug("slug")
@@ -260,6 +280,16 @@ class PromptUpdateParamsTest {
                                 .content("content")
                                 .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
+                        )
+                    )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
                         )
                     )
                     .build()

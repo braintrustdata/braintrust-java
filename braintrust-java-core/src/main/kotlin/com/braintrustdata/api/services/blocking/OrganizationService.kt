@@ -11,7 +11,7 @@ import com.braintrustdata.api.models.OrganizationListPage
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
-import com.braintrustdata.api.services.blocking.organization.MemberService
+import com.braintrustdata.api.services.blocking.organizations.MemberService
 
 interface OrganizationService {
 

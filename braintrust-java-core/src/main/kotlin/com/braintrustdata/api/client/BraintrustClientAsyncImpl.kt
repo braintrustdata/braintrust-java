@@ -20,77 +20,75 @@ constructor(
 
     private val topLevel: TopLevelServiceAsync by lazy { TopLevelServiceAsyncImpl(clientOptions) }
 
-    private val project: ProjectServiceAsync by lazy { ProjectServiceAsyncImpl(clientOptions) }
+    private val projects: ProjectServiceAsync by lazy { ProjectServiceAsyncImpl(clientOptions) }
 
-    private val experiment: ExperimentServiceAsync by lazy {
+    private val experiments: ExperimentServiceAsync by lazy {
         ExperimentServiceAsyncImpl(clientOptions)
     }
 
-    private val dataset: DatasetServiceAsync by lazy { DatasetServiceAsyncImpl(clientOptions) }
+    private val datasets: DatasetServiceAsync by lazy { DatasetServiceAsyncImpl(clientOptions) }
 
-    private val prompt: PromptServiceAsync by lazy { PromptServiceAsyncImpl(clientOptions) }
+    private val prompts: PromptServiceAsync by lazy { PromptServiceAsyncImpl(clientOptions) }
 
-    private val role: RoleServiceAsync by lazy { RoleServiceAsyncImpl(clientOptions) }
+    private val roles: RoleServiceAsync by lazy { RoleServiceAsyncImpl(clientOptions) }
 
-    private val group: GroupServiceAsync by lazy { GroupServiceAsyncImpl(clientOptions) }
+    private val groups: GroupServiceAsync by lazy { GroupServiceAsyncImpl(clientOptions) }
 
-    private val acl: AclServiceAsync by lazy { AclServiceAsyncImpl(clientOptions) }
+    private val acls: AclServiceAsync by lazy { AclServiceAsyncImpl(clientOptions) }
 
-    private val user: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
+    private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
 
-    private val projectScore: ProjectScoreServiceAsync by lazy {
+    private val projectScores: ProjectScoreServiceAsync by lazy {
         ProjectScoreServiceAsyncImpl(clientOptions)
     }
 
-    private val projectTag: ProjectTagServiceAsync by lazy {
+    private val projectTags: ProjectTagServiceAsync by lazy {
         ProjectTagServiceAsyncImpl(clientOptions)
     }
 
-    private val function: FunctionServiceAsync by lazy { FunctionServiceAsyncImpl(clientOptions) }
+    private val functions: FunctionServiceAsync by lazy { FunctionServiceAsyncImpl(clientOptions) }
 
-    private val view: ViewServiceAsync by lazy { ViewServiceAsyncImpl(clientOptions) }
+    private val views: ViewServiceAsync by lazy { ViewServiceAsyncImpl(clientOptions) }
 
-    private val organization: OrganizationServiceAsync by lazy {
+    private val organizations: OrganizationServiceAsync by lazy {
         OrganizationServiceAsyncImpl(clientOptions)
     }
 
-    private val apiKeyResource: ApiKeyResourceServiceAsync by lazy {
-        ApiKeyResourceServiceAsyncImpl(clientOptions)
-    }
+    private val apiKeys: ApiKeyServiceAsync by lazy { ApiKeyServiceAsyncImpl(clientOptions) }
 
-    private val aiSecret: AiSecretServiceAsync by lazy { AiSecretServiceAsyncImpl(clientOptions) }
+    private val aiSecrets: AiSecretServiceAsync by lazy { AiSecretServiceAsyncImpl(clientOptions) }
 
     override fun sync(): BraintrustClient = sync
 
     override fun topLevel(): TopLevelServiceAsync = topLevel
 
-    override fun project(): ProjectServiceAsync = project
+    override fun projects(): ProjectServiceAsync = projects
 
-    override fun experiment(): ExperimentServiceAsync = experiment
+    override fun experiments(): ExperimentServiceAsync = experiments
 
-    override fun dataset(): DatasetServiceAsync = dataset
+    override fun datasets(): DatasetServiceAsync = datasets
 
-    override fun prompt(): PromptServiceAsync = prompt
+    override fun prompts(): PromptServiceAsync = prompts
 
-    override fun role(): RoleServiceAsync = role
+    override fun roles(): RoleServiceAsync = roles
 
-    override fun group(): GroupServiceAsync = group
+    override fun groups(): GroupServiceAsync = groups
 
-    override fun acl(): AclServiceAsync = acl
+    override fun acls(): AclServiceAsync = acls
 
-    override fun user(): UserServiceAsync = user
+    override fun users(): UserServiceAsync = users
 
-    override fun projectScore(): ProjectScoreServiceAsync = projectScore
+    override fun projectScores(): ProjectScoreServiceAsync = projectScores
 
-    override fun projectTag(): ProjectTagServiceAsync = projectTag
+    override fun projectTags(): ProjectTagServiceAsync = projectTags
 
-    override fun function(): FunctionServiceAsync = function
+    override fun functions(): FunctionServiceAsync = functions
 
-    override fun view(): ViewServiceAsync = view
+    override fun views(): ViewServiceAsync = views
 
-    override fun organization(): OrganizationServiceAsync = organization
+    override fun organizations(): OrganizationServiceAsync = organizations
 
-    override fun apiKeyResource(): ApiKeyResourceServiceAsync = apiKeyResource
+    override fun apiKeys(): ApiKeyServiceAsync = apiKeys
 
-    override fun aiSecret(): AiSecretServiceAsync = aiSecret
+    override fun aiSecrets(): AiSecretServiceAsync = aiSecrets
 }

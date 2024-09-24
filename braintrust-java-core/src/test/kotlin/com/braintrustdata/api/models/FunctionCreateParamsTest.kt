@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -22,7 +23,13 @@ class FunctionCreateParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .slug("slug")
             .description("description")
-            .functionType(FunctionCreateParams.FunctionType.TASK)
+            .functionSchema(
+                FunctionCreateParams.FunctionSchema.builder()
+                    .parameters(JsonValue.from(mapOf<String, Any>()))
+                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .build()
+            )
+            .functionType(FunctionCreateParams.FunctionType.LLM)
             .origin(
                 FunctionCreateParams.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -104,6 +111,16 @@ class FunctionCreateParamsTest {
                                 .build()
                         )
                     )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
+                        )
+                    )
                     .build()
             )
             .tags(listOf("string"))
@@ -125,7 +142,13 @@ class FunctionCreateParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .slug("slug")
                 .description("description")
-                .functionType(FunctionCreateParams.FunctionType.TASK)
+                .functionSchema(
+                    FunctionCreateParams.FunctionSchema.builder()
+                        .parameters(JsonValue.from(mapOf<String, Any>()))
+                        .returns(JsonValue.from(mapOf<String, Any>()))
+                        .build()
+                )
+                .functionType(FunctionCreateParams.FunctionType.LLM)
                 .origin(
                     FunctionCreateParams.Origin.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -209,6 +232,16 @@ class FunctionCreateParamsTest {
                                     .build()
                             )
                         )
+                        .toolFunctions(
+                            listOf(
+                                PromptData.ToolFunction.ofFunction(
+                                    PromptData.ToolFunction.Function.builder()
+                                        .id("id")
+                                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                        .build()
+                                )
+                            )
+                        )
                         .build()
                 )
                 .tags(listOf("string"))
@@ -227,7 +260,14 @@ class FunctionCreateParamsTest {
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.slug()).isEqualTo("slug")
         assertThat(body.description()).isEqualTo("description")
-        assertThat(body.functionType()).isEqualTo(FunctionCreateParams.FunctionType.TASK)
+        assertThat(body.functionSchema())
+            .isEqualTo(
+                FunctionCreateParams.FunctionSchema.builder()
+                    .parameters(JsonValue.from(mapOf<String, Any>()))
+                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .build()
+            )
+        assertThat(body.functionType()).isEqualTo(FunctionCreateParams.FunctionType.LLM)
         assertThat(body.origin())
             .isEqualTo(
                 FunctionCreateParams.Origin.builder()
@@ -309,6 +349,16 @@ class FunctionCreateParamsTest {
                                 .content("content")
                                 .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
+                        )
+                    )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
                         )
                     )
                     .build()

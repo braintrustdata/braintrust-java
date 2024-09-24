@@ -5,14 +5,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
 import com.braintrustdata.api.models.ProjectListPageAsync
 import com.braintrustdata.api.models.ProjectListParams
-import com.braintrustdata.api.models.ProjectModel
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
-import com.braintrustdata.api.services.async.project.LogServiceAsync
+import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import java.util.concurrent.CompletableFuture
 
 interface ProjectServiceAsync {
@@ -27,14 +27,14 @@ interface ProjectServiceAsync {
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectModel>
+    ): CompletableFuture<Project>
 
     /** Get a project object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectModel>
+    ): CompletableFuture<Project>
 
     /**
      * Partially update a project object. Specify the fields to update in the payload. Any
@@ -45,7 +45,7 @@ interface ProjectServiceAsync {
     fun update(
         params: ProjectUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectModel>
+    ): CompletableFuture<Project>
 
     /**
      * List out all projects. The projects are sorted by creation date, with the most
@@ -62,5 +62,5 @@ interface ProjectServiceAsync {
     fun delete(
         params: ProjectDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectModel>
+    ): CompletableFuture<Project>
 }

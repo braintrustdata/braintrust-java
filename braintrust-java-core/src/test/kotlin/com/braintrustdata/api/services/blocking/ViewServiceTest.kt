@@ -21,7 +21,7 @@ class ViewServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.view()
+        val viewService = client.views()
         val view =
             viewService.create(
                 ViewCreateParams.builder()
@@ -63,7 +63,7 @@ class ViewServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.view()
+        val viewService = client.views()
         val view =
             viewService.retrieve(
                 ViewRetrieveParams.builder()
@@ -83,7 +83,7 @@ class ViewServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.view()
+        val viewService = client.views()
         val view =
             viewService.update(
                 ViewUpdateParams.builder()
@@ -125,7 +125,7 @@ class ViewServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.view()
+        val viewService = client.views()
         val response =
             viewService.list(
                 ViewListParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -141,7 +141,7 @@ class ViewServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.view()
+        val viewService = client.views()
         val view =
             viewService.delete(
                 ViewDeleteParams.builder()
@@ -161,7 +161,7 @@ class ViewServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.view()
+        val viewService = client.views()
         val view =
             viewService.replace(
                 ViewReplaceParams.builder()

@@ -14,8 +14,8 @@ import com.braintrustdata.api.models.OrganizationListPage
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
-import com.braintrustdata.api.services.blocking.organization.MemberService
-import com.braintrustdata.api.services.blocking.organization.MemberServiceImpl
+import com.braintrustdata.api.services.blocking.organizations.MemberService
+import com.braintrustdata.api.services.blocking.organizations.MemberServiceImpl
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
