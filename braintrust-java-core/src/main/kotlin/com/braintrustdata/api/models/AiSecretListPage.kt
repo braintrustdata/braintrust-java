@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class AiSecretListPage
 private constructor(
-    private val aiSecretService: AiSecretService,
+    private val aiSecretsService: AiSecretService,
     private val params: AiSecretListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is AiSecretListPage &&
-            this.aiSecretService == other.aiSecretService &&
+            this.aiSecretsService == other.aiSecretsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            aiSecretService,
+            aiSecretsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "AiSecretListPage{aiSecretService=$aiSecretService, params=$params, response=$response}"
+        "AiSecretListPage{aiSecretsService=$aiSecretsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<AiSecretListPage> {
-        return getNextPageParams().map { aiSecretService.list(it) }
+        return getNextPageParams().map { aiSecretsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -86,9 +86,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(aiSecretService: AiSecretService, params: AiSecretListParams, response: Response) =
+        fun of(aiSecretsService: AiSecretService, params: AiSecretListParams, response: Response) =
             AiSecretListPage(
-                aiSecretService,
+                aiSecretsService,
                 params,
                 response,
             )

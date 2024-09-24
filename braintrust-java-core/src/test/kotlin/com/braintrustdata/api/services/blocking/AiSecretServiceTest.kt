@@ -19,7 +19,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val aISecret =
             aiSecretService.create(
                 AiSecretCreateParams.builder()
@@ -41,7 +41,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val aISecret =
             aiSecretService.retrieve(
                 AiSecretRetrieveParams.builder()
@@ -59,7 +59,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val aISecret =
             aiSecretService.update(
                 AiSecretUpdateParams.builder()
@@ -81,7 +81,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val response = aiSecretService.list(AiSecretListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -94,7 +94,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val aISecret =
             aiSecretService.delete(
                 AiSecretDeleteParams.builder()
@@ -112,7 +112,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val aISecret =
             aiSecretService.findAndDelete(
                 AiSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
@@ -128,7 +128,7 @@ class AiSecretServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val aiSecretService = client.aiSecret()
+        val aiSecretService = client.aiSecrets()
         val aISecret =
             aiSecretService.replace(
                 AiSecretReplaceParams.builder()

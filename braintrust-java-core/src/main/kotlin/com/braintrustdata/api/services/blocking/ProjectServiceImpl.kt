@@ -8,15 +8,15 @@ import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.errors.BraintrustError
+import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
 import com.braintrustdata.api.models.ProjectListPage
 import com.braintrustdata.api.models.ProjectListParams
-import com.braintrustdata.api.models.ProjectModel
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
-import com.braintrustdata.api.services.blocking.project.LogService
-import com.braintrustdata.api.services.blocking.project.LogServiceImpl
+import com.braintrustdata.api.services.blocking.projects.LogService
+import com.braintrustdata.api.services.blocking.projects.LogServiceImpl
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
@@ -33,14 +33,14 @@ constructor(
 
     override fun logs(): LogService = logs
 
-    private val createHandler: Handler<ProjectModel> =
-        jsonHandler<ProjectModel>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val createHandler: Handler<Project> =
+        jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
      * Create a new project. If there is an existing project with the same name as the one specified
      * in the request, will return the existing project unmodified
      */
-    override fun create(params: ProjectCreateParams, requestOptions: RequestOptions): ProjectModel {
+    override fun create(params: ProjectCreateParams, requestOptions: RequestOptions): Project {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -62,14 +62,11 @@ constructor(
         }
     }
 
-    private val retrieveHandler: Handler<ProjectModel> =
-        jsonHandler<ProjectModel>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val retrieveHandler: Handler<Project> =
+        jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Get a project object by its id */
-    override fun retrieve(
-        params: ProjectRetrieveParams,
-        requestOptions: RequestOptions
-    ): ProjectModel {
+    override fun retrieve(params: ProjectRetrieveParams, requestOptions: RequestOptions): Project {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -90,15 +87,15 @@ constructor(
         }
     }
 
-    private val updateHandler: Handler<ProjectModel> =
-        jsonHandler<ProjectModel>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val updateHandler: Handler<Project> =
+        jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /**
      * Partially update a project object. Specify the fields to update in the payload. Any
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    override fun update(params: ProjectUpdateParams, requestOptions: RequestOptions): ProjectModel {
+    override fun update(params: ProjectUpdateParams, requestOptions: RequestOptions): Project {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.PATCH)
@@ -150,11 +147,11 @@ constructor(
         }
     }
 
-    private val deleteHandler: Handler<ProjectModel> =
-        jsonHandler<ProjectModel>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val deleteHandler: Handler<Project> =
+        jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Delete a project object by its id */
-    override fun delete(params: ProjectDeleteParams, requestOptions: RequestOptions): ProjectModel {
+    override fun delete(params: ProjectDeleteParams, requestOptions: RequestOptions): Project {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.DELETE)

@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class OrganizationListPage
 private constructor(
-    private val organizationService: OrganizationService,
+    private val organizationsService: OrganizationService,
     private val params: OrganizationListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is OrganizationListPage &&
-            this.organizationService == other.organizationService &&
+            this.organizationsService == other.organizationsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            organizationService,
+            organizationsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "OrganizationListPage{organizationService=$organizationService, params=$params, response=$response}"
+        "OrganizationListPage{organizationsService=$organizationsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<OrganizationListPage> {
-        return getNextPageParams().map { organizationService.list(it) }
+        return getNextPageParams().map { organizationsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -87,12 +87,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            organizationService: OrganizationService,
+            organizationsService: OrganizationService,
             params: OrganizationListParams,
             response: Response
         ) =
             OrganizationListPage(
-                organizationService,
+                organizationsService,
                 params,
                 response,
             )

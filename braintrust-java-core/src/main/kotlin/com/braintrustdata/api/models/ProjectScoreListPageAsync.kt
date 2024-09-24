@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class ProjectScoreListPageAsync
 private constructor(
-    private val projectScoreService: ProjectScoreServiceAsync,
+    private val projectScoresService: ProjectScoreServiceAsync,
     private val params: ProjectScoreListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is ProjectScoreListPageAsync &&
-            this.projectScoreService == other.projectScoreService &&
+            this.projectScoresService == other.projectScoresService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            projectScoreService,
+            projectScoresService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ProjectScoreListPageAsync{projectScoreService=$projectScoreService, params=$params, response=$response}"
+        "ProjectScoreListPageAsync{projectScoresService=$projectScoresService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -80,7 +80,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<ProjectScoreListPageAsync>> {
         return getNextPageParams()
-            .map { projectScoreService.list(it).thenApply { Optional.of(it) } }
+            .map { projectScoresService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -90,12 +90,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            projectScoreService: ProjectScoreServiceAsync,
+            projectScoresService: ProjectScoreServiceAsync,
             params: ProjectScoreListParams,
             response: Response
         ) =
             ProjectScoreListPageAsync(
-                projectScoreService,
+                projectScoresService,
                 params,
                 response,
             )

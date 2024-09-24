@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class PromptListPage
 private constructor(
-    private val promptService: PromptService,
+    private val promptsService: PromptService,
     private val params: PromptListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is PromptListPage &&
-            this.promptService == other.promptService &&
+            this.promptsService == other.promptsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            promptService,
+            promptsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "PromptListPage{promptService=$promptService, params=$params, response=$response}"
+        "PromptListPage{promptsService=$promptsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -72,7 +72,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<PromptListPage> {
-        return getNextPageParams().map { promptService.list(it) }
+        return getNextPageParams().map { promptsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -80,9 +80,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(promptService: PromptService, params: PromptListParams, response: Response) =
+        fun of(promptsService: PromptService, params: PromptListParams, response: Response) =
             PromptListPage(
-                promptService,
+                promptsService,
                 params,
                 response,
             )

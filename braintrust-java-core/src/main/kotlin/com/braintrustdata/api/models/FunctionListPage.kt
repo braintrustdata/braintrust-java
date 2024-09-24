@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class FunctionListPage
 private constructor(
-    private val functionService: FunctionService,
+    private val functionsService: FunctionService,
     private val params: FunctionListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is FunctionListPage &&
-            this.functionService == other.functionService &&
+            this.functionsService == other.functionsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            functionService,
+            functionsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "FunctionListPage{functionService=$functionService, params=$params, response=$response}"
+        "FunctionListPage{functionsService=$functionsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<FunctionListPage> {
-        return getNextPageParams().map { functionService.list(it) }
+        return getNextPageParams().map { functionsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -86,9 +86,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(functionService: FunctionService, params: FunctionListParams, response: Response) =
+        fun of(functionsService: FunctionService, params: FunctionListParams, response: Response) =
             FunctionListPage(
-                functionService,
+                functionsService,
                 params,
                 response,
             )
