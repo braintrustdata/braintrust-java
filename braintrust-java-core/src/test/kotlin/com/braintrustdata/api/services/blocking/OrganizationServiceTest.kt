@@ -19,7 +19,7 @@ class OrganizationServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val organizationService = client.organization()
+        val organizationService = client.organizations()
         val organization =
             organizationService.retrieve(
                 OrganizationRetrieveParams.builder()
@@ -37,7 +37,7 @@ class OrganizationServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val organizationService = client.organization()
+        val organizationService = client.organizations()
         val organization =
             organizationService.update(
                 OrganizationUpdateParams.builder()
@@ -60,7 +60,7 @@ class OrganizationServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val organizationService = client.organization()
+        val organizationService = client.organizations()
         val response = organizationService.list(OrganizationListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -73,7 +73,7 @@ class OrganizationServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val organizationService = client.organization()
+        val organizationService = client.organizations()
         val organization =
             organizationService.delete(
                 OrganizationDeleteParams.builder()

@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -28,7 +29,13 @@ class FunctionTest {
                 .slug("slug")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .description("description")
-                .functionType(Function.FunctionType.TASK)
+                .functionSchema(
+                    Function.FunctionSchema.builder()
+                        .parameters(JsonValue.from(mapOf<String, Any>()))
+                        .returns(JsonValue.from(mapOf<String, Any>()))
+                        .build()
+                )
+                .functionType(Function.FunctionType.LLM)
                 .metadata(Function.Metadata.builder().build())
                 .origin(
                     Function.Origin.builder()
@@ -113,6 +120,16 @@ class FunctionTest {
                                     .build()
                             )
                         )
+                        .toolFunctions(
+                            listOf(
+                                PromptData.ToolFunction.ofFunction(
+                                    PromptData.ToolFunction.Function.builder()
+                                        .id("id")
+                                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                        .build()
+                                )
+                            )
+                        )
                         .build()
                 )
                 .tags(listOf("string"))
@@ -135,7 +152,14 @@ class FunctionTest {
         assertThat(function.slug()).isEqualTo("slug")
         assertThat(function.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(function.description()).contains("description")
-        assertThat(function.functionType()).contains(Function.FunctionType.TASK)
+        assertThat(function.functionSchema())
+            .contains(
+                Function.FunctionSchema.builder()
+                    .parameters(JsonValue.from(mapOf<String, Any>()))
+                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .build()
+            )
+        assertThat(function.functionType()).contains(Function.FunctionType.LLM)
         assertThat(function.metadata()).contains(Function.Metadata.builder().build())
         assertThat(function.origin())
             .contains(
@@ -218,6 +242,16 @@ class FunctionTest {
                                 .content("content")
                                 .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
+                        )
+                    )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
                         )
                     )
                     .build()

@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -22,7 +23,13 @@ class FunctionReplaceParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .slug("slug")
             .description("description")
-            .functionType(FunctionReplaceParams.FunctionType.TASK)
+            .functionSchema(
+                FunctionReplaceParams.FunctionSchema.builder()
+                    .parameters(JsonValue.from(mapOf<String, Any>()))
+                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .build()
+            )
+            .functionType(FunctionReplaceParams.FunctionType.LLM)
             .origin(
                 FunctionReplaceParams.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -104,6 +111,16 @@ class FunctionReplaceParamsTest {
                                 .build()
                         )
                     )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
+                        )
+                    )
                     .build()
             )
             .tags(listOf("string"))
@@ -125,7 +142,13 @@ class FunctionReplaceParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .slug("slug")
                 .description("description")
-                .functionType(FunctionReplaceParams.FunctionType.TASK)
+                .functionSchema(
+                    FunctionReplaceParams.FunctionSchema.builder()
+                        .parameters(JsonValue.from(mapOf<String, Any>()))
+                        .returns(JsonValue.from(mapOf<String, Any>()))
+                        .build()
+                )
+                .functionType(FunctionReplaceParams.FunctionType.LLM)
                 .origin(
                     FunctionReplaceParams.Origin.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -209,6 +232,16 @@ class FunctionReplaceParamsTest {
                                     .build()
                             )
                         )
+                        .toolFunctions(
+                            listOf(
+                                PromptData.ToolFunction.ofFunction(
+                                    PromptData.ToolFunction.Function.builder()
+                                        .id("id")
+                                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                        .build()
+                                )
+                            )
+                        )
                         .build()
                 )
                 .tags(listOf("string"))
@@ -227,7 +260,14 @@ class FunctionReplaceParamsTest {
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.slug()).isEqualTo("slug")
         assertThat(body.description()).isEqualTo("description")
-        assertThat(body.functionType()).isEqualTo(FunctionReplaceParams.FunctionType.TASK)
+        assertThat(body.functionSchema())
+            .isEqualTo(
+                FunctionReplaceParams.FunctionSchema.builder()
+                    .parameters(JsonValue.from(mapOf<String, Any>()))
+                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .build()
+            )
+        assertThat(body.functionType()).isEqualTo(FunctionReplaceParams.FunctionType.LLM)
         assertThat(body.origin())
             .isEqualTo(
                 FunctionReplaceParams.Origin.builder()
@@ -309,6 +349,16 @@ class FunctionReplaceParamsTest {
                                 .content("content")
                                 .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
+                        )
+                    )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
                         )
                     )
                     .build()

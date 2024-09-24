@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class ProjectTagListPage
 private constructor(
-    private val projectTagService: ProjectTagService,
+    private val projectTagsService: ProjectTagService,
     private val params: ProjectTagListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is ProjectTagListPage &&
-            this.projectTagService == other.projectTagService &&
+            this.projectTagsService == other.projectTagsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            projectTagService,
+            projectTagsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ProjectTagListPage{projectTagService=$projectTagService, params=$params, response=$response}"
+        "ProjectTagListPage{projectTagsService=$projectTagsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<ProjectTagListPage> {
-        return getNextPageParams().map { projectTagService.list(it) }
+        return getNextPageParams().map { projectTagsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -87,12 +87,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            projectTagService: ProjectTagService,
+            projectTagsService: ProjectTagService,
             params: ProjectTagListParams,
             response: Response
         ) =
             ProjectTagListPage(
-                projectTagService,
+                projectTagsService,
                 params,
                 response,
             )

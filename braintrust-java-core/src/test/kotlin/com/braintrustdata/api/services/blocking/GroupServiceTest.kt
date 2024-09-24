@@ -19,7 +19,7 @@ class GroupServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val groupService = client.group()
+        val groupService = client.groups()
         val group =
             groupService.create(
                 GroupCreateParams.builder()
@@ -41,7 +41,7 @@ class GroupServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val groupService = client.group()
+        val groupService = client.groups()
         val group =
             groupService.retrieve(
                 GroupRetrieveParams.builder()
@@ -59,7 +59,7 @@ class GroupServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val groupService = client.group()
+        val groupService = client.groups()
         val group =
             groupService.update(
                 GroupUpdateParams.builder()
@@ -83,7 +83,7 @@ class GroupServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val groupService = client.group()
+        val groupService = client.groups()
         val response = groupService.list(GroupListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -96,7 +96,7 @@ class GroupServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val groupService = client.group()
+        val groupService = client.groups()
         val group =
             groupService.delete(
                 GroupDeleteParams.builder().groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
@@ -112,7 +112,7 @@ class GroupServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val groupService = client.group()
+        val groupService = client.groups()
         val group =
             groupService.replace(
                 GroupReplaceParams.builder()

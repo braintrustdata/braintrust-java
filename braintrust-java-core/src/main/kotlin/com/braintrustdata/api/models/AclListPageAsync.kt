@@ -21,7 +21,7 @@ import java.util.function.Predicate
 
 class AclListPageAsync
 private constructor(
-    private val aclService: AclServiceAsync,
+    private val aclsService: AclServiceAsync,
     private val params: AclListParams,
     private val response: Response,
 ) {
@@ -36,21 +36,21 @@ private constructor(
         }
 
         return other is AclListPageAsync &&
-            this.aclService == other.aclService &&
+            this.aclsService == other.aclsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            aclService,
+            aclsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "AclListPageAsync{aclService=$aclService, params=$params, response=$response}"
+        "AclListPageAsync{aclsService=$aclsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -74,7 +74,7 @@ private constructor(
 
     fun getNextPage(): CompletableFuture<Optional<AclListPageAsync>> {
         return getNextPageParams()
-            .map { aclService.list(it).thenApply { Optional.of(it) } }
+            .map { aclsService.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -83,9 +83,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(aclService: AclServiceAsync, params: AclListParams, response: Response) =
+        fun of(aclsService: AclServiceAsync, params: AclListParams, response: Response) =
             AclListPageAsync(
-                aclService,
+                aclsService,
                 params,
                 response,
             )

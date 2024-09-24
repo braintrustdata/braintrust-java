@@ -20,14 +20,14 @@ import java.util.stream.StreamSupport
 
 class ProjectListPage
 private constructor(
-    private val projectService: ProjectService,
+    private val projectsService: ProjectService,
     private val params: ProjectListParams,
     private val response: Response,
 ) {
 
     fun response(): Response = response
 
-    fun objects(): List<ProjectModel> = response().objects()
+    fun objects(): List<Project> = response().objects()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is ProjectListPage &&
-            this.projectService == other.projectService &&
+            this.projectsService == other.projectsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            projectService,
+            projectsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "ProjectListPage{projectService=$projectService, params=$params, response=$response}"
+        "ProjectListPage{projectsService=$projectsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -78,7 +78,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<ProjectListPage> {
-        return getNextPageParams().map { projectService.list(it) }
+        return getNextPageParams().map { projectsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -86,9 +86,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(projectService: ProjectService, params: ProjectListParams, response: Response) =
+        fun of(projectsService: ProjectService, params: ProjectListParams, response: Response) =
             ProjectListPage(
-                projectService,
+                projectsService,
                 params,
                 response,
             )
@@ -98,16 +98,16 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val objects: JsonField<List<ProjectModel>>,
+        private val objects: JsonField<List<Project>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun objects(): List<ProjectModel> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Project> = objects.getNullable("objects") ?: listOf()
 
         @JsonProperty("objects")
-        fun _objects(): Optional<JsonField<List<ProjectModel>>> = Optional.ofNullable(objects)
+        fun _objects(): Optional<JsonField<List<Project>>> = Optional.ofNullable(objects)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -146,7 +146,7 @@ private constructor(
 
         class Builder {
 
-            private var objects: JsonField<List<ProjectModel>> = JsonMissing.of()
+            private var objects: JsonField<List<Project>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -155,10 +155,10 @@ private constructor(
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun objects(objects: List<ProjectModel>) = objects(JsonField.of(objects))
+            fun objects(objects: List<Project>) = objects(JsonField.of(objects))
 
             @JsonProperty("objects")
-            fun objects(objects: JsonField<List<ProjectModel>>) = apply { this.objects = objects }
+            fun objects(objects: JsonField<List<Project>>) = apply { this.objects = objects }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
@@ -172,9 +172,9 @@ private constructor(
     class AutoPager
     constructor(
         private val firstPage: ProjectListPage,
-    ) : Iterable<ProjectModel> {
+    ) : Iterable<Project> {
 
-        override fun iterator(): Iterator<ProjectModel> = iterator {
+        override fun iterator(): Iterator<Project> = iterator {
             var page = firstPage
             var index = 0
             while (true) {
@@ -186,7 +186,7 @@ private constructor(
             }
         }
 
-        fun stream(): Stream<ProjectModel> {
+        fun stream(): Stream<Project> {
             return StreamSupport.stream(spliterator(), false)
         }
     }

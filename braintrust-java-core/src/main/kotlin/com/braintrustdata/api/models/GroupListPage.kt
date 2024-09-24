@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport
 
 class GroupListPage
 private constructor(
-    private val groupService: GroupService,
+    private val groupsService: GroupService,
     private val params: GroupListParams,
     private val response: Response,
 ) {
@@ -35,21 +35,21 @@ private constructor(
         }
 
         return other is GroupListPage &&
-            this.groupService == other.groupService &&
+            this.groupsService == other.groupsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            groupService,
+            groupsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "GroupListPage{groupService=$groupService, params=$params, response=$response}"
+        "GroupListPage{groupsService=$groupsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return !objects().isEmpty()
@@ -72,7 +72,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<GroupListPage> {
-        return getNextPageParams().map { groupService.list(it) }
+        return getNextPageParams().map { groupsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -80,9 +80,9 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(groupService: GroupService, params: GroupListParams, response: Response) =
+        fun of(groupsService: GroupService, params: GroupListParams, response: Response) =
             GroupListPage(
-                groupService,
+                groupsService,
                 params,
                 response,
             )

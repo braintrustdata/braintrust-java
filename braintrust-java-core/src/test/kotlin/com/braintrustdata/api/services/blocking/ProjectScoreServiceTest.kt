@@ -19,7 +19,7 @@ class ProjectScoreServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectScoreService = client.projectScore()
+        val projectScoreService = client.projectScores()
         val projectScore =
             projectScoreService.create(
                 ProjectScoreCreateParams.builder()
@@ -45,7 +45,7 @@ class ProjectScoreServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectScoreService = client.projectScore()
+        val projectScoreService = client.projectScores()
         val projectScore =
             projectScoreService.retrieve(
                 ProjectScoreRetrieveParams.builder()
@@ -63,7 +63,7 @@ class ProjectScoreServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectScoreService = client.projectScore()
+        val projectScoreService = client.projectScores()
         val projectScore =
             projectScoreService.update(
                 ProjectScoreUpdateParams.builder()
@@ -89,7 +89,7 @@ class ProjectScoreServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectScoreService = client.projectScore()
+        val projectScoreService = client.projectScores()
         val response = projectScoreService.list(ProjectScoreListParams.builder().build())
         println(response)
         response.objects().forEach { it.validate() }
@@ -102,7 +102,7 @@ class ProjectScoreServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectScoreService = client.projectScore()
+        val projectScoreService = client.projectScores()
         val projectScore =
             projectScoreService.delete(
                 ProjectScoreDeleteParams.builder()
@@ -120,7 +120,7 @@ class ProjectScoreServiceTest {
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectScoreService = client.projectScore()
+        val projectScoreService = client.projectScores()
         val projectScore =
             projectScoreService.replace(
                 ProjectScoreReplaceParams.builder()

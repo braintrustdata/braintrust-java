@@ -15,7 +15,7 @@ class PromptReplaceParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .slug("slug")
             .description("description")
-            .functionType(PromptReplaceParams.FunctionType.TASK)
+            .functionType(PromptReplaceParams.FunctionType.LLM)
             .promptData(
                 PromptData.builder()
                     .options(
@@ -90,6 +90,16 @@ class PromptReplaceParamsTest {
                                 .build()
                         )
                     )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
+                        )
+                    )
                     .build()
             )
             .tags(listOf("string"))
@@ -104,7 +114,7 @@ class PromptReplaceParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .slug("slug")
                 .description("description")
-                .functionType(PromptReplaceParams.FunctionType.TASK)
+                .functionType(PromptReplaceParams.FunctionType.LLM)
                 .promptData(
                     PromptData.builder()
                         .options(
@@ -181,6 +191,16 @@ class PromptReplaceParamsTest {
                                     .build()
                             )
                         )
+                        .toolFunctions(
+                            listOf(
+                                PromptData.ToolFunction.ofFunction(
+                                    PromptData.ToolFunction.Function.builder()
+                                        .id("id")
+                                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                        .build()
+                                )
+                            )
+                        )
                         .build()
                 )
                 .tags(listOf("string"))
@@ -191,7 +211,7 @@ class PromptReplaceParamsTest {
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.slug()).isEqualTo("slug")
         assertThat(body.description()).isEqualTo("description")
-        assertThat(body.functionType()).isEqualTo(PromptReplaceParams.FunctionType.TASK)
+        assertThat(body.functionType()).isEqualTo(PromptReplaceParams.FunctionType.LLM)
         assertThat(body.promptData())
             .isEqualTo(
                 PromptData.builder()
@@ -265,6 +285,16 @@ class PromptReplaceParamsTest {
                                 .content("content")
                                 .type(PromptData.Prompt.Completion.Type.COMPLETION)
                                 .build()
+                        )
+                    )
+                    .toolFunctions(
+                        listOf(
+                            PromptData.ToolFunction.ofFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
+                            )
                         )
                     )
                     .build()
