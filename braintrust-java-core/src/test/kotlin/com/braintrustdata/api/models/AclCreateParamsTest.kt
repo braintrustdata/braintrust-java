@@ -48,9 +48,13 @@ class AclCreateParamsTest {
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            AclCreateParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+            AclCreateParams.builder()
+                .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .objectType(AclCreateParams.ObjectType.ORGANIZATION)
+                .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.objectType()).isEqualTo(AclCreateParams.ObjectType.ORGANIZATION)
     }
 }

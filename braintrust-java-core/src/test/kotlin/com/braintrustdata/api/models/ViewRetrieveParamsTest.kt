@@ -37,9 +37,11 @@ class ViewRetrieveParamsTest {
             ViewRetrieveParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .objectType(ViewRetrieveParams.ObjectType.ORGANIZATION)
                 .build()
         val expected = mutableMapOf<String, List<String>>()
         expected.put("object_id", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+        expected.put("object_type", listOf(ViewRetrieveParams.ObjectType.ORGANIZATION.toString()))
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }
 
@@ -49,6 +51,7 @@ class ViewRetrieveParamsTest {
             ViewRetrieveParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .objectType(ViewRetrieveParams.ObjectType.ORGANIZATION)
                 .build()
         assertThat(params).isNotNull
         // path param "viewId"

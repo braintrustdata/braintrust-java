@@ -26,7 +26,7 @@ import java.util.Optional
 class AclListParams
 constructor(
     private val objectId: String,
-    private val objectType: ObjectType?,
+    private val objectType: ObjectType,
     private val endingBefore: String?,
     private val ids: Ids?,
     private val limit: Long?,
@@ -37,7 +37,7 @@ constructor(
 
     fun objectId(): String = objectId
 
-    fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
+    fun objectType(): ObjectType = objectType
 
     fun endingBefore(): Optional<String> = Optional.ofNullable(endingBefore)
 
@@ -217,7 +217,7 @@ constructor(
         fun build(): AclListParams =
             AclListParams(
                 checkNotNull(objectId) { "`objectId` is required but was not set" },
-                objectType,
+                checkNotNull(objectType) { "`objectType` is required but was not set" },
                 endingBefore,
                 ids,
                 limit,

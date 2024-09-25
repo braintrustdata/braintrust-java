@@ -16,13 +16,14 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
+import java.util.Optional
 
-@JsonDeserialize(builder = Scorer.Builder::class)
+@JsonDeserialize(builder = PatchOrganizationMembersOutput.Builder::class)
 @NoAutoDetect
-class Scorer
+class PatchOrganizationMembersOutput
 private constructor(
-    private val type: JsonField<Type>,
-    private val index: JsonField<Long>,
+    private val status: JsonField<Status>,
+    private val sendEmailError: JsonField<String>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -30,22 +31,31 @@ private constructor(
 
     private var hashCode: Int = 0
 
-    fun type(): Type = type.getRequired("type")
+    fun status(): Status = status.getRequired("status")
 
-    fun index(): Long = index.getRequired("index")
+    /**
+     * If invite emails failed to send for some reason, the patch operation will still complete, but
+     * we will return an error message here
+     */
+    fun sendEmailError(): Optional<String> =
+        Optional.ofNullable(sendEmailError.getNullable("send_email_error"))
 
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("status") @ExcludeMissing fun _status() = status
 
-    @JsonProperty("index") @ExcludeMissing fun _index() = index
+    /**
+     * If invite emails failed to send for some reason, the patch operation will still complete, but
+     * we will return an error message here
+     */
+    @JsonProperty("send_email_error") @ExcludeMissing fun _sendEmailError() = sendEmailError
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): Scorer = apply {
+    fun validate(): PatchOrganizationMembersOutput = apply {
         if (!validated) {
-            type()
-            index()
+            status()
+            sendEmailError()
             validated = true
         }
     }
@@ -57,9 +67,9 @@ private constructor(
             return true
         }
 
-        return other is Scorer &&
-            this.type == other.type &&
-            this.index == other.index &&
+        return other is PatchOrganizationMembersOutput &&
+            this.status == other.status &&
+            this.sendEmailError == other.sendEmailError &&
             this.additionalProperties == other.additionalProperties
     }
 
@@ -67,8 +77,8 @@ private constructor(
         if (hashCode == 0) {
             hashCode =
                 Objects.hash(
-                    type,
-                    index,
+                    status,
+                    sendEmailError,
                     additionalProperties,
                 )
         }
@@ -76,7 +86,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Scorer{type=$type, index=$index, additionalProperties=$additionalProperties}"
+        "PatchOrganizationMembersOutput{status=$status, sendEmailError=$sendEmailError, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -85,28 +95,38 @@ private constructor(
 
     class Builder {
 
-        private var type: JsonField<Type> = JsonMissing.of()
-        private var index: JsonField<Long> = JsonMissing.of()
+        private var status: JsonField<Status> = JsonMissing.of()
+        private var sendEmailError: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(scorer: Scorer) = apply {
-            this.type = scorer.type
-            this.index = scorer.index
-            additionalProperties(scorer.additionalProperties)
+        internal fun from(patchOrganizationMembersOutput: PatchOrganizationMembersOutput) = apply {
+            this.status = patchOrganizationMembersOutput.status
+            this.sendEmailError = patchOrganizationMembersOutput.sendEmailError
+            additionalProperties(patchOrganizationMembersOutput.additionalProperties)
         }
 
-        fun type(type: Type) = type(JsonField.of(type))
+        fun status(status: Status) = status(JsonField.of(status))
 
-        @JsonProperty("type")
+        @JsonProperty("status")
         @ExcludeMissing
-        fun type(type: JsonField<Type>) = apply { this.type = type }
+        fun status(status: JsonField<Status>) = apply { this.status = status }
 
-        fun index(index: Long) = index(JsonField.of(index))
+        /**
+         * If invite emails failed to send for some reason, the patch operation will still complete,
+         * but we will return an error message here
+         */
+        fun sendEmailError(sendEmailError: String) = sendEmailError(JsonField.of(sendEmailError))
 
-        @JsonProperty("index")
+        /**
+         * If invite emails failed to send for some reason, the patch operation will still complete,
+         * but we will return an error message here
+         */
+        @JsonProperty("send_email_error")
         @ExcludeMissing
-        fun index(index: JsonField<Long>) = apply { this.index = index }
+        fun sendEmailError(sendEmailError: JsonField<String>) = apply {
+            this.sendEmailError = sendEmailError
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -122,15 +142,15 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): Scorer =
-            Scorer(
-                type,
-                index,
+        fun build(): PatchOrganizationMembersOutput =
+            PatchOrganizationMembersOutput(
+                status,
+                sendEmailError,
                 additionalProperties.toUnmodifiable(),
             )
     }
 
-    class Type
+    class Status
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
@@ -143,7 +163,7 @@ private constructor(
                 return true
             }
 
-            return other is Type && this.value == other.value
+            return other is Status && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -152,30 +172,30 @@ private constructor(
 
         companion object {
 
-            @JvmField val SCORER = Type(JsonField.of("scorer"))
+            @JvmField val SUCCESS = Status(JsonField.of("success"))
 
-            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
 
         enum class Known {
-            SCORER,
+            SUCCESS,
         }
 
         enum class Value {
-            SCORER,
+            SUCCESS,
             _UNKNOWN,
         }
 
         fun value(): Value =
             when (this) {
-                SCORER -> Value.SCORER
+                SUCCESS -> Value.SUCCESS
                 else -> Value._UNKNOWN
             }
 
         fun known(): Known =
             when (this) {
-                SCORER -> Known.SCORER
-                else -> throw BraintrustInvalidDataException("Unknown Type: $value")
+                SUCCESS -> Known.SUCCESS
+                else -> throw BraintrustInvalidDataException("Unknown Status: $value")
             }
 
         fun asString(): String = _value().asStringOrThrow()

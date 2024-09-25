@@ -9,7 +9,7 @@ import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
-import com.braintrustdata.api.models.OrganizationMemberUpdateResponse
+import com.braintrustdata.api.models.PatchOrganizationMembersOutput
 import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
@@ -22,15 +22,15 @@ constructor(
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-    private val updateHandler: Handler<OrganizationMemberUpdateResponse> =
-        jsonHandler<OrganizationMemberUpdateResponse>(clientOptions.jsonMapper)
+    private val updateHandler: Handler<PatchOrganizationMembersOutput> =
+        jsonHandler<PatchOrganizationMembersOutput>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Modify organization membership */
     override fun update(
         params: OrganizationMemberUpdateParams,
         requestOptions: RequestOptions
-    ): OrganizationMemberUpdateResponse {
+    ): PatchOrganizationMembersOutput {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.PATCH)
