@@ -6,7 +6,7 @@ package com.braintrustdata.api.services.async.organizations
 
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
-import com.braintrustdata.api.models.OrganizationMemberUpdateResponse
+import com.braintrustdata.api.models.PatchOrganizationMembersOutput
 import java.util.concurrent.CompletableFuture
 
 interface MemberServiceAsync {
@@ -16,5 +16,5 @@ interface MemberServiceAsync {
     fun update(
         params: OrganizationMemberUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<OrganizationMemberUpdateResponse>
+    ): CompletableFuture<PatchOrganizationMembersOutput>
 }

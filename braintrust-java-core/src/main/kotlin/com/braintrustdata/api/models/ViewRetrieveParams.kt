@@ -11,13 +11,12 @@ import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonCreator
 import java.util.Objects
-import java.util.Optional
 
 class ViewRetrieveParams
 constructor(
     private val viewId: String,
     private val objectId: String,
-    private val objectType: ObjectType?,
+    private val objectType: ObjectType,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
 ) {
@@ -26,7 +25,7 @@ constructor(
 
     fun objectId(): String = objectId
 
-    fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
+    fun objectType(): ObjectType = objectType
 
     @JvmSynthetic
     internal fun getQueryParams(): Map<String, List<String>> {
@@ -154,7 +153,7 @@ constructor(
             ViewRetrieveParams(
                 checkNotNull(viewId) { "`viewId` is required but was not set" },
                 checkNotNull(objectId) { "`objectId` is required but was not set" },
-                objectType,
+                checkNotNull(objectType) { "`objectType` is required but was not set" },
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
             )

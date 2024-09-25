@@ -45,7 +45,7 @@ class ViewTest {
         assertThat(view.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(view.name()).isEqualTo("name")
         assertThat(view.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(view.objectType()).contains(View.ObjectType.ORGANIZATION)
+        assertThat(view.objectType()).isEqualTo(View.ObjectType.ORGANIZATION)
         assertThat(view.viewType()).contains(View.ViewType.PROJECTS)
         assertThat(view.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(view.deletedAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))

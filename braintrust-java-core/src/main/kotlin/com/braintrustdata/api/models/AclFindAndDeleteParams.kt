@@ -21,7 +21,7 @@ import java.util.Optional
 class AclFindAndDeleteParams
 constructor(
     private val objectId: String,
-    private val objectType: ObjectType?,
+    private val objectType: ObjectType,
     private val groupId: String?,
     private val permission: Permission?,
     private val restrictObjectType: RestrictObjectType?,
@@ -34,7 +34,7 @@ constructor(
 
     fun objectId(): String = objectId
 
-    fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
+    fun objectType(): ObjectType = objectType
 
     fun groupId(): Optional<String> = Optional.ofNullable(groupId)
 
@@ -102,13 +102,14 @@ constructor(
          */
         @JsonProperty("group_id") fun groupId(): String? = groupId
 
-        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        /**
+         * Each permission permits a certain type of operation on an object in the system
+         *
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
+         */
         @JsonProperty("permission") fun permission(): Permission? = permission
 
-        /**
-         * When setting a permission directly, optionally restricts the permission grant to just the
-         * specified object type. Cannot be set alongside a `role_id`.
-         */
+        /** The object type that the ACL applies to */
         @JsonProperty("restrict_object_type")
         fun restrictObjectType(): RestrictObjectType? = restrictObjectType
 
@@ -209,15 +210,15 @@ constructor(
             fun groupId(groupId: String) = apply { this.groupId = groupId }
 
             /**
-             * Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided
+             * Each permission permits a certain type of operation on an object in the system
+             *
+             * Permissions can be assigned to to objects on an individual basis, or grouped into
+             * roles
              */
             @JsonProperty("permission")
             fun permission(permission: Permission) = apply { this.permission = permission }
 
-            /**
-             * When setting a permission directly, optionally restricts the permission grant to just
-             * the specified object type. Cannot be set alongside a `role_id`.
-             */
+            /** The object type that the ACL applies to */
             @JsonProperty("restrict_object_type")
             fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
                 this.restrictObjectType = restrictObjectType
@@ -252,7 +253,7 @@ constructor(
             fun build(): AclFindAndDeleteBody =
                 AclFindAndDeleteBody(
                     checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    objectType,
+                    checkNotNull(objectType) { "`objectType` is required but was not set" },
                     groupId,
                     permission,
                     restrictObjectType,
@@ -352,13 +353,14 @@ constructor(
          */
         fun groupId(groupId: String) = apply { this.groupId = groupId }
 
-        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
+        /**
+         * Each permission permits a certain type of operation on an object in the system
+         *
+         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
+         */
         fun permission(permission: Permission) = apply { this.permission = permission }
 
-        /**
-         * When setting a permission directly, optionally restricts the permission grant to just the
-         * specified object type. Cannot be set alongside a `role_id`.
-         */
+        /** The object type that the ACL applies to */
         fun restrictObjectType(restrictObjectType: RestrictObjectType) = apply {
             this.restrictObjectType = restrictObjectType
         }
@@ -431,7 +433,7 @@ constructor(
         fun build(): AclFindAndDeleteParams =
             AclFindAndDeleteParams(
                 checkNotNull(objectId) { "`objectId` is required but was not set" },
-                objectType,
+                checkNotNull(objectType) { "`objectType` is required but was not set" },
                 groupId,
                 permission,
                 restrictObjectType,

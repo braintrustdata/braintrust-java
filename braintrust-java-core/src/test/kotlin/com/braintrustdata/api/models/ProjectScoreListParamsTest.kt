@@ -19,8 +19,8 @@ class ProjectScoreListParamsTest {
             .projectName("project_name")
             .projectScoreName("project_score_name")
             .scoreType(
-                ProjectScoreListParams.ScoreType.ofProjectScoreTypeSingle(
-                    ProjectScoreListParams.ScoreType.ProjectScoreTypeSingle.SLIDER
+                ProjectScoreListParams.ScoreType.ofProjectScoreType(
+                    ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER
                 )
             )
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -39,8 +39,8 @@ class ProjectScoreListParamsTest {
                 .projectName("project_name")
                 .projectScoreName("project_score_name")
                 .scoreType(
-                    ProjectScoreListParams.ScoreType.ofProjectScoreTypeSingle(
-                        ProjectScoreListParams.ScoreType.ProjectScoreTypeSingle.SLIDER
+                    ProjectScoreListParams.ScoreType.ofProjectScoreType(
+                        ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER
                     )
                 )
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -62,8 +62,8 @@ class ProjectScoreListParamsTest {
         expected.put(
             "score_type",
             listOf(
-                ProjectScoreListParams.ScoreType.ofProjectScoreTypeSingle(
-                        ProjectScoreListParams.ProjectScoreTypeSingle.SLIDER.toString()
+                ProjectScoreListParams.ScoreType.ofProjectScoreType(
+                        ProjectScoreListParams.ProjectScoreType.SLIDER.toString()
                     )
                     .toString()
             )

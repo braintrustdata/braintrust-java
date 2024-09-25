@@ -44,8 +44,7 @@ private constructor(
     fun id(): String = id.getRequired("id")
 
     /** The object type that the ACL applies to */
-    fun objectType(): Optional<ObjectType> =
-        Optional.ofNullable(objectType.getNullable("object_type"))
+    fun objectType(): ObjectType = objectType.getRequired("object_type")
 
     /** The id of the object the view applies to */
     fun objectId(): String = objectId.getRequired("object_id")

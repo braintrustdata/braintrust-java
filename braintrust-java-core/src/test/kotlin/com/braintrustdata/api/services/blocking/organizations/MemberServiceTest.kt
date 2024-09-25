@@ -19,7 +19,7 @@ class MemberServiceTest {
                 .apiKey("My API Key")
                 .build()
         val memberService = client.organizations().members()
-        val organizationMemberUpdateResponse =
+        val patchOrganizationMembersOutput =
             memberService.update(
                 OrganizationMemberUpdateParams.builder()
                     .inviteUsers(
@@ -43,7 +43,7 @@ class MemberServiceTest {
                     )
                     .build()
             )
-        println(organizationMemberUpdateResponse)
-        organizationMemberUpdateResponse.validate()
+        println(patchOrganizationMembersOutput)
+        patchOrganizationMembersOutput.validate()
     }
 }
