@@ -16,13 +16,12 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
-import java.util.Optional
 
 class ViewDeleteParams
 constructor(
     private val viewId: String,
     private val objectId: String,
-    private val objectType: ObjectType?,
+    private val objectType: ObjectType,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -32,7 +31,7 @@ constructor(
 
     fun objectId(): String = objectId
 
-    fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
+    fun objectType(): ObjectType = objectType
 
     @JvmSynthetic
     internal fun getBody(): ViewDeleteBody {
@@ -146,7 +145,7 @@ constructor(
             fun build(): ViewDeleteBody =
                 ViewDeleteBody(
                     checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    objectType,
+                    checkNotNull(objectType) { "`objectType` is required but was not set" },
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -280,7 +279,7 @@ constructor(
             ViewDeleteParams(
                 checkNotNull(viewId) { "`viewId` is required but was not set" },
                 checkNotNull(objectId) { "`objectId` is required but was not set" },
-                objectType,
+                checkNotNull(objectType) { "`objectType` is required but was not set" },
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),

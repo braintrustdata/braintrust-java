@@ -128,7 +128,10 @@ class ViewServiceTest {
         val viewService = client.views()
         val response =
             viewService.list(
-                ViewListParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+                ViewListParams.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(ViewListParams.ObjectType.ORGANIZATION)
+                    .build()
             )
         println(response)
         response.objects().forEach { it.validate() }

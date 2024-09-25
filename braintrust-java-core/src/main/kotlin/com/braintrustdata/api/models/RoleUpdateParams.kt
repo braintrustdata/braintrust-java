@@ -536,7 +536,7 @@ constructor(
 
             fun build(): AddMemberPermission =
                 AddMemberPermission(
-                    permission,
+                    checkNotNull(permission) { "`permission` is required but was not set" },
                     restrictObjectType,
                     additionalProperties.toUnmodifiable(),
                 )
@@ -851,7 +851,7 @@ constructor(
 
             fun build(): RemoveMemberPermission =
                 RemoveMemberPermission(
-                    permission,
+                    checkNotNull(permission) { "`permission` is required but was not set" },
                     restrictObjectType,
                     additionalProperties.toUnmodifiable(),
                 )

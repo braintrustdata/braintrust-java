@@ -26,7 +26,7 @@ private constructor(
     private val created: JsonField<OffsetDateTime>,
     private val deletedAt: JsonField<OffsetDateTime>,
     private val userId: JsonField<String>,
-    private val settings: JsonField<Settings>,
+    private val settings: JsonField<ProjectSettings>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -53,7 +53,8 @@ private constructor(
     /** Identifies the user who created the project */
     fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
 
-    fun settings(): Optional<Settings> = Optional.ofNullable(settings.getNullable("settings"))
+    fun settings(): Optional<ProjectSettings> =
+        Optional.ofNullable(settings.getNullable("settings"))
 
     /** Unique identifier for the project */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
@@ -143,7 +144,7 @@ private constructor(
         private var created: JsonField<OffsetDateTime> = JsonMissing.of()
         private var deletedAt: JsonField<OffsetDateTime> = JsonMissing.of()
         private var userId: JsonField<String> = JsonMissing.of()
-        private var settings: JsonField<Settings> = JsonMissing.of()
+        private var settings: JsonField<ProjectSettings> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -204,11 +205,11 @@ private constructor(
         @ExcludeMissing
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
-        fun settings(settings: Settings) = settings(JsonField.of(settings))
+        fun settings(settings: ProjectSettings) = settings(JsonField.of(settings))
 
         @JsonProperty("settings")
         @ExcludeMissing
-        fun settings(settings: JsonField<Settings>) = apply { this.settings = settings }
+        fun settings(settings: JsonField<ProjectSettings>) = apply { this.settings = settings }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -235,101 +236,5 @@ private constructor(
                 settings,
                 additionalProperties.toUnmodifiable(),
             )
-    }
-
-    @JsonDeserialize(builder = Settings.Builder::class)
-    @NoAutoDetect
-    class Settings
-    private constructor(
-        private val comparisonKey: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        private var hashCode: Int = 0
-
-        /** The key used to join two experiments (defaults to `input`). */
-        fun comparisonKey(): Optional<String> =
-            Optional.ofNullable(comparisonKey.getNullable("comparison_key"))
-
-        /** The key used to join two experiments (defaults to `input`). */
-        @JsonProperty("comparison_key") @ExcludeMissing fun _comparisonKey() = comparisonKey
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Settings = apply {
-            if (!validated) {
-                comparisonKey()
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Settings &&
-                this.comparisonKey == other.comparisonKey &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(comparisonKey, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Settings{comparisonKey=$comparisonKey, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var comparisonKey: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(settings: Settings) = apply {
-                this.comparisonKey = settings.comparisonKey
-                additionalProperties(settings.additionalProperties)
-            }
-
-            /** The key used to join two experiments (defaults to `input`). */
-            fun comparisonKey(comparisonKey: String) = comparisonKey(JsonField.of(comparisonKey))
-
-            /** The key used to join two experiments (defaults to `input`). */
-            @JsonProperty("comparison_key")
-            @ExcludeMissing
-            fun comparisonKey(comparisonKey: JsonField<String>) = apply {
-                this.comparisonKey = comparisonKey
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Settings = Settings(comparisonKey, additionalProperties.toUnmodifiable())
-        }
     }
 }

@@ -27,16 +27,15 @@ class ProjectScoreTest {
                         .destination(ProjectScore.Config.Destination.EXPECTED)
                         .multiSelect(true)
                         .online(
-                            ProjectScore.Config.Online.builder()
+                            OnlineScoreConfig.builder()
                                 .samplingRate(1.0)
                                 .scorers(
                                     listOf(
-                                        ProjectScore.Config.Online.Scorer.ofFunction(
-                                            ProjectScore.Config.Online.Scorer.Function.builder()
+                                        OnlineScoreConfig.Scorer.ofFunction(
+                                            OnlineScoreConfig.Scorer.Function.builder()
                                                 .id("id")
                                                 .type(
-                                                    ProjectScore.Config.Online.Scorer.Function.Type
-                                                        .FUNCTION
+                                                    OnlineScoreConfig.Scorer.Function.Type.FUNCTION
                                                 )
                                                 .build()
                                         )
@@ -56,7 +55,7 @@ class ProjectScoreTest {
         assertThat(projectScore.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectScore.name()).isEqualTo("name")
         assertThat(projectScore.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(projectScore.scoreType()).contains(ProjectScore.ScoreType.SLIDER)
+        assertThat(projectScore.scoreType()).isEqualTo(ProjectScore.ScoreType.SLIDER)
         assertThat(projectScore.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectScore.categories())
             .contains(
@@ -70,17 +69,14 @@ class ProjectScoreTest {
                     .destination(ProjectScore.Config.Destination.EXPECTED)
                     .multiSelect(true)
                     .online(
-                        ProjectScore.Config.Online.builder()
+                        OnlineScoreConfig.builder()
                             .samplingRate(1.0)
                             .scorers(
                                 listOf(
-                                    ProjectScore.Config.Online.Scorer.ofFunction(
-                                        ProjectScore.Config.Online.Scorer.Function.builder()
+                                    OnlineScoreConfig.Scorer.ofFunction(
+                                        OnlineScoreConfig.Scorer.Function.builder()
                                             .id("id")
-                                            .type(
-                                                ProjectScore.Config.Online.Scorer.Function.Type
-                                                    .FUNCTION
-                                            )
+                                            .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
                                             .build()
                                     )
                                 )
