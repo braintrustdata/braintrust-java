@@ -330,9 +330,9 @@ class FunctionServiceTest {
                     .input(JsonValue.from(mapOf<String, Any>()))
                     .messages(
                         listOf(
-                            FunctionInvokeParams.Message.ofSystem(
-                                FunctionInvokeParams.Message.System.builder()
-                                    .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                            Messages.ofSystem(
+                                Messages.System.builder()
+                                    .role(Messages.System.Role.SYSTEM)
                                     .content("content")
                                     .name("name")
                                     .build()
