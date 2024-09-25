@@ -18,12 +18,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = OrganizationMemberUpdateResponse.Builder::class)
+@JsonDeserialize(builder = ChatCompletionContentPartText.Builder::class)
 @NoAutoDetect
-class OrganizationMemberUpdateResponse
+class ChatCompletionContentPartText
 private constructor(
-    private val status: JsonField<Status>,
-    private val sendEmailError: JsonField<String>,
+    private val text: JsonField<String>,
+    private val type: JsonField<Type>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -31,31 +31,22 @@ private constructor(
 
     private var hashCode: Int = 0
 
-    fun status(): Status = status.getRequired("status")
+    fun text(): Optional<String> = Optional.ofNullable(text.getNullable("text"))
 
-    /**
-     * If invite emails failed to send for some reason, the patch operation will still complete, but
-     * we will return an error message here
-     */
-    fun sendEmailError(): Optional<String> =
-        Optional.ofNullable(sendEmailError.getNullable("send_email_error"))
+    fun type(): Type = type.getRequired("type")
 
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    @JsonProperty("text") @ExcludeMissing fun _text() = text
 
-    /**
-     * If invite emails failed to send for some reason, the patch operation will still complete, but
-     * we will return an error message here
-     */
-    @JsonProperty("send_email_error") @ExcludeMissing fun _sendEmailError() = sendEmailError
+    @JsonProperty("type") @ExcludeMissing fun _type() = type
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): OrganizationMemberUpdateResponse = apply {
+    fun validate(): ChatCompletionContentPartText = apply {
         if (!validated) {
-            status()
-            sendEmailError()
+            text()
+            type()
             validated = true
         }
     }
@@ -67,9 +58,9 @@ private constructor(
             return true
         }
 
-        return other is OrganizationMemberUpdateResponse &&
-            this.status == other.status &&
-            this.sendEmailError == other.sendEmailError &&
+        return other is ChatCompletionContentPartText &&
+            this.text == other.text &&
+            this.type == other.type &&
             this.additionalProperties == other.additionalProperties
     }
 
@@ -77,8 +68,8 @@ private constructor(
         if (hashCode == 0) {
             hashCode =
                 Objects.hash(
-                    status,
-                    sendEmailError,
+                    text,
+                    type,
                     additionalProperties,
                 )
         }
@@ -86,7 +77,7 @@ private constructor(
     }
 
     override fun toString() =
-        "OrganizationMemberUpdateResponse{status=$status, sendEmailError=$sendEmailError, additionalProperties=$additionalProperties}"
+        "ChatCompletionContentPartText{text=$text, type=$type, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -95,39 +86,28 @@ private constructor(
 
     class Builder {
 
-        private var status: JsonField<Status> = JsonMissing.of()
-        private var sendEmailError: JsonField<String> = JsonMissing.of()
+        private var text: JsonField<String> = JsonMissing.of()
+        private var type: JsonField<Type> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(organizationMemberUpdateResponse: OrganizationMemberUpdateResponse) =
-            apply {
-                this.status = organizationMemberUpdateResponse.status
-                this.sendEmailError = organizationMemberUpdateResponse.sendEmailError
-                additionalProperties(organizationMemberUpdateResponse.additionalProperties)
-            }
-
-        fun status(status: Status) = status(JsonField.of(status))
-
-        @JsonProperty("status")
-        @ExcludeMissing
-        fun status(status: JsonField<Status>) = apply { this.status = status }
-
-        /**
-         * If invite emails failed to send for some reason, the patch operation will still complete,
-         * but we will return an error message here
-         */
-        fun sendEmailError(sendEmailError: String) = sendEmailError(JsonField.of(sendEmailError))
-
-        /**
-         * If invite emails failed to send for some reason, the patch operation will still complete,
-         * but we will return an error message here
-         */
-        @JsonProperty("send_email_error")
-        @ExcludeMissing
-        fun sendEmailError(sendEmailError: JsonField<String>) = apply {
-            this.sendEmailError = sendEmailError
+        internal fun from(chatCompletionContentPartText: ChatCompletionContentPartText) = apply {
+            this.text = chatCompletionContentPartText.text
+            this.type = chatCompletionContentPartText.type
+            additionalProperties(chatCompletionContentPartText.additionalProperties)
         }
+
+        fun text(text: String) = text(JsonField.of(text))
+
+        @JsonProperty("text")
+        @ExcludeMissing
+        fun text(text: JsonField<String>) = apply { this.text = text }
+
+        fun type(type: Type) = type(JsonField.of(type))
+
+        @JsonProperty("type")
+        @ExcludeMissing
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -143,15 +123,15 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): OrganizationMemberUpdateResponse =
-            OrganizationMemberUpdateResponse(
-                status,
-                sendEmailError,
+        fun build(): ChatCompletionContentPartText =
+            ChatCompletionContentPartText(
+                text,
+                type,
                 additionalProperties.toUnmodifiable(),
             )
     }
 
-    class Status
+    class Type
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
@@ -164,7 +144,7 @@ private constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return other is Type && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -173,30 +153,30 @@ private constructor(
 
         companion object {
 
-            @JvmField val SUCCESS = Status(JsonField.of("success"))
+            @JvmField val TEXT = Type(JsonField.of("text"))
 
-            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
+            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }
 
         enum class Known {
-            SUCCESS,
+            TEXT,
         }
 
         enum class Value {
-            SUCCESS,
+            TEXT,
             _UNKNOWN,
         }
 
         fun value(): Value =
             when (this) {
-                SUCCESS -> Value.SUCCESS
+                TEXT -> Value.TEXT
                 else -> Value._UNKNOWN
             }
 
         fun known(): Known =
             when (this) {
-                SUCCESS -> Known.SUCCESS
-                else -> throw BraintrustInvalidDataException("Unknown Status: $value")
+                TEXT -> Known.TEXT
+                else -> throw BraintrustInvalidDataException("Unknown Type: $value")
             }
 
         fun asString(): String = _value().asStringOrThrow()

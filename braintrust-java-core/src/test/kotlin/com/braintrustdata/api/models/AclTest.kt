@@ -27,7 +27,7 @@ class AclTest {
         assertThat(acl.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(acl._objectOrgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(acl.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(acl.objectType()).contains(Acl.ObjectType.ORGANIZATION)
+        assertThat(acl.objectType()).isEqualTo(Acl.ObjectType.ORGANIZATION)
         assertThat(acl.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(acl.groupId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(acl.permission()).contains(Acl.Permission.CREATE)

@@ -31,7 +31,7 @@ class ProjectScoreCreateParams
 constructor(
     private val name: String,
     private val projectId: String,
-    private val scoreType: ScoreType?,
+    private val scoreType: ScoreType,
     private val categories: Categories?,
     private val description: String?,
     private val additionalQueryParams: Map<String, List<String>>,
@@ -43,7 +43,7 @@ constructor(
 
     fun projectId(): String = projectId
 
-    fun scoreType(): Optional<ScoreType> = Optional.ofNullable(scoreType)
+    fun scoreType(): ScoreType = scoreType
 
     fun categories(): Optional<Categories> = Optional.ofNullable(categories)
 
@@ -191,7 +191,7 @@ constructor(
                 ProjectScoreCreateBody(
                     checkNotNull(name) { "`name` is required but was not set" },
                     checkNotNull(projectId) { "`projectId` is required but was not set" },
-                    scoreType,
+                    checkNotNull(scoreType) { "`scoreType` is required but was not set" },
                     categories,
                     description,
                     additionalProperties.toUnmodifiable(),
@@ -361,7 +361,7 @@ constructor(
             ProjectScoreCreateParams(
                 checkNotNull(name) { "`name` is required but was not set" },
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
-                scoreType,
+                checkNotNull(scoreType) { "`scoreType` is required but was not set" },
                 categories,
                 description,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),

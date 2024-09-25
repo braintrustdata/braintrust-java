@@ -13,12 +13,13 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
+import java.util.Optional
 
-@JsonDeserialize(builder = ToolChoiceFunction.Builder::class)
+@JsonDeserialize(builder = ProjectSettings.Builder::class)
 @NoAutoDetect
-class ToolChoiceFunction
+class ProjectSettings
 private constructor(
-    private val name: JsonField<String>,
+    private val comparisonKey: JsonField<String>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -26,17 +27,20 @@ private constructor(
 
     private var hashCode: Int = 0
 
-    fun name(): String = name.getRequired("name")
+    /** The key used to join two experiments (defaults to `input`). */
+    fun comparisonKey(): Optional<String> =
+        Optional.ofNullable(comparisonKey.getNullable("comparison_key"))
 
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    /** The key used to join two experiments (defaults to `input`). */
+    @JsonProperty("comparison_key") @ExcludeMissing fun _comparisonKey() = comparisonKey
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): ToolChoiceFunction = apply {
+    fun validate(): ProjectSettings = apply {
         if (!validated) {
-            name()
+            comparisonKey()
             validated = true
         }
     }
@@ -48,20 +52,20 @@ private constructor(
             return true
         }
 
-        return other is ToolChoiceFunction &&
-            this.name == other.name &&
+        return other is ProjectSettings &&
+            this.comparisonKey == other.comparisonKey &&
             this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
         if (hashCode == 0) {
-            hashCode = Objects.hash(name, additionalProperties)
+            hashCode = Objects.hash(comparisonKey, additionalProperties)
         }
         return hashCode
     }
 
     override fun toString() =
-        "ToolChoiceFunction{name=$name, additionalProperties=$additionalProperties}"
+        "ProjectSettings{comparisonKey=$comparisonKey, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -70,20 +74,24 @@ private constructor(
 
     class Builder {
 
-        private var name: JsonField<String> = JsonMissing.of()
+        private var comparisonKey: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(toolChoiceFunction: ToolChoiceFunction) = apply {
-            this.name = toolChoiceFunction.name
-            additionalProperties(toolChoiceFunction.additionalProperties)
+        internal fun from(projectSettings: ProjectSettings) = apply {
+            this.comparisonKey = projectSettings.comparisonKey
+            additionalProperties(projectSettings.additionalProperties)
         }
 
-        fun name(name: String) = name(JsonField.of(name))
+        /** The key used to join two experiments (defaults to `input`). */
+        fun comparisonKey(comparisonKey: String) = comparisonKey(JsonField.of(comparisonKey))
 
-        @JsonProperty("name")
+        /** The key used to join two experiments (defaults to `input`). */
+        @JsonProperty("comparison_key")
         @ExcludeMissing
-        fun name(name: JsonField<String>) = apply { this.name = name }
+        fun comparisonKey(comparisonKey: JsonField<String>) = apply {
+            this.comparisonKey = comparisonKey
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -99,7 +107,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): ToolChoiceFunction =
-            ToolChoiceFunction(name, additionalProperties.toUnmodifiable())
+        fun build(): ProjectSettings =
+            ProjectSettings(comparisonKey, additionalProperties.toUnmodifiable())
     }
 }

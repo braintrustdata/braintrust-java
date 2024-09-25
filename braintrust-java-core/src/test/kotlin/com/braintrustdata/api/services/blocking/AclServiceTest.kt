@@ -62,7 +62,10 @@ class AclServiceTest {
         val aclService = client.acls()
         val response =
             aclService.list(
-                AclListParams.builder().objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+                AclListParams.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(AclListParams.ObjectType.ORGANIZATION)
+                    .build()
             )
         println(response)
         response.objects().forEach { it.validate() }

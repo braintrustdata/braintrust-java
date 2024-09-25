@@ -66,7 +66,7 @@ class ErrorHandlingTest {
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .settings(Project.Settings.builder().comparisonKey("comparison_key").build())
+                .settings(ProjectSettings.builder().comparisonKey("comparison_key").build())
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 

@@ -57,10 +57,12 @@ class ProjectScoreReplaceParamsTest {
             ProjectScoreReplaceParams.builder()
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.scoreType()).isEqualTo(ProjectScoreReplaceParams.ScoreType.SLIDER)
     }
 }
