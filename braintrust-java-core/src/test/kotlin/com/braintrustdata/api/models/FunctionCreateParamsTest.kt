@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -25,8 +25,8 @@ class FunctionCreateParamsTest {
             .description("description")
             .functionSchema(
                 FunctionCreateParams.FunctionSchema.builder()
-                    .parameters(JsonValue.from(mapOf<String, Any>()))
-                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .parameters(JsonNull.of())
+                    .returns(JsonNull.of())
                     .build()
             )
             .functionType(FunctionCreateParams.FunctionType.LLM)
@@ -144,8 +144,8 @@ class FunctionCreateParamsTest {
                 .description("description")
                 .functionSchema(
                     FunctionCreateParams.FunctionSchema.builder()
-                        .parameters(JsonValue.from(mapOf<String, Any>()))
-                        .returns(JsonValue.from(mapOf<String, Any>()))
+                        .parameters(JsonNull.of())
+                        .returns(JsonNull.of())
                         .build()
                 )
                 .functionType(FunctionCreateParams.FunctionType.LLM)
@@ -263,8 +263,8 @@ class FunctionCreateParamsTest {
         assertThat(body.functionSchema())
             .isEqualTo(
                 FunctionCreateParams.FunctionSchema.builder()
-                    .parameters(JsonValue.from(mapOf<String, Any>()))
-                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .parameters(JsonNull.of())
+                    .returns(JsonNull.of())
                     .build()
             )
         assertThat(body.functionType()).isEqualTo(FunctionCreateParams.FunctionType.LLM)

@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ class InsertExperimentEventReplaceTest {
                 )
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .datasetRecordId("dataset_record_id")
-                .error(JsonValue.from(mapOf<String, Any>()))
-                .expected(JsonValue.from(mapOf<String, Any>()))
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .error(JsonNull.of())
+                .expected(JsonNull.of())
+                .input(JsonNull.of())
                 .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                 .metrics(
                     InsertExperimentEventReplace.Metrics.builder()
@@ -39,7 +39,7 @@ class InsertExperimentEventReplaceTest {
                         .tokens(123L)
                         .build()
                 )
-                .output(JsonValue.from(mapOf<String, Any>()))
+                .output(JsonNull.of())
                 .scores(InsertExperimentEventReplace.Scores.builder().build())
                 .spanAttributes(
                     InsertExperimentEventReplace.SpanAttributes.builder()
@@ -65,12 +65,9 @@ class InsertExperimentEventReplaceTest {
         assertThat(insertExperimentEventReplace.created())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(insertExperimentEventReplace.datasetRecordId()).contains("dataset_record_id")
-        assertThat(insertExperimentEventReplace._error())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(insertExperimentEventReplace._expected())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(insertExperimentEventReplace._input())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(insertExperimentEventReplace._error()).isEqualTo(JsonNull.of())
+        assertThat(insertExperimentEventReplace._expected()).isEqualTo(JsonNull.of())
+        assertThat(insertExperimentEventReplace._input()).isEqualTo(JsonNull.of())
         assertThat(insertExperimentEventReplace.metadata())
             .contains(InsertExperimentEventReplace.Metadata.builder().build())
         assertThat(insertExperimentEventReplace.metrics())
@@ -83,8 +80,7 @@ class InsertExperimentEventReplaceTest {
                     .tokens(123L)
                     .build()
             )
-        assertThat(insertExperimentEventReplace._output())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(insertExperimentEventReplace._output()).isEqualTo(JsonNull.of())
         assertThat(insertExperimentEventReplace.scores())
             .contains(InsertExperimentEventReplace.Scores.builder().build())
         assertThat(insertExperimentEventReplace.spanAttributes())

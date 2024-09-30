@@ -4,7 +4,7 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.ViewListParams
 import java.time.OffsetDateTime
@@ -42,10 +42,10 @@ class ViewServiceTest {
                         ViewData.builder()
                             .search(
                                 ViewDataSearch.builder()
-                                    .filter(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .match(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .sort(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .tag(listOf(JsonValue.from(mapOf<String, Any>())))
+                                    .filter(listOf(JsonNull.of()))
+                                    .match(listOf(JsonNull.of()))
+                                    .sort(listOf(JsonNull.of()))
+                                    .tag(listOf(JsonNull.of()))
                                     .build()
                             )
                             .build()
@@ -103,10 +103,10 @@ class ViewServiceTest {
                         ViewData.builder()
                             .search(
                                 ViewDataSearch.builder()
-                                    .filter(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .match(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .sort(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .tag(listOf(JsonValue.from(mapOf<String, Any>())))
+                                    .filter(listOf(JsonNull.of()))
+                                    .match(listOf(JsonNull.of()))
+                                    .sort(listOf(JsonNull.of()))
+                                    .tag(listOf(JsonNull.of()))
                                     .build()
                             )
                             .build()
@@ -185,10 +185,10 @@ class ViewServiceTest {
                         ViewData.builder()
                             .search(
                                 ViewDataSearch.builder()
-                                    .filter(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .match(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .sort(listOf(JsonValue.from(mapOf<String, Any>())))
-                                    .tag(listOf(JsonValue.from(mapOf<String, Any>())))
+                                    .filter(listOf(JsonNull.of()))
+                                    .match(listOf(JsonNull.of()))
+                                    .sort(listOf(JsonNull.of()))
+                                    .tag(listOf(JsonNull.of()))
                                     .build()
                             )
                             .build()

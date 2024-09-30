@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -25,9 +25,9 @@ class InsertProjectLogsEventMergeTest {
                         .build()
                 )
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .error(JsonValue.from(mapOf<String, Any>()))
-                .expected(JsonValue.from(mapOf<String, Any>()))
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .error(JsonNull.of())
+                .expected(JsonNull.of())
+                .input(JsonNull.of())
                 .metadata(InsertProjectLogsEventMerge.Metadata.builder().build())
                 .metrics(
                     InsertProjectLogsEventMerge.Metrics.builder()
@@ -38,7 +38,7 @@ class InsertProjectLogsEventMergeTest {
                         .tokens(123L)
                         .build()
                 )
-                .output(JsonValue.from(mapOf<String, Any>()))
+                .output(JsonNull.of())
                 .scores(InsertProjectLogsEventMerge.Scores.builder().build())
                 .spanAttributes(
                     InsertProjectLogsEventMerge.SpanAttributes.builder()
@@ -64,12 +64,9 @@ class InsertProjectLogsEventMergeTest {
             )
         assertThat(insertProjectLogsEventMerge.created())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(insertProjectLogsEventMerge._error())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(insertProjectLogsEventMerge._expected())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(insertProjectLogsEventMerge._input())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(insertProjectLogsEventMerge._error()).isEqualTo(JsonNull.of())
+        assertThat(insertProjectLogsEventMerge._expected()).isEqualTo(JsonNull.of())
+        assertThat(insertProjectLogsEventMerge._input()).isEqualTo(JsonNull.of())
         assertThat(insertProjectLogsEventMerge.metadata())
             .contains(InsertProjectLogsEventMerge.Metadata.builder().build())
         assertThat(insertProjectLogsEventMerge.metrics())
@@ -82,8 +79,7 @@ class InsertProjectLogsEventMergeTest {
                     .tokens(123L)
                     .build()
             )
-        assertThat(insertProjectLogsEventMerge._output())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(insertProjectLogsEventMerge._output()).isEqualTo(JsonNull.of())
         assertThat(insertProjectLogsEventMerge.scores())
             .contains(InsertProjectLogsEventMerge.Scores.builder().build())
         assertThat(insertProjectLogsEventMerge.spanAttributes())

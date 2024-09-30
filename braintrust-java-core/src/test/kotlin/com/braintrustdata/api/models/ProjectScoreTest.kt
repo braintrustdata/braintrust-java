@@ -23,8 +23,8 @@ class ProjectScoreTest {
                     )
                 )
                 .config(
-                    ProjectScore.Config.builder()
-                        .destination(ProjectScore.Config.Destination.EXPECTED)
+                    ProjectScoreConfig.builder()
+                        .destination(ProjectScoreConfig.Destination.EXPECTED)
                         .multiSelect(true)
                         .online(
                             OnlineScoreConfig.builder()
@@ -65,8 +65,8 @@ class ProjectScoreTest {
             )
         assertThat(projectScore.config())
             .contains(
-                ProjectScore.Config.builder()
-                    .destination(ProjectScore.Config.Destination.EXPECTED)
+                ProjectScoreConfig.builder()
+                    .destination(ProjectScoreConfig.Destination.EXPECTED)
                     .multiSelect(true)
                     .online(
                         OnlineScoreConfig.builder()

@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -31,9 +31,9 @@ class FetchExperimentEventsResponseTest {
                                     .build()
                             )
                             .datasetRecordId("dataset_record_id")
-                            .error(JsonValue.from(mapOf<String, Any>()))
-                            .expected(JsonValue.from(mapOf<String, Any>()))
-                            .input(JsonValue.from(mapOf<String, Any>()))
+                            .error(JsonNull.of())
+                            .expected(JsonNull.of())
+                            .input(JsonNull.of())
                             .metadata(ExperimentEvent.Metadata.builder().build())
                             .metrics(
                                 ExperimentEvent.Metrics.builder()
@@ -44,7 +44,7 @@ class FetchExperimentEventsResponseTest {
                                     .tokens(123L)
                                     .build()
                             )
-                            .output(JsonValue.from(mapOf<String, Any>()))
+                            .output(JsonNull.of())
                             .scores(ExperimentEvent.Scores.builder().build())
                             .spanAttributes(
                                 ExperimentEvent.SpanAttributes.builder()
@@ -78,9 +78,9 @@ class FetchExperimentEventsResponseTest {
                             .build()
                     )
                     .datasetRecordId("dataset_record_id")
-                    .error(JsonValue.from(mapOf<String, Any>()))
-                    .expected(JsonValue.from(mapOf<String, Any>()))
-                    .input(JsonValue.from(mapOf<String, Any>()))
+                    .error(JsonNull.of())
+                    .expected(JsonNull.of())
+                    .input(JsonNull.of())
                     .metadata(ExperimentEvent.Metadata.builder().build())
                     .metrics(
                         ExperimentEvent.Metrics.builder()
@@ -91,7 +91,7 @@ class FetchExperimentEventsResponseTest {
                             .tokens(123L)
                             .build()
                     )
-                    .output(JsonValue.from(mapOf<String, Any>()))
+                    .output(JsonNull.of())
                     .scores(ExperimentEvent.Scores.builder().build())
                     .spanAttributes(
                         ExperimentEvent.SpanAttributes.builder()

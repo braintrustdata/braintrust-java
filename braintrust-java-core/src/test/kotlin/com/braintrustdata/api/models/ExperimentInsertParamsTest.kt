@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -31,9 +31,9 @@ class ExperimentInsertParamsTest {
                             )
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .datasetRecordId("dataset_record_id")
-                            .error(JsonValue.from(mapOf<String, Any>()))
-                            .expected(JsonValue.from(mapOf<String, Any>()))
-                            .input(JsonValue.from(mapOf<String, Any>()))
+                            .error(JsonNull.of())
+                            .expected(JsonNull.of())
+                            .input(JsonNull.of())
                             .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                             .metrics(
                                 InsertExperimentEventReplace.Metrics.builder()
@@ -44,7 +44,7 @@ class ExperimentInsertParamsTest {
                                     .tokens(123L)
                                     .build()
                             )
-                            .output(JsonValue.from(mapOf<String, Any>()))
+                            .output(JsonNull.of())
                             .scores(InsertExperimentEventReplace.Scores.builder().build())
                             .spanAttributes(
                                 InsertExperimentEventReplace.SpanAttributes.builder()
@@ -82,9 +82,9 @@ class ExperimentInsertParamsTest {
                                 )
                                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                 .datasetRecordId("dataset_record_id")
-                                .error(JsonValue.from(mapOf<String, Any>()))
-                                .expected(JsonValue.from(mapOf<String, Any>()))
-                                .input(JsonValue.from(mapOf<String, Any>()))
+                                .error(JsonNull.of())
+                                .expected(JsonNull.of())
+                                .input(JsonNull.of())
                                 .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                                 .metrics(
                                     InsertExperimentEventReplace.Metrics.builder()
@@ -95,7 +95,7 @@ class ExperimentInsertParamsTest {
                                         .tokens(123L)
                                         .build()
                                 )
-                                .output(JsonValue.from(mapOf<String, Any>()))
+                                .output(JsonNull.of())
                                 .scores(InsertExperimentEventReplace.Scores.builder().build())
                                 .spanAttributes(
                                     InsertExperimentEventReplace.SpanAttributes.builder()
@@ -129,9 +129,9 @@ class ExperimentInsertParamsTest {
                             )
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .datasetRecordId("dataset_record_id")
-                            .error(JsonValue.from(mapOf<String, Any>()))
-                            .expected(JsonValue.from(mapOf<String, Any>()))
-                            .input(JsonValue.from(mapOf<String, Any>()))
+                            .error(JsonNull.of())
+                            .expected(JsonNull.of())
+                            .input(JsonNull.of())
                             .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                             .metrics(
                                 InsertExperimentEventReplace.Metrics.builder()
@@ -142,7 +142,7 @@ class ExperimentInsertParamsTest {
                                     .tokens(123L)
                                     .build()
                             )
-                            .output(JsonValue.from(mapOf<String, Any>()))
+                            .output(JsonNull.of())
                             .scores(InsertExperimentEventReplace.Scores.builder().build())
                             .spanAttributes(
                                 InsertExperimentEventReplace.SpanAttributes.builder()

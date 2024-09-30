@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -23,8 +23,8 @@ class DatasetInsertParamsTest {
                             ._objectDelete(true)
                             ._parentId("_parent_id")
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .expected(JsonValue.from(mapOf<String, Any>()))
-                            .input(JsonValue.from(mapOf<String, Any>()))
+                            .expected(JsonNull.of())
+                            .input(JsonNull.of())
                             .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                             .tags(listOf("string"))
                             .build()
@@ -48,8 +48,8 @@ class DatasetInsertParamsTest {
                                 ._objectDelete(true)
                                 ._parentId("_parent_id")
                                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                                .expected(JsonValue.from(mapOf<String, Any>()))
-                                .input(JsonValue.from(mapOf<String, Any>()))
+                                .expected(JsonNull.of())
+                                .input(JsonNull.of())
                                 .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                                 .tags(listOf("string"))
                                 .build()
@@ -69,8 +69,8 @@ class DatasetInsertParamsTest {
                             ._objectDelete(true)
                             ._parentId("_parent_id")
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .expected(JsonValue.from(mapOf<String, Any>()))
-                            .input(JsonValue.from(mapOf<String, Any>()))
+                            .expected(JsonNull.of())
+                            .input(JsonNull.of())
                             .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                             .tags(listOf("string"))
                             .build()

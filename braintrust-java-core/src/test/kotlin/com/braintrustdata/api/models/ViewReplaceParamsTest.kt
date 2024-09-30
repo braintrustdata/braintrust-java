@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -30,10 +30,10 @@ class ViewReplaceParamsTest {
                 ViewData.builder()
                     .search(
                         ViewDataSearch.builder()
-                            .filter(listOf(JsonValue.from(mapOf<String, Any>())))
-                            .match(listOf(JsonValue.from(mapOf<String, Any>())))
-                            .sort(listOf(JsonValue.from(mapOf<String, Any>())))
-                            .tag(listOf(JsonValue.from(mapOf<String, Any>())))
+                            .filter(listOf(JsonNull.of()))
+                            .match(listOf(JsonNull.of()))
+                            .sort(listOf(JsonNull.of()))
+                            .tag(listOf(JsonNull.of()))
                             .build()
                     )
                     .build()
@@ -62,10 +62,10 @@ class ViewReplaceParamsTest {
                     ViewData.builder()
                         .search(
                             ViewDataSearch.builder()
-                                .filter(listOf(JsonValue.from(mapOf<String, Any>())))
-                                .match(listOf(JsonValue.from(mapOf<String, Any>())))
-                                .sort(listOf(JsonValue.from(mapOf<String, Any>())))
-                                .tag(listOf(JsonValue.from(mapOf<String, Any>())))
+                                .filter(listOf(JsonNull.of()))
+                                .match(listOf(JsonNull.of()))
+                                .sort(listOf(JsonNull.of()))
+                                .tag(listOf(JsonNull.of()))
                                 .build()
                         )
                         .build()
@@ -92,10 +92,10 @@ class ViewReplaceParamsTest {
                 ViewData.builder()
                     .search(
                         ViewDataSearch.builder()
-                            .filter(listOf(JsonValue.from(mapOf<String, Any>())))
-                            .match(listOf(JsonValue.from(mapOf<String, Any>())))
-                            .sort(listOf(JsonValue.from(mapOf<String, Any>())))
-                            .tag(listOf(JsonValue.from(mapOf<String, Any>())))
+                            .filter(listOf(JsonNull.of()))
+                            .match(listOf(JsonNull.of()))
+                            .sort(listOf(JsonNull.of()))
+                            .tag(listOf(JsonNull.of()))
                             .build()
                     )
                     .build()

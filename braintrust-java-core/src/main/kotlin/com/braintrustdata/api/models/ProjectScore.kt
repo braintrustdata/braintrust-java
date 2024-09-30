@@ -41,7 +41,7 @@ private constructor(
     private val description: JsonField<String>,
     private val scoreType: JsonField<ScoreType>,
     private val categories: JsonField<Categories>,
-    private val config: JsonField<Config>,
+    private val config: JsonField<ProjectScoreConfig>,
     private val position: JsonField<String>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
@@ -74,7 +74,7 @@ private constructor(
     fun categories(): Optional<Categories> =
         Optional.ofNullable(categories.getNullable("categories"))
 
-    fun config(): Optional<Config> = Optional.ofNullable(config.getNullable("config"))
+    fun config(): Optional<ProjectScoreConfig> = Optional.ofNullable(config.getNullable("config"))
 
     /** An optional LexoRank-based string that sets the sort position for the score in the UI */
     fun position(): Optional<String> = Optional.ofNullable(position.getNullable("position"))
@@ -185,7 +185,7 @@ private constructor(
         private var description: JsonField<String> = JsonMissing.of()
         private var scoreType: JsonField<ScoreType> = JsonMissing.of()
         private var categories: JsonField<Categories> = JsonMissing.of()
-        private var config: JsonField<Config> = JsonMissing.of()
+        private var config: JsonField<ProjectScoreConfig> = JsonMissing.of()
         private var position: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -262,11 +262,11 @@ private constructor(
         @ExcludeMissing
         fun categories(categories: JsonField<Categories>) = apply { this.categories = categories }
 
-        fun config(config: Config) = config(JsonField.of(config))
+        fun config(config: ProjectScoreConfig) = config(JsonField.of(config))
 
         @JsonProperty("config")
         @ExcludeMissing
-        fun config(config: JsonField<Config>) = apply { this.config = config }
+        fun config(config: JsonField<ProjectScoreConfig>) = apply { this.config = config }
 
         /** An optional LexoRank-based string that sets the sort position for the score in the UI */
         fun position(position: String) = position(JsonField.of(position))
@@ -706,195 +706,6 @@ private constructor(
                 fun build(): NullableVariant =
                     NullableVariant(additionalProperties.toUnmodifiable())
             }
-        }
-    }
-
-    @JsonDeserialize(builder = Config.Builder::class)
-    @NoAutoDetect
-    class Config
-    private constructor(
-        private val multiSelect: JsonField<Boolean>,
-        private val destination: JsonField<Destination>,
-        private val online: JsonField<OnlineScoreConfig>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        private var hashCode: Int = 0
-
-        fun multiSelect(): Optional<Boolean> =
-            Optional.ofNullable(multiSelect.getNullable("multi_select"))
-
-        fun destination(): Optional<Destination> =
-            Optional.ofNullable(destination.getNullable("destination"))
-
-        fun online(): Optional<OnlineScoreConfig> =
-            Optional.ofNullable(online.getNullable("online"))
-
-        @JsonProperty("multi_select") @ExcludeMissing fun _multiSelect() = multiSelect
-
-        @JsonProperty("destination") @ExcludeMissing fun _destination() = destination
-
-        @JsonProperty("online") @ExcludeMissing fun _online() = online
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Config = apply {
-            if (!validated) {
-                multiSelect()
-                destination()
-                online().map { it.validate() }
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Config &&
-                this.multiSelect == other.multiSelect &&
-                this.destination == other.destination &&
-                this.online == other.online &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        multiSelect,
-                        destination,
-                        online,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Config{multiSelect=$multiSelect, destination=$destination, online=$online, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var multiSelect: JsonField<Boolean> = JsonMissing.of()
-            private var destination: JsonField<Destination> = JsonMissing.of()
-            private var online: JsonField<OnlineScoreConfig> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(config: Config) = apply {
-                this.multiSelect = config.multiSelect
-                this.destination = config.destination
-                this.online = config.online
-                additionalProperties(config.additionalProperties)
-            }
-
-            fun multiSelect(multiSelect: Boolean) = multiSelect(JsonField.of(multiSelect))
-
-            @JsonProperty("multi_select")
-            @ExcludeMissing
-            fun multiSelect(multiSelect: JsonField<Boolean>) = apply {
-                this.multiSelect = multiSelect
-            }
-
-            fun destination(destination: Destination) = destination(JsonField.of(destination))
-
-            @JsonProperty("destination")
-            @ExcludeMissing
-            fun destination(destination: JsonField<Destination>) = apply {
-                this.destination = destination
-            }
-
-            fun online(online: OnlineScoreConfig) = online(JsonField.of(online))
-
-            @JsonProperty("online")
-            @ExcludeMissing
-            fun online(online: JsonField<OnlineScoreConfig>) = apply { this.online = online }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Config =
-                Config(
-                    multiSelect,
-                    destination,
-                    online,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        class Destination
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Destination && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val EXPECTED = Destination(JsonField.of("expected"))
-
-                @JvmStatic fun of(value: String) = Destination(JsonField.of(value))
-            }
-
-            enum class Known {
-                EXPECTED,
-            }
-
-            enum class Value {
-                EXPECTED,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    EXPECTED -> Value.EXPECTED
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    EXPECTED -> Known.EXPECTED
-                    else -> throw BraintrustInvalidDataException("Unknown Destination: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
         }
     }
 }
