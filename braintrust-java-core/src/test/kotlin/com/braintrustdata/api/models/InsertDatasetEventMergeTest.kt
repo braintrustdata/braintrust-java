@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -18,8 +18,8 @@ class InsertDatasetEventMergeTest {
                 ._mergePaths(listOf(listOf("string")))
                 ._objectDelete(true)
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .expected(JsonValue.from(mapOf<String, Any>()))
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .expected(JsonNull.of())
+                .input(JsonNull.of())
                 .metadata(InsertDatasetEventMerge.Metadata.builder().build())
                 .tags(listOf("string"))
                 .build()
@@ -30,9 +30,8 @@ class InsertDatasetEventMergeTest {
         assertThat(insertDatasetEventMerge._objectDelete()).contains(true)
         assertThat(insertDatasetEventMerge.created())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(insertDatasetEventMerge._expected())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(insertDatasetEventMerge._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(insertDatasetEventMerge._expected()).isEqualTo(JsonNull.of())
+        assertThat(insertDatasetEventMerge._input()).isEqualTo(JsonNull.of())
         assertThat(insertDatasetEventMerge.metadata())
             .contains(InsertDatasetEventMerge.Metadata.builder().build())
         assertThat(insertDatasetEventMerge.tags().get()).containsExactly("string")

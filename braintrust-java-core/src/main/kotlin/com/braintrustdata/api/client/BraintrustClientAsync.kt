@@ -42,4 +42,8 @@ interface BraintrustClientAsync {
     fun apiKeys(): ApiKeyServiceAsync
 
     fun aiSecrets(): AiSecretServiceAsync
+
+    fun envVars(): EnvVarServiceAsync
+
+    fun evals(): EvalServiceAsync
 }

@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -18,7 +18,7 @@ class ExperimentFeedbackParamsTest {
                     FeedbackExperimentItem.builder()
                         .id("id")
                         .comment("comment")
-                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .expected(JsonNull.of())
                         .metadata(FeedbackExperimentItem.Metadata.builder().build())
                         .scores(FeedbackExperimentItem.Scores.builder().build())
                         .source(FeedbackExperimentItem.Source.APP)
@@ -38,7 +38,7 @@ class ExperimentFeedbackParamsTest {
                         FeedbackExperimentItem.builder()
                             .id("id")
                             .comment("comment")
-                            .expected(JsonValue.from(mapOf<String, Any>()))
+                            .expected(JsonNull.of())
                             .metadata(FeedbackExperimentItem.Metadata.builder().build())
                             .scores(FeedbackExperimentItem.Scores.builder().build())
                             .source(FeedbackExperimentItem.Source.APP)
@@ -54,7 +54,7 @@ class ExperimentFeedbackParamsTest {
                     FeedbackExperimentItem.builder()
                         .id("id")
                         .comment("comment")
-                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .expected(JsonNull.of())
                         .metadata(FeedbackExperimentItem.Metadata.builder().build())
                         .scores(FeedbackExperimentItem.Scores.builder().build())
                         .source(FeedbackExperimentItem.Source.APP)

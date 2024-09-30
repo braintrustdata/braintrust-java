@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -14,7 +14,7 @@ class FeedbackExperimentItemTest {
             FeedbackExperimentItem.builder()
                 .id("id")
                 .comment("comment")
-                .expected(JsonValue.from(mapOf<String, Any>()))
+                .expected(JsonNull.of())
                 .metadata(FeedbackExperimentItem.Metadata.builder().build())
                 .scores(FeedbackExperimentItem.Scores.builder().build())
                 .source(FeedbackExperimentItem.Source.APP)
@@ -22,8 +22,7 @@ class FeedbackExperimentItemTest {
         assertThat(feedbackExperimentItem).isNotNull
         assertThat(feedbackExperimentItem.id()).isEqualTo("id")
         assertThat(feedbackExperimentItem.comment()).contains("comment")
-        assertThat(feedbackExperimentItem._expected())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(feedbackExperimentItem._expected()).isEqualTo(JsonNull.of())
         assertThat(feedbackExperimentItem.metadata())
             .contains(FeedbackExperimentItem.Metadata.builder().build())
         assertThat(feedbackExperimentItem.scores())

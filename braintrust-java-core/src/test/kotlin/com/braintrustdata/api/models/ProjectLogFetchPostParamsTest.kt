@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -19,7 +19,7 @@ class ProjectLogFetchPostParamsTest {
                     PathLookupFilter.builder()
                         .path(listOf("string"))
                         .type(PathLookupFilter.Type.PATH_LOOKUP)
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value(JsonNull.of())
                         .build()
                 )
             )
@@ -41,7 +41,7 @@ class ProjectLogFetchPostParamsTest {
                         PathLookupFilter.builder()
                             .path(listOf("string"))
                             .type(PathLookupFilter.Type.PATH_LOOKUP)
-                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .value(JsonNull.of())
                             .build()
                     )
                 )
@@ -59,7 +59,7 @@ class ProjectLogFetchPostParamsTest {
                     PathLookupFilter.builder()
                         .path(listOf("string"))
                         .type(PathLookupFilter.Type.PATH_LOOKUP)
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value(JsonNull.of())
                         .build()
                 )
             )

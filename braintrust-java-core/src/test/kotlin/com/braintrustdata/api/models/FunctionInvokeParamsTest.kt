@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -13,7 +13,7 @@ class FunctionInvokeParamsTest {
     fun createFunctionInvokeParams() {
         FunctionInvokeParams.builder()
             .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .input(JsonValue.from(mapOf<String, Any>()))
+            .input(JsonNull.of())
             .messages(
                 listOf(
                     FunctionInvokeParams.Message.ofSystem(
@@ -57,7 +57,7 @@ class FunctionInvokeParamsTest {
         val params =
             FunctionInvokeParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .input(JsonNull.of())
                 .messages(
                     listOf(
                         FunctionInvokeParams.Message.ofSystem(
@@ -97,7 +97,7 @@ class FunctionInvokeParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(body.input()).isEqualTo(JsonNull.of())
         assertThat(body.messages())
             .isEqualTo(
                 listOf(

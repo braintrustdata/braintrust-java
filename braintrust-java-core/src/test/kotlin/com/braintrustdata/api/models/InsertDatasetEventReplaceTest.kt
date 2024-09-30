@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -18,8 +18,8 @@ class InsertDatasetEventReplaceTest {
                 ._objectDelete(true)
                 ._parentId("_parent_id")
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .expected(JsonValue.from(mapOf<String, Any>()))
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .expected(JsonNull.of())
+                .input(JsonNull.of())
                 .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                 .tags(listOf("string"))
                 .build()
@@ -30,10 +30,8 @@ class InsertDatasetEventReplaceTest {
         assertThat(insertDatasetEventReplace._parentId()).contains("_parent_id")
         assertThat(insertDatasetEventReplace.created())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(insertDatasetEventReplace._expected())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(insertDatasetEventReplace._input())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(insertDatasetEventReplace._expected()).isEqualTo(JsonNull.of())
+        assertThat(insertDatasetEventReplace._input()).isEqualTo(JsonNull.of())
         assertThat(insertDatasetEventReplace.metadata())
             .contains(InsertDatasetEventReplace.Metadata.builder().build())
         assertThat(insertDatasetEventReplace.tags().get()).containsExactly("string")
