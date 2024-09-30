@@ -22,6 +22,7 @@ import com.braintrustdata.api.services.errorHandler
 import com.braintrustdata.api.services.json
 import com.braintrustdata.api.services.jsonHandler
 import com.braintrustdata.api.services.withErrorHandler
+import java.util.Optional
 
 class FunctionServiceImpl
 constructor(
@@ -183,7 +184,7 @@ constructor(
     override fun invoke(
         params: FunctionInvokeParams,
         requestOptions: RequestOptions
-    ): FunctionInvokeResponse {
+    ): Optional<FunctionInvokeResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)

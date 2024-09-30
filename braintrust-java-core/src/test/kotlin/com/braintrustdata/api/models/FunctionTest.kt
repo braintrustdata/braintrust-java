@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -31,8 +31,8 @@ class FunctionTest {
                 .description("description")
                 .functionSchema(
                     Function.FunctionSchema.builder()
-                        .parameters(JsonValue.from(mapOf<String, Any>()))
-                        .returns(JsonValue.from(mapOf<String, Any>()))
+                        .parameters(JsonNull.of())
+                        .returns(JsonNull.of())
                         .build()
                 )
                 .functionType(Function.FunctionType.LLM)
@@ -155,8 +155,8 @@ class FunctionTest {
         assertThat(function.functionSchema())
             .contains(
                 Function.FunctionSchema.builder()
-                    .parameters(JsonValue.from(mapOf<String, Any>()))
-                    .returns(JsonValue.from(mapOf<String, Any>()))
+                    .parameters(JsonNull.of())
+                    .returns(JsonNull.of())
                     .build()
             )
         assertThat(function.functionType()).contains(Function.FunctionType.LLM)

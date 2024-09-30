@@ -4,7 +4,7 @@ package com.braintrustdata.api.services.blocking.projects
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ class LogServiceTest {
                             FeedbackProjectLogsItem.builder()
                                 .id("id")
                                 .comment("comment")
-                                .expected(JsonValue.from(mapOf<String, Any>()))
+                                .expected(JsonNull.of())
                                 .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
                                 .scores(FeedbackProjectLogsItem.Scores.builder().build())
                                 .source(FeedbackProjectLogsItem.Source.APP)
@@ -83,7 +83,7 @@ class LogServiceTest {
                             PathLookupFilter.builder()
                                 .path(listOf("string"))
                                 .type(PathLookupFilter.Type.PATH_LOOKUP)
-                                .value(JsonValue.from(mapOf<String, Any>()))
+                                .value(JsonNull.of())
                                 .build()
                         )
                     )
@@ -125,9 +125,9 @@ class LogServiceTest {
                                             .build()
                                     )
                                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                                    .error(JsonValue.from(mapOf<String, Any>()))
-                                    .expected(JsonValue.from(mapOf<String, Any>()))
-                                    .input(JsonValue.from(mapOf<String, Any>()))
+                                    .error(JsonNull.of())
+                                    .expected(JsonNull.of())
+                                    .input(JsonNull.of())
                                     .metadata(
                                         InsertProjectLogsEventReplace.Metadata.builder().build()
                                     )
@@ -140,7 +140,7 @@ class LogServiceTest {
                                             .tokens(123L)
                                             .build()
                                     )
-                                    .output(JsonValue.from(mapOf<String, Any>()))
+                                    .output(JsonNull.of())
                                     .scores(InsertProjectLogsEventReplace.Scores.builder().build())
                                     .spanAttributes(
                                         InsertProjectLogsEventReplace.SpanAttributes.builder()
