@@ -4,7 +4,7 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.FunctionListParams
 import org.junit.jupiter.api.Test
@@ -37,8 +37,8 @@ class FunctionServiceTest {
                     .description("description")
                     .functionSchema(
                         FunctionCreateParams.FunctionSchema.builder()
-                            .parameters(JsonValue.from(mapOf<String, Any>()))
-                            .returns(JsonValue.from(mapOf<String, Any>()))
+                            .parameters(JsonNull.of())
+                            .returns(JsonNull.of())
                             .build()
                     )
                     .functionType(FunctionCreateParams.FunctionType.LLM)
@@ -327,7 +327,7 @@ class FunctionServiceTest {
             functionService.invoke(
                 FunctionInvokeParams.builder()
                     .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .input(JsonValue.from(mapOf<String, Any>()))
+                    .input(JsonNull.of())
                     .messages(
                         listOf(
                             FunctionInvokeParams.Message.ofSystem(
@@ -394,8 +394,8 @@ class FunctionServiceTest {
                     .description("description")
                     .functionSchema(
                         FunctionReplaceParams.FunctionSchema.builder()
-                            .parameters(JsonValue.from(mapOf<String, Any>()))
-                            .returns(JsonValue.from(mapOf<String, Any>()))
+                            .parameters(JsonNull.of())
+                            .returns(JsonNull.of())
                             .build()
                     )
                     .functionType(FunctionReplaceParams.FunctionType.LLM)

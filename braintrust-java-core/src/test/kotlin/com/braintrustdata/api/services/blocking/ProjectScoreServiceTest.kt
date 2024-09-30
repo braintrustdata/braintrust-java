@@ -31,6 +31,32 @@ class ProjectScoreServiceTest {
                             listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )
+                    .config(
+                        ProjectScoreConfig.builder()
+                            .destination(ProjectScoreConfig.Destination.EXPECTED)
+                            .multiSelect(true)
+                            .online(
+                                OnlineScoreConfig.builder()
+                                    .samplingRate(1.0)
+                                    .scorers(
+                                        listOf(
+                                            OnlineScoreConfig.Scorer.ofFunction(
+                                                OnlineScoreConfig.Scorer.Function.builder()
+                                                    .id("id")
+                                                    .type(
+                                                        OnlineScoreConfig.Scorer.Function.Type
+                                                            .FUNCTION
+                                                    )
+                                                    .build()
+                                            )
+                                        )
+                                    )
+                                    .applyToRootSpan(true)
+                                    .applyToSpanNames(listOf("string"))
+                                    .build()
+                            )
+                            .build()
+                    )
                     .description("description")
                     .build()
             )
@@ -72,6 +98,32 @@ class ProjectScoreServiceTest {
                         ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
                             listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
+                    )
+                    .config(
+                        ProjectScoreConfig.builder()
+                            .destination(ProjectScoreConfig.Destination.EXPECTED)
+                            .multiSelect(true)
+                            .online(
+                                OnlineScoreConfig.builder()
+                                    .samplingRate(1.0)
+                                    .scorers(
+                                        listOf(
+                                            OnlineScoreConfig.Scorer.ofFunction(
+                                                OnlineScoreConfig.Scorer.Function.builder()
+                                                    .id("id")
+                                                    .type(
+                                                        OnlineScoreConfig.Scorer.Function.Type
+                                                            .FUNCTION
+                                                    )
+                                                    .build()
+                                            )
+                                        )
+                                    )
+                                    .applyToRootSpan(true)
+                                    .applyToSpanNames(listOf("string"))
+                                    .build()
+                            )
+                            .build()
                     )
                     .description("description")
                     .name("name")
@@ -131,6 +183,32 @@ class ProjectScoreServiceTest {
                         ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
                             listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
+                    )
+                    .config(
+                        ProjectScoreConfig.builder()
+                            .destination(ProjectScoreConfig.Destination.EXPECTED)
+                            .multiSelect(true)
+                            .online(
+                                OnlineScoreConfig.builder()
+                                    .samplingRate(1.0)
+                                    .scorers(
+                                        listOf(
+                                            OnlineScoreConfig.Scorer.ofFunction(
+                                                OnlineScoreConfig.Scorer.Function.builder()
+                                                    .id("id")
+                                                    .type(
+                                                        OnlineScoreConfig.Scorer.Function.Type
+                                                            .FUNCTION
+                                                    )
+                                                    .build()
+                                            )
+                                        )
+                                    )
+                                    .applyToRootSpan(true)
+                                    .applyToSpanNames(listOf("string"))
+                                    .build()
+                            )
+                            .build()
                     )
                     .description("description")
                     .build()

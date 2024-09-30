@@ -17,6 +17,29 @@ class ProjectScoreUpdateParamsTest {
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
+            .config(
+                ProjectScoreConfig.builder()
+                    .destination(ProjectScoreConfig.Destination.EXPECTED)
+                    .multiSelect(true)
+                    .online(
+                        OnlineScoreConfig.builder()
+                            .samplingRate(1.0)
+                            .scorers(
+                                listOf(
+                                    OnlineScoreConfig.Scorer.ofFunction(
+                                        OnlineScoreConfig.Scorer.Function.builder()
+                                            .id("id")
+                                            .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
+                                            .build()
+                                    )
+                                )
+                            )
+                            .applyToRootSpan(true)
+                            .applyToSpanNames(listOf("string"))
+                            .build()
+                    )
+                    .build()
+            )
             .description("description")
             .name("name")
             .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
@@ -33,6 +56,31 @@ class ProjectScoreUpdateParamsTest {
                         listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
+                .config(
+                    ProjectScoreConfig.builder()
+                        .destination(ProjectScoreConfig.Destination.EXPECTED)
+                        .multiSelect(true)
+                        .online(
+                            OnlineScoreConfig.builder()
+                                .samplingRate(1.0)
+                                .scorers(
+                                    listOf(
+                                        OnlineScoreConfig.Scorer.ofFunction(
+                                            OnlineScoreConfig.Scorer.Function.builder()
+                                                .id("id")
+                                                .type(
+                                                    OnlineScoreConfig.Scorer.Function.Type.FUNCTION
+                                                )
+                                                .build()
+                                        )
+                                    )
+                                )
+                                .applyToRootSpan(true)
+                                .applyToSpanNames(listOf("string"))
+                                .build()
+                        )
+                        .build()
+                )
                 .description("description")
                 .name("name")
                 .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
@@ -44,6 +92,30 @@ class ProjectScoreUpdateParamsTest {
                 ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
+            )
+        assertThat(body.config())
+            .isEqualTo(
+                ProjectScoreConfig.builder()
+                    .destination(ProjectScoreConfig.Destination.EXPECTED)
+                    .multiSelect(true)
+                    .online(
+                        OnlineScoreConfig.builder()
+                            .samplingRate(1.0)
+                            .scorers(
+                                listOf(
+                                    OnlineScoreConfig.Scorer.ofFunction(
+                                        OnlineScoreConfig.Scorer.Function.builder()
+                                            .id("id")
+                                            .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
+                                            .build()
+                                    )
+                                )
+                            )
+                            .applyToRootSpan(true)
+                            .applyToSpanNames(listOf("string"))
+                            .build()
+                    )
+                    .build()
             )
         assertThat(body.description()).isEqualTo("description")
         assertThat(body.name()).isEqualTo("name")

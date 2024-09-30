@@ -4,7 +4,7 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.ExperimentListParams
 import java.time.OffsetDateTime
@@ -157,7 +157,7 @@ class ExperimentServiceTest {
                             FeedbackExperimentItem.builder()
                                 .id("id")
                                 .comment("comment")
-                                .expected(JsonValue.from(mapOf<String, Any>()))
+                                .expected(JsonNull.of())
                                 .metadata(FeedbackExperimentItem.Metadata.builder().build())
                                 .scores(FeedbackExperimentItem.Scores.builder().build())
                                 .source(FeedbackExperimentItem.Source.APP)
@@ -210,7 +210,7 @@ class ExperimentServiceTest {
                             PathLookupFilter.builder()
                                 .path(listOf("string"))
                                 .type(PathLookupFilter.Type.PATH_LOOKUP)
-                                .value(JsonValue.from(mapOf<String, Any>()))
+                                .value(JsonNull.of())
                                 .build()
                         )
                     )
@@ -253,9 +253,9 @@ class ExperimentServiceTest {
                                     )
                                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                     .datasetRecordId("dataset_record_id")
-                                    .error(JsonValue.from(mapOf<String, Any>()))
-                                    .expected(JsonValue.from(mapOf<String, Any>()))
-                                    .input(JsonValue.from(mapOf<String, Any>()))
+                                    .error(JsonNull.of())
+                                    .expected(JsonNull.of())
+                                    .input(JsonNull.of())
                                     .metadata(
                                         InsertExperimentEventReplace.Metadata.builder().build()
                                     )
@@ -268,7 +268,7 @@ class ExperimentServiceTest {
                                             .tokens(123L)
                                             .build()
                                     )
-                                    .output(JsonValue.from(mapOf<String, Any>()))
+                                    .output(JsonNull.of())
                                     .scores(InsertExperimentEventReplace.Scores.builder().build())
                                     .spanAttributes(
                                         InsertExperimentEventReplace.SpanAttributes.builder()

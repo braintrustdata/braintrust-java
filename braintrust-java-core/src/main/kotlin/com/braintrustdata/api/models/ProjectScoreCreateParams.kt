@@ -33,6 +33,7 @@ constructor(
     private val projectId: String,
     private val scoreType: ScoreType,
     private val categories: Categories?,
+    private val config: ProjectScoreConfig?,
     private val description: String?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
@@ -47,6 +48,8 @@ constructor(
 
     fun categories(): Optional<Categories> = Optional.ofNullable(categories)
 
+    fun config(): Optional<ProjectScoreConfig> = Optional.ofNullable(config)
+
     fun description(): Optional<String> = Optional.ofNullable(description)
 
     @JvmSynthetic
@@ -56,6 +59,7 @@ constructor(
             projectId,
             scoreType,
             categories,
+            config,
             description,
             additionalBodyProperties,
         )
@@ -65,6 +69,7 @@ constructor(
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
+    /** A project score is a user-configured score, which can be manually-labeled through the UI */
     @JsonDeserialize(builder = ProjectScoreCreateBody.Builder::class)
     @NoAutoDetect
     class ProjectScoreCreateBody
@@ -73,6 +78,7 @@ constructor(
         private val projectId: String?,
         private val scoreType: ScoreType?,
         private val categories: Categories?,
+        private val config: ProjectScoreConfig?,
         private val description: String?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
@@ -89,6 +95,8 @@ constructor(
         @JsonProperty("score_type") fun scoreType(): ScoreType? = scoreType
 
         @JsonProperty("categories") fun categories(): Categories? = categories
+
+        @JsonProperty("config") fun config(): ProjectScoreConfig? = config
 
         /** Textual description of the project score */
         @JsonProperty("description") fun description(): String? = description
@@ -109,6 +117,7 @@ constructor(
                 this.projectId == other.projectId &&
                 this.scoreType == other.scoreType &&
                 this.categories == other.categories &&
+                this.config == other.config &&
                 this.description == other.description &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -121,6 +130,7 @@ constructor(
                         projectId,
                         scoreType,
                         categories,
+                        config,
                         description,
                         additionalProperties,
                     )
@@ -129,7 +139,7 @@ constructor(
         }
 
         override fun toString() =
-            "ProjectScoreCreateBody{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, description=$description, additionalProperties=$additionalProperties}"
+            "ProjectScoreCreateBody{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, config=$config, description=$description, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -142,6 +152,7 @@ constructor(
             private var projectId: String? = null
             private var scoreType: ScoreType? = null
             private var categories: Categories? = null
+            private var config: ProjectScoreConfig? = null
             private var description: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -151,6 +162,7 @@ constructor(
                 this.projectId = projectScoreCreateBody.projectId
                 this.scoreType = projectScoreCreateBody.scoreType
                 this.categories = projectScoreCreateBody.categories
+                this.config = projectScoreCreateBody.config
                 this.description = projectScoreCreateBody.description
                 additionalProperties(projectScoreCreateBody.additionalProperties)
             }
@@ -168,6 +180,9 @@ constructor(
 
             @JsonProperty("categories")
             fun categories(categories: Categories) = apply { this.categories = categories }
+
+            @JsonProperty("config")
+            fun config(config: ProjectScoreConfig) = apply { this.config = config }
 
             /** Textual description of the project score */
             @JsonProperty("description")
@@ -193,6 +208,7 @@ constructor(
                     checkNotNull(projectId) { "`projectId` is required but was not set" },
                     checkNotNull(scoreType) { "`scoreType` is required but was not set" },
                     categories,
+                    config,
                     description,
                     additionalProperties.toUnmodifiable(),
                 )
@@ -215,6 +231,7 @@ constructor(
             this.projectId == other.projectId &&
             this.scoreType == other.scoreType &&
             this.categories == other.categories &&
+            this.config == other.config &&
             this.description == other.description &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
@@ -227,6 +244,7 @@ constructor(
             projectId,
             scoreType,
             categories,
+            config,
             description,
             additionalQueryParams,
             additionalHeaders,
@@ -235,7 +253,7 @@ constructor(
     }
 
     override fun toString() =
-        "ProjectScoreCreateParams{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, description=$description, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectScoreCreateParams{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, config=$config, description=$description, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -251,6 +269,7 @@ constructor(
         private var projectId: String? = null
         private var scoreType: ScoreType? = null
         private var categories: Categories? = null
+        private var config: ProjectScoreConfig? = null
         private var description: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -262,6 +281,7 @@ constructor(
             this.projectId = projectScoreCreateParams.projectId
             this.scoreType = projectScoreCreateParams.scoreType
             this.categories = projectScoreCreateParams.categories
+            this.config = projectScoreCreateParams.config
             this.description = projectScoreCreateParams.description
             additionalQueryParams(projectScoreCreateParams.additionalQueryParams)
             additionalHeaders(projectScoreCreateParams.additionalHeaders)
@@ -299,6 +319,8 @@ constructor(
         fun categories(nullableVariant: Categories.NullableVariant) = apply {
             this.categories = Categories.ofNullableVariant(nullableVariant)
         }
+
+        fun config(config: ProjectScoreConfig) = apply { this.config = config }
 
         /** Textual description of the project score */
         fun description(description: String) = apply { this.description = description }
@@ -363,6 +385,7 @@ constructor(
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
                 checkNotNull(scoreType) { "`scoreType` is required but was not set" },
                 categories,
+                config,
                 description,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),

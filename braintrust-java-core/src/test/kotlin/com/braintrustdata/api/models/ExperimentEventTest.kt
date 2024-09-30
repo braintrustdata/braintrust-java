@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -28,9 +28,9 @@ class ExperimentEventTest {
                         .build()
                 )
                 .datasetRecordId("dataset_record_id")
-                .error(JsonValue.from(mapOf<String, Any>()))
-                .expected(JsonValue.from(mapOf<String, Any>()))
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .error(JsonNull.of())
+                .expected(JsonNull.of())
+                .input(JsonNull.of())
                 .metadata(ExperimentEvent.Metadata.builder().build())
                 .metrics(
                     ExperimentEvent.Metrics.builder()
@@ -41,7 +41,7 @@ class ExperimentEventTest {
                         .tokens(123L)
                         .build()
                 )
-                .output(JsonValue.from(mapOf<String, Any>()))
+                .output(JsonNull.of())
                 .scores(ExperimentEvent.Scores.builder().build())
                 .spanAttributes(
                     ExperimentEvent.SpanAttributes.builder()
@@ -70,9 +70,9 @@ class ExperimentEventTest {
                     .build()
             )
         assertThat(experimentEvent.datasetRecordId()).contains("dataset_record_id")
-        assertThat(experimentEvent._error()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(experimentEvent._expected()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(experimentEvent._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(experimentEvent._error()).isEqualTo(JsonNull.of())
+        assertThat(experimentEvent._expected()).isEqualTo(JsonNull.of())
+        assertThat(experimentEvent._input()).isEqualTo(JsonNull.of())
         assertThat(experimentEvent.metadata()).contains(ExperimentEvent.Metadata.builder().build())
         assertThat(experimentEvent.metrics())
             .contains(
@@ -84,7 +84,7 @@ class ExperimentEventTest {
                     .tokens(123L)
                     .build()
             )
-        assertThat(experimentEvent._output()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(experimentEvent._output()).isEqualTo(JsonNull.of())
         assertThat(experimentEvent.scores()).contains(ExperimentEvent.Scores.builder().build())
         assertThat(experimentEvent.spanAttributes())
             .contains(

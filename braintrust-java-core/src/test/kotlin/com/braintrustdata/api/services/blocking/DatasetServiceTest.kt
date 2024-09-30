@@ -4,7 +4,7 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.DatasetListParams
 import java.time.OffsetDateTime
@@ -26,8 +26,8 @@ class DatasetServiceTest {
             datasetService.create(
                 DatasetCreateParams.builder()
                     .name("name")
-                    .description("description")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .description("description")
                     .build()
             )
         println(dataset)
@@ -172,7 +172,7 @@ class DatasetServiceTest {
                             PathLookupFilter.builder()
                                 .path(listOf("string"))
                                 .type(PathLookupFilter.Type.PATH_LOOKUP)
-                                .value(JsonValue.from(mapOf<String, Any>()))
+                                .value(JsonNull.of())
                                 .build()
                         )
                     )
@@ -207,8 +207,8 @@ class DatasetServiceTest {
                                     ._objectDelete(true)
                                     ._parentId("_parent_id")
                                     .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                                    .expected(JsonValue.from(mapOf<String, Any>()))
-                                    .input(JsonValue.from(mapOf<String, Any>()))
+                                    .expected(JsonNull.of())
+                                    .input(JsonNull.of())
                                     .metadata(InsertDatasetEventReplace.Metadata.builder().build())
                                     .tags(listOf("string"))
                                     .build()

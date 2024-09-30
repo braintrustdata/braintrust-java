@@ -2,7 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.JsonNull
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -28,9 +28,9 @@ class ProjectLogsEventTest {
                         .callerLineno(123L)
                         .build()
                 )
-                .error(JsonValue.from(mapOf<String, Any>()))
-                .expected(JsonValue.from(mapOf<String, Any>()))
-                .input(JsonValue.from(mapOf<String, Any>()))
+                .error(JsonNull.of())
+                .expected(JsonNull.of())
+                .input(JsonNull.of())
                 .metadata(ProjectLogsEvent.Metadata.builder().build())
                 .metrics(
                     ProjectLogsEvent.Metrics.builder()
@@ -41,7 +41,7 @@ class ProjectLogsEventTest {
                         .tokens(123L)
                         .build()
                 )
-                .output(JsonValue.from(mapOf<String, Any>()))
+                .output(JsonNull.of())
                 .scores(ProjectLogsEvent.Scores.builder().build())
                 .spanAttributes(
                     ProjectLogsEvent.SpanAttributes.builder()
@@ -70,9 +70,9 @@ class ProjectLogsEventTest {
                     .callerLineno(123L)
                     .build()
             )
-        assertThat(projectLogsEvent._error()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(projectLogsEvent._expected()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(projectLogsEvent._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(projectLogsEvent._error()).isEqualTo(JsonNull.of())
+        assertThat(projectLogsEvent._expected()).isEqualTo(JsonNull.of())
+        assertThat(projectLogsEvent._input()).isEqualTo(JsonNull.of())
         assertThat(projectLogsEvent.metadata())
             .contains(ProjectLogsEvent.Metadata.builder().build())
         assertThat(projectLogsEvent.metrics())
@@ -85,7 +85,7 @@ class ProjectLogsEventTest {
                     .tokens(123L)
                     .build()
             )
-        assertThat(projectLogsEvent._output()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(projectLogsEvent._output()).isEqualTo(JsonNull.of())
         assertThat(projectLogsEvent.scores()).contains(ProjectLogsEvent.Scores.builder().build())
         assertThat(projectLogsEvent.spanAttributes())
             .contains(

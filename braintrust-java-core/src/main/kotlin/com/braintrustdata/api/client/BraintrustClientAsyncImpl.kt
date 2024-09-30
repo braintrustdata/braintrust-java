@@ -58,6 +58,10 @@ constructor(
 
     private val aiSecrets: AiSecretServiceAsync by lazy { AiSecretServiceAsyncImpl(clientOptions) }
 
+    private val envVars: EnvVarServiceAsync by lazy { EnvVarServiceAsyncImpl(clientOptions) }
+
+    private val evals: EvalServiceAsync by lazy { EvalServiceAsyncImpl(clientOptions) }
+
     override fun sync(): BraintrustClient = sync
 
     override fun topLevel(): TopLevelServiceAsync = topLevel
@@ -91,4 +95,8 @@ constructor(
     override fun apiKeys(): ApiKeyServiceAsync = apiKeys
 
     override fun aiSecrets(): AiSecretServiceAsync = aiSecrets
+
+    override fun envVars(): EnvVarServiceAsync = envVars
+
+    override fun evals(): EvalServiceAsync = evals
 }
