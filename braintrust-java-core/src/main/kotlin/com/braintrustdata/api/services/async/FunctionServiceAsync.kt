@@ -15,7 +15,6 @@ import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
 interface FunctionServiceAsync {
@@ -70,7 +69,7 @@ interface FunctionServiceAsync {
     fun invoke(
         params: FunctionInvokeParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<Optional<FunctionInvokeResponse>>
+    ): CompletableFuture<FunctionInvokeResponse>
 
     /**
      * Create or replace function. If there is an existing function in the project with the same

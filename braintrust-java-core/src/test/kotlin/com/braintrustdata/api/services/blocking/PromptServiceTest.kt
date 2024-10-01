@@ -66,17 +66,7 @@ class PromptServiceTest {
                                                 )
                                                 .stop(listOf("string"))
                                                 .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
+                                                .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
                                                 .topP(42.23)
                                                 .useCache(true)
                                                 .build()
@@ -196,17 +186,7 @@ class PromptServiceTest {
                                                 )
                                                 .stop(listOf("string"))
                                                 .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
+                                                .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
                                                 .topP(42.23)
                                                 .useCache(true)
                                                 .build()
@@ -342,17 +322,7 @@ class PromptServiceTest {
                                                 )
                                                 .stop(listOf("string"))
                                                 .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptData.Options.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptData.Options.Params
-                                                                .OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
+                                                .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
                                                 .topP(42.23)
                                                 .useCache(true)
                                                 .build()
