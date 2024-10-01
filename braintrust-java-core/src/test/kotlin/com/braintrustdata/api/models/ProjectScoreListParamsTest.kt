@@ -56,9 +56,7 @@ class ProjectScoreListParamsTest {
         expected.put(
             "score_type",
             listOf(
-                ProjectScoreListParams.ScoreType.ofProjectScoreType(
-                        ProjectScoreType.SLIDER.toString()
-                    )
+                ProjectScoreListParams.ScoreType.ofProjectScoreType(ProjectScoreType.SLIDER)
                     .toString()
             )
         )
