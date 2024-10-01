@@ -14,10 +14,8 @@ class ProjectScoreReplaceParamsTest {
             .name("name")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .scoreType(ProjectScoreType.SLIDER)
-            .categories(
-                ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
-                )
+            .projectScoreCategories(
+                listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
             )
             .config(
                 ProjectScoreConfig.builder()
@@ -53,10 +51,8 @@ class ProjectScoreReplaceParamsTest {
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .scoreType(ProjectScoreType.SLIDER)
-                .categories(
-                    ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
-                    )
+                .projectScoreCategories(
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
                 .config(
                     ProjectScoreConfig.builder()
@@ -92,7 +88,7 @@ class ProjectScoreReplaceParamsTest {
         assertThat(body.scoreType()).isEqualTo(ProjectScoreType.SLIDER)
         assertThat(body.categories())
             .isEqualTo(
-                ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
+                ProjectScoreReplaceParams.Categories.ofProjectScoreCategories(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )

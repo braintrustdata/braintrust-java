@@ -26,10 +26,8 @@ class ProjectScoreServiceTest {
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .scoreType(ProjectScoreType.SLIDER)
-                    .categories(
-                        ProjectScoreCreateParams.Categories.ofList<ProjectScoreCategory>(
-                            listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
-                        )
+                    .projectScoreCategories(
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                     .config(
                         ProjectScoreConfig.builder()
@@ -94,10 +92,8 @@ class ProjectScoreServiceTest {
             projectScoreService.update(
                 ProjectScoreUpdateParams.builder()
                     .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .categories(
-                        ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
-                            listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
-                        )
+                    .projectScoreCategories(
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                     .config(
                         ProjectScoreConfig.builder()
@@ -179,10 +175,8 @@ class ProjectScoreServiceTest {
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .scoreType(ProjectScoreType.SLIDER)
-                    .categories(
-                        ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
-                            listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
-                        )
+                    .projectScoreCategories(
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                     .config(
                         ProjectScoreConfig.builder()
