@@ -1,5 +1,3 @@
-@file:JvmSynthetic
-
 package com.braintrustdata.api.core.http
 
 import com.braintrustdata.api.core.RequestOptions
