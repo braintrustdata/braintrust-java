@@ -13,7 +13,7 @@ class ProjectScoreUpdateParamsTest {
         ProjectScoreUpdateParams.builder()
             .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .categories(
-                ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
+                ProjectScoreUpdateParams.Categories.ofCategorical(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
@@ -52,7 +52,7 @@ class ProjectScoreUpdateParamsTest {
             ProjectScoreUpdateParams.builder()
                 .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .categories(
-                    ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
+                    ProjectScoreUpdateParams.Categories.ofCategorical(
                         listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
@@ -89,7 +89,7 @@ class ProjectScoreUpdateParamsTest {
         assertThat(body).isNotNull
         assertThat(body.categories())
             .isEqualTo(
-                ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
+                ProjectScoreUpdateParams.Categories.ofCategorical(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )

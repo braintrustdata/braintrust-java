@@ -83,18 +83,11 @@ private constructor(
             return true
         }
 
-        return other is ToolChoice &&
-            this.auto == other.auto &&
-            this.none == other.none &&
-            this.function == other.function
+        return /* spotless:off */ other is ToolChoice && this.auto == other.auto && this.none == other.none && this.function == other.function /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            auto,
-            none,
-            function,
-        )
+        return /* spotless:off */ Objects.hash(auto, none, function) /* spotless:on */
     }
 
     override fun toString(): String {
@@ -133,6 +126,7 @@ private constructor(
 
         override fun ObjectCodec.deserialize(node: JsonNode): ToolChoice {
             val json = JsonValue.fromJsonNode(node)
+
             tryDeserialize(node, jacksonTypeRef<Auto>())?.let {
                 return ToolChoice(auto = it, _json = json)
             }
@@ -178,7 +172,7 @@ private constructor(
                 return true
             }
 
-            return other is Auto && this.value == other.value
+            return /* spotless:off */ other is Auto && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -229,7 +223,7 @@ private constructor(
                 return true
             }
 
-            return other is None && this.value == other.value
+            return /* spotless:off */ other is None && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -278,8 +272,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun type(): Type = type.getRequired("type")
 
         fun function(): FunctionToolChoice = function.getRequired("function")
@@ -301,32 +293,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Function &&
-                this.type == other.type &&
-                this.function == other.function &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        function,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Function{type=$type, function=$function, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -395,7 +361,7 @@ private constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -432,5 +398,25 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Function && this.type == other.type && this.function == other.function && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(type, function, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Function{type=$type, function=$function, additionalProperties=$additionalProperties}"
     }
 }

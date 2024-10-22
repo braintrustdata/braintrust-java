@@ -52,22 +52,11 @@ constructor(
             return true
         }
 
-        return other is ExperimentSummarizeParams &&
-            this.experimentId == other.experimentId &&
-            this.comparisonExperimentId == other.comparisonExperimentId &&
-            this.summarizeScores == other.summarizeScores &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ExperimentSummarizeParams && this.experimentId == other.experimentId && this.comparisonExperimentId == other.comparisonExperimentId && this.summarizeScores == other.summarizeScores && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            experimentId,
-            comparisonExperimentId,
-            summarizeScores,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(experimentId, comparisonExperimentId, summarizeScores, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

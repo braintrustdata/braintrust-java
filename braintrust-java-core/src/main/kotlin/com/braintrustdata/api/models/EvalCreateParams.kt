@@ -88,8 +88,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** The dataset to use */
         @JsonProperty("data") fun data(): Data? = data
 
@@ -126,42 +124,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is EvalCreateBody &&
-                this.data == other.data &&
-                this.projectId == other.projectId &&
-                this.scores == other.scores &&
-                this.task == other.task &&
-                this.experimentName == other.experimentName &&
-                this.metadata == other.metadata &&
-                this.stream == other.stream &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        data,
-                        projectId,
-                        scores,
-                        task,
-                        experimentName,
-                        metadata,
-                        stream,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "EvalCreateBody{data=$data, projectId=$projectId, scores=$scores, task=$task, experimentName=$experimentName, metadata=$metadata, stream=$stream, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -254,6 +216,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is EvalCreateBody && this.data == other.data && this.projectId == other.projectId && this.scores == other.scores && this.task == other.task && this.experimentName == other.experimentName && this.metadata == other.metadata && this.stream == other.stream && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(data, projectId, scores, task, experimentName, metadata, stream, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "EvalCreateBody{data=$data, projectId=$projectId, scores=$scores, task=$task, experimentName=$experimentName, metadata=$metadata, stream=$stream, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -267,32 +249,11 @@ constructor(
             return true
         }
 
-        return other is EvalCreateParams &&
-            this.data == other.data &&
-            this.projectId == other.projectId &&
-            this.scores == other.scores &&
-            this.task == other.task &&
-            this.experimentName == other.experimentName &&
-            this.metadata == other.metadata &&
-            this.stream == other.stream &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is EvalCreateParams && this.data == other.data && this.projectId == other.projectId && this.scores == other.scores && this.task == other.task && this.experimentName == other.experimentName && this.metadata == other.metadata && this.stream == other.stream && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            data,
-            projectId,
-            scores,
-            task,
-            experimentName,
-            metadata,
-            stream,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(data, projectId, scores, task, experimentName, metadata, stream, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -525,13 +486,11 @@ constructor(
                 return true
             }
 
-            return other is Data &&
-                this.datasetId == other.datasetId &&
-                this.projectDatasetName == other.projectDatasetName
+            return /* spotless:off */ other is Data && this.datasetId == other.datasetId && this.projectDatasetName == other.projectDatasetName /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(datasetId, projectDatasetName)
+            return /* spotless:off */ Objects.hash(datasetId, projectDatasetName) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -567,6 +526,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Data {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<DatasetId>()) { it.validate() }
                     ?.let {
                         return Data(datasetId = it, _json = json)
@@ -608,8 +568,6 @@ constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             fun datasetId(): String = datasetId.getRequired("dataset_id")
 
             @JsonProperty("dataset_id") @ExcludeMissing fun _datasetId() = datasetId
@@ -626,26 +584,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is DatasetId &&
-                    this.datasetId == other.datasetId &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(datasetId, additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "DatasetId{datasetId=$datasetId, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -686,6 +624,26 @@ constructor(
 
                 fun build(): DatasetId = DatasetId(datasetId, additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is DatasetId && this.datasetId == other.datasetId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(datasetId, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "DatasetId{datasetId=$datasetId, additionalProperties=$additionalProperties}"
         }
 
         /** Project and dataset name */
@@ -699,8 +657,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             fun projectName(): String = projectName.getRequired("project_name")
 
@@ -723,32 +679,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ProjectDatasetName &&
-                    this.projectName == other.projectName &&
-                    this.datasetName == other.datasetName &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            projectName,
-                            datasetName,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "ProjectDatasetName{projectName=$projectName, datasetName=$datasetName, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -806,6 +736,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ProjectDatasetName && this.projectName == other.projectName && this.datasetName == other.datasetName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(projectName, datasetName, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "ProjectDatasetName{projectName=$projectName, datasetName=$datasetName, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -902,24 +852,11 @@ constructor(
                 return true
             }
 
-            return other is Score &&
-                this.functionId == other.functionId &&
-                this.projectSlug == other.projectSlug &&
-                this.globalFunction == other.globalFunction &&
-                this.promptSessionId == other.promptSessionId &&
-                this.inlineCode == other.inlineCode &&
-                this.inlinePrompt == other.inlinePrompt
+            return /* spotless:off */ other is Score && this.functionId == other.functionId && this.projectSlug == other.projectSlug && this.globalFunction == other.globalFunction && this.promptSessionId == other.promptSessionId && this.inlineCode == other.inlineCode && this.inlinePrompt == other.inlinePrompt /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                functionId,
-                projectSlug,
-                globalFunction,
-                promptSessionId,
-                inlineCode,
-                inlinePrompt,
-            )
+            return /* spotless:off */ Objects.hash(functionId, projectSlug, globalFunction, promptSessionId, inlineCode, inlinePrompt) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -979,6 +916,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Score {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<FunctionId>()) { it.validate() }
                     ?.let {
                         return Score(functionId = it, _json = json)
@@ -1040,8 +978,6 @@ constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             /** The ID of the function */
             fun functionId(): String = functionId.getRequired("function_id")
 
@@ -1067,32 +1003,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is FunctionId &&
-                    this.functionId == other.functionId &&
-                    this.version == other.version &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            functionId,
-                            version,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "FunctionId{functionId=$functionId, version=$version, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1152,6 +1062,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is FunctionId && this.functionId == other.functionId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(functionId, version, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "FunctionId{functionId=$functionId, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Project name and slug */
@@ -1166,8 +1096,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The name of the project containing the function */
             fun projectName(): String = projectName.getRequired("project_name")
@@ -1201,34 +1129,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ProjectSlug &&
-                    this.projectName == other.projectName &&
-                    this.slug == other.slug &&
-                    this.version == other.version &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            projectName,
-                            slug,
-                            version,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "ProjectSlug{projectName=$projectName, slug=$slug, version=$version, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1299,6 +1199,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ProjectSlug && this.projectName == other.projectName && this.slug == other.slug && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(projectName, slug, version, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "ProjectSlug{projectName=$projectName, slug=$slug, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Global function name */
@@ -1311,8 +1231,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /**
              * The name of the global function. Currently, the global namespace includes the
@@ -1338,26 +1256,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is GlobalFunction &&
-                    this.globalFunction == other.globalFunction &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(globalFunction, additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "GlobalFunction{globalFunction=$globalFunction, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1410,6 +1308,26 @@ constructor(
                 fun build(): GlobalFunction =
                     GlobalFunction(globalFunction, additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is GlobalFunction && this.globalFunction == other.globalFunction && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(globalFunction, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "GlobalFunction{globalFunction=$globalFunction, additionalProperties=$additionalProperties}"
         }
 
         /** Prompt session id */
@@ -1424,8 +1342,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The ID of the prompt session */
             fun promptSessionId(): String = promptSessionId.getRequired("prompt_session_id")
@@ -1464,34 +1380,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is PromptSessionId &&
-                    this.promptSessionId == other.promptSessionId &&
-                    this.promptSessionFunctionId == other.promptSessionFunctionId &&
-                    this.version == other.version &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            promptSessionId,
-                            promptSessionFunctionId,
-                            version,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "PromptSessionId{promptSessionId=$promptSessionId, promptSessionFunctionId=$promptSessionFunctionId, version=$version, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1566,6 +1454,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is PromptSessionId && this.promptSessionId == other.promptSessionId && this.promptSessionFunctionId == other.promptSessionFunctionId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(promptSessionId, promptSessionFunctionId, version, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "PromptSessionId{promptSessionId=$promptSessionId, promptSessionFunctionId=$promptSessionFunctionId, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Inline code function */
@@ -1580,8 +1488,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             fun inlineContext(): InlineContext = inlineContext.getRequired("inline_context")
 
@@ -1613,34 +1519,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is InlineCode &&
-                    this.inlineContext == other.inlineContext &&
-                    this.code == other.code &&
-                    this.name == other.name &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            inlineContext,
-                            code,
-                            name,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "InlineCode{inlineContext=$inlineContext, code=$code, name=$name, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1722,8 +1600,6 @@ constructor(
 
                 private var validated: Boolean = false
 
-                private var hashCode: Int = 0
-
                 fun runtime(): Runtime = runtime.getRequired("runtime")
 
                 fun version(): String = version.getRequired("version")
@@ -1745,32 +1621,6 @@ constructor(
                 }
 
                 fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is InlineContext &&
-                        this.runtime == other.runtime &&
-                        this.version == other.version &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode =
-                            Objects.hash(
-                                runtime,
-                                version,
-                                additionalProperties,
-                            )
-                    }
-                    return hashCode
-                }
-
-                override fun toString() =
-                    "InlineContext{runtime=$runtime, version=$version, additionalProperties=$additionalProperties}"
 
                 companion object {
 
@@ -1839,7 +1689,7 @@ constructor(
                             return true
                         }
 
-                        return other is Runtime && this.value == other.value
+                        return /* spotless:off */ other is Runtime && this.value == other.value /* spotless:on */
                     }
 
                     override fun hashCode() = value.hashCode()
@@ -1882,7 +1732,47 @@ constructor(
 
                     fun asString(): String = _value().asStringOrThrow()
                 }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is InlineContext && this.runtime == other.runtime && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                private var hashCode: Int = 0
+
+                override fun hashCode(): Int {
+                    if (hashCode == 0) {
+                        hashCode = /* spotless:off */ Objects.hash(runtime, version, additionalProperties) /* spotless:on */
+                    }
+                    return hashCode
+                }
+
+                override fun toString() =
+                    "InlineContext{runtime=$runtime, version=$version, additionalProperties=$additionalProperties}"
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is InlineCode && this.inlineContext == other.inlineContext && this.code == other.code && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(inlineContext, code, name, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "InlineCode{inlineContext=$inlineContext, code=$code, name=$name, additionalProperties=$additionalProperties}"
         }
 
         /** Inline prompt definition */
@@ -1896,8 +1786,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The prompt, model, and its parameters */
             fun inlinePrompt(): Optional<PromptData> =
@@ -1925,32 +1813,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is InlinePrompt &&
-                    this.inlinePrompt == other.inlinePrompt &&
-                    this.name == other.name &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            inlinePrompt,
-                            name,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "InlinePrompt{inlinePrompt=$inlinePrompt, name=$name, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2011,6 +1873,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is InlinePrompt && this.inlinePrompt == other.inlinePrompt && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(inlinePrompt, name, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "InlinePrompt{inlinePrompt=$inlinePrompt, name=$name, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -2107,24 +1989,11 @@ constructor(
                 return true
             }
 
-            return other is Task &&
-                this.functionId == other.functionId &&
-                this.projectSlug == other.projectSlug &&
-                this.globalFunction == other.globalFunction &&
-                this.promptSessionId == other.promptSessionId &&
-                this.inlineCode == other.inlineCode &&
-                this.inlinePrompt == other.inlinePrompt
+            return /* spotless:off */ other is Task && this.functionId == other.functionId && this.projectSlug == other.projectSlug && this.globalFunction == other.globalFunction && this.promptSessionId == other.promptSessionId && this.inlineCode == other.inlineCode && this.inlinePrompt == other.inlinePrompt /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                functionId,
-                projectSlug,
-                globalFunction,
-                promptSessionId,
-                inlineCode,
-                inlinePrompt,
-            )
+            return /* spotless:off */ Objects.hash(functionId, projectSlug, globalFunction, promptSessionId, inlineCode, inlinePrompt) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -2183,6 +2052,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Task {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<FunctionId>()) { it.validate() }
                     ?.let {
                         return Task(functionId = it, _json = json)
@@ -2244,8 +2114,6 @@ constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             /** The ID of the function */
             fun functionId(): String = functionId.getRequired("function_id")
 
@@ -2271,32 +2139,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is FunctionId &&
-                    this.functionId == other.functionId &&
-                    this.version == other.version &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            functionId,
-                            version,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "FunctionId{functionId=$functionId, version=$version, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2356,6 +2198,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is FunctionId && this.functionId == other.functionId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(functionId, version, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "FunctionId{functionId=$functionId, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Project name and slug */
@@ -2370,8 +2232,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The name of the project containing the function */
             fun projectName(): String = projectName.getRequired("project_name")
@@ -2405,34 +2265,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ProjectSlug &&
-                    this.projectName == other.projectName &&
-                    this.slug == other.slug &&
-                    this.version == other.version &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            projectName,
-                            slug,
-                            version,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "ProjectSlug{projectName=$projectName, slug=$slug, version=$version, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2503,6 +2335,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ProjectSlug && this.projectName == other.projectName && this.slug == other.slug && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(projectName, slug, version, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "ProjectSlug{projectName=$projectName, slug=$slug, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Global function name */
@@ -2515,8 +2367,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /**
              * The name of the global function. Currently, the global namespace includes the
@@ -2542,26 +2392,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is GlobalFunction &&
-                    this.globalFunction == other.globalFunction &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(globalFunction, additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "GlobalFunction{globalFunction=$globalFunction, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2614,6 +2444,26 @@ constructor(
                 fun build(): GlobalFunction =
                     GlobalFunction(globalFunction, additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is GlobalFunction && this.globalFunction == other.globalFunction && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(globalFunction, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "GlobalFunction{globalFunction=$globalFunction, additionalProperties=$additionalProperties}"
         }
 
         /** Prompt session id */
@@ -2628,8 +2478,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The ID of the prompt session */
             fun promptSessionId(): String = promptSessionId.getRequired("prompt_session_id")
@@ -2668,34 +2516,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is PromptSessionId &&
-                    this.promptSessionId == other.promptSessionId &&
-                    this.promptSessionFunctionId == other.promptSessionFunctionId &&
-                    this.version == other.version &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            promptSessionId,
-                            promptSessionFunctionId,
-                            version,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "PromptSessionId{promptSessionId=$promptSessionId, promptSessionFunctionId=$promptSessionFunctionId, version=$version, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2770,6 +2590,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is PromptSessionId && this.promptSessionId == other.promptSessionId && this.promptSessionFunctionId == other.promptSessionFunctionId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(promptSessionId, promptSessionFunctionId, version, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "PromptSessionId{promptSessionId=$promptSessionId, promptSessionFunctionId=$promptSessionFunctionId, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Inline code function */
@@ -2784,8 +2624,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             fun inlineContext(): InlineContext = inlineContext.getRequired("inline_context")
 
@@ -2817,34 +2655,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is InlineCode &&
-                    this.inlineContext == other.inlineContext &&
-                    this.code == other.code &&
-                    this.name == other.name &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            inlineContext,
-                            code,
-                            name,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "InlineCode{inlineContext=$inlineContext, code=$code, name=$name, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2926,8 +2736,6 @@ constructor(
 
                 private var validated: Boolean = false
 
-                private var hashCode: Int = 0
-
                 fun runtime(): Runtime = runtime.getRequired("runtime")
 
                 fun version(): String = version.getRequired("version")
@@ -2949,32 +2757,6 @@ constructor(
                 }
 
                 fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is InlineContext &&
-                        this.runtime == other.runtime &&
-                        this.version == other.version &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode =
-                            Objects.hash(
-                                runtime,
-                                version,
-                                additionalProperties,
-                            )
-                    }
-                    return hashCode
-                }
-
-                override fun toString() =
-                    "InlineContext{runtime=$runtime, version=$version, additionalProperties=$additionalProperties}"
 
                 companion object {
 
@@ -3043,7 +2825,7 @@ constructor(
                             return true
                         }
 
-                        return other is Runtime && this.value == other.value
+                        return /* spotless:off */ other is Runtime && this.value == other.value /* spotless:on */
                     }
 
                     override fun hashCode() = value.hashCode()
@@ -3086,7 +2868,47 @@ constructor(
 
                     fun asString(): String = _value().asStringOrThrow()
                 }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is InlineContext && this.runtime == other.runtime && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                private var hashCode: Int = 0
+
+                override fun hashCode(): Int {
+                    if (hashCode == 0) {
+                        hashCode = /* spotless:off */ Objects.hash(runtime, version, additionalProperties) /* spotless:on */
+                    }
+                    return hashCode
+                }
+
+                override fun toString() =
+                    "InlineContext{runtime=$runtime, version=$version, additionalProperties=$additionalProperties}"
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is InlineCode && this.inlineContext == other.inlineContext && this.code == other.code && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(inlineContext, code, name, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "InlineCode{inlineContext=$inlineContext, code=$code, name=$name, additionalProperties=$additionalProperties}"
         }
 
         /** Inline prompt definition */
@@ -3100,8 +2922,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The prompt, model, and its parameters */
             fun inlinePrompt(): Optional<PromptData> =
@@ -3129,32 +2949,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is InlinePrompt &&
-                    this.inlinePrompt == other.inlinePrompt &&
-                    this.name == other.name &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            inlinePrompt,
-                            name,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "InlinePrompt{inlinePrompt=$inlinePrompt, name=$name, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -3215,6 +3009,26 @@ constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is InlinePrompt && this.inlinePrompt == other.inlinePrompt && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(inlinePrompt, name, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "InlinePrompt{inlinePrompt=$inlinePrompt, name=$name, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -3229,30 +3043,11 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Metadata && this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -3284,5 +3079,24 @@ constructor(
 
             fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
 }

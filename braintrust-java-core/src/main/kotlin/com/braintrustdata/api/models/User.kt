@@ -31,8 +31,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique identifier for the user */
     fun id(): String = id.getRequired("id")
 
@@ -86,40 +84,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is User &&
-            this.id == other.id &&
-            this.givenName == other.givenName &&
-            this.familyName == other.familyName &&
-            this.email == other.email &&
-            this.avatarUrl == other.avatarUrl &&
-            this.created == other.created &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    givenName,
-                    familyName,
-                    email,
-                    avatarUrl,
-                    created,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "User{id=$id, givenName=$givenName, familyName=$familyName, email=$email, avatarUrl=$avatarUrl, created=$created, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -218,4 +182,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is User && this.id == other.id && this.givenName == other.givenName && this.familyName == other.familyName && this.email == other.email && this.avatarUrl == other.avatarUrl && this.created == other.created && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, givenName, familyName, email, avatarUrl, created, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "User{id=$id, givenName=$givenName, familyName=$familyName, email=$email, avatarUrl=$avatarUrl, created=$created, additionalProperties=$additionalProperties}"
 }

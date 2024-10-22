@@ -41,8 +41,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique identifier for the prompt */
     fun id(): String = id.getRequired("id")
 
@@ -154,54 +152,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is Prompt &&
-            this.id == other.id &&
-            this._xactId == other._xactId &&
-            this.projectId == other.projectId &&
-            this.logId == other.logId &&
-            this.orgId == other.orgId &&
-            this.name == other.name &&
-            this.slug == other.slug &&
-            this.description == other.description &&
-            this.created == other.created &&
-            this.promptData == other.promptData &&
-            this.tags == other.tags &&
-            this.metadata == other.metadata &&
-            this.functionType == other.functionType &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    _xactId,
-                    projectId,
-                    logId,
-                    orgId,
-                    name,
-                    slug,
-                    description,
-                    created,
-                    promptData,
-                    tags,
-                    metadata,
-                    functionType,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "Prompt{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, functionType=$functionType, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -399,7 +349,7 @@ private constructor(
                 return true
             }
 
-            return other is LogId && this.value == other.value
+            return /* spotless:off */ other is LogId && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -450,7 +400,7 @@ private constructor(
                 return true
             }
 
-            return other is FunctionType && this.value == other.value
+            return /* spotless:off */ other is FunctionType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -516,8 +466,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -529,23 +477,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Metadata && this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -577,5 +508,44 @@ private constructor(
 
             fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is Prompt && this.id == other.id && this._xactId == other._xactId && this.projectId == other.projectId && this.logId == other.logId && this.orgId == other.orgId && this.name == other.name && this.slug == other.slug && this.description == other.description && this.created == other.created && this.promptData == other.promptData && this.tags == other.tags && this.metadata == other.metadata && this.functionType == other.functionType && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, _xactId, projectId, logId, orgId, name, slug, description, created, promptData, tags, metadata, functionType, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "Prompt{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, functionType=$functionType, additionalProperties=$additionalProperties}"
 }

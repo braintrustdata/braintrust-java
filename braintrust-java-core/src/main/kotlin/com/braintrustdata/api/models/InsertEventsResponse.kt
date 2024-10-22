@@ -24,8 +24,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /**
      * The ids of all rows that were inserted, aligning one-to-one with the rows provided as input
      */
@@ -48,26 +46,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is InsertEventsResponse &&
-            this.rowIds == other.rowIds &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(rowIds, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "InsertEventsResponse{rowIds=$rowIds, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -119,4 +97,24 @@ private constructor(
                 additionalProperties.toUnmodifiable()
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is InsertEventsResponse && this.rowIds == other.rowIds && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(rowIds, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "InsertEventsResponse{rowIds=$rowIds, additionalProperties=$additionalProperties}"
 }

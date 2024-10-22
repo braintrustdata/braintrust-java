@@ -27,7 +27,7 @@ class ProjectScoreServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .scoreType(ProjectScoreType.SLIDER)
                     .categories(
-                        ProjectScoreCreateParams.Categories.ofList<ProjectScoreCategory>(
+                        ProjectScoreCreateParams.Categories.ofCategorical(
                             listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )
@@ -95,7 +95,7 @@ class ProjectScoreServiceTest {
                 ProjectScoreUpdateParams.builder()
                     .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .categories(
-                        ProjectScoreUpdateParams.Categories.ofList<ProjectScoreCategory>(
+                        ProjectScoreUpdateParams.Categories.ofCategorical(
                             listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )
@@ -180,7 +180,7 @@ class ProjectScoreServiceTest {
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .scoreType(ProjectScoreType.SLIDER)
                     .categories(
-                        ProjectScoreReplaceParams.Categories.ofList<ProjectScoreCategory>(
+                        ProjectScoreReplaceParams.Categories.ofCategorical(
                             listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                         )
                     )

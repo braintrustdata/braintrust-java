@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is ExperimentRetrieveParams &&
-            this.experimentId == other.experimentId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ExperimentRetrieveParams && this.experimentId == other.experimentId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            experimentId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(experimentId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

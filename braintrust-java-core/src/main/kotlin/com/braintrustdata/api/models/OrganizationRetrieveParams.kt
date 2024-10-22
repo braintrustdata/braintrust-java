@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is OrganizationRetrieveParams &&
-            this.organizationId == other.organizationId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is OrganizationRetrieveParams && this.organizationId == other.organizationId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            organizationId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(organizationId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

@@ -40,8 +40,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The sampling rate for online scoring */
     fun samplingRate(): Double = samplingRate.getRequired("sampling_rate")
 
@@ -83,36 +81,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is OnlineScoreConfig &&
-            this.samplingRate == other.samplingRate &&
-            this.scorers == other.scorers &&
-            this.applyToRootSpan == other.applyToRootSpan &&
-            this.applyToSpanNames == other.applyToSpanNames &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    samplingRate,
-                    scorers,
-                    applyToRootSpan,
-                    applyToSpanNames,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "OnlineScoreConfig{samplingRate=$samplingRate, scorers=$scorers, applyToRootSpan=$applyToRootSpan, applyToSpanNames=$applyToSpanNames, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -249,11 +217,11 @@ private constructor(
                 return true
             }
 
-            return other is Scorer && this.function == other.function && this.global == other.global
+            return /* spotless:off */ other is Scorer && this.function == other.function && this.global == other.global /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(function, global)
+            return /* spotless:off */ Objects.hash(function, global) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -287,6 +255,7 @@ private constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Scorer {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<Function>()) { it.validate() }
                     ?.let {
                         return Scorer(function = it, _json = json)
@@ -327,8 +296,6 @@ private constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             fun type(): Type = type.getRequired("type")
 
             fun id(): String = id.getRequired("id")
@@ -350,32 +317,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Function &&
-                    this.type == other.type &&
-                    this.id == other.id &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            type,
-                            id,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "Function{type=$type, id=$id, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -443,7 +384,7 @@ private constructor(
                         return true
                     }
 
-                    return other is Type && this.value == other.value
+                    return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -480,6 +421,26 @@ private constructor(
 
                 fun asString(): String = _value().asStringOrThrow()
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Function && this.type == other.type && this.id == other.id && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(type, id, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "Function{type=$type, id=$id, additionalProperties=$additionalProperties}"
         }
 
         @JsonDeserialize(builder = Global.Builder::class)
@@ -492,8 +453,6 @@ private constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             fun type(): Type = type.getRequired("type")
 
@@ -516,32 +475,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Global &&
-                    this.type == other.type &&
-                    this.name == other.name &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            type,
-                            name,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "Global{type=$type, name=$name, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -609,7 +542,7 @@ private constructor(
                         return true
                     }
 
-                    return other is Type && this.value == other.value
+                    return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -646,6 +579,46 @@ private constructor(
 
                 fun asString(): String = _value().asStringOrThrow()
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Global && this.type == other.type && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(type, name, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "Global{type=$type, name=$name, additionalProperties=$additionalProperties}"
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is OnlineScoreConfig && this.samplingRate == other.samplingRate && this.scorers == other.scorers && this.applyToRootSpan == other.applyToRootSpan && this.applyToSpanNames == other.applyToSpanNames && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(samplingRate, scorers, applyToRootSpan, applyToSpanNames, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "OnlineScoreConfig{samplingRate=$samplingRate, scorers=$scorers, applyToRootSpan=$applyToRootSpan, applyToSpanNames=$applyToSpanNames, additionalProperties=$additionalProperties}"
 }

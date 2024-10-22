@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is AclRetrieveParams &&
-            this.aclId == other.aclId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is AclRetrieveParams && this.aclId == other.aclId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            aclId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(aclId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
