@@ -80,8 +80,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Name of the project score */
         @JsonProperty("name") fun name(): String? = name
 
@@ -103,40 +101,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ProjectScoreCreateBody &&
-                this.name == other.name &&
-                this.projectId == other.projectId &&
-                this.scoreType == other.scoreType &&
-                this.categories == other.categories &&
-                this.config == other.config &&
-                this.description == other.description &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        projectId,
-                        scoreType,
-                        categories,
-                        config,
-                        description,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ProjectScoreCreateBody{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, config=$config, description=$description, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -210,6 +174,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ProjectScoreCreateBody && this.name == other.name && this.projectId == other.projectId && this.scoreType == other.scoreType && this.categories == other.categories && this.config == other.config && this.description == other.description && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, projectId, scoreType, categories, config, description, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ProjectScoreCreateBody{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, config=$config, description=$description, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -223,30 +207,11 @@ constructor(
             return true
         }
 
-        return other is ProjectScoreCreateParams &&
-            this.name == other.name &&
-            this.projectId == other.projectId &&
-            this.scoreType == other.scoreType &&
-            this.categories == other.categories &&
-            this.config == other.config &&
-            this.description == other.description &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ProjectScoreCreateParams && this.name == other.name && this.projectId == other.projectId && this.scoreType == other.scoreType && this.categories == other.categories && this.config == other.config && this.description == other.description && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            projectId,
-            scoreType,
-            categories,
-            config,
-            description,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(name, projectId, scoreType, categories, config, description, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -298,8 +263,8 @@ constructor(
         fun categories(categories: Categories) = apply { this.categories = categories }
 
         /** For categorical-type project scores, the list of all categories */
-        fun categories(projectScoreCategories: List<ProjectScoreCategory>) = apply {
-            this.categories = Categories.ofProjectScoreCategories(projectScoreCategories)
+        fun categoriesOfCategorical(categorical: List<ProjectScoreCategory>) = apply {
+            this.categories = Categories.ofCategorical(categorical)
         }
 
         /** For categorical-type project scores, the list of all categories */
@@ -308,8 +273,8 @@ constructor(
         }
 
         /** For categorical-type project scores, the list of all categories */
-        fun categories(strings: List<String>) = apply {
-            this.categories = Categories.ofStrings(strings)
+        fun categoriesOfMinimum(minimum: List<String>) = apply {
+            this.categories = Categories.ofMinimum(minimum)
         }
 
         /** For categorical-type project scores, the list of all categories */
@@ -394,9 +359,9 @@ constructor(
     @JsonSerialize(using = Categories.Serializer::class)
     class Categories
     private constructor(
-        private val projectScoreCategories: List<ProjectScoreCategory>? = null,
+        private val categorical: List<ProjectScoreCategory>? = null,
         private val weighted: Weighted? = null,
-        private val strings: List<String>? = null,
+        private val minimum: List<String>? = null,
         private val nullableVariant: NullableVariant? = null,
         private val _json: JsonValue? = null,
     ) {
@@ -404,29 +369,27 @@ constructor(
         private var validated: Boolean = false
 
         /** For categorical-type project scores, the list of all categories */
-        fun projectScoreCategories(): Optional<List<ProjectScoreCategory>> =
-            Optional.ofNullable(projectScoreCategories)
+        fun categorical(): Optional<List<ProjectScoreCategory>> = Optional.ofNullable(categorical)
         /** For weighted-type project scores, the weights of each score */
         fun weighted(): Optional<Weighted> = Optional.ofNullable(weighted)
         /** For minimum-type project scores, the list of included scores */
-        fun strings(): Optional<List<String>> = Optional.ofNullable(strings)
+        fun minimum(): Optional<List<String>> = Optional.ofNullable(minimum)
 
         fun nullableVariant(): Optional<NullableVariant> = Optional.ofNullable(nullableVariant)
 
-        fun isProjectScoreCategories(): Boolean = projectScoreCategories != null
+        fun isCategorical(): Boolean = categorical != null
 
         fun isWeighted(): Boolean = weighted != null
 
-        fun isStrings(): Boolean = strings != null
+        fun isMinimum(): Boolean = minimum != null
 
         fun isNullableVariant(): Boolean = nullableVariant != null
 
-        fun asProjectScoreCategories(): List<ProjectScoreCategory> =
-            projectScoreCategories.getOrThrow("projectScoreCategories")
+        fun asCategorical(): List<ProjectScoreCategory> = categorical.getOrThrow("categorical")
 
         fun asWeighted(): Weighted = weighted.getOrThrow("weighted")
 
-        fun asStrings(): List<String> = strings.getOrThrow("strings")
+        fun asMinimum(): List<String> = minimum.getOrThrow("minimum")
 
         fun asNullableVariant(): NullableVariant = nullableVariant.getOrThrow("nullableVariant")
 
@@ -434,10 +397,9 @@ constructor(
 
         fun <T> accept(visitor: Visitor<T>): T {
             return when {
-                projectScoreCategories != null ->
-                    visitor.visitProjectScoreCategories(projectScoreCategories)
+                categorical != null -> visitor.visitCategorical(categorical)
                 weighted != null -> visitor.visitWeighted(weighted)
-                strings != null -> visitor.visitStrings(strings)
+                minimum != null -> visitor.visitMinimum(minimum)
                 nullableVariant != null -> visitor.visitNullableVariant(nullableVariant)
                 else -> visitor.unknown(_json)
             }
@@ -446,14 +408,14 @@ constructor(
         fun validate(): Categories = apply {
             if (!validated) {
                 if (
-                    projectScoreCategories == null &&
+                    categorical == null &&
                         weighted == null &&
-                        strings == null &&
+                        minimum == null &&
                         nullableVariant == null
                 ) {
                     throw BraintrustInvalidDataException("Unknown Categories: $_json")
                 }
-                projectScoreCategories?.forEach { it.validate() }
+                categorical?.forEach { it.validate() }
                 weighted?.validate()
                 nullableVariant?.validate()
                 validated = true
@@ -465,28 +427,18 @@ constructor(
                 return true
             }
 
-            return other is Categories &&
-                this.projectScoreCategories == other.projectScoreCategories &&
-                this.weighted == other.weighted &&
-                this.strings == other.strings &&
-                this.nullableVariant == other.nullableVariant
+            return /* spotless:off */ other is Categories && this.categorical == other.categorical && this.weighted == other.weighted && this.minimum == other.minimum && this.nullableVariant == other.nullableVariant /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                projectScoreCategories,
-                weighted,
-                strings,
-                nullableVariant,
-            )
+            return /* spotless:off */ Objects.hash(categorical, weighted, minimum, nullableVariant) /* spotless:on */
         }
 
         override fun toString(): String {
             return when {
-                projectScoreCategories != null ->
-                    "Categories{projectScoreCategories=$projectScoreCategories}"
+                categorical != null -> "Categories{categorical=$categorical}"
                 weighted != null -> "Categories{weighted=$weighted}"
-                strings != null -> "Categories{strings=$strings}"
+                minimum != null -> "Categories{minimum=$minimum}"
                 nullableVariant != null -> "Categories{nullableVariant=$nullableVariant}"
                 _json != null -> "Categories{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Categories")
@@ -496,12 +448,12 @@ constructor(
         companion object {
 
             @JvmStatic
-            fun ofProjectScoreCategories(projectScoreCategories: List<ProjectScoreCategory>) =
-                Categories(projectScoreCategories = projectScoreCategories)
+            fun ofCategorical(categorical: List<ProjectScoreCategory>) =
+                Categories(categorical = categorical)
 
             @JvmStatic fun ofWeighted(weighted: Weighted) = Categories(weighted = weighted)
 
-            @JvmStatic fun ofStrings(strings: List<String>) = Categories(strings = strings)
+            @JvmStatic fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum)
 
             @JvmStatic
             fun ofNullableVariant(nullableVariant: NullableVariant) =
@@ -510,11 +462,11 @@ constructor(
 
         interface Visitor<out T> {
 
-            fun visitProjectScoreCategories(projectScoreCategories: List<ProjectScoreCategory>): T
+            fun visitCategorical(categorical: List<ProjectScoreCategory>): T
 
             fun visitWeighted(weighted: Weighted): T
 
-            fun visitStrings(strings: List<String>): T
+            fun visitMinimum(minimum: List<String>): T
 
             fun visitNullableVariant(nullableVariant: NullableVariant): T
 
@@ -527,18 +479,19 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Categories {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<List<ProjectScoreCategory>>()) {
                         it.forEach { it.validate() }
                     }
                     ?.let {
-                        return Categories(projectScoreCategories = it, _json = json)
+                        return Categories(categorical = it, _json = json)
                     }
                 tryDeserialize(node, jacksonTypeRef<Weighted>()) { it.validate() }
                     ?.let {
                         return Categories(weighted = it, _json = json)
                     }
                 tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
-                    return Categories(strings = it, _json = json)
+                    return Categories(minimum = it, _json = json)
                 }
                 tryDeserialize(node, jacksonTypeRef<NullableVariant>()) { it.validate() }
                     ?.let {
@@ -557,10 +510,9 @@ constructor(
                 provider: SerializerProvider
             ) {
                 when {
-                    value.projectScoreCategories != null ->
-                        generator.writeObject(value.projectScoreCategories)
+                    value.categorical != null -> generator.writeObject(value.categorical)
                     value.weighted != null -> generator.writeObject(value.weighted)
-                    value.strings != null -> generator.writeObject(value.strings)
+                    value.minimum != null -> generator.writeObject(value.minimum)
                     value.nullableVariant != null -> generator.writeObject(value.nullableVariant)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Categories")
@@ -578,8 +530,6 @@ constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -591,23 +541,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Weighted && this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() = "Weighted{additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -640,6 +573,25 @@ constructor(
 
                 fun build(): Weighted = Weighted(additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Weighted && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() = "Weighted{additionalProperties=$additionalProperties}"
         }
 
         @JsonDeserialize(builder = NullableVariant.Builder::class)
@@ -650,8 +602,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -664,24 +614,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is NullableVariant &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() = "NullableVariant{additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -715,6 +647,25 @@ constructor(
                 fun build(): NullableVariant =
                     NullableVariant(additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is NullableVariant && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() = "NullableVariant{additionalProperties=$additionalProperties}"
         }
     }
 }

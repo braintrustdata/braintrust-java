@@ -4,6 +4,9 @@ package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.handlers.errorHandler
+import com.braintrustdata.api.core.handlers.jsonHandler
+import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
@@ -12,9 +15,6 @@ import com.braintrustdata.api.models.User
 import com.braintrustdata.api.models.UserListPageAsync
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
-import com.braintrustdata.api.services.errorHandler
-import com.braintrustdata.api.services.jsonHandler
-import com.braintrustdata.api.services.withErrorHandler
 import java.util.concurrent.CompletableFuture
 
 class UserServiceAsyncImpl

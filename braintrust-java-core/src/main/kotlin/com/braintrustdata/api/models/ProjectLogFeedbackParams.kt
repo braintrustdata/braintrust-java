@@ -50,8 +50,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** A list of project logs feedback items */
         @JsonProperty("feedback") fun feedback(): List<FeedbackProjectLogsItem>? = feedback
 
@@ -60,26 +58,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ProjectLogFeedbackBody &&
-                this.feedback == other.feedback &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(feedback, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ProjectLogFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -124,6 +102,26 @@ constructor(
                     additionalProperties.toUnmodifiable()
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ProjectLogFeedbackBody && this.feedback == other.feedback && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(feedback, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ProjectLogFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -137,22 +135,11 @@ constructor(
             return true
         }
 
-        return other is ProjectLogFeedbackParams &&
-            this.projectId == other.projectId &&
-            this.feedback == other.feedback &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ProjectLogFeedbackParams && this.projectId == other.projectId && this.feedback == other.feedback && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectId,
-            feedback,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(projectId, feedback, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

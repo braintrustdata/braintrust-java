@@ -58,26 +58,11 @@ constructor(
             return true
         }
 
-        return other is ProjectLogFetchParams &&
-            this.projectId == other.projectId &&
-            this.limit == other.limit &&
-            this.maxRootSpanId == other.maxRootSpanId &&
-            this.maxXactId == other.maxXactId &&
-            this.version == other.version &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ProjectLogFetchParams && this.projectId == other.projectId && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectId,
-            limit,
-            maxRootSpanId,
-            maxXactId,
-            version,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(projectId, limit, maxRootSpanId, maxXactId, version, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

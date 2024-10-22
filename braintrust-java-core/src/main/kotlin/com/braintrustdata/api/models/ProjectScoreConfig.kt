@@ -30,8 +30,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun multiSelect(): Optional<Boolean> =
         Optional.ofNullable(multiSelect.getNullable("multi_select"))
 
@@ -60,34 +58,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is ProjectScoreConfig &&
-            this.multiSelect == other.multiSelect &&
-            this.destination == other.destination &&
-            this.online == other.online &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    multiSelect,
-                    destination,
-                    online,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "ProjectScoreConfig{multiSelect=$multiSelect, destination=$destination, online=$online, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -165,7 +135,7 @@ private constructor(
                 return true
             }
 
-            return other is Destination && this.value == other.value
+            return /* spotless:off */ other is Destination && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -202,4 +172,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectScoreConfig && this.multiSelect == other.multiSelect && this.destination == other.destination && this.online == other.online && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(multiSelect, destination, online, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "ProjectScoreConfig{multiSelect=$multiSelect, destination=$destination, online=$online, additionalProperties=$additionalProperties}"
 }

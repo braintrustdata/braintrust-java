@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is ApiKeyRetrieveParams &&
-            this.apiKeyId == other.apiKeyId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ApiKeyRetrieveParams && this.apiKeyId == other.apiKeyId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            apiKeyId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(apiKeyId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

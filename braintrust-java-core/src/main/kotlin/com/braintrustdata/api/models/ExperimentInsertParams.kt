@@ -61,8 +61,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** A list of experiment events to insert */
         @JsonProperty("events") fun events(): List<Event>? = events
 
@@ -71,26 +69,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ExperimentInsertBody &&
-                this.events == other.events &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(events, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ExperimentInsertBody{events=$events, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -132,6 +110,26 @@ constructor(
                     additionalProperties.toUnmodifiable()
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ExperimentInsertBody && this.events == other.events && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(events, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ExperimentInsertBody{events=$events, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -145,22 +143,11 @@ constructor(
             return true
         }
 
-        return other is ExperimentInsertParams &&
-            this.experimentId == other.experimentId &&
-            this.events == other.events &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ExperimentInsertParams && this.experimentId == other.experimentId && this.events == other.events && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            experimentId,
-            events,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(experimentId, events, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -322,13 +309,11 @@ constructor(
                 return true
             }
 
-            return other is Event &&
-                this.insertExperimentEventReplace == other.insertExperimentEventReplace &&
-                this.insertExperimentEventMerge == other.insertExperimentEventMerge
+            return /* spotless:off */ other is Event && this.insertExperimentEventReplace == other.insertExperimentEventReplace && this.insertExperimentEventMerge == other.insertExperimentEventMerge /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(insertExperimentEventReplace, insertExperimentEventMerge)
+            return /* spotless:off */ Objects.hash(insertExperimentEventReplace, insertExperimentEventMerge) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -374,6 +359,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Event {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<InsertExperimentEventReplace>()) {
                         it.validate()
                     }

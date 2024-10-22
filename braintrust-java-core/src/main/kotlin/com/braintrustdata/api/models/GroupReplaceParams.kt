@@ -64,8 +64,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Name of the group */
         @JsonProperty("name") fun name(): String? = name
 
@@ -95,38 +93,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is GroupReplaceBody &&
-                this.name == other.name &&
-                this.description == other.description &&
-                this.memberGroups == other.memberGroups &&
-                this.memberUsers == other.memberUsers &&
-                this.orgName == other.orgName &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        description,
-                        memberGroups,
-                        memberUsers,
-                        orgName,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "GroupReplaceBody{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -206,6 +172,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is GroupReplaceBody && this.name == other.name && this.description == other.description && this.memberGroups == other.memberGroups && this.memberUsers == other.memberUsers && this.orgName == other.orgName && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "GroupReplaceBody{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -219,28 +205,11 @@ constructor(
             return true
         }
 
-        return other is GroupReplaceParams &&
-            this.name == other.name &&
-            this.description == other.description &&
-            this.memberGroups == other.memberGroups &&
-            this.memberUsers == other.memberUsers &&
-            this.orgName == other.orgName &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is GroupReplaceParams && this.name == other.name && this.description == other.description && this.memberGroups == other.memberGroups && this.memberUsers == other.memberUsers && this.orgName == other.orgName && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            description,
-            memberGroups,
-            memberUsers,
-            orgName,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

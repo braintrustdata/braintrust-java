@@ -25,8 +25,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Total number of records in the dataset */
     fun totalRecords(): Long = totalRecords.getRequired("total_records")
 
@@ -45,26 +43,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is DataSummary &&
-            this.totalRecords == other.totalRecords &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(totalRecords, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "DataSummary{totalRecords=$totalRecords, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -106,4 +84,24 @@ private constructor(
 
         fun build(): DataSummary = DataSummary(totalRecords, additionalProperties.toUnmodifiable())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DataSummary && this.totalRecords == other.totalRecords && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(totalRecords, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "DataSummary{totalRecords=$totalRecords, additionalProperties=$additionalProperties}"
 }

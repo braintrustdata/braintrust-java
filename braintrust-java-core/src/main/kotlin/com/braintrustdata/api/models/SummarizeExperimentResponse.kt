@@ -32,8 +32,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Name of the project that the experiment belongs to */
     fun projectName(): String = projectName.getRequired("project_name")
 
@@ -97,42 +95,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is SummarizeExperimentResponse &&
-            this.projectName == other.projectName &&
-            this.experimentName == other.experimentName &&
-            this.projectUrl == other.projectUrl &&
-            this.experimentUrl == other.experimentUrl &&
-            this.comparisonExperimentName == other.comparisonExperimentName &&
-            this.scores == other.scores &&
-            this.metrics == other.metrics &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    projectName,
-                    experimentName,
-                    projectUrl,
-                    experimentUrl,
-                    comparisonExperimentName,
-                    scores,
-                    metrics,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "SummarizeExperimentResponse{projectName=$projectName, experimentName=$experimentName, projectUrl=$projectUrl, experimentUrl=$experimentUrl, comparisonExperimentName=$comparisonExperimentName, scores=$scores, metrics=$metrics, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -262,8 +224,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -275,23 +235,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Metrics && this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Metrics{additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -323,6 +266,25 @@ private constructor(
 
             fun build(): Metrics = Metrics(additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Metrics && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Metrics{additionalProperties=$additionalProperties}"
     }
 
     /** Summary of the experiment's scores */
@@ -335,8 +297,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -348,23 +308,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Scores && this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Scores{additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -396,5 +339,44 @@ private constructor(
 
             fun build(): Scores = Scores(additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Scores && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Scores{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SummarizeExperimentResponse && this.projectName == other.projectName && this.experimentName == other.experimentName && this.projectUrl == other.projectUrl && this.experimentUrl == other.experimentUrl && this.comparisonExperimentName == other.comparisonExperimentName && this.scores == other.scores && this.metrics == other.metrics && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(projectName, experimentName, projectUrl, experimentUrl, comparisonExperimentName, scores, metrics, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "SummarizeExperimentResponse{projectName=$projectName, experimentName=$experimentName, projectUrl=$projectUrl, experimentUrl=$experimentUrl, comparisonExperimentName=$comparisonExperimentName, scores=$scores, metrics=$metrics, additionalProperties=$additionalProperties}"
 }

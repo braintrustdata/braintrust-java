@@ -31,8 +31,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Name of the metric */
     fun name(): String = name.getRequired("name")
 
@@ -86,40 +84,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is MetricSummary &&
-            this.name == other.name &&
-            this.metric == other.metric &&
-            this.unit == other.unit &&
-            this.diff == other.diff &&
-            this.improvements == other.improvements &&
-            this.regressions == other.regressions &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    name,
-                    metric,
-                    unit,
-                    diff,
-                    improvements,
-                    regressions,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "MetricSummary{name=$name, metric=$metric, unit=$unit, diff=$diff, improvements=$improvements, regressions=$regressions, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -220,4 +184,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is MetricSummary && this.name == other.name && this.metric == other.metric && this.unit == other.unit && this.diff == other.diff && this.improvements == other.improvements && this.regressions == other.regressions && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(name, metric, unit, diff, improvements, regressions, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "MetricSummary{name=$name, metric=$metric, unit=$unit, diff=$diff, improvements=$improvements, regressions=$regressions, additionalProperties=$additionalProperties}"
 }

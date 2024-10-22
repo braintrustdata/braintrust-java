@@ -32,8 +32,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique identifier for the api key */
     fun id(): String = id.getRequired("id")
 
@@ -92,42 +90,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is CreateApiKeyOutput &&
-            this.id == other.id &&
-            this.created == other.created &&
-            this.name == other.name &&
-            this.previewName == other.previewName &&
-            this.userId == other.userId &&
-            this.orgId == other.orgId &&
-            this.key == other.key &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    created,
-                    name,
-                    previewName,
-                    userId,
-                    orgId,
-                    key,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "CreateApiKeyOutput{id=$id, created=$created, name=$name, previewName=$previewName, userId=$userId, orgId=$orgId, key=$key, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -235,4 +197,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is CreateApiKeyOutput && this.id == other.id && this.created == other.created && this.name == other.name && this.previewName == other.previewName && this.userId == other.userId && this.orgId == other.orgId && this.key == other.key && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, created, name, previewName, userId, orgId, key, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "CreateApiKeyOutput{id=$id, created=$created, name=$name, previewName=$previewName, userId=$userId, orgId=$orgId, key=$key, additionalProperties=$additionalProperties}"
 }

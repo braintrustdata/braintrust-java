@@ -26,8 +26,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Name of the category */
     fun name(): String = name.getRequired("name")
 
@@ -53,32 +51,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is ProjectScoreCategory &&
-            this.name == other.name &&
-            this.value == other.value &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    name,
-                    value,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "ProjectScoreCategory{name=$name, value=$value, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -135,4 +107,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectScoreCategory && this.name == other.name && this.value == other.value && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(name, value, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "ProjectScoreCategory{name=$name, value=$value, additionalProperties=$additionalProperties}"
 }

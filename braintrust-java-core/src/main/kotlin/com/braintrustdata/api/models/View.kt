@@ -38,8 +38,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique identifier for the view */
     fun id(): String = id.getRequired("id")
 
@@ -122,48 +120,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is View &&
-            this.id == other.id &&
-            this.objectType == other.objectType &&
-            this.objectId == other.objectId &&
-            this.viewType == other.viewType &&
-            this.name == other.name &&
-            this.created == other.created &&
-            this.viewData == other.viewData &&
-            this.options == other.options &&
-            this.userId == other.userId &&
-            this.deletedAt == other.deletedAt &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    objectType,
-                    objectId,
-                    viewType,
-                    name,
-                    created,
-                    viewData,
-                    options,
-                    userId,
-                    deletedAt,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "View{id=$id, objectType=$objectType, objectId=$objectId, viewType=$viewType, name=$name, created=$created, viewData=$viewData, options=$options, userId=$userId, deletedAt=$deletedAt, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -320,7 +276,7 @@ private constructor(
                 return true
             }
 
-            return other is ObjectType && this.value == other.value
+            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -431,7 +387,7 @@ private constructor(
                 return true
             }
 
-            return other is ViewType && this.value == other.value
+            return /* spotless:off */ other is ViewType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -510,4 +466,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is View && this.id == other.id && this.objectType == other.objectType && this.objectId == other.objectId && this.viewType == other.viewType && this.name == other.name && this.created == other.created && this.viewData == other.viewData && this.options == other.options && this.userId == other.userId && this.deletedAt == other.deletedAt && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, objectType, objectId, viewType, name, created, viewData, options, userId, deletedAt, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "View{id=$id, objectType=$objectType, objectId=$objectId, viewType=$viewType, name=$name, created=$created, viewData=$viewData, options=$options, userId=$userId, deletedAt=$deletedAt, additionalProperties=$additionalProperties}"
 }

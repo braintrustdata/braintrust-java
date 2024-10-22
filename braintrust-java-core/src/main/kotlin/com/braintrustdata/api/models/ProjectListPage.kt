@@ -34,18 +34,11 @@ private constructor(
             return true
         }
 
-        return other is ProjectListPage &&
-            this.projectsService == other.projectsService &&
-            this.params == other.params &&
-            this.response == other.response
+        return /* spotless:off */ other is ProjectListPage && this.projectsService == other.projectsService && this.params == other.params && this.response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectsService,
-            params,
-            response,
-        )
+        return /* spotless:off */ Objects.hash(projectsService, params, response) /* spotless:on */
     }
 
     override fun toString() =
@@ -127,13 +120,11 @@ private constructor(
                 return true
             }
 
-            return other is Response &&
-                this.objects == other.objects &&
-                this.additionalProperties == other.additionalProperties
+            return /* spotless:off */ other is Response && this.objects == other.objects && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(objects, additionalProperties)
+            return /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
         }
 
         override fun toString() =

@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is ProjectScoreRetrieveParams &&
-            this.projectScoreId == other.projectScoreId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ProjectScoreRetrieveParams && this.projectScoreId == other.projectScoreId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectScoreId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(projectScoreId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
