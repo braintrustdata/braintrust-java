@@ -136,7 +136,7 @@ private constructor(
             tryDeserialize(node, jacksonTypeRef<Auto>())?.let {
                 return ToolChoice(auto = it, _json = json)
             }
-            tryDeserialize(node, jacksonTypeRef<None>())?.let {
+            tryDeserialize(node, jacksonTypeRef<ToolChoice.None>())?.let {
                 return ToolChoice(none = it, _json = json)
             }
             tryDeserialize(node, jacksonTypeRef<Function>()) { it.validate() }

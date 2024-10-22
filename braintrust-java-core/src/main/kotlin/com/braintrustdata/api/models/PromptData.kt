@@ -955,7 +955,7 @@ private constructor(
                             tryDeserialize(node, jacksonTypeRef<Auto>())?.let {
                                 return FunctionCall(auto = it, _json = json)
                             }
-                            tryDeserialize(node, jacksonTypeRef<None>())?.let {
+                            tryDeserialize(node, jacksonTypeRef<FunctionCall.None>())?.let {
                                 return FunctionCall(none = it, _json = json)
                             }
                             tryDeserialize(node, jacksonTypeRef<Function>()) { it.validate() }

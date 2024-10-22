@@ -18,7 +18,7 @@ class ProjectScoreTest {
                 .scoreType(ProjectScoreType.SLIDER)
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .categories(
-                    ProjectScore.Categories.ofList<ProjectScoreCategory>(
+                    ProjectScore.Categories.ofProjectScoreCategories(
                         listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                     )
                 )
@@ -59,7 +59,7 @@ class ProjectScoreTest {
         assertThat(projectScore.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectScore.categories())
             .contains(
-                ProjectScore.Categories.ofList<ProjectScoreCategory>(
+                ProjectScore.Categories.ofProjectScoreCategories(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )

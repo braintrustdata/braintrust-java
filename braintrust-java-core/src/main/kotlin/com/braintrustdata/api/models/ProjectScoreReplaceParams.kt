@@ -10,7 +10,6 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.toUnmodifiable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -298,7 +297,7 @@ constructor(
         fun categories(categories: Categories) = apply { this.categories = categories }
 
         /** For categorical-type project scores, the list of all categories */
-        fun categories(projectScoreCategories: List<ProjectScoreCategory>) = apply {
+        fun projectScoreCategories(projectScoreCategories: List<ProjectScoreCategory>) = apply {
             this.categories = Categories.ofProjectScoreCategories(projectScoreCategories)
         }
 
