@@ -108,6 +108,7 @@ private constructor(
             headers.put("X-Stainless-OS", getOsName())
             headers.put("X-Stainless-OS-Version", getOsVersion())
             headers.put("X-Stainless-Package-Version", getPackageVersion())
+            headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             if (!apiKey.isNullOrEmpty()) {
                 headers.put("Authorization", "Bearer ${apiKey}")
