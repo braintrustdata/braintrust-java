@@ -3,6 +3,7 @@
 package com.braintrustdata.api.client
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.getPackageVersion
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.services.blocking.*
 
@@ -11,47 +12,66 @@ constructor(
     private val clientOptions: ClientOptions,
 ) : BraintrustClient {
 
+    private val clientOptionsWithUserAgent =
+        if (clientOptions.headers.containsKey("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
+
+    // Pass the original clientOptions so that this client sets its own User-Agent.
     private val async: BraintrustClientAsync by lazy { BraintrustClientAsyncImpl(clientOptions) }
 
-    private val topLevel: TopLevelService by lazy { TopLevelServiceImpl(clientOptions) }
+    private val topLevel: TopLevelService by lazy {
+        TopLevelServiceImpl(clientOptionsWithUserAgent)
+    }
 
-    private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptions) }
+    private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptionsWithUserAgent) }
 
-    private val experiments: ExperimentService by lazy { ExperimentServiceImpl(clientOptions) }
+    private val experiments: ExperimentService by lazy {
+        ExperimentServiceImpl(clientOptionsWithUserAgent)
+    }
 
-    private val datasets: DatasetService by lazy { DatasetServiceImpl(clientOptions) }
+    private val datasets: DatasetService by lazy { DatasetServiceImpl(clientOptionsWithUserAgent) }
 
-    private val prompts: PromptService by lazy { PromptServiceImpl(clientOptions) }
+    private val prompts: PromptService by lazy { PromptServiceImpl(clientOptionsWithUserAgent) }
 
-    private val roles: RoleService by lazy { RoleServiceImpl(clientOptions) }
+    private val roles: RoleService by lazy { RoleServiceImpl(clientOptionsWithUserAgent) }
 
-    private val groups: GroupService by lazy { GroupServiceImpl(clientOptions) }
+    private val groups: GroupService by lazy { GroupServiceImpl(clientOptionsWithUserAgent) }
 
-    private val acls: AclService by lazy { AclServiceImpl(clientOptions) }
+    private val acls: AclService by lazy { AclServiceImpl(clientOptionsWithUserAgent) }
 
-    private val users: UserService by lazy { UserServiceImpl(clientOptions) }
+    private val users: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
 
     private val projectScores: ProjectScoreService by lazy {
-        ProjectScoreServiceImpl(clientOptions)
+        ProjectScoreServiceImpl(clientOptionsWithUserAgent)
     }
 
-    private val projectTags: ProjectTagService by lazy { ProjectTagServiceImpl(clientOptions) }
+    private val projectTags: ProjectTagService by lazy {
+        ProjectTagServiceImpl(clientOptionsWithUserAgent)
+    }
 
-    private val functions: FunctionService by lazy { FunctionServiceImpl(clientOptions) }
+    private val functions: FunctionService by lazy {
+        FunctionServiceImpl(clientOptionsWithUserAgent)
+    }
 
-    private val views: ViewService by lazy { ViewServiceImpl(clientOptions) }
+    private val views: ViewService by lazy { ViewServiceImpl(clientOptionsWithUserAgent) }
 
     private val organizations: OrganizationService by lazy {
-        OrganizationServiceImpl(clientOptions)
+        OrganizationServiceImpl(clientOptionsWithUserAgent)
     }
 
-    private val apiKeys: ApiKeyService by lazy { ApiKeyServiceImpl(clientOptions) }
+    private val apiKeys: ApiKeyService by lazy { ApiKeyServiceImpl(clientOptionsWithUserAgent) }
 
-    private val aiSecrets: AiSecretService by lazy { AiSecretServiceImpl(clientOptions) }
+    private val aiSecrets: AiSecretService by lazy {
+        AiSecretServiceImpl(clientOptionsWithUserAgent)
+    }
 
-    private val envVars: EnvVarService by lazy { EnvVarServiceImpl(clientOptions) }
+    private val envVars: EnvVarService by lazy { EnvVarServiceImpl(clientOptionsWithUserAgent) }
 
-    private val evals: EvalService by lazy { EvalServiceImpl(clientOptions) }
+    private val evals: EvalService by lazy { EvalServiceImpl(clientOptionsWithUserAgent) }
 
     override fun async(): BraintrustClientAsync = async
 

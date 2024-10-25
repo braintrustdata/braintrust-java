@@ -3,6 +3,7 @@
 package com.braintrustdata.api.client
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.getPackageVersion
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.services.async.*
 
@@ -11,51 +12,78 @@ constructor(
     private val clientOptions: ClientOptions,
 ) : BraintrustClientAsync {
 
+    private val clientOptionsWithUserAgent =
+        if (clientOptions.headers.containsKey("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
+
+    // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: BraintrustClient by lazy { BraintrustClientImpl(clientOptions) }
 
-    private val topLevel: TopLevelServiceAsync by lazy { TopLevelServiceAsyncImpl(clientOptions) }
-
-    private val projects: ProjectServiceAsync by lazy { ProjectServiceAsyncImpl(clientOptions) }
-
-    private val experiments: ExperimentServiceAsync by lazy {
-        ExperimentServiceAsyncImpl(clientOptions)
+    private val topLevel: TopLevelServiceAsync by lazy {
+        TopLevelServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val datasets: DatasetServiceAsync by lazy { DatasetServiceAsyncImpl(clientOptions) }
+    private val projects: ProjectServiceAsync by lazy {
+        ProjectServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val prompts: PromptServiceAsync by lazy { PromptServiceAsyncImpl(clientOptions) }
+    private val experiments: ExperimentServiceAsync by lazy {
+        ExperimentServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val roles: RoleServiceAsync by lazy { RoleServiceAsyncImpl(clientOptions) }
+    private val datasets: DatasetServiceAsync by lazy {
+        DatasetServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val groups: GroupServiceAsync by lazy { GroupServiceAsyncImpl(clientOptions) }
+    private val prompts: PromptServiceAsync by lazy {
+        PromptServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val acls: AclServiceAsync by lazy { AclServiceAsyncImpl(clientOptions) }
+    private val roles: RoleServiceAsync by lazy { RoleServiceAsyncImpl(clientOptionsWithUserAgent) }
 
-    private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
+    private val groups: GroupServiceAsync by lazy {
+        GroupServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val acls: AclServiceAsync by lazy { AclServiceAsyncImpl(clientOptionsWithUserAgent) }
+
+    private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptionsWithUserAgent) }
 
     private val projectScores: ProjectScoreServiceAsync by lazy {
-        ProjectScoreServiceAsyncImpl(clientOptions)
+        ProjectScoreServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
     private val projectTags: ProjectTagServiceAsync by lazy {
-        ProjectTagServiceAsyncImpl(clientOptions)
+        ProjectTagServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val functions: FunctionServiceAsync by lazy { FunctionServiceAsyncImpl(clientOptions) }
+    private val functions: FunctionServiceAsync by lazy {
+        FunctionServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val views: ViewServiceAsync by lazy { ViewServiceAsyncImpl(clientOptions) }
+    private val views: ViewServiceAsync by lazy { ViewServiceAsyncImpl(clientOptionsWithUserAgent) }
 
     private val organizations: OrganizationServiceAsync by lazy {
-        OrganizationServiceAsyncImpl(clientOptions)
+        OrganizationServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val apiKeys: ApiKeyServiceAsync by lazy { ApiKeyServiceAsyncImpl(clientOptions) }
+    private val apiKeys: ApiKeyServiceAsync by lazy {
+        ApiKeyServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val aiSecrets: AiSecretServiceAsync by lazy { AiSecretServiceAsyncImpl(clientOptions) }
+    private val aiSecrets: AiSecretServiceAsync by lazy {
+        AiSecretServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val envVars: EnvVarServiceAsync by lazy { EnvVarServiceAsyncImpl(clientOptions) }
+    private val envVars: EnvVarServiceAsync by lazy {
+        EnvVarServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val evals: EvalServiceAsync by lazy { EvalServiceAsyncImpl(clientOptions) }
+    private val evals: EvalServiceAsync by lazy { EvalServiceAsyncImpl(clientOptionsWithUserAgent) }
 
     override fun sync(): BraintrustClient = sync
 
