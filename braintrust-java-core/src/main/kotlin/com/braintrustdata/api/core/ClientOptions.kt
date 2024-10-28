@@ -3,6 +3,7 @@
 package com.braintrustdata.api.core
 
 import com.braintrustdata.api.core.http.HttpClient
+import com.braintrustdata.api.core.http.PhantomReachableClosingHttpClient
 import com.braintrustdata.api.core.http.RetryingHttpClient
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.google.common.collect.ArrayListMultimap
@@ -141,11 +142,13 @@ private constructor(
 
             return ClientOptions(
                 httpClient!!,
-                RetryingHttpClient.builder()
-                    .httpClient(httpClient!!)
-                    .clock(clock)
-                    .maxRetries(maxRetries)
-                    .build(),
+                PhantomReachableClosingHttpClient(
+                    RetryingHttpClient.builder()
+                        .httpClient(httpClient!!)
+                        .clock(clock)
+                        .maxRetries(maxRetries)
+                        .build()
+                ),
                 jsonMapper ?: jsonMapper(),
                 clock,
                 baseUrl,
