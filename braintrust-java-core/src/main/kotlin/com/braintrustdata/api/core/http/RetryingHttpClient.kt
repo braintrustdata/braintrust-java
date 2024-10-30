@@ -2,7 +2,6 @@ package com.braintrustdata.api.core.http
 
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.errors.BraintrustIoException
-import com.google.common.util.concurrent.MoreExecutors
 import java.io.IOException
 import java.time.Clock
 import java.time.Duration
@@ -116,8 +115,10 @@ private constructor(
                             executeWithRetries(request, requestOptions)
                         }
                     },
-                    MoreExecutors.directExecutor()
-                )
+                ) {
+                    // Run in the same thread.
+                    it.run()
+                }
                 .thenCompose(Function.identity())
         }
 
