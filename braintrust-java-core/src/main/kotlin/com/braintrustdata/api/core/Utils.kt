@@ -9,13 +9,8 @@ import com.google.common.collect.Multimaps
 import java.util.Collections
 
 @JvmSynthetic
-internal fun <T : Any> T?.getOrThrow(name: String): T {
-    if (this == null) {
-        throw BraintrustInvalidDataException("'${name}' is not present")
-    }
-
-    return this
-}
+internal fun <T : Any> T?.getOrThrow(name: String): T =
+    this ?: throw BraintrustInvalidDataException("`${name}` is not present")
 
 @JvmSynthetic
 internal fun <T> List<T>.toUnmodifiable(): List<T> {
