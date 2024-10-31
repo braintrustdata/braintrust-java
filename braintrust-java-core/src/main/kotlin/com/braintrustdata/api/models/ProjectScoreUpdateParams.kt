@@ -84,6 +84,7 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
+        /** For categorical-type project scores, the list of all categories */
         @JsonProperty("categories") fun categories(): Categories? = categories
 
         @JsonProperty("config") fun config(): ProjectScoreConfig? = config
@@ -127,6 +128,7 @@ constructor(
                 additionalProperties(projectScoreUpdateBody.additionalProperties)
             }
 
+            /** For categorical-type project scores, the list of all categories */
             @JsonProperty("categories")
             fun categories(categories: Categories) = apply { this.categories = categories }
 
