@@ -67,6 +67,7 @@ private constructor(
     /** The type of the configured score */
     fun scoreType(): ProjectScoreType = scoreType.getRequired("score_type")
 
+    /** For categorical-type project scores, the list of all categories */
     fun categories(): Optional<Categories> =
         Optional.ofNullable(categories.getNullable("categories"))
 
@@ -95,6 +96,7 @@ private constructor(
     /** The type of the configured score */
     @JsonProperty("score_type") @ExcludeMissing fun _scoreType() = scoreType
 
+    /** For categorical-type project scores, the list of all categories */
     @JsonProperty("categories") @ExcludeMissing fun _categories() = categories
 
     @JsonProperty("config") @ExcludeMissing fun _config() = config
@@ -210,8 +212,10 @@ private constructor(
         @ExcludeMissing
         fun scoreType(scoreType: JsonField<ProjectScoreType>) = apply { this.scoreType = scoreType }
 
+        /** For categorical-type project scores, the list of all categories */
         fun categories(categories: Categories) = categories(JsonField.of(categories))
 
+        /** For categorical-type project scores, the list of all categories */
         @JsonProperty("categories")
         @ExcludeMissing
         fun categories(categories: JsonField<Categories>) = apply { this.categories = categories }
