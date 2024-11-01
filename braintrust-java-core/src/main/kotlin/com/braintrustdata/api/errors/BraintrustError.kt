@@ -4,7 +4,7 @@ package com.braintrustdata.api.errors
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
@@ -62,6 +62,6 @@ constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): BraintrustError = BraintrustError(additionalProperties.toUnmodifiable())
+        fun build(): BraintrustError = BraintrustError(additionalProperties.toImmutable())
     }
 }

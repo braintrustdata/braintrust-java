@@ -8,7 +8,7 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -168,7 +168,7 @@ constructor(
                     description,
                     name,
                     scoreType,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -346,9 +346,9 @@ constructor(
                 description,
                 name,
                 scoreType,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -568,7 +568,7 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Weighted = Weighted(additionalProperties.toUnmodifiable())
+                fun build(): Weighted = Weighted(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -641,8 +641,7 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): NullableVariant =
-                    NullableVariant(additionalProperties.toUnmodifiable())
+                fun build(): NullableVariant = NullableVariant(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {

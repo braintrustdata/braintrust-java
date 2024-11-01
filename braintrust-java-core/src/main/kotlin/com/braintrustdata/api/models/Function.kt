@@ -11,7 +11,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -390,13 +390,13 @@ private constructor(
                 description,
                 created,
                 promptData,
-                tags.map { it.toUnmodifiable() },
+                tags.map { it.toImmutable() },
                 metadata,
                 functionType,
                 functionData,
                 origin,
                 functionSchema,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -600,7 +600,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Prompt = Prompt(type, additionalProperties.toUnmodifiable())
+                fun build(): Prompt = Prompt(type, additionalProperties.toImmutable())
             }
 
             class Type
@@ -757,7 +757,7 @@ private constructor(
                     Code(
                         type,
                         data,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1030,7 +1030,7 @@ private constructor(
                                 bundleId,
                                 preview,
                                 type,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -1211,7 +1211,7 @@ private constructor(
                                 type,
                                 runtimeContext,
                                 code,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -1302,7 +1302,7 @@ private constructor(
                                 RuntimeContext(
                                     runtime,
                                     version,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -1616,7 +1616,7 @@ private constructor(
                     Global(
                         type,
                         name,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1822,7 +1822,7 @@ private constructor(
                 FunctionSchema(
                     parameters,
                     returns,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -1966,7 +1966,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
+            fun build(): Metadata = Metadata(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -2111,7 +2111,7 @@ private constructor(
                     objectType,
                     objectId,
                     internal_,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

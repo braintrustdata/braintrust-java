@@ -7,7 +7,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -120,9 +120,9 @@ private constructor(
         fun build(): ViewOptions =
             ViewOptions(
                 columnVisibility,
-                columnOrder.map { it.toUnmodifiable() },
+                columnOrder.map { it.toImmutable() },
                 columnSizing,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -175,7 +175,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): ColumnSizing = ColumnSizing(additionalProperties.toUnmodifiable())
+            fun build(): ColumnSizing = ColumnSizing(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -247,7 +247,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): ColumnVisibility = ColumnVisibility(additionalProperties.toUnmodifiable())
+            fun build(): ColumnVisibility = ColumnVisibility(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
