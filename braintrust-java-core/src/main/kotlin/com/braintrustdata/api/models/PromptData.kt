@@ -11,7 +11,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -156,9 +156,9 @@ private constructor(
                 prompt,
                 options,
                 parser,
-                toolFunctions.map { it.toUnmodifiable() },
+                toolFunctions.map { it.toImmutable() },
                 origin,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -258,7 +258,7 @@ private constructor(
                     model,
                     params,
                     position,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -720,8 +720,8 @@ private constructor(
                             toolChoice,
                             functionCall,
                             n,
-                            stop.map { it.toUnmodifiable() },
-                            additionalProperties.toUnmodifiable(),
+                            stop.map { it.toImmutable() },
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1028,7 +1028,7 @@ private constructor(
                             ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun build(): Function =
-                                Function(name, additionalProperties.toUnmodifiable())
+                                Function(name, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -1119,7 +1119,7 @@ private constructor(
                         ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun build(): ResponseFormat =
-                            ResponseFormat(type, additionalProperties.toUnmodifiable())
+                            ResponseFormat(type, additionalProperties.toImmutable())
                     }
 
                     class Type
@@ -1390,9 +1390,9 @@ private constructor(
                             temperature,
                             topP,
                             topK,
-                            stopSequences.map { it.toUnmodifiable() },
+                            stopSequences.map { it.toImmutable() },
                             maxTokensToSample,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1554,7 +1554,7 @@ private constructor(
                             maxOutputTokens,
                             topP,
                             topK,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1680,7 +1680,7 @@ private constructor(
                             useCache,
                             temperature,
                             topK,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1771,7 +1771,7 @@ private constructor(
                         }
 
                     fun build(): JsCompletionParams =
-                        JsCompletionParams(useCache, additionalProperties.toUnmodifiable())
+                        JsCompletionParams(useCache, additionalProperties.toImmutable())
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -1916,7 +1916,7 @@ private constructor(
                     promptId,
                     projectId,
                     promptVersion,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -2039,7 +2039,7 @@ private constructor(
                     type,
                     useCot,
                     choiceScores,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -2093,7 +2093,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): ChoiceScores = ChoiceScores(additionalProperties.toUnmodifiable())
+                fun build(): ChoiceScores = ChoiceScores(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2408,7 +2408,7 @@ private constructor(
                     Completion(
                         type,
                         content,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -2581,9 +2581,9 @@ private constructor(
                 fun build(): Chat =
                     Chat(
                         type,
-                        messages.map { it.toUnmodifiable() },
+                        messages.map { it.toImmutable() },
                         tools,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -2887,7 +2887,7 @@ private constructor(
                                 content,
                                 role,
                                 name,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -3063,7 +3063,7 @@ private constructor(
                                 content,
                                 role,
                                 name,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -3401,8 +3401,8 @@ private constructor(
                                 content,
                                 functionCall,
                                 name,
-                                toolCalls.map { it.toUnmodifiable() },
-                                additionalProperties.toUnmodifiable(),
+                                toolCalls.map { it.toImmutable() },
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -3543,7 +3543,7 @@ private constructor(
                                 FunctionCall(
                                     arguments,
                                     name,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -3691,7 +3691,7 @@ private constructor(
                                 content,
                                 role,
                                 toolCallId,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -3867,7 +3867,7 @@ private constructor(
                                 content,
                                 name,
                                 role,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -4028,7 +4028,7 @@ private constructor(
                             Fallback(
                                 role,
                                 content,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -4228,8 +4228,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): NullableVariant =
-                    NullableVariant(additionalProperties.toUnmodifiable())
+                fun build(): NullableVariant = NullableVariant(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -4452,7 +4451,7 @@ private constructor(
                     Function(
                         type,
                         id,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -4610,7 +4609,7 @@ private constructor(
                     Global(
                         type,
                         name,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 

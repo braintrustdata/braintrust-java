@@ -1,6 +1,6 @@
 package com.braintrustdata.api.core.http
 
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
 import com.google.common.collect.Multimap
@@ -83,8 +83,8 @@ private constructor(
             HttpRequest(
                 checkNotNull(method) { "`method` is required but was not set" },
                 url,
-                pathSegments.toUnmodifiable(),
-                queryParams.toUnmodifiable(),
+                pathSegments.toImmutable(),
+                queryParams.toImmutable(),
                 headers,
                 body,
             )

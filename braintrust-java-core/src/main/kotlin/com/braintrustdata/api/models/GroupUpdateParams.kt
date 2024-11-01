@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -178,13 +178,13 @@ constructor(
 
             fun build(): GroupUpdateBody =
                 GroupUpdateBody(
-                    addMemberGroups?.toUnmodifiable(),
-                    addMemberUsers?.toUnmodifiable(),
+                    addMemberGroups?.toImmutable(),
+                    addMemberUsers?.toImmutable(),
                     description,
                     name,
-                    removeMemberGroups?.toUnmodifiable(),
-                    removeMemberUsers?.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    removeMemberGroups?.toImmutable(),
+                    removeMemberUsers?.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -375,15 +375,15 @@ constructor(
         fun build(): GroupUpdateParams =
             GroupUpdateParams(
                 checkNotNull(groupId) { "`groupId` is required but was not set" },
-                if (addMemberGroups.size == 0) null else addMemberGroups.toUnmodifiable(),
-                if (addMemberUsers.size == 0) null else addMemberUsers.toUnmodifiable(),
+                if (addMemberGroups.size == 0) null else addMemberGroups.toImmutable(),
+                if (addMemberUsers.size == 0) null else addMemberUsers.toImmutable(),
                 description,
                 name,
-                if (removeMemberGroups.size == 0) null else removeMemberGroups.toUnmodifiable(),
-                if (removeMemberUsers.size == 0) null else removeMemberUsers.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                if (removeMemberGroups.size == 0) null else removeMemberGroups.toImmutable(),
+                if (removeMemberUsers.size == 0) null else removeMemberUsers.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 }

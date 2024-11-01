@@ -3,7 +3,7 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -25,7 +25,7 @@ constructor(
         val params = mutableMapOf<String, List<String>>()
         this.summarizeData?.let { params.put("summarize_data", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -131,8 +131,8 @@ constructor(
             DatasetSummarizeParams(
                 checkNotNull(datasetId) { "`datasetId` is required but was not set" },
                 summarizeData,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }

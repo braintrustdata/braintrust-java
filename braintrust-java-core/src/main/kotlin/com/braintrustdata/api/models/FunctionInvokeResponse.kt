@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
@@ -61,7 +61,7 @@ private constructor(
         }
 
         fun build(): FunctionInvokeResponse =
-            FunctionInvokeResponse(additionalProperties.toUnmodifiable())
+            FunctionInvokeResponse(additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

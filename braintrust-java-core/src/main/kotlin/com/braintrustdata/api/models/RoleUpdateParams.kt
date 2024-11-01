@@ -7,7 +7,7 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -186,13 +186,13 @@ constructor(
 
             fun build(): RoleUpdateBody =
                 RoleUpdateBody(
-                    addMemberPermissions?.toUnmodifiable(),
-                    addMemberRoles?.toUnmodifiable(),
+                    addMemberPermissions?.toImmutable(),
+                    addMemberRoles?.toImmutable(),
                     description,
                     name,
-                    removeMemberPermissions?.toUnmodifiable(),
-                    removeMemberRoles?.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    removeMemberPermissions?.toImmutable(),
+                    removeMemberRoles?.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -383,16 +383,16 @@ constructor(
         fun build(): RoleUpdateParams =
             RoleUpdateParams(
                 checkNotNull(roleId) { "`roleId` is required but was not set" },
-                if (addMemberPermissions.size == 0) null else addMemberPermissions.toUnmodifiable(),
-                if (addMemberRoles.size == 0) null else addMemberRoles.toUnmodifiable(),
+                if (addMemberPermissions.size == 0) null else addMemberPermissions.toImmutable(),
+                if (addMemberRoles.size == 0) null else addMemberRoles.toImmutable(),
                 description,
                 name,
                 if (removeMemberPermissions.size == 0) null
-                else removeMemberPermissions.toUnmodifiable(),
-                if (removeMemberRoles.size == 0) null else removeMemberRoles.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                else removeMemberPermissions.toImmutable(),
+                if (removeMemberRoles.size == 0) null else removeMemberRoles.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -473,7 +473,7 @@ constructor(
                 AddMemberPermission(
                     checkNotNull(permission) { "`permission` is required but was not set" },
                     restrictObjectType,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -780,7 +780,7 @@ constructor(
                 RemoveMemberPermission(
                     checkNotNull(permission) { "`permission` is required but was not set" },
                     restrictObjectType,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
