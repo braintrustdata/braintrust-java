@@ -7,7 +7,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -122,11 +122,11 @@ private constructor(
 
         fun build(): ViewDataSearch =
             ViewDataSearch(
-                filter.map { it.toUnmodifiable() },
-                tag.map { it.toUnmodifiable() },
-                match.map { it.toUnmodifiable() },
-                sort.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable(),
+                filter.map { it.toImmutable() },
+                tag.map { it.toImmutable() },
+                match.map { it.toImmutable() },
+                sort.map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 

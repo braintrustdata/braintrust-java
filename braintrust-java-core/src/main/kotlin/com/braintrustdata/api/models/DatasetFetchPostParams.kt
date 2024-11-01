@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -276,12 +276,12 @@ constructor(
             fun build(): DatasetFetchPostBody =
                 DatasetFetchPostBody(
                     cursor,
-                    filters?.toUnmodifiable(),
+                    filters?.toImmutable(),
                     limit,
                     maxRootSpanId,
                     maxXactId,
                     version,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -508,14 +508,14 @@ constructor(
             DatasetFetchPostParams(
                 checkNotNull(datasetId) { "`datasetId` is required but was not set" },
                 cursor,
-                if (filters.size == 0) null else filters.toUnmodifiable(),
+                if (filters.size == 0) null else filters.toImmutable(),
                 limit,
                 maxRootSpanId,
                 maxXactId,
                 version,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 }

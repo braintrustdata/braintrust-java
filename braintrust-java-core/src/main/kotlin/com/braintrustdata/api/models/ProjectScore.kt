@@ -10,7 +10,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.getOrThrow
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -260,7 +260,7 @@ private constructor(
                 categories,
                 config,
                 position,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -480,7 +480,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Weighted = Weighted(additionalProperties.toUnmodifiable())
+                fun build(): Weighted = Weighted(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -553,8 +553,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): NullableVariant =
-                    NullableVariant(additionalProperties.toUnmodifiable())
+                fun build(): NullableVariant = NullableVariant(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {

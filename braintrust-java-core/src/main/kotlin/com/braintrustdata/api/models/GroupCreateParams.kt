@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -166,10 +166,10 @@ constructor(
                 GroupCreateBody(
                     checkNotNull(name) { "`name` is required but was not set" },
                     description,
-                    memberGroups?.toUnmodifiable(),
-                    memberUsers?.toUnmodifiable(),
+                    memberGroups?.toImmutable(),
+                    memberUsers?.toImmutable(),
                     orgName,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -345,12 +345,12 @@ constructor(
             GroupCreateParams(
                 checkNotNull(name) { "`name` is required but was not set" },
                 description,
-                if (memberGroups.size == 0) null else memberGroups.toUnmodifiable(),
-                if (memberUsers.size == 0) null else memberUsers.toUnmodifiable(),
+                if (memberGroups.size == 0) null else memberGroups.toImmutable(),
+                if (memberUsers.size == 0) null else memberUsers.toImmutable(),
                 orgName,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 }

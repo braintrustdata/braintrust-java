@@ -3,7 +3,7 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.models.*
 import java.util.Objects
 
@@ -113,8 +113,8 @@ constructor(
         fun build(): AclRetrieveParams =
             AclRetrieveParams(
                 checkNotNull(aclId) { "`aclId` is required but was not set" },
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }

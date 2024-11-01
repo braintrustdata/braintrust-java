@@ -8,7 +8,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -81,7 +81,7 @@ private constructor(
         }
 
         fun build(): FeedbackResponseSchema =
-            FeedbackResponseSchema(status, additionalProperties.toUnmodifiable())
+            FeedbackResponseSchema(status, additionalProperties.toImmutable())
     }
 
     class Status

@@ -7,7 +7,7 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -180,8 +180,8 @@ constructor(
                     description,
                     functionType,
                     promptData,
-                    tags?.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    tags?.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -350,10 +350,10 @@ constructor(
                 description,
                 functionType,
                 promptData,
-                if (tags.size == 0) null else tags.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                if (tags.size == 0) null else tags.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
