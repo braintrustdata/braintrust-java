@@ -7,7 +7,7 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -172,10 +172,10 @@ constructor(
                 RoleReplaceBody(
                     checkNotNull(name) { "`name` is required but was not set" },
                     description,
-                    memberPermissions?.toUnmodifiable(),
-                    memberRoles?.toUnmodifiable(),
+                    memberPermissions?.toImmutable(),
+                    memberRoles?.toImmutable(),
                     orgName,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -353,12 +353,12 @@ constructor(
             RoleReplaceParams(
                 checkNotNull(name) { "`name` is required but was not set" },
                 description,
-                if (memberPermissions.size == 0) null else memberPermissions.toUnmodifiable(),
-                if (memberRoles.size == 0) null else memberRoles.toUnmodifiable(),
+                if (memberPermissions.size == 0) null else memberPermissions.toImmutable(),
+                if (memberRoles.size == 0) null else memberRoles.toImmutable(),
                 orgName,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -439,7 +439,7 @@ constructor(
                 MemberPermission(
                     checkNotNull(permission) { "`permission` is required but was not set" },
                     restrictObjectType,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

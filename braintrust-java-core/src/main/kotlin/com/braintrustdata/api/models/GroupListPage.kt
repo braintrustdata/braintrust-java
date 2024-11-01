@@ -7,7 +7,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.services.blocking.GroupService
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -150,7 +150,7 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() = Response(objects, additionalProperties.toUnmodifiable())
+            fun build() = Response(objects, additionalProperties.toImmutable())
         }
     }
 

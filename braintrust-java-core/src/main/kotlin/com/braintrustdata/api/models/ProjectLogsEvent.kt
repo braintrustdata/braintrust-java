@@ -8,7 +8,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.toUnmodifiable
+import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -604,14 +604,14 @@ private constructor(
                 error,
                 scores,
                 metadata,
-                tags.map { it.toUnmodifiable() },
+                tags.map { it.toImmutable() },
                 metrics,
                 context,
                 spanId,
-                spanParents.map { it.toUnmodifiable() },
+                spanParents.map { it.toImmutable() },
                 rootSpanId,
                 spanAttributes,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -792,7 +792,7 @@ private constructor(
                     callerFunctionname,
                     callerFilename,
                     callerLineno,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -873,7 +873,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
+            fun build(): Metadata = Metadata(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1104,7 +1104,7 @@ private constructor(
                     promptTokens,
                     completionTokens,
                     tokens,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -1187,7 +1187,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Scores = Scores(additionalProperties.toUnmodifiable())
+            fun build(): Scores = Scores(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1300,7 +1300,7 @@ private constructor(
                 SpanAttributes(
                     name,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
