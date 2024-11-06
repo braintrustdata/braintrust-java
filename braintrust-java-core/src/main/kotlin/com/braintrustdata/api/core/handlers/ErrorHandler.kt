@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.core.handlers
 
+import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.errors.BadRequestException
@@ -14,7 +15,6 @@ import com.braintrustdata.api.errors.UnauthorizedException
 import com.braintrustdata.api.errors.UnexpectedStatusCodeException
 import com.braintrustdata.api.errors.UnprocessableEntityException
 import com.fasterxml.jackson.databind.json.JsonMapper
-import com.google.common.collect.ListMultimap
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 
@@ -116,7 +116,7 @@ private fun HttpResponse.buffered(): HttpResponse {
     return object : HttpResponse {
         override fun statusCode(): Int = this@buffered.statusCode()
 
-        override fun headers(): ListMultimap<String, String> = this@buffered.headers()
+        override fun headers(): Headers = this@buffered.headers()
 
         override fun body(): InputStream = ByteArrayInputStream(body)
 
