@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -29,25 +30,22 @@ class OrganizationListParamsTest {
                 .orgName("org_name")
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("ending_before", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+        val expected = QueryParams.builder()
+        expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put(
             "ids",
-            listOf(
-                OrganizationListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .toString()
-            )
+            OrganizationListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString()
         )
-        expected.put("limit", listOf("123"))
-        expected.put("org_name", listOf("org_name"))
-        expected.put("starting_after", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        expected.put("limit", "123")
+        expected.put("org_name", "org_name")
+        expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params = OrganizationListParams.builder().build()
-        val expected = mutableMapOf<String, List<String>>()
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 }

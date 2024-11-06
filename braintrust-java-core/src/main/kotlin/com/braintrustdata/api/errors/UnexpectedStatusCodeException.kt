@@ -1,10 +1,10 @@
 package com.braintrustdata.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.braintrustdata.api.core.http.Headers
 
 class UnexpectedStatusCodeException(
     statusCode: Int,
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: BraintrustError,
 ) : BraintrustServiceException(statusCode, headers, body, error)
