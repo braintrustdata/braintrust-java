@@ -48,8 +48,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique identifier for the acl */
     fun id(): String = id.getRequired("id")
 
@@ -151,48 +149,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is Acl &&
-            this.id == other.id &&
-            this.objectType == other.objectType &&
-            this.objectId == other.objectId &&
-            this.userId == other.userId &&
-            this.groupId == other.groupId &&
-            this.permission == other.permission &&
-            this.restrictObjectType == other.restrictObjectType &&
-            this.roleId == other.roleId &&
-            this._objectOrgId == other._objectOrgId &&
-            this.created == other.created &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    objectType,
-                    objectId,
-                    userId,
-                    groupId,
-                    permission,
-                    restrictObjectType,
-                    roleId,
-                    _objectOrgId,
-                    created,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "Acl{id=$id, objectType=$objectType, objectId=$objectId, userId=$userId, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, _objectOrgId=$_objectOrgId, created=$created, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -378,7 +334,7 @@ private constructor(
                 return true
             }
 
-            return other is ObjectType && this.value == other.value
+            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -489,7 +445,7 @@ private constructor(
                 return true
             }
 
-            return other is Permission && this.value == other.value
+            return /* spotless:off */ other is Permission && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -582,7 +538,7 @@ private constructor(
                 return true
             }
 
-            return other is RestrictObjectType && this.value == other.value
+            return /* spotless:off */ other is RestrictObjectType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -679,4 +635,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is Acl && this.id == other.id && this.objectType == other.objectType && this.objectId == other.objectId && this.userId == other.userId && this.groupId == other.groupId && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.roleId == other.roleId && this._objectOrgId == other._objectOrgId && this.created == other.created && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, _objectOrgId, created, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "Acl{id=$id, objectType=$objectType, objectId=$objectId, userId=$userId, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, _objectOrgId=$_objectOrgId, created=$created, additionalProperties=$additionalProperties}"
 }

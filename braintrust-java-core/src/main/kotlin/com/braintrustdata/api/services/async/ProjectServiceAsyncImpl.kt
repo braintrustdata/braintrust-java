@@ -4,9 +4,13 @@ package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.handlers.errorHandler
+import com.braintrustdata.api.core.handlers.jsonHandler
+import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
+import com.braintrustdata.api.core.json
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
@@ -17,10 +21,6 @@ import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import com.braintrustdata.api.services.async.projects.LogServiceAsyncImpl
-import com.braintrustdata.api.services.errorHandler
-import com.braintrustdata.api.services.json
-import com.braintrustdata.api.services.jsonHandler
-import com.braintrustdata.api.services.withErrorHandler
 import java.util.concurrent.CompletableFuture
 
 class ProjectServiceAsyncImpl

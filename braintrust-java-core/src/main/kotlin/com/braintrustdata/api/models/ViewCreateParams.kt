@@ -84,8 +84,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Name of the view */
         @JsonProperty("name") fun name(): String? = name
 
@@ -115,44 +113,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ViewCreateBody &&
-                this.name == other.name &&
-                this.objectId == other.objectId &&
-                this.objectType == other.objectType &&
-                this.viewType == other.viewType &&
-                this.deletedAt == other.deletedAt &&
-                this.options == other.options &&
-                this.userId == other.userId &&
-                this.viewData == other.viewData &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        objectId,
-                        objectType,
-                        viewType,
-                        deletedAt,
-                        options,
-                        userId,
-                        viewData,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ViewCreateBody{name=$name, objectId=$objectId, objectType=$objectType, viewType=$viewType, deletedAt=$deletedAt, options=$options, userId=$userId, viewData=$viewData, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -241,6 +201,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ViewCreateBody && this.name == other.name && this.objectId == other.objectId && this.objectType == other.objectType && this.viewType == other.viewType && this.deletedAt == other.deletedAt && this.options == other.options && this.userId == other.userId && this.viewData == other.viewData && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ViewCreateBody{name=$name, objectId=$objectId, objectType=$objectType, viewType=$viewType, deletedAt=$deletedAt, options=$options, userId=$userId, viewData=$viewData, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -254,34 +234,11 @@ constructor(
             return true
         }
 
-        return other is ViewCreateParams &&
-            this.name == other.name &&
-            this.objectId == other.objectId &&
-            this.objectType == other.objectType &&
-            this.viewType == other.viewType &&
-            this.deletedAt == other.deletedAt &&
-            this.options == other.options &&
-            this.userId == other.userId &&
-            this.viewData == other.viewData &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ViewCreateParams && this.name == other.name && this.objectId == other.objectId && this.objectType == other.objectType && this.viewType == other.viewType && this.deletedAt == other.deletedAt && this.options == other.options && this.userId == other.userId && this.viewData == other.viewData && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            objectId,
-            objectType,
-            viewType,
-            deletedAt,
-            options,
-            userId,
-            viewData,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -431,7 +388,7 @@ constructor(
                 return true
             }
 
-            return other is ObjectType && this.value == other.value
+            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -542,7 +499,7 @@ constructor(
                 return true
             }
 
-            return other is ViewType && this.value == other.value
+            return /* spotless:off */ other is ViewType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

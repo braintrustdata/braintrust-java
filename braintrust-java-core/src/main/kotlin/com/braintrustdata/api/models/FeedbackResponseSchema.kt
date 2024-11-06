@@ -27,8 +27,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun status(): Status = status.getRequired("status")
 
     @JsonProperty("status") @ExcludeMissing fun _status() = status
@@ -45,26 +43,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is FeedbackResponseSchema &&
-            this.status == other.status &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(status, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "FeedbackResponseSchema{status=$status, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -119,7 +97,7 @@ private constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -156,4 +134,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is FeedbackResponseSchema && this.status == other.status && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(status, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "FeedbackResponseSchema{status=$status, additionalProperties=$additionalProperties}"
 }

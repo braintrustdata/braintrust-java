@@ -79,8 +79,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** A list of group IDs to add to the group's inheriting-from set */
         @JsonProperty("add_member_groups") fun addMemberGroups(): List<String>? = addMemberGroups
 
@@ -106,40 +104,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is GroupUpdateBody &&
-                this.addMemberGroups == other.addMemberGroups &&
-                this.addMemberUsers == other.addMemberUsers &&
-                this.description == other.description &&
-                this.name == other.name &&
-                this.removeMemberGroups == other.removeMemberGroups &&
-                this.removeMemberUsers == other.removeMemberUsers &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        addMemberGroups,
-                        addMemberUsers,
-                        description,
-                        name,
-                        removeMemberGroups,
-                        removeMemberUsers,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "GroupUpdateBody{addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -223,6 +187,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is GroupUpdateBody && this.addMemberGroups == other.addMemberGroups && this.addMemberUsers == other.addMemberUsers && this.description == other.description && this.name == other.name && this.removeMemberGroups == other.removeMemberGroups && this.removeMemberUsers == other.removeMemberUsers && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(addMemberGroups, addMemberUsers, description, name, removeMemberGroups, removeMemberUsers, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "GroupUpdateBody{addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -236,32 +220,11 @@ constructor(
             return true
         }
 
-        return other is GroupUpdateParams &&
-            this.groupId == other.groupId &&
-            this.addMemberGroups == other.addMemberGroups &&
-            this.addMemberUsers == other.addMemberUsers &&
-            this.description == other.description &&
-            this.name == other.name &&
-            this.removeMemberGroups == other.removeMemberGroups &&
-            this.removeMemberUsers == other.removeMemberUsers &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is GroupUpdateParams && this.groupId == other.groupId && this.addMemberGroups == other.addMemberGroups && this.addMemberUsers == other.addMemberUsers && this.description == other.description && this.name == other.name && this.removeMemberGroups == other.removeMemberGroups && this.removeMemberUsers == other.removeMemberUsers && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            groupId,
-            addMemberGroups,
-            addMemberUsers,
-            description,
-            name,
-            removeMemberGroups,
-            removeMemberUsers,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(groupId, addMemberGroups, addMemberUsers, description, name, removeMemberGroups, removeMemberUsers, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

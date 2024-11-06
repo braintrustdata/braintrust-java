@@ -32,8 +32,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique identifier for the project */
     fun id(): String = id.getRequired("id")
 
@@ -94,42 +92,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is Project &&
-            this.id == other.id &&
-            this.orgId == other.orgId &&
-            this.name == other.name &&
-            this.created == other.created &&
-            this.deletedAt == other.deletedAt &&
-            this.userId == other.userId &&
-            this.settings == other.settings &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    orgId,
-                    name,
-                    created,
-                    deletedAt,
-                    userId,
-                    settings,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "Project{id=$id, orgId=$orgId, name=$name, created=$created, deletedAt=$deletedAt, userId=$userId, settings=$settings, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -237,4 +199,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is Project && this.id == other.id && this.orgId == other.orgId && this.name == other.name && this.created == other.created && this.deletedAt == other.deletedAt && this.userId == other.userId && this.settings == other.settings && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, orgId, name, created, deletedAt, userId, settings, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "Project{id=$id, orgId=$orgId, name=$name, created=$created, deletedAt=$deletedAt, userId=$userId, settings=$settings, additionalProperties=$additionalProperties}"
 }

@@ -30,8 +30,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Name of the project that the dataset belongs to */
     fun projectName(): String = projectName.getRequired("project_name")
 
@@ -79,38 +77,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is SummarizeDatasetResponse &&
-            this.projectName == other.projectName &&
-            this.datasetName == other.datasetName &&
-            this.projectUrl == other.projectUrl &&
-            this.datasetUrl == other.datasetUrl &&
-            this.dataSummary == other.dataSummary &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    projectName,
-                    datasetName,
-                    projectUrl,
-                    datasetUrl,
-                    dataSummary,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "SummarizeDatasetResponse{projectName=$projectName, datasetName=$datasetName, projectUrl=$projectUrl, datasetUrl=$datasetUrl, dataSummary=$dataSummary, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -202,4 +168,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SummarizeDatasetResponse && this.projectName == other.projectName && this.datasetName == other.datasetName && this.projectUrl == other.projectUrl && this.datasetUrl == other.datasetUrl && this.dataSummary == other.dataSummary && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(projectName, datasetName, projectUrl, datasetUrl, dataSummary, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "SummarizeDatasetResponse{projectName=$projectName, datasetName=$datasetName, projectUrl=$projectUrl, datasetUrl=$datasetUrl, dataSummary=$dataSummary, additionalProperties=$additionalProperties}"
 }

@@ -79,8 +79,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /**
          * An opaque string to be used as a cursor for the next page of results, in order from
          * latest to earliest.
@@ -158,40 +156,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ExperimentFetchPostBody &&
-                this.cursor == other.cursor &&
-                this.filters == other.filters &&
-                this.limit == other.limit &&
-                this.maxRootSpanId == other.maxRootSpanId &&
-                this.maxXactId == other.maxXactId &&
-                this.version == other.version &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        cursor,
-                        filters,
-                        limit,
-                        maxRootSpanId,
-                        maxXactId,
-                        version,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ExperimentFetchPostBody{cursor=$cursor, filters=$filters, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -320,6 +284,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ExperimentFetchPostBody && this.cursor == other.cursor && this.filters == other.filters && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(cursor, filters, limit, maxRootSpanId, maxXactId, version, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ExperimentFetchPostBody{cursor=$cursor, filters=$filters, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -333,32 +317,11 @@ constructor(
             return true
         }
 
-        return other is ExperimentFetchPostParams &&
-            this.experimentId == other.experimentId &&
-            this.cursor == other.cursor &&
-            this.filters == other.filters &&
-            this.limit == other.limit &&
-            this.maxRootSpanId == other.maxRootSpanId &&
-            this.maxXactId == other.maxXactId &&
-            this.version == other.version &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ExperimentFetchPostParams && this.experimentId == other.experimentId && this.cursor == other.cursor && this.filters == other.filters && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            experimentId,
-            cursor,
-            filters,
-            limit,
-            maxRootSpanId,
-            maxXactId,
-            version,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(experimentId, cursor, filters, limit, maxRootSpanId, maxXactId, version, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

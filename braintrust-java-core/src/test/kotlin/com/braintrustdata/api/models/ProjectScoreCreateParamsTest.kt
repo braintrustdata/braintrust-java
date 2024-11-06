@@ -14,8 +14,10 @@ class ProjectScoreCreateParamsTest {
             .name("name")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .scoreType(ProjectScoreType.SLIDER)
-            .projectScoreCategories(
-                listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
+            .categories(
+                ProjectScoreCreateParams.Categories.ofCategorical(
+                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
+                )
             )
             .config(
                 ProjectScoreConfig.builder()
@@ -51,8 +53,10 @@ class ProjectScoreCreateParamsTest {
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .scoreType(ProjectScoreType.SLIDER)
-                .projectScoreCategories(
-                    listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
+                .categories(
+                    ProjectScoreCreateParams.Categories.ofCategorical(
+                        listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
+                    )
                 )
                 .config(
                     ProjectScoreConfig.builder()
@@ -88,7 +92,7 @@ class ProjectScoreCreateParamsTest {
         assertThat(body.scoreType()).isEqualTo(ProjectScoreType.SLIDER)
         assertThat(body.categories())
             .isEqualTo(
-                ProjectScoreCreateParams.Categories.ofProjectScoreCategories(
+                ProjectScoreCreateParams.Categories.ofCategorical(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
                 )
             )
