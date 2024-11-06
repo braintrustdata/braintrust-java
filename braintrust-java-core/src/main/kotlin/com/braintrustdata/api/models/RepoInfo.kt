@@ -34,8 +34,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** SHA of most recent commit */
     fun commit(): Optional<String> = Optional.ofNullable(commit.getNullable("commit"))
 
@@ -118,46 +116,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is RepoInfo &&
-            this.commit == other.commit &&
-            this.branch == other.branch &&
-            this.tag == other.tag &&
-            this.dirty == other.dirty &&
-            this.authorName == other.authorName &&
-            this.authorEmail == other.authorEmail &&
-            this.commitMessage == other.commitMessage &&
-            this.commitTime == other.commitTime &&
-            this.gitDiff == other.gitDiff &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    commit,
-                    branch,
-                    tag,
-                    dirty,
-                    authorName,
-                    authorEmail,
-                    commitMessage,
-                    commitTime,
-                    gitDiff,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "RepoInfo{commit=$commit, branch=$branch, tag=$tag, dirty=$dirty, authorName=$authorName, authorEmail=$authorEmail, commitMessage=$commitMessage, commitTime=$commitTime, gitDiff=$gitDiff, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -299,4 +257,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is RepoInfo && this.commit == other.commit && this.branch == other.branch && this.tag == other.tag && this.dirty == other.dirty && this.authorName == other.authorName && this.authorEmail == other.authorEmail && this.commitMessage == other.commitMessage && this.commitTime == other.commitTime && this.gitDiff == other.gitDiff && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(commit, branch, tag, dirty, authorName, authorEmail, commitMessage, commitTime, gitDiff, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "RepoInfo{commit=$commit, branch=$branch, tag=$tag, dirty=$dirty, authorName=$authorName, authorEmail=$authorEmail, commitMessage=$commitMessage, commitTime=$commitTime, gitDiff=$gitDiff, additionalProperties=$additionalProperties}"
 }

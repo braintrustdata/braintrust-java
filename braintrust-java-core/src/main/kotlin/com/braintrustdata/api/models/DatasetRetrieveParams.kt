@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is DatasetRetrieveParams &&
-            this.datasetId == other.datasetId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is DatasetRetrieveParams && this.datasetId == other.datasetId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            datasetId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(datasetId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

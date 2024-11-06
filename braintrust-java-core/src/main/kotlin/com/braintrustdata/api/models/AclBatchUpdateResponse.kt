@@ -25,8 +25,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /**
      * An ACL grants a certain permission or role to a certain user or group on an object.
      *
@@ -88,32 +86,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is AclBatchUpdateResponse &&
-            this.addedAcls == other.addedAcls &&
-            this.removedAcls == other.removedAcls &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    addedAcls,
-                    removedAcls,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "AclBatchUpdateResponse{addedAcls=$addedAcls, removedAcls=$removedAcls, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -208,4 +180,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AclBatchUpdateResponse && this.addedAcls == other.addedAcls && this.removedAcls == other.removedAcls && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(addedAcls, removedAcls, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "AclBatchUpdateResponse{addedAcls=$addedAcls, removedAcls=$removedAcls, additionalProperties=$additionalProperties}"
 }

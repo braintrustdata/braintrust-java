@@ -3,18 +3,13 @@
 package com.braintrustdata.api.client
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.http.HttpResponse.Handler
-import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.*
 import com.braintrustdata.api.services.async.*
-import com.braintrustdata.api.services.errorHandler
 
 class BraintrustClientAsyncImpl
 constructor(
     private val clientOptions: ClientOptions,
 ) : BraintrustClientAsync {
-
-    private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
     private val sync: BraintrustClient by lazy { BraintrustClientImpl(clientOptions) }
 

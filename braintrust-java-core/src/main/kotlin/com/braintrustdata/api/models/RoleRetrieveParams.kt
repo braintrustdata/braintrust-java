@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is RoleRetrieveParams &&
-            this.roleId == other.roleId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is RoleRetrieveParams && this.roleId == other.roleId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            roleId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(roleId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

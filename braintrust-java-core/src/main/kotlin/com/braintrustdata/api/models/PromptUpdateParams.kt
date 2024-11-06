@@ -74,8 +74,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Textual description of the prompt */
         @JsonProperty("description") fun description(): String? = description
 
@@ -96,38 +94,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PromptUpdateBody &&
-                this.description == other.description &&
-                this.name == other.name &&
-                this.promptData == other.promptData &&
-                this.slug == other.slug &&
-                this.tags == other.tags &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        description,
-                        name,
-                        promptData,
-                        slug,
-                        tags,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "PromptUpdateBody{description=$description, name=$name, promptData=$promptData, slug=$slug, tags=$tags, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -194,6 +160,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is PromptUpdateBody && this.description == other.description && this.name == other.name && this.promptData == other.promptData && this.slug == other.slug && this.tags == other.tags && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(description, name, promptData, slug, tags, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "PromptUpdateBody{description=$description, name=$name, promptData=$promptData, slug=$slug, tags=$tags, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -207,30 +193,11 @@ constructor(
             return true
         }
 
-        return other is PromptUpdateParams &&
-            this.promptId == other.promptId &&
-            this.description == other.description &&
-            this.name == other.name &&
-            this.promptData == other.promptData &&
-            this.slug == other.slug &&
-            this.tags == other.tags &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is PromptUpdateParams && this.promptId == other.promptId && this.description == other.description && this.name == other.name && this.promptData == other.promptData && this.slug == other.slug && this.tags == other.tags && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            promptId,
-            description,
-            name,
-            promptData,
-            slug,
-            tags,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(promptId, description, name, promptData, slug, tags, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

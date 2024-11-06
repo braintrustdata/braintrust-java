@@ -36,8 +36,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /**
      * A unique identifier for the dataset event. If you don't provide one, BrainTrust will generate
      * one for you
@@ -166,50 +164,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is DatasetEvent &&
-            this.id == other.id &&
-            this._xactId == other._xactId &&
-            this.created == other.created &&
-            this.projectId == other.projectId &&
-            this.datasetId == other.datasetId &&
-            this.input == other.input &&
-            this.expected == other.expected &&
-            this.metadata == other.metadata &&
-            this.tags == other.tags &&
-            this.spanId == other.spanId &&
-            this.rootSpanId == other.rootSpanId &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    _xactId,
-                    created,
-                    projectId,
-                    datasetId,
-                    input,
-                    expected,
-                    metadata,
-                    tags,
-                    spanId,
-                    rootSpanId,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "DatasetEvent{id=$id, _xactId=$_xactId, created=$created, projectId=$projectId, datasetId=$datasetId, input=$input, expected=$expected, metadata=$metadata, tags=$tags, spanId=$spanId, rootSpanId=$rootSpanId, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -413,8 +367,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -426,23 +378,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Metadata && this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -474,5 +409,44 @@ private constructor(
 
             fun build(): Metadata = Metadata(additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetEvent && this.id == other.id && this._xactId == other._xactId && this.created == other.created && this.projectId == other.projectId && this.datasetId == other.datasetId && this.input == other.input && this.expected == other.expected && this.metadata == other.metadata && this.tags == other.tags && this.spanId == other.spanId && this.rootSpanId == other.rootSpanId && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, _xactId, created, projectId, datasetId, input, expected, metadata, tags, spanId, rootSpanId, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "DatasetEvent{id=$id, _xactId=$_xactId, created=$created, projectId=$projectId, datasetId=$datasetId, input=$input, expected=$expected, metadata=$metadata, tags=$tags, spanId=$spanId, rootSpanId=$rootSpanId, additionalProperties=$additionalProperties}"
 }

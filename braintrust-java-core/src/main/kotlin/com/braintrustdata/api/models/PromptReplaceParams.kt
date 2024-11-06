@@ -78,8 +78,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Name of the prompt */
         @JsonProperty("name") fun name(): String? = name
 
@@ -105,42 +103,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PromptReplaceBody &&
-                this.name == other.name &&
-                this.projectId == other.projectId &&
-                this.slug == other.slug &&
-                this.description == other.description &&
-                this.functionType == other.functionType &&
-                this.promptData == other.promptData &&
-                this.tags == other.tags &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        projectId,
-                        slug,
-                        description,
-                        functionType,
-                        promptData,
-                        tags,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "PromptReplaceBody{name=$name, projectId=$projectId, slug=$slug, description=$description, functionType=$functionType, promptData=$promptData, tags=$tags, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -222,6 +184,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is PromptReplaceBody && this.name == other.name && this.projectId == other.projectId && this.slug == other.slug && this.description == other.description && this.functionType == other.functionType && this.promptData == other.promptData && this.tags == other.tags && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, projectId, slug, description, functionType, promptData, tags, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "PromptReplaceBody{name=$name, projectId=$projectId, slug=$slug, description=$description, functionType=$functionType, promptData=$promptData, tags=$tags, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -235,32 +217,11 @@ constructor(
             return true
         }
 
-        return other is PromptReplaceParams &&
-            this.name == other.name &&
-            this.projectId == other.projectId &&
-            this.slug == other.slug &&
-            this.description == other.description &&
-            this.functionType == other.functionType &&
-            this.promptData == other.promptData &&
-            this.tags == other.tags &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is PromptReplaceParams && this.name == other.name && this.projectId == other.projectId && this.slug == other.slug && this.description == other.description && this.functionType == other.functionType && this.promptData == other.promptData && this.tags == other.tags && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            projectId,
-            slug,
-            description,
-            functionType,
-            promptData,
-            tags,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(name, projectId, slug, description, functionType, promptData, tags, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -409,7 +370,7 @@ constructor(
                 return true
             }
 
-            return other is FunctionType && this.value == other.value
+            return /* spotless:off */ other is FunctionType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
