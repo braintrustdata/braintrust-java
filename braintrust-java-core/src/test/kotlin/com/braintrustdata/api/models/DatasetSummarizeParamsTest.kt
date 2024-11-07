@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -23,9 +24,9 @@ class DatasetSummarizeParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .summarizeData(true)
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("summarize_data", listOf("true"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("summarize_data", "true")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
@@ -34,8 +35,8 @@ class DatasetSummarizeParamsTest {
             DatasetSummarizeParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
