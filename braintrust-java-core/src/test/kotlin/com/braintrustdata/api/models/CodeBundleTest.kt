@@ -17,8 +17,12 @@ class CodeBundleTest {
                         CodeBundle.Location.Experiment.builder()
                             .evalName("eval_name")
                             .position(
-                                CodeBundle.Location.Experiment.Position.ofTask(
-                                    Task.builder().type(Task.Type.TASK).build()
+                                CodeBundle.Location.Experiment.Position.ofType(
+                                    CodeBundle.Location.Experiment.Position.Type.builder()
+                                        .type(
+                                            CodeBundle.Location.Experiment.Position.Type.Type.TASK
+                                        )
+                                        .build()
                                 )
                             )
                             .type(CodeBundle.Location.Experiment.Type.EXPERIMENT)
@@ -41,8 +45,10 @@ class CodeBundleTest {
                     CodeBundle.Location.Experiment.builder()
                         .evalName("eval_name")
                         .position(
-                            CodeBundle.Location.Experiment.Position.ofTask(
-                                Task.builder().type(Task.Type.TASK).build()
+                            CodeBundle.Location.Experiment.Position.ofType(
+                                CodeBundle.Location.Experiment.Position.Type.builder()
+                                    .type(CodeBundle.Location.Experiment.Position.Type.Type.TASK)
+                                    .build()
                             )
                         )
                         .type(CodeBundle.Location.Experiment.Type.EXPERIMENT)

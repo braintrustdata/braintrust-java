@@ -11,7 +11,7 @@ class RoleReplaceParamsTest {
     @Test
     fun createRoleReplaceParams() {
         RoleReplaceParams.builder()
-            .name("name")
+            .name("x")
             .description("description")
             .memberPermissions(
                 listOf(
@@ -32,7 +32,7 @@ class RoleReplaceParamsTest {
     fun getBody() {
         val params =
             RoleReplaceParams.builder()
-                .name("name")
+                .name("x")
                 .description("description")
                 .memberPermissions(
                     listOf(
@@ -49,7 +49,7 @@ class RoleReplaceParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
         assertThat(body.description()).isEqualTo("description")
         assertThat(body.memberPermissions())
             .isEqualTo(
@@ -68,9 +68,9 @@ class RoleReplaceParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = RoleReplaceParams.builder().name("name").build()
+        val params = RoleReplaceParams.builder().name("x").build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
     }
 }

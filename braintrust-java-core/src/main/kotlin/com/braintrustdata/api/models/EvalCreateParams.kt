@@ -36,9 +36,17 @@ constructor(
     private val projectId: String,
     private val scores: List<Score>,
     private val task: Task,
+    private val baseExperimentId: String?,
+    private val baseExperimentName: String?,
     private val experimentName: String?,
+    private val gitMetadataSettings: GitMetadataSettings?,
+    private val isPublic: Boolean?,
+    private val maxConcurrency: Double?,
     private val metadata: Metadata?,
+    private val repoInfo: RepoInfo?,
     private val stream: Boolean?,
+    private val timeout: Double?,
+    private val trialCount: Double?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -52,11 +60,28 @@ constructor(
 
     fun task(): Task = task
 
+    fun baseExperimentId(): Optional<String> = Optional.ofNullable(baseExperimentId)
+
+    fun baseExperimentName(): Optional<String> = Optional.ofNullable(baseExperimentName)
+
     fun experimentName(): Optional<String> = Optional.ofNullable(experimentName)
+
+    fun gitMetadataSettings(): Optional<GitMetadataSettings> =
+        Optional.ofNullable(gitMetadataSettings)
+
+    fun isPublic(): Optional<Boolean> = Optional.ofNullable(isPublic)
+
+    fun maxConcurrency(): Optional<Double> = Optional.ofNullable(maxConcurrency)
 
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
 
+    fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo)
+
     fun stream(): Optional<Boolean> = Optional.ofNullable(stream)
+
+    fun timeout(): Optional<Double> = Optional.ofNullable(timeout)
+
+    fun trialCount(): Optional<Double> = Optional.ofNullable(trialCount)
 
     @JvmSynthetic
     internal fun getBody(): EvalCreateBody {
@@ -65,9 +90,17 @@ constructor(
             projectId,
             scores,
             task,
+            baseExperimentId,
+            baseExperimentName,
             experimentName,
+            gitMetadataSettings,
+            isPublic,
+            maxConcurrency,
             metadata,
+            repoInfo,
             stream,
+            timeout,
+            trialCount,
             additionalBodyProperties,
         )
     }
@@ -84,9 +117,17 @@ constructor(
         private val projectId: String?,
         private val scores: List<Score>?,
         private val task: Task?,
+        private val baseExperimentId: String?,
+        private val baseExperimentName: String?,
         private val experimentName: String?,
+        private val gitMetadataSettings: GitMetadataSettings?,
+        private val isPublic: Boolean?,
+        private val maxConcurrency: Double?,
         private val metadata: Metadata?,
+        private val repoInfo: RepoInfo?,
         private val stream: Boolean?,
+        private val timeout: Double?,
+        private val trialCount: Double?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -103,10 +144,38 @@ constructor(
         @JsonProperty("task") fun task(): Task? = task
 
         /**
+         * An optional experiment id to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        @JsonProperty("base_experiment_id") fun baseExperimentId(): String? = baseExperimentId
+
+        /**
+         * An optional experiment name to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        @JsonProperty("base_experiment_name") fun baseExperimentName(): String? = baseExperimentName
+
+        /**
          * An optional name for the experiment created by this eval. If it conflicts with an
          * existing experiment, it will be suffixed with a unique identifier.
          */
         @JsonProperty("experiment_name") fun experimentName(): String? = experimentName
+
+        /**
+         * Optional settings for collecting git metadata. By default, will collect all git metadata
+         * fields allowed in org-level settings.
+         */
+        @JsonProperty("git_metadata_settings")
+        fun gitMetadataSettings(): GitMetadataSettings? = gitMetadataSettings
+
+        /** Whether the experiment should be public. Defaults to false. */
+        @JsonProperty("is_public") fun isPublic(): Boolean? = isPublic
+
+        /**
+         * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
+         * in which case there is no max concurrency.
+         */
+        @JsonProperty("max_concurrency") fun maxConcurrency(): Double? = maxConcurrency
 
         /**
          * Optional experiment-level metadata to store about the evaluation. You can later use this
@@ -114,12 +183,28 @@ constructor(
          */
         @JsonProperty("metadata") fun metadata(): Metadata? = metadata
 
+        /** Metadata about the state of the repo when the experiment was created */
+        @JsonProperty("repo_info") fun repoInfo(): RepoInfo? = repoInfo
+
         /**
          * Whether to stream the results of the eval. If true, the request will return two events:
          * one to indicate the experiment has started, and another upon completion. If false, the
          * request will return the evaluation's summary upon completion.
          */
         @JsonProperty("stream") fun stream(): Boolean? = stream
+
+        /**
+         * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
+         * which case there is no timeout.
+         */
+        @JsonProperty("timeout") fun timeout(): Double? = timeout
+
+        /**
+         * The number of times to run the evaluator per input. This is useful for evaluating
+         * applications that have non-deterministic behavior and gives you both a stronger aggregate
+         * measure and a sense of the variance in the results.
+         */
+        @JsonProperty("trial_count") fun trialCount(): Double? = trialCount
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -138,9 +223,17 @@ constructor(
             private var projectId: String? = null
             private var scores: List<Score>? = null
             private var task: Task? = null
+            private var baseExperimentId: String? = null
+            private var baseExperimentName: String? = null
             private var experimentName: String? = null
+            private var gitMetadataSettings: GitMetadataSettings? = null
+            private var isPublic: Boolean? = null
+            private var maxConcurrency: Double? = null
             private var metadata: Metadata? = null
+            private var repoInfo: RepoInfo? = null
             private var stream: Boolean? = null
+            private var timeout: Double? = null
+            private var trialCount: Double? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -149,9 +242,17 @@ constructor(
                 this.projectId = evalCreateBody.projectId
                 this.scores = evalCreateBody.scores
                 this.task = evalCreateBody.task
+                this.baseExperimentId = evalCreateBody.baseExperimentId
+                this.baseExperimentName = evalCreateBody.baseExperimentName
                 this.experimentName = evalCreateBody.experimentName
+                this.gitMetadataSettings = evalCreateBody.gitMetadataSettings
+                this.isPublic = evalCreateBody.isPublic
+                this.maxConcurrency = evalCreateBody.maxConcurrency
                 this.metadata = evalCreateBody.metadata
+                this.repoInfo = evalCreateBody.repoInfo
                 this.stream = evalCreateBody.stream
+                this.timeout = evalCreateBody.timeout
+                this.trialCount = evalCreateBody.trialCount
                 additionalProperties(evalCreateBody.additionalProperties)
             }
 
@@ -169,6 +270,24 @@ constructor(
             @JsonProperty("task") fun task(task: Task) = apply { this.task = task }
 
             /**
+             * An optional experiment id to use as a base. If specified, the new experiment will be
+             * summarized and compared to this experiment.
+             */
+            @JsonProperty("base_experiment_id")
+            fun baseExperimentId(baseExperimentId: String) = apply {
+                this.baseExperimentId = baseExperimentId
+            }
+
+            /**
+             * An optional experiment name to use as a base. If specified, the new experiment will
+             * be summarized and compared to this experiment.
+             */
+            @JsonProperty("base_experiment_name")
+            fun baseExperimentName(baseExperimentName: String) = apply {
+                this.baseExperimentName = baseExperimentName
+            }
+
+            /**
              * An optional name for the experiment created by this eval. If it conflicts with an
              * existing experiment, it will be suffixed with a unique identifier.
              */
@@ -178,11 +297,37 @@ constructor(
             }
 
             /**
+             * Optional settings for collecting git metadata. By default, will collect all git
+             * metadata fields allowed in org-level settings.
+             */
+            @JsonProperty("git_metadata_settings")
+            fun gitMetadataSettings(gitMetadataSettings: GitMetadataSettings) = apply {
+                this.gitMetadataSettings = gitMetadataSettings
+            }
+
+            /** Whether the experiment should be public. Defaults to false. */
+            @JsonProperty("is_public")
+            fun isPublic(isPublic: Boolean) = apply { this.isPublic = isPublic }
+
+            /**
+             * The maximum number of tasks/scorers that will be run concurrently. Defaults to
+             * undefined, in which case there is no max concurrency.
+             */
+            @JsonProperty("max_concurrency")
+            fun maxConcurrency(maxConcurrency: Double) = apply {
+                this.maxConcurrency = maxConcurrency
+            }
+
+            /**
              * Optional experiment-level metadata to store about the evaluation. You can later use
              * this to slice & dice across experiments.
              */
             @JsonProperty("metadata")
             fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+
+            /** Metadata about the state of the repo when the experiment was created */
+            @JsonProperty("repo_info")
+            fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
 
             /**
              * Whether to stream the results of the eval. If true, the request will return two
@@ -190,6 +335,20 @@ constructor(
              * false, the request will return the evaluation's summary upon completion.
              */
             @JsonProperty("stream") fun stream(stream: Boolean) = apply { this.stream = stream }
+
+            /**
+             * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
+             * in which case there is no timeout.
+             */
+            @JsonProperty("timeout") fun timeout(timeout: Double) = apply { this.timeout = timeout }
+
+            /**
+             * The number of times to run the evaluator per input. This is useful for evaluating
+             * applications that have non-deterministic behavior and gives you both a stronger
+             * aggregate measure and a sense of the variance in the results.
+             */
+            @JsonProperty("trial_count")
+            fun trialCount(trialCount: Double) = apply { this.trialCount = trialCount }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -211,9 +370,17 @@ constructor(
                     checkNotNull(projectId) { "`projectId` is required but was not set" },
                     checkNotNull(scores) { "`scores` is required but was not set" }.toImmutable(),
                     checkNotNull(task) { "`task` is required but was not set" },
+                    baseExperimentId,
+                    baseExperimentName,
                     experimentName,
+                    gitMetadataSettings,
+                    isPublic,
+                    maxConcurrency,
                     metadata,
+                    repoInfo,
                     stream,
+                    timeout,
+                    trialCount,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -223,20 +390,20 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is EvalCreateBody && this.data == other.data && this.projectId == other.projectId && this.scores == other.scores && this.task == other.task && this.experimentName == other.experimentName && this.metadata == other.metadata && this.stream == other.stream && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is EvalCreateBody && this.data == other.data && this.projectId == other.projectId && this.scores == other.scores && this.task == other.task && this.baseExperimentId == other.baseExperimentId && this.baseExperimentName == other.baseExperimentName && this.experimentName == other.experimentName && this.gitMetadataSettings == other.gitMetadataSettings && this.isPublic == other.isPublic && this.maxConcurrency == other.maxConcurrency && this.metadata == other.metadata && this.repoInfo == other.repoInfo && this.stream == other.stream && this.timeout == other.timeout && this.trialCount == other.trialCount && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         private var hashCode: Int = 0
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(data, projectId, scores, task, experimentName, metadata, stream, additionalProperties) /* spotless:on */
+                hashCode = /* spotless:off */ Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, repoInfo, stream, timeout, trialCount, additionalProperties) /* spotless:on */
             }
             return hashCode
         }
 
         override fun toString() =
-            "EvalCreateBody{data=$data, projectId=$projectId, scores=$scores, task=$task, experimentName=$experimentName, metadata=$metadata, stream=$stream, additionalProperties=$additionalProperties}"
+            "EvalCreateBody{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -250,15 +417,15 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is EvalCreateParams && this.data == other.data && this.projectId == other.projectId && this.scores == other.scores && this.task == other.task && this.experimentName == other.experimentName && this.metadata == other.metadata && this.stream == other.stream && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is EvalCreateParams && this.data == other.data && this.projectId == other.projectId && this.scores == other.scores && this.task == other.task && this.baseExperimentId == other.baseExperimentId && this.baseExperimentName == other.baseExperimentName && this.experimentName == other.experimentName && this.gitMetadataSettings == other.gitMetadataSettings && this.isPublic == other.isPublic && this.maxConcurrency == other.maxConcurrency && this.metadata == other.metadata && this.repoInfo == other.repoInfo && this.stream == other.stream && this.timeout == other.timeout && this.trialCount == other.trialCount && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(data, projectId, scores, task, experimentName, metadata, stream, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+        return /* spotless:off */ Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, repoInfo, stream, timeout, trialCount, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
-        "EvalCreateParams{data=$data, projectId=$projectId, scores=$scores, task=$task, experimentName=$experimentName, metadata=$metadata, stream=$stream, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "EvalCreateParams{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -274,9 +441,17 @@ constructor(
         private var projectId: String? = null
         private var scores: MutableList<Score> = mutableListOf()
         private var task: Task? = null
+        private var baseExperimentId: String? = null
+        private var baseExperimentName: String? = null
         private var experimentName: String? = null
+        private var gitMetadataSettings: GitMetadataSettings? = null
+        private var isPublic: Boolean? = null
+        private var maxConcurrency: Double? = null
         private var metadata: Metadata? = null
+        private var repoInfo: RepoInfo? = null
         private var stream: Boolean? = null
+        private var timeout: Double? = null
+        private var trialCount: Double? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -287,9 +462,17 @@ constructor(
             this.projectId = evalCreateParams.projectId
             this.scores(evalCreateParams.scores)
             this.task = evalCreateParams.task
+            this.baseExperimentId = evalCreateParams.baseExperimentId
+            this.baseExperimentName = evalCreateParams.baseExperimentName
             this.experimentName = evalCreateParams.experimentName
+            this.gitMetadataSettings = evalCreateParams.gitMetadataSettings
+            this.isPublic = evalCreateParams.isPublic
+            this.maxConcurrency = evalCreateParams.maxConcurrency
             this.metadata = evalCreateParams.metadata
+            this.repoInfo = evalCreateParams.repoInfo
             this.stream = evalCreateParams.stream
+            this.timeout = evalCreateParams.timeout
+            this.trialCount = evalCreateParams.trialCount
             additionalHeaders(evalCreateParams.additionalHeaders)
             additionalQueryParams(evalCreateParams.additionalQueryParams)
             additionalBodyProperties(evalCreateParams.additionalBodyProperties)
@@ -348,10 +531,43 @@ constructor(
         }
 
         /**
+         * An optional experiment id to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        fun baseExperimentId(baseExperimentId: String) = apply {
+            this.baseExperimentId = baseExperimentId
+        }
+
+        /**
+         * An optional experiment name to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        fun baseExperimentName(baseExperimentName: String) = apply {
+            this.baseExperimentName = baseExperimentName
+        }
+
+        /**
          * An optional name for the experiment created by this eval. If it conflicts with an
          * existing experiment, it will be suffixed with a unique identifier.
          */
         fun experimentName(experimentName: String) = apply { this.experimentName = experimentName }
+
+        /**
+         * Optional settings for collecting git metadata. By default, will collect all git metadata
+         * fields allowed in org-level settings.
+         */
+        fun gitMetadataSettings(gitMetadataSettings: GitMetadataSettings) = apply {
+            this.gitMetadataSettings = gitMetadataSettings
+        }
+
+        /** Whether the experiment should be public. Defaults to false. */
+        fun isPublic(isPublic: Boolean) = apply { this.isPublic = isPublic }
+
+        /**
+         * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
+         * in which case there is no max concurrency.
+         */
+        fun maxConcurrency(maxConcurrency: Double) = apply { this.maxConcurrency = maxConcurrency }
 
         /**
          * Optional experiment-level metadata to store about the evaluation. You can later use this
@@ -359,12 +575,28 @@ constructor(
          */
         fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
+        /** Metadata about the state of the repo when the experiment was created */
+        fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
+
         /**
          * Whether to stream the results of the eval. If true, the request will return two events:
          * one to indicate the experiment has started, and another upon completion. If false, the
          * request will return the evaluation's summary upon completion.
          */
         fun stream(stream: Boolean) = apply { this.stream = stream }
+
+        /**
+         * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
+         * which case there is no timeout.
+         */
+        fun timeout(timeout: Double) = apply { this.timeout = timeout }
+
+        /**
+         * The number of times to run the evaluator per input. This is useful for evaluating
+         * applications that have non-deterministic behavior and gives you both a stronger aggregate
+         * measure and a sense of the variance in the results.
+         */
+        fun trialCount(trialCount: Double) = apply { this.trialCount = trialCount }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -492,9 +724,17 @@ constructor(
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
                 checkNotNull(scores) { "`scores` is required but was not set" }.toImmutable(),
                 checkNotNull(task) { "`task` is required but was not set" },
+                baseExperimentId,
+                baseExperimentName,
                 experimentName,
+                gitMetadataSettings,
+                isPublic,
+                maxConcurrency,
                 metadata,
+                repoInfo,
                 stream,
+                timeout,
+                trialCount,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -3097,6 +3337,257 @@ constructor(
             override fun toString() =
                 "InlinePrompt{inlinePrompt=$inlinePrompt, name=$name, additionalProperties=$additionalProperties}"
         }
+    }
+
+    /**
+     * Optional settings for collecting git metadata. By default, will collect all git metadata
+     * fields allowed in org-level settings.
+     */
+    @JsonDeserialize(builder = GitMetadataSettings.Builder::class)
+    @NoAutoDetect
+    class GitMetadataSettings
+    private constructor(
+        private val collect: Collect?,
+        private val fields: List<Field>?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        @JsonProperty("collect") fun collect(): Collect? = collect
+
+        @JsonProperty("fields") fun fields(): List<Field>? = fields
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var collect: Collect? = null
+            private var fields: List<Field>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(gitMetadataSettings: GitMetadataSettings) = apply {
+                this.collect = gitMetadataSettings.collect
+                this.fields = gitMetadataSettings.fields
+                additionalProperties(gitMetadataSettings.additionalProperties)
+            }
+
+            @JsonProperty("collect")
+            fun collect(collect: Collect) = apply { this.collect = collect }
+
+            @JsonProperty("fields") fun fields(fields: List<Field>) = apply { this.fields = fields }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): GitMetadataSettings =
+                GitMetadataSettings(
+                    checkNotNull(collect) { "`collect` is required but was not set" },
+                    fields?.toImmutable(),
+                    additionalProperties.toImmutable(),
+                )
+        }
+
+        class Collect
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Collect && this.value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val ALL = Collect(JsonField.of("all"))
+
+                @JvmField val NONE = Collect(JsonField.of("none"))
+
+                @JvmField val SOME = Collect(JsonField.of("some"))
+
+                @JvmStatic fun of(value: String) = Collect(JsonField.of(value))
+            }
+
+            enum class Known {
+                ALL,
+                NONE,
+                SOME,
+            }
+
+            enum class Value {
+                ALL,
+                NONE,
+                SOME,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    ALL -> Value.ALL
+                    NONE -> Value.NONE
+                    SOME -> Value.SOME
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    ALL -> Known.ALL
+                    NONE -> Known.NONE
+                    SOME -> Known.SOME
+                    else -> throw BraintrustInvalidDataException("Unknown Collect: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+
+        class Field
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Field && this.value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val COMMIT = Field(JsonField.of("commit"))
+
+                @JvmField val BRANCH = Field(JsonField.of("branch"))
+
+                @JvmField val TAG = Field(JsonField.of("tag"))
+
+                @JvmField val DIRTY = Field(JsonField.of("dirty"))
+
+                @JvmField val AUTHOR_NAME = Field(JsonField.of("author_name"))
+
+                @JvmField val AUTHOR_EMAIL = Field(JsonField.of("author_email"))
+
+                @JvmField val COMMIT_MESSAGE = Field(JsonField.of("commit_message"))
+
+                @JvmField val COMMIT_TIME = Field(JsonField.of("commit_time"))
+
+                @JvmField val GIT_DIFF = Field(JsonField.of("git_diff"))
+
+                @JvmStatic fun of(value: String) = Field(JsonField.of(value))
+            }
+
+            enum class Known {
+                COMMIT,
+                BRANCH,
+                TAG,
+                DIRTY,
+                AUTHOR_NAME,
+                AUTHOR_EMAIL,
+                COMMIT_MESSAGE,
+                COMMIT_TIME,
+                GIT_DIFF,
+            }
+
+            enum class Value {
+                COMMIT,
+                BRANCH,
+                TAG,
+                DIRTY,
+                AUTHOR_NAME,
+                AUTHOR_EMAIL,
+                COMMIT_MESSAGE,
+                COMMIT_TIME,
+                GIT_DIFF,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    COMMIT -> Value.COMMIT
+                    BRANCH -> Value.BRANCH
+                    TAG -> Value.TAG
+                    DIRTY -> Value.DIRTY
+                    AUTHOR_NAME -> Value.AUTHOR_NAME
+                    AUTHOR_EMAIL -> Value.AUTHOR_EMAIL
+                    COMMIT_MESSAGE -> Value.COMMIT_MESSAGE
+                    COMMIT_TIME -> Value.COMMIT_TIME
+                    GIT_DIFF -> Value.GIT_DIFF
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    COMMIT -> Known.COMMIT
+                    BRANCH -> Known.BRANCH
+                    TAG -> Known.TAG
+                    DIRTY -> Known.DIRTY
+                    AUTHOR_NAME -> Known.AUTHOR_NAME
+                    AUTHOR_EMAIL -> Known.AUTHOR_EMAIL
+                    COMMIT_MESSAGE -> Known.COMMIT_MESSAGE
+                    COMMIT_TIME -> Known.COMMIT_TIME
+                    GIT_DIFF -> Known.GIT_DIFF
+                    else -> throw BraintrustInvalidDataException("Unknown Field: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is GitMetadataSettings && this.collect == other.collect && this.fields == other.fields && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(collect, fields, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "GitMetadataSettings{collect=$collect, fields=$fields, additionalProperties=$additionalProperties}"
     }
 
     /**

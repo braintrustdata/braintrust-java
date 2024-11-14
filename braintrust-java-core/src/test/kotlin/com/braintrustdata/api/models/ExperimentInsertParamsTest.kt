@@ -37,6 +37,9 @@ class ExperimentInsertParamsTest {
                             .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                             .metrics(
                                 InsertExperimentEventReplace.Metrics.builder()
+                                    .callerFilename(JsonNull.of())
+                                    .callerFunctionname(JsonNull.of())
+                                    .callerLineno(JsonNull.of())
                                     .completionTokens(123L)
                                     .end(42.23)
                                     .promptTokens(123L)
@@ -88,6 +91,9 @@ class ExperimentInsertParamsTest {
                                 .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                                 .metrics(
                                     InsertExperimentEventReplace.Metrics.builder()
+                                        .callerFilename(JsonNull.of())
+                                        .callerFunctionname(JsonNull.of())
+                                        .callerLineno(JsonNull.of())
                                         .completionTokens(123L)
                                         .end(42.23)
                                         .promptTokens(123L)
@@ -135,6 +141,9 @@ class ExperimentInsertParamsTest {
                             .metadata(InsertExperimentEventReplace.Metadata.builder().build())
                             .metrics(
                                 InsertExperimentEventReplace.Metrics.builder()
+                                    .callerFilename(JsonNull.of())
+                                    .callerFunctionname(JsonNull.of())
+                                    .callerLineno(JsonNull.of())
                                     .completionTokens(123L)
                                     .end(42.23)
                                     .promptTokens(123L)

@@ -24,7 +24,7 @@ class RoleUpdateParamsTest {
             )
             .addMemberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .description("description")
-            .name("name")
+            .name("x")
             .removeMemberPermissions(
                 listOf(
                     RoleUpdateParams.RemoveMemberPermission.builder()
@@ -56,7 +56,7 @@ class RoleUpdateParamsTest {
                 )
                 .addMemberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .description("description")
-                .name("name")
+                .name("x")
                 .removeMemberPermissions(
                     listOf(
                         RoleUpdateParams.RemoveMemberPermission.builder()
@@ -85,7 +85,7 @@ class RoleUpdateParamsTest {
             )
         assertThat(body.addMemberRoles()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         assertThat(body.description()).isEqualTo("description")
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
         assertThat(body.removeMemberPermissions())
             .isEqualTo(
                 listOf(

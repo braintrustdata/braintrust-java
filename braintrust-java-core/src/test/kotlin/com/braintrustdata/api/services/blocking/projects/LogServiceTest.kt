@@ -105,7 +105,7 @@ class LogServiceTest {
                 .apiKey("My API Key")
                 .build()
         val logService = client.projects().logs()
-        val insertEventsResponse =
+        val projectLogInsertResponse =
             logService.insert(
                 ProjectLogInsertParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -133,6 +133,9 @@ class LogServiceTest {
                                     )
                                     .metrics(
                                         InsertProjectLogsEventReplace.Metrics.builder()
+                                            .callerFilename(JsonNull.of())
+                                            .callerFunctionname(JsonNull.of())
+                                            .callerLineno(JsonNull.of())
                                             .completionTokens(123L)
                                             .end(42.23)
                                             .promptTokens(123L)
@@ -158,7 +161,6 @@ class LogServiceTest {
                     )
                     .build()
             )
-        println(insertEventsResponse)
-        insertEventsResponse.validate()
+        println(projectLogInsertResponse)
     }
 }

@@ -4,6 +4,7 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
+import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
@@ -14,6 +15,7 @@ import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.ObjectCodec
@@ -37,7 +39,7 @@ private constructor(
     private val created: JsonField<OffsetDateTime>,
     private val name: JsonField<String>,
     private val description: JsonField<String>,
-    private val scoreType: JsonField<ProjectScoreType>,
+    private val scoreType: JsonField<ScoreType>,
     private val categories: JsonField<Categories>,
     private val config: JsonField<ProjectScoreConfig>,
     private val position: JsonField<String>,
@@ -65,7 +67,7 @@ private constructor(
         Optional.ofNullable(description.getNullable("description"))
 
     /** The type of the configured score */
-    fun scoreType(): ProjectScoreType = scoreType.getRequired("score_type")
+    fun scoreType(): ScoreType = scoreType.getRequired("score_type")
 
     /** For categorical-type project scores, the list of all categories */
     fun categories(): Optional<Categories> =
@@ -139,7 +141,7 @@ private constructor(
         private var created: JsonField<OffsetDateTime> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
         private var description: JsonField<String> = JsonMissing.of()
-        private var scoreType: JsonField<ProjectScoreType> = JsonMissing.of()
+        private var scoreType: JsonField<ScoreType> = JsonMissing.of()
         private var categories: JsonField<Categories> = JsonMissing.of()
         private var config: JsonField<ProjectScoreConfig> = JsonMissing.of()
         private var position: JsonField<String> = JsonMissing.of()
@@ -205,12 +207,12 @@ private constructor(
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** The type of the configured score */
-        fun scoreType(scoreType: ProjectScoreType) = scoreType(JsonField.of(scoreType))
+        fun scoreType(scoreType: ScoreType) = scoreType(JsonField.of(scoreType))
 
         /** The type of the configured score */
         @JsonProperty("score_type")
         @ExcludeMissing
-        fun scoreType(scoreType: JsonField<ProjectScoreType>) = apply { this.scoreType = scoreType }
+        fun scoreType(scoreType: JsonField<ScoreType>) = apply { this.scoreType = scoreType }
 
         /** For categorical-type project scores, the list of all categories */
         fun categories(categories: Categories) = categories(JsonField.of(categories))
@@ -262,6 +264,87 @@ private constructor(
                 position,
                 additionalProperties.toImmutable(),
             )
+    }
+
+    class ScoreType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ScoreType && this.value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val SLIDER = ScoreType(JsonField.of("slider"))
+
+            @JvmField val CATEGORICAL = ScoreType(JsonField.of("categorical"))
+
+            @JvmField val WEIGHTED = ScoreType(JsonField.of("weighted"))
+
+            @JvmField val MINIMUM = ScoreType(JsonField.of("minimum"))
+
+            @JvmField val MAXIMUM = ScoreType(JsonField.of("maximum"))
+
+            @JvmField val ONLINE = ScoreType(JsonField.of("online"))
+
+            @JvmStatic fun of(value: String) = ScoreType(JsonField.of(value))
+        }
+
+        enum class Known {
+            SLIDER,
+            CATEGORICAL,
+            WEIGHTED,
+            MINIMUM,
+            MAXIMUM,
+            ONLINE,
+        }
+
+        enum class Value {
+            SLIDER,
+            CATEGORICAL,
+            WEIGHTED,
+            MINIMUM,
+            MAXIMUM,
+            ONLINE,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                SLIDER -> Value.SLIDER
+                CATEGORICAL -> Value.CATEGORICAL
+                WEIGHTED -> Value.WEIGHTED
+                MINIMUM -> Value.MINIMUM
+                MAXIMUM -> Value.MAXIMUM
+                ONLINE -> Value.ONLINE
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                SLIDER -> Known.SLIDER
+                CATEGORICAL -> Known.CATEGORICAL
+                WEIGHTED -> Known.WEIGHTED
+                MINIMUM -> Known.MINIMUM
+                MAXIMUM -> Known.MAXIMUM
+                ONLINE -> Known.ONLINE
+                else -> throw BraintrustInvalidDataException("Unknown ScoreType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(using = Categories.Deserializer::class)

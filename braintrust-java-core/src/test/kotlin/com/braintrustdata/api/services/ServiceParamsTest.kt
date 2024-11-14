@@ -57,7 +57,7 @@ class ServiceParamsTest {
 
         val params =
             ProjectCreateParams.builder()
-                .name("name")
+                .name("x")
                 .orgName("org_name")
                 .additionalHeaders(additionalHeaders)
                 .additionalBodyProperties(additionalBodyProperties)
