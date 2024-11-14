@@ -32,6 +32,9 @@ class InsertExperimentEventMergeTest {
                 .metadata(InsertExperimentEventMerge.Metadata.builder().build())
                 .metrics(
                     InsertExperimentEventMerge.Metrics.builder()
+                        .callerFilename(JsonNull.of())
+                        .callerFunctionname(JsonNull.of())
+                        .callerLineno(JsonNull.of())
                         .completionTokens(123L)
                         .end(42.23)
                         .promptTokens(123L)
@@ -73,6 +76,9 @@ class InsertExperimentEventMergeTest {
         assertThat(insertExperimentEventMerge.metrics())
             .contains(
                 InsertExperimentEventMerge.Metrics.builder()
+                    .callerFilename(JsonNull.of())
+                    .callerFunctionname(JsonNull.of())
+                    .callerLineno(JsonNull.of())
                     .completionTokens(123L)
                     .end(42.23)
                     .promptTokens(123L)

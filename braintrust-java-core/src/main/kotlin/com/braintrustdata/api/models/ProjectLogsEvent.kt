@@ -41,7 +41,9 @@ private constructor(
     private val spanId: JsonField<String>,
     private val spanParents: JsonField<List<String>>,
     private val rootSpanId: JsonField<String>,
+    private val isRoot: JsonField<Boolean>,
     private val spanAttributes: JsonField<SpanAttributes>,
+    private val origin: JsonField<Origin>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -151,9 +153,15 @@ private constructor(
     /** The `span_id` of the root of the trace this project logs event belongs to */
     fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
 
+    /** Whether this span is a root span */
+    fun isRoot(): Optional<Boolean> = Optional.ofNullable(isRoot.getNullable("is_root"))
+
     /** Human-identifying attributes of the span, such as name, type, etc. */
     fun spanAttributes(): Optional<SpanAttributes> =
         Optional.ofNullable(spanAttributes.getNullable("span_attributes"))
+
+    /** Indicates the event was copied from another object. */
+    fun origin(): Optional<Origin> = Optional.ofNullable(origin.getNullable("origin"))
 
     /**
      * A unique identifier for the project logs event. If you don't provide one, BrainTrust will
@@ -258,8 +266,14 @@ private constructor(
     /** The `span_id` of the root of the trace this project logs event belongs to */
     @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId() = rootSpanId
 
+    /** Whether this span is a root span */
+    @JsonProperty("is_root") @ExcludeMissing fun _isRoot() = isRoot
+
     /** Human-identifying attributes of the span, such as name, type, etc. */
     @JsonProperty("span_attributes") @ExcludeMissing fun _spanAttributes() = spanAttributes
+
+    /** Indicates the event was copied from another object. */
+    @JsonProperty("origin") @ExcludeMissing fun _origin() = origin
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -285,7 +299,9 @@ private constructor(
             spanId()
             spanParents()
             rootSpanId()
+            isRoot()
             spanAttributes().map { it.validate() }
+            origin().map { it.validate() }
             validated = true
         }
     }
@@ -317,7 +333,9 @@ private constructor(
         private var spanId: JsonField<String> = JsonMissing.of()
         private var spanParents: JsonField<List<String>> = JsonMissing.of()
         private var rootSpanId: JsonField<String> = JsonMissing.of()
+        private var isRoot: JsonField<Boolean> = JsonMissing.of()
         private var spanAttributes: JsonField<SpanAttributes> = JsonMissing.of()
+        private var origin: JsonField<Origin> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -340,7 +358,9 @@ private constructor(
             this.spanId = projectLogsEvent.spanId
             this.spanParents = projectLogsEvent.spanParents
             this.rootSpanId = projectLogsEvent.rootSpanId
+            this.isRoot = projectLogsEvent.isRoot
             this.spanAttributes = projectLogsEvent.spanAttributes
+            this.origin = projectLogsEvent.origin
             additionalProperties(projectLogsEvent.additionalProperties)
         }
 
@@ -565,6 +585,14 @@ private constructor(
         @ExcludeMissing
         fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
 
+        /** Whether this span is a root span */
+        fun isRoot(isRoot: Boolean) = isRoot(JsonField.of(isRoot))
+
+        /** Whether this span is a root span */
+        @JsonProperty("is_root")
+        @ExcludeMissing
+        fun isRoot(isRoot: JsonField<Boolean>) = apply { this.isRoot = isRoot }
+
         /** Human-identifying attributes of the span, such as name, type, etc. */
         fun spanAttributes(spanAttributes: SpanAttributes) =
             spanAttributes(JsonField.of(spanAttributes))
@@ -575,6 +603,14 @@ private constructor(
         fun spanAttributes(spanAttributes: JsonField<SpanAttributes>) = apply {
             this.spanAttributes = spanAttributes
         }
+
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: Origin) = origin(JsonField.of(origin))
+
+        /** Indicates the event was copied from another object. */
+        @JsonProperty("origin")
+        @ExcludeMissing
+        fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -610,7 +646,9 @@ private constructor(
                 spanId,
                 spanParents.map { it.toImmutable() },
                 rootSpanId,
+                isRoot,
                 spanAttributes,
+                origin,
                 additionalProperties.toImmutable(),
             )
     }
@@ -910,6 +948,9 @@ private constructor(
         private val promptTokens: JsonField<Long>,
         private val completionTokens: JsonField<Long>,
         private val tokens: JsonField<Long>,
+        private val callerFunctionname: JsonValue,
+        private val callerFilename: JsonValue,
+        private val callerLineno: JsonValue,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -944,6 +985,15 @@ private constructor(
         /** The total number of tokens in the input and output of the project logs event. */
         fun tokens(): Optional<Long> = Optional.ofNullable(tokens.getNullable("tokens"))
 
+        /** This metric is deprecated */
+        fun callerFunctionname(): JsonValue = callerFunctionname
+
+        /** This metric is deprecated */
+        fun callerFilename(): JsonValue = callerFilename
+
+        /** This metric is deprecated */
+        fun callerLineno(): JsonValue = callerLineno
+
         /**
          * A unix timestamp recording when the section of code which produced the project logs event
          * started
@@ -973,6 +1023,17 @@ private constructor(
         /** The total number of tokens in the input and output of the project logs event. */
         @JsonProperty("tokens") @ExcludeMissing fun _tokens() = tokens
 
+        /** This metric is deprecated */
+        @JsonProperty("caller_functionname")
+        @ExcludeMissing
+        fun _callerFunctionname() = callerFunctionname
+
+        /** This metric is deprecated */
+        @JsonProperty("caller_filename") @ExcludeMissing fun _callerFilename() = callerFilename
+
+        /** This metric is deprecated */
+        @JsonProperty("caller_lineno") @ExcludeMissing fun _callerLineno() = callerLineno
+
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -984,6 +1045,9 @@ private constructor(
                 promptTokens()
                 completionTokens()
                 tokens()
+                callerFunctionname()
+                callerFilename()
+                callerLineno()
                 validated = true
             }
         }
@@ -1002,6 +1066,9 @@ private constructor(
             private var promptTokens: JsonField<Long> = JsonMissing.of()
             private var completionTokens: JsonField<Long> = JsonMissing.of()
             private var tokens: JsonField<Long> = JsonMissing.of()
+            private var callerFunctionname: JsonValue = JsonMissing.of()
+            private var callerFilename: JsonValue = JsonMissing.of()
+            private var callerLineno: JsonValue = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1011,6 +1078,9 @@ private constructor(
                 this.promptTokens = metrics.promptTokens
                 this.completionTokens = metrics.completionTokens
                 this.tokens = metrics.tokens
+                this.callerFunctionname = metrics.callerFunctionname
+                this.callerFilename = metrics.callerFilename
+                this.callerLineno = metrics.callerLineno
                 additionalProperties(metrics.additionalProperties)
             }
 
@@ -1083,6 +1153,25 @@ private constructor(
             @ExcludeMissing
             fun tokens(tokens: JsonField<Long>) = apply { this.tokens = tokens }
 
+            /** This metric is deprecated */
+            @JsonProperty("caller_functionname")
+            @ExcludeMissing
+            fun callerFunctionname(callerFunctionname: JsonValue) = apply {
+                this.callerFunctionname = callerFunctionname
+            }
+
+            /** This metric is deprecated */
+            @JsonProperty("caller_filename")
+            @ExcludeMissing
+            fun callerFilename(callerFilename: JsonValue) = apply {
+                this.callerFilename = callerFilename
+            }
+
+            /** This metric is deprecated */
+            @JsonProperty("caller_lineno")
+            @ExcludeMissing
+            fun callerLineno(callerLineno: JsonValue) = apply { this.callerLineno = callerLineno }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 this.additionalProperties.putAll(additionalProperties)
@@ -1104,6 +1193,9 @@ private constructor(
                     promptTokens,
                     completionTokens,
                     tokens,
+                    callerFunctionname,
+                    callerFilename,
+                    callerLineno,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -1113,20 +1205,256 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metrics && this.start == other.start && this.end == other.end && this.promptTokens == other.promptTokens && this.completionTokens == other.completionTokens && this.tokens == other.tokens && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metrics && this.start == other.start && this.end == other.end && this.promptTokens == other.promptTokens && this.completionTokens == other.completionTokens && this.tokens == other.tokens && this.callerFunctionname == other.callerFunctionname && this.callerFilename == other.callerFilename && this.callerLineno == other.callerLineno && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         private var hashCode: Int = 0
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(start, end, promptTokens, completionTokens, tokens, additionalProperties) /* spotless:on */
+                hashCode = /* spotless:off */ Objects.hash(start, end, promptTokens, completionTokens, tokens, callerFunctionname, callerFilename, callerLineno, additionalProperties) /* spotless:on */
             }
             return hashCode
         }
 
         override fun toString() =
-            "Metrics{start=$start, end=$end, promptTokens=$promptTokens, completionTokens=$completionTokens, tokens=$tokens, additionalProperties=$additionalProperties}"
+            "Metrics{start=$start, end=$end, promptTokens=$promptTokens, completionTokens=$completionTokens, tokens=$tokens, callerFunctionname=$callerFunctionname, callerFilename=$callerFilename, callerLineno=$callerLineno, additionalProperties=$additionalProperties}"
+    }
+
+    /** Indicates the event was copied from another object. */
+    @JsonDeserialize(builder = Origin.Builder::class)
+    @NoAutoDetect
+    class Origin
+    private constructor(
+        private val objectType: JsonField<ObjectType>,
+        private val objectId: JsonField<String>,
+        private val id: JsonField<String>,
+        private val _xactId: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        /** Type of the object the event is originating from. */
+        fun objectType(): ObjectType = objectType.getRequired("object_type")
+
+        /** ID of the object the event is originating from. */
+        fun objectId(): String = objectId.getRequired("object_id")
+
+        /** ID of the original event. */
+        fun id(): String = id.getRequired("id")
+
+        /** Transaction ID of the original event. */
+        fun _xactId(): String = _xactId.getRequired("_xact_id")
+
+        /** Type of the object the event is originating from. */
+        @JsonProperty("object_type") @ExcludeMissing fun _objectType() = objectType
+
+        /** ID of the object the event is originating from. */
+        @JsonProperty("object_id") @ExcludeMissing fun _objectId() = objectId
+
+        /** ID of the original event. */
+        @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+        /** Transaction ID of the original event. */
+        @JsonProperty("_xact_id") @ExcludeMissing fun __xactId() = _xactId
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): Origin = apply {
+            if (!validated) {
+                objectType()
+                objectId()
+                id()
+                _xactId()
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var objectType: JsonField<ObjectType> = JsonMissing.of()
+            private var objectId: JsonField<String> = JsonMissing.of()
+            private var id: JsonField<String> = JsonMissing.of()
+            private var _xactId: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(origin: Origin) = apply {
+                this.objectType = origin.objectType
+                this.objectId = origin.objectId
+                this.id = origin.id
+                this._xactId = origin._xactId
+                additionalProperties(origin.additionalProperties)
+            }
+
+            /** Type of the object the event is originating from. */
+            fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
+
+            /** Type of the object the event is originating from. */
+            @JsonProperty("object_type")
+            @ExcludeMissing
+            fun objectType(objectType: JsonField<ObjectType>) = apply {
+                this.objectType = objectType
+            }
+
+            /** ID of the object the event is originating from. */
+            fun objectId(objectId: String) = objectId(JsonField.of(objectId))
+
+            /** ID of the object the event is originating from. */
+            @JsonProperty("object_id")
+            @ExcludeMissing
+            fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
+
+            /** ID of the original event. */
+            fun id(id: String) = id(JsonField.of(id))
+
+            /** ID of the original event. */
+            @JsonProperty("id")
+            @ExcludeMissing
+            fun id(id: JsonField<String>) = apply { this.id = id }
+
+            /** Transaction ID of the original event. */
+            fun _xactId(_xactId: String) = _xactId(JsonField.of(_xactId))
+
+            /** Transaction ID of the original event. */
+            @JsonProperty("_xact_id")
+            @ExcludeMissing
+            fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Origin =
+                Origin(
+                    objectType,
+                    objectId,
+                    id,
+                    _xactId,
+                    additionalProperties.toImmutable(),
+                )
+        }
+
+        class ObjectType
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+
+                @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+
+                @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+
+                @JvmField val FUNCTION = ObjectType(JsonField.of("function"))
+
+                @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+
+                @JvmField val PROJECT_LOGS = ObjectType(JsonField.of("project_logs"))
+
+                @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
+            }
+
+            enum class Known {
+                EXPERIMENT,
+                DATASET,
+                PROMPT,
+                FUNCTION,
+                PROMPT_SESSION,
+                PROJECT_LOGS,
+            }
+
+            enum class Value {
+                EXPERIMENT,
+                DATASET,
+                PROMPT,
+                FUNCTION,
+                PROMPT_SESSION,
+                PROJECT_LOGS,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    EXPERIMENT -> Value.EXPERIMENT
+                    DATASET -> Value.DATASET
+                    PROMPT -> Value.PROMPT
+                    FUNCTION -> Value.FUNCTION
+                    PROMPT_SESSION -> Value.PROMPT_SESSION
+                    PROJECT_LOGS -> Value.PROJECT_LOGS
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    EXPERIMENT -> Known.EXPERIMENT
+                    DATASET -> Known.DATASET
+                    PROMPT -> Known.PROMPT
+                    FUNCTION -> Known.FUNCTION
+                    PROMPT_SESSION -> Known.PROMPT_SESSION
+                    PROJECT_LOGS -> Known.PROJECT_LOGS
+                    else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Origin && this.objectType == other.objectType && this.objectId == other.objectId && this.id == other.id && this._xactId == other._xactId && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(objectType, objectId, id, _xactId, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Origin{objectType=$objectType, objectId=$objectId, id=$id, _xactId=$_xactId, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -1411,18 +1739,18 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectLogsEvent && this.id == other.id && this._xactId == other._xactId && this.created == other.created && this.orgId == other.orgId && this.projectId == other.projectId && this.logId == other.logId && this.input == other.input && this.output == other.output && this.expected == other.expected && this.error == other.error && this.scores == other.scores && this.metadata == other.metadata && this.tags == other.tags && this.metrics == other.metrics && this.context == other.context && this.spanId == other.spanId && this.spanParents == other.spanParents && this.rootSpanId == other.rootSpanId && this.spanAttributes == other.spanAttributes && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectLogsEvent && this.id == other.id && this._xactId == other._xactId && this.created == other.created && this.orgId == other.orgId && this.projectId == other.projectId && this.logId == other.logId && this.input == other.input && this.output == other.output && this.expected == other.expected && this.error == other.error && this.scores == other.scores && this.metadata == other.metadata && this.tags == other.tags && this.metrics == other.metrics && this.context == other.context && this.spanId == other.spanId && this.spanParents == other.spanParents && this.rootSpanId == other.rootSpanId && this.isRoot == other.isRoot && this.spanAttributes == other.spanAttributes && this.origin == other.origin && this.additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     private var hashCode: Int = 0
 
     override fun hashCode(): Int {
         if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, _xactId, created, orgId, projectId, logId, input, output, expected, error, scores, metadata, tags, metrics, context, spanId, spanParents, rootSpanId, spanAttributes, additionalProperties) /* spotless:on */
+            hashCode = /* spotless:off */ Objects.hash(id, _xactId, created, orgId, projectId, logId, input, output, expected, error, scores, metadata, tags, metrics, context, spanId, spanParents, rootSpanId, isRoot, spanAttributes, origin, additionalProperties) /* spotless:on */
         }
         return hashCode
     }
 
     override fun toString() =
-        "ProjectLogsEvent{id=$id, _xactId=$_xactId, created=$created, orgId=$orgId, projectId=$projectId, logId=$logId, input=$input, output=$output, expected=$expected, error=$error, scores=$scores, metadata=$metadata, tags=$tags, metrics=$metrics, context=$context, spanId=$spanId, spanParents=$spanParents, rootSpanId=$rootSpanId, spanAttributes=$spanAttributes, additionalProperties=$additionalProperties}"
+        "ProjectLogsEvent{id=$id, _xactId=$_xactId, created=$created, orgId=$orgId, projectId=$projectId, logId=$logId, input=$input, output=$output, expected=$expected, error=$error, scores=$scores, metadata=$metadata, tags=$tags, metrics=$metrics, context=$context, spanId=$spanId, spanParents=$spanParents, rootSpanId=$rootSpanId, isRoot=$isRoot, spanAttributes=$spanAttributes, origin=$origin, additionalProperties=$additionalProperties}"
 }

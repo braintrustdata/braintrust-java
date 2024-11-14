@@ -56,7 +56,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate200() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         val expected =
             Project.builder()
@@ -76,7 +76,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate400() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -91,7 +91,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate401() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -106,7 +106,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate403() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -125,7 +125,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate404() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -140,7 +140,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate422() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -159,7 +159,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate429() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -174,7 +174,7 @@ class ErrorHandlingTest {
 
     @Test
     fun projectsCreate500() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -193,7 +193,7 @@ class ErrorHandlingTest {
 
     @Test
     fun unexpectedStatusCode() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(
             post(anyUrl())
@@ -213,7 +213,7 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidBody() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(post(anyUrl()).willReturn(status(200).withBody("Not JSON")))
 
@@ -227,7 +227,7 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidErrorBody() {
-        val params = ProjectCreateParams.builder().name("name").orgName("org_name").build()
+        val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
 
         stubFor(post(anyUrl()).willReturn(status(400).withBody("Not JSON")))
 

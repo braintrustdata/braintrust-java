@@ -11,9 +11,9 @@ class PromptCreateParamsTest {
     @Test
     fun createPromptCreateParams() {
         PromptCreateParams.builder()
-            .name("name")
+            .name("x")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .slug("slug")
+            .slug("x")
             .description("description")
             .functionType(PromptCreateParams.FunctionType.LLM)
             .promptData(
@@ -40,18 +40,33 @@ class PromptCreateParamsTest {
                                         .responseFormat(
                                             PromptData.Options.Params.OpenAIModelParams
                                                 .ResponseFormat
-                                                .builder()
-                                                .type(
+                                                .ofJsonObject(
                                                     PromptData.Options.Params.OpenAIModelParams
                                                         .ResponseFormat
-                                                        .Type
-                                                        .JSON_OBJECT
+                                                        .JsonObject
+                                                        .builder()
+                                                        .type(
+                                                            PromptData.Options.Params
+                                                                .OpenAIModelParams
+                                                                .ResponseFormat
+                                                                .JsonObject
+                                                                .Type
+                                                                .JSON_OBJECT
+                                                        )
+                                                        .build()
                                                 )
-                                                .build()
                                         )
                                         .stop(listOf("string"))
                                         .temperature(42.23)
-                                        .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
+                                        .toolChoice(
+                                            PromptData.Options.Params.OpenAIModelParams.ToolChoice
+                                                .ofAuto(
+                                                    PromptData.Options.Params.OpenAIModelParams
+                                                        .ToolChoice
+                                                        .Auto
+                                                        .AUTO
+                                                )
+                                        )
                                         .topP(42.23)
                                         .useCache(true)
                                         .build()
@@ -102,9 +117,9 @@ class PromptCreateParamsTest {
     fun getBody() {
         val params =
             PromptCreateParams.builder()
-                .name("name")
+                .name("x")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .slug("slug")
+                .slug("x")
                 .description("description")
                 .functionType(PromptCreateParams.FunctionType.LLM)
                 .promptData(
@@ -132,18 +147,34 @@ class PromptCreateParamsTest {
                                             .responseFormat(
                                                 PromptData.Options.Params.OpenAIModelParams
                                                     .ResponseFormat
-                                                    .builder()
-                                                    .type(
+                                                    .ofJsonObject(
                                                         PromptData.Options.Params.OpenAIModelParams
                                                             .ResponseFormat
-                                                            .Type
-                                                            .JSON_OBJECT
+                                                            .JsonObject
+                                                            .builder()
+                                                            .type(
+                                                                PromptData.Options.Params
+                                                                    .OpenAIModelParams
+                                                                    .ResponseFormat
+                                                                    .JsonObject
+                                                                    .Type
+                                                                    .JSON_OBJECT
+                                                            )
+                                                            .build()
                                                     )
-                                                    .build()
                                             )
                                             .stop(listOf("string"))
                                             .temperature(42.23)
-                                            .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
+                                            .toolChoice(
+                                                PromptData.Options.Params.OpenAIModelParams
+                                                    .ToolChoice
+                                                    .ofAuto(
+                                                        PromptData.Options.Params.OpenAIModelParams
+                                                            .ToolChoice
+                                                            .Auto
+                                                            .AUTO
+                                                    )
+                                            )
                                             .topP(42.23)
                                             .useCache(true)
                                             .build()
@@ -190,9 +221,9 @@ class PromptCreateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.slug()).isEqualTo("slug")
+        assertThat(body.slug()).isEqualTo("x")
         assertThat(body.description()).isEqualTo("description")
         assertThat(body.functionType()).isEqualTo(PromptCreateParams.FunctionType.LLM)
         assertThat(body.promptData())
@@ -220,18 +251,33 @@ class PromptCreateParamsTest {
                                         .responseFormat(
                                             PromptData.Options.Params.OpenAIModelParams
                                                 .ResponseFormat
-                                                .builder()
-                                                .type(
+                                                .ofJsonObject(
                                                     PromptData.Options.Params.OpenAIModelParams
                                                         .ResponseFormat
-                                                        .Type
-                                                        .JSON_OBJECT
+                                                        .JsonObject
+                                                        .builder()
+                                                        .type(
+                                                            PromptData.Options.Params
+                                                                .OpenAIModelParams
+                                                                .ResponseFormat
+                                                                .JsonObject
+                                                                .Type
+                                                                .JSON_OBJECT
+                                                        )
+                                                        .build()
                                                 )
-                                                .build()
                                         )
                                         .stop(listOf("string"))
                                         .temperature(42.23)
-                                        .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
+                                        .toolChoice(
+                                            PromptData.Options.Params.OpenAIModelParams.ToolChoice
+                                                .ofAuto(
+                                                    PromptData.Options.Params.OpenAIModelParams
+                                                        .ToolChoice
+                                                        .Auto
+                                                        .AUTO
+                                                )
+                                        )
                                         .topP(42.23)
                                         .useCache(true)
                                         .build()
@@ -281,14 +327,14 @@ class PromptCreateParamsTest {
     fun getBodyWithoutOptionalFields() {
         val params =
             PromptCreateParams.builder()
-                .name("name")
+                .name("x")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .slug("slug")
+                .slug("x")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.slug()).isEqualTo("slug")
+        assertThat(body.slug()).isEqualTo("x")
     }
 }

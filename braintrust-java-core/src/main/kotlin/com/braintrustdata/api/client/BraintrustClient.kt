@@ -31,6 +31,8 @@ interface BraintrustClient {
 
     fun projectTags(): ProjectTagService
 
+    fun spanIframes(): SpanIframeService
+
     fun functions(): FunctionService
 
     fun views(): ViewService

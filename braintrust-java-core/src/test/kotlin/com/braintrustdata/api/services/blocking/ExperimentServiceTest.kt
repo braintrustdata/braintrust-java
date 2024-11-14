@@ -32,7 +32,7 @@ class ExperimentServiceTest {
                     .description("description")
                     .ensureNew(true)
                     .metadata(ExperimentCreateParams.Metadata.builder().build())
-                    .name("name")
+                    .name("x")
                     .public_(true)
                     .repoInfo(
                         RepoInfo.builder()
@@ -232,7 +232,7 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val insertEventsResponse =
+        val experimentInsertResponse =
             experimentService.insert(
                 ExperimentInsertParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -261,6 +261,9 @@ class ExperimentServiceTest {
                                     )
                                     .metrics(
                                         InsertExperimentEventReplace.Metrics.builder()
+                                            .callerFilename(JsonNull.of())
+                                            .callerFunctionname(JsonNull.of())
+                                            .callerLineno(JsonNull.of())
                                             .completionTokens(123L)
                                             .end(42.23)
                                             .promptTokens(123L)
@@ -285,8 +288,7 @@ class ExperimentServiceTest {
                     )
                     .build()
             )
-        println(insertEventsResponse)
-        insertEventsResponse.validate()
+        println(experimentInsertResponse)
     }
 
     @Test

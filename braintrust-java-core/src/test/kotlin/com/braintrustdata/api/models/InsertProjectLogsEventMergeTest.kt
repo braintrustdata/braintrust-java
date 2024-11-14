@@ -31,6 +31,9 @@ class InsertProjectLogsEventMergeTest {
                 .metadata(InsertProjectLogsEventMerge.Metadata.builder().build())
                 .metrics(
                     InsertProjectLogsEventMerge.Metrics.builder()
+                        .callerFilename(JsonNull.of())
+                        .callerFunctionname(JsonNull.of())
+                        .callerLineno(JsonNull.of())
                         .completionTokens(123L)
                         .end(42.23)
                         .promptTokens(123L)
@@ -72,6 +75,9 @@ class InsertProjectLogsEventMergeTest {
         assertThat(insertProjectLogsEventMerge.metrics())
             .contains(
                 InsertProjectLogsEventMerge.Metrics.builder()
+                    .callerFilename(JsonNull.of())
+                    .callerFunctionname(JsonNull.of())
+                    .callerLineno(JsonNull.of())
                     .completionTokens(123L)
                     .end(42.23)
                     .promptTokens(123L)

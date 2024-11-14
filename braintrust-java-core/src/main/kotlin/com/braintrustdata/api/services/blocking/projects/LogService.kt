@@ -7,11 +7,11 @@ package com.braintrustdata.api.services.blocking.projects
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchProjectLogsEventsResponse
-import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
+import com.braintrustdata.api.models.ProjectLogInsertResponse
 
 interface LogService {
 
@@ -47,5 +47,5 @@ interface LogService {
     fun insert(
         params: ProjectLogInsertParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): InsertEventsResponse
+    ): ProjectLogInsertResponse
 }

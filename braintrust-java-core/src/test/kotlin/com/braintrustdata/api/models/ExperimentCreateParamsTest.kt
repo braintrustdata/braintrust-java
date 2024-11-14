@@ -18,7 +18,7 @@ class ExperimentCreateParamsTest {
             .description("description")
             .ensureNew(true)
             .metadata(ExperimentCreateParams.Metadata.builder().build())
-            .name("name")
+            .name("x")
             .public_(true)
             .repoInfo(
                 RepoInfo.builder()
@@ -47,7 +47,7 @@ class ExperimentCreateParamsTest {
                 .description("description")
                 .ensureNew(true)
                 .metadata(ExperimentCreateParams.Metadata.builder().build())
-                .name("name")
+                .name("x")
                 .public_(true)
                 .repoInfo(
                     RepoInfo.builder()
@@ -72,7 +72,7 @@ class ExperimentCreateParamsTest {
         assertThat(body.description()).isEqualTo("description")
         assertThat(body.ensureNew()).isEqualTo(true)
         assertThat(body.metadata()).isEqualTo(ExperimentCreateParams.Metadata.builder().build())
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
         assertThat(body.public_()).isEqualTo(true)
         assertThat(body.repoInfo())
             .isEqualTo(

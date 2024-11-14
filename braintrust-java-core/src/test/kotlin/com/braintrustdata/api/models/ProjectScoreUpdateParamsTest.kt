@@ -42,7 +42,7 @@ class ProjectScoreUpdateParamsTest {
             )
             .description("description")
             .name("name")
-            .scoreType(ProjectScoreType.SLIDER)
+            .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
             .build()
     }
 
@@ -83,7 +83,7 @@ class ProjectScoreUpdateParamsTest {
                 )
                 .description("description")
                 .name("name")
-                .scoreType(ProjectScoreType.SLIDER)
+                .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -119,7 +119,7 @@ class ProjectScoreUpdateParamsTest {
             )
         assertThat(body.description()).isEqualTo("description")
         assertThat(body.name()).isEqualTo("name")
-        assertThat(body.scoreType()).isEqualTo(ProjectScoreType.SLIDER)
+        assertThat(body.scoreType()).isEqualTo(ProjectScoreUpdateParams.ScoreType.SLIDER)
     }
 
     @Test

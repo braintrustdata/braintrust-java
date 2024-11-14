@@ -67,15 +67,14 @@ private constructor(
      */
     fun groupId(): Optional<String> = Optional.ofNullable(groupId.getNullable("group_id"))
 
-    /**
-     * Each permission permits a certain type of operation on an object in the system
-     *
-     * Permissions can be assigned to to objects on an individual basis, or grouped into roles
-     */
+    /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
     fun permission(): Optional<Permission> =
         Optional.ofNullable(permission.getNullable("permission"))
 
-    /** The object type that the ACL applies to */
+    /**
+     * When setting a permission directly, optionally restricts the permission grant to just the
+     * specified object type. Cannot be set alongside a `role_id`.
+     */
     fun restrictObjectType(): Optional<RestrictObjectType> =
         Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
 
@@ -107,14 +106,13 @@ private constructor(
      */
     @JsonProperty("group_id") @ExcludeMissing fun _groupId() = groupId
 
-    /**
-     * Each permission permits a certain type of operation on an object in the system
-     *
-     * Permissions can be assigned to to objects on an individual basis, or grouped into roles
-     */
+    /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
     @JsonProperty("permission") @ExcludeMissing fun _permission() = permission
 
-    /** The object type that the ACL applies to */
+    /**
+     * When setting a permission directly, optionally restricts the permission grant to just the
+     * specified object type. Cannot be set alongside a `role_id`.
+     */
     @JsonProperty("restrict_object_type")
     @ExcludeMissing
     fun _restrictObjectType() = restrictObjectType
@@ -234,27 +232,25 @@ private constructor(
         @ExcludeMissing
         fun groupId(groupId: JsonField<String>) = apply { this.groupId = groupId }
 
-        /**
-         * Each permission permits a certain type of operation on an object in the system
-         *
-         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
-         */
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
         fun permission(permission: Permission) = permission(JsonField.of(permission))
 
-        /**
-         * Each permission permits a certain type of operation on an object in the system
-         *
-         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
-         */
+        /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
         @JsonProperty("permission")
         @ExcludeMissing
         fun permission(permission: JsonField<Permission>) = apply { this.permission = permission }
 
-        /** The object type that the ACL applies to */
+        /**
+         * When setting a permission directly, optionally restricts the permission grant to just the
+         * specified object type. Cannot be set alongside a `role_id`.
+         */
         fun restrictObjectType(restrictObjectType: RestrictObjectType) =
             restrictObjectType(JsonField.of(restrictObjectType))
 
-        /** The object type that the ACL applies to */
+        /**
+         * When setting a permission directly, optionally restricts the permission grant to just the
+         * specified object type. Cannot be set alongside a `role_id`.
+         */
         @JsonProperty("restrict_object_type")
         @ExcludeMissing
         fun restrictObjectType(restrictObjectType: JsonField<RestrictObjectType>) = apply {

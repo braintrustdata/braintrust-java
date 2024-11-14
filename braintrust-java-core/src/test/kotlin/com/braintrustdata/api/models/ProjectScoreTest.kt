@@ -15,7 +15,7 @@ class ProjectScoreTest {
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .scoreType(ProjectScoreType.SLIDER)
+                .scoreType(ProjectScore.ScoreType.SLIDER)
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .categories(
                     ProjectScore.Categories.ofCategorical(
@@ -55,7 +55,7 @@ class ProjectScoreTest {
         assertThat(projectScore.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectScore.name()).isEqualTo("name")
         assertThat(projectScore.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(projectScore.scoreType()).isEqualTo(ProjectScoreType.SLIDER)
+        assertThat(projectScore.scoreType()).isEqualTo(ProjectScore.ScoreType.SLIDER)
         assertThat(projectScore.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectScore.categories())
             .contains(

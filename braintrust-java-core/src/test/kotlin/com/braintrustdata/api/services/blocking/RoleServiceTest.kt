@@ -23,7 +23,7 @@ class RoleServiceTest {
         val role =
             roleService.create(
                 RoleCreateParams.builder()
-                    .name("name")
+                    .name("x")
                     .description("description")
                     .memberPermissions(
                         listOf(
@@ -85,7 +85,7 @@ class RoleServiceTest {
                     )
                     .addMemberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .description("description")
-                    .name("name")
+                    .name("x")
                     .removeMemberPermissions(
                         listOf(
                             RoleUpdateParams.RemoveMemberPermission.builder()
@@ -146,7 +146,7 @@ class RoleServiceTest {
         val role =
             roleService.replace(
                 RoleReplaceParams.builder()
-                    .name("name")
+                    .name("x")
                     .description("description")
                     .memberPermissions(
                         listOf(
