@@ -59,9 +59,9 @@ class FetchExperimentEventsResponseTest {
                             .output(JsonNull.of())
                             .scores(ExperimentEvent.Scores.builder().build())
                             .spanAttributes(
-                                ExperimentEvent.SpanAttributes.builder()
+                                SpanAttributes.builder()
                                     .name("name")
-                                    .type(ExperimentEvent.SpanAttributes.Type.LLM)
+                                    .type(SpanAttributes.Type.LLM)
                                     .build()
                             )
                             .spanParents(listOf("string"))
@@ -118,10 +118,7 @@ class FetchExperimentEventsResponseTest {
                     .output(JsonNull.of())
                     .scores(ExperimentEvent.Scores.builder().build())
                     .spanAttributes(
-                        ExperimentEvent.SpanAttributes.builder()
-                            .name("name")
-                            .type(ExperimentEvent.SpanAttributes.Type.LLM)
-                            .build()
+                        SpanAttributes.builder().name("name").type(SpanAttributes.Type.LLM).build()
                     )
                     .spanParents(listOf("string"))
                     .tags(listOf("string"))

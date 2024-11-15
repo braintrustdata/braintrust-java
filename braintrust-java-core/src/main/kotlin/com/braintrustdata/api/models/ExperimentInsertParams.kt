@@ -2,34 +2,23 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
-import java.util.Optional
 
 class ExperimentInsertParams
 constructor(
     private val experimentId: String,
-    private val events: List<Event>,
+    private val events: List<InsertExperimentEvent>,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -37,7 +26,7 @@ constructor(
 
     fun experimentId(): String = experimentId
 
-    fun events(): List<Event> = events
+    fun events(): List<InsertExperimentEvent> = events
 
     @JvmSynthetic
     internal fun getBody(): ExperimentInsertBody {
@@ -59,12 +48,12 @@ constructor(
     @NoAutoDetect
     class ExperimentInsertBody
     internal constructor(
-        private val events: List<Event>?,
+        private val events: List<InsertExperimentEvent>?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** A list of experiment events to insert */
-        @JsonProperty("events") fun events(): List<Event>? = events
+        @JsonProperty("events") fun events(): List<InsertExperimentEvent>? = events
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -79,7 +68,7 @@ constructor(
 
         class Builder {
 
-            private var events: List<Event>? = null
+            private var events: List<InsertExperimentEvent>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -89,7 +78,8 @@ constructor(
             }
 
             /** A list of experiment events to insert */
-            @JsonProperty("events") fun events(events: List<Event>) = apply { this.events = events }
+            @JsonProperty("events")
+            fun events(events: List<InsertExperimentEvent>) = apply { this.events = events }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -165,7 +155,7 @@ constructor(
     class Builder {
 
         private var experimentId: String? = null
-        private var events: MutableList<Event> = mutableListOf()
+        private var events: MutableList<InsertExperimentEvent> = mutableListOf()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -183,13 +173,13 @@ constructor(
         fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
 
         /** A list of experiment events to insert */
-        fun events(events: List<Event>) = apply {
+        fun events(events: List<InsertExperimentEvent>) = apply {
             this.events.clear()
             this.events.addAll(events)
         }
 
         /** A list of experiment events to insert */
-        fun addEvent(event: Event) = apply { this.events.add(event) }
+        fun addEvent(event: InsertExperimentEvent) = apply { this.events.add(event) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -319,145 +309,5 @@ constructor(
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
-    }
-
-    @JsonDeserialize(using = Event.Deserializer::class)
-    @JsonSerialize(using = Event.Serializer::class)
-    class Event
-    private constructor(
-        private val insertExperimentEventReplace: InsertExperimentEventReplace? = null,
-        private val insertExperimentEventMerge: InsertExperimentEventMerge? = null,
-        private val _json: JsonValue? = null,
-    ) {
-
-        private var validated: Boolean = false
-
-        fun insertExperimentEventReplace(): Optional<InsertExperimentEventReplace> =
-            Optional.ofNullable(insertExperimentEventReplace)
-
-        fun insertExperimentEventMerge(): Optional<InsertExperimentEventMerge> =
-            Optional.ofNullable(insertExperimentEventMerge)
-
-        fun isInsertExperimentEventReplace(): Boolean = insertExperimentEventReplace != null
-
-        fun isInsertExperimentEventMerge(): Boolean = insertExperimentEventMerge != null
-
-        fun asInsertExperimentEventReplace(): InsertExperimentEventReplace =
-            insertExperimentEventReplace.getOrThrow("insertExperimentEventReplace")
-
-        fun asInsertExperimentEventMerge(): InsertExperimentEventMerge =
-            insertExperimentEventMerge.getOrThrow("insertExperimentEventMerge")
-
-        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                insertExperimentEventReplace != null ->
-                    visitor.visitInsertExperimentEventReplace(insertExperimentEventReplace)
-                insertExperimentEventMerge != null ->
-                    visitor.visitInsertExperimentEventMerge(insertExperimentEventMerge)
-                else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Event = apply {
-            if (!validated) {
-                if (insertExperimentEventReplace == null && insertExperimentEventMerge == null) {
-                    throw BraintrustInvalidDataException("Unknown Event: $_json")
-                }
-                insertExperimentEventReplace?.validate()
-                insertExperimentEventMerge?.validate()
-                validated = true
-            }
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Event && this.insertExperimentEventReplace == other.insertExperimentEventReplace && this.insertExperimentEventMerge == other.insertExperimentEventMerge /* spotless:on */
-        }
-
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(insertExperimentEventReplace, insertExperimentEventMerge) /* spotless:on */
-        }
-
-        override fun toString(): String {
-            return when {
-                insertExperimentEventReplace != null ->
-                    "Event{insertExperimentEventReplace=$insertExperimentEventReplace}"
-                insertExperimentEventMerge != null ->
-                    "Event{insertExperimentEventMerge=$insertExperimentEventMerge}"
-                _json != null -> "Event{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Event")
-            }
-        }
-
-        companion object {
-
-            @JvmStatic
-            fun ofInsertExperimentEventReplace(
-                insertExperimentEventReplace: InsertExperimentEventReplace
-            ) = Event(insertExperimentEventReplace = insertExperimentEventReplace)
-
-            @JvmStatic
-            fun ofInsertExperimentEventMerge(
-                insertExperimentEventMerge: InsertExperimentEventMerge
-            ) = Event(insertExperimentEventMerge = insertExperimentEventMerge)
-        }
-
-        interface Visitor<out T> {
-
-            fun visitInsertExperimentEventReplace(
-                insertExperimentEventReplace: InsertExperimentEventReplace
-            ): T
-
-            fun visitInsertExperimentEventMerge(
-                insertExperimentEventMerge: InsertExperimentEventMerge
-            ): T
-
-            fun unknown(json: JsonValue?): T {
-                throw BraintrustInvalidDataException("Unknown Event: $json")
-            }
-        }
-
-        class Deserializer : BaseDeserializer<Event>(Event::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Event {
-                val json = JsonValue.fromJsonNode(node)
-
-                tryDeserialize(node, jacksonTypeRef<InsertExperimentEventReplace>()) {
-                        it.validate()
-                    }
-                    ?.let {
-                        return Event(insertExperimentEventReplace = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<InsertExperimentEventMerge>()) { it.validate() }
-                    ?.let {
-                        return Event(insertExperimentEventMerge = it, _json = json)
-                    }
-
-                return Event(_json = json)
-            }
-        }
-
-        class Serializer : BaseSerializer<Event>(Event::class) {
-
-            override fun serialize(
-                value: Event,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.insertExperimentEventReplace != null ->
-                        generator.writeObject(value.insertExperimentEventReplace)
-                    value.insertExperimentEventMerge != null ->
-                        generator.writeObject(value.insertExperimentEventMerge)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Event")
-                }
-            }
-        }
     }
 }

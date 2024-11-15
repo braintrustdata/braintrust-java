@@ -91,7 +91,7 @@ private constructor(
      */
     fun spanId(): String = spanId.getRequired("span_id")
 
-    /** The `span_id` of the root of the trace this dataset event belongs to */
+    /** A unique identifier for the trace this dataset event belongs to */
     fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
 
     /** Whether this span is a root span */
@@ -150,7 +150,7 @@ private constructor(
      */
     @JsonProperty("span_id") @ExcludeMissing fun _spanId() = spanId
 
-    /** The `span_id` of the root of the trace this dataset event belongs to */
+    /** A unique identifier for the trace this dataset event belongs to */
     @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId() = rootSpanId
 
     /** Whether this span is a root span */
@@ -335,10 +335,10 @@ private constructor(
         @ExcludeMissing
         fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
 
-        /** The `span_id` of the root of the trace this dataset event belongs to */
+        /** A unique identifier for the trace this dataset event belongs to */
         fun rootSpanId(rootSpanId: String) = rootSpanId(JsonField.of(rootSpanId))
 
-        /** The `span_id` of the root of the trace this dataset event belongs to */
+        /** A unique identifier for the trace this dataset event belongs to */
         @JsonProperty("root_span_id")
         @ExcludeMissing
         fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
