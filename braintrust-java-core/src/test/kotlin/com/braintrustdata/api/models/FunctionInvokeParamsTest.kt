@@ -16,9 +16,9 @@ class FunctionInvokeParamsTest {
             .input(JsonNull.of())
             .messages(
                 listOf(
-                    ChatCompletionMessage.ofSystem(
-                        ChatCompletionMessage.System.builder()
-                            .role(ChatCompletionMessage.System.Role.SYSTEM)
+                    FunctionInvokeParams.Message.ofSystem(
+                        FunctionInvokeParams.Message.System.builder()
+                            .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
                             .content("content")
                             .name("name")
                             .build()
@@ -60,9 +60,9 @@ class FunctionInvokeParamsTest {
                 .input(JsonNull.of())
                 .messages(
                     listOf(
-                        ChatCompletionMessage.ofSystem(
-                            ChatCompletionMessage.System.builder()
-                                .role(ChatCompletionMessage.System.Role.SYSTEM)
+                        FunctionInvokeParams.Message.ofSystem(
+                            FunctionInvokeParams.Message.System.builder()
+                                .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
                                 .content("content")
                                 .name("name")
                                 .build()
@@ -101,9 +101,9 @@ class FunctionInvokeParamsTest {
         assertThat(body.messages())
             .isEqualTo(
                 listOf(
-                    ChatCompletionMessage.ofSystem(
-                        ChatCompletionMessage.System.builder()
-                            .role(ChatCompletionMessage.System.Role.SYSTEM)
+                    FunctionInvokeParams.Message.ofSystem(
+                        FunctionInvokeParams.Message.System.builder()
+                            .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
                             .content("content")
                             .name("name")
                             .build()
