@@ -338,9 +338,9 @@ class FunctionServiceTest {
                     .input(JsonNull.of())
                     .messages(
                         listOf(
-                            ChatCompletionMessage.ofSystem(
-                                ChatCompletionMessage.System.builder()
-                                    .role(ChatCompletionMessage.System.Role.SYSTEM)
+                            FunctionInvokeParams.Message.ofSystem(
+                                FunctionInvokeParams.Message.System.builder()
+                                    .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
                                     .content("content")
                                     .name("name")
                                     .build()
