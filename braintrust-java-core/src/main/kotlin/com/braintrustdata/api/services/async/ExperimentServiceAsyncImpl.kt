@@ -19,7 +19,6 @@ import com.braintrustdata.api.models.ExperimentFeedbackParams
 import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
 import com.braintrustdata.api.models.ExperimentInsertParams
-import com.braintrustdata.api.models.ExperimentInsertResponse
 import com.braintrustdata.api.models.ExperimentListPageAsync
 import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
@@ -27,6 +26,7 @@ import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
 import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchExperimentEventsResponse
+import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
 
@@ -233,7 +233,8 @@ constructor(
 
     /**
      * Fetch the events in an experiment. Equivalent to the POST form of the same path, but with the
-     * parameters in the URL query rather than in the request body
+     * parameters in the URL query rather than in the request body. For more complex queries, use
+     * the `POST /btql` endpoint.
      */
     override fun fetch(
         params: ExperimentFetchParams,
@@ -266,7 +267,8 @@ constructor(
 
     /**
      * Fetch the events in an experiment. Equivalent to the GET form of the same path, but with the
-     * parameters in the request body rather than in the URL query
+     * parameters in the request body rather than in the URL query. For more complex queries, use
+     * the `POST /btql` endpoint.
      */
     override fun fetchPost(
         params: ExperimentFetchPostParams,
@@ -294,15 +296,14 @@ constructor(
         }
     }
 
-    private val insertHandler: Handler<ExperimentInsertResponse> =
-        jsonHandler<ExperimentInsertResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    private val insertHandler: Handler<InsertEventsResponse> =
+        jsonHandler<InsertEventsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Insert a set of events into the experiment */
     override fun insert(
         params: ExperimentInsertParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<ExperimentInsertResponse> {
+    ): CompletableFuture<InsertEventsResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
