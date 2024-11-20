@@ -161,6 +161,7 @@ class ExperimentServiceTest {
                                 .metadata(FeedbackExperimentItem.Metadata.builder().build())
                                 .scores(FeedbackExperimentItem.Scores.builder().build())
                                 .source(FeedbackExperimentItem.Source.APP)
+                                .tags(listOf("string"))
                                 .build()
                         )
                     )
@@ -205,15 +206,6 @@ class ExperimentServiceTest {
                 ExperimentFetchPostParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
-                    .filters(
-                        listOf(
-                            PathLookupFilter.builder()
-                                .path(listOf("string"))
-                                .type(PathLookupFilter.Type.PATH_LOOKUP)
-                                .value(JsonNull.of())
-                                .build()
-                        )
-                    )
                     .limit(123L)
                     .maxRootSpanId("max_root_span_id")
                     .maxXactId("max_xact_id")
@@ -232,7 +224,7 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val experimentInsertResponse =
+        val insertEventsResponse =
             experimentService.insert(
                 ExperimentInsertParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -286,7 +278,8 @@ class ExperimentServiceTest {
                     )
                     .build()
             )
-        println(experimentInsertResponse)
+        println(insertEventsResponse)
+        insertEventsResponse.validate()
     }
 
     @Test
