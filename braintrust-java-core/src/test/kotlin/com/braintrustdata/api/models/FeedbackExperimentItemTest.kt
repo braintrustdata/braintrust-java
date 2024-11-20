@@ -18,7 +18,6 @@ class FeedbackExperimentItemTest {
                 .metadata(FeedbackExperimentItem.Metadata.builder().build())
                 .scores(FeedbackExperimentItem.Scores.builder().build())
                 .source(FeedbackExperimentItem.Source.APP)
-                .tags(listOf("string"))
                 .build()
         assertThat(feedbackExperimentItem).isNotNull
         assertThat(feedbackExperimentItem.id()).isEqualTo("id")
@@ -29,6 +28,5 @@ class FeedbackExperimentItemTest {
         assertThat(feedbackExperimentItem.scores())
             .contains(FeedbackExperimentItem.Scores.builder().build())
         assertThat(feedbackExperimentItem.source()).contains(FeedbackExperimentItem.Source.APP)
-        assertThat(feedbackExperimentItem.tags().get()).containsExactly("string")
     }
 }
