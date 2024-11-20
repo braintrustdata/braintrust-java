@@ -20,6 +20,7 @@ class ExperimentFetchPostParams
 constructor(
     private val experimentId: String,
     private val cursor: String?,
+    private val filters: List<PathLookupFilter>?,
     private val limit: Long?,
     private val maxRootSpanId: String?,
     private val maxXactId: String?,
@@ -33,6 +34,8 @@ constructor(
 
     fun cursor(): Optional<String> = Optional.ofNullable(cursor)
 
+    fun filters(): Optional<List<PathLookupFilter>> = Optional.ofNullable(filters)
+
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
     fun maxRootSpanId(): Optional<String> = Optional.ofNullable(maxRootSpanId)
@@ -45,6 +48,7 @@ constructor(
     internal fun getBody(): ExperimentFetchPostBody {
         return ExperimentFetchPostBody(
             cursor,
+            filters,
             limit,
             maxRootSpanId,
             maxXactId,
@@ -69,6 +73,7 @@ constructor(
     class ExperimentFetchPostBody
     internal constructor(
         private val cursor: String?,
+        private val filters: List<PathLookupFilter>?,
         private val limit: Long?,
         private val maxRootSpanId: String?,
         private val maxXactId: String?,
@@ -84,6 +89,16 @@ constructor(
          * query
          */
         @JsonProperty("cursor") fun cursor(): String? = cursor
+
+        /**
+         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+         * advanced filtering.
+         *
+         * A list of filters on the events to fetch. Currently, only path-lookup type filters are
+         * supported.
+         */
+        @JsonProperty("filters") fun filters(): List<PathLookupFilter>? = filters
 
         /**
          * limit the number of traces fetched
@@ -152,6 +167,7 @@ constructor(
         class Builder {
 
             private var cursor: String? = null
+            private var filters: List<PathLookupFilter>? = null
             private var limit: Long? = null
             private var maxRootSpanId: String? = null
             private var maxXactId: String? = null
@@ -161,6 +177,7 @@ constructor(
             @JvmSynthetic
             internal fun from(experimentFetchPostBody: ExperimentFetchPostBody) = apply {
                 this.cursor = experimentFetchPostBody.cursor
+                this.filters = experimentFetchPostBody.filters
                 this.limit = experimentFetchPostBody.limit
                 this.maxRootSpanId = experimentFetchPostBody.maxRootSpanId
                 this.maxXactId = experimentFetchPostBody.maxXactId
@@ -176,6 +193,17 @@ constructor(
              * query
              */
             @JsonProperty("cursor") fun cursor(cursor: String) = apply { this.cursor = cursor }
+
+            /**
+             * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+             * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+             * advanced filtering.
+             *
+             * A list of filters on the events to fetch. Currently, only path-lookup type filters
+             * are supported.
+             */
+            @JsonProperty("filters")
+            fun filters(filters: List<PathLookupFilter>) = apply { this.filters = filters }
 
             /**
              * limit the number of traces fetched
@@ -250,6 +278,7 @@ constructor(
             fun build(): ExperimentFetchPostBody =
                 ExperimentFetchPostBody(
                     cursor,
+                    filters?.toImmutable(),
                     limit,
                     maxRootSpanId,
                     maxXactId,
@@ -263,20 +292,20 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ExperimentFetchPostBody && this.cursor == other.cursor && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ExperimentFetchPostBody && this.cursor == other.cursor && this.filters == other.filters && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         private var hashCode: Int = 0
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(cursor, limit, maxRootSpanId, maxXactId, version, additionalProperties) /* spotless:on */
+                hashCode = /* spotless:off */ Objects.hash(cursor, filters, limit, maxRootSpanId, maxXactId, version, additionalProperties) /* spotless:on */
             }
             return hashCode
         }
 
         override fun toString() =
-            "ExperimentFetchPostBody{cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
+            "ExperimentFetchPostBody{cursor=$cursor, filters=$filters, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -290,15 +319,15 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentFetchPostParams && this.experimentId == other.experimentId && this.cursor == other.cursor && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ExperimentFetchPostParams && this.experimentId == other.experimentId && this.cursor == other.cursor && this.filters == other.filters && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(experimentId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+        return /* spotless:off */ Objects.hash(experimentId, cursor, filters, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
-        "ExperimentFetchPostParams{experimentId=$experimentId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ExperimentFetchPostParams{experimentId=$experimentId, cursor=$cursor, filters=$filters, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -312,6 +341,7 @@ constructor(
 
         private var experimentId: String? = null
         private var cursor: String? = null
+        private var filters: MutableList<PathLookupFilter> = mutableListOf()
         private var limit: Long? = null
         private var maxRootSpanId: String? = null
         private var maxXactId: String? = null
@@ -324,6 +354,7 @@ constructor(
         internal fun from(experimentFetchPostParams: ExperimentFetchPostParams) = apply {
             this.experimentId = experimentFetchPostParams.experimentId
             this.cursor = experimentFetchPostParams.cursor
+            this.filters(experimentFetchPostParams.filters ?: listOf())
             this.limit = experimentFetchPostParams.limit
             this.maxRootSpanId = experimentFetchPostParams.maxRootSpanId
             this.maxXactId = experimentFetchPostParams.maxXactId
@@ -344,6 +375,29 @@ constructor(
          * query
          */
         fun cursor(cursor: String) = apply { this.cursor = cursor }
+
+        /**
+         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+         * advanced filtering.
+         *
+         * A list of filters on the events to fetch. Currently, only path-lookup type filters are
+         * supported.
+         */
+        fun filters(filters: List<PathLookupFilter>) = apply {
+            this.filters.clear()
+            this.filters.addAll(filters)
+        }
+
+        /**
+         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
+         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
+         * advanced filtering.
+         *
+         * A list of filters on the events to fetch. Currently, only path-lookup type filters are
+         * supported.
+         */
+        fun addFilter(filter: PathLookupFilter) = apply { this.filters.add(filter) }
 
         /**
          * limit the number of traces fetched
@@ -522,6 +576,7 @@ constructor(
             ExperimentFetchPostParams(
                 checkNotNull(experimentId) { "`experimentId` is required but was not set" },
                 cursor,
+                if (filters.size == 0) null else filters.toImmutable(),
                 limit,
                 maxRootSpanId,
                 maxXactId,

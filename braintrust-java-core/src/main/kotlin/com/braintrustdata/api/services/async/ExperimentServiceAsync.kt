@@ -12,6 +12,7 @@ import com.braintrustdata.api.models.ExperimentFeedbackParams
 import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
 import com.braintrustdata.api.models.ExperimentInsertParams
+import com.braintrustdata.api.models.ExperimentInsertResponse
 import com.braintrustdata.api.models.ExperimentListPageAsync
 import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
@@ -19,7 +20,6 @@ import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
 import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchExperimentEventsResponse
-import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
 
@@ -79,8 +79,7 @@ interface ExperimentServiceAsync {
 
     /**
      * Fetch the events in an experiment. Equivalent to the POST form of the same path, but with the
-     * parameters in the URL query rather than in the request body. For more complex queries, use
-     * the `POST /btql` endpoint.
+     * parameters in the URL query rather than in the request body
      */
     @JvmOverloads
     fun fetch(
@@ -90,8 +89,7 @@ interface ExperimentServiceAsync {
 
     /**
      * Fetch the events in an experiment. Equivalent to the GET form of the same path, but with the
-     * parameters in the request body rather than in the URL query. For more complex queries, use
-     * the `POST /btql` endpoint.
+     * parameters in the request body rather than in the URL query
      */
     @JvmOverloads
     fun fetchPost(
@@ -104,7 +102,7 @@ interface ExperimentServiceAsync {
     fun insert(
         params: ExperimentInsertParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<InsertEventsResponse>
+    ): CompletableFuture<ExperimentInsertResponse>
 
     /** Summarize experiment */
     @JvmOverloads

@@ -124,7 +124,6 @@ class DatasetServiceTest {
                                 .comment("comment")
                                 .metadata(FeedbackDatasetItem.Metadata.builder().build())
                                 .source(FeedbackDatasetItem.Source.APP)
-                                .tags(listOf("string"))
                                 .build()
                         )
                     )
@@ -169,6 +168,15 @@ class DatasetServiceTest {
                 DatasetFetchPostParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
+                    .filters(
+                        listOf(
+                            PathLookupFilter.builder()
+                                .path(listOf("string"))
+                                .type(PathLookupFilter.Type.PATH_LOOKUP)
+                                .value(JsonNull.of())
+                                .build()
+                        )
+                    )
                     .limit(123L)
                     .maxRootSpanId("max_root_span_id")
                     .maxXactId("max_xact_id")
