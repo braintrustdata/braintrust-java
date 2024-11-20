@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
 import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -14,15 +13,6 @@ class ExperimentFetchPostParamsTest {
         ExperimentFetchPostParams.builder()
             .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .cursor("cursor")
-            .filters(
-                listOf(
-                    PathLookupFilter.builder()
-                        .path(listOf("string"))
-                        .type(PathLookupFilter.Type.PATH_LOOKUP)
-                        .value(JsonNull.of())
-                        .build()
-                )
-            )
             .limit(123L)
             .maxRootSpanId("max_root_span_id")
             .maxXactId("max_xact_id")
@@ -36,15 +26,6 @@ class ExperimentFetchPostParamsTest {
             ExperimentFetchPostParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .cursor("cursor")
-                .filters(
-                    listOf(
-                        PathLookupFilter.builder()
-                            .path(listOf("string"))
-                            .type(PathLookupFilter.Type.PATH_LOOKUP)
-                            .value(JsonNull.of())
-                            .build()
-                    )
-                )
                 .limit(123L)
                 .maxRootSpanId("max_root_span_id")
                 .maxXactId("max_xact_id")
@@ -53,16 +34,6 @@ class ExperimentFetchPostParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.cursor()).isEqualTo("cursor")
-        assertThat(body.filters())
-            .isEqualTo(
-                listOf(
-                    PathLookupFilter.builder()
-                        .path(listOf("string"))
-                        .type(PathLookupFilter.Type.PATH_LOOKUP)
-                        .value(JsonNull.of())
-                        .build()
-                )
-            )
         assertThat(body.limit()).isEqualTo(123L)
         assertThat(body.maxRootSpanId()).isEqualTo("max_root_span_id")
         assertThat(body.maxXactId()).isEqualTo("max_xact_id")
