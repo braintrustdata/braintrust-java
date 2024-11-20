@@ -23,7 +23,7 @@ class GroupServiceTest {
         val group =
             groupService.create(
                 GroupCreateParams.builder()
-                    .name("name")
+                    .name("x")
                     .description("description")
                     .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
@@ -67,7 +67,7 @@ class GroupServiceTest {
                     .addMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .addMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .description("description")
-                    .name("name")
+                    .name("x")
                     .removeMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .removeMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .build()
@@ -116,7 +116,7 @@ class GroupServiceTest {
         val group =
             groupService.replace(
                 GroupReplaceParams.builder()
-                    .name("name")
+                    .name("x")
                     .description("description")
                     .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                     .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))

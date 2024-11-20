@@ -13,7 +13,7 @@ class ProjectScoreReplaceParamsTest {
         ProjectScoreReplaceParams.builder()
             .name("name")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .scoreType(ProjectScoreType.SLIDER)
+            .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
             .categories(
                 ProjectScoreReplaceParams.Categories.ofCategorical(
                     listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
@@ -52,7 +52,7 @@ class ProjectScoreReplaceParamsTest {
             ProjectScoreReplaceParams.builder()
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .scoreType(ProjectScoreType.SLIDER)
+                .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
                 .categories(
                     ProjectScoreReplaceParams.Categories.ofCategorical(
                         listOf(ProjectScoreCategory.builder().name("name").value(42.23).build())
@@ -89,7 +89,7 @@ class ProjectScoreReplaceParamsTest {
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.scoreType()).isEqualTo(ProjectScoreType.SLIDER)
+        assertThat(body.scoreType()).isEqualTo(ProjectScoreReplaceParams.ScoreType.SLIDER)
         assertThat(body.categories())
             .isEqualTo(
                 ProjectScoreReplaceParams.Categories.ofCategorical(
@@ -129,12 +129,12 @@ class ProjectScoreReplaceParamsTest {
             ProjectScoreReplaceParams.builder()
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .scoreType(ProjectScoreType.SLIDER)
+                .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.scoreType()).isEqualTo(ProjectScoreType.SLIDER)
+        assertThat(body.scoreType()).isEqualTo(ProjectScoreReplaceParams.ScoreType.SLIDER)
     }
 }

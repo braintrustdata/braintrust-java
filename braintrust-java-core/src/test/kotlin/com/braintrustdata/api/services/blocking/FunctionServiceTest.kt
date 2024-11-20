@@ -31,9 +31,9 @@ class FunctionServiceTest {
                                 .build()
                         )
                     )
-                    .name("name")
+                    .name("x")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .slug("slug")
+                    .slug("x")
                     .description("description")
                     .functionSchema(
                         FunctionCreateParams.FunctionSchema.builder()
@@ -75,19 +75,36 @@ class FunctionServiceTest {
                                                 .responseFormat(
                                                     PromptData.Options.Params.OpenAIModelParams
                                                         .ResponseFormat
-                                                        .builder()
-                                                        .type(
+                                                        .ofJsonObject(
                                                             PromptData.Options.Params
                                                                 .OpenAIModelParams
                                                                 .ResponseFormat
-                                                                .Type
-                                                                .JSON_OBJECT
+                                                                .JsonObject
+                                                                .builder()
+                                                                .type(
+                                                                    PromptData.Options.Params
+                                                                        .OpenAIModelParams
+                                                                        .ResponseFormat
+                                                                        .JsonObject
+                                                                        .Type
+                                                                        .JSON_OBJECT
+                                                                )
+                                                                .build()
                                                         )
-                                                        .build()
                                                 )
                                                 .stop(listOf("string"))
                                                 .temperature(42.23)
-                                                .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
+                                                .toolChoice(
+                                                    PromptData.Options.Params.OpenAIModelParams
+                                                        .ToolChoice
+                                                        .ofAuto(
+                                                            PromptData.Options.Params
+                                                                .OpenAIModelParams
+                                                                .ToolChoice
+                                                                .Auto
+                                                                .AUTO
+                                                        )
+                                                )
                                                 .topP(42.23)
                                                 .useCache(true)
                                                 .build()
@@ -202,19 +219,36 @@ class FunctionServiceTest {
                                                 .responseFormat(
                                                     PromptData.Options.Params.OpenAIModelParams
                                                         .ResponseFormat
-                                                        .builder()
-                                                        .type(
+                                                        .ofJsonObject(
                                                             PromptData.Options.Params
                                                                 .OpenAIModelParams
                                                                 .ResponseFormat
-                                                                .Type
-                                                                .JSON_OBJECT
+                                                                .JsonObject
+                                                                .builder()
+                                                                .type(
+                                                                    PromptData.Options.Params
+                                                                        .OpenAIModelParams
+                                                                        .ResponseFormat
+                                                                        .JsonObject
+                                                                        .Type
+                                                                        .JSON_OBJECT
+                                                                )
+                                                                .build()
                                                         )
-                                                        .build()
                                                 )
                                                 .stop(listOf("string"))
                                                 .temperature(42.23)
-                                                .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
+                                                .toolChoice(
+                                                    PromptData.Options.Params.OpenAIModelParams
+                                                        .ToolChoice
+                                                        .ofAuto(
+                                                            PromptData.Options.Params
+                                                                .OpenAIModelParams
+                                                                .ToolChoice
+                                                                .Auto
+                                                                .AUTO
+                                                        )
+                                                )
                                                 .topP(42.23)
                                                 .useCache(true)
                                                 .build()
@@ -368,9 +402,9 @@ class FunctionServiceTest {
                                 .build()
                         )
                     )
-                    .name("name")
+                    .name("x")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .slug("slug")
+                    .slug("x")
                     .description("description")
                     .functionSchema(
                         FunctionReplaceParams.FunctionSchema.builder()
@@ -412,19 +446,36 @@ class FunctionServiceTest {
                                                 .responseFormat(
                                                     PromptData.Options.Params.OpenAIModelParams
                                                         .ResponseFormat
-                                                        .builder()
-                                                        .type(
+                                                        .ofJsonObject(
                                                             PromptData.Options.Params
                                                                 .OpenAIModelParams
                                                                 .ResponseFormat
-                                                                .Type
-                                                                .JSON_OBJECT
+                                                                .JsonObject
+                                                                .builder()
+                                                                .type(
+                                                                    PromptData.Options.Params
+                                                                        .OpenAIModelParams
+                                                                        .ResponseFormat
+                                                                        .JsonObject
+                                                                        .Type
+                                                                        .JSON_OBJECT
+                                                                )
+                                                                .build()
                                                         )
-                                                        .build()
                                                 )
                                                 .stop(listOf("string"))
                                                 .temperature(42.23)
-                                                .toolChoice(ToolChoice.ofAuto(ToolChoice.Auto.AUTO))
+                                                .toolChoice(
+                                                    PromptData.Options.Params.OpenAIModelParams
+                                                        .ToolChoice
+                                                        .ofAuto(
+                                                            PromptData.Options.Params
+                                                                .OpenAIModelParams
+                                                                .ToolChoice
+                                                                .Auto
+                                                                .AUTO
+                                                        )
+                                                )
                                                 .topP(42.23)
                                                 .useCache(true)
                                                 .build()

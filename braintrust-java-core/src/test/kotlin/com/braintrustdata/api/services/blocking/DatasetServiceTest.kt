@@ -25,9 +25,10 @@ class DatasetServiceTest {
         val dataset =
             datasetService.create(
                 DatasetCreateParams.builder()
-                    .name("name")
+                    .name("x")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .description("description")
+                    .metadata(DatasetCreateParams.Metadata.builder().build())
                     .build()
             )
         println(dataset)

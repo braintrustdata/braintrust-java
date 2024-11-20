@@ -19,7 +19,11 @@ class ProjectScoreListParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .projectName("project_name")
             .projectScoreName("project_score_name")
-            .scoreType(ProjectScoreListParams.ScoreType.ofProjectScoreType(ProjectScoreType.SLIDER))
+            .scoreType(
+                ProjectScoreListParams.ScoreType.ofProjectScoreType(
+                    ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER
+                )
+            )
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
     }
@@ -36,7 +40,9 @@ class ProjectScoreListParamsTest {
                 .projectName("project_name")
                 .projectScoreName("project_score_name")
                 .scoreType(
-                    ProjectScoreListParams.ScoreType.ofProjectScoreType(ProjectScoreType.SLIDER)
+                    ProjectScoreListParams.ScoreType.ofProjectScoreType(
+                        ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER
+                    )
                 )
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
@@ -53,10 +59,10 @@ class ProjectScoreListParamsTest {
         expected.put("project_score_name", "project_score_name")
         expected.put(
             "score_type",
-
-                ProjectScoreListParams.ScoreType.ofProjectScoreType(ProjectScoreType.SLIDER)
-                    .toString()
-
+            ProjectScoreListParams.ScoreType.ofProjectScoreType(
+                    ProjectScoreListParams.ProjectScoreType.SLIDER.toString()
+                )
+                .toString()
         )
         expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(params.getQueryParams()).isEqualTo(expected.build())
