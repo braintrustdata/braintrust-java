@@ -22,6 +22,7 @@ import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
+import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
 class FunctionServiceAsyncImpl
@@ -198,7 +199,7 @@ constructor(
     override fun invoke(
         params: FunctionInvokeParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<FunctionInvokeResponse> {
+    ): CompletableFuture<Optional<FunctionInvokeResponse>> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)

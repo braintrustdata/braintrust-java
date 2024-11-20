@@ -22,7 +22,7 @@ class ProjectServiceTest {
         val projectService = client.projects()
         val project =
             projectService.create(
-                ProjectCreateParams.builder().name("name").orgName("org_name").build()
+                ProjectCreateParams.builder().name("x").orgName("org_name").build()
             )
         println(project)
         project.validate()

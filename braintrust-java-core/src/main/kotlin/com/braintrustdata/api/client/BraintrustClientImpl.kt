@@ -53,6 +53,10 @@ constructor(
         ProjectTagServiceImpl(clientOptionsWithUserAgent)
     }
 
+    private val spanIframes: SpanIframeService by lazy {
+        SpanIframeServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val functions: FunctionService by lazy {
         FunctionServiceImpl(clientOptionsWithUserAgent)
     }
@@ -96,6 +100,8 @@ constructor(
     override fun projectScores(): ProjectScoreService = projectScores
 
     override fun projectTags(): ProjectTagService = projectTags
+
+    override fun spanIframes(): SpanIframeService = spanIframes
 
     override fun functions(): FunctionService = functions
 

@@ -11,7 +11,7 @@ class GroupReplaceParamsTest {
     @Test
     fun createGroupReplaceParams() {
         GroupReplaceParams.builder()
-            .name("name")
+            .name("x")
             .description("description")
             .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
             .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
@@ -23,7 +23,7 @@ class GroupReplaceParamsTest {
     fun getBody() {
         val params =
             GroupReplaceParams.builder()
-                .name("name")
+                .name("x")
                 .description("description")
                 .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
                 .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
@@ -31,7 +31,7 @@ class GroupReplaceParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
         assertThat(body.description()).isEqualTo("description")
         assertThat(body.memberGroups()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         assertThat(body.memberUsers()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
@@ -40,9 +40,9 @@ class GroupReplaceParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = GroupReplaceParams.builder().name("name").build()
+        val params = GroupReplaceParams.builder().name("x").build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).isEqualTo("x")
     }
 }

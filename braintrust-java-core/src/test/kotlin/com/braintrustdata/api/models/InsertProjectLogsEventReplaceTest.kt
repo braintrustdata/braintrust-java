@@ -31,6 +31,9 @@ class InsertProjectLogsEventReplaceTest {
                 .metadata(InsertProjectLogsEventReplace.Metadata.builder().build())
                 .metrics(
                     InsertProjectLogsEventReplace.Metrics.builder()
+                        .callerFilename(JsonNull.of())
+                        .callerFunctionname(JsonNull.of())
+                        .callerLineno(JsonNull.of())
                         .completionTokens(123L)
                         .end(42.23)
                         .promptTokens(123L)
@@ -71,6 +74,9 @@ class InsertProjectLogsEventReplaceTest {
         assertThat(insertProjectLogsEventReplace.metrics())
             .contains(
                 InsertProjectLogsEventReplace.Metrics.builder()
+                    .callerFilename(JsonNull.of())
+                    .callerFunctionname(JsonNull.of())
+                    .callerLineno(JsonNull.of())
                     .completionTokens(123L)
                     .end(42.23)
                     .promptTokens(123L)

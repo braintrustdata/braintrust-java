@@ -61,6 +61,10 @@ constructor(
         ProjectTagServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val spanIframes: SpanIframeServiceAsync by lazy {
+        SpanIframeServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val functions: FunctionServiceAsync by lazy {
         FunctionServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -108,6 +112,8 @@ constructor(
     override fun projectScores(): ProjectScoreServiceAsync = projectScores
 
     override fun projectTags(): ProjectTagServiceAsync = projectTags
+
+    override fun spanIframes(): SpanIframeServiceAsync = spanIframes
 
     override fun functions(): FunctionServiceAsync = functions
 

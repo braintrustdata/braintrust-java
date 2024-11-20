@@ -22,7 +22,16 @@ class DatasetEventTest {
                 .spanId("span_id")
                 .expected(JsonNull.of())
                 .input(JsonNull.of())
+                .isRoot(true)
                 .metadata(DatasetEvent.Metadata.builder().build())
+                .origin(
+                    DatasetEvent.Origin.builder()
+                        .id("id")
+                        ._xactId("_xact_id")
+                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .objectType(DatasetEvent.Origin.ObjectType.EXPERIMENT)
+                        .build()
+                )
                 .tags(listOf("string"))
                 .build()
         assertThat(datasetEvent).isNotNull
@@ -36,7 +45,17 @@ class DatasetEventTest {
         assertThat(datasetEvent.spanId()).isEqualTo("span_id")
         assertThat(datasetEvent._expected()).isEqualTo(JsonNull.of())
         assertThat(datasetEvent._input()).isEqualTo(JsonNull.of())
+        assertThat(datasetEvent.isRoot()).contains(true)
         assertThat(datasetEvent.metadata()).contains(DatasetEvent.Metadata.builder().build())
+        assertThat(datasetEvent.origin())
+            .contains(
+                DatasetEvent.Origin.builder()
+                    .id("id")
+                    ._xactId("_xact_id")
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(DatasetEvent.Origin.ObjectType.EXPERIMENT)
+                    .build()
+            )
         assertThat(datasetEvent.tags().get()).containsExactly("string")
     }
 }

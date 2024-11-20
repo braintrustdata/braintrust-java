@@ -837,6 +837,9 @@ private constructor(
         private val promptTokens: JsonField<Long>,
         private val completionTokens: JsonField<Long>,
         private val tokens: JsonField<Long>,
+        private val callerFunctionname: JsonValue,
+        private val callerFilename: JsonValue,
+        private val callerLineno: JsonValue,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -871,6 +874,15 @@ private constructor(
         /** The total number of tokens in the input and output of the project logs event. */
         fun tokens(): Optional<Long> = Optional.ofNullable(tokens.getNullable("tokens"))
 
+        /** This metric is deprecated */
+        fun callerFunctionname(): JsonValue = callerFunctionname
+
+        /** This metric is deprecated */
+        fun callerFilename(): JsonValue = callerFilename
+
+        /** This metric is deprecated */
+        fun callerLineno(): JsonValue = callerLineno
+
         /**
          * A unix timestamp recording when the section of code which produced the project logs event
          * started
@@ -900,6 +912,17 @@ private constructor(
         /** The total number of tokens in the input and output of the project logs event. */
         @JsonProperty("tokens") @ExcludeMissing fun _tokens() = tokens
 
+        /** This metric is deprecated */
+        @JsonProperty("caller_functionname")
+        @ExcludeMissing
+        fun _callerFunctionname() = callerFunctionname
+
+        /** This metric is deprecated */
+        @JsonProperty("caller_filename") @ExcludeMissing fun _callerFilename() = callerFilename
+
+        /** This metric is deprecated */
+        @JsonProperty("caller_lineno") @ExcludeMissing fun _callerLineno() = callerLineno
+
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -911,6 +934,9 @@ private constructor(
                 promptTokens()
                 completionTokens()
                 tokens()
+                callerFunctionname()
+                callerFilename()
+                callerLineno()
                 validated = true
             }
         }
@@ -929,6 +955,9 @@ private constructor(
             private var promptTokens: JsonField<Long> = JsonMissing.of()
             private var completionTokens: JsonField<Long> = JsonMissing.of()
             private var tokens: JsonField<Long> = JsonMissing.of()
+            private var callerFunctionname: JsonValue = JsonMissing.of()
+            private var callerFilename: JsonValue = JsonMissing.of()
+            private var callerLineno: JsonValue = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -938,6 +967,9 @@ private constructor(
                 this.promptTokens = metrics.promptTokens
                 this.completionTokens = metrics.completionTokens
                 this.tokens = metrics.tokens
+                this.callerFunctionname = metrics.callerFunctionname
+                this.callerFilename = metrics.callerFilename
+                this.callerLineno = metrics.callerLineno
                 additionalProperties(metrics.additionalProperties)
             }
 
@@ -1010,6 +1042,25 @@ private constructor(
             @ExcludeMissing
             fun tokens(tokens: JsonField<Long>) = apply { this.tokens = tokens }
 
+            /** This metric is deprecated */
+            @JsonProperty("caller_functionname")
+            @ExcludeMissing
+            fun callerFunctionname(callerFunctionname: JsonValue) = apply {
+                this.callerFunctionname = callerFunctionname
+            }
+
+            /** This metric is deprecated */
+            @JsonProperty("caller_filename")
+            @ExcludeMissing
+            fun callerFilename(callerFilename: JsonValue) = apply {
+                this.callerFilename = callerFilename
+            }
+
+            /** This metric is deprecated */
+            @JsonProperty("caller_lineno")
+            @ExcludeMissing
+            fun callerLineno(callerLineno: JsonValue) = apply { this.callerLineno = callerLineno }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 this.additionalProperties.putAll(additionalProperties)
@@ -1031,6 +1082,9 @@ private constructor(
                     promptTokens,
                     completionTokens,
                     tokens,
+                    callerFunctionname,
+                    callerFilename,
+                    callerLineno,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -1040,20 +1094,20 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metrics && this.start == other.start && this.end == other.end && this.promptTokens == other.promptTokens && this.completionTokens == other.completionTokens && this.tokens == other.tokens && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metrics && this.start == other.start && this.end == other.end && this.promptTokens == other.promptTokens && this.completionTokens == other.completionTokens && this.tokens == other.tokens && this.callerFunctionname == other.callerFunctionname && this.callerFilename == other.callerFilename && this.callerLineno == other.callerLineno && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         private var hashCode: Int = 0
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(start, end, promptTokens, completionTokens, tokens, additionalProperties) /* spotless:on */
+                hashCode = /* spotless:off */ Objects.hash(start, end, promptTokens, completionTokens, tokens, callerFunctionname, callerFilename, callerLineno, additionalProperties) /* spotless:on */
             }
             return hashCode
         }
 
         override fun toString() =
-            "Metrics{start=$start, end=$end, promptTokens=$promptTokens, completionTokens=$completionTokens, tokens=$tokens, additionalProperties=$additionalProperties}"
+            "Metrics{start=$start, end=$end, promptTokens=$promptTokens, completionTokens=$completionTokens, tokens=$tokens, callerFunctionname=$callerFunctionname, callerFilename=$callerFilename, callerLineno=$callerLineno, additionalProperties=$additionalProperties}"
     }
 
     /**

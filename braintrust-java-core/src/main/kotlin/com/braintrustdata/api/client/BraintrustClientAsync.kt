@@ -31,6 +31,8 @@ interface BraintrustClientAsync {
 
     fun projectTags(): ProjectTagServiceAsync
 
+    fun spanIframes(): SpanIframeServiceAsync
+
     fun functions(): FunctionServiceAsync
 
     fun views(): ViewServiceAsync
