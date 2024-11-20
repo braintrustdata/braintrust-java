@@ -79,7 +79,8 @@ interface DatasetServiceAsync {
 
     /**
      * Fetch the events in a dataset. Equivalent to the POST form of the same path, but with the
-     * parameters in the URL query rather than in the request body
+     * parameters in the URL query rather than in the request body. For more complex queries, use
+     * the `POST /btql` endpoint.
      */
     @JvmOverloads
     fun fetch(
@@ -89,7 +90,8 @@ interface DatasetServiceAsync {
 
     /**
      * Fetch the events in a dataset. Equivalent to the GET form of the same path, but with the
-     * parameters in the request body rather than in the URL query
+     * parameters in the request body rather than in the URL query. For more complex queries, use
+     * the `POST /btql` endpoint.
      */
     @JvmOverloads
     fun fetchPost(
