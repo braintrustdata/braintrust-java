@@ -12,33 +12,30 @@ class PromptDataTest {
         val promptData =
             PromptData.builder()
                 .options(
-                    PromptData.Options.builder()
+                    PromptOptions.builder()
                         .model("model")
                         .params(
-                            PromptData.Options.Params.ofOpenAIModelParams(
-                                PromptData.Options.Params.OpenAIModelParams.builder()
+                            PromptOptions.Params.ofOpenAIModelParams(
+                                PromptOptions.Params.OpenAIModelParams.builder()
                                     .frequencyPenalty(42.23)
                                     .functionCall(
-                                        PromptData.Options.Params.OpenAIModelParams.FunctionCall
-                                            .ofAuto(
-                                                PromptData.Options.Params.OpenAIModelParams
-                                                    .FunctionCall
-                                                    .Auto
-                                                    .AUTO
-                                            )
+                                        PromptOptions.Params.OpenAIModelParams.FunctionCall.ofAuto(
+                                            PromptOptions.Params.OpenAIModelParams.FunctionCall.Auto
+                                                .AUTO
+                                        )
                                     )
                                     .maxTokens(42.23)
                                     .n(42.23)
                                     .presencePenalty(42.23)
                                     .responseFormat(
-                                        PromptData.Options.Params.OpenAIModelParams.ResponseFormat
+                                        PromptOptions.Params.OpenAIModelParams.ResponseFormat
                                             .ofJsonObject(
-                                                PromptData.Options.Params.OpenAIModelParams
+                                                PromptOptions.Params.OpenAIModelParams
                                                     .ResponseFormat
                                                     .JsonObject
                                                     .builder()
                                                     .type(
-                                                        PromptData.Options.Params.OpenAIModelParams
+                                                        PromptOptions.Params.OpenAIModelParams
                                                             .ResponseFormat
                                                             .JsonObject
                                                             .Type
@@ -50,13 +47,10 @@ class PromptDataTest {
                                     .stop(listOf("string"))
                                     .temperature(42.23)
                                     .toolChoice(
-                                        PromptData.Options.Params.OpenAIModelParams.ToolChoice
-                                            .ofAuto(
-                                                PromptData.Options.Params.OpenAIModelParams
-                                                    .ToolChoice
-                                                    .Auto
-                                                    .AUTO
-                                            )
+                                        PromptOptions.Params.OpenAIModelParams.ToolChoice.ofAuto(
+                                            PromptOptions.Params.OpenAIModelParams.ToolChoice.Auto
+                                                .AUTO
+                                        )
                                     )
                                     .topP(42.23)
                                     .useCache(true)
@@ -102,16 +96,15 @@ class PromptDataTest {
         assertThat(promptData).isNotNull
         assertThat(promptData.options())
             .contains(
-                PromptData.Options.builder()
+                PromptOptions.builder()
                     .model("model")
                     .params(
-                        PromptData.Options.Params.ofOpenAIModelParams(
-                            PromptData.Options.Params.OpenAIModelParams.builder()
+                        PromptOptions.Params.ofOpenAIModelParams(
+                            PromptOptions.Params.OpenAIModelParams.builder()
                                 .frequencyPenalty(42.23)
                                 .functionCall(
-                                    PromptData.Options.Params.OpenAIModelParams.FunctionCall.ofAuto(
-                                        PromptData.Options.Params.OpenAIModelParams.FunctionCall
-                                            .Auto
+                                    PromptOptions.Params.OpenAIModelParams.FunctionCall.ofAuto(
+                                        PromptOptions.Params.OpenAIModelParams.FunctionCall.Auto
                                             .AUTO
                                     )
                                 )
@@ -119,14 +112,13 @@ class PromptDataTest {
                                 .n(42.23)
                                 .presencePenalty(42.23)
                                 .responseFormat(
-                                    PromptData.Options.Params.OpenAIModelParams.ResponseFormat
+                                    PromptOptions.Params.OpenAIModelParams.ResponseFormat
                                         .ofJsonObject(
-                                            PromptData.Options.Params.OpenAIModelParams
-                                                .ResponseFormat
+                                            PromptOptions.Params.OpenAIModelParams.ResponseFormat
                                                 .JsonObject
                                                 .builder()
                                                 .type(
-                                                    PromptData.Options.Params.OpenAIModelParams
+                                                    PromptOptions.Params.OpenAIModelParams
                                                         .ResponseFormat
                                                         .JsonObject
                                                         .Type
@@ -138,9 +130,8 @@ class PromptDataTest {
                                 .stop(listOf("string"))
                                 .temperature(42.23)
                                 .toolChoice(
-                                    PromptData.Options.Params.OpenAIModelParams.ToolChoice.ofAuto(
-                                        PromptData.Options.Params.OpenAIModelParams.ToolChoice.Auto
-                                            .AUTO
+                                    PromptOptions.Params.OpenAIModelParams.ToolChoice.ofAuto(
+                                        PromptOptions.Params.OpenAIModelParams.ToolChoice.Auto.AUTO
                                     )
                                 )
                                 .topP(42.23)
