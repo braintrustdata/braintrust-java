@@ -20,7 +20,6 @@ class DatasetFetchPostParams
 constructor(
     private val datasetId: String,
     private val cursor: String?,
-    private val filters: List<PathLookupFilter>?,
     private val limit: Long?,
     private val maxRootSpanId: String?,
     private val maxXactId: String?,
@@ -34,8 +33,6 @@ constructor(
 
     fun cursor(): Optional<String> = Optional.ofNullable(cursor)
 
-    fun filters(): Optional<List<PathLookupFilter>> = Optional.ofNullable(filters)
-
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
     fun maxRootSpanId(): Optional<String> = Optional.ofNullable(maxRootSpanId)
@@ -48,7 +45,6 @@ constructor(
     internal fun getBody(): DatasetFetchPostBody {
         return DatasetFetchPostBody(
             cursor,
-            filters,
             limit,
             maxRootSpanId,
             maxXactId,
@@ -73,7 +69,6 @@ constructor(
     class DatasetFetchPostBody
     internal constructor(
         private val cursor: String?,
-        private val filters: List<PathLookupFilter>?,
         private val limit: Long?,
         private val maxRootSpanId: String?,
         private val maxXactId: String?,
@@ -89,16 +84,6 @@ constructor(
          * query
          */
         @JsonProperty("cursor") fun cursor(): String? = cursor
-
-        /**
-         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
-         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
-         * advanced filtering.
-         *
-         * A list of filters on the events to fetch. Currently, only path-lookup type filters are
-         * supported.
-         */
-        @JsonProperty("filters") fun filters(): List<PathLookupFilter>? = filters
 
         /**
          * limit the number of traces fetched
@@ -167,7 +152,6 @@ constructor(
         class Builder {
 
             private var cursor: String? = null
-            private var filters: List<PathLookupFilter>? = null
             private var limit: Long? = null
             private var maxRootSpanId: String? = null
             private var maxXactId: String? = null
@@ -177,7 +161,6 @@ constructor(
             @JvmSynthetic
             internal fun from(datasetFetchPostBody: DatasetFetchPostBody) = apply {
                 this.cursor = datasetFetchPostBody.cursor
-                this.filters = datasetFetchPostBody.filters
                 this.limit = datasetFetchPostBody.limit
                 this.maxRootSpanId = datasetFetchPostBody.maxRootSpanId
                 this.maxXactId = datasetFetchPostBody.maxXactId
@@ -193,17 +176,6 @@ constructor(
              * query
              */
             @JsonProperty("cursor") fun cursor(cursor: String) = apply { this.cursor = cursor }
-
-            /**
-             * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
-             * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
-             * advanced filtering.
-             *
-             * A list of filters on the events to fetch. Currently, only path-lookup type filters
-             * are supported.
-             */
-            @JsonProperty("filters")
-            fun filters(filters: List<PathLookupFilter>) = apply { this.filters = filters }
 
             /**
              * limit the number of traces fetched
@@ -278,7 +250,6 @@ constructor(
             fun build(): DatasetFetchPostBody =
                 DatasetFetchPostBody(
                     cursor,
-                    filters?.toImmutable(),
                     limit,
                     maxRootSpanId,
                     maxXactId,
@@ -292,20 +263,20 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is DatasetFetchPostBody && this.cursor == other.cursor && this.filters == other.filters && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is DatasetFetchPostBody && this.cursor == other.cursor && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         private var hashCode: Int = 0
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(cursor, filters, limit, maxRootSpanId, maxXactId, version, additionalProperties) /* spotless:on */
+                hashCode = /* spotless:off */ Objects.hash(cursor, limit, maxRootSpanId, maxXactId, version, additionalProperties) /* spotless:on */
             }
             return hashCode
         }
 
         override fun toString() =
-            "DatasetFetchPostBody{cursor=$cursor, filters=$filters, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
+            "DatasetFetchPostBody{cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -319,15 +290,15 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetFetchPostParams && this.datasetId == other.datasetId && this.cursor == other.cursor && this.filters == other.filters && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is DatasetFetchPostParams && this.datasetId == other.datasetId && this.cursor == other.cursor && this.limit == other.limit && this.maxRootSpanId == other.maxRootSpanId && this.maxXactId == other.maxXactId && this.version == other.version && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(datasetId, cursor, filters, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+        return /* spotless:off */ Objects.hash(datasetId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
-        "DatasetFetchPostParams{datasetId=$datasetId, cursor=$cursor, filters=$filters, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "DatasetFetchPostParams{datasetId=$datasetId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -341,7 +312,6 @@ constructor(
 
         private var datasetId: String? = null
         private var cursor: String? = null
-        private var filters: MutableList<PathLookupFilter> = mutableListOf()
         private var limit: Long? = null
         private var maxRootSpanId: String? = null
         private var maxXactId: String? = null
@@ -354,7 +324,6 @@ constructor(
         internal fun from(datasetFetchPostParams: DatasetFetchPostParams) = apply {
             this.datasetId = datasetFetchPostParams.datasetId
             this.cursor = datasetFetchPostParams.cursor
-            this.filters(datasetFetchPostParams.filters ?: listOf())
             this.limit = datasetFetchPostParams.limit
             this.maxRootSpanId = datasetFetchPostParams.maxRootSpanId
             this.maxXactId = datasetFetchPostParams.maxXactId
@@ -375,29 +344,6 @@ constructor(
          * query
          */
         fun cursor(cursor: String) = apply { this.cursor = cursor }
-
-        /**
-         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
-         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
-         * advanced filtering.
-         *
-         * A list of filters on the events to fetch. Currently, only path-lookup type filters are
-         * supported.
-         */
-        fun filters(filters: List<PathLookupFilter>) = apply {
-            this.filters.clear()
-            this.filters.addAll(filters)
-        }
-
-        /**
-         * NOTE: This parameter is deprecated and will be removed in a future revision. Consider
-         * using the `/btql` endpoint (https://www.braintrust.dev/docs/reference/btql) for more
-         * advanced filtering.
-         *
-         * A list of filters on the events to fetch. Currently, only path-lookup type filters are
-         * supported.
-         */
-        fun addFilter(filter: PathLookupFilter) = apply { this.filters.add(filter) }
 
         /**
          * limit the number of traces fetched
@@ -576,7 +522,6 @@ constructor(
             DatasetFetchPostParams(
                 checkNotNull(datasetId) { "`datasetId` is required but was not set" },
                 cursor,
-                if (filters.size == 0) null else filters.toImmutable(),
                 limit,
                 maxRootSpanId,
                 maxXactId,
