@@ -56,10 +56,7 @@ class ExperimentEventTest {
                 .output(JsonNull.of())
                 .scores(ExperimentEvent.Scores.builder().build())
                 .spanAttributes(
-                    ExperimentEvent.SpanAttributes.builder()
-                        .name("name")
-                        .type(ExperimentEvent.SpanAttributes.Type.LLM)
-                        .build()
+                    SpanAttributes.builder().name("name").type(SpanAttributes.Type.LLM).build()
                 )
                 .spanParents(listOf("string"))
                 .tags(listOf("string"))
@@ -112,12 +109,7 @@ class ExperimentEventTest {
         assertThat(experimentEvent._output()).isEqualTo(JsonNull.of())
         assertThat(experimentEvent.scores()).contains(ExperimentEvent.Scores.builder().build())
         assertThat(experimentEvent.spanAttributes())
-            .contains(
-                ExperimentEvent.SpanAttributes.builder()
-                    .name("name")
-                    .type(ExperimentEvent.SpanAttributes.Type.LLM)
-                    .build()
-            )
+            .contains(SpanAttributes.builder().name("name").type(SpanAttributes.Type.LLM).build())
         assertThat(experimentEvent.spanParents().get()).containsExactly("string")
         assertThat(experimentEvent.tags().get()).containsExactly("string")
     }

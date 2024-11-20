@@ -2,34 +2,23 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
-import java.util.Optional
 
 class DatasetInsertParams
 constructor(
     private val datasetId: String,
-    private val events: List<Event>,
+    private val events: List<InsertDatasetEvent>,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -37,7 +26,7 @@ constructor(
 
     fun datasetId(): String = datasetId
 
-    fun events(): List<Event> = events
+    fun events(): List<InsertDatasetEvent> = events
 
     @JvmSynthetic
     internal fun getBody(): DatasetInsertBody {
@@ -59,12 +48,12 @@ constructor(
     @NoAutoDetect
     class DatasetInsertBody
     internal constructor(
-        private val events: List<Event>?,
+        private val events: List<InsertDatasetEvent>?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** A list of dataset events to insert */
-        @JsonProperty("events") fun events(): List<Event>? = events
+        @JsonProperty("events") fun events(): List<InsertDatasetEvent>? = events
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -79,7 +68,7 @@ constructor(
 
         class Builder {
 
-            private var events: List<Event>? = null
+            private var events: List<InsertDatasetEvent>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -89,7 +78,8 @@ constructor(
             }
 
             /** A list of dataset events to insert */
-            @JsonProperty("events") fun events(events: List<Event>) = apply { this.events = events }
+            @JsonProperty("events")
+            fun events(events: List<InsertDatasetEvent>) = apply { this.events = events }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -165,7 +155,7 @@ constructor(
     class Builder {
 
         private var datasetId: String? = null
-        private var events: MutableList<Event> = mutableListOf()
+        private var events: MutableList<InsertDatasetEvent> = mutableListOf()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -183,13 +173,13 @@ constructor(
         fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
 
         /** A list of dataset events to insert */
-        fun events(events: List<Event>) = apply {
+        fun events(events: List<InsertDatasetEvent>) = apply {
             this.events.clear()
             this.events.addAll(events)
         }
 
         /** A list of dataset events to insert */
-        fun addEvent(event: Event) = apply { this.events.add(event) }
+        fun addEvent(event: InsertDatasetEvent) = apply { this.events.add(event) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -319,139 +309,5 @@ constructor(
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
-    }
-
-    @JsonDeserialize(using = Event.Deserializer::class)
-    @JsonSerialize(using = Event.Serializer::class)
-    class Event
-    private constructor(
-        private val insertDatasetEventReplace: InsertDatasetEventReplace? = null,
-        private val insertDatasetEventMerge: InsertDatasetEventMerge? = null,
-        private val _json: JsonValue? = null,
-    ) {
-
-        private var validated: Boolean = false
-
-        fun insertDatasetEventReplace(): Optional<InsertDatasetEventReplace> =
-            Optional.ofNullable(insertDatasetEventReplace)
-
-        fun insertDatasetEventMerge(): Optional<InsertDatasetEventMerge> =
-            Optional.ofNullable(insertDatasetEventMerge)
-
-        fun isInsertDatasetEventReplace(): Boolean = insertDatasetEventReplace != null
-
-        fun isInsertDatasetEventMerge(): Boolean = insertDatasetEventMerge != null
-
-        fun asInsertDatasetEventReplace(): InsertDatasetEventReplace =
-            insertDatasetEventReplace.getOrThrow("insertDatasetEventReplace")
-
-        fun asInsertDatasetEventMerge(): InsertDatasetEventMerge =
-            insertDatasetEventMerge.getOrThrow("insertDatasetEventMerge")
-
-        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                insertDatasetEventReplace != null ->
-                    visitor.visitInsertDatasetEventReplace(insertDatasetEventReplace)
-                insertDatasetEventMerge != null ->
-                    visitor.visitInsertDatasetEventMerge(insertDatasetEventMerge)
-                else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Event = apply {
-            if (!validated) {
-                if (insertDatasetEventReplace == null && insertDatasetEventMerge == null) {
-                    throw BraintrustInvalidDataException("Unknown Event: $_json")
-                }
-                insertDatasetEventReplace?.validate()
-                insertDatasetEventMerge?.validate()
-                validated = true
-            }
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Event && this.insertDatasetEventReplace == other.insertDatasetEventReplace && this.insertDatasetEventMerge == other.insertDatasetEventMerge /* spotless:on */
-        }
-
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(insertDatasetEventReplace, insertDatasetEventMerge) /* spotless:on */
-        }
-
-        override fun toString(): String {
-            return when {
-                insertDatasetEventReplace != null ->
-                    "Event{insertDatasetEventReplace=$insertDatasetEventReplace}"
-                insertDatasetEventMerge != null ->
-                    "Event{insertDatasetEventMerge=$insertDatasetEventMerge}"
-                _json != null -> "Event{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Event")
-            }
-        }
-
-        companion object {
-
-            @JvmStatic
-            fun ofInsertDatasetEventReplace(insertDatasetEventReplace: InsertDatasetEventReplace) =
-                Event(insertDatasetEventReplace = insertDatasetEventReplace)
-
-            @JvmStatic
-            fun ofInsertDatasetEventMerge(insertDatasetEventMerge: InsertDatasetEventMerge) =
-                Event(insertDatasetEventMerge = insertDatasetEventMerge)
-        }
-
-        interface Visitor<out T> {
-
-            fun visitInsertDatasetEventReplace(
-                insertDatasetEventReplace: InsertDatasetEventReplace
-            ): T
-
-            fun visitInsertDatasetEventMerge(insertDatasetEventMerge: InsertDatasetEventMerge): T
-
-            fun unknown(json: JsonValue?): T {
-                throw BraintrustInvalidDataException("Unknown Event: $json")
-            }
-        }
-
-        class Deserializer : BaseDeserializer<Event>(Event::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Event {
-                val json = JsonValue.fromJsonNode(node)
-
-                tryDeserialize(node, jacksonTypeRef<InsertDatasetEventReplace>()) { it.validate() }
-                    ?.let {
-                        return Event(insertDatasetEventReplace = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<InsertDatasetEventMerge>()) { it.validate() }
-                    ?.let {
-                        return Event(insertDatasetEventMerge = it, _json = json)
-                    }
-
-                return Event(_json = json)
-            }
-        }
-
-        class Serializer : BaseSerializer<Event>(Event::class) {
-
-            override fun serialize(
-                value: Event,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.insertDatasetEventReplace != null ->
-                        generator.writeObject(value.insertDatasetEventReplace)
-                    value.insertDatasetEventMerge != null ->
-                        generator.writeObject(value.insertDatasetEventMerge)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Event")
-                }
-            }
-        }
     }
 }
