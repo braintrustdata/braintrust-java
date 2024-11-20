@@ -1313,7 +1313,7 @@ private constructor(
                 @NoAutoDetect
                 class User
                 private constructor(
-                    private val content: JsonField<Content>,
+                    private val content: JsonField<ChatCompletionContent>,
                     private val role: JsonField<Role>,
                     private val name: JsonField<String>,
                     private val additionalProperties: Map<String, JsonValue>,
@@ -1321,7 +1321,7 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun content(): Optional<Content> =
+                    fun content(): Optional<ChatCompletionContent> =
                         Optional.ofNullable(content.getNullable("content"))
 
                     fun role(): Role = role.getRequired("role")
@@ -1356,7 +1356,7 @@ private constructor(
 
                     class Builder {
 
-                        private var content: JsonField<Content> = JsonMissing.of()
+                        private var content: JsonField<ChatCompletionContent> = JsonMissing.of()
                         private var role: JsonField<Role> = JsonMissing.of()
                         private var name: JsonField<String> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
@@ -1370,11 +1370,13 @@ private constructor(
                             additionalProperties(user.additionalProperties)
                         }
 
-                        fun content(content: Content) = content(JsonField.of(content))
+                        fun content(content: ChatCompletionContent) = content(JsonField.of(content))
 
                         @JsonProperty("content")
                         @ExcludeMissing
-                        fun content(content: JsonField<Content>) = apply { this.content = content }
+                        fun content(content: JsonField<ChatCompletionContent>) = apply {
+                            this.content = content
+                        }
 
                         fun role(role: Role) = role(JsonField.of(role))
 
@@ -1462,330 +1464,6 @@ private constructor(
                             }
 
                         fun asString(): String = _value().asStringOrThrow()
-                    }
-
-                    @JsonDeserialize(using = Content.Deserializer::class)
-                    @JsonSerialize(using = Content.Serializer::class)
-                    class Content
-                    private constructor(
-                        private val text: String? = null,
-                        private val array: List<ChatCompletionContentPart>? = null,
-                        private val _json: JsonValue? = null,
-                    ) {
-
-                        private var validated: Boolean = false
-
-                        fun text(): Optional<String> = Optional.ofNullable(text)
-
-                        fun array(): Optional<List<ChatCompletionContentPart>> =
-                            Optional.ofNullable(array)
-
-                        fun isText(): Boolean = text != null
-
-                        fun isArray(): Boolean = array != null
-
-                        fun asText(): String = text.getOrThrow("text")
-
-                        fun asArray(): List<ChatCompletionContentPart> = array.getOrThrow("array")
-
-                        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-                        fun <T> accept(visitor: Visitor<T>): T {
-                            return when {
-                                text != null -> visitor.visitText(text)
-                                array != null -> visitor.visitArray(array)
-                                else -> visitor.unknown(_json)
-                            }
-                        }
-
-                        fun validate(): Content = apply {
-                            if (!validated) {
-                                if (text == null && array == null) {
-                                    throw BraintrustInvalidDataException("Unknown Content: $_json")
-                                }
-                                validated = true
-                            }
-                        }
-
-                        override fun equals(other: Any?): Boolean {
-                            if (this === other) {
-                                return true
-                            }
-
-                            return /* spotless:off */ other is Content && this.text == other.text && this.array == other.array /* spotless:on */
-                        }
-
-                        override fun hashCode(): Int {
-                            return /* spotless:off */ Objects.hash(text, array) /* spotless:on */
-                        }
-
-                        override fun toString(): String {
-                            return when {
-                                text != null -> "Content{text=$text}"
-                                array != null -> "Content{array=$array}"
-                                _json != null -> "Content{_unknown=$_json}"
-                                else -> throw IllegalStateException("Invalid Content")
-                            }
-                        }
-
-                        companion object {
-
-                            @JvmStatic fun ofText(text: String) = Content(text = text)
-
-                            @JvmStatic
-                            fun ofArray(array: List<ChatCompletionContentPart>) =
-                                Content(array = array)
-                        }
-
-                        interface Visitor<out T> {
-
-                            fun visitText(text: String): T
-
-                            fun visitArray(array: List<ChatCompletionContentPart>): T
-
-                            fun unknown(json: JsonValue?): T {
-                                throw BraintrustInvalidDataException("Unknown Content: $json")
-                            }
-                        }
-
-                        class Deserializer : BaseDeserializer<Content>(Content::class) {
-
-                            override fun ObjectCodec.deserialize(node: JsonNode): Content {
-                                val json = JsonValue.fromJsonNode(node)
-
-                                tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                                    return Content(text = it, _json = json)
-                                }
-                                tryDeserialize(
-                                        node,
-                                        jacksonTypeRef<List<ChatCompletionContentPart>>()
-                                    )
-                                    ?.let {
-                                        return Content(array = it, _json = json)
-                                    }
-
-                                return Content(_json = json)
-                            }
-                        }
-
-                        class Serializer : BaseSerializer<Content>(Content::class) {
-
-                            override fun serialize(
-                                value: Content,
-                                generator: JsonGenerator,
-                                provider: SerializerProvider
-                            ) {
-                                when {
-                                    value.text != null -> generator.writeObject(value.text)
-                                    value.array != null -> generator.writeObject(value.array)
-                                    value._json != null -> generator.writeObject(value._json)
-                                    else -> throw IllegalStateException("Invalid Content")
-                                }
-                            }
-                        }
-
-                        @JsonDeserialize(using = ChatCompletionContentPart.Deserializer::class)
-                        @JsonSerialize(using = ChatCompletionContentPart.Serializer::class)
-                        class ChatCompletionContentPart
-                        private constructor(
-                            private val chatCompletionContentPartText:
-                                ChatCompletionContentPartText? =
-                                null,
-                            private val chatCompletionContentPartImage:
-                                ChatCompletionContentPartImage? =
-                                null,
-                            private val _json: JsonValue? = null,
-                        ) {
-
-                            private var validated: Boolean = false
-
-                            fun chatCompletionContentPartText():
-                                Optional<ChatCompletionContentPartText> =
-                                Optional.ofNullable(chatCompletionContentPartText)
-
-                            fun chatCompletionContentPartImage():
-                                Optional<ChatCompletionContentPartImage> =
-                                Optional.ofNullable(chatCompletionContentPartImage)
-
-                            fun isChatCompletionContentPartText(): Boolean =
-                                chatCompletionContentPartText != null
-
-                            fun isChatCompletionContentPartImage(): Boolean =
-                                chatCompletionContentPartImage != null
-
-                            fun asChatCompletionContentPartText(): ChatCompletionContentPartText =
-                                chatCompletionContentPartText.getOrThrow(
-                                    "chatCompletionContentPartText"
-                                )
-
-                            fun asChatCompletionContentPartImage(): ChatCompletionContentPartImage =
-                                chatCompletionContentPartImage.getOrThrow(
-                                    "chatCompletionContentPartImage"
-                                )
-
-                            fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-                            fun <T> accept(visitor: Visitor<T>): T {
-                                return when {
-                                    chatCompletionContentPartText != null ->
-                                        visitor.visitChatCompletionContentPartText(
-                                            chatCompletionContentPartText
-                                        )
-                                    chatCompletionContentPartImage != null ->
-                                        visitor.visitChatCompletionContentPartImage(
-                                            chatCompletionContentPartImage
-                                        )
-                                    else -> visitor.unknown(_json)
-                                }
-                            }
-
-                            fun validate(): ChatCompletionContentPart = apply {
-                                if (!validated) {
-                                    if (
-                                        chatCompletionContentPartText == null &&
-                                            chatCompletionContentPartImage == null
-                                    ) {
-                                        throw BraintrustInvalidDataException(
-                                            "Unknown ChatCompletionContentPart: $_json"
-                                        )
-                                    }
-                                    chatCompletionContentPartText?.validate()
-                                    chatCompletionContentPartImage?.validate()
-                                    validated = true
-                                }
-                            }
-
-                            override fun equals(other: Any?): Boolean {
-                                if (this === other) {
-                                    return true
-                                }
-
-                                return /* spotless:off */ other is ChatCompletionContentPart && this.chatCompletionContentPartText == other.chatCompletionContentPartText && this.chatCompletionContentPartImage == other.chatCompletionContentPartImage /* spotless:on */
-                            }
-
-                            override fun hashCode(): Int {
-                                return /* spotless:off */ Objects.hash(chatCompletionContentPartText, chatCompletionContentPartImage) /* spotless:on */
-                            }
-
-                            override fun toString(): String {
-                                return when {
-                                    chatCompletionContentPartText != null ->
-                                        "ChatCompletionContentPart{chatCompletionContentPartText=$chatCompletionContentPartText}"
-                                    chatCompletionContentPartImage != null ->
-                                        "ChatCompletionContentPart{chatCompletionContentPartImage=$chatCompletionContentPartImage}"
-                                    _json != null -> "ChatCompletionContentPart{_unknown=$_json}"
-                                    else ->
-                                        throw IllegalStateException(
-                                            "Invalid ChatCompletionContentPart"
-                                        )
-                                }
-                            }
-
-                            companion object {
-
-                                @JvmStatic
-                                fun ofChatCompletionContentPartText(
-                                    chatCompletionContentPartText: ChatCompletionContentPartText
-                                ) =
-                                    ChatCompletionContentPart(
-                                        chatCompletionContentPartText =
-                                            chatCompletionContentPartText
-                                    )
-
-                                @JvmStatic
-                                fun ofChatCompletionContentPartImage(
-                                    chatCompletionContentPartImage: ChatCompletionContentPartImage
-                                ) =
-                                    ChatCompletionContentPart(
-                                        chatCompletionContentPartImage =
-                                            chatCompletionContentPartImage
-                                    )
-                            }
-
-                            interface Visitor<out T> {
-
-                                fun visitChatCompletionContentPartText(
-                                    chatCompletionContentPartText: ChatCompletionContentPartText
-                                ): T
-
-                                fun visitChatCompletionContentPartImage(
-                                    chatCompletionContentPartImage: ChatCompletionContentPartImage
-                                ): T
-
-                                fun unknown(json: JsonValue?): T {
-                                    throw BraintrustInvalidDataException(
-                                        "Unknown ChatCompletionContentPart: $json"
-                                    )
-                                }
-                            }
-
-                            class Deserializer :
-                                BaseDeserializer<ChatCompletionContentPart>(
-                                    ChatCompletionContentPart::class
-                                ) {
-
-                                override fun ObjectCodec.deserialize(
-                                    node: JsonNode
-                                ): ChatCompletionContentPart {
-                                    val json = JsonValue.fromJsonNode(node)
-
-                                    tryDeserialize(
-                                            node,
-                                            jacksonTypeRef<ChatCompletionContentPartText>()
-                                        ) {
-                                            it.validate()
-                                        }
-                                        ?.let {
-                                            return ChatCompletionContentPart(
-                                                chatCompletionContentPartText = it,
-                                                _json = json
-                                            )
-                                        }
-                                    tryDeserialize(
-                                            node,
-                                            jacksonTypeRef<ChatCompletionContentPartImage>()
-                                        ) {
-                                            it.validate()
-                                        }
-                                        ?.let {
-                                            return ChatCompletionContentPart(
-                                                chatCompletionContentPartImage = it,
-                                                _json = json
-                                            )
-                                        }
-
-                                    return ChatCompletionContentPart(_json = json)
-                                }
-                            }
-
-                            class Serializer :
-                                BaseSerializer<ChatCompletionContentPart>(
-                                    ChatCompletionContentPart::class
-                                ) {
-
-                                override fun serialize(
-                                    value: ChatCompletionContentPart,
-                                    generator: JsonGenerator,
-                                    provider: SerializerProvider
-                                ) {
-                                    when {
-                                        value.chatCompletionContentPartText != null ->
-                                            generator.writeObject(
-                                                value.chatCompletionContentPartText
-                                            )
-                                        value.chatCompletionContentPartImage != null ->
-                                            generator.writeObject(
-                                                value.chatCompletionContentPartImage
-                                            )
-                                        value._json != null -> generator.writeObject(value._json)
-                                        else ->
-                                            throw IllegalStateException(
-                                                "Invalid ChatCompletionContentPart"
-                                            )
-                                    }
-                                }
-                            }
-                        }
                     }
 
                     override fun equals(other: Any?): Boolean {
