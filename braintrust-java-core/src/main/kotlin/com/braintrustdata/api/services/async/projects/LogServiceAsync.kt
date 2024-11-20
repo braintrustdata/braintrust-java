@@ -7,11 +7,11 @@ package com.braintrustdata.api.services.async.projects
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchProjectLogsEventsResponse
+import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
-import com.braintrustdata.api.models.ProjectLogInsertResponse
 import java.util.concurrent.CompletableFuture
 
 interface LogServiceAsync {
@@ -25,7 +25,8 @@ interface LogServiceAsync {
 
     /**
      * Fetch the events in a project logs. Equivalent to the POST form of the same path, but with
-     * the parameters in the URL query rather than in the request body
+     * the parameters in the URL query rather than in the request body. For more complex queries,
+     * use the `POST /btql` endpoint.
      */
     @JvmOverloads
     fun fetch(
@@ -35,7 +36,8 @@ interface LogServiceAsync {
 
     /**
      * Fetch the events in a project logs. Equivalent to the GET form of the same path, but with the
-     * parameters in the request body rather than in the URL query
+     * parameters in the request body rather than in the URL query. For more complex queries, use
+     * the `POST /btql` endpoint.
      */
     @JvmOverloads
     fun fetchPost(
@@ -48,5 +50,5 @@ interface LogServiceAsync {
     fun insert(
         params: ProjectLogInsertParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<ProjectLogInsertResponse>
+    ): CompletableFuture<InsertEventsResponse>
 }
