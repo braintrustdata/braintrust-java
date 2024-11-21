@@ -186,17 +186,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectScoreReplaceBody && this.name == other.name && this.projectId == other.projectId && this.scoreType == other.scoreType && this.categories == other.categories && this.config == other.config && this.description == other.description && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ProjectScoreReplaceBody && name == other.name && projectId == other.projectId && scoreType == other.scoreType && categories == other.categories && config == other.config && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, projectId, scoreType, categories, config, description, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, projectId, scoreType, categories, config, description, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ProjectScoreReplaceBody{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, config=$config, description=$description, additionalProperties=$additionalProperties}"
@@ -213,12 +210,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreReplaceParams && this.name == other.name && this.projectId == other.projectId && this.scoreType == other.scoreType && this.categories == other.categories && this.config == other.config && this.description == other.description && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectScoreReplaceParams && name == other.name && projectId == other.projectId && scoreType == other.scoreType && categories == other.categories && config == other.config && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(name, projectId, scoreType, categories, config, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, scoreType, categories, config, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ProjectScoreReplaceParams{name=$name, projectId=$projectId, scoreType=$scoreType, categories=$categories, config=$config, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -440,7 +435,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ScoreType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ScoreType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -580,15 +575,13 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Categories && this.categorical == other.categorical && this.weighted == other.weighted && this.minimum == other.minimum && this.nullableVariant == other.nullableVariant /* spotless:on */
+            return /* spotless:off */ other is Categories && categorical == other.categorical && weighted == other.weighted && minimum == other.minimum && nullableVariant == other.nullableVariant /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(categorical, weighted, minimum, nullableVariant) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(categorical, weighted, minimum, nullableVariant) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 categorical != null -> "Categories{categorical=$categorical}"
                 weighted != null -> "Categories{weighted=$weighted}"
                 minimum != null -> "Categories{minimum=$minimum}"
@@ -596,7 +589,6 @@ constructor(
                 _json != null -> "Categories{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Categories")
             }
-        }
 
         companion object {
 
@@ -732,17 +724,14 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Weighted && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Weighted && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() = "Weighted{additionalProperties=$additionalProperties}"
         }
@@ -805,17 +794,14 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is NullableVariant && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is NullableVariant && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() = "NullableVariant{additionalProperties=$additionalProperties}"
         }

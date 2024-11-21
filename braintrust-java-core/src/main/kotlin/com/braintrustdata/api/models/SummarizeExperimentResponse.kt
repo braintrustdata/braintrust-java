@@ -272,17 +272,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metrics && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metrics && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metrics{additionalProperties=$additionalProperties}"
     }
@@ -345,17 +342,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Scores && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Scores && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Scores{additionalProperties=$additionalProperties}"
     }
@@ -365,17 +359,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SummarizeExperimentResponse && this.projectName == other.projectName && this.experimentName == other.experimentName && this.projectUrl == other.projectUrl && this.experimentUrl == other.experimentUrl && this.comparisonExperimentName == other.comparisonExperimentName && this.scores == other.scores && this.metrics == other.metrics && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SummarizeExperimentResponse && projectName == other.projectName && experimentName == other.experimentName && projectUrl == other.projectUrl && experimentUrl == other.experimentUrl && comparisonExperimentName == other.comparisonExperimentName && scores == other.scores && metrics == other.metrics && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(projectName, experimentName, projectUrl, experimentUrl, comparisonExperimentName, scores, metrics, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(projectName, experimentName, projectUrl, experimentUrl, comparisonExperimentName, scores, metrics, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "SummarizeExperimentResponse{projectName=$projectName, experimentName=$experimentName, projectUrl=$projectUrl, experimentUrl=$experimentUrl, comparisonExperimentName=$comparisonExperimentName, scores=$scores, metrics=$metrics, additionalProperties=$additionalProperties}"

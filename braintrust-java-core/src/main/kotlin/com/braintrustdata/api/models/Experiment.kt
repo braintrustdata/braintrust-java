@@ -426,17 +426,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
@@ -446,17 +443,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Experiment && this.id == other.id && this.projectId == other.projectId && this.name == other.name && this.description == other.description && this.created == other.created && this.repoInfo == other.repoInfo && this.commit == other.commit && this.baseExpId == other.baseExpId && this.deletedAt == other.deletedAt && this.datasetId == other.datasetId && this.datasetVersion == other.datasetVersion && this.public_ == other.public_ && this.userId == other.userId && this.metadata == other.metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Experiment && id == other.id && projectId == other.projectId && name == other.name && description == other.description && created == other.created && repoInfo == other.repoInfo && commit == other.commit && baseExpId == other.baseExpId && deletedAt == other.deletedAt && datasetId == other.datasetId && datasetVersion == other.datasetVersion && public_ == other.public_ && userId == other.userId && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, projectId, name, description, created, repoInfo, commit, baseExpId, deletedAt, datasetId, datasetVersion, public_, userId, metadata, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, projectId, name, description, created, repoInfo, commit, baseExpId, deletedAt, datasetId, datasetVersion, public_, userId, metadata, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Experiment{id=$id, projectId=$projectId, name=$name, description=$description, created=$created, repoInfo=$repoInfo, commit=$commit, baseExpId=$baseExpId, deletedAt=$deletedAt, datasetId=$datasetId, datasetVersion=$datasetVersion, public_=$public_, userId=$userId, metadata=$metadata, additionalProperties=$additionalProperties}"

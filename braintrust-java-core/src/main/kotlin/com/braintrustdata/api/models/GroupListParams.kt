@@ -69,12 +69,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupListParams && this.endingBefore == other.endingBefore && this.groupName == other.groupName && this.ids == other.ids && this.limit == other.limit && this.orgName == other.orgName && this.startingAfter == other.startingAfter && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is GroupListParams && endingBefore == other.endingBefore && groupName == other.groupName && ids == other.ids && limit == other.limit && orgName == other.orgName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(endingBefore, groupName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, groupName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "GroupListParams{endingBefore=$endingBefore, groupName=$groupName, ids=$ids, limit=$limit, orgName=$orgName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
@@ -313,21 +311,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "Ids{string=$string}"
                 strings != null -> "Ids{strings=$strings}"
                 _json != null -> "Ids{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Ids")
             }
-        }
 
         companion object {
 

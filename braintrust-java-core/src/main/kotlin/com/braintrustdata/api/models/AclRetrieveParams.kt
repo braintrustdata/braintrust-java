@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclRetrieveParams && this.aclId == other.aclId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is AclRetrieveParams && aclId == other.aclId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(aclId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aclId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "AclRetrieveParams{aclId=$aclId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

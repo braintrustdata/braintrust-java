@@ -135,7 +135,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Destination && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Destination && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -178,17 +178,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreConfig && this.multiSelect == other.multiSelect && this.destination == other.destination && this.online == other.online && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectScoreConfig && multiSelect == other.multiSelect && destination == other.destination && online == other.online && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(multiSelect, destination, online, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(multiSelect, destination, online, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "ProjectScoreConfig{multiSelect=$multiSelect, destination=$destination, online=$online, additionalProperties=$additionalProperties}"

@@ -190,17 +190,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is MetricSummary && this.name == other.name && this.metric == other.metric && this.unit == other.unit && this.diff == other.diff && this.improvements == other.improvements && this.regressions == other.regressions && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is MetricSummary && name == other.name && metric == other.metric && unit == other.unit && diff == other.diff && improvements == other.improvements && regressions == other.regressions && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(name, metric, unit, diff, improvements, regressions, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(name, metric, unit, diff, improvements, regressions, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "MetricSummary{name=$name, metric=$metric, unit=$unit, diff=$diff, improvements=$improvements, regressions=$regressions, additionalProperties=$additionalProperties}"

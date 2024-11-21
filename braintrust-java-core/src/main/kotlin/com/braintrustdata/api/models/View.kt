@@ -276,7 +276,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -387,7 +387,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -472,17 +472,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is View && this.id == other.id && this.objectType == other.objectType && this.objectId == other.objectId && this.viewType == other.viewType && this.name == other.name && this.created == other.created && this.viewData == other.viewData && this.options == other.options && this.userId == other.userId && this.deletedAt == other.deletedAt && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is View && id == other.id && objectType == other.objectType && objectId == other.objectId && viewType == other.viewType && name == other.name && created == other.created && viewData == other.viewData && options == other.options && userId == other.userId && deletedAt == other.deletedAt && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, objectType, objectId, viewType, name, created, viewData, options, userId, deletedAt, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, objectType, objectId, viewType, name, created, viewData, options, userId, deletedAt, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "View{id=$id, objectType=$objectType, objectId=$objectId, viewType=$viewType, name=$name, created=$created, viewData=$viewData, options=$options, userId=$userId, deletedAt=$deletedAt, additionalProperties=$additionalProperties}"

@@ -158,17 +158,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AclBatchUpdateBody && this.addAcls == other.addAcls && this.removeAcls == other.removeAcls && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is AclBatchUpdateBody && addAcls == other.addAcls && removeAcls == other.removeAcls && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(addAcls, removeAcls, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(addAcls, removeAcls, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "AclBatchUpdateBody{addAcls=$addAcls, removeAcls=$removeAcls, additionalProperties=$additionalProperties}"
@@ -185,12 +182,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclBatchUpdateParams && this.addAcls == other.addAcls && this.removeAcls == other.removeAcls && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is AclBatchUpdateParams && addAcls == other.addAcls && removeAcls == other.removeAcls && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(addAcls, removeAcls, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(addAcls, removeAcls, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "AclBatchUpdateParams{addAcls=$addAcls, removeAcls=$removeAcls, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -577,7 +572,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -688,7 +683,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Permission && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -781,7 +776,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is RestrictObjectType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is RestrictObjectType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -885,17 +880,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AddAcl && this.objectType == other.objectType && this.objectId == other.objectId && this.userId == other.userId && this.groupId == other.groupId && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.roleId == other.roleId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is AddAcl && objectType == other.objectType && objectId == other.objectId && userId == other.userId && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "AddAcl{objectType=$objectType, objectId=$objectId, userId=$userId, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, additionalProperties=$additionalProperties}"
@@ -1074,7 +1066,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1185,7 +1177,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Permission && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1278,7 +1270,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is RestrictObjectType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is RestrictObjectType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1382,17 +1374,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveAcl && this.objectType == other.objectType && this.objectId == other.objectId && this.userId == other.userId && this.groupId == other.groupId && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.roleId == other.roleId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is RemoveAcl && objectType == other.objectType && objectId == other.objectId && userId == other.userId && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "RemoveAcl{objectType=$objectType, objectId=$objectId, userId=$userId, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, additionalProperties=$additionalProperties}"

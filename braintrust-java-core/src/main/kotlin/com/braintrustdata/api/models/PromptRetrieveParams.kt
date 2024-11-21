@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptRetrieveParams && this.promptId == other.promptId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is PromptRetrieveParams && promptId == other.promptId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(promptId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(promptId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "PromptRetrieveParams{promptId=$promptId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

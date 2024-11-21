@@ -208,17 +208,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectTag && this.id == other.id && this.projectId == other.projectId && this.userId == other.userId && this.created == other.created && this.name == other.name && this.description == other.description && this.color == other.color && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectTag && id == other.id && projectId == other.projectId && userId == other.userId && created == other.created && name == other.name && description == other.description && color == other.color && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, projectId, userId, created, name, description, color, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, projectId, userId, created, name, description, color, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "ProjectTag{id=$id, projectId=$projectId, userId=$userId, created=$created, name=$name, description=$description, color=$color, additionalProperties=$additionalProperties}"

@@ -263,17 +263,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RepoInfo && this.commit == other.commit && this.branch == other.branch && this.tag == other.tag && this.dirty == other.dirty && this.authorName == other.authorName && this.authorEmail == other.authorEmail && this.commitMessage == other.commitMessage && this.commitTime == other.commitTime && this.gitDiff == other.gitDiff && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is RepoInfo && commit == other.commit && branch == other.branch && tag == other.tag && dirty == other.dirty && authorName == other.authorName && authorEmail == other.authorEmail && commitMessage == other.commitMessage && commitTime == other.commitTime && gitDiff == other.gitDiff && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(commit, branch, tag, dirty, authorName, authorEmail, commitMessage, commitTime, gitDiff, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(commit, branch, tag, dirty, authorName, authorEmail, commitMessage, commitTime, gitDiff, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "RepoInfo{commit=$commit, branch=$branch, tag=$tag, dirty=$dirty, authorName=$authorName, authorEmail=$authorEmail, commitMessage=$commitMessage, commitTime=$commitTime, gitDiff=$gitDiff, additionalProperties=$additionalProperties}"

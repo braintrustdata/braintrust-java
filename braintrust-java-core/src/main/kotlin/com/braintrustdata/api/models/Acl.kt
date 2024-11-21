@@ -330,7 +330,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -441,7 +441,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Permission && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -534,7 +534,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RestrictObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is RestrictObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -637,17 +637,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Acl && this.id == other.id && this.objectType == other.objectType && this.objectId == other.objectId && this.userId == other.userId && this.groupId == other.groupId && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.roleId == other.roleId && this._objectOrgId == other._objectOrgId && this.created == other.created && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Acl && id == other.id && objectType == other.objectType && objectId == other.objectId && userId == other.userId && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && _objectOrgId == other._objectOrgId && created == other.created && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, _objectOrgId, created, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, objectType, objectId, userId, groupId, permission, restrictObjectType, roleId, _objectOrgId, created, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Acl{id=$id, objectType=$objectType, objectId=$objectId, userId=$userId, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, _objectOrgId=$_objectOrgId, created=$created, additionalProperties=$additionalProperties}"

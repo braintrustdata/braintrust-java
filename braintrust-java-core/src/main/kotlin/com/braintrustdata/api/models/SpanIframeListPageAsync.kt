@@ -35,12 +35,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeListPageAsync && this.spanIframesService == other.spanIframesService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is SpanIframeListPageAsync && spanIframesService == other.spanIframesService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(spanIframesService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframesService, params, response) /* spotless:on */
 
     override fun toString() =
         "SpanIframeListPageAsync{spanIframesService=$spanIframesService, params=$params, response=$response}"
@@ -127,15 +125,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.objects == other.objects && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "SpanIframeListPageAsync.Response{objects=$objects, additionalProperties=$additionalProperties}"
+            "Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 

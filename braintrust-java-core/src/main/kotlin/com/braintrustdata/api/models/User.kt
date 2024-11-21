@@ -188,17 +188,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is User && this.id == other.id && this.givenName == other.givenName && this.familyName == other.familyName && this.email == other.email && this.avatarUrl == other.avatarUrl && this.created == other.created && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is User && id == other.id && givenName == other.givenName && familyName == other.familyName && email == other.email && avatarUrl == other.avatarUrl && created == other.created && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, givenName, familyName, email, avatarUrl, created, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, givenName, familyName, email, avatarUrl, created, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "User{id=$id, givenName=$givenName, familyName=$familyName, email=$email, avatarUrl=$avatarUrl, created=$created, additionalProperties=$additionalProperties}"

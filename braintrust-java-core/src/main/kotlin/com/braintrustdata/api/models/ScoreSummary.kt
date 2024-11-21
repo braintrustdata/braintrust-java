@@ -171,17 +171,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ScoreSummary && this.name == other.name && this.score == other.score && this.diff == other.diff && this.improvements == other.improvements && this.regressions == other.regressions && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ScoreSummary && name == other.name && score == other.score && diff == other.diff && improvements == other.improvements && regressions == other.regressions && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(name, score, diff, improvements, regressions, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(name, score, diff, improvements, regressions, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "ScoreSummary{name=$name, score=$score, diff=$diff, improvements=$improvements, regressions=$regressions, additionalProperties=$additionalProperties}"

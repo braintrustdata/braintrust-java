@@ -195,17 +195,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Organization && this.id == other.id && this.name == other.name && this.apiUrl == other.apiUrl && this.isUniversalApi == other.isUniversalApi && this.proxyUrl == other.proxyUrl && this.realtimeUrl == other.realtimeUrl && this.created == other.created && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Organization && id == other.id && name == other.name && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && created == other.created && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, name, apiUrl, isUniversalApi, proxyUrl, realtimeUrl, created, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, name, apiUrl, isUniversalApi, proxyUrl, realtimeUrl, created, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Organization{id=$id, name=$name, apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, created=$created, additionalProperties=$additionalProperties}"

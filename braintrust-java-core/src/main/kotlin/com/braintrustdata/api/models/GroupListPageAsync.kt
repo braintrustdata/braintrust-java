@@ -35,12 +35,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupListPageAsync && this.groupsService == other.groupsService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is GroupListPageAsync && groupsService == other.groupsService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(groupsService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupsService, params, response) /* spotless:on */
 
     override fun toString() =
         "GroupListPageAsync{groupsService=$groupsService, params=$params, response=$response}"
@@ -117,15 +115,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.objects == other.objects && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "GroupListPageAsync.Response{objects=$objects, additionalProperties=$additionalProperties}"
+            "Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 
