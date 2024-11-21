@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AiSecretRetrieveParams && this.aiSecretId == other.aiSecretId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is AiSecretRetrieveParams && aiSecretId == other.aiSecretId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(aiSecretId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "AiSecretRetrieveParams{aiSecretId=$aiSecretId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

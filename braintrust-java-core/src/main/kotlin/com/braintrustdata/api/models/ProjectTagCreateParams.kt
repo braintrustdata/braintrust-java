@@ -144,17 +144,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectTagCreateBody && this.name == other.name && this.projectId == other.projectId && this.color == other.color && this.description == other.description && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ProjectTagCreateBody && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, projectId, color, description, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, projectId, color, description, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ProjectTagCreateBody{name=$name, projectId=$projectId, color=$color, description=$description, additionalProperties=$additionalProperties}"
@@ -171,12 +168,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectTagCreateParams && this.name == other.name && this.projectId == other.projectId && this.color == other.color && this.description == other.description && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectTagCreateParams && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(name, projectId, color, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, color, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ProjectTagCreateParams{name=$name, projectId=$projectId, color=$color, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

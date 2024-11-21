@@ -84,12 +84,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreListParams && this.endingBefore == other.endingBefore && this.ids == other.ids && this.limit == other.limit && this.orgName == other.orgName && this.projectId == other.projectId && this.projectName == other.projectName && this.projectScoreName == other.projectScoreName && this.scoreType == other.scoreType && this.startingAfter == other.startingAfter && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ProjectScoreListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && projectScoreName == other.projectScoreName && scoreType == other.scoreType && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, projectId, projectName, projectScoreName, scoreType, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, projectId, projectName, projectScoreName, scoreType, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ProjectScoreListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, projectScoreName=$projectScoreName, scoreType=$scoreType, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
@@ -358,21 +356,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "Ids{string=$string}"
                 strings != null -> "Ids{strings=$strings}"
                 _json != null -> "Ids{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Ids")
             }
-        }
 
         companion object {
 
@@ -475,21 +470,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ScoreType && this.projectScoreType == other.projectScoreType && this.projectScoreTypes == other.projectScoreTypes /* spotless:on */
+            return /* spotless:off */ other is ScoreType && projectScoreType == other.projectScoreType && projectScoreTypes == other.projectScoreTypes /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(projectScoreType, projectScoreTypes) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectScoreType, projectScoreTypes) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 projectScoreType != null -> "ScoreType{projectScoreType=$projectScoreType}"
                 projectScoreTypes != null -> "ScoreType{projectScoreTypes=$projectScoreTypes}"
                 _json != null -> "ScoreType{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid ScoreType")
             }
-        }
 
         companion object {
 
@@ -559,7 +551,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ProjectScoreType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is ProjectScoreType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -640,7 +632,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ProjectScoreType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is ProjectScoreType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()

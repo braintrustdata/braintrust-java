@@ -183,17 +183,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ColumnSizing && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ColumnSizing && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "ColumnSizing{additionalProperties=$additionalProperties}"
     }
@@ -255,17 +252,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ColumnVisibility && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ColumnVisibility && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "ColumnVisibility{additionalProperties=$additionalProperties}"
     }
@@ -275,17 +269,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewOptions && this.columnVisibility == other.columnVisibility && this.columnOrder == other.columnOrder && this.columnSizing == other.columnSizing && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ViewOptions && columnVisibility == other.columnVisibility && columnOrder == other.columnOrder && columnSizing == other.columnSizing && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(columnVisibility, columnOrder, columnSizing, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(columnVisibility, columnOrder, columnSizing, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "ViewOptions{columnVisibility=$columnVisibility, columnOrder=$columnOrder, columnSizing=$columnSizing, additionalProperties=$additionalProperties}"

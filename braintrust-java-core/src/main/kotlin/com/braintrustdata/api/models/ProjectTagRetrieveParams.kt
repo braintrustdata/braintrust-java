@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectTagRetrieveParams && this.projectTagId == other.projectTagId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ProjectTagRetrieveParams && projectTagId == other.projectTagId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(projectTagId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectTagId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ProjectTagRetrieveParams{projectTagId=$projectTagId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

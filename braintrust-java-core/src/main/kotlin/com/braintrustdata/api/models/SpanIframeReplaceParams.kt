@@ -165,17 +165,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SpanIframeReplaceBody && this.name == other.name && this.projectId == other.projectId && this.url == other.url && this.description == other.description && this.postMessage == other.postMessage && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is SpanIframeReplaceBody && name == other.name && projectId == other.projectId && url == other.url && description == other.description && postMessage == other.postMessage && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, projectId, url, description, postMessage, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, projectId, url, description, postMessage, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "SpanIframeReplaceBody{name=$name, projectId=$projectId, url=$url, description=$description, postMessage=$postMessage, additionalProperties=$additionalProperties}"
@@ -192,12 +189,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeReplaceParams && this.name == other.name && this.projectId == other.projectId && this.url == other.url && this.description == other.description && this.postMessage == other.postMessage && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SpanIframeReplaceParams && name == other.name && projectId == other.projectId && url == other.url && description == other.description && postMessage == other.postMessage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(name, projectId, url, description, postMessage, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, url, description, postMessage, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "SpanIframeReplaceParams{name=$name, projectId=$projectId, url=$url, description=$description, postMessage=$postMessage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

@@ -260,17 +260,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIFrame && this.id == other.id && this.projectId == other.projectId && this.userId == other.userId && this.created == other.created && this.deletedAt == other.deletedAt && this.name == other.name && this.description == other.description && this.url == other.url && this.postMessage == other.postMessage && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SpanIFrame && id == other.id && projectId == other.projectId && userId == other.userId && created == other.created && deletedAt == other.deletedAt && name == other.name && description == other.description && url == other.url && postMessage == other.postMessage && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, projectId, userId, created, deletedAt, name, description, url, postMessage, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, projectId, userId, created, deletedAt, name, description, url, postMessage, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "SpanIFrame{id=$id, projectId=$projectId, userId=$userId, created=$created, deletedAt=$deletedAt, name=$name, description=$description, url=$url, postMessage=$postMessage, additionalProperties=$additionalProperties}"

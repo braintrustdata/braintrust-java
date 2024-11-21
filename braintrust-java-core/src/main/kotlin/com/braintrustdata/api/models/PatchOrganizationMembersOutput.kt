@@ -154,7 +154,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -197,17 +197,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PatchOrganizationMembersOutput && this.status == other.status && this.orgId == other.orgId && this.sendEmailError == other.sendEmailError && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PatchOrganizationMembersOutput && status == other.status && orgId == other.orgId && sendEmailError == other.sendEmailError && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(status, orgId, sendEmailError, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(status, orgId, sendEmailError, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "PatchOrganizationMembersOutput{status=$status, orgId=$orgId, sendEmailError=$sendEmailError, additionalProperties=$additionalProperties}"

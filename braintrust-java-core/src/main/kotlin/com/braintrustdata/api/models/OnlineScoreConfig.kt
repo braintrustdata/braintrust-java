@@ -217,21 +217,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Scorer && this.function == other.function && this.global == other.global /* spotless:on */
+            return /* spotless:off */ other is Scorer && function == other.function && global == other.global /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(function, global) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(function, global) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 function != null -> "Scorer{function=$function}"
                 global != null -> "Scorer{global=$global}"
                 _json != null -> "Scorer{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Scorer")
             }
-        }
 
         companion object {
 
@@ -384,7 +381,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -427,17 +424,14 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Function && this.type == other.type && this.id == other.id && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Function && type == other.type && id == other.id && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(type, id, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(type, id, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "Function{type=$type, id=$id, additionalProperties=$additionalProperties}"
@@ -542,7 +536,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -585,17 +579,14 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Global && this.type == other.type && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Global && type == other.type && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(type, name, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(type, name, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "Global{type=$type, name=$name, additionalProperties=$additionalProperties}"
@@ -607,17 +598,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is OnlineScoreConfig && this.samplingRate == other.samplingRate && this.scorers == other.scorers && this.applyToRootSpan == other.applyToRootSpan && this.applyToSpanNames == other.applyToSpanNames && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is OnlineScoreConfig && samplingRate == other.samplingRate && scorers == other.scorers && applyToRootSpan == other.applyToRootSpan && applyToSpanNames == other.applyToSpanNames && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(samplingRate, scorers, applyToRootSpan, applyToSpanNames, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(samplingRate, scorers, applyToRootSpan, applyToSpanNames, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "OnlineScoreConfig{samplingRate=$samplingRate, scorers=$scorers, applyToRootSpan=$applyToRootSpan, applyToSpanNames=$applyToSpanNames, additionalProperties=$additionalProperties}"

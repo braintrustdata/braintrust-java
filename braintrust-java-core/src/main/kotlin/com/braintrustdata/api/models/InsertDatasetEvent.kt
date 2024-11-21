@@ -773,17 +773,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
@@ -793,17 +790,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InsertDatasetEvent && this.input == other.input && this.expected == other.expected && this.metadata == other.metadata && this.tags == other.tags && this.id == other.id && this.created == other.created && this._objectDelete == other._objectDelete && this._isMerge == other._isMerge && this._mergePaths == other._mergePaths && this._parentId == other._parentId && this.spanId == other.spanId && this.rootSpanId == other.rootSpanId && this.spanParents == other.spanParents && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is InsertDatasetEvent && input == other.input && expected == other.expected && metadata == other.metadata && tags == other.tags && id == other.id && created == other.created && _objectDelete == other._objectDelete && _isMerge == other._isMerge && _mergePaths == other._mergePaths && _parentId == other._parentId && spanId == other.spanId && rootSpanId == other.rootSpanId && spanParents == other.spanParents && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(input, expected, metadata, tags, id, created, _objectDelete, _isMerge, _mergePaths, _parentId, spanId, rootSpanId, spanParents, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(input, expected, metadata, tags, id, created, _objectDelete, _isMerge, _mergePaths, _parentId, spanId, rootSpanId, spanParents, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "InsertDatasetEvent{input=$input, expected=$expected, metadata=$metadata, tags=$tags, id=$id, created=$created, _objectDelete=$_objectDelete, _isMerge=$_isMerge, _mergePaths=$_mergePaths, _parentId=$_parentId, spanId=$spanId, rootSpanId=$rootSpanId, spanParents=$spanParents, additionalProperties=$additionalProperties}"

@@ -145,17 +145,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SpanIframeUpdateBody && this.name == other.name && this.postMessage == other.postMessage && this.url == other.url && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is SpanIframeUpdateBody && name == other.name && postMessage == other.postMessage && url == other.url && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, postMessage, url, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, postMessage, url, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "SpanIframeUpdateBody{name=$name, postMessage=$postMessage, url=$url, additionalProperties=$additionalProperties}"
@@ -172,12 +169,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeUpdateParams && this.spanIframeId == other.spanIframeId && this.name == other.name && this.postMessage == other.postMessage && this.url == other.url && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SpanIframeUpdateParams && spanIframeId == other.spanIframeId && name == other.name && postMessage == other.postMessage && url == other.url && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(spanIframeId, name, postMessage, url, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, name, postMessage, url, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "SpanIframeUpdateParams{spanIframeId=$spanIframeId, name=$name, postMessage=$postMessage, url=$url, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

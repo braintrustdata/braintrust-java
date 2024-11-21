@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentRetrieveParams && this.experimentId == other.experimentId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ExperimentRetrieveParams && experimentId == other.experimentId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(experimentId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ExperimentRetrieveParams{experimentId=$experimentId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

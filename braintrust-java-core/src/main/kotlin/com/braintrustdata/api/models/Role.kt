@@ -437,7 +437,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Permission && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -530,7 +530,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is RestrictObjectType && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is RestrictObjectType && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -634,17 +634,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is MemberPermission && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is MemberPermission && permission == other.permission && restrictObjectType == other.restrictObjectType && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(permission, restrictObjectType, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(permission, restrictObjectType, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "MemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
@@ -655,17 +652,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Role && this.id == other.id && this.orgId == other.orgId && this.userId == other.userId && this.created == other.created && this.name == other.name && this.description == other.description && this.deletedAt == other.deletedAt && this.memberPermissions == other.memberPermissions && this.memberRoles == other.memberRoles && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Role && id == other.id && orgId == other.orgId && userId == other.userId && created == other.created && name == other.name && description == other.description && deletedAt == other.deletedAt && memberPermissions == other.memberPermissions && memberRoles == other.memberRoles && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, orgId, userId, created, name, description, deletedAt, memberPermissions, memberRoles, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, orgId, userId, created, name, description, deletedAt, memberPermissions, memberRoles, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Role{id=$id, orgId=$orgId, userId=$userId, created=$created, name=$name, description=$description, deletedAt=$deletedAt, memberPermissions=$memberPermissions, memberRoles=$memberRoles, additionalProperties=$additionalProperties}"

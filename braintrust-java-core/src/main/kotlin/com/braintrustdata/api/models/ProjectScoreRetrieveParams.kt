@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreRetrieveParams && this.projectScoreId == other.projectScoreId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ProjectScoreRetrieveParams && projectScoreId == other.projectScoreId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(projectScoreId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectScoreId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ProjectScoreRetrieveParams{projectScoreId=$projectScoreId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

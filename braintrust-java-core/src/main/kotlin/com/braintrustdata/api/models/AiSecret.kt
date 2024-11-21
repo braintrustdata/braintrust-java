@@ -250,17 +250,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
@@ -270,17 +267,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AISecret && this.id == other.id && this.created == other.created && this.orgId == other.orgId && this.name == other.name && this.type == other.type && this.metadata == other.metadata && this.previewSecret == other.previewSecret && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AISecret && id == other.id && created == other.created && orgId == other.orgId && name == other.name && type == other.type && metadata == other.metadata && previewSecret == other.previewSecret && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, created, orgId, name, type, metadata, previewSecret, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, created, orgId, name, type, metadata, previewSecret, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "AISecret{id=$id, created=$created, orgId=$orgId, name=$name, type=$type, metadata=$metadata, previewSecret=$previewSecret, additionalProperties=$additionalProperties}"

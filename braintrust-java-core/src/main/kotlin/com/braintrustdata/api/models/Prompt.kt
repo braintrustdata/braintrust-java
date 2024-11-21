@@ -349,7 +349,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is LogId && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is LogId && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -400,7 +400,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is FunctionType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is FunctionType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -514,17 +514,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
@@ -534,17 +531,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Prompt && this.id == other.id && this._xactId == other._xactId && this.projectId == other.projectId && this.logId == other.logId && this.orgId == other.orgId && this.name == other.name && this.slug == other.slug && this.description == other.description && this.created == other.created && this.promptData == other.promptData && this.tags == other.tags && this.metadata == other.metadata && this.functionType == other.functionType && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Prompt && id == other.id && _xactId == other._xactId && projectId == other.projectId && logId == other.logId && orgId == other.orgId && name == other.name && slug == other.slug && description == other.description && created == other.created && promptData == other.promptData && tags == other.tags && metadata == other.metadata && functionType == other.functionType && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, _xactId, projectId, logId, orgId, name, slug, description, created, promptData, tags, metadata, functionType, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, _xactId, projectId, logId, orgId, name, slug, description, created, promptData, tags, metadata, functionType, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Prompt{id=$id, _xactId=$_xactId, projectId=$projectId, logId=$logId, orgId=$orgId, name=$name, slug=$slug, description=$description, created=$created, promptData=$promptData, tags=$tags, metadata=$metadata, functionType=$functionType, additionalProperties=$additionalProperties}"

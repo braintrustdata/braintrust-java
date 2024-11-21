@@ -163,17 +163,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is OrganizationUpdateBody && this.apiUrl == other.apiUrl && this.isUniversalApi == other.isUniversalApi && this.name == other.name && this.proxyUrl == other.proxyUrl && this.realtimeUrl == other.realtimeUrl && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is OrganizationUpdateBody && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "OrganizationUpdateBody{apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalProperties=$additionalProperties}"
@@ -190,12 +187,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is OrganizationUpdateParams && this.organizationId == other.organizationId && this.apiUrl == other.apiUrl && this.isUniversalApi == other.isUniversalApi && this.name == other.name && this.proxyUrl == other.proxyUrl && this.realtimeUrl == other.realtimeUrl && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(organizationId, apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationId, apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "OrganizationUpdateParams{organizationId=$organizationId, apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
