@@ -203,17 +203,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CreateApiKeyOutput && this.id == other.id && this.created == other.created && this.name == other.name && this.previewName == other.previewName && this.userId == other.userId && this.orgId == other.orgId && this.key == other.key && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CreateApiKeyOutput && id == other.id && created == other.created && name == other.name && previewName == other.previewName && userId == other.userId && orgId == other.orgId && key == other.key && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, created, name, previewName, userId, orgId, key, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, created, name, previewName, userId, orgId, key, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "CreateApiKeyOutput{id=$id, created=$created, name=$name, previewName=$previewName, userId=$userId, orgId=$orgId, key=$key, additionalProperties=$additionalProperties}"

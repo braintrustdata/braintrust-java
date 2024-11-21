@@ -131,17 +131,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectUpdateBody && this.name == other.name && this.settings == other.settings && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ProjectUpdateBody && name == other.name && settings == other.settings && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, settings, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, settings, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ProjectUpdateBody{name=$name, settings=$settings, additionalProperties=$additionalProperties}"
@@ -158,12 +155,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectUpdateParams && this.projectId == other.projectId && this.name == other.name && this.settings == other.settings && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectUpdateParams && projectId == other.projectId && name == other.name && settings == other.settings && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(projectId, name, settings, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, name, settings, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ProjectUpdateParams{projectId=$projectId, name=$name, settings=$settings, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

@@ -135,17 +135,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewDataSearch && this.filter == other.filter && this.tag == other.tag && this.match == other.match && this.sort == other.sort && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ViewDataSearch && filter == other.filter && tag == other.tag && match == other.match && sort == other.sort && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(filter, tag, match, sort, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(filter, tag, match, sort, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "ViewDataSearch{filter=$filter, tag=$tag, match=$match, sort=$sort, additionalProperties=$additionalProperties}"

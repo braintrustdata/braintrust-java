@@ -107,17 +107,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is DatasetInsertBody && this.events == other.events && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is DatasetInsertBody && events == other.events && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(events, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(events, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "DatasetInsertBody{events=$events, additionalProperties=$additionalProperties}"
@@ -134,12 +131,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetInsertParams && this.datasetId == other.datasetId && this.events == other.events && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is DatasetInsertParams && datasetId == other.datasetId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(datasetId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "DatasetInsertParams{datasetId=$datasetId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

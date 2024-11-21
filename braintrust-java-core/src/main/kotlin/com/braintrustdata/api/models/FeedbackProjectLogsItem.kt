@@ -312,17 +312,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
@@ -388,17 +385,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Scores && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Scores && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Scores{additionalProperties=$additionalProperties}"
     }
@@ -416,7 +410,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Source && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Source && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -471,17 +465,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FeedbackProjectLogsItem && this.id == other.id && this.scores == other.scores && this.expected == other.expected && this.comment == other.comment && this.metadata == other.metadata && this.source == other.source && this.tags == other.tags && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is FeedbackProjectLogsItem && id == other.id && scores == other.scores && expected == other.expected && comment == other.comment && metadata == other.metadata && source == other.source && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, scores, expected, comment, metadata, source, tags, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, scores, expected, comment, metadata, source, tags, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "FeedbackProjectLogsItem{id=$id, scores=$scores, expected=$expected, comment=$comment, metadata=$metadata, source=$source, tags=$tags, additionalProperties=$additionalProperties}"

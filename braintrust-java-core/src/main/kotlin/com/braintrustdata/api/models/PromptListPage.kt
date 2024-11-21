@@ -34,12 +34,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptListPage && this.promptsService == other.promptsService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is PromptListPage && promptsService == other.promptsService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(promptsService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(promptsService, params, response) /* spotless:on */
 
     override fun toString() =
         "PromptListPage{promptsService=$promptsService, params=$params, response=$response}"
@@ -114,15 +112,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.objects == other.objects && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "PromptListPage.Response{objects=$objects, additionalProperties=$additionalProperties}"
+            "Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 

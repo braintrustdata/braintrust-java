@@ -123,17 +123,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ApiKeyCreateBody && this.name == other.name && this.orgName == other.orgName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ApiKeyCreateBody && name == other.name && orgName == other.orgName && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, orgName, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, orgName, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ApiKeyCreateBody{name=$name, orgName=$orgName, additionalProperties=$additionalProperties}"
@@ -150,12 +147,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ApiKeyCreateParams && this.name == other.name && this.orgName == other.orgName && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ApiKeyCreateParams && name == other.name && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ApiKeyCreateParams{name=$name, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

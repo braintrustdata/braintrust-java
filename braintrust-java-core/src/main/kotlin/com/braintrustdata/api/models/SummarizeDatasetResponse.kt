@@ -174,17 +174,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SummarizeDatasetResponse && this.projectName == other.projectName && this.datasetName == other.datasetName && this.projectUrl == other.projectUrl && this.datasetUrl == other.datasetUrl && this.dataSummary == other.dataSummary && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SummarizeDatasetResponse && projectName == other.projectName && datasetName == other.datasetName && projectUrl == other.projectUrl && datasetUrl == other.datasetUrl && dataSummary == other.dataSummary && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(projectName, datasetName, projectUrl, datasetUrl, dataSummary, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(projectName, datasetName, projectUrl, datasetUrl, dataSummary, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "SummarizeDatasetResponse{projectName=$projectName, datasetName=$datasetName, projectUrl=$projectUrl, datasetUrl=$datasetUrl, dataSummary=$dataSummary, additionalProperties=$additionalProperties}"

@@ -53,12 +53,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentSummarizeParams && this.experimentId == other.experimentId && this.comparisonExperimentId == other.comparisonExperimentId && this.summarizeScores == other.summarizeScores && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ExperimentSummarizeParams && experimentId == other.experimentId && comparisonExperimentId == other.comparisonExperimentId && summarizeScores == other.summarizeScores && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(experimentId, comparisonExperimentId, summarizeScores, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, comparisonExperimentId, summarizeScores, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ExperimentSummarizeParams{experimentId=$experimentId, comparisonExperimentId=$comparisonExperimentId, summarizeScores=$summarizeScores, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

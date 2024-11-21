@@ -72,12 +72,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclListParams && this.objectId == other.objectId && this.objectType == other.objectType && this.endingBefore == other.endingBefore && this.ids == other.ids && this.limit == other.limit && this.startingAfter == other.startingAfter && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is AclListParams && objectId == other.objectId && objectType == other.objectType && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(objectId, objectType, endingBefore, ids, limit, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, endingBefore, ids, limit, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "AclListParams{objectId=$objectId, objectType=$objectType, endingBefore=$endingBefore, ids=$ids, limit=$limit, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
@@ -282,7 +280,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -427,21 +425,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "Ids{string=$string}"
                 strings != null -> "Ids{strings=$strings}"
                 _json != null -> "Ids{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Ids")
             }
-        }
 
         companion object {
 

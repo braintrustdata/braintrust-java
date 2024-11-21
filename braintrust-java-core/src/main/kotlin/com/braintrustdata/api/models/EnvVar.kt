@@ -199,7 +199,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -254,17 +254,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVar && this.id == other.id && this.objectType == other.objectType && this.objectId == other.objectId && this.name == other.name && this.created == other.created && this.used == other.used && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is EnvVar && id == other.id && objectType == other.objectType && objectId == other.objectId && name == other.name && created == other.created && used == other.used && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, objectType, objectId, name, created, used, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, objectType, objectId, name, created, used, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "EnvVar{id=$id, objectType=$objectType, objectId=$objectId, name=$name, created=$created, used=$used, additionalProperties=$additionalProperties}"

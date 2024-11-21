@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeRetrieveParams && this.spanIframeId == other.spanIframeId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is SpanIframeRetrieveParams && spanIframeId == other.spanIframeId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(spanIframeId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "SpanIframeRetrieveParams{spanIframeId=$spanIframeId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

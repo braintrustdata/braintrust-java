@@ -231,17 +231,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AclFindAndDeleteBody && this.objectId == other.objectId && this.objectType == other.objectType && this.groupId == other.groupId && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.roleId == other.roleId && this.userId == other.userId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is AclFindAndDeleteBody && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "AclFindAndDeleteBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
@@ -258,12 +255,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclFindAndDeleteParams && this.objectId == other.objectId && this.objectType == other.objectType && this.groupId == other.groupId && this.permission == other.permission && this.restrictObjectType == other.restrictObjectType && this.roleId == other.roleId && this.userId == other.userId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is AclFindAndDeleteParams && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "AclFindAndDeleteParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -485,7 +480,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -596,7 +591,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Permission && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -689,7 +684,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RestrictObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is RestrictObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
