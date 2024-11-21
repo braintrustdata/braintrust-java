@@ -209,17 +209,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewReplaceBody && this.name == other.name && this.objectId == other.objectId && this.objectType == other.objectType && this.viewType == other.viewType && this.deletedAt == other.deletedAt && this.options == other.options && this.userId == other.userId && this.viewData == other.viewData && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ViewReplaceBody && name == other.name && objectId == other.objectId && objectType == other.objectType && viewType == other.viewType && deletedAt == other.deletedAt && options == other.options && userId == other.userId && viewData == other.viewData && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ViewReplaceBody{name=$name, objectId=$objectId, objectType=$objectType, viewType=$viewType, deletedAt=$deletedAt, options=$options, userId=$userId, viewData=$viewData, additionalProperties=$additionalProperties}"
@@ -236,12 +233,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewReplaceParams && this.name == other.name && this.objectId == other.objectId && this.objectType == other.objectType && this.viewType == other.viewType && this.deletedAt == other.deletedAt && this.options == other.options && this.userId == other.userId && this.viewData == other.viewData && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ViewReplaceParams && name == other.name && objectId == other.objectId && objectType == other.objectType && viewType == other.viewType && deletedAt == other.deletedAt && options == other.options && userId == other.userId && viewData == other.viewData && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ViewReplaceParams{name=$name, objectId=$objectId, objectType=$objectType, viewType=$viewType, deletedAt=$deletedAt, options=$options, userId=$userId, viewData=$viewData, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -456,7 +451,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -567,7 +562,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

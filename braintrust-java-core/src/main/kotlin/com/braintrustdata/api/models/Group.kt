@@ -294,17 +294,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Group && this.id == other.id && this.orgId == other.orgId && this.userId == other.userId && this.created == other.created && this.name == other.name && this.description == other.description && this.deletedAt == other.deletedAt && this.memberUsers == other.memberUsers && this.memberGroups == other.memberGroups && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Group && id == other.id && orgId == other.orgId && userId == other.userId && created == other.created && name == other.name && description == other.description && deletedAt == other.deletedAt && memberUsers == other.memberUsers && memberGroups == other.memberGroups && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, orgId, userId, created, name, description, deletedAt, memberUsers, memberGroups, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, orgId, userId, created, name, description, deletedAt, memberUsers, memberGroups, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Group{id=$id, orgId=$orgId, userId=$userId, created=$created, name=$name, description=$description, deletedAt=$deletedAt, memberUsers=$memberUsers, memberGroups=$memberGroups, additionalProperties=$additionalProperties}"

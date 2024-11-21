@@ -163,17 +163,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is OrganizationMemberUpdateBody && this.inviteUsers == other.inviteUsers && this.orgId == other.orgId && this.orgName == other.orgName && this.removeUsers == other.removeUsers && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is OrganizationMemberUpdateBody && inviteUsers == other.inviteUsers && orgId == other.orgId && orgName == other.orgName && removeUsers == other.removeUsers && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "OrganizationMemberUpdateBody{inviteUsers=$inviteUsers, orgId=$orgId, orgName=$orgName, removeUsers=$removeUsers, additionalProperties=$additionalProperties}"
@@ -190,12 +187,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is OrganizationMemberUpdateParams && this.inviteUsers == other.inviteUsers && this.orgId == other.orgId && this.orgName == other.orgName && this.removeUsers == other.removeUsers && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is OrganizationMemberUpdateParams && inviteUsers == other.inviteUsers && orgId == other.orgId && orgName == other.orgName && removeUsers == other.removeUsers && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "OrganizationMemberUpdateParams{inviteUsers=$inviteUsers, orgId=$orgId, orgName=$orgName, removeUsers=$removeUsers, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -512,17 +507,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InviteUsers && this.ids == other.ids && this.emails == other.emails && this.sendInviteEmails == other.sendInviteEmails && this.groupIds == other.groupIds && this.groupNames == other.groupNames && this.groupId == other.groupId && this.groupName == other.groupName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is InviteUsers && ids == other.ids && emails == other.emails && sendInviteEmails == other.sendInviteEmails && groupIds == other.groupIds && groupNames == other.groupNames && groupId == other.groupId && groupName == other.groupName && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(ids, emails, sendInviteEmails, groupIds, groupNames, groupId, groupName, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(ids, emails, sendInviteEmails, groupIds, groupNames, groupId, groupName, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "InviteUsers{ids=$ids, emails=$emails, sendInviteEmails=$sendInviteEmails, groupIds=$groupIds, groupNames=$groupNames, groupId=$groupId, groupName=$groupName, additionalProperties=$additionalProperties}"
@@ -602,17 +594,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveUsers && this.ids == other.ids && this.emails == other.emails && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is RemoveUsers && ids == other.ids && emails == other.emails && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(ids, emails, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(ids, emails, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "RemoveUsers{ids=$ids, emails=$emails, additionalProperties=$additionalProperties}"

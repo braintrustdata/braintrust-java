@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupRetrieveParams && this.groupId == other.groupId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is GroupRetrieveParams && groupId == other.groupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "GroupRetrieveParams{groupId=$groupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

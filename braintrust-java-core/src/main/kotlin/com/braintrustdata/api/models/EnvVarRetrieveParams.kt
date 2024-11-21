@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVarRetrieveParams && this.envVarId == other.envVarId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is EnvVarRetrieveParams && envVarId == other.envVarId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(envVarId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "EnvVarRetrieveParams{envVarId=$envVarId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

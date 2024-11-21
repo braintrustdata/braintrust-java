@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is FunctionRetrieveParams && this.functionId == other.functionId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is FunctionRetrieveParams && functionId == other.functionId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(functionId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "FunctionRetrieveParams{functionId=$functionId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

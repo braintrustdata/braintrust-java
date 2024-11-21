@@ -281,17 +281,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
@@ -301,17 +298,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Dataset && this.id == other.id && this.projectId == other.projectId && this.name == other.name && this.description == other.description && this.created == other.created && this.deletedAt == other.deletedAt && this.userId == other.userId && this.metadata == other.metadata && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Dataset && id == other.id && projectId == other.projectId && name == other.name && description == other.description && created == other.created && deletedAt == other.deletedAt && userId == other.userId && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, projectId, name, description, created, deletedAt, userId, metadata, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, projectId, name, description, created, deletedAt, userId, metadata, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Dataset{id=$id, projectId=$projectId, name=$name, description=$description, created=$created, deletedAt=$deletedAt, userId=$userId, metadata=$metadata, additionalProperties=$additionalProperties}"

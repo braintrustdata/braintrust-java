@@ -110,17 +110,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ExperimentFeedbackBody && this.feedback == other.feedback && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ExperimentFeedbackBody && feedback == other.feedback && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(feedback, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(feedback, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ExperimentFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
@@ -137,12 +134,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentFeedbackParams && this.experimentId == other.experimentId && this.feedback == other.feedback && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ExperimentFeedbackParams && experimentId == other.experimentId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(experimentId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ExperimentFeedbackParams{experimentId=$experimentId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

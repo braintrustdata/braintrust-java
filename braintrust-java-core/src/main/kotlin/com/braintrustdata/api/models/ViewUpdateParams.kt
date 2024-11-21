@@ -203,17 +203,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewUpdateBody && this.objectId == other.objectId && this.objectType == other.objectType && this.name == other.name && this.options == other.options && this.userId == other.userId && this.viewData == other.viewData && this.viewType == other.viewType && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ViewUpdateBody && objectId == other.objectId && objectType == other.objectType && name == other.name && options == other.options && userId == other.userId && viewData == other.viewData && viewType == other.viewType && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(objectId, objectType, name, options, userId, viewData, viewType, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(objectId, objectType, name, options, userId, viewData, viewType, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ViewUpdateBody{objectId=$objectId, objectType=$objectType, name=$name, options=$options, userId=$userId, viewData=$viewData, viewType=$viewType, additionalProperties=$additionalProperties}"
@@ -230,12 +227,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewUpdateParams && this.viewId == other.viewId && this.objectId == other.objectId && this.objectType == other.objectType && this.name == other.name && this.options == other.options && this.userId == other.userId && this.viewData == other.viewData && this.viewType == other.viewType && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ViewUpdateParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && name == other.name && options == other.options && userId == other.userId && viewData == other.viewData && viewType == other.viewType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(viewId, objectId, objectType, name, options, userId, viewData, viewType, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, name, options, userId, viewData, viewType, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ViewUpdateParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, name=$name, options=$options, userId=$userId, viewData=$viewData, viewType=$viewType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -450,7 +445,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -561,7 +556,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

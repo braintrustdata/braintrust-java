@@ -77,12 +77,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is UserListParams && this.email == other.email && this.endingBefore == other.endingBefore && this.familyName == other.familyName && this.givenName == other.givenName && this.ids == other.ids && this.limit == other.limit && this.orgName == other.orgName && this.startingAfter == other.startingAfter && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is UserListParams && email == other.email && endingBefore == other.endingBefore && familyName == other.familyName && givenName == other.givenName && ids == other.ids && limit == other.limit && orgName == other.orgName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(email, endingBefore, familyName, givenName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(email, endingBefore, familyName, givenName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "UserListParams{email=$email, endingBefore=$endingBefore, familyName=$familyName, givenName=$givenName, ids=$ids, limit=$limit, orgName=$orgName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
@@ -382,21 +380,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Email && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is Email && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "Email{string=$string}"
                 strings != null -> "Email{strings=$strings}"
                 _json != null -> "Email{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Email")
             }
-        }
 
         companion object {
 
@@ -496,21 +491,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is FamilyName && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is FamilyName && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "FamilyName{string=$string}"
                 strings != null -> "FamilyName{strings=$strings}"
                 _json != null -> "FamilyName{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid FamilyName")
             }
-        }
 
         companion object {
 
@@ -610,21 +602,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is GivenName && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is GivenName && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "GivenName{string=$string}"
                 strings != null -> "GivenName{strings=$strings}"
                 _json != null -> "GivenName{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid GivenName")
             }
-        }
 
         companion object {
 
@@ -724,21 +713,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && this.string == other.string && this.strings == other.strings /* spotless:on */
+            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 string != null -> "Ids{string=$string}"
                 strings != null -> "Ids{strings=$strings}"
                 _json != null -> "Ids{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Ids")
             }
-        }
 
         companion object {
 
