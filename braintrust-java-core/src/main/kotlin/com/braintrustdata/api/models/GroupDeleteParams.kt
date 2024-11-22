@@ -21,6 +21,12 @@ constructor(
 
     fun groupId(): String = groupId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): Optional<Map<String, JsonValue>> {
         return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
@@ -36,25 +42,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is GroupDeleteParams && groupId == other.groupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "GroupDeleteParams{groupId=$groupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -73,10 +60,10 @@ constructor(
 
         @JvmSynthetic
         internal fun from(groupDeleteParams: GroupDeleteParams) = apply {
-            this.groupId = groupDeleteParams.groupId
-            additionalHeaders(groupDeleteParams.additionalHeaders)
-            additionalQueryParams(groupDeleteParams.additionalQueryParams)
-            additionalBodyProperties(groupDeleteParams.additionalBodyProperties)
+            groupId = groupDeleteParams.groupId
+            additionalHeaders = groupDeleteParams.additionalHeaders.toBuilder()
+            additionalQueryParams = groupDeleteParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = groupDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Group id */
@@ -210,4 +197,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is GroupDeleteParams && groupId == other.groupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "GroupDeleteParams{groupId=$groupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

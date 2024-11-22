@@ -21,6 +21,12 @@ constructor(
 
     fun experimentId(): String = experimentId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): Optional<Map<String, JsonValue>> {
         return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
@@ -36,25 +42,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ExperimentDeleteParams && experimentId == other.experimentId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ExperimentDeleteParams{experimentId=$experimentId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -73,10 +60,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(experimentDeleteParams: ExperimentDeleteParams) = apply {
-            this.experimentId = experimentDeleteParams.experimentId
-            additionalHeaders(experimentDeleteParams.additionalHeaders)
-            additionalQueryParams(experimentDeleteParams.additionalQueryParams)
-            additionalBodyProperties(experimentDeleteParams.additionalBodyProperties)
+            experimentId = experimentDeleteParams.experimentId
+            additionalHeaders = experimentDeleteParams.additionalHeaders.toBuilder()
+            additionalQueryParams = experimentDeleteParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                experimentDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Experiment id */
@@ -210,4 +198,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ExperimentDeleteParams && experimentId == other.experimentId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ExperimentDeleteParams{experimentId=$experimentId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

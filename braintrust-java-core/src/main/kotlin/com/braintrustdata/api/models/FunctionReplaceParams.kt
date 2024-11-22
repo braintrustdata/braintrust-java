@@ -67,6 +67,12 @@ constructor(
 
     fun tags(): Optional<List<String>> = Optional.ofNullable(tags)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): FunctionReplaceBody {
         return FunctionReplaceBody(
@@ -259,25 +265,6 @@ constructor(
             "FunctionReplaceBody{functionData=$functionData, name=$name, projectId=$projectId, slug=$slug, description=$description, functionSchema=$functionSchema, functionType=$functionType, origin=$origin, promptData=$promptData, tags=$tags, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is FunctionReplaceParams && functionData == other.functionData && name == other.name && projectId == other.projectId && slug == other.slug && description == other.description && functionSchema == other.functionSchema && functionType == other.functionType && origin == other.origin && promptData == other.promptData && tags == other.tags && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionData, name, projectId, slug, description, functionSchema, functionType, origin, promptData, tags, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "FunctionReplaceParams{functionData=$functionData, name=$name, projectId=$projectId, slug=$slug, description=$description, functionSchema=$functionSchema, functionType=$functionType, origin=$origin, promptData=$promptData, tags=$tags, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -304,19 +291,19 @@ constructor(
 
         @JvmSynthetic
         internal fun from(functionReplaceParams: FunctionReplaceParams) = apply {
-            this.functionData = functionReplaceParams.functionData
-            this.name = functionReplaceParams.name
-            this.projectId = functionReplaceParams.projectId
-            this.slug = functionReplaceParams.slug
-            this.description = functionReplaceParams.description
-            this.functionSchema = functionReplaceParams.functionSchema
-            this.functionType = functionReplaceParams.functionType
-            this.origin = functionReplaceParams.origin
-            this.promptData = functionReplaceParams.promptData
-            this.tags(functionReplaceParams.tags ?: listOf())
-            additionalHeaders(functionReplaceParams.additionalHeaders)
-            additionalQueryParams(functionReplaceParams.additionalQueryParams)
-            additionalBodyProperties(functionReplaceParams.additionalBodyProperties)
+            functionData = functionReplaceParams.functionData
+            name = functionReplaceParams.name
+            projectId = functionReplaceParams.projectId
+            slug = functionReplaceParams.slug
+            description = functionReplaceParams.description
+            functionSchema = functionReplaceParams.functionSchema
+            functionType = functionReplaceParams.functionType
+            origin = functionReplaceParams.origin
+            promptData = functionReplaceParams.promptData
+            tags = functionReplaceParams.tags?.toMutableList() ?: mutableListOf()
+            additionalHeaders = functionReplaceParams.additionalHeaders.toBuilder()
+            additionalQueryParams = functionReplaceParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = functionReplaceParams.additionalBodyProperties.toMutableMap()
         }
 
         fun functionData(functionData: FunctionData) = apply { this.functionData = functionData }
@@ -497,7 +484,7 @@ constructor(
                 functionType,
                 origin,
                 promptData,
-                if (tags.size == 0) null else tags.toImmutable(),
+                tags.toImmutable().ifEmpty { null },
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -2137,4 +2124,17 @@ constructor(
         override fun toString() =
             "Origin{objectType=$objectType, objectId=$objectId, internal_=$internal_, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is FunctionReplaceParams && functionData == other.functionData && name == other.name && projectId == other.projectId && slug == other.slug && description == other.description && functionSchema == other.functionSchema && functionType == other.functionType && origin == other.origin && promptData == other.promptData && tags == other.tags && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionData, name, projectId, slug, description, functionSchema, functionType, origin, promptData, tags, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "FunctionReplaceParams{functionData=$functionData, name=$name, projectId=$projectId, slug=$slug, description=$description, functionSchema=$functionSchema, functionType=$functionType, origin=$origin, promptData=$promptData, tags=$tags, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

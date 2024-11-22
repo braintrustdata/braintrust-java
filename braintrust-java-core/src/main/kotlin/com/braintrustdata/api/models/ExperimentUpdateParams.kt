@@ -50,6 +50,12 @@ constructor(
 
     fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ExperimentUpdateBody {
         return ExperimentUpdateBody(
@@ -246,25 +252,6 @@ constructor(
             "ExperimentUpdateBody{baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ExperimentUpdateParams && experimentId == other.experimentId && baseExpId == other.baseExpId && datasetId == other.datasetId && datasetVersion == other.datasetVersion && description == other.description && metadata == other.metadata && name == other.name && public_ == other.public_ && repoInfo == other.repoInfo && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, baseExpId, datasetId, datasetVersion, description, metadata, name, public_, repoInfo, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ExperimentUpdateParams{experimentId=$experimentId, baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -290,18 +277,19 @@ constructor(
 
         @JvmSynthetic
         internal fun from(experimentUpdateParams: ExperimentUpdateParams) = apply {
-            this.experimentId = experimentUpdateParams.experimentId
-            this.baseExpId = experimentUpdateParams.baseExpId
-            this.datasetId = experimentUpdateParams.datasetId
-            this.datasetVersion = experimentUpdateParams.datasetVersion
-            this.description = experimentUpdateParams.description
-            this.metadata = experimentUpdateParams.metadata
-            this.name = experimentUpdateParams.name
-            this.public_ = experimentUpdateParams.public_
-            this.repoInfo = experimentUpdateParams.repoInfo
-            additionalHeaders(experimentUpdateParams.additionalHeaders)
-            additionalQueryParams(experimentUpdateParams.additionalQueryParams)
-            additionalBodyProperties(experimentUpdateParams.additionalBodyProperties)
+            experimentId = experimentUpdateParams.experimentId
+            baseExpId = experimentUpdateParams.baseExpId
+            datasetId = experimentUpdateParams.datasetId
+            datasetVersion = experimentUpdateParams.datasetVersion
+            description = experimentUpdateParams.description
+            metadata = experimentUpdateParams.metadata
+            name = experimentUpdateParams.name
+            public_ = experimentUpdateParams.public_
+            repoInfo = experimentUpdateParams.repoInfo
+            additionalHeaders = experimentUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = experimentUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                experimentUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Experiment id */
@@ -537,4 +525,17 @@ constructor(
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ExperimentUpdateParams && experimentId == other.experimentId && baseExpId == other.baseExpId && datasetId == other.datasetId && datasetVersion == other.datasetVersion && description == other.description && metadata == other.metadata && name == other.name && public_ == other.public_ && repoInfo == other.repoInfo && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, baseExpId, datasetId, datasetVersion, description, metadata, name, public_, repoInfo, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ExperimentUpdateParams{experimentId=$experimentId, baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

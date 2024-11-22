@@ -28,6 +28,12 @@ constructor(
 
     fun events(): List<InsertProjectLogsEvent> = events
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectLogInsertBody {
         return ProjectLogInsertBody(events, additionalBodyProperties)
@@ -120,25 +126,6 @@ constructor(
             "ProjectLogInsertBody{events=$events, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectLogInsertParams && projectId == other.projectId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectLogInsertParams{projectId=$projectId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -157,11 +144,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectLogInsertParams: ProjectLogInsertParams) = apply {
-            this.projectId = projectLogInsertParams.projectId
-            this.events(projectLogInsertParams.events)
-            additionalHeaders(projectLogInsertParams.additionalHeaders)
-            additionalQueryParams(projectLogInsertParams.additionalQueryParams)
-            additionalBodyProperties(projectLogInsertParams.additionalBodyProperties)
+            projectId = projectLogInsertParams.projectId
+            events = projectLogInsertParams.events.toMutableList()
+            additionalHeaders = projectLogInsertParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectLogInsertParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                projectLogInsertParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Project id */
@@ -299,10 +287,23 @@ constructor(
         fun build(): ProjectLogInsertParams =
             ProjectLogInsertParams(
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
-                checkNotNull(events) { "`events` is required but was not set" }.toImmutable(),
+                events.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectLogInsertParams && projectId == other.projectId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectLogInsertParams{projectId=$projectId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

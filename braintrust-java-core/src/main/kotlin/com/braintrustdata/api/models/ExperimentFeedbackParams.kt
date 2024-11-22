@@ -28,6 +28,12 @@ constructor(
 
     fun feedback(): List<FeedbackExperimentItem> = feedback
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ExperimentFeedbackBody {
         return ExperimentFeedbackBody(feedback, additionalBodyProperties)
@@ -123,25 +129,6 @@ constructor(
             "ExperimentFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ExperimentFeedbackParams && experimentId == other.experimentId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ExperimentFeedbackParams{experimentId=$experimentId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -160,11 +147,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(experimentFeedbackParams: ExperimentFeedbackParams) = apply {
-            this.experimentId = experimentFeedbackParams.experimentId
-            this.feedback(experimentFeedbackParams.feedback)
-            additionalHeaders(experimentFeedbackParams.additionalHeaders)
-            additionalQueryParams(experimentFeedbackParams.additionalQueryParams)
-            additionalBodyProperties(experimentFeedbackParams.additionalBodyProperties)
+            experimentId = experimentFeedbackParams.experimentId
+            feedback = experimentFeedbackParams.feedback.toMutableList()
+            additionalHeaders = experimentFeedbackParams.additionalHeaders.toBuilder()
+            additionalQueryParams = experimentFeedbackParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                experimentFeedbackParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Experiment id */
@@ -302,10 +290,23 @@ constructor(
         fun build(): ExperimentFeedbackParams =
             ExperimentFeedbackParams(
                 checkNotNull(experimentId) { "`experimentId` is required but was not set" },
-                checkNotNull(feedback) { "`feedback` is required but was not set" }.toImmutable(),
+                feedback.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ExperimentFeedbackParams && experimentId == other.experimentId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ExperimentFeedbackParams{experimentId=$experimentId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

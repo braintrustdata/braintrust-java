@@ -28,6 +28,10 @@ constructor(
 
     fun objectType(): ObjectType = objectType
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -45,23 +49,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ViewRetrieveParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ViewRetrieveParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -81,11 +68,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(viewRetrieveParams: ViewRetrieveParams) = apply {
-            this.viewId = viewRetrieveParams.viewId
-            this.objectId = viewRetrieveParams.objectId
-            this.objectType = viewRetrieveParams.objectType
-            additionalHeaders(viewRetrieveParams.additionalHeaders)
-            additionalQueryParams(viewRetrieveParams.additionalQueryParams)
+            viewId = viewRetrieveParams.viewId
+            objectId = viewRetrieveParams.objectId
+            objectType = viewRetrieveParams.objectType
+            additionalHeaders = viewRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = viewRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /** View id */
@@ -315,4 +302,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ViewRetrieveParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ViewRetrieveParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

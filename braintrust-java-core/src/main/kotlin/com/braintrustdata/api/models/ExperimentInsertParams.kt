@@ -28,6 +28,12 @@ constructor(
 
     fun events(): List<InsertExperimentEvent> = events
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ExperimentInsertBody {
         return ExperimentInsertBody(events, additionalBodyProperties)
@@ -120,25 +126,6 @@ constructor(
             "ExperimentInsertBody{events=$events, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ExperimentInsertParams && experimentId == other.experimentId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ExperimentInsertParams{experimentId=$experimentId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -157,11 +144,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(experimentInsertParams: ExperimentInsertParams) = apply {
-            this.experimentId = experimentInsertParams.experimentId
-            this.events(experimentInsertParams.events)
-            additionalHeaders(experimentInsertParams.additionalHeaders)
-            additionalQueryParams(experimentInsertParams.additionalQueryParams)
-            additionalBodyProperties(experimentInsertParams.additionalBodyProperties)
+            experimentId = experimentInsertParams.experimentId
+            events = experimentInsertParams.events.toMutableList()
+            additionalHeaders = experimentInsertParams.additionalHeaders.toBuilder()
+            additionalQueryParams = experimentInsertParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                experimentInsertParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Experiment id */
@@ -299,10 +287,23 @@ constructor(
         fun build(): ExperimentInsertParams =
             ExperimentInsertParams(
                 checkNotNull(experimentId) { "`experimentId` is required but was not set" },
-                checkNotNull(events) { "`events` is required but was not set" }.toImmutable(),
+                events.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ExperimentInsertParams && experimentId == other.experimentId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ExperimentInsertParams{experimentId=$experimentId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

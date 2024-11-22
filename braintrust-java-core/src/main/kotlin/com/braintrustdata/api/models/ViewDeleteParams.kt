@@ -35,6 +35,12 @@ constructor(
 
     fun objectType(): ObjectType = objectType
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ViewDeleteBody {
         return ViewDeleteBody(
@@ -142,25 +148,6 @@ constructor(
             "ViewDeleteBody{objectId=$objectId, objectType=$objectType, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ViewDeleteParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ViewDeleteParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -180,12 +167,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(viewDeleteParams: ViewDeleteParams) = apply {
-            this.viewId = viewDeleteParams.viewId
-            this.objectId = viewDeleteParams.objectId
-            this.objectType = viewDeleteParams.objectType
-            additionalHeaders(viewDeleteParams.additionalHeaders)
-            additionalQueryParams(viewDeleteParams.additionalQueryParams)
-            additionalBodyProperties(viewDeleteParams.additionalBodyProperties)
+            viewId = viewDeleteParams.viewId
+            objectId = viewDeleteParams.objectId
+            objectType = viewDeleteParams.objectType
+            additionalHeaders = viewDeleteParams.additionalHeaders.toBuilder()
+            additionalQueryParams = viewDeleteParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = viewDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
         /** View id */
@@ -438,4 +425,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ViewDeleteParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ViewDeleteParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
