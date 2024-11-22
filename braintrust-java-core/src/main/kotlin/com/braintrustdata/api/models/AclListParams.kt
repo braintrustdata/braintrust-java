@@ -48,6 +48,10 @@ constructor(
 
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -62,23 +66,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AclListParams && objectId == other.objectId && objectType == other.objectType && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, endingBefore, ids, limit, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "AclListParams{objectId=$objectId, objectType=$objectType, endingBefore=$endingBefore, ids=$ids, limit=$limit, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -101,14 +88,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aclListParams: AclListParams) = apply {
-            this.objectId = aclListParams.objectId
-            this.objectType = aclListParams.objectType
-            this.endingBefore = aclListParams.endingBefore
-            this.ids = aclListParams.ids
-            this.limit = aclListParams.limit
-            this.startingAfter = aclListParams.startingAfter
-            additionalHeaders(aclListParams.additionalHeaders)
-            additionalQueryParams(aclListParams.additionalQueryParams)
+            objectId = aclListParams.objectId
+            objectType = aclListParams.objectType
+            endingBefore = aclListParams.endingBefore
+            ids = aclListParams.ids
+            limit = aclListParams.limit
+            startingAfter = aclListParams.startingAfter
+            additionalHeaders = aclListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aclListParams.additionalQueryParams.toBuilder()
         }
 
         /** The id of the object the ACL applies to */
@@ -488,4 +475,17 @@ constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AclListParams && objectId == other.objectId && objectType == other.objectType && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, endingBefore, ids, limit, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "AclListParams{objectId=$objectId, objectType=$objectType, endingBefore=$endingBefore, ids=$ids, limit=$limit, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

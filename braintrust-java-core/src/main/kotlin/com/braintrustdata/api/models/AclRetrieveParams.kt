@@ -17,6 +17,10 @@ constructor(
 
     fun aclId(): String = aclId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
@@ -27,23 +31,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AclRetrieveParams && aclId == other.aclId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aclId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "AclRetrieveParams{aclId=$aclId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -61,9 +48,9 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aclRetrieveParams: AclRetrieveParams) = apply {
-            this.aclId = aclRetrieveParams.aclId
-            additionalHeaders(aclRetrieveParams.additionalHeaders)
-            additionalQueryParams(aclRetrieveParams.additionalQueryParams)
+            aclId = aclRetrieveParams.aclId
+            additionalHeaders = aclRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aclRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /** Acl id */
@@ -174,4 +161,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AclRetrieveParams && aclId == other.aclId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aclId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "AclRetrieveParams{aclId=$aclId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -45,6 +45,10 @@ constructor(
 
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -59,23 +63,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SpanIframeListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && spanIframeName == other.spanIframeName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, spanIframeName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "SpanIframeListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, spanIframeName=$spanIframeName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -98,14 +85,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(spanIframeListParams: SpanIframeListParams) = apply {
-            this.endingBefore = spanIframeListParams.endingBefore
-            this.ids = spanIframeListParams.ids
-            this.limit = spanIframeListParams.limit
-            this.orgName = spanIframeListParams.orgName
-            this.spanIframeName = spanIframeListParams.spanIframeName
-            this.startingAfter = spanIframeListParams.startingAfter
-            additionalHeaders(spanIframeListParams.additionalHeaders)
-            additionalQueryParams(spanIframeListParams.additionalQueryParams)
+            endingBefore = spanIframeListParams.endingBefore
+            ids = spanIframeListParams.ids
+            limit = spanIframeListParams.limit
+            orgName = spanIframeListParams.orgName
+            spanIframeName = spanIframeListParams.spanIframeName
+            startingAfter = spanIframeListParams.startingAfter
+            additionalHeaders = spanIframeListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = spanIframeListParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -374,4 +361,17 @@ constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SpanIframeListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && spanIframeName == other.spanIframeName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, spanIframeName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "SpanIframeListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, spanIframeName=$spanIframeName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -21,6 +21,10 @@ constructor(
 
     fun summarizeData(): Optional<Boolean> = Optional.ofNullable(summarizeData)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -37,23 +41,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is DatasetSummarizeParams && datasetId == other.datasetId && summarizeData == other.summarizeData && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, summarizeData, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "DatasetSummarizeParams{datasetId=$datasetId, summarizeData=$summarizeData, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -72,10 +59,10 @@ constructor(
 
         @JvmSynthetic
         internal fun from(datasetSummarizeParams: DatasetSummarizeParams) = apply {
-            this.datasetId = datasetSummarizeParams.datasetId
-            this.summarizeData = datasetSummarizeParams.summarizeData
-            additionalHeaders(datasetSummarizeParams.additionalHeaders)
-            additionalQueryParams(datasetSummarizeParams.additionalQueryParams)
+            datasetId = datasetSummarizeParams.datasetId
+            summarizeData = datasetSummarizeParams.summarizeData
+            additionalHeaders = datasetSummarizeParams.additionalHeaders.toBuilder()
+            additionalQueryParams = datasetSummarizeParams.additionalQueryParams.toBuilder()
         }
 
         /** Dataset id */
@@ -192,4 +179,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetSummarizeParams && datasetId == other.datasetId && summarizeData == other.summarizeData && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, summarizeData, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "DatasetSummarizeParams{datasetId=$datasetId, summarizeData=$summarizeData, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -35,6 +35,12 @@ constructor(
 
     fun name(): Optional<String> = Optional.ofNullable(name)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): DatasetUpdateBody {
         return DatasetUpdateBody(
@@ -153,25 +159,6 @@ constructor(
             "DatasetUpdateBody{description=$description, metadata=$metadata, name=$name, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is DatasetUpdateParams && datasetId == other.datasetId && description == other.description && metadata == other.metadata && name == other.name && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, description, metadata, name, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "DatasetUpdateParams{datasetId=$datasetId, description=$description, metadata=$metadata, name=$name, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -192,13 +179,13 @@ constructor(
 
         @JvmSynthetic
         internal fun from(datasetUpdateParams: DatasetUpdateParams) = apply {
-            this.datasetId = datasetUpdateParams.datasetId
-            this.description = datasetUpdateParams.description
-            this.metadata = datasetUpdateParams.metadata
-            this.name = datasetUpdateParams.name
-            additionalHeaders(datasetUpdateParams.additionalHeaders)
-            additionalQueryParams(datasetUpdateParams.additionalQueryParams)
-            additionalBodyProperties(datasetUpdateParams.additionalBodyProperties)
+            datasetId = datasetUpdateParams.datasetId
+            description = datasetUpdateParams.description
+            metadata = datasetUpdateParams.metadata
+            name = datasetUpdateParams.name
+            additionalHeaders = datasetUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = datasetUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = datasetUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Dataset id */
@@ -406,4 +393,17 @@ constructor(
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetUpdateParams && datasetId == other.datasetId && description == other.description && metadata == other.metadata && name == other.name && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, description, metadata, name, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "DatasetUpdateParams{datasetId=$datasetId, description=$description, metadata=$metadata, name=$name, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

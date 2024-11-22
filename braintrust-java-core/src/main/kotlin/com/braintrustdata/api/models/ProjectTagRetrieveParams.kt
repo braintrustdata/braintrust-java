@@ -17,6 +17,10 @@ constructor(
 
     fun projectTagId(): String = projectTagId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
@@ -27,23 +31,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectTagRetrieveParams && projectTagId == other.projectTagId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectTagId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ProjectTagRetrieveParams{projectTagId=$projectTagId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -61,9 +48,9 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectTagRetrieveParams: ProjectTagRetrieveParams) = apply {
-            this.projectTagId = projectTagRetrieveParams.projectTagId
-            additionalHeaders(projectTagRetrieveParams.additionalHeaders)
-            additionalQueryParams(projectTagRetrieveParams.additionalQueryParams)
+            projectTagId = projectTagRetrieveParams.projectTagId
+            additionalHeaders = projectTagRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectTagRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /** ProjectTag id */
@@ -174,4 +161,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectTagRetrieveParams && projectTagId == other.projectTagId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectTagId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ProjectTagRetrieveParams{projectTagId=$projectTagId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

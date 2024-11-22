@@ -51,6 +51,10 @@ constructor(
 
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -67,23 +71,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is UserListParams && email == other.email && endingBefore == other.endingBefore && familyName == other.familyName && givenName == other.givenName && ids == other.ids && limit == other.limit && orgName == other.orgName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(email, endingBefore, familyName, givenName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "UserListParams{email=$email, endingBefore=$endingBefore, familyName=$familyName, givenName=$givenName, ids=$ids, limit=$limit, orgName=$orgName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -108,16 +95,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(userListParams: UserListParams) = apply {
-            this.email = userListParams.email
-            this.endingBefore = userListParams.endingBefore
-            this.familyName = userListParams.familyName
-            this.givenName = userListParams.givenName
-            this.ids = userListParams.ids
-            this.limit = userListParams.limit
-            this.orgName = userListParams.orgName
-            this.startingAfter = userListParams.startingAfter
-            additionalHeaders(userListParams.additionalHeaders)
-            additionalQueryParams(userListParams.additionalQueryParams)
+            email = userListParams.email
+            endingBefore = userListParams.endingBefore
+            familyName = userListParams.familyName
+            givenName = userListParams.givenName
+            ids = userListParams.ids
+            limit = userListParams.limit
+            orgName = userListParams.orgName
+            startingAfter = userListParams.startingAfter
+            additionalHeaders = userListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = userListParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -776,4 +763,17 @@ constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is UserListParams && email == other.email && endingBefore == other.endingBefore && familyName == other.familyName && givenName == other.givenName && ids == other.ids && limit == other.limit && orgName == other.orgName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(email, endingBefore, familyName, givenName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "UserListParams{email=$email, endingBefore=$endingBefore, familyName=$familyName, givenName=$givenName, ids=$ids, limit=$limit, orgName=$orgName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

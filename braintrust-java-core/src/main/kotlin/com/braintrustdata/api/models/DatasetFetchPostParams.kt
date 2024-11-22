@@ -41,6 +41,12 @@ constructor(
 
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): DatasetFetchPostBody {
         return DatasetFetchPostBody(
@@ -276,25 +282,6 @@ constructor(
             "DatasetFetchPostBody{cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is DatasetFetchPostParams && datasetId == other.datasetId && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "DatasetFetchPostParams{datasetId=$datasetId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -317,15 +304,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(datasetFetchPostParams: DatasetFetchPostParams) = apply {
-            this.datasetId = datasetFetchPostParams.datasetId
-            this.cursor = datasetFetchPostParams.cursor
-            this.limit = datasetFetchPostParams.limit
-            this.maxRootSpanId = datasetFetchPostParams.maxRootSpanId
-            this.maxXactId = datasetFetchPostParams.maxXactId
-            this.version = datasetFetchPostParams.version
-            additionalHeaders(datasetFetchPostParams.additionalHeaders)
-            additionalQueryParams(datasetFetchPostParams.additionalQueryParams)
-            additionalBodyProperties(datasetFetchPostParams.additionalBodyProperties)
+            datasetId = datasetFetchPostParams.datasetId
+            cursor = datasetFetchPostParams.cursor
+            limit = datasetFetchPostParams.limit
+            maxRootSpanId = datasetFetchPostParams.maxRootSpanId
+            maxXactId = datasetFetchPostParams.maxXactId
+            version = datasetFetchPostParams.version
+            additionalHeaders = datasetFetchPostParams.additionalHeaders.toBuilder()
+            additionalQueryParams = datasetFetchPostParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                datasetFetchPostParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Dataset id */
@@ -526,4 +514,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetFetchPostParams && datasetId == other.datasetId && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "DatasetFetchPostParams{datasetId=$datasetId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

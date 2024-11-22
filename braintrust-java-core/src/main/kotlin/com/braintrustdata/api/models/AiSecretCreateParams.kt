@@ -38,6 +38,12 @@ constructor(
 
     fun type(): Optional<String> = Optional.ofNullable(type)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): AiSecretCreateBody {
         return AiSecretCreateBody(
@@ -181,25 +187,6 @@ constructor(
             "AiSecretCreateBody{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AiSecretCreateParams && name == other.name && metadata == other.metadata && orgName == other.orgName && secret == other.secret && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, metadata, orgName, secret, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AiSecretCreateParams{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -221,14 +208,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aiSecretCreateParams: AiSecretCreateParams) = apply {
-            this.name = aiSecretCreateParams.name
-            this.metadata = aiSecretCreateParams.metadata
-            this.orgName = aiSecretCreateParams.orgName
-            this.secret = aiSecretCreateParams.secret
-            this.type = aiSecretCreateParams.type
-            additionalHeaders(aiSecretCreateParams.additionalHeaders)
-            additionalQueryParams(aiSecretCreateParams.additionalQueryParams)
-            additionalBodyProperties(aiSecretCreateParams.additionalBodyProperties)
+            name = aiSecretCreateParams.name
+            metadata = aiSecretCreateParams.metadata
+            orgName = aiSecretCreateParams.orgName
+            secret = aiSecretCreateParams.secret
+            type = aiSecretCreateParams.type
+            additionalHeaders = aiSecretCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aiSecretCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = aiSecretCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the AI secret */
@@ -444,4 +431,17 @@ constructor(
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AiSecretCreateParams && name == other.name && metadata == other.metadata && orgName == other.orgName && secret == other.secret && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, metadata, orgName, secret, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AiSecretCreateParams{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

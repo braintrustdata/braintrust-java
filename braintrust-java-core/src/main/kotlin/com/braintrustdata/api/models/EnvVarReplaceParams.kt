@@ -39,6 +39,12 @@ constructor(
 
     fun value(): Optional<String> = Optional.ofNullable(value)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): EnvVarReplaceBody {
         return EnvVarReplaceBody(
@@ -161,25 +167,6 @@ constructor(
             "EnvVarReplaceBody{name=$name, objectId=$objectId, objectType=$objectType, value=$value, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is EnvVarReplaceParams && name == other.name && objectId == other.objectId && objectType == other.objectType && value == other.value && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, objectId, objectType, value, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "EnvVarReplaceParams{name=$name, objectId=$objectId, objectType=$objectType, value=$value, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -200,13 +187,13 @@ constructor(
 
         @JvmSynthetic
         internal fun from(envVarReplaceParams: EnvVarReplaceParams) = apply {
-            this.name = envVarReplaceParams.name
-            this.objectId = envVarReplaceParams.objectId
-            this.objectType = envVarReplaceParams.objectType
-            this.value = envVarReplaceParams.value
-            additionalHeaders(envVarReplaceParams.additionalHeaders)
-            additionalQueryParams(envVarReplaceParams.additionalQueryParams)
-            additionalBodyProperties(envVarReplaceParams.additionalBodyProperties)
+            name = envVarReplaceParams.name
+            objectId = envVarReplaceParams.objectId
+            objectType = envVarReplaceParams.objectType
+            value = envVarReplaceParams.value
+            additionalHeaders = envVarReplaceParams.additionalHeaders.toBuilder()
+            additionalQueryParams = envVarReplaceParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = envVarReplaceParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The name of the environment variable */
@@ -415,4 +402,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is EnvVarReplaceParams && name == other.name && objectId == other.objectId && objectType == other.objectType && value == other.value && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, objectId, objectType, value, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "EnvVarReplaceParams{name=$name, objectId=$objectId, objectType=$objectType, value=$value, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

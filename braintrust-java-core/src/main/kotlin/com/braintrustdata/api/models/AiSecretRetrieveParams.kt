@@ -17,6 +17,10 @@ constructor(
 
     fun aiSecretId(): String = aiSecretId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
@@ -27,23 +31,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AiSecretRetrieveParams && aiSecretId == other.aiSecretId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "AiSecretRetrieveParams{aiSecretId=$aiSecretId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -61,9 +48,9 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aiSecretRetrieveParams: AiSecretRetrieveParams) = apply {
-            this.aiSecretId = aiSecretRetrieveParams.aiSecretId
-            additionalHeaders(aiSecretRetrieveParams.additionalHeaders)
-            additionalQueryParams(aiSecretRetrieveParams.additionalQueryParams)
+            aiSecretId = aiSecretRetrieveParams.aiSecretId
+            additionalHeaders = aiSecretRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aiSecretRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /** AiSecret id */
@@ -174,4 +161,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AiSecretRetrieveParams && aiSecretId == other.aiSecretId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "AiSecretRetrieveParams{aiSecretId=$aiSecretId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

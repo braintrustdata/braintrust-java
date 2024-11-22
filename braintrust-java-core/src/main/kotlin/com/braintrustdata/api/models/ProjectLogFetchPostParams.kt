@@ -41,6 +41,12 @@ constructor(
 
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectLogFetchPostBody {
         return ProjectLogFetchPostBody(
@@ -276,25 +282,6 @@ constructor(
             "ProjectLogFetchPostBody{cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectLogFetchPostParams && projectId == other.projectId && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectLogFetchPostParams{projectId=$projectId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -317,15 +304,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectLogFetchPostParams: ProjectLogFetchPostParams) = apply {
-            this.projectId = projectLogFetchPostParams.projectId
-            this.cursor = projectLogFetchPostParams.cursor
-            this.limit = projectLogFetchPostParams.limit
-            this.maxRootSpanId = projectLogFetchPostParams.maxRootSpanId
-            this.maxXactId = projectLogFetchPostParams.maxXactId
-            this.version = projectLogFetchPostParams.version
-            additionalHeaders(projectLogFetchPostParams.additionalHeaders)
-            additionalQueryParams(projectLogFetchPostParams.additionalQueryParams)
-            additionalBodyProperties(projectLogFetchPostParams.additionalBodyProperties)
+            projectId = projectLogFetchPostParams.projectId
+            cursor = projectLogFetchPostParams.cursor
+            limit = projectLogFetchPostParams.limit
+            maxRootSpanId = projectLogFetchPostParams.maxRootSpanId
+            maxXactId = projectLogFetchPostParams.maxXactId
+            version = projectLogFetchPostParams.version
+            additionalHeaders = projectLogFetchPostParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectLogFetchPostParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                projectLogFetchPostParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Project id */
@@ -526,4 +514,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectLogFetchPostParams && projectId == other.projectId && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectLogFetchPostParams{projectId=$projectId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

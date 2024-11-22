@@ -41,6 +41,12 @@ constructor(
 
     fun realtimeUrl(): Optional<String> = Optional.ofNullable(realtimeUrl)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): OrganizationUpdateBody {
         return OrganizationUpdateBody(
@@ -176,25 +182,6 @@ constructor(
             "OrganizationUpdateBody{apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationId, apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "OrganizationUpdateParams{organizationId=$organizationId, apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -217,15 +204,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(organizationUpdateParams: OrganizationUpdateParams) = apply {
-            this.organizationId = organizationUpdateParams.organizationId
-            this.apiUrl = organizationUpdateParams.apiUrl
-            this.isUniversalApi = organizationUpdateParams.isUniversalApi
-            this.name = organizationUpdateParams.name
-            this.proxyUrl = organizationUpdateParams.proxyUrl
-            this.realtimeUrl = organizationUpdateParams.realtimeUrl
-            additionalHeaders(organizationUpdateParams.additionalHeaders)
-            additionalQueryParams(organizationUpdateParams.additionalQueryParams)
-            additionalBodyProperties(organizationUpdateParams.additionalBodyProperties)
+            organizationId = organizationUpdateParams.organizationId
+            apiUrl = organizationUpdateParams.apiUrl
+            isUniversalApi = organizationUpdateParams.isUniversalApi
+            name = organizationUpdateParams.name
+            proxyUrl = organizationUpdateParams.proxyUrl
+            realtimeUrl = organizationUpdateParams.realtimeUrl
+            additionalHeaders = organizationUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = organizationUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                organizationUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Organization id */
@@ -375,4 +363,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationId, apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "OrganizationUpdateParams{organizationId=$organizationId, apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

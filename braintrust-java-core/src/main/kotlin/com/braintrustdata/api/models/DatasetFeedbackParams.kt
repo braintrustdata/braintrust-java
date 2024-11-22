@@ -28,6 +28,12 @@ constructor(
 
     fun feedback(): List<FeedbackDatasetItem> = feedback
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): DatasetFeedbackBody {
         return DatasetFeedbackBody(feedback, additionalBodyProperties)
@@ -121,25 +127,6 @@ constructor(
             "DatasetFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is DatasetFeedbackParams && datasetId == other.datasetId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "DatasetFeedbackParams{datasetId=$datasetId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -158,11 +145,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(datasetFeedbackParams: DatasetFeedbackParams) = apply {
-            this.datasetId = datasetFeedbackParams.datasetId
-            this.feedback(datasetFeedbackParams.feedback)
-            additionalHeaders(datasetFeedbackParams.additionalHeaders)
-            additionalQueryParams(datasetFeedbackParams.additionalQueryParams)
-            additionalBodyProperties(datasetFeedbackParams.additionalBodyProperties)
+            datasetId = datasetFeedbackParams.datasetId
+            feedback = datasetFeedbackParams.feedback.toMutableList()
+            additionalHeaders = datasetFeedbackParams.additionalHeaders.toBuilder()
+            additionalQueryParams = datasetFeedbackParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = datasetFeedbackParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Dataset id */
@@ -300,10 +287,23 @@ constructor(
         fun build(): DatasetFeedbackParams =
             DatasetFeedbackParams(
                 checkNotNull(datasetId) { "`datasetId` is required but was not set" },
-                checkNotNull(feedback) { "`feedback` is required but was not set" }.toImmutable(),
+                feedback.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetFeedbackParams && datasetId == other.datasetId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "DatasetFeedbackParams{datasetId=$datasetId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

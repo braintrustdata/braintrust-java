@@ -45,6 +45,10 @@ constructor(
 
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -59,23 +63,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is GroupListParams && endingBefore == other.endingBefore && groupName == other.groupName && ids == other.ids && limit == other.limit && orgName == other.orgName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, groupName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "GroupListParams{endingBefore=$endingBefore, groupName=$groupName, ids=$ids, limit=$limit, orgName=$orgName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -98,14 +85,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(groupListParams: GroupListParams) = apply {
-            this.endingBefore = groupListParams.endingBefore
-            this.groupName = groupListParams.groupName
-            this.ids = groupListParams.ids
-            this.limit = groupListParams.limit
-            this.orgName = groupListParams.orgName
-            this.startingAfter = groupListParams.startingAfter
-            additionalHeaders(groupListParams.additionalHeaders)
-            additionalQueryParams(groupListParams.additionalQueryParams)
+            endingBefore = groupListParams.endingBefore
+            groupName = groupListParams.groupName
+            ids = groupListParams.ids
+            limit = groupListParams.limit
+            orgName = groupListParams.orgName
+            startingAfter = groupListParams.startingAfter
+            additionalHeaders = groupListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = groupListParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -374,4 +361,17 @@ constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is GroupListParams && endingBefore == other.endingBefore && groupName == other.groupName && ids == other.ids && limit == other.limit && orgName == other.orgName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, groupName, ids, limit, orgName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "GroupListParams{endingBefore=$endingBefore, groupName=$groupName, ids=$ids, limit=$limit, orgName=$orgName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
