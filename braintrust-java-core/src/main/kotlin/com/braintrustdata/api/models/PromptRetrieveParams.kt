@@ -17,6 +17,10 @@ constructor(
 
     fun promptId(): String = promptId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
@@ -27,23 +31,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is PromptRetrieveParams && promptId == other.promptId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(promptId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "PromptRetrieveParams{promptId=$promptId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -61,9 +48,9 @@ constructor(
 
         @JvmSynthetic
         internal fun from(promptRetrieveParams: PromptRetrieveParams) = apply {
-            this.promptId = promptRetrieveParams.promptId
-            additionalHeaders(promptRetrieveParams.additionalHeaders)
-            additionalQueryParams(promptRetrieveParams.additionalQueryParams)
+            promptId = promptRetrieveParams.promptId
+            additionalHeaders = promptRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = promptRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /** Prompt id */
@@ -174,4 +161,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PromptRetrieveParams && promptId == other.promptId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(promptId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "PromptRetrieveParams{promptId=$promptId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

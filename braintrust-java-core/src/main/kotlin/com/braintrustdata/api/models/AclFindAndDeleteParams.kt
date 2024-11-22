@@ -48,6 +48,12 @@ constructor(
 
     fun userId(): Optional<String> = Optional.ofNullable(userId)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): AclFindAndDeleteBody {
         return AclFindAndDeleteBody(
@@ -244,25 +250,6 @@ constructor(
             "AclFindAndDeleteBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AclFindAndDeleteParams && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AclFindAndDeleteParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -286,16 +273,17 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aclFindAndDeleteParams: AclFindAndDeleteParams) = apply {
-            this.objectId = aclFindAndDeleteParams.objectId
-            this.objectType = aclFindAndDeleteParams.objectType
-            this.groupId = aclFindAndDeleteParams.groupId
-            this.permission = aclFindAndDeleteParams.permission
-            this.restrictObjectType = aclFindAndDeleteParams.restrictObjectType
-            this.roleId = aclFindAndDeleteParams.roleId
-            this.userId = aclFindAndDeleteParams.userId
-            additionalHeaders(aclFindAndDeleteParams.additionalHeaders)
-            additionalQueryParams(aclFindAndDeleteParams.additionalQueryParams)
-            additionalBodyProperties(aclFindAndDeleteParams.additionalBodyProperties)
+            objectId = aclFindAndDeleteParams.objectId
+            objectType = aclFindAndDeleteParams.objectType
+            groupId = aclFindAndDeleteParams.groupId
+            permission = aclFindAndDeleteParams.permission
+            restrictObjectType = aclFindAndDeleteParams.restrictObjectType
+            roleId = aclFindAndDeleteParams.roleId
+            userId = aclFindAndDeleteParams.userId
+            additionalHeaders = aclFindAndDeleteParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aclFindAndDeleteParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                aclFindAndDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The id of the object the ACL applies to */
@@ -781,4 +769,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AclFindAndDeleteParams && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AclFindAndDeleteParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

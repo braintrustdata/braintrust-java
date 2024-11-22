@@ -45,6 +45,10 @@ constructor(
 
     fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -58,23 +62,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is EnvVarListParams && envVarName == other.envVarName && ids == other.ids && limit == other.limit && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarName, ids, limit, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "EnvVarListParams{envVarName=$envVarName, ids=$ids, limit=$limit, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -96,13 +83,13 @@ constructor(
 
         @JvmSynthetic
         internal fun from(envVarListParams: EnvVarListParams) = apply {
-            this.envVarName = envVarListParams.envVarName
-            this.ids = envVarListParams.ids
-            this.limit = envVarListParams.limit
-            this.objectId = envVarListParams.objectId
-            this.objectType = envVarListParams.objectType
-            additionalHeaders(envVarListParams.additionalHeaders)
-            additionalQueryParams(envVarListParams.additionalQueryParams)
+            envVarName = envVarListParams.envVarName
+            ids = envVarListParams.ids
+            limit = envVarListParams.limit
+            objectId = envVarListParams.objectId
+            objectType = envVarListParams.objectType
+            additionalHeaders = envVarListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = envVarListParams.additionalQueryParams.toBuilder()
         }
 
         /** Name of the env_var to search for */
@@ -418,4 +405,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is EnvVarListParams && envVarName == other.envVarName && ids == other.ids && limit == other.limit && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarName, ids, limit, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "EnvVarListParams{envVarName=$envVarName, ids=$ids, limit=$limit, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

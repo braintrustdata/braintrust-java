@@ -57,6 +57,10 @@ constructor(
 
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -75,23 +79,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is FunctionListParams && endingBefore == other.endingBefore && functionName == other.functionName && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && slug == other.slug && startingAfter == other.startingAfter && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, functionName, ids, limit, orgName, projectId, projectName, slug, startingAfter, version, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "FunctionListParams{endingBefore=$endingBefore, functionName=$functionName, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, slug=$slug, startingAfter=$startingAfter, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -118,18 +105,18 @@ constructor(
 
         @JvmSynthetic
         internal fun from(functionListParams: FunctionListParams) = apply {
-            this.endingBefore = functionListParams.endingBefore
-            this.functionName = functionListParams.functionName
-            this.ids = functionListParams.ids
-            this.limit = functionListParams.limit
-            this.orgName = functionListParams.orgName
-            this.projectId = functionListParams.projectId
-            this.projectName = functionListParams.projectName
-            this.slug = functionListParams.slug
-            this.startingAfter = functionListParams.startingAfter
-            this.version = functionListParams.version
-            additionalHeaders(functionListParams.additionalHeaders)
-            additionalQueryParams(functionListParams.additionalQueryParams)
+            endingBefore = functionListParams.endingBefore
+            functionName = functionListParams.functionName
+            ids = functionListParams.ids
+            limit = functionListParams.limit
+            orgName = functionListParams.orgName
+            projectId = functionListParams.projectId
+            projectName = functionListParams.projectName
+            slug = functionListParams.slug
+            startingAfter = functionListParams.startingAfter
+            version = functionListParams.version
+            additionalHeaders = functionListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = functionListParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -419,4 +406,17 @@ constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is FunctionListParams && endingBefore == other.endingBefore && functionName == other.functionName && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && slug == other.slug && startingAfter == other.startingAfter && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, functionName, ids, limit, orgName, projectId, projectName, slug, startingAfter, version, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "FunctionListParams{endingBefore=$endingBefore, functionName=$functionName, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, slug=$slug, startingAfter=$startingAfter, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

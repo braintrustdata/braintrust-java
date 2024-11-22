@@ -83,6 +83,12 @@ constructor(
 
     fun trialCount(): Optional<Double> = Optional.ofNullable(trialCount)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): EvalCreateBody {
         return EvalCreateBody(
@@ -403,25 +409,6 @@ constructor(
             "EvalCreateBody{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is EvalCreateParams && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, repoInfo, stream, timeout, trialCount, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "EvalCreateParams{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -453,24 +440,24 @@ constructor(
 
         @JvmSynthetic
         internal fun from(evalCreateParams: EvalCreateParams) = apply {
-            this.data = evalCreateParams.data
-            this.projectId = evalCreateParams.projectId
-            this.scores(evalCreateParams.scores)
-            this.task = evalCreateParams.task
-            this.baseExperimentId = evalCreateParams.baseExperimentId
-            this.baseExperimentName = evalCreateParams.baseExperimentName
-            this.experimentName = evalCreateParams.experimentName
-            this.gitMetadataSettings = evalCreateParams.gitMetadataSettings
-            this.isPublic = evalCreateParams.isPublic
-            this.maxConcurrency = evalCreateParams.maxConcurrency
-            this.metadata = evalCreateParams.metadata
-            this.repoInfo = evalCreateParams.repoInfo
-            this.stream = evalCreateParams.stream
-            this.timeout = evalCreateParams.timeout
-            this.trialCount = evalCreateParams.trialCount
-            additionalHeaders(evalCreateParams.additionalHeaders)
-            additionalQueryParams(evalCreateParams.additionalQueryParams)
-            additionalBodyProperties(evalCreateParams.additionalBodyProperties)
+            data = evalCreateParams.data
+            projectId = evalCreateParams.projectId
+            scores = evalCreateParams.scores.toMutableList()
+            task = evalCreateParams.task
+            baseExperimentId = evalCreateParams.baseExperimentId
+            baseExperimentName = evalCreateParams.baseExperimentName
+            experimentName = evalCreateParams.experimentName
+            gitMetadataSettings = evalCreateParams.gitMetadataSettings
+            isPublic = evalCreateParams.isPublic
+            maxConcurrency = evalCreateParams.maxConcurrency
+            metadata = evalCreateParams.metadata
+            repoInfo = evalCreateParams.repoInfo
+            stream = evalCreateParams.stream
+            timeout = evalCreateParams.timeout
+            trialCount = evalCreateParams.trialCount
+            additionalHeaders = evalCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = evalCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = evalCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The dataset to use */
@@ -717,7 +704,7 @@ constructor(
             EvalCreateParams(
                 checkNotNull(data) { "`data` is required but was not set" },
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
-                checkNotNull(scores) { "`scores` is required but was not set" }.toImmutable(),
+                scores.toImmutable(),
                 checkNotNull(task) { "`task` is required but was not set" },
                 baseExperimentId,
                 baseExperimentName,
@@ -3589,4 +3576,17 @@ constructor(
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is EvalCreateParams && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, repoInfo, stream, timeout, trialCount, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "EvalCreateParams{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

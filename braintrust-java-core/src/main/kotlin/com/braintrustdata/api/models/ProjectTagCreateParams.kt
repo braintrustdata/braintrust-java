@@ -35,6 +35,12 @@ constructor(
 
     fun description(): Optional<String> = Optional.ofNullable(description)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectTagCreateBody {
         return ProjectTagCreateBody(
@@ -157,25 +163,6 @@ constructor(
             "ProjectTagCreateBody{name=$name, projectId=$projectId, color=$color, description=$description, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectTagCreateParams && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, color, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectTagCreateParams{name=$name, projectId=$projectId, color=$color, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -196,13 +183,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectTagCreateParams: ProjectTagCreateParams) = apply {
-            this.name = projectTagCreateParams.name
-            this.projectId = projectTagCreateParams.projectId
-            this.color = projectTagCreateParams.color
-            this.description = projectTagCreateParams.description
-            additionalHeaders(projectTagCreateParams.additionalHeaders)
-            additionalQueryParams(projectTagCreateParams.additionalQueryParams)
-            additionalBodyProperties(projectTagCreateParams.additionalBodyProperties)
+            name = projectTagCreateParams.name
+            projectId = projectTagCreateParams.projectId
+            color = projectTagCreateParams.color
+            description = projectTagCreateParams.description
+            additionalHeaders = projectTagCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectTagCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                projectTagCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the project tag */
@@ -348,4 +336,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectTagCreateParams && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, color, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectTagCreateParams{name=$name, projectId=$projectId, color=$color, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

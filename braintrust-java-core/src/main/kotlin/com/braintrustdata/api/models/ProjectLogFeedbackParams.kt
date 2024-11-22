@@ -28,6 +28,12 @@ constructor(
 
     fun feedback(): List<FeedbackProjectLogsItem> = feedback
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectLogFeedbackBody {
         return ProjectLogFeedbackBody(feedback, additionalBodyProperties)
@@ -123,25 +129,6 @@ constructor(
             "ProjectLogFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectLogFeedbackParams && projectId == other.projectId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectLogFeedbackParams{projectId=$projectId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -160,11 +147,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectLogFeedbackParams: ProjectLogFeedbackParams) = apply {
-            this.projectId = projectLogFeedbackParams.projectId
-            this.feedback(projectLogFeedbackParams.feedback)
-            additionalHeaders(projectLogFeedbackParams.additionalHeaders)
-            additionalQueryParams(projectLogFeedbackParams.additionalQueryParams)
-            additionalBodyProperties(projectLogFeedbackParams.additionalBodyProperties)
+            projectId = projectLogFeedbackParams.projectId
+            feedback = projectLogFeedbackParams.feedback.toMutableList()
+            additionalHeaders = projectLogFeedbackParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectLogFeedbackParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                projectLogFeedbackParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Project id */
@@ -302,10 +290,23 @@ constructor(
         fun build(): ProjectLogFeedbackParams =
             ProjectLogFeedbackParams(
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
-                checkNotNull(feedback) { "`feedback` is required but was not set" }.toImmutable(),
+                feedback.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectLogFeedbackParams && projectId == other.projectId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectLogFeedbackParams{projectId=$projectId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

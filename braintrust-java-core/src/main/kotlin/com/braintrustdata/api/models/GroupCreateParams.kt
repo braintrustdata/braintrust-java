@@ -38,6 +38,12 @@ constructor(
 
     fun orgName(): Optional<String> = Optional.ofNullable(orgName)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): GroupCreateBody {
         return GroupCreateBody(
@@ -193,25 +199,6 @@ constructor(
             "GroupCreateBody{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is GroupCreateParams && name == other.name && description == other.description && memberGroups == other.memberGroups && memberUsers == other.memberUsers && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "GroupCreateParams{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -233,14 +220,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(groupCreateParams: GroupCreateParams) = apply {
-            this.name = groupCreateParams.name
-            this.description = groupCreateParams.description
-            this.memberGroups(groupCreateParams.memberGroups ?: listOf())
-            this.memberUsers(groupCreateParams.memberUsers ?: listOf())
-            this.orgName = groupCreateParams.orgName
-            additionalHeaders(groupCreateParams.additionalHeaders)
-            additionalQueryParams(groupCreateParams.additionalQueryParams)
-            additionalBodyProperties(groupCreateParams.additionalBodyProperties)
+            name = groupCreateParams.name
+            description = groupCreateParams.description
+            memberGroups = groupCreateParams.memberGroups?.toMutableList() ?: mutableListOf()
+            memberUsers = groupCreateParams.memberUsers?.toMutableList() ?: mutableListOf()
+            orgName = groupCreateParams.orgName
+            additionalHeaders = groupCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = groupCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = groupCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the group */
@@ -408,12 +395,25 @@ constructor(
             GroupCreateParams(
                 checkNotNull(name) { "`name` is required but was not set" },
                 description,
-                if (memberGroups.size == 0) null else memberGroups.toImmutable(),
-                if (memberUsers.size == 0) null else memberUsers.toImmutable(),
+                memberGroups.toImmutable().ifEmpty { null },
+                memberUsers.toImmutable().ifEmpty { null },
                 orgName,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is GroupCreateParams && name == other.name && description == other.description && memberGroups == other.memberGroups && memberUsers == other.memberUsers && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "GroupCreateParams{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

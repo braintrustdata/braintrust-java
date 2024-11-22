@@ -35,6 +35,12 @@ constructor(
 
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): DatasetCreateBody {
         return DatasetCreateBody(
@@ -158,25 +164,6 @@ constructor(
             "DatasetCreateBody{name=$name, projectId=$projectId, description=$description, metadata=$metadata, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is DatasetCreateParams && name == other.name && projectId == other.projectId && description == other.description && metadata == other.metadata && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, description, metadata, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "DatasetCreateParams{name=$name, projectId=$projectId, description=$description, metadata=$metadata, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -197,13 +184,13 @@ constructor(
 
         @JvmSynthetic
         internal fun from(datasetCreateParams: DatasetCreateParams) = apply {
-            this.name = datasetCreateParams.name
-            this.projectId = datasetCreateParams.projectId
-            this.description = datasetCreateParams.description
-            this.metadata = datasetCreateParams.metadata
-            additionalHeaders(datasetCreateParams.additionalHeaders)
-            additionalQueryParams(datasetCreateParams.additionalQueryParams)
-            additionalBodyProperties(datasetCreateParams.additionalBodyProperties)
+            name = datasetCreateParams.name
+            projectId = datasetCreateParams.projectId
+            description = datasetCreateParams.description
+            metadata = datasetCreateParams.metadata
+            additionalHeaders = datasetCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = datasetCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = datasetCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the dataset. Within a project, dataset names are unique */
@@ -411,4 +398,17 @@ constructor(
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetCreateParams && name == other.name && projectId == other.projectId && description == other.description && metadata == other.metadata && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, description, metadata, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "DatasetCreateParams{name=$name, projectId=$projectId, description=$description, metadata=$metadata, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
