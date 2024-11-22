@@ -44,6 +44,12 @@ constructor(
 
     fun removeMemberUsers(): Optional<List<String>> = Optional.ofNullable(removeMemberUsers)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): GroupUpdateBody {
         return GroupUpdateBody(
@@ -208,25 +214,6 @@ constructor(
             "GroupUpdateBody{addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is GroupUpdateParams && groupId == other.groupId && addMemberGroups == other.addMemberGroups && addMemberUsers == other.addMemberUsers && description == other.description && name == other.name && removeMemberGroups == other.removeMemberGroups && removeMemberUsers == other.removeMemberUsers && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, addMemberGroups, addMemberUsers, description, name, removeMemberGroups, removeMemberUsers, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "GroupUpdateParams{groupId=$groupId, addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -250,16 +237,18 @@ constructor(
 
         @JvmSynthetic
         internal fun from(groupUpdateParams: GroupUpdateParams) = apply {
-            this.groupId = groupUpdateParams.groupId
-            this.addMemberGroups(groupUpdateParams.addMemberGroups ?: listOf())
-            this.addMemberUsers(groupUpdateParams.addMemberUsers ?: listOf())
-            this.description = groupUpdateParams.description
-            this.name = groupUpdateParams.name
-            this.removeMemberGroups(groupUpdateParams.removeMemberGroups ?: listOf())
-            this.removeMemberUsers(groupUpdateParams.removeMemberUsers ?: listOf())
-            additionalHeaders(groupUpdateParams.additionalHeaders)
-            additionalQueryParams(groupUpdateParams.additionalQueryParams)
-            additionalBodyProperties(groupUpdateParams.additionalBodyProperties)
+            groupId = groupUpdateParams.groupId
+            addMemberGroups = groupUpdateParams.addMemberGroups?.toMutableList() ?: mutableListOf()
+            addMemberUsers = groupUpdateParams.addMemberUsers?.toMutableList() ?: mutableListOf()
+            description = groupUpdateParams.description
+            name = groupUpdateParams.name
+            removeMemberGroups =
+                groupUpdateParams.removeMemberGroups?.toMutableList() ?: mutableListOf()
+            removeMemberUsers =
+                groupUpdateParams.removeMemberUsers?.toMutableList() ?: mutableListOf()
+            additionalHeaders = groupUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = groupUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = groupUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Group id */
@@ -438,15 +427,28 @@ constructor(
         fun build(): GroupUpdateParams =
             GroupUpdateParams(
                 checkNotNull(groupId) { "`groupId` is required but was not set" },
-                if (addMemberGroups.size == 0) null else addMemberGroups.toImmutable(),
-                if (addMemberUsers.size == 0) null else addMemberUsers.toImmutable(),
+                addMemberGroups.toImmutable().ifEmpty { null },
+                addMemberUsers.toImmutable().ifEmpty { null },
                 description,
                 name,
-                if (removeMemberGroups.size == 0) null else removeMemberGroups.toImmutable(),
-                if (removeMemberUsers.size == 0) null else removeMemberUsers.toImmutable(),
+                removeMemberGroups.toImmutable().ifEmpty { null },
+                removeMemberUsers.toImmutable().ifEmpty { null },
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is GroupUpdateParams && groupId == other.groupId && addMemberGroups == other.addMemberGroups && addMemberUsers == other.addMemberUsers && description == other.description && name == other.name && removeMemberGroups == other.removeMemberGroups && removeMemberUsers == other.removeMemberUsers && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, addMemberGroups, addMemberUsers, description, name, removeMemberGroups, removeMemberUsers, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "GroupUpdateParams{groupId=$groupId, addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

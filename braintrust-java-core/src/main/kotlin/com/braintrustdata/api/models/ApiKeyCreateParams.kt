@@ -29,6 +29,12 @@ constructor(
 
     fun orgName(): Optional<String> = Optional.ofNullable(orgName)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ApiKeyCreateBody {
         return ApiKeyCreateBody(
@@ -136,25 +142,6 @@ constructor(
             "ApiKeyCreateBody{name=$name, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ApiKeyCreateParams && name == other.name && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ApiKeyCreateParams{name=$name, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -173,11 +160,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(apiKeyCreateParams: ApiKeyCreateParams) = apply {
-            this.name = apiKeyCreateParams.name
-            this.orgName = apiKeyCreateParams.orgName
-            additionalHeaders(apiKeyCreateParams.additionalHeaders)
-            additionalQueryParams(apiKeyCreateParams.additionalQueryParams)
-            additionalBodyProperties(apiKeyCreateParams.additionalBodyProperties)
+            name = apiKeyCreateParams.name
+            orgName = apiKeyCreateParams.orgName
+            additionalHeaders = apiKeyCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = apiKeyCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = apiKeyCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the api key. Does not have to be unique */
@@ -319,4 +306,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ApiKeyCreateParams && name == other.name && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ApiKeyCreateParams{name=$name, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

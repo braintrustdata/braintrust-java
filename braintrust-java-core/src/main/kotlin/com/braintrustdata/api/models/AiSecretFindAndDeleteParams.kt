@@ -29,6 +29,12 @@ constructor(
 
     fun orgName(): Optional<String> = Optional.ofNullable(orgName)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): AiSecretFindAndDeleteBody {
         return AiSecretFindAndDeleteBody(
@@ -136,25 +142,6 @@ constructor(
             "AiSecretFindAndDeleteBody{name=$name, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AiSecretFindAndDeleteParams && name == other.name && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AiSecretFindAndDeleteParams{name=$name, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -173,11 +160,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aiSecretFindAndDeleteParams: AiSecretFindAndDeleteParams) = apply {
-            this.name = aiSecretFindAndDeleteParams.name
-            this.orgName = aiSecretFindAndDeleteParams.orgName
-            additionalHeaders(aiSecretFindAndDeleteParams.additionalHeaders)
-            additionalQueryParams(aiSecretFindAndDeleteParams.additionalQueryParams)
-            additionalBodyProperties(aiSecretFindAndDeleteParams.additionalBodyProperties)
+            name = aiSecretFindAndDeleteParams.name
+            orgName = aiSecretFindAndDeleteParams.orgName
+            additionalHeaders = aiSecretFindAndDeleteParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aiSecretFindAndDeleteParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                aiSecretFindAndDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the AI secret */
@@ -319,4 +307,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AiSecretFindAndDeleteParams && name == other.name && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AiSecretFindAndDeleteParams{name=$name, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

@@ -28,6 +28,12 @@ constructor(
 
     fun events(): List<InsertDatasetEvent> = events
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): DatasetInsertBody {
         return DatasetInsertBody(events, additionalBodyProperties)
@@ -120,25 +126,6 @@ constructor(
             "DatasetInsertBody{events=$events, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is DatasetInsertParams && datasetId == other.datasetId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "DatasetInsertParams{datasetId=$datasetId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -157,11 +144,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(datasetInsertParams: DatasetInsertParams) = apply {
-            this.datasetId = datasetInsertParams.datasetId
-            this.events(datasetInsertParams.events)
-            additionalHeaders(datasetInsertParams.additionalHeaders)
-            additionalQueryParams(datasetInsertParams.additionalQueryParams)
-            additionalBodyProperties(datasetInsertParams.additionalBodyProperties)
+            datasetId = datasetInsertParams.datasetId
+            events = datasetInsertParams.events.toMutableList()
+            additionalHeaders = datasetInsertParams.additionalHeaders.toBuilder()
+            additionalQueryParams = datasetInsertParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = datasetInsertParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Dataset id */
@@ -299,10 +286,23 @@ constructor(
         fun build(): DatasetInsertParams =
             DatasetInsertParams(
                 checkNotNull(datasetId) { "`datasetId` is required but was not set" },
-                checkNotNull(events) { "`events` is required but was not set" }.toImmutable(),
+                events.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DatasetInsertParams && datasetId == other.datasetId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "DatasetInsertParams{datasetId=$datasetId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

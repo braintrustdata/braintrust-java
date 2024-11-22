@@ -41,6 +41,12 @@ constructor(
 
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ExperimentFetchPostBody {
         return ExperimentFetchPostBody(
@@ -276,25 +282,6 @@ constructor(
             "ExperimentFetchPostBody{cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ExperimentFetchPostParams && experimentId == other.experimentId && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ExperimentFetchPostParams{experimentId=$experimentId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -317,15 +304,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(experimentFetchPostParams: ExperimentFetchPostParams) = apply {
-            this.experimentId = experimentFetchPostParams.experimentId
-            this.cursor = experimentFetchPostParams.cursor
-            this.limit = experimentFetchPostParams.limit
-            this.maxRootSpanId = experimentFetchPostParams.maxRootSpanId
-            this.maxXactId = experimentFetchPostParams.maxXactId
-            this.version = experimentFetchPostParams.version
-            additionalHeaders(experimentFetchPostParams.additionalHeaders)
-            additionalQueryParams(experimentFetchPostParams.additionalQueryParams)
-            additionalBodyProperties(experimentFetchPostParams.additionalBodyProperties)
+            experimentId = experimentFetchPostParams.experimentId
+            cursor = experimentFetchPostParams.cursor
+            limit = experimentFetchPostParams.limit
+            maxRootSpanId = experimentFetchPostParams.maxRootSpanId
+            maxXactId = experimentFetchPostParams.maxXactId
+            version = experimentFetchPostParams.version
+            additionalHeaders = experimentFetchPostParams.additionalHeaders.toBuilder()
+            additionalQueryParams = experimentFetchPostParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                experimentFetchPostParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Experiment id */
@@ -526,4 +514,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ExperimentFetchPostParams && experimentId == other.experimentId && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, cursor, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ExperimentFetchPostParams{experimentId=$experimentId, cursor=$cursor, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

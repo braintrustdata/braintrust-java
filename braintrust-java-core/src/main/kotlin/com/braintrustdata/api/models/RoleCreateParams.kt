@@ -43,6 +43,12 @@ constructor(
 
     fun orgName(): Optional<String> = Optional.ofNullable(orgName)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): RoleCreateBody {
         return RoleCreateBody(
@@ -199,25 +205,6 @@ constructor(
             "RoleCreateBody{name=$name, description=$description, memberPermissions=$memberPermissions, memberRoles=$memberRoles, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is RoleCreateParams && name == other.name && description == other.description && memberPermissions == other.memberPermissions && memberRoles == other.memberRoles && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, description, memberPermissions, memberRoles, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "RoleCreateParams{name=$name, description=$description, memberPermissions=$memberPermissions, memberRoles=$memberRoles, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -239,14 +226,15 @@ constructor(
 
         @JvmSynthetic
         internal fun from(roleCreateParams: RoleCreateParams) = apply {
-            this.name = roleCreateParams.name
-            this.description = roleCreateParams.description
-            this.memberPermissions(roleCreateParams.memberPermissions ?: listOf())
-            this.memberRoles(roleCreateParams.memberRoles ?: listOf())
-            this.orgName = roleCreateParams.orgName
-            additionalHeaders(roleCreateParams.additionalHeaders)
-            additionalQueryParams(roleCreateParams.additionalQueryParams)
-            additionalBodyProperties(roleCreateParams.additionalBodyProperties)
+            name = roleCreateParams.name
+            description = roleCreateParams.description
+            memberPermissions =
+                roleCreateParams.memberPermissions?.toMutableList() ?: mutableListOf()
+            memberRoles = roleCreateParams.memberRoles?.toMutableList() ?: mutableListOf()
+            orgName = roleCreateParams.orgName
+            additionalHeaders = roleCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = roleCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = roleCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the role */
@@ -416,8 +404,8 @@ constructor(
             RoleCreateParams(
                 checkNotNull(name) { "`name` is required but was not set" },
                 description,
-                if (memberPermissions.size == 0) null else memberPermissions.toImmutable(),
-                if (memberRoles.size == 0) null else memberRoles.toImmutable(),
+                memberPermissions.toImmutable().ifEmpty { null },
+                memberRoles.toImmutable().ifEmpty { null },
                 orgName,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -728,4 +716,17 @@ constructor(
         override fun toString() =
             "MemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is RoleCreateParams && name == other.name && description == other.description && memberPermissions == other.memberPermissions && memberRoles == other.memberRoles && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, description, memberPermissions, memberRoles, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "RoleCreateParams{name=$name, description=$description, memberPermissions=$memberPermissions, memberRoles=$memberRoles, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

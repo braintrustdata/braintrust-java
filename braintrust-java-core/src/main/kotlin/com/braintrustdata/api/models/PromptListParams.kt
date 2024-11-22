@@ -57,6 +57,10 @@ constructor(
 
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -75,23 +79,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is PromptListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && promptName == other.promptName && slug == other.slug && startingAfter == other.startingAfter && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, projectId, projectName, promptName, slug, startingAfter, version, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "PromptListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, promptName=$promptName, slug=$slug, startingAfter=$startingAfter, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -118,18 +105,18 @@ constructor(
 
         @JvmSynthetic
         internal fun from(promptListParams: PromptListParams) = apply {
-            this.endingBefore = promptListParams.endingBefore
-            this.ids = promptListParams.ids
-            this.limit = promptListParams.limit
-            this.orgName = promptListParams.orgName
-            this.projectId = promptListParams.projectId
-            this.projectName = promptListParams.projectName
-            this.promptName = promptListParams.promptName
-            this.slug = promptListParams.slug
-            this.startingAfter = promptListParams.startingAfter
-            this.version = promptListParams.version
-            additionalHeaders(promptListParams.additionalHeaders)
-            additionalQueryParams(promptListParams.additionalQueryParams)
+            endingBefore = promptListParams.endingBefore
+            ids = promptListParams.ids
+            limit = promptListParams.limit
+            orgName = promptListParams.orgName
+            projectId = promptListParams.projectId
+            projectName = promptListParams.projectName
+            promptName = promptListParams.promptName
+            slug = promptListParams.slug
+            startingAfter = promptListParams.startingAfter
+            version = promptListParams.version
+            additionalHeaders = promptListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = promptListParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -419,4 +406,17 @@ constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PromptListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && promptName == other.promptName && slug == other.slug && startingAfter == other.startingAfter && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, projectId, projectName, promptName, slug, startingAfter, version, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "PromptListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, promptName=$promptName, slug=$slug, startingAfter=$startingAfter, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

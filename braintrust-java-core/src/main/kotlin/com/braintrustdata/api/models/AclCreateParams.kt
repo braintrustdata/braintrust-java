@@ -48,6 +48,12 @@ constructor(
 
     fun userId(): Optional<String> = Optional.ofNullable(userId)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): AclCreateBody {
         return AclCreateBody(
@@ -244,25 +250,6 @@ constructor(
             "AclCreateBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AclCreateParams && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AclCreateParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -286,16 +273,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(aclCreateParams: AclCreateParams) = apply {
-            this.objectId = aclCreateParams.objectId
-            this.objectType = aclCreateParams.objectType
-            this.groupId = aclCreateParams.groupId
-            this.permission = aclCreateParams.permission
-            this.restrictObjectType = aclCreateParams.restrictObjectType
-            this.roleId = aclCreateParams.roleId
-            this.userId = aclCreateParams.userId
-            additionalHeaders(aclCreateParams.additionalHeaders)
-            additionalQueryParams(aclCreateParams.additionalQueryParams)
-            additionalBodyProperties(aclCreateParams.additionalBodyProperties)
+            objectId = aclCreateParams.objectId
+            objectType = aclCreateParams.objectType
+            groupId = aclCreateParams.groupId
+            permission = aclCreateParams.permission
+            restrictObjectType = aclCreateParams.restrictObjectType
+            roleId = aclCreateParams.roleId
+            userId = aclCreateParams.userId
+            additionalHeaders = aclCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = aclCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = aclCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The id of the object the ACL applies to */
@@ -781,4 +768,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AclCreateParams && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AclCreateParams{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

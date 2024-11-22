@@ -54,6 +54,10 @@ constructor(
 
     fun viewType(): Optional<ViewType> = Optional.ofNullable(viewType)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -70,23 +74,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ViewListParams && objectId == other.objectId && objectType == other.objectType && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && startingAfter == other.startingAfter && viewName == other.viewName && viewType == other.viewType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, endingBefore, ids, limit, startingAfter, viewName, viewType, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ViewListParams{objectId=$objectId, objectType=$objectType, endingBefore=$endingBefore, ids=$ids, limit=$limit, startingAfter=$startingAfter, viewName=$viewName, viewType=$viewType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -111,16 +98,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(viewListParams: ViewListParams) = apply {
-            this.objectId = viewListParams.objectId
-            this.objectType = viewListParams.objectType
-            this.endingBefore = viewListParams.endingBefore
-            this.ids = viewListParams.ids
-            this.limit = viewListParams.limit
-            this.startingAfter = viewListParams.startingAfter
-            this.viewName = viewListParams.viewName
-            this.viewType = viewListParams.viewType
-            additionalHeaders(viewListParams.additionalHeaders)
-            additionalQueryParams(viewListParams.additionalQueryParams)
+            objectId = viewListParams.objectId
+            objectType = viewListParams.objectType
+            endingBefore = viewListParams.endingBefore
+            ids = viewListParams.ids
+            limit = viewListParams.limit
+            startingAfter = viewListParams.startingAfter
+            viewName = viewListParams.viewName
+            viewType = viewListParams.viewType
+            additionalHeaders = viewListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = viewListParams.additionalQueryParams.toBuilder()
         }
 
         /** The id of the object the ACL applies to */
@@ -601,4 +588,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ViewListParams && objectId == other.objectId && objectType == other.objectType && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && startingAfter == other.startingAfter && viewName == other.viewName && viewType == other.viewType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectId, objectType, endingBefore, ids, limit, startingAfter, viewName, viewType, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ViewListParams{objectId=$objectId, objectType=$objectType, endingBefore=$endingBefore, ids=$ids, limit=$limit, startingAfter=$startingAfter, viewName=$viewName, viewType=$viewType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

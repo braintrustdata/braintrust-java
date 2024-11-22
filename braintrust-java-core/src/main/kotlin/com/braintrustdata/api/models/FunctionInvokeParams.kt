@@ -58,6 +58,12 @@ constructor(
 
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): FunctionInvokeBody {
         return FunctionInvokeBody(
@@ -215,25 +221,6 @@ constructor(
             "FunctionInvokeBody{input=$input, messages=$messages, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is FunctionInvokeParams && functionId == other.functionId && input == other.input && messages == other.messages && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, input, messages, mode, parent, stream, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "FunctionInvokeParams{functionId=$functionId, input=$input, messages=$messages, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -257,16 +244,16 @@ constructor(
 
         @JvmSynthetic
         internal fun from(functionInvokeParams: FunctionInvokeParams) = apply {
-            this.functionId = functionInvokeParams.functionId
-            this.input = functionInvokeParams.input
-            this.messages(functionInvokeParams.messages ?: listOf())
-            this.mode = functionInvokeParams.mode
-            this.parent = functionInvokeParams.parent
-            this.stream = functionInvokeParams.stream
-            this.version = functionInvokeParams.version
-            additionalHeaders(functionInvokeParams.additionalHeaders)
-            additionalQueryParams(functionInvokeParams.additionalQueryParams)
-            additionalBodyProperties(functionInvokeParams.additionalBodyProperties)
+            functionId = functionInvokeParams.functionId
+            input = functionInvokeParams.input
+            messages = functionInvokeParams.messages?.toMutableList() ?: mutableListOf()
+            mode = functionInvokeParams.mode
+            parent = functionInvokeParams.parent
+            stream = functionInvokeParams.stream
+            version = functionInvokeParams.version
+            additionalHeaders = functionInvokeParams.additionalHeaders.toBuilder()
+            additionalQueryParams = functionInvokeParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = functionInvokeParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Function id */
@@ -431,7 +418,7 @@ constructor(
             FunctionInvokeParams(
                 checkNotNull(functionId) { "`functionId` is required but was not set" },
                 input,
-                if (messages.size == 0) null else messages.toImmutable(),
+                messages.toImmutable().ifEmpty { null },
                 mode,
                 parent,
                 stream,
@@ -2672,4 +2659,17 @@ constructor(
                 "SpanParentStruct{objectType=$objectType, objectId=$objectId, rowIds=$rowIds, propagatedEvent=$propagatedEvent, additionalProperties=$additionalProperties}"
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is FunctionInvokeParams && functionId == other.functionId && input == other.input && messages == other.messages && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, input, messages, mode, parent, stream, version, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "FunctionInvokeParams{functionId=$functionId, input=$input, messages=$messages, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
