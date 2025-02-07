@@ -3,27 +3,30 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 
+/** Get a function object by its id */
 class FunctionRetrieveParams
-constructor(
+private constructor(
     private val functionId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Function id */
     fun functionId(): String = functionId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -39,8 +42,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [FunctionRetrieveParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var functionId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -156,7 +160,7 @@ constructor(
 
         fun build(): FunctionRetrieveParams =
             FunctionRetrieveParams(
-                checkNotNull(functionId) { "`functionId` is required but was not set" },
+                checkRequired("functionId", functionId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

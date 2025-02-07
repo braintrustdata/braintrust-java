@@ -9,7 +9,7 @@ class InsertEventsResponseTest {
 
     @Test
     fun createInsertEventsResponse() {
-        val insertEventsResponse = InsertEventsResponse.builder().rowIds(listOf("string")).build()
+        val insertEventsResponse = InsertEventsResponse.builder().addRowId("string").build()
         assertThat(insertEventsResponse).isNotNull
         assertThat(insertEventsResponse.rowIds()).containsExactly("string")
     }

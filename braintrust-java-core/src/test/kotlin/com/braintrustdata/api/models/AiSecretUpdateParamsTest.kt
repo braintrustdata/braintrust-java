@@ -2,17 +2,21 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class AiSecretUpdateParamsTest {
 
     @Test
-    fun createAiSecretUpdateParams() {
+    fun create() {
         AiSecretUpdateParams.builder()
             .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .metadata(AiSecretUpdateParams.Metadata.builder().build())
+            .metadata(
+                AiSecretUpdateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
             .name("name")
             .secret("secret")
             .type("type")
@@ -20,30 +24,39 @@ class AiSecretUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             AiSecretUpdateParams.builder()
                 .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .metadata(AiSecretUpdateParams.Metadata.builder().build())
+                .metadata(
+                    AiSecretUpdateParams.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .name("name")
                 .secret("secret")
                 .type("type")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.metadata()).isEqualTo(AiSecretUpdateParams.Metadata.builder().build())
-        assertThat(body.name()).isEqualTo("name")
-        assertThat(body.secret()).isEqualTo("secret")
-        assertThat(body.type()).isEqualTo("type")
+        assertThat(body.metadata())
+            .contains(
+                AiSecretUpdateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+        assertThat(body.name()).contains("name")
+        assertThat(body.secret()).contains("secret")
+        assertThat(body.type()).contains("type")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             AiSecretUpdateParams.builder()
                 .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

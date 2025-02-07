@@ -2,53 +2,64 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ProjectLogFeedbackParamsTest {
 
     @Test
-    fun createProjectLogFeedbackParams() {
+    fun create() {
         ProjectLogFeedbackParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .feedback(
-                listOf(
-                    FeedbackProjectLogsItem.builder()
-                        .id("id")
-                        .comment("comment")
-                        .expected(JsonNull.of())
-                        .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
-                        .scores(FeedbackProjectLogsItem.Scores.builder().build())
-                        .source(FeedbackProjectLogsItem.Source.APP)
-                        .tags(listOf("string"))
-                        .build()
-                )
+            .addFeedback(
+                FeedbackProjectLogsItem.builder()
+                    .id("id")
+                    .comment("comment")
+                    .expected(JsonValue.from(mapOf<String, Any>()))
+                    .metadata(
+                        FeedbackProjectLogsItem.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .scores(
+                        FeedbackProjectLogsItem.Scores.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .source(FeedbackProjectLogsItem.Source.APP)
+                    .addTag("string")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ProjectLogFeedbackParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(
-                    listOf(
-                        FeedbackProjectLogsItem.builder()
-                            .id("id")
-                            .comment("comment")
-                            .expected(JsonNull.of())
-                            .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
-                            .scores(FeedbackProjectLogsItem.Scores.builder().build())
-                            .source(FeedbackProjectLogsItem.Source.APP)
-                            .tags(listOf("string"))
-                            .build()
-                    )
+                .addFeedback(
+                    FeedbackProjectLogsItem.builder()
+                        .id("id")
+                        .comment("comment")
+                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            FeedbackProjectLogsItem.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .scores(
+                            FeedbackProjectLogsItem.Scores.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
+                        .source(FeedbackProjectLogsItem.Source.APP)
+                        .addTag("string")
+                        .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(
@@ -56,24 +67,32 @@ class ProjectLogFeedbackParamsTest {
                     FeedbackProjectLogsItem.builder()
                         .id("id")
                         .comment("comment")
-                        .expected(JsonNull.of())
-                        .metadata(FeedbackProjectLogsItem.Metadata.builder().build())
-                        .scores(FeedbackProjectLogsItem.Scores.builder().build())
+                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            FeedbackProjectLogsItem.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .scores(
+                            FeedbackProjectLogsItem.Scores.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
                         .source(FeedbackProjectLogsItem.Source.APP)
-                        .tags(listOf("string"))
+                        .addTag("string")
                         .build()
                 )
             )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ProjectLogFeedbackParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
+                .addFeedback(FeedbackProjectLogsItem.builder().id("id").build())
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
@@ -84,7 +103,7 @@ class ProjectLogFeedbackParamsTest {
         val params =
             ProjectLogFeedbackParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
+                .addFeedback(FeedbackProjectLogsItem.builder().id("id").build())
                 .build()
         assertThat(params).isNotNull
         // path param "projectId"

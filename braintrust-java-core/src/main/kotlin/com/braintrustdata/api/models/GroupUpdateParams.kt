@@ -3,69 +3,86 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Partially update a group object. Specify the fields to update in the payload. Any object-type
+ * fields will be deep-merged with existing content. Currently we do not support removing fields or
+ * setting them to null.
+ */
 class GroupUpdateParams
-constructor(
+private constructor(
     private val groupId: String,
-    private val addMemberGroups: List<String>?,
-    private val addMemberUsers: List<String>?,
-    private val description: String?,
-    private val name: String?,
-    private val removeMemberGroups: List<String>?,
-    private val removeMemberUsers: List<String>?,
+    private val body: GroupUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** Group id */
     fun groupId(): String = groupId
 
-    fun addMemberGroups(): Optional<List<String>> = Optional.ofNullable(addMemberGroups)
+    /** A list of group IDs to add to the group's inheriting-from set */
+    fun addMemberGroups(): Optional<List<String>> = body.addMemberGroups()
 
-    fun addMemberUsers(): Optional<List<String>> = Optional.ofNullable(addMemberUsers)
+    /** A list of user IDs to add to the group */
+    fun addMemberUsers(): Optional<List<String>> = body.addMemberUsers()
 
-    fun description(): Optional<String> = Optional.ofNullable(description)
+    /** Textual description of the group */
+    fun description(): Optional<String> = body.description()
 
-    fun name(): Optional<String> = Optional.ofNullable(name)
+    /** Name of the group */
+    fun name(): Optional<String> = body.name()
 
-    fun removeMemberGroups(): Optional<List<String>> = Optional.ofNullable(removeMemberGroups)
+    /** A list of group IDs to remove from the group's inheriting-from set */
+    fun removeMemberGroups(): Optional<List<String>> = body.removeMemberGroups()
 
-    fun removeMemberUsers(): Optional<List<String>> = Optional.ofNullable(removeMemberUsers)
+    /** A list of user IDs to remove from the group */
+    fun removeMemberUsers(): Optional<List<String>> = body.removeMemberUsers()
+
+    /** A list of group IDs to add to the group's inheriting-from set */
+    fun _addMemberGroups(): JsonField<List<String>> = body._addMemberGroups()
+
+    /** A list of user IDs to add to the group */
+    fun _addMemberUsers(): JsonField<List<String>> = body._addMemberUsers()
+
+    /** Textual description of the group */
+    fun _description(): JsonField<String> = body._description()
+
+    /** Name of the group */
+    fun _name(): JsonField<String> = body._name()
+
+    /** A list of group IDs to remove from the group's inheriting-from set */
+    fun _removeMemberGroups(): JsonField<List<String>> = body._removeMemberGroups()
+
+    /** A list of user IDs to remove from the group */
+    fun _removeMemberUsers(): JsonField<List<String>> = body._removeMemberUsers()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): GroupUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): GroupUpdateBody {
-        return GroupUpdateBody(
-            addMemberGroups,
-            addMemberUsers,
-            description,
-            name,
-            removeMemberGroups,
-            removeMemberUsers,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -74,42 +91,102 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = GroupUpdateBody.Builder::class)
     @NoAutoDetect
     class GroupUpdateBody
+    @JsonCreator
     internal constructor(
-        private val addMemberGroups: List<String>?,
-        private val addMemberUsers: List<String>?,
-        private val description: String?,
-        private val name: String?,
-        private val removeMemberGroups: List<String>?,
-        private val removeMemberUsers: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("add_member_groups")
+        @ExcludeMissing
+        private val addMemberGroups: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("add_member_users")
+        @ExcludeMissing
+        private val addMemberUsers: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("remove_member_groups")
+        @ExcludeMissing
+        private val removeMemberGroups: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("remove_member_users")
+        @ExcludeMissing
+        private val removeMemberUsers: JsonField<List<String>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A list of group IDs to add to the group's inheriting-from set */
-        @JsonProperty("add_member_groups") fun addMemberGroups(): List<String>? = addMemberGroups
+        fun addMemberGroups(): Optional<List<String>> =
+            Optional.ofNullable(addMemberGroups.getNullable("add_member_groups"))
 
         /** A list of user IDs to add to the group */
-        @JsonProperty("add_member_users") fun addMemberUsers(): List<String>? = addMemberUsers
+        fun addMemberUsers(): Optional<List<String>> =
+            Optional.ofNullable(addMemberUsers.getNullable("add_member_users"))
 
         /** Textual description of the group */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
 
         /** Name of the group */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+        /** A list of group IDs to remove from the group's inheriting-from set */
+        fun removeMemberGroups(): Optional<List<String>> =
+            Optional.ofNullable(removeMemberGroups.getNullable("remove_member_groups"))
+
+        /** A list of user IDs to remove from the group */
+        fun removeMemberUsers(): Optional<List<String>> =
+            Optional.ofNullable(removeMemberUsers.getNullable("remove_member_users"))
+
+        /** A list of group IDs to add to the group's inheriting-from set */
+        @JsonProperty("add_member_groups")
+        @ExcludeMissing
+        fun _addMemberGroups(): JsonField<List<String>> = addMemberGroups
+
+        /** A list of user IDs to add to the group */
+        @JsonProperty("add_member_users")
+        @ExcludeMissing
+        fun _addMemberUsers(): JsonField<List<String>> = addMemberUsers
+
+        /** Textual description of the group */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /** Name of the group */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /** A list of group IDs to remove from the group's inheriting-from set */
         @JsonProperty("remove_member_groups")
-        fun removeMemberGroups(): List<String>? = removeMemberGroups
+        @ExcludeMissing
+        fun _removeMemberGroups(): JsonField<List<String>> = removeMemberGroups
 
         /** A list of user IDs to remove from the group */
         @JsonProperty("remove_member_users")
-        fun removeMemberUsers(): List<String>? = removeMemberUsers
+        @ExcludeMissing
+        fun _removeMemberUsers(): JsonField<List<String>> = removeMemberUsers
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): GroupUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            addMemberGroups()
+            addMemberUsers()
+            description()
+            name()
+            removeMemberGroups()
+            removeMemberUsers()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -118,80 +195,183 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [GroupUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var addMemberGroups: List<String>? = null
-            private var addMemberUsers: List<String>? = null
-            private var description: String? = null
-            private var name: String? = null
-            private var removeMemberGroups: List<String>? = null
-            private var removeMemberUsers: List<String>? = null
+            private var addMemberGroups: JsonField<MutableList<String>>? = null
+            private var addMemberUsers: JsonField<MutableList<String>>? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
+            private var removeMemberGroups: JsonField<MutableList<String>>? = null
+            private var removeMemberUsers: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(groupUpdateBody: GroupUpdateBody) = apply {
-                this.addMemberGroups = groupUpdateBody.addMemberGroups
-                this.addMemberUsers = groupUpdateBody.addMemberUsers
-                this.description = groupUpdateBody.description
-                this.name = groupUpdateBody.name
-                this.removeMemberGroups = groupUpdateBody.removeMemberGroups
-                this.removeMemberUsers = groupUpdateBody.removeMemberUsers
-                additionalProperties(groupUpdateBody.additionalProperties)
+                addMemberGroups = groupUpdateBody.addMemberGroups.map { it.toMutableList() }
+                addMemberUsers = groupUpdateBody.addMemberUsers.map { it.toMutableList() }
+                description = groupUpdateBody.description
+                name = groupUpdateBody.name
+                removeMemberGroups = groupUpdateBody.removeMemberGroups.map { it.toMutableList() }
+                removeMemberUsers = groupUpdateBody.removeMemberUsers.map { it.toMutableList() }
+                additionalProperties = groupUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** A list of group IDs to add to the group's inheriting-from set */
-            @JsonProperty("add_member_groups")
-            fun addMemberGroups(addMemberGroups: List<String>) = apply {
-                this.addMemberGroups = addMemberGroups
+            fun addMemberGroups(addMemberGroups: List<String>?) =
+                addMemberGroups(JsonField.ofNullable(addMemberGroups))
+
+            /** A list of group IDs to add to the group's inheriting-from set */
+            fun addMemberGroups(addMemberGroups: Optional<List<String>>) =
+                addMemberGroups(addMemberGroups.orElse(null))
+
+            /** A list of group IDs to add to the group's inheriting-from set */
+            fun addMemberGroups(addMemberGroups: JsonField<List<String>>) = apply {
+                this.addMemberGroups = addMemberGroups.map { it.toMutableList() }
+            }
+
+            /** A list of group IDs to add to the group's inheriting-from set */
+            fun addAddMemberGroup(addMemberGroup: String) = apply {
+                addMemberGroups =
+                    (addMemberGroups ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(addMemberGroup)
+                    }
             }
 
             /** A list of user IDs to add to the group */
-            @JsonProperty("add_member_users")
-            fun addMemberUsers(addMemberUsers: List<String>) = apply {
-                this.addMemberUsers = addMemberUsers
+            fun addMemberUsers(addMemberUsers: List<String>?) =
+                addMemberUsers(JsonField.ofNullable(addMemberUsers))
+
+            /** A list of user IDs to add to the group */
+            fun addMemberUsers(addMemberUsers: Optional<List<String>>) =
+                addMemberUsers(addMemberUsers.orElse(null))
+
+            /** A list of user IDs to add to the group */
+            fun addMemberUsers(addMemberUsers: JsonField<List<String>>) = apply {
+                this.addMemberUsers = addMemberUsers.map { it.toMutableList() }
+            }
+
+            /** A list of user IDs to add to the group */
+            fun addAddMemberUser(addMemberUser: String) = apply {
+                addMemberUsers =
+                    (addMemberUsers ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(addMemberUser)
+                    }
             }
 
             /** Textual description of the group */
-            @JsonProperty("description")
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** Textual description of the group */
+            fun description(description: Optional<String>) = description(description.orElse(null))
+
+            /** Textual description of the group */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
 
             /** Name of the group */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** Name of the group */
+            fun name(name: Optional<String>) = name(name.orElse(null))
+
+            /** Name of the group */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** A list of group IDs to remove from the group's inheriting-from set */
-            @JsonProperty("remove_member_groups")
-            fun removeMemberGroups(removeMemberGroups: List<String>) = apply {
-                this.removeMemberGroups = removeMemberGroups
+            fun removeMemberGroups(removeMemberGroups: List<String>?) =
+                removeMemberGroups(JsonField.ofNullable(removeMemberGroups))
+
+            /** A list of group IDs to remove from the group's inheriting-from set */
+            fun removeMemberGroups(removeMemberGroups: Optional<List<String>>) =
+                removeMemberGroups(removeMemberGroups.orElse(null))
+
+            /** A list of group IDs to remove from the group's inheriting-from set */
+            fun removeMemberGroups(removeMemberGroups: JsonField<List<String>>) = apply {
+                this.removeMemberGroups = removeMemberGroups.map { it.toMutableList() }
+            }
+
+            /** A list of group IDs to remove from the group's inheriting-from set */
+            fun addRemoveMemberGroup(removeMemberGroup: String) = apply {
+                removeMemberGroups =
+                    (removeMemberGroups ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(removeMemberGroup)
+                    }
             }
 
             /** A list of user IDs to remove from the group */
-            @JsonProperty("remove_member_users")
-            fun removeMemberUsers(removeMemberUsers: List<String>) = apply {
-                this.removeMemberUsers = removeMemberUsers
+            fun removeMemberUsers(removeMemberUsers: List<String>?) =
+                removeMemberUsers(JsonField.ofNullable(removeMemberUsers))
+
+            /** A list of user IDs to remove from the group */
+            fun removeMemberUsers(removeMemberUsers: Optional<List<String>>) =
+                removeMemberUsers(removeMemberUsers.orElse(null))
+
+            /** A list of user IDs to remove from the group */
+            fun removeMemberUsers(removeMemberUsers: JsonField<List<String>>) = apply {
+                this.removeMemberUsers = removeMemberUsers.map { it.toMutableList() }
+            }
+
+            /** A list of user IDs to remove from the group */
+            fun addRemoveMemberUser(removeMemberUser: String) = apply {
+                removeMemberUsers =
+                    (removeMemberUsers ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(removeMemberUser)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): GroupUpdateBody =
                 GroupUpdateBody(
-                    addMemberGroups?.toImmutable(),
-                    addMemberUsers?.toImmutable(),
+                    (addMemberGroups ?: JsonMissing.of()).map { it.toImmutable() },
+                    (addMemberUsers ?: JsonMissing.of()).map { it.toImmutable() },
                     description,
                     name,
-                    removeMemberGroups?.toImmutable(),
-                    removeMemberUsers?.toImmutable(),
+                    (removeMemberGroups ?: JsonMissing.of()).map { it.toImmutable() },
+                    (removeMemberUsers ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -221,87 +401,135 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [GroupUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var groupId: String? = null
-        private var addMemberGroups: MutableList<String> = mutableListOf()
-        private var addMemberUsers: MutableList<String> = mutableListOf()
-        private var description: String? = null
-        private var name: String? = null
-        private var removeMemberGroups: MutableList<String> = mutableListOf()
-        private var removeMemberUsers: MutableList<String> = mutableListOf()
+        private var body: GroupUpdateBody.Builder = GroupUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(groupUpdateParams: GroupUpdateParams) = apply {
             groupId = groupUpdateParams.groupId
-            addMemberGroups = groupUpdateParams.addMemberGroups?.toMutableList() ?: mutableListOf()
-            addMemberUsers = groupUpdateParams.addMemberUsers?.toMutableList() ?: mutableListOf()
-            description = groupUpdateParams.description
-            name = groupUpdateParams.name
-            removeMemberGroups =
-                groupUpdateParams.removeMemberGroups?.toMutableList() ?: mutableListOf()
-            removeMemberUsers =
-                groupUpdateParams.removeMemberUsers?.toMutableList() ?: mutableListOf()
+            body = groupUpdateParams.body.toBuilder()
             additionalHeaders = groupUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = groupUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = groupUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Group id */
         fun groupId(groupId: String) = apply { this.groupId = groupId }
 
         /** A list of group IDs to add to the group's inheriting-from set */
-        fun addMemberGroups(addMemberGroups: List<String>) = apply {
-            this.addMemberGroups.clear()
-            this.addMemberGroups.addAll(addMemberGroups)
+        fun addMemberGroups(addMemberGroups: List<String>?) = apply {
+            body.addMemberGroups(addMemberGroups)
+        }
+
+        /** A list of group IDs to add to the group's inheriting-from set */
+        fun addMemberGroups(addMemberGroups: Optional<List<String>>) =
+            addMemberGroups(addMemberGroups.orElse(null))
+
+        /** A list of group IDs to add to the group's inheriting-from set */
+        fun addMemberGroups(addMemberGroups: JsonField<List<String>>) = apply {
+            body.addMemberGroups(addMemberGroups)
         }
 
         /** A list of group IDs to add to the group's inheriting-from set */
         fun addAddMemberGroup(addMemberGroup: String) = apply {
-            this.addMemberGroups.add(addMemberGroup)
+            body.addAddMemberGroup(addMemberGroup)
         }
 
         /** A list of user IDs to add to the group */
-        fun addMemberUsers(addMemberUsers: List<String>) = apply {
-            this.addMemberUsers.clear()
-            this.addMemberUsers.addAll(addMemberUsers)
+        fun addMemberUsers(addMemberUsers: List<String>?) = apply {
+            body.addMemberUsers(addMemberUsers)
         }
 
         /** A list of user IDs to add to the group */
-        fun addAddMemberUser(addMemberUser: String) = apply {
-            this.addMemberUsers.add(addMemberUser)
+        fun addMemberUsers(addMemberUsers: Optional<List<String>>) =
+            addMemberUsers(addMemberUsers.orElse(null))
+
+        /** A list of user IDs to add to the group */
+        fun addMemberUsers(addMemberUsers: JsonField<List<String>>) = apply {
+            body.addMemberUsers(addMemberUsers)
         }
+
+        /** A list of user IDs to add to the group */
+        fun addAddMemberUser(addMemberUser: String) = apply { body.addAddMemberUser(addMemberUser) }
 
         /** Textual description of the group */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String?) = apply { body.description(description) }
+
+        /** Textual description of the group */
+        fun description(description: Optional<String>) = description(description.orElse(null))
+
+        /** Textual description of the group */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** Name of the group */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String?) = apply { body.name(name) }
+
+        /** Name of the group */
+        fun name(name: Optional<String>) = name(name.orElse(null))
+
+        /** Name of the group */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** A list of group IDs to remove from the group's inheriting-from set */
-        fun removeMemberGroups(removeMemberGroups: List<String>) = apply {
-            this.removeMemberGroups.clear()
-            this.removeMemberGroups.addAll(removeMemberGroups)
+        fun removeMemberGroups(removeMemberGroups: List<String>?) = apply {
+            body.removeMemberGroups(removeMemberGroups)
+        }
+
+        /** A list of group IDs to remove from the group's inheriting-from set */
+        fun removeMemberGroups(removeMemberGroups: Optional<List<String>>) =
+            removeMemberGroups(removeMemberGroups.orElse(null))
+
+        /** A list of group IDs to remove from the group's inheriting-from set */
+        fun removeMemberGroups(removeMemberGroups: JsonField<List<String>>) = apply {
+            body.removeMemberGroups(removeMemberGroups)
         }
 
         /** A list of group IDs to remove from the group's inheriting-from set */
         fun addRemoveMemberGroup(removeMemberGroup: String) = apply {
-            this.removeMemberGroups.add(removeMemberGroup)
+            body.addRemoveMemberGroup(removeMemberGroup)
         }
 
         /** A list of user IDs to remove from the group */
-        fun removeMemberUsers(removeMemberUsers: List<String>) = apply {
-            this.removeMemberUsers.clear()
-            this.removeMemberUsers.addAll(removeMemberUsers)
+        fun removeMemberUsers(removeMemberUsers: List<String>?) = apply {
+            body.removeMemberUsers(removeMemberUsers)
+        }
+
+        /** A list of user IDs to remove from the group */
+        fun removeMemberUsers(removeMemberUsers: Optional<List<String>>) =
+            removeMemberUsers(removeMemberUsers.orElse(null))
+
+        /** A list of user IDs to remove from the group */
+        fun removeMemberUsers(removeMemberUsers: JsonField<List<String>>) = apply {
+            body.removeMemberUsers(removeMemberUsers)
         }
 
         /** A list of user IDs to remove from the group */
         fun addRemoveMemberUser(removeMemberUser: String) = apply {
-            this.removeMemberUsers.add(removeMemberUser)
+            body.addRemoveMemberUser(removeMemberUser)
+        }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -402,40 +630,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): GroupUpdateParams =
             GroupUpdateParams(
-                checkNotNull(groupId) { "`groupId` is required but was not set" },
-                addMemberGroups.toImmutable().ifEmpty { null },
-                addMemberUsers.toImmutable().ifEmpty { null },
-                description,
-                name,
-                removeMemberGroups.toImmutable().ifEmpty { null },
-                removeMemberUsers.toImmutable().ifEmpty { null },
+                checkRequired("groupId", groupId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -444,11 +644,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupUpdateParams && groupId == other.groupId && addMemberGroups == other.addMemberGroups && addMemberUsers == other.addMemberUsers && description == other.description && name == other.name && removeMemberGroups == other.removeMemberGroups && removeMemberUsers == other.removeMemberUsers && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is GroupUpdateParams && groupId == other.groupId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, addMemberGroups, addMemberUsers, description, name, removeMemberGroups, removeMemberUsers, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "GroupUpdateParams{groupId=$groupId, addMemberGroups=$addMemberGroups, addMemberUsers=$addMemberUsers, description=$description, name=$name, removeMemberGroups=$removeMemberGroups, removeMemberUsers=$removeMemberUsers, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "GroupUpdateParams{groupId=$groupId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

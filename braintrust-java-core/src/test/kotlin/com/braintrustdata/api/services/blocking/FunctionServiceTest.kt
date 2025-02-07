@@ -4,9 +4,16 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.models.FunctionCreateParams
+import com.braintrustdata.api.models.FunctionDeleteParams
+import com.braintrustdata.api.models.FunctionInvokeParams
 import com.braintrustdata.api.models.FunctionListParams
+import com.braintrustdata.api.models.FunctionReplaceParams
+import com.braintrustdata.api.models.FunctionRetrieveParams
+import com.braintrustdata.api.models.FunctionUpdateParams
+import com.braintrustdata.api.models.PromptData
+import com.braintrustdata.api.models.PromptOptions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -25,11 +32,9 @@ class FunctionServiceTest {
             functionService.create(
                 FunctionCreateParams.builder()
                     .functionData(
-                        FunctionCreateParams.FunctionData.ofPrompt(
-                            FunctionCreateParams.FunctionData.Prompt.builder()
-                                .type(FunctionCreateParams.FunctionData.Prompt.Type.PROMPT)
-                                .build()
-                        )
+                        FunctionCreateParams.FunctionData.Prompt.builder()
+                            .type(FunctionCreateParams.FunctionData.Prompt.Type.PROMPT)
+                            .build()
                     )
                     .name("x")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -37,8 +42,8 @@ class FunctionServiceTest {
                     .description("description")
                     .functionSchema(
                         FunctionCreateParams.FunctionSchema.builder()
-                            .parameters(JsonNull.of())
-                            .returns(JsonNull.of())
+                            .parameters(JsonValue.from(mapOf<String, Any>()))
+                            .returns(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
                     .functionType(FunctionCreateParams.FunctionType.LLM)
@@ -55,57 +60,12 @@ class FunctionServiceTest {
                                 PromptOptions.builder()
                                     .model("model")
                                     .params(
-                                        PromptOptions.Params.ofOpenAIModelParams(
-                                            PromptOptions.Params.OpenAIModelParams.builder()
-                                                .frequencyPenalty(42.23)
-                                                .functionCall(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .FunctionCall
-                                                        .ofAuto(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .FunctionCall
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .maxTokens(42.23)
-                                                .n(42.23)
-                                                .presencePenalty(42.23)
-                                                .responseFormat(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .ofJsonObject(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .ResponseFormat
-                                                                .JsonObject
-                                                                .builder()
-                                                                .type(
-                                                                    PromptOptions.Params
-                                                                        .OpenAIModelParams
-                                                                        .ResponseFormat
-                                                                        .JsonObject
-                                                                        .Type
-                                                                        .JSON_OBJECT
-                                                                )
-                                                                .build()
-                                                        )
-                                                )
-                                                .stop(listOf("string"))
-                                                .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .topP(42.23)
-                                                .useCache(true)
-                                                .build()
-                                        )
+                                        PromptOptions.Params.AnthropicModelParams.builder()
+                                            .maxTokens(0.0)
+                                            .temperature(0.0)
+                                            .topP(0.0)
+                                            .useCache(true)
+                                            .build()
                                     )
                                     .position("position")
                                     .build()
@@ -119,32 +79,30 @@ class FunctionServiceTest {
                             )
                             .parser(
                                 PromptData.Parser.builder()
-                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .choiceScores(
+                                        PromptData.Parser.ChoiceScores.builder()
+                                            .putAdditionalProperty("foo", JsonValue.from(0))
+                                            .build()
+                                    )
                                     .type(PromptData.Parser.Type.LLM_CLASSIFIER)
                                     .useCot(true)
                                     .build()
                             )
                             .prompt(
-                                PromptData.Prompt.ofCompletion(
-                                    PromptData.Prompt.Completion.builder()
-                                        .content("content")
-                                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
-                                        .build()
-                                )
+                                PromptData.Prompt.Completion.builder()
+                                    .content("content")
+                                    .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                                    .build()
                             )
-                            .toolFunctions(
-                                listOf(
-                                    PromptData.ToolFunction.ofFunction(
-                                        PromptData.ToolFunction.Function.builder()
-                                            .id("id")
-                                            .type(PromptData.ToolFunction.Function.Type.FUNCTION)
-                                            .build()
-                                    )
-                                )
+                            .addToolFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
                             )
                             .build()
                     )
-                    .tags(listOf("string"))
+                    .addTag("string")
                     .build()
             )
         println(function)
@@ -183,11 +141,9 @@ class FunctionServiceTest {
                     .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .description("description")
                     .functionData(
-                        FunctionUpdateParams.FunctionData.ofPrompt(
-                            FunctionUpdateParams.FunctionData.Prompt.builder()
-                                .type(FunctionUpdateParams.FunctionData.Prompt.Type.PROMPT)
-                                .build()
-                        )
+                        FunctionUpdateParams.FunctionData.Prompt.builder()
+                            .type(FunctionUpdateParams.FunctionData.Prompt.Type.PROMPT)
+                            .build()
                     )
                     .name("name")
                     .promptData(
@@ -196,57 +152,12 @@ class FunctionServiceTest {
                                 PromptOptions.builder()
                                     .model("model")
                                     .params(
-                                        PromptOptions.Params.ofOpenAIModelParams(
-                                            PromptOptions.Params.OpenAIModelParams.builder()
-                                                .frequencyPenalty(42.23)
-                                                .functionCall(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .FunctionCall
-                                                        .ofAuto(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .FunctionCall
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .maxTokens(42.23)
-                                                .n(42.23)
-                                                .presencePenalty(42.23)
-                                                .responseFormat(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .ofJsonObject(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .ResponseFormat
-                                                                .JsonObject
-                                                                .builder()
-                                                                .type(
-                                                                    PromptOptions.Params
-                                                                        .OpenAIModelParams
-                                                                        .ResponseFormat
-                                                                        .JsonObject
-                                                                        .Type
-                                                                        .JSON_OBJECT
-                                                                )
-                                                                .build()
-                                                        )
-                                                )
-                                                .stop(listOf("string"))
-                                                .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .topP(42.23)
-                                                .useCache(true)
-                                                .build()
-                                        )
+                                        PromptOptions.Params.AnthropicModelParams.builder()
+                                            .maxTokens(0.0)
+                                            .temperature(0.0)
+                                            .topP(0.0)
+                                            .useCache(true)
+                                            .build()
                                     )
                                     .position("position")
                                     .build()
@@ -260,32 +171,30 @@ class FunctionServiceTest {
                             )
                             .parser(
                                 PromptData.Parser.builder()
-                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .choiceScores(
+                                        PromptData.Parser.ChoiceScores.builder()
+                                            .putAdditionalProperty("foo", JsonValue.from(0))
+                                            .build()
+                                    )
                                     .type(PromptData.Parser.Type.LLM_CLASSIFIER)
                                     .useCot(true)
                                     .build()
                             )
                             .prompt(
-                                PromptData.Prompt.ofCompletion(
-                                    PromptData.Prompt.Completion.builder()
-                                        .content("content")
-                                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
-                                        .build()
-                                )
+                                PromptData.Prompt.Completion.builder()
+                                    .content("content")
+                                    .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                                    .build()
                             )
-                            .toolFunctions(
-                                listOf(
-                                    PromptData.ToolFunction.ofFunction(
-                                        PromptData.ToolFunction.Function.builder()
-                                            .id("id")
-                                            .type(PromptData.ToolFunction.Function.Type.FUNCTION)
-                                            .build()
-                                    )
-                                )
+                            .addToolFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
                             )
                             .build()
                     )
-                    .tags(listOf("string"))
+                    .addTag("string")
                     .build()
             )
         println(function)
@@ -335,41 +244,35 @@ class FunctionServiceTest {
             functionService.invoke(
                 FunctionInvokeParams.builder()
                     .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .input(JsonNull.of())
-                    .messages(
-                        listOf(
-                            FunctionInvokeParams.Message.ofSystem(
-                                FunctionInvokeParams.Message.System.builder()
-                                    .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
-                                    .content("content")
-                                    .name("name")
-                                    .build()
-                            )
-                        )
+                    .input(JsonValue.from(mapOf<String, Any>()))
+                    .addMessage(
+                        FunctionInvokeParams.Message.System.builder()
+                            .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                            .content("content")
+                            .name("name")
+                            .build()
                     )
                     .mode(FunctionInvokeParams.Mode.AUTO)
                     .parent(
-                        FunctionInvokeParams.Parent.ofSpanParentStruct(
-                            FunctionInvokeParams.Parent.SpanParentStruct.builder()
-                                .objectId("object_id")
-                                .objectType(
-                                    FunctionInvokeParams.Parent.SpanParentStruct.ObjectType
-                                        .PROJECT_LOGS
-                                )
-                                .propagatedEvent(
-                                    FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent
-                                        .builder()
-                                        .build()
-                                )
-                                .rowIds(
-                                    FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
-                                        .id("id")
-                                        .rootSpanId("root_span_id")
-                                        .spanId("span_id")
-                                        .build()
-                                )
-                                .build()
-                        )
+                        FunctionInvokeParams.Parent.SpanParentStruct.builder()
+                            .objectId("object_id")
+                            .objectType(
+                                FunctionInvokeParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
+                            )
+                            .propagatedEvent(
+                                FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent
+                                    .builder()
+                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                    .build()
+                            )
+                            .rowIds(
+                                FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
+                                    .id("id")
+                                    .rootSpanId("root_span_id")
+                                    .spanId("span_id")
+                                    .build()
+                            )
+                            .build()
                     )
                     .stream(true)
                     .version("version")
@@ -390,11 +293,9 @@ class FunctionServiceTest {
             functionService.replace(
                 FunctionReplaceParams.builder()
                     .functionData(
-                        FunctionReplaceParams.FunctionData.ofPrompt(
-                            FunctionReplaceParams.FunctionData.Prompt.builder()
-                                .type(FunctionReplaceParams.FunctionData.Prompt.Type.PROMPT)
-                                .build()
-                        )
+                        FunctionReplaceParams.FunctionData.Prompt.builder()
+                            .type(FunctionReplaceParams.FunctionData.Prompt.Type.PROMPT)
+                            .build()
                     )
                     .name("x")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -402,8 +303,8 @@ class FunctionServiceTest {
                     .description("description")
                     .functionSchema(
                         FunctionReplaceParams.FunctionSchema.builder()
-                            .parameters(JsonNull.of())
-                            .returns(JsonNull.of())
+                            .parameters(JsonValue.from(mapOf<String, Any>()))
+                            .returns(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
                     .functionType(FunctionReplaceParams.FunctionType.LLM)
@@ -420,57 +321,12 @@ class FunctionServiceTest {
                                 PromptOptions.builder()
                                     .model("model")
                                     .params(
-                                        PromptOptions.Params.ofOpenAIModelParams(
-                                            PromptOptions.Params.OpenAIModelParams.builder()
-                                                .frequencyPenalty(42.23)
-                                                .functionCall(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .FunctionCall
-                                                        .ofAuto(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .FunctionCall
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .maxTokens(42.23)
-                                                .n(42.23)
-                                                .presencePenalty(42.23)
-                                                .responseFormat(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .ofJsonObject(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .ResponseFormat
-                                                                .JsonObject
-                                                                .builder()
-                                                                .type(
-                                                                    PromptOptions.Params
-                                                                        .OpenAIModelParams
-                                                                        .ResponseFormat
-                                                                        .JsonObject
-                                                                        .Type
-                                                                        .JSON_OBJECT
-                                                                )
-                                                                .build()
-                                                        )
-                                                )
-                                                .stop(listOf("string"))
-                                                .temperature(42.23)
-                                                .toolChoice(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ToolChoice
-                                                        .ofAuto(
-                                                            PromptOptions.Params.OpenAIModelParams
-                                                                .ToolChoice
-                                                                .Auto
-                                                                .AUTO
-                                                        )
-                                                )
-                                                .topP(42.23)
-                                                .useCache(true)
-                                                .build()
-                                        )
+                                        PromptOptions.Params.AnthropicModelParams.builder()
+                                            .maxTokens(0.0)
+                                            .temperature(0.0)
+                                            .topP(0.0)
+                                            .useCache(true)
+                                            .build()
                                     )
                                     .position("position")
                                     .build()
@@ -484,32 +340,30 @@ class FunctionServiceTest {
                             )
                             .parser(
                                 PromptData.Parser.builder()
-                                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                                    .choiceScores(
+                                        PromptData.Parser.ChoiceScores.builder()
+                                            .putAdditionalProperty("foo", JsonValue.from(0))
+                                            .build()
+                                    )
                                     .type(PromptData.Parser.Type.LLM_CLASSIFIER)
                                     .useCot(true)
                                     .build()
                             )
                             .prompt(
-                                PromptData.Prompt.ofCompletion(
-                                    PromptData.Prompt.Completion.builder()
-                                        .content("content")
-                                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
-                                        .build()
-                                )
+                                PromptData.Prompt.Completion.builder()
+                                    .content("content")
+                                    .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                                    .build()
                             )
-                            .toolFunctions(
-                                listOf(
-                                    PromptData.ToolFunction.ofFunction(
-                                        PromptData.ToolFunction.Function.builder()
-                                            .id("id")
-                                            .type(PromptData.ToolFunction.Function.Type.FUNCTION)
-                                            .build()
-                                    )
-                                )
+                            .addToolFunction(
+                                PromptData.ToolFunction.Function.builder()
+                                    .id("id")
+                                    .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                                    .build()
                             )
                             .build()
                     )
-                    .tags(listOf("string"))
+                    .addTag("string")
                     .build()
             )
         println(function)

@@ -3,53 +3,62 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Partially update an env_var object. Specify the fields to update in the payload. Any object-type
+ * fields will be deep-merged with existing content. Currently we do not support removing fields or
+ * setting them to null.
+ */
 class EnvVarUpdateParams
-constructor(
+private constructor(
     private val envVarId: String,
-    private val name: String,
-    private val value: String?,
+    private val body: EnvVarUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** EnvVar id */
     fun envVarId(): String = envVarId
 
-    fun name(): String = name
+    /** The name of the environment variable */
+    fun name(): String = body.name()
 
-    fun value(): Optional<String> = Optional.ofNullable(value)
+    /** The value of the environment variable. Will be encrypted at rest. */
+    fun value(): Optional<String> = body.value()
+
+    /** The name of the environment variable */
+    fun _name(): JsonField<String> = body._name()
+
+    /** The value of the environment variable. Will be encrypted at rest. */
+    fun _value(): JsonField<String> = body._value()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): EnvVarUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): EnvVarUpdateBody {
-        return EnvVarUpdateBody(
-            name,
-            value,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -58,24 +67,47 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = EnvVarUpdateBody.Builder::class)
     @NoAutoDetect
     class EnvVarUpdateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val value: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("value")
+        @ExcludeMissing
+        private val value: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The name of the environment variable */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String = name.getRequired("name")
 
         /** The value of the environment variable. Will be encrypted at rest. */
-        @JsonProperty("value") fun value(): String? = value
+        fun value(): Optional<String> = Optional.ofNullable(value.getNullable("value"))
+
+        /** The name of the environment variable */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /** The value of the environment variable. Will be encrypted at rest. */
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): EnvVarUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            value()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -84,42 +116,57 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [EnvVarUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var name: String? = null
-            private var value: String? = null
+            private var name: JsonField<String>? = null
+            private var value: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(envVarUpdateBody: EnvVarUpdateBody) = apply {
-                this.name = envVarUpdateBody.name
-                this.value = envVarUpdateBody.value
-                additionalProperties(envVarUpdateBody.additionalProperties)
+                name = envVarUpdateBody.name
+                value = envVarUpdateBody.value
+                additionalProperties = envVarUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** The name of the environment variable */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** The name of the environment variable */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The value of the environment variable. Will be encrypted at rest. */
-            @JsonProperty("value") fun value(value: String) = apply { this.value = value }
+            fun value(value: String?) = value(JsonField.ofNullable(value))
+
+            /** The value of the environment variable. Will be encrypted at rest. */
+            fun value(value: Optional<String>) = value(value.orElse(null))
+
+            /** The value of the environment variable. Will be encrypted at rest. */
+            fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): EnvVarUpdateBody =
                 EnvVarUpdateBody(
-                    checkNotNull(name) { "`name` is required but was not set" },
+                    checkRequired("name", name),
                     value,
                     additionalProperties.toImmutable(),
                 )
@@ -150,34 +197,59 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [EnvVarUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var envVarId: String? = null
-        private var name: String? = null
-        private var value: String? = null
+        private var body: EnvVarUpdateBody.Builder = EnvVarUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(envVarUpdateParams: EnvVarUpdateParams) = apply {
             envVarId = envVarUpdateParams.envVarId
-            name = envVarUpdateParams.name
-            value = envVarUpdateParams.value
+            body = envVarUpdateParams.body.toBuilder()
             additionalHeaders = envVarUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = envVarUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = envVarUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** EnvVar id */
         fun envVarId(envVarId: String) = apply { this.envVarId = envVarId }
 
         /** The name of the environment variable */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply { body.name(name) }
+
+        /** The name of the environment variable */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** The value of the environment variable. Will be encrypted at rest. */
-        fun value(value: String) = apply { this.value = value }
+        fun value(value: String?) = apply { body.value(value) }
+
+        /** The value of the environment variable. Will be encrypted at rest. */
+        fun value(value: Optional<String>) = value(value.orElse(null))
+
+        /** The value of the environment variable. Will be encrypted at rest. */
+        fun value(value: JsonField<String>) = apply { body.value(value) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -277,36 +349,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): EnvVarUpdateParams =
             EnvVarUpdateParams(
-                checkNotNull(envVarId) { "`envVarId` is required but was not set" },
-                checkNotNull(name) { "`name` is required but was not set" },
-                value,
+                checkRequired("envVarId", envVarId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -315,11 +363,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVarUpdateParams && envVarId == other.envVarId && name == other.name && value == other.value && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is EnvVarUpdateParams && envVarId == other.envVarId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarId, name, value, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "EnvVarUpdateParams{envVarId=$envVarId, name=$name, value=$value, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "EnvVarUpdateParams{envVarId=$envVarId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

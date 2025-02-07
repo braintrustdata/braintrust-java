@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -23,7 +24,11 @@ class ExperimentTest {
                 .datasetVersion("dataset_version")
                 .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .description("description")
-                .metadata(Experiment.Metadata.builder().build())
+                .metadata(
+                    Experiment.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .repoInfo(
                     RepoInfo.builder()
                         .authorEmail("author_email")
@@ -52,7 +57,12 @@ class ExperimentTest {
         assertThat(experiment.deletedAt())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(experiment.description()).contains("description")
-        assertThat(experiment.metadata()).contains(Experiment.Metadata.builder().build())
+        assertThat(experiment.metadata())
+            .contains(
+                Experiment.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
         assertThat(experiment.repoInfo())
             .contains(
                 RepoInfo.builder()

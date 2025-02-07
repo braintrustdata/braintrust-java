@@ -2,14 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ProjectTagUpdateParamsTest {
 
     @Test
-    fun createProjectTagUpdateParams() {
+    fun create() {
         ProjectTagUpdateParams.builder()
             .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .color("color")
@@ -19,7 +18,7 @@ class ProjectTagUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ProjectTagUpdateParams.builder()
                 .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -27,20 +26,20 @@ class ProjectTagUpdateParamsTest {
                 .description("description")
                 .name("name")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.color()).isEqualTo("color")
-        assertThat(body.description()).isEqualTo("description")
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.color()).contains("color")
+        assertThat(body.description()).contains("description")
+        assertThat(body.name()).contains("name")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ProjectTagUpdateParams.builder()
                 .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

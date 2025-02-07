@@ -15,19 +15,15 @@ class ProjectScoreConfigTest {
                 .multiSelect(true)
                 .online(
                     OnlineScoreConfig.builder()
-                        .samplingRate(1.0)
-                        .scorers(
-                            listOf(
-                                OnlineScoreConfig.Scorer.ofFunction(
-                                    OnlineScoreConfig.Scorer.Function.builder()
-                                        .id("id")
-                                        .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
-                                        .build()
-                                )
-                            )
+                        .samplingRate(0.0)
+                        .addScorer(
+                            OnlineScoreConfig.Scorer.Function.builder()
+                                .id("id")
+                                .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
+                                .build()
                         )
                         .applyToRootSpan(true)
-                        .applyToSpanNames(listOf("string"))
+                        .addApplyToSpanName("string")
                         .build()
                 )
                 .build()
@@ -38,19 +34,15 @@ class ProjectScoreConfigTest {
         assertThat(projectScoreConfig.online())
             .contains(
                 OnlineScoreConfig.builder()
-                    .samplingRate(1.0)
-                    .scorers(
-                        listOf(
-                            OnlineScoreConfig.Scorer.ofFunction(
-                                OnlineScoreConfig.Scorer.Function.builder()
-                                    .id("id")
-                                    .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
-                                    .build()
-                            )
-                        )
+                    .samplingRate(0.0)
+                    .addScorer(
+                        OnlineScoreConfig.Scorer.Function.builder()
+                            .id("id")
+                            .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
+                            .build()
                     )
                     .applyToRootSpan(true)
-                    .applyToSpanNames(listOf("string"))
+                    .addApplyToSpanName("string")
                     .build()
             )
     }

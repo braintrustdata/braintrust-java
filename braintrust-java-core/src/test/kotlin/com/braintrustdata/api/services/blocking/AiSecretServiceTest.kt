@@ -4,8 +4,14 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.models.AiSecretCreateParams
+import com.braintrustdata.api.models.AiSecretDeleteParams
+import com.braintrustdata.api.models.AiSecretFindAndDeleteParams
 import com.braintrustdata.api.models.AiSecretListParams
+import com.braintrustdata.api.models.AiSecretReplaceParams
+import com.braintrustdata.api.models.AiSecretRetrieveParams
+import com.braintrustdata.api.models.AiSecretUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -24,7 +30,11 @@ class AiSecretServiceTest {
             aiSecretService.create(
                 AiSecretCreateParams.builder()
                     .name("name")
-                    .metadata(AiSecretCreateParams.Metadata.builder().build())
+                    .metadata(
+                        AiSecretCreateParams.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .orgName("org_name")
                     .secret("secret")
                     .type("type")
@@ -64,7 +74,11 @@ class AiSecretServiceTest {
             aiSecretService.update(
                 AiSecretUpdateParams.builder()
                     .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .metadata(AiSecretUpdateParams.Metadata.builder().build())
+                    .metadata(
+                        AiSecretUpdateParams.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .name("name")
                     .secret("secret")
                     .type("type")
@@ -133,7 +147,11 @@ class AiSecretServiceTest {
             aiSecretService.replace(
                 AiSecretReplaceParams.builder()
                     .name("name")
-                    .metadata(AiSecretReplaceParams.Metadata.builder().build())
+                    .metadata(
+                        AiSecretReplaceParams.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .orgName("org_name")
                     .secret("secret")
                     .type("type")

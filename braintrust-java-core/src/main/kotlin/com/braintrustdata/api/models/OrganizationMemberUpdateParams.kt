@@ -3,93 +3,165 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/** Modify organization membership */
 class OrganizationMemberUpdateParams
-constructor(
-    private val inviteUsers: InviteUsers?,
-    private val orgId: String?,
-    private val orgName: String?,
-    private val removeUsers: RemoveUsers?,
+private constructor(
+    private val body: OrganizationMemberUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun inviteUsers(): Optional<InviteUsers> = Optional.ofNullable(inviteUsers)
+    /** Users to invite to the organization */
+    fun inviteUsers(): Optional<InviteUsers> = body.inviteUsers()
 
-    fun orgId(): Optional<String> = Optional.ofNullable(orgId)
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, or in case you want to explicitly assert the
+     * organization you are modifying, you may specify the id of the organization.
+     */
+    fun orgId(): Optional<String> = body.orgId()
 
-    fun orgName(): Optional<String> = Optional.ofNullable(orgName)
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, or in case you want to explicitly assert the
+     * organization you are modifying, you may specify the name of the organization.
+     */
+    fun orgName(): Optional<String> = body.orgName()
 
-    fun removeUsers(): Optional<RemoveUsers> = Optional.ofNullable(removeUsers)
+    /** Users to remove from the organization */
+    fun removeUsers(): Optional<RemoveUsers> = body.removeUsers()
+
+    /** Users to invite to the organization */
+    fun _inviteUsers(): JsonField<InviteUsers> = body._inviteUsers()
+
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, or in case you want to explicitly assert the
+     * organization you are modifying, you may specify the id of the organization.
+     */
+    fun _orgId(): JsonField<String> = body._orgId()
+
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, or in case you want to explicitly assert the
+     * organization you are modifying, you may specify the name of the organization.
+     */
+    fun _orgName(): JsonField<String> = body._orgName()
+
+    /** Users to remove from the organization */
+    fun _removeUsers(): JsonField<RemoveUsers> = body._removeUsers()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): OrganizationMemberUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): OrganizationMemberUpdateBody {
-        return OrganizationMemberUpdateBody(
-            inviteUsers,
-            orgId,
-            orgName,
-            removeUsers,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @JsonDeserialize(builder = OrganizationMemberUpdateBody.Builder::class)
     @NoAutoDetect
     class OrganizationMemberUpdateBody
+    @JsonCreator
     internal constructor(
-        private val inviteUsers: InviteUsers?,
-        private val orgId: String?,
-        private val orgName: String?,
-        private val removeUsers: RemoveUsers?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("invite_users")
+        @ExcludeMissing
+        private val inviteUsers: JsonField<InviteUsers> = JsonMissing.of(),
+        @JsonProperty("org_id")
+        @ExcludeMissing
+        private val orgId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("org_name")
+        @ExcludeMissing
+        private val orgName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("remove_users")
+        @ExcludeMissing
+        private val removeUsers: JsonField<RemoveUsers> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Users to invite to the organization */
-        @JsonProperty("invite_users") fun inviteUsers(): InviteUsers? = inviteUsers
+        fun inviteUsers(): Optional<InviteUsers> =
+            Optional.ofNullable(inviteUsers.getNullable("invite_users"))
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, or in case you want to explicitly assert
          * the organization you are modifying, you may specify the id of the organization.
          */
-        @JsonProperty("org_id") fun orgId(): String? = orgId
+        fun orgId(): Optional<String> = Optional.ofNullable(orgId.getNullable("org_id"))
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, or in case you want to explicitly assert
          * the organization you are modifying, you may specify the name of the organization.
          */
-        @JsonProperty("org_name") fun orgName(): String? = orgName
+        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
 
         /** Users to remove from the organization */
-        @JsonProperty("remove_users") fun removeUsers(): RemoveUsers? = removeUsers
+        fun removeUsers(): Optional<RemoveUsers> =
+            Optional.ofNullable(removeUsers.getNullable("remove_users"))
+
+        /** Users to invite to the organization */
+        @JsonProperty("invite_users")
+        @ExcludeMissing
+        fun _inviteUsers(): JsonField<InviteUsers> = inviteUsers
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, or in case you want to explicitly assert
+         * the organization you are modifying, you may specify the id of the organization.
+         */
+        @JsonProperty("org_id") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, or in case you want to explicitly assert
+         * the organization you are modifying, you may specify the name of the organization.
+         */
+        @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
+
+        /** Users to remove from the organization */
+        @JsonProperty("remove_users")
+        @ExcludeMissing
+        fun _removeUsers(): JsonField<RemoveUsers> = removeUsers
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): OrganizationMemberUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            inviteUsers().ifPresent { it.validate() }
+            orgId()
+            orgName()
+            removeUsers().ifPresent { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -98,26 +170,37 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [OrganizationMemberUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var inviteUsers: InviteUsers? = null
-            private var orgId: String? = null
-            private var orgName: String? = null
-            private var removeUsers: RemoveUsers? = null
+            private var inviteUsers: JsonField<InviteUsers> = JsonMissing.of()
+            private var orgId: JsonField<String> = JsonMissing.of()
+            private var orgName: JsonField<String> = JsonMissing.of()
+            private var removeUsers: JsonField<RemoveUsers> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(organizationMemberUpdateBody: OrganizationMemberUpdateBody) = apply {
-                this.inviteUsers = organizationMemberUpdateBody.inviteUsers
-                this.orgId = organizationMemberUpdateBody.orgId
-                this.orgName = organizationMemberUpdateBody.orgName
-                this.removeUsers = organizationMemberUpdateBody.removeUsers
-                additionalProperties(organizationMemberUpdateBody.additionalProperties)
+                inviteUsers = organizationMemberUpdateBody.inviteUsers
+                orgId = organizationMemberUpdateBody.orgId
+                orgName = organizationMemberUpdateBody.orgName
+                removeUsers = organizationMemberUpdateBody.removeUsers
+                additionalProperties =
+                    organizationMemberUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** Users to invite to the organization */
-            @JsonProperty("invite_users")
-            fun inviteUsers(inviteUsers: InviteUsers) = apply { this.inviteUsers = inviteUsers }
+            fun inviteUsers(inviteUsers: InviteUsers?) =
+                inviteUsers(JsonField.ofNullable(inviteUsers))
+
+            /** Users to invite to the organization */
+            fun inviteUsers(inviteUsers: Optional<InviteUsers>) =
+                inviteUsers(inviteUsers.orElse(null))
+
+            /** Users to invite to the organization */
+            fun inviteUsers(inviteUsers: JsonField<InviteUsers>) = apply {
+                this.inviteUsers = inviteUsers
+            }
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -125,7 +208,23 @@ constructor(
              * assert the organization you are modifying, you may specify the id of the
              * organization.
              */
-            @JsonProperty("org_id") fun orgId(orgId: String) = apply { this.orgId = orgId }
+            fun orgId(orgId: String?) = orgId(JsonField.ofNullable(orgId))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, or in case you want to explicitly
+             * assert the organization you are modifying, you may specify the id of the
+             * organization.
+             */
+            fun orgId(orgId: Optional<String>) = orgId(orgId.orElse(null))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, or in case you want to explicitly
+             * assert the organization you are modifying, you may specify the id of the
+             * organization.
+             */
+            fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -133,25 +232,54 @@ constructor(
              * assert the organization you are modifying, you may specify the name of the
              * organization.
              */
-            @JsonProperty("org_name")
-            fun orgName(orgName: String) = apply { this.orgName = orgName }
+            fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, or in case you want to explicitly
+             * assert the organization you are modifying, you may specify the name of the
+             * organization.
+             */
+            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, or in case you want to explicitly
+             * assert the organization you are modifying, you may specify the name of the
+             * organization.
+             */
+            fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
 
             /** Users to remove from the organization */
-            @JsonProperty("remove_users")
-            fun removeUsers(removeUsers: RemoveUsers) = apply { this.removeUsers = removeUsers }
+            fun removeUsers(removeUsers: RemoveUsers?) =
+                removeUsers(JsonField.ofNullable(removeUsers))
+
+            /** Users to remove from the organization */
+            fun removeUsers(removeUsers: Optional<RemoveUsers>) =
+                removeUsers(removeUsers.orElse(null))
+
+            /** Users to remove from the organization */
+            fun removeUsers(removeUsers: JsonField<RemoveUsers>) = apply {
+                this.removeUsers = removeUsers
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): OrganizationMemberUpdateBody =
@@ -189,48 +317,104 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [OrganizationMemberUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
-        private var inviteUsers: InviteUsers? = null
-        private var orgId: String? = null
-        private var orgName: String? = null
-        private var removeUsers: RemoveUsers? = null
+        private var body: OrganizationMemberUpdateBody.Builder =
+            OrganizationMemberUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(organizationMemberUpdateParams: OrganizationMemberUpdateParams) = apply {
-            inviteUsers = organizationMemberUpdateParams.inviteUsers
-            orgId = organizationMemberUpdateParams.orgId
-            orgName = organizationMemberUpdateParams.orgName
-            removeUsers = organizationMemberUpdateParams.removeUsers
+            body = organizationMemberUpdateParams.body.toBuilder()
             additionalHeaders = organizationMemberUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = organizationMemberUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                organizationMemberUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Users to invite to the organization */
-        fun inviteUsers(inviteUsers: InviteUsers) = apply { this.inviteUsers = inviteUsers }
+        fun inviteUsers(inviteUsers: InviteUsers?) = apply { body.inviteUsers(inviteUsers) }
+
+        /** Users to invite to the organization */
+        fun inviteUsers(inviteUsers: Optional<InviteUsers>) = inviteUsers(inviteUsers.orElse(null))
+
+        /** Users to invite to the organization */
+        fun inviteUsers(inviteUsers: JsonField<InviteUsers>) = apply {
+            body.inviteUsers(inviteUsers)
+        }
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, or in case you want to explicitly assert
          * the organization you are modifying, you may specify the id of the organization.
          */
-        fun orgId(orgId: String) = apply { this.orgId = orgId }
+        fun orgId(orgId: String?) = apply { body.orgId(orgId) }
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, or in case you want to explicitly assert
+         * the organization you are modifying, you may specify the id of the organization.
+         */
+        fun orgId(orgId: Optional<String>) = orgId(orgId.orElse(null))
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, or in case you want to explicitly assert
+         * the organization you are modifying, you may specify the id of the organization.
+         */
+        fun orgId(orgId: JsonField<String>) = apply { body.orgId(orgId) }
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, or in case you want to explicitly assert
          * the organization you are modifying, you may specify the name of the organization.
          */
-        fun orgName(orgName: String) = apply { this.orgName = orgName }
+        fun orgName(orgName: String?) = apply { body.orgName(orgName) }
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, or in case you want to explicitly assert
+         * the organization you are modifying, you may specify the name of the organization.
+         */
+        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, or in case you want to explicitly assert
+         * the organization you are modifying, you may specify the name of the organization.
+         */
+        fun orgName(orgName: JsonField<String>) = apply { body.orgName(orgName) }
 
         /** Users to remove from the organization */
-        fun removeUsers(removeUsers: RemoveUsers) = apply { this.removeUsers = removeUsers }
+        fun removeUsers(removeUsers: RemoveUsers?) = apply { body.removeUsers(removeUsers) }
+
+        /** Users to remove from the organization */
+        fun removeUsers(removeUsers: Optional<RemoveUsers>) = removeUsers(removeUsers.orElse(null))
+
+        /** Users to remove from the organization */
+        fun removeUsers(removeUsers: JsonField<RemoveUsers>) = apply {
+            body.removeUsers(removeUsers)
+        }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -330,79 +514,115 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): OrganizationMemberUpdateParams =
             OrganizationMemberUpdateParams(
-                inviteUsers,
-                orgId,
-                orgName,
-                removeUsers,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
     /** Users to invite to the organization */
-    @JsonDeserialize(builder = InviteUsers.Builder::class)
     @NoAutoDetect
     class InviteUsers
+    @JsonCreator
     private constructor(
-        private val ids: List<String>?,
-        private val emails: List<String>?,
-        private val sendInviteEmails: Boolean?,
-        private val groupIds: List<String>?,
-        private val groupNames: List<String>?,
-        private val groupId: String?,
-        private val groupName: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("emails")
+        @ExcludeMissing
+        private val emails: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("group_id")
+        @ExcludeMissing
+        private val groupId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("group_ids")
+        @ExcludeMissing
+        private val groupIds: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("group_name")
+        @ExcludeMissing
+        private val groupName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("group_names")
+        @ExcludeMissing
+        private val groupNames: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("ids")
+        @ExcludeMissing
+        private val ids: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("send_invite_emails")
+        @ExcludeMissing
+        private val sendInviteEmails: JsonField<Boolean> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Ids of existing users to invite */
-        @JsonProperty("ids") fun ids(): List<String>? = ids
-
         /** Emails of users to invite */
-        @JsonProperty("emails") fun emails(): List<String>? = emails
-
-        /** If true, send invite emails to the users who wore actually added */
-        @JsonProperty("send_invite_emails") fun sendInviteEmails(): Boolean? = sendInviteEmails
-
-        /** Optional list of group ids to add newly-invited users to. */
-        @JsonProperty("group_ids") fun groupIds(): List<String>? = groupIds
-
-        /** Optional list of group names to add newly-invited users to. */
-        @JsonProperty("group_names") fun groupNames(): List<String>? = groupNames
+        fun emails(): Optional<List<String>> = Optional.ofNullable(emails.getNullable("emails"))
 
         /** Singular form of group_ids */
-        @JsonProperty("group_id") fun groupId(): String? = groupId
+        fun groupId(): Optional<String> = Optional.ofNullable(groupId.getNullable("group_id"))
+
+        /** Optional list of group ids to add newly-invited users to. */
+        fun groupIds(): Optional<List<String>> =
+            Optional.ofNullable(groupIds.getNullable("group_ids"))
 
         /** Singular form of group_names */
-        @JsonProperty("group_name") fun groupName(): String? = groupName
+        fun groupName(): Optional<String> = Optional.ofNullable(groupName.getNullable("group_name"))
+
+        /** Optional list of group names to add newly-invited users to. */
+        fun groupNames(): Optional<List<String>> =
+            Optional.ofNullable(groupNames.getNullable("group_names"))
+
+        /** Ids of existing users to invite */
+        fun ids(): Optional<List<String>> = Optional.ofNullable(ids.getNullable("ids"))
+
+        /** If true, send invite emails to the users who wore actually added */
+        fun sendInviteEmails(): Optional<Boolean> =
+            Optional.ofNullable(sendInviteEmails.getNullable("send_invite_emails"))
+
+        /** Emails of users to invite */
+        @JsonProperty("emails") @ExcludeMissing fun _emails(): JsonField<List<String>> = emails
+
+        /** Singular form of group_ids */
+        @JsonProperty("group_id") @ExcludeMissing fun _groupId(): JsonField<String> = groupId
+
+        /** Optional list of group ids to add newly-invited users to. */
+        @JsonProperty("group_ids")
+        @ExcludeMissing
+        fun _groupIds(): JsonField<List<String>> = groupIds
+
+        /** Singular form of group_names */
+        @JsonProperty("group_name") @ExcludeMissing fun _groupName(): JsonField<String> = groupName
+
+        /** Optional list of group names to add newly-invited users to. */
+        @JsonProperty("group_names")
+        @ExcludeMissing
+        fun _groupNames(): JsonField<List<String>> = groupNames
+
+        /** Ids of existing users to invite */
+        @JsonProperty("ids") @ExcludeMissing fun _ids(): JsonField<List<String>> = ids
+
+        /** If true, send invite emails to the users who wore actually added */
+        @JsonProperty("send_invite_emails")
+        @ExcludeMissing
+        fun _sendInviteEmails(): JsonField<Boolean> = sendInviteEmails
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): InviteUsers = apply {
+            if (validated) {
+                return@apply
+            }
+
+            emails()
+            groupId()
+            groupIds()
+            groupName()
+            groupNames()
+            ids()
+            sendInviteEmails()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -411,81 +631,194 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [InviteUsers]. */
+        class Builder internal constructor() {
 
-            private var ids: List<String>? = null
-            private var emails: List<String>? = null
-            private var sendInviteEmails: Boolean? = null
-            private var groupIds: List<String>? = null
-            private var groupNames: List<String>? = null
-            private var groupId: String? = null
-            private var groupName: String? = null
+            private var emails: JsonField<MutableList<String>>? = null
+            private var groupId: JsonField<String> = JsonMissing.of()
+            private var groupIds: JsonField<MutableList<String>>? = null
+            private var groupName: JsonField<String> = JsonMissing.of()
+            private var groupNames: JsonField<MutableList<String>>? = null
+            private var ids: JsonField<MutableList<String>>? = null
+            private var sendInviteEmails: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(inviteUsers: InviteUsers) = apply {
-                this.ids = inviteUsers.ids
-                this.emails = inviteUsers.emails
-                this.sendInviteEmails = inviteUsers.sendInviteEmails
-                this.groupIds = inviteUsers.groupIds
-                this.groupNames = inviteUsers.groupNames
-                this.groupId = inviteUsers.groupId
-                this.groupName = inviteUsers.groupName
-                additionalProperties(inviteUsers.additionalProperties)
+                emails = inviteUsers.emails.map { it.toMutableList() }
+                groupId = inviteUsers.groupId
+                groupIds = inviteUsers.groupIds.map { it.toMutableList() }
+                groupName = inviteUsers.groupName
+                groupNames = inviteUsers.groupNames.map { it.toMutableList() }
+                ids = inviteUsers.ids.map { it.toMutableList() }
+                sendInviteEmails = inviteUsers.sendInviteEmails
+                additionalProperties = inviteUsers.additionalProperties.toMutableMap()
             }
 
-            /** Ids of existing users to invite */
-            @JsonProperty("ids") fun ids(ids: List<String>) = apply { this.ids = ids }
+            /** Emails of users to invite */
+            fun emails(emails: List<String>?) = emails(JsonField.ofNullable(emails))
 
             /** Emails of users to invite */
-            @JsonProperty("emails")
-            fun emails(emails: List<String>) = apply { this.emails = emails }
+            fun emails(emails: Optional<List<String>>) = emails(emails.orElse(null))
 
-            /** If true, send invite emails to the users who wore actually added */
-            @JsonProperty("send_invite_emails")
-            fun sendInviteEmails(sendInviteEmails: Boolean) = apply {
-                this.sendInviteEmails = sendInviteEmails
+            /** Emails of users to invite */
+            fun emails(emails: JsonField<List<String>>) = apply {
+                this.emails = emails.map { it.toMutableList() }
+            }
+
+            /** Emails of users to invite */
+            fun addEmail(email: String) = apply {
+                emails =
+                    (emails ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(email)
+                    }
+            }
+
+            /** Singular form of group_ids */
+            fun groupId(groupId: String?) = groupId(JsonField.ofNullable(groupId))
+
+            /** Singular form of group_ids */
+            fun groupId(groupId: Optional<String>) = groupId(groupId.orElse(null))
+
+            /** Singular form of group_ids */
+            fun groupId(groupId: JsonField<String>) = apply { this.groupId = groupId }
+
+            /** Optional list of group ids to add newly-invited users to. */
+            fun groupIds(groupIds: List<String>?) = groupIds(JsonField.ofNullable(groupIds))
+
+            /** Optional list of group ids to add newly-invited users to. */
+            fun groupIds(groupIds: Optional<List<String>>) = groupIds(groupIds.orElse(null))
+
+            /** Optional list of group ids to add newly-invited users to. */
+            fun groupIds(groupIds: JsonField<List<String>>) = apply {
+                this.groupIds = groupIds.map { it.toMutableList() }
             }
 
             /** Optional list of group ids to add newly-invited users to. */
-            @JsonProperty("group_ids")
-            fun groupIds(groupIds: List<String>) = apply { this.groupIds = groupIds }
-
-            /** Optional list of group names to add newly-invited users to. */
-            @JsonProperty("group_names")
-            fun groupNames(groupNames: List<String>) = apply { this.groupNames = groupNames }
-
-            /** Singular form of group_ids */
-            @JsonProperty("group_id")
-            fun groupId(groupId: String) = apply { this.groupId = groupId }
+            fun addGroupId(groupId: String) = apply {
+                groupIds =
+                    (groupIds ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(groupId)
+                    }
+            }
 
             /** Singular form of group_names */
-            @JsonProperty("group_name")
-            fun groupName(groupName: String) = apply { this.groupName = groupName }
+            fun groupName(groupName: String?) = groupName(JsonField.ofNullable(groupName))
+
+            /** Singular form of group_names */
+            fun groupName(groupName: Optional<String>) = groupName(groupName.orElse(null))
+
+            /** Singular form of group_names */
+            fun groupName(groupName: JsonField<String>) = apply { this.groupName = groupName }
+
+            /** Optional list of group names to add newly-invited users to. */
+            fun groupNames(groupNames: List<String>?) = groupNames(JsonField.ofNullable(groupNames))
+
+            /** Optional list of group names to add newly-invited users to. */
+            fun groupNames(groupNames: Optional<List<String>>) = groupNames(groupNames.orElse(null))
+
+            /** Optional list of group names to add newly-invited users to. */
+            fun groupNames(groupNames: JsonField<List<String>>) = apply {
+                this.groupNames = groupNames.map { it.toMutableList() }
+            }
+
+            /** Optional list of group names to add newly-invited users to. */
+            fun addGroupName(groupName: String) = apply {
+                groupNames =
+                    (groupNames ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(groupName)
+                    }
+            }
+
+            /** Ids of existing users to invite */
+            fun ids(ids: List<String>?) = ids(JsonField.ofNullable(ids))
+
+            /** Ids of existing users to invite */
+            fun ids(ids: Optional<List<String>>) = ids(ids.orElse(null))
+
+            /** Ids of existing users to invite */
+            fun ids(ids: JsonField<List<String>>) = apply {
+                this.ids = ids.map { it.toMutableList() }
+            }
+
+            /** Ids of existing users to invite */
+            fun addId(id: String) = apply {
+                ids =
+                    (ids ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(id)
+                    }
+            }
+
+            /** If true, send invite emails to the users who wore actually added */
+            fun sendInviteEmails(sendInviteEmails: Boolean?) =
+                sendInviteEmails(JsonField.ofNullable(sendInviteEmails))
+
+            /** If true, send invite emails to the users who wore actually added */
+            fun sendInviteEmails(sendInviteEmails: Boolean) =
+                sendInviteEmails(sendInviteEmails as Boolean?)
+
+            /** If true, send invite emails to the users who wore actually added */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun sendInviteEmails(sendInviteEmails: Optional<Boolean>) =
+                sendInviteEmails(sendInviteEmails.orElse(null) as Boolean?)
+
+            /** If true, send invite emails to the users who wore actually added */
+            fun sendInviteEmails(sendInviteEmails: JsonField<Boolean>) = apply {
+                this.sendInviteEmails = sendInviteEmails
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): InviteUsers =
                 InviteUsers(
-                    ids?.toImmutable(),
-                    emails?.toImmutable(),
-                    sendInviteEmails,
-                    groupIds?.toImmutable(),
-                    groupNames?.toImmutable(),
+                    (emails ?: JsonMissing.of()).map { it.toImmutable() },
                     groupId,
+                    (groupIds ?: JsonMissing.of()).map { it.toImmutable() },
                     groupName,
+                    (groupNames ?: JsonMissing.of()).map { it.toImmutable() },
+                    (ids ?: JsonMissing.of()).map { it.toImmutable() },
+                    sendInviteEmails,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -495,38 +828,61 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InviteUsers && ids == other.ids && emails == other.emails && sendInviteEmails == other.sendInviteEmails && groupIds == other.groupIds && groupNames == other.groupNames && groupId == other.groupId && groupName == other.groupName && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is InviteUsers && emails == other.emails && groupId == other.groupId && groupIds == other.groupIds && groupName == other.groupName && groupNames == other.groupNames && ids == other.ids && sendInviteEmails == other.sendInviteEmails && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(ids, emails, sendInviteEmails, groupIds, groupNames, groupId, groupName, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(emails, groupId, groupIds, groupName, groupNames, ids, sendInviteEmails, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "InviteUsers{ids=$ids, emails=$emails, sendInviteEmails=$sendInviteEmails, groupIds=$groupIds, groupNames=$groupNames, groupId=$groupId, groupName=$groupName, additionalProperties=$additionalProperties}"
+            "InviteUsers{emails=$emails, groupId=$groupId, groupIds=$groupIds, groupName=$groupName, groupNames=$groupNames, ids=$ids, sendInviteEmails=$sendInviteEmails, additionalProperties=$additionalProperties}"
     }
 
     /** Users to remove from the organization */
-    @JsonDeserialize(builder = RemoveUsers.Builder::class)
     @NoAutoDetect
     class RemoveUsers
+    @JsonCreator
     private constructor(
-        private val ids: List<String>?,
-        private val emails: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("emails")
+        @ExcludeMissing
+        private val emails: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("ids")
+        @ExcludeMissing
+        private val ids: JsonField<List<String>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /** Emails of users to remove */
+        fun emails(): Optional<List<String>> = Optional.ofNullable(emails.getNullable("emails"))
+
         /** Ids of users to remove */
-        @JsonProperty("ids") fun ids(): List<String>? = ids
+        fun ids(): Optional<List<String>> = Optional.ofNullable(ids.getNullable("ids"))
 
         /** Emails of users to remove */
-        @JsonProperty("emails") fun emails(): List<String>? = emails
+        @JsonProperty("emails") @ExcludeMissing fun _emails(): JsonField<List<String>> = emails
+
+        /** Ids of users to remove */
+        @JsonProperty("ids") @ExcludeMissing fun _ids(): JsonField<List<String>> = ids
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): RemoveUsers = apply {
+            if (validated) {
+                return@apply
+            }
+
+            emails()
+            ids()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -535,44 +891,93 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [RemoveUsers]. */
+        class Builder internal constructor() {
 
-            private var ids: List<String>? = null
-            private var emails: List<String>? = null
+            private var emails: JsonField<MutableList<String>>? = null
+            private var ids: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(removeUsers: RemoveUsers) = apply {
-                this.ids = removeUsers.ids
-                this.emails = removeUsers.emails
-                additionalProperties(removeUsers.additionalProperties)
+                emails = removeUsers.emails.map { it.toMutableList() }
+                ids = removeUsers.ids.map { it.toMutableList() }
+                additionalProperties = removeUsers.additionalProperties.toMutableMap()
+            }
+
+            /** Emails of users to remove */
+            fun emails(emails: List<String>?) = emails(JsonField.ofNullable(emails))
+
+            /** Emails of users to remove */
+            fun emails(emails: Optional<List<String>>) = emails(emails.orElse(null))
+
+            /** Emails of users to remove */
+            fun emails(emails: JsonField<List<String>>) = apply {
+                this.emails = emails.map { it.toMutableList() }
+            }
+
+            /** Emails of users to remove */
+            fun addEmail(email: String) = apply {
+                emails =
+                    (emails ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(email)
+                    }
             }
 
             /** Ids of users to remove */
-            @JsonProperty("ids") fun ids(ids: List<String>) = apply { this.ids = ids }
+            fun ids(ids: List<String>?) = ids(JsonField.ofNullable(ids))
 
-            /** Emails of users to remove */
-            @JsonProperty("emails")
-            fun emails(emails: List<String>) = apply { this.emails = emails }
+            /** Ids of users to remove */
+            fun ids(ids: Optional<List<String>>) = ids(ids.orElse(null))
+
+            /** Ids of users to remove */
+            fun ids(ids: JsonField<List<String>>) = apply {
+                this.ids = ids.map { it.toMutableList() }
+            }
+
+            /** Ids of users to remove */
+            fun addId(id: String) = apply {
+                ids =
+                    (ids ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(id)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): RemoveUsers =
                 RemoveUsers(
-                    ids?.toImmutable(),
-                    emails?.toImmutable(),
+                    (emails ?: JsonMissing.of()).map { it.toImmutable() },
+                    (ids ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -582,17 +987,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveUsers && ids == other.ids && emails == other.emails && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is RemoveUsers && emails == other.emails && ids == other.ids && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(ids, emails, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(emails, ids, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "RemoveUsers{ids=$ids, emails=$emails, additionalProperties=$additionalProperties}"
+            "RemoveUsers{emails=$emails, ids=$ids, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -600,11 +1005,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is OrganizationMemberUpdateParams && inviteUsers == other.inviteUsers && orgId == other.orgId && orgName == other.orgName && removeUsers == other.removeUsers && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is OrganizationMemberUpdateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "OrganizationMemberUpdateParams{inviteUsers=$inviteUsers, orgId=$orgId, orgName=$orgName, removeUsers=$removeUsers, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "OrganizationMemberUpdateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

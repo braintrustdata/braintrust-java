@@ -2,50 +2,44 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class FunctionInvokeParamsTest {
 
     @Test
-    fun createFunctionInvokeParams() {
+    fun create() {
         FunctionInvokeParams.builder()
             .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .input(JsonNull.of())
-            .messages(
-                listOf(
-                    FunctionInvokeParams.Message.ofSystem(
-                        FunctionInvokeParams.Message.System.builder()
-                            .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
-                            .content("content")
-                            .name("name")
-                            .build()
-                    )
-                )
+            .input(JsonValue.from(mapOf<String, Any>()))
+            .addMessage(
+                FunctionInvokeParams.Message.System.builder()
+                    .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                    .content("content")
+                    .name("name")
+                    .build()
             )
             .mode(FunctionInvokeParams.Mode.AUTO)
             .parent(
-                FunctionInvokeParams.Parent.ofSpanParentStruct(
-                    FunctionInvokeParams.Parent.SpanParentStruct.builder()
-                        .objectId("object_id")
-                        .objectType(
-                            FunctionInvokeParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
-                        )
-                        .propagatedEvent(
-                            FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent.builder()
-                                .build()
-                        )
-                        .rowIds(
-                            FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
-                                .id("id")
-                                .rootSpanId("root_span_id")
-                                .spanId("span_id")
-                                .build()
-                        )
-                        .build()
-                )
+                FunctionInvokeParams.Parent.SpanParentStruct.builder()
+                    .objectId("object_id")
+                    .objectType(
+                        FunctionInvokeParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
+                    )
+                    .propagatedEvent(
+                        FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .rowIds(
+                        FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
+                            .id("id")
+                            .rootSpanId("root_span_id")
+                            .spanId("span_id")
+                            .build()
+                    )
+                    .build()
             )
             .stream(true)
             .version("version")
@@ -53,53 +47,47 @@ class FunctionInvokeParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             FunctionInvokeParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .input(JsonNull.of())
-                .messages(
-                    listOf(
-                        FunctionInvokeParams.Message.ofSystem(
-                            FunctionInvokeParams.Message.System.builder()
-                                .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
-                                .content("content")
-                                .name("name")
-                                .build()
-                        )
-                    )
+                .input(JsonValue.from(mapOf<String, Any>()))
+                .addMessage(
+                    FunctionInvokeParams.Message.System.builder()
+                        .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
+                        .content("content")
+                        .name("name")
+                        .build()
                 )
                 .mode(FunctionInvokeParams.Mode.AUTO)
                 .parent(
-                    FunctionInvokeParams.Parent.ofSpanParentStruct(
-                        FunctionInvokeParams.Parent.SpanParentStruct.builder()
-                            .objectId("object_id")
-                            .objectType(
-                                FunctionInvokeParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
-                            )
-                            .propagatedEvent(
-                                FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent
-                                    .builder()
-                                    .build()
-                            )
-                            .rowIds(
-                                FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
-                                    .id("id")
-                                    .rootSpanId("root_span_id")
-                                    .spanId("span_id")
-                                    .build()
-                            )
-                            .build()
-                    )
+                    FunctionInvokeParams.Parent.SpanParentStruct.builder()
+                        .objectId("object_id")
+                        .objectType(
+                            FunctionInvokeParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
+                        )
+                        .propagatedEvent(
+                            FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .rowIds(
+                            FunctionInvokeParams.Parent.SpanParentStruct.RowIds.builder()
+                                .id("id")
+                                .rootSpanId("root_span_id")
+                                .spanId("span_id")
+                                .build()
+                        )
+                        .build()
                 )
                 .stream(true)
                 .version("version")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.input()).isEqualTo(JsonNull.of())
+        assertThat(body._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.messages())
-            .isEqualTo(
+            .contains(
                 listOf(
                     FunctionInvokeParams.Message.ofSystem(
                         FunctionInvokeParams.Message.System.builder()
@@ -110,9 +98,9 @@ class FunctionInvokeParamsTest {
                     )
                 )
             )
-        assertThat(body.mode()).isEqualTo(FunctionInvokeParams.Mode.AUTO)
+        assertThat(body.mode()).contains(FunctionInvokeParams.Mode.AUTO)
         assertThat(body.parent())
-            .isEqualTo(
+            .contains(
                 FunctionInvokeParams.Parent.ofSpanParentStruct(
                     FunctionInvokeParams.Parent.SpanParentStruct.builder()
                         .objectId("object_id")
@@ -121,6 +109,7 @@ class FunctionInvokeParamsTest {
                         )
                         .propagatedEvent(
                             FunctionInvokeParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
                         .rowIds(
@@ -133,17 +122,17 @@ class FunctionInvokeParamsTest {
                         .build()
                 )
             )
-        assertThat(body.stream()).isEqualTo(true)
-        assertThat(body.version()).isEqualTo("version")
+        assertThat(body.stream()).contains(true)
+        assertThat(body.version()).contains("version")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             FunctionInvokeParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

@@ -4,19 +4,18 @@ package com.braintrustdata.api.services
 
 import com.braintrustdata.api.client.BraintrustClient
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonString
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.jsonMapper
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.models.Project
+import com.braintrustdata.api.models.ProjectCreateParams
+import com.braintrustdata.api.models.ProjectSettings
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath
 import com.github.tomakehurst.wiremock.client.WireMock.ok
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
@@ -53,7 +52,7 @@ class ServiceParamsTest {
 
         val additionalBodyProperties = mutableMapOf<String, JsonValue>()
 
-        additionalBodyProperties.put("testBodyProperty", JsonString.of("ghi890"))
+        additionalBodyProperties.put("testBodyProperty", JsonValue.from("ghi890"))
 
         val params =
             ProjectCreateParams.builder()

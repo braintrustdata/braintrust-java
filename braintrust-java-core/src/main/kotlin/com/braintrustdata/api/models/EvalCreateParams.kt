@@ -10,12 +10,14 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -30,191 +32,423 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Launch an evaluation. This is the API-equivalent of the `Eval` function that is built into the
+ * Braintrust SDK. In the Eval API, you provide pointers to a dataset, task function, and scoring
+ * functions. The API will then run the evaluation, create an experiment, and return the results
+ * along with a link to the experiment. To learn more about evals, see the
+ * [Evals guide](https://www.braintrust.dev/docs/guides/evals).
+ */
 class EvalCreateParams
-constructor(
-    private val data: Data,
-    private val projectId: String,
-    private val scores: List<Score>,
-    private val task: Task,
-    private val baseExperimentId: String?,
-    private val baseExperimentName: String?,
-    private val experimentName: String?,
-    private val gitMetadataSettings: GitMetadataSettings?,
-    private val isPublic: Boolean?,
-    private val maxConcurrency: Double?,
-    private val metadata: Metadata?,
-    private val repoInfo: RepoInfo?,
-    private val stream: Boolean?,
-    private val timeout: Double?,
-    private val trialCount: Double?,
+private constructor(
+    private val body: EvalCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun data(): Data = data
+    /** The dataset to use */
+    fun data(): Data = body.data()
 
-    fun projectId(): String = projectId
+    /** Unique identifier for the project to run the eval in */
+    fun projectId(): String = body.projectId()
 
-    fun scores(): List<Score> = scores
+    /** The functions to score the eval on */
+    fun scores(): List<Score> = body.scores()
 
-    fun task(): Task = task
+    /** The function to evaluate */
+    fun task(): Task = body.task()
 
-    fun baseExperimentId(): Optional<String> = Optional.ofNullable(baseExperimentId)
+    /**
+     * An optional experiment id to use as a base. If specified, the new experiment will be
+     * summarized and compared to this experiment.
+     */
+    fun baseExperimentId(): Optional<String> = body.baseExperimentId()
 
-    fun baseExperimentName(): Optional<String> = Optional.ofNullable(baseExperimentName)
+    /**
+     * An optional experiment name to use as a base. If specified, the new experiment will be
+     * summarized and compared to this experiment.
+     */
+    fun baseExperimentName(): Optional<String> = body.baseExperimentName()
 
-    fun experimentName(): Optional<String> = Optional.ofNullable(experimentName)
+    /**
+     * An optional name for the experiment created by this eval. If it conflicts with an existing
+     * experiment, it will be suffixed with a unique identifier.
+     */
+    fun experimentName(): Optional<String> = body.experimentName()
 
-    fun gitMetadataSettings(): Optional<GitMetadataSettings> =
-        Optional.ofNullable(gitMetadataSettings)
+    /**
+     * Optional settings for collecting git metadata. By default, will collect all git metadata
+     * fields allowed in org-level settings.
+     */
+    fun gitMetadataSettings(): Optional<GitMetadataSettings> = body.gitMetadataSettings()
 
-    fun isPublic(): Optional<Boolean> = Optional.ofNullable(isPublic)
+    /** Whether the experiment should be public. Defaults to false. */
+    fun isPublic(): Optional<Boolean> = body.isPublic()
 
-    fun maxConcurrency(): Optional<Double> = Optional.ofNullable(maxConcurrency)
+    /**
+     * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined, in
+     * which case there is no max concurrency.
+     */
+    fun maxConcurrency(): Optional<Double> = body.maxConcurrency()
 
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
+    /**
+     * Optional experiment-level metadata to store about the evaluation. You can later use this to
+     * slice & dice across experiments.
+     */
+    fun metadata(): Optional<Metadata> = body.metadata()
 
-    fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo)
+    /** Metadata about the state of the repo when the experiment was created */
+    fun repoInfo(): Optional<RepoInfo> = body.repoInfo()
 
-    fun stream(): Optional<Boolean> = Optional.ofNullable(stream)
+    /**
+     * Whether to stream the results of the eval. If true, the request will return two events: one
+     * to indicate the experiment has started, and another upon completion. If false, the request
+     * will return the evaluation's summary upon completion.
+     */
+    fun stream(): Optional<Boolean> = body.stream()
 
-    fun timeout(): Optional<Double> = Optional.ofNullable(timeout)
+    /**
+     * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in which
+     * case there is no timeout.
+     */
+    fun timeout(): Optional<Double> = body.timeout()
 
-    fun trialCount(): Optional<Double> = Optional.ofNullable(trialCount)
+    /**
+     * The number of times to run the evaluator per input. This is useful for evaluating
+     * applications that have non-deterministic behavior and gives you both a stronger aggregate
+     * measure and a sense of the variance in the results.
+     */
+    fun trialCount(): Optional<Double> = body.trialCount()
+
+    /** The dataset to use */
+    fun _data(): JsonField<Data> = body._data()
+
+    /** Unique identifier for the project to run the eval in */
+    fun _projectId(): JsonField<String> = body._projectId()
+
+    /** The functions to score the eval on */
+    fun _scores(): JsonField<List<Score>> = body._scores()
+
+    /** The function to evaluate */
+    fun _task(): JsonField<Task> = body._task()
+
+    /**
+     * An optional experiment id to use as a base. If specified, the new experiment will be
+     * summarized and compared to this experiment.
+     */
+    fun _baseExperimentId(): JsonField<String> = body._baseExperimentId()
+
+    /**
+     * An optional experiment name to use as a base. If specified, the new experiment will be
+     * summarized and compared to this experiment.
+     */
+    fun _baseExperimentName(): JsonField<String> = body._baseExperimentName()
+
+    /**
+     * An optional name for the experiment created by this eval. If it conflicts with an existing
+     * experiment, it will be suffixed with a unique identifier.
+     */
+    fun _experimentName(): JsonField<String> = body._experimentName()
+
+    /**
+     * Optional settings for collecting git metadata. By default, will collect all git metadata
+     * fields allowed in org-level settings.
+     */
+    fun _gitMetadataSettings(): JsonField<GitMetadataSettings> = body._gitMetadataSettings()
+
+    /** Whether the experiment should be public. Defaults to false. */
+    fun _isPublic(): JsonField<Boolean> = body._isPublic()
+
+    /**
+     * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined, in
+     * which case there is no max concurrency.
+     */
+    fun _maxConcurrency(): JsonField<Double> = body._maxConcurrency()
+
+    /**
+     * Optional experiment-level metadata to store about the evaluation. You can later use this to
+     * slice & dice across experiments.
+     */
+    fun _metadata(): JsonField<Metadata> = body._metadata()
+
+    /** Metadata about the state of the repo when the experiment was created */
+    fun _repoInfo(): JsonField<RepoInfo> = body._repoInfo()
+
+    /**
+     * Whether to stream the results of the eval. If true, the request will return two events: one
+     * to indicate the experiment has started, and another upon completion. If false, the request
+     * will return the evaluation's summary upon completion.
+     */
+    fun _stream(): JsonField<Boolean> = body._stream()
+
+    /**
+     * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in which
+     * case there is no timeout.
+     */
+    fun _timeout(): JsonField<Double> = body._timeout()
+
+    /**
+     * The number of times to run the evaluator per input. This is useful for evaluating
+     * applications that have non-deterministic behavior and gives you both a stronger aggregate
+     * measure and a sense of the variance in the results.
+     */
+    fun _trialCount(): JsonField<Double> = body._trialCount()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): EvalCreateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): EvalCreateBody {
-        return EvalCreateBody(
-            data,
-            projectId,
-            scores,
-            task,
-            baseExperimentId,
-            baseExperimentName,
-            experimentName,
-            gitMetadataSettings,
-            isPublic,
-            maxConcurrency,
-            metadata,
-            repoInfo,
-            stream,
-            timeout,
-            trialCount,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @JsonDeserialize(builder = EvalCreateBody.Builder::class)
     @NoAutoDetect
     class EvalCreateBody
+    @JsonCreator
     internal constructor(
-        private val data: Data?,
-        private val projectId: String?,
-        private val scores: List<Score>?,
-        private val task: Task?,
-        private val baseExperimentId: String?,
-        private val baseExperimentName: String?,
-        private val experimentName: String?,
-        private val gitMetadataSettings: GitMetadataSettings?,
-        private val isPublic: Boolean?,
-        private val maxConcurrency: Double?,
-        private val metadata: Metadata?,
-        private val repoInfo: RepoInfo?,
-        private val stream: Boolean?,
-        private val timeout: Double?,
-        private val trialCount: Double?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
+        @JsonProperty("project_id")
+        @ExcludeMissing
+        private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("scores")
+        @ExcludeMissing
+        private val scores: JsonField<List<Score>> = JsonMissing.of(),
+        @JsonProperty("task") @ExcludeMissing private val task: JsonField<Task> = JsonMissing.of(),
+        @JsonProperty("base_experiment_id")
+        @ExcludeMissing
+        private val baseExperimentId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("base_experiment_name")
+        @ExcludeMissing
+        private val baseExperimentName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("experiment_name")
+        @ExcludeMissing
+        private val experimentName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("git_metadata_settings")
+        @ExcludeMissing
+        private val gitMetadataSettings: JsonField<GitMetadataSettings> = JsonMissing.of(),
+        @JsonProperty("is_public")
+        @ExcludeMissing
+        private val isPublic: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("max_concurrency")
+        @ExcludeMissing
+        private val maxConcurrency: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        private val metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("repo_info")
+        @ExcludeMissing
+        private val repoInfo: JsonField<RepoInfo> = JsonMissing.of(),
+        @JsonProperty("stream")
+        @ExcludeMissing
+        private val stream: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("timeout")
+        @ExcludeMissing
+        private val timeout: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("trial_count")
+        @ExcludeMissing
+        private val trialCount: JsonField<Double> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The dataset to use */
-        @JsonProperty("data") fun data(): Data? = data
+        fun data(): Data = data.getRequired("data")
 
         /** Unique identifier for the project to run the eval in */
-        @JsonProperty("project_id") fun projectId(): String? = projectId
+        fun projectId(): String = projectId.getRequired("project_id")
 
         /** The functions to score the eval on */
-        @JsonProperty("scores") fun scores(): List<Score>? = scores
+        fun scores(): List<Score> = scores.getRequired("scores")
 
         /** The function to evaluate */
-        @JsonProperty("task") fun task(): Task? = task
+        fun task(): Task = task.getRequired("task")
 
         /**
          * An optional experiment id to use as a base. If specified, the new experiment will be
          * summarized and compared to this experiment.
          */
-        @JsonProperty("base_experiment_id") fun baseExperimentId(): String? = baseExperimentId
+        fun baseExperimentId(): Optional<String> =
+            Optional.ofNullable(baseExperimentId.getNullable("base_experiment_id"))
 
         /**
          * An optional experiment name to use as a base. If specified, the new experiment will be
          * summarized and compared to this experiment.
          */
-        @JsonProperty("base_experiment_name") fun baseExperimentName(): String? = baseExperimentName
+        fun baseExperimentName(): Optional<String> =
+            Optional.ofNullable(baseExperimentName.getNullable("base_experiment_name"))
 
         /**
          * An optional name for the experiment created by this eval. If it conflicts with an
          * existing experiment, it will be suffixed with a unique identifier.
          */
-        @JsonProperty("experiment_name") fun experimentName(): String? = experimentName
+        fun experimentName(): Optional<String> =
+            Optional.ofNullable(experimentName.getNullable("experiment_name"))
 
         /**
          * Optional settings for collecting git metadata. By default, will collect all git metadata
          * fields allowed in org-level settings.
          */
-        @JsonProperty("git_metadata_settings")
-        fun gitMetadataSettings(): GitMetadataSettings? = gitMetadataSettings
+        fun gitMetadataSettings(): Optional<GitMetadataSettings> =
+            Optional.ofNullable(gitMetadataSettings.getNullable("git_metadata_settings"))
 
         /** Whether the experiment should be public. Defaults to false. */
-        @JsonProperty("is_public") fun isPublic(): Boolean? = isPublic
+        fun isPublic(): Optional<Boolean> = Optional.ofNullable(isPublic.getNullable("is_public"))
 
         /**
          * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
          * in which case there is no max concurrency.
          */
-        @JsonProperty("max_concurrency") fun maxConcurrency(): Double? = maxConcurrency
+        fun maxConcurrency(): Optional<Double> =
+            Optional.ofNullable(maxConcurrency.getNullable("max_concurrency"))
 
         /**
          * Optional experiment-level metadata to store about the evaluation. You can later use this
          * to slice & dice across experiments.
          */
-        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
+        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
         /** Metadata about the state of the repo when the experiment was created */
-        @JsonProperty("repo_info") fun repoInfo(): RepoInfo? = repoInfo
+        fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo.getNullable("repo_info"))
 
         /**
          * Whether to stream the results of the eval. If true, the request will return two events:
          * one to indicate the experiment has started, and another upon completion. If false, the
          * request will return the evaluation's summary upon completion.
          */
-        @JsonProperty("stream") fun stream(): Boolean? = stream
+        fun stream(): Optional<Boolean> = Optional.ofNullable(stream.getNullable("stream"))
 
         /**
          * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
          * which case there is no timeout.
          */
-        @JsonProperty("timeout") fun timeout(): Double? = timeout
+        fun timeout(): Optional<Double> = Optional.ofNullable(timeout.getNullable("timeout"))
 
         /**
          * The number of times to run the evaluator per input. This is useful for evaluating
          * applications that have non-deterministic behavior and gives you both a stronger aggregate
          * measure and a sense of the variance in the results.
          */
-        @JsonProperty("trial_count") fun trialCount(): Double? = trialCount
+        fun trialCount(): Optional<Double> =
+            Optional.ofNullable(trialCount.getNullable("trial_count"))
+
+        /** The dataset to use */
+        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
+
+        /** Unique identifier for the project to run the eval in */
+        @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+
+        /** The functions to score the eval on */
+        @JsonProperty("scores") @ExcludeMissing fun _scores(): JsonField<List<Score>> = scores
+
+        /** The function to evaluate */
+        @JsonProperty("task") @ExcludeMissing fun _task(): JsonField<Task> = task
+
+        /**
+         * An optional experiment id to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        @JsonProperty("base_experiment_id")
+        @ExcludeMissing
+        fun _baseExperimentId(): JsonField<String> = baseExperimentId
+
+        /**
+         * An optional experiment name to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        @JsonProperty("base_experiment_name")
+        @ExcludeMissing
+        fun _baseExperimentName(): JsonField<String> = baseExperimentName
+
+        /**
+         * An optional name for the experiment created by this eval. If it conflicts with an
+         * existing experiment, it will be suffixed with a unique identifier.
+         */
+        @JsonProperty("experiment_name")
+        @ExcludeMissing
+        fun _experimentName(): JsonField<String> = experimentName
+
+        /**
+         * Optional settings for collecting git metadata. By default, will collect all git metadata
+         * fields allowed in org-level settings.
+         */
+        @JsonProperty("git_metadata_settings")
+        @ExcludeMissing
+        fun _gitMetadataSettings(): JsonField<GitMetadataSettings> = gitMetadataSettings
+
+        /** Whether the experiment should be public. Defaults to false. */
+        @JsonProperty("is_public") @ExcludeMissing fun _isPublic(): JsonField<Boolean> = isPublic
+
+        /**
+         * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
+         * in which case there is no max concurrency.
+         */
+        @JsonProperty("max_concurrency")
+        @ExcludeMissing
+        fun _maxConcurrency(): JsonField<Double> = maxConcurrency
+
+        /**
+         * Optional experiment-level metadata to store about the evaluation. You can later use this
+         * to slice & dice across experiments.
+         */
+        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+        /** Metadata about the state of the repo when the experiment was created */
+        @JsonProperty("repo_info") @ExcludeMissing fun _repoInfo(): JsonField<RepoInfo> = repoInfo
+
+        /**
+         * Whether to stream the results of the eval. If true, the request will return two events:
+         * one to indicate the experiment has started, and another upon completion. If false, the
+         * request will return the evaluation's summary upon completion.
+         */
+        @JsonProperty("stream") @ExcludeMissing fun _stream(): JsonField<Boolean> = stream
+
+        /**
+         * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
+         * which case there is no timeout.
+         */
+        @JsonProperty("timeout") @ExcludeMissing fun _timeout(): JsonField<Double> = timeout
+
+        /**
+         * The number of times to run the evaluator per input. This is useful for evaluating
+         * applications that have non-deterministic behavior and gives you both a stronger aggregate
+         * measure and a sense of the variance in the results.
+         */
+        @JsonProperty("trial_count")
+        @ExcludeMissing
+        fun _trialCount(): JsonField<Double> = trialCount
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): EvalCreateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            data().validate()
+            projectId()
+            scores().forEach { it.validate() }
+            task().validate()
+            baseExperimentId()
+            baseExperimentName()
+            experimentName()
+            gitMetadataSettings().ifPresent { it.validate() }
+            isPublic()
+            maxConcurrency()
+            metadata().ifPresent { it.validate() }
+            repoInfo().ifPresent { it.validate() }
+            stream()
+            timeout()
+            trialCount()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -223,64 +457,154 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [EvalCreateBody]. */
+        class Builder internal constructor() {
 
-            private var data: Data? = null
-            private var projectId: String? = null
-            private var scores: List<Score>? = null
-            private var task: Task? = null
-            private var baseExperimentId: String? = null
-            private var baseExperimentName: String? = null
-            private var experimentName: String? = null
-            private var gitMetadataSettings: GitMetadataSettings? = null
-            private var isPublic: Boolean? = null
-            private var maxConcurrency: Double? = null
-            private var metadata: Metadata? = null
-            private var repoInfo: RepoInfo? = null
-            private var stream: Boolean? = null
-            private var timeout: Double? = null
-            private var trialCount: Double? = null
+            private var data: JsonField<Data>? = null
+            private var projectId: JsonField<String>? = null
+            private var scores: JsonField<MutableList<Score>>? = null
+            private var task: JsonField<Task>? = null
+            private var baseExperimentId: JsonField<String> = JsonMissing.of()
+            private var baseExperimentName: JsonField<String> = JsonMissing.of()
+            private var experimentName: JsonField<String> = JsonMissing.of()
+            private var gitMetadataSettings: JsonField<GitMetadataSettings> = JsonMissing.of()
+            private var isPublic: JsonField<Boolean> = JsonMissing.of()
+            private var maxConcurrency: JsonField<Double> = JsonMissing.of()
+            private var metadata: JsonField<Metadata> = JsonMissing.of()
+            private var repoInfo: JsonField<RepoInfo> = JsonMissing.of()
+            private var stream: JsonField<Boolean> = JsonMissing.of()
+            private var timeout: JsonField<Double> = JsonMissing.of()
+            private var trialCount: JsonField<Double> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(evalCreateBody: EvalCreateBody) = apply {
-                this.data = evalCreateBody.data
-                this.projectId = evalCreateBody.projectId
-                this.scores = evalCreateBody.scores
-                this.task = evalCreateBody.task
-                this.baseExperimentId = evalCreateBody.baseExperimentId
-                this.baseExperimentName = evalCreateBody.baseExperimentName
-                this.experimentName = evalCreateBody.experimentName
-                this.gitMetadataSettings = evalCreateBody.gitMetadataSettings
-                this.isPublic = evalCreateBody.isPublic
-                this.maxConcurrency = evalCreateBody.maxConcurrency
-                this.metadata = evalCreateBody.metadata
-                this.repoInfo = evalCreateBody.repoInfo
-                this.stream = evalCreateBody.stream
-                this.timeout = evalCreateBody.timeout
-                this.trialCount = evalCreateBody.trialCount
-                additionalProperties(evalCreateBody.additionalProperties)
+                data = evalCreateBody.data
+                projectId = evalCreateBody.projectId
+                scores = evalCreateBody.scores.map { it.toMutableList() }
+                task = evalCreateBody.task
+                baseExperimentId = evalCreateBody.baseExperimentId
+                baseExperimentName = evalCreateBody.baseExperimentName
+                experimentName = evalCreateBody.experimentName
+                gitMetadataSettings = evalCreateBody.gitMetadataSettings
+                isPublic = evalCreateBody.isPublic
+                maxConcurrency = evalCreateBody.maxConcurrency
+                metadata = evalCreateBody.metadata
+                repoInfo = evalCreateBody.repoInfo
+                stream = evalCreateBody.stream
+                timeout = evalCreateBody.timeout
+                trialCount = evalCreateBody.trialCount
+                additionalProperties = evalCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The dataset to use */
-            @JsonProperty("data") fun data(data: Data) = apply { this.data = data }
+            fun data(data: Data) = data(JsonField.of(data))
+
+            /** The dataset to use */
+            fun data(data: JsonField<Data>) = apply { this.data = data }
+
+            /** Dataset id */
+            fun data(datasetId: Data.DatasetId) = data(Data.ofDatasetId(datasetId))
+
+            /** Project and dataset name */
+            fun data(projectDatasetName: Data.ProjectDatasetName) =
+                data(Data.ofProjectDatasetName(projectDatasetName))
 
             /** Unique identifier for the project to run the eval in */
-            @JsonProperty("project_id")
-            fun projectId(projectId: String) = apply { this.projectId = projectId }
+            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+            /** Unique identifier for the project to run the eval in */
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
             /** The functions to score the eval on */
-            @JsonProperty("scores") fun scores(scores: List<Score>) = apply { this.scores = scores }
+            fun scores(scores: List<Score>) = scores(JsonField.of(scores))
+
+            /** The functions to score the eval on */
+            fun scores(scores: JsonField<List<Score>>) = apply {
+                this.scores = scores.map { it.toMutableList() }
+            }
+
+            /** The functions to score the eval on */
+            fun addScore(score: Score) = apply {
+                scores =
+                    (scores ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(score)
+                    }
+            }
+
+            /** Function id */
+            fun addScore(functionId: Score.FunctionId) = addScore(Score.ofFunctionId(functionId))
+
+            /** Project name and slug */
+            fun addScore(projectSlug: Score.ProjectSlug) =
+                addScore(Score.ofProjectSlug(projectSlug))
+
+            /** Global function name */
+            fun addScore(globalFunction: Score.GlobalFunction) =
+                addScore(Score.ofGlobalFunction(globalFunction))
+
+            /** Prompt session id */
+            fun addScore(promptSessionId: Score.PromptSessionId) =
+                addScore(Score.ofPromptSessionId(promptSessionId))
+
+            /** Inline code function */
+            fun addScore(inlineCode: Score.InlineCode) = addScore(Score.ofInlineCode(inlineCode))
+
+            /** Inline prompt definition */
+            fun addScore(inlinePrompt: Score.InlinePrompt) =
+                addScore(Score.ofInlinePrompt(inlinePrompt))
 
             /** The function to evaluate */
-            @JsonProperty("task") fun task(task: Task) = apply { this.task = task }
+            fun task(task: Task) = task(JsonField.of(task))
+
+            /** The function to evaluate */
+            fun task(task: JsonField<Task>) = apply { this.task = task }
+
+            /** Function id */
+            fun task(functionId: Task.FunctionId) = task(Task.ofFunctionId(functionId))
+
+            /** Project name and slug */
+            fun task(projectSlug: Task.ProjectSlug) = task(Task.ofProjectSlug(projectSlug))
+
+            /** Global function name */
+            fun task(globalFunction: Task.GlobalFunction) =
+                task(Task.ofGlobalFunction(globalFunction))
+
+            /** Prompt session id */
+            fun task(promptSessionId: Task.PromptSessionId) =
+                task(Task.ofPromptSessionId(promptSessionId))
+
+            /** Inline code function */
+            fun task(inlineCode: Task.InlineCode) = task(Task.ofInlineCode(inlineCode))
+
+            /** Inline prompt definition */
+            fun task(inlinePrompt: Task.InlinePrompt) = task(Task.ofInlinePrompt(inlinePrompt))
 
             /**
              * An optional experiment id to use as a base. If specified, the new experiment will be
              * summarized and compared to this experiment.
              */
-            @JsonProperty("base_experiment_id")
-            fun baseExperimentId(baseExperimentId: String) = apply {
+            fun baseExperimentId(baseExperimentId: String?) =
+                baseExperimentId(JsonField.ofNullable(baseExperimentId))
+
+            /**
+             * An optional experiment id to use as a base. If specified, the new experiment will be
+             * summarized and compared to this experiment.
+             */
+            fun baseExperimentId(baseExperimentId: Optional<String>) =
+                baseExperimentId(baseExperimentId.orElse(null))
+
+            /**
+             * An optional experiment id to use as a base. If specified, the new experiment will be
+             * summarized and compared to this experiment.
+             */
+            fun baseExperimentId(baseExperimentId: JsonField<String>) = apply {
                 this.baseExperimentId = baseExperimentId
             }
 
@@ -288,8 +612,21 @@ constructor(
              * An optional experiment name to use as a base. If specified, the new experiment will
              * be summarized and compared to this experiment.
              */
-            @JsonProperty("base_experiment_name")
-            fun baseExperimentName(baseExperimentName: String) = apply {
+            fun baseExperimentName(baseExperimentName: String?) =
+                baseExperimentName(JsonField.ofNullable(baseExperimentName))
+
+            /**
+             * An optional experiment name to use as a base. If specified, the new experiment will
+             * be summarized and compared to this experiment.
+             */
+            fun baseExperimentName(baseExperimentName: Optional<String>) =
+                baseExperimentName(baseExperimentName.orElse(null))
+
+            /**
+             * An optional experiment name to use as a base. If specified, the new experiment will
+             * be summarized and compared to this experiment.
+             */
+            fun baseExperimentName(baseExperimentName: JsonField<String>) = apply {
                 this.baseExperimentName = baseExperimentName
             }
 
@@ -297,8 +634,14 @@ constructor(
              * An optional name for the experiment created by this eval. If it conflicts with an
              * existing experiment, it will be suffixed with a unique identifier.
              */
-            @JsonProperty("experiment_name")
-            fun experimentName(experimentName: String) = apply {
+            fun experimentName(experimentName: String) =
+                experimentName(JsonField.of(experimentName))
+
+            /**
+             * An optional name for the experiment created by this eval. If it conflicts with an
+             * existing experiment, it will be suffixed with a unique identifier.
+             */
+            fun experimentName(experimentName: JsonField<String>) = apply {
                 this.experimentName = experimentName
             }
 
@@ -306,21 +649,63 @@ constructor(
              * Optional settings for collecting git metadata. By default, will collect all git
              * metadata fields allowed in org-level settings.
              */
-            @JsonProperty("git_metadata_settings")
-            fun gitMetadataSettings(gitMetadataSettings: GitMetadataSettings) = apply {
+            fun gitMetadataSettings(gitMetadataSettings: GitMetadataSettings?) =
+                gitMetadataSettings(JsonField.ofNullable(gitMetadataSettings))
+
+            /**
+             * Optional settings for collecting git metadata. By default, will collect all git
+             * metadata fields allowed in org-level settings.
+             */
+            fun gitMetadataSettings(gitMetadataSettings: Optional<GitMetadataSettings>) =
+                gitMetadataSettings(gitMetadataSettings.orElse(null))
+
+            /**
+             * Optional settings for collecting git metadata. By default, will collect all git
+             * metadata fields allowed in org-level settings.
+             */
+            fun gitMetadataSettings(gitMetadataSettings: JsonField<GitMetadataSettings>) = apply {
                 this.gitMetadataSettings = gitMetadataSettings
             }
 
             /** Whether the experiment should be public. Defaults to false. */
-            @JsonProperty("is_public")
-            fun isPublic(isPublic: Boolean) = apply { this.isPublic = isPublic }
+            fun isPublic(isPublic: Boolean?) = isPublic(JsonField.ofNullable(isPublic))
+
+            /** Whether the experiment should be public. Defaults to false. */
+            fun isPublic(isPublic: Boolean) = isPublic(isPublic as Boolean?)
+
+            /** Whether the experiment should be public. Defaults to false. */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun isPublic(isPublic: Optional<Boolean>) = isPublic(isPublic.orElse(null) as Boolean?)
+
+            /** Whether the experiment should be public. Defaults to false. */
+            fun isPublic(isPublic: JsonField<Boolean>) = apply { this.isPublic = isPublic }
 
             /**
              * The maximum number of tasks/scorers that will be run concurrently. Defaults to
              * undefined, in which case there is no max concurrency.
              */
-            @JsonProperty("max_concurrency")
-            fun maxConcurrency(maxConcurrency: Double) = apply {
+            fun maxConcurrency(maxConcurrency: Double?) =
+                maxConcurrency(JsonField.ofNullable(maxConcurrency))
+
+            /**
+             * The maximum number of tasks/scorers that will be run concurrently. Defaults to
+             * undefined, in which case there is no max concurrency.
+             */
+            fun maxConcurrency(maxConcurrency: Double) = maxConcurrency(maxConcurrency as Double?)
+
+            /**
+             * The maximum number of tasks/scorers that will be run concurrently. Defaults to
+             * undefined, in which case there is no max concurrency.
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun maxConcurrency(maxConcurrency: Optional<Double>) =
+                maxConcurrency(maxConcurrency.orElse(null) as Double?)
+
+            /**
+             * The maximum number of tasks/scorers that will be run concurrently. Defaults to
+             * undefined, in which case there is no max concurrency.
+             */
+            fun maxConcurrency(maxConcurrency: JsonField<Double>) = apply {
                 this.maxConcurrency = maxConcurrency
             }
 
@@ -328,54 +713,117 @@ constructor(
              * Optional experiment-level metadata to store about the evaluation. You can later use
              * this to slice & dice across experiments.
              */
-            @JsonProperty("metadata")
-            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+            fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
+
+            /**
+             * Optional experiment-level metadata to store about the evaluation. You can later use
+             * this to slice & dice across experiments.
+             */
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /** Metadata about the state of the repo when the experiment was created */
-            @JsonProperty("repo_info")
-            fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
+            fun repoInfo(repoInfo: RepoInfo?) = repoInfo(JsonField.ofNullable(repoInfo))
+
+            /** Metadata about the state of the repo when the experiment was created */
+            fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+
+            /** Metadata about the state of the repo when the experiment was created */
+            fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { this.repoInfo = repoInfo }
 
             /**
              * Whether to stream the results of the eval. If true, the request will return two
              * events: one to indicate the experiment has started, and another upon completion. If
              * false, the request will return the evaluation's summary upon completion.
              */
-            @JsonProperty("stream") fun stream(stream: Boolean) = apply { this.stream = stream }
+            fun stream(stream: Boolean) = stream(JsonField.of(stream))
+
+            /**
+             * Whether to stream the results of the eval. If true, the request will return two
+             * events: one to indicate the experiment has started, and another upon completion. If
+             * false, the request will return the evaluation's summary upon completion.
+             */
+            fun stream(stream: JsonField<Boolean>) = apply { this.stream = stream }
 
             /**
              * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
              * in which case there is no timeout.
              */
-            @JsonProperty("timeout") fun timeout(timeout: Double) = apply { this.timeout = timeout }
+            fun timeout(timeout: Double?) = timeout(JsonField.ofNullable(timeout))
+
+            /**
+             * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
+             * in which case there is no timeout.
+             */
+            fun timeout(timeout: Double) = timeout(timeout as Double?)
+
+            /**
+             * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
+             * in which case there is no timeout.
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun timeout(timeout: Optional<Double>) = timeout(timeout.orElse(null) as Double?)
+
+            /**
+             * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
+             * in which case there is no timeout.
+             */
+            fun timeout(timeout: JsonField<Double>) = apply { this.timeout = timeout }
 
             /**
              * The number of times to run the evaluator per input. This is useful for evaluating
              * applications that have non-deterministic behavior and gives you both a stronger
              * aggregate measure and a sense of the variance in the results.
              */
-            @JsonProperty("trial_count")
-            fun trialCount(trialCount: Double) = apply { this.trialCount = trialCount }
+            fun trialCount(trialCount: Double?) = trialCount(JsonField.ofNullable(trialCount))
+
+            /**
+             * The number of times to run the evaluator per input. This is useful for evaluating
+             * applications that have non-deterministic behavior and gives you both a stronger
+             * aggregate measure and a sense of the variance in the results.
+             */
+            fun trialCount(trialCount: Double) = trialCount(trialCount as Double?)
+
+            /**
+             * The number of times to run the evaluator per input. This is useful for evaluating
+             * applications that have non-deterministic behavior and gives you both a stronger
+             * aggregate measure and a sense of the variance in the results.
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun trialCount(trialCount: Optional<Double>) =
+                trialCount(trialCount.orElse(null) as Double?)
+
+            /**
+             * The number of times to run the evaluator per input. This is useful for evaluating
+             * applications that have non-deterministic behavior and gives you both a stronger
+             * aggregate measure and a sense of the variance in the results.
+             */
+            fun trialCount(trialCount: JsonField<Double>) = apply { this.trialCount = trialCount }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): EvalCreateBody =
                 EvalCreateBody(
-                    checkNotNull(data) { "`data` is required but was not set" },
-                    checkNotNull(projectId) { "`projectId` is required but was not set" },
-                    checkNotNull(scores) { "`scores` is required but was not set" }.toImmutable(),
-                    checkNotNull(task) { "`task` is required but was not set" },
+                    checkRequired("data", data),
+                    checkRequired("projectId", projectId),
+                    checkRequired("scores", scores).map { it.toImmutable() },
+                    checkRequired("task", task),
                     baseExperimentId,
                     baseExperimentName,
                     experimentName,
@@ -416,169 +864,326 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [EvalCreateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
-        private var data: Data? = null
-        private var projectId: String? = null
-        private var scores: MutableList<Score> = mutableListOf()
-        private var task: Task? = null
-        private var baseExperimentId: String? = null
-        private var baseExperimentName: String? = null
-        private var experimentName: String? = null
-        private var gitMetadataSettings: GitMetadataSettings? = null
-        private var isPublic: Boolean? = null
-        private var maxConcurrency: Double? = null
-        private var metadata: Metadata? = null
-        private var repoInfo: RepoInfo? = null
-        private var stream: Boolean? = null
-        private var timeout: Double? = null
-        private var trialCount: Double? = null
+        private var body: EvalCreateBody.Builder = EvalCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(evalCreateParams: EvalCreateParams) = apply {
-            data = evalCreateParams.data
-            projectId = evalCreateParams.projectId
-            scores = evalCreateParams.scores.toMutableList()
-            task = evalCreateParams.task
-            baseExperimentId = evalCreateParams.baseExperimentId
-            baseExperimentName = evalCreateParams.baseExperimentName
-            experimentName = evalCreateParams.experimentName
-            gitMetadataSettings = evalCreateParams.gitMetadataSettings
-            isPublic = evalCreateParams.isPublic
-            maxConcurrency = evalCreateParams.maxConcurrency
-            metadata = evalCreateParams.metadata
-            repoInfo = evalCreateParams.repoInfo
-            stream = evalCreateParams.stream
-            timeout = evalCreateParams.timeout
-            trialCount = evalCreateParams.trialCount
+            body = evalCreateParams.body.toBuilder()
             additionalHeaders = evalCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = evalCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = evalCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The dataset to use */
-        fun data(data: Data) = apply { this.data = data }
+        fun data(data: Data) = apply { body.data(data) }
 
         /** The dataset to use */
-        fun data(datasetId: Data.DatasetId) = apply { this.data = Data.ofDatasetId(datasetId) }
+        fun data(data: JsonField<Data>) = apply { body.data(data) }
 
-        /** The dataset to use */
+        /** Dataset id */
+        fun data(datasetId: Data.DatasetId) = apply { body.data(datasetId) }
+
+        /** Project and dataset name */
         fun data(projectDatasetName: Data.ProjectDatasetName) = apply {
-            this.data = Data.ofProjectDatasetName(projectDatasetName)
+            body.data(projectDatasetName)
         }
 
         /** Unique identifier for the project to run the eval in */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+
+        /** Unique identifier for the project to run the eval in */
+        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
 
         /** The functions to score the eval on */
-        fun scores(scores: List<Score>) = apply {
-            this.scores.clear()
-            this.scores.addAll(scores)
-        }
+        fun scores(scores: List<Score>) = apply { body.scores(scores) }
 
         /** The functions to score the eval on */
-        fun addScore(score: Score) = apply { this.scores.add(score) }
+        fun scores(scores: JsonField<List<Score>>) = apply { body.scores(scores) }
 
-        /** The function to evaluate */
-        fun task(task: Task) = apply { this.task = task }
+        /** The functions to score the eval on */
+        fun addScore(score: Score) = apply { body.addScore(score) }
 
-        /** The function to evaluate */
-        fun task(functionId: Task.FunctionId) = apply { this.task = Task.ofFunctionId(functionId) }
+        /** Function id */
+        fun addScore(functionId: Score.FunctionId) = apply { body.addScore(functionId) }
 
-        /** The function to evaluate */
-        fun task(projectSlug: Task.ProjectSlug) = apply {
-            this.task = Task.ofProjectSlug(projectSlug)
+        /** Project name and slug */
+        fun addScore(projectSlug: Score.ProjectSlug) = apply { body.addScore(projectSlug) }
+
+        /** Global function name */
+        fun addScore(globalFunction: Score.GlobalFunction) = apply { body.addScore(globalFunction) }
+
+        /** Prompt session id */
+        fun addScore(promptSessionId: Score.PromptSessionId) = apply {
+            body.addScore(promptSessionId)
         }
 
-        /** The function to evaluate */
-        fun task(globalFunction: Task.GlobalFunction) = apply {
-            this.task = Task.ofGlobalFunction(globalFunction)
-        }
+        /** Inline code function */
+        fun addScore(inlineCode: Score.InlineCode) = apply { body.addScore(inlineCode) }
+
+        /** Inline prompt definition */
+        fun addScore(inlinePrompt: Score.InlinePrompt) = apply { body.addScore(inlinePrompt) }
 
         /** The function to evaluate */
-        fun task(promptSessionId: Task.PromptSessionId) = apply {
-            this.task = Task.ofPromptSessionId(promptSessionId)
-        }
+        fun task(task: Task) = apply { body.task(task) }
 
         /** The function to evaluate */
-        fun task(inlineCode: Task.InlineCode) = apply { this.task = Task.ofInlineCode(inlineCode) }
+        fun task(task: JsonField<Task>) = apply { body.task(task) }
 
-        /** The function to evaluate */
-        fun task(inlinePrompt: Task.InlinePrompt) = apply {
-            this.task = Task.ofInlinePrompt(inlinePrompt)
+        /** Function id */
+        fun task(functionId: Task.FunctionId) = apply { body.task(functionId) }
+
+        /** Project name and slug */
+        fun task(projectSlug: Task.ProjectSlug) = apply { body.task(projectSlug) }
+
+        /** Global function name */
+        fun task(globalFunction: Task.GlobalFunction) = apply { body.task(globalFunction) }
+
+        /** Prompt session id */
+        fun task(promptSessionId: Task.PromptSessionId) = apply { body.task(promptSessionId) }
+
+        /** Inline code function */
+        fun task(inlineCode: Task.InlineCode) = apply { body.task(inlineCode) }
+
+        /** Inline prompt definition */
+        fun task(inlinePrompt: Task.InlinePrompt) = apply { body.task(inlinePrompt) }
+
+        /**
+         * An optional experiment id to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        fun baseExperimentId(baseExperimentId: String?) = apply {
+            body.baseExperimentId(baseExperimentId)
         }
 
         /**
          * An optional experiment id to use as a base. If specified, the new experiment will be
          * summarized and compared to this experiment.
          */
-        fun baseExperimentId(baseExperimentId: String) = apply {
-            this.baseExperimentId = baseExperimentId
+        fun baseExperimentId(baseExperimentId: Optional<String>) =
+            baseExperimentId(baseExperimentId.orElse(null))
+
+        /**
+         * An optional experiment id to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        fun baseExperimentId(baseExperimentId: JsonField<String>) = apply {
+            body.baseExperimentId(baseExperimentId)
         }
 
         /**
          * An optional experiment name to use as a base. If specified, the new experiment will be
          * summarized and compared to this experiment.
          */
-        fun baseExperimentName(baseExperimentName: String) = apply {
-            this.baseExperimentName = baseExperimentName
+        fun baseExperimentName(baseExperimentName: String?) = apply {
+            body.baseExperimentName(baseExperimentName)
+        }
+
+        /**
+         * An optional experiment name to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        fun baseExperimentName(baseExperimentName: Optional<String>) =
+            baseExperimentName(baseExperimentName.orElse(null))
+
+        /**
+         * An optional experiment name to use as a base. If specified, the new experiment will be
+         * summarized and compared to this experiment.
+         */
+        fun baseExperimentName(baseExperimentName: JsonField<String>) = apply {
+            body.baseExperimentName(baseExperimentName)
         }
 
         /**
          * An optional name for the experiment created by this eval. If it conflicts with an
          * existing experiment, it will be suffixed with a unique identifier.
          */
-        fun experimentName(experimentName: String) = apply { this.experimentName = experimentName }
+        fun experimentName(experimentName: String) = apply { body.experimentName(experimentName) }
+
+        /**
+         * An optional name for the experiment created by this eval. If it conflicts with an
+         * existing experiment, it will be suffixed with a unique identifier.
+         */
+        fun experimentName(experimentName: JsonField<String>) = apply {
+            body.experimentName(experimentName)
+        }
 
         /**
          * Optional settings for collecting git metadata. By default, will collect all git metadata
          * fields allowed in org-level settings.
          */
-        fun gitMetadataSettings(gitMetadataSettings: GitMetadataSettings) = apply {
-            this.gitMetadataSettings = gitMetadataSettings
+        fun gitMetadataSettings(gitMetadataSettings: GitMetadataSettings?) = apply {
+            body.gitMetadataSettings(gitMetadataSettings)
+        }
+
+        /**
+         * Optional settings for collecting git metadata. By default, will collect all git metadata
+         * fields allowed in org-level settings.
+         */
+        fun gitMetadataSettings(gitMetadataSettings: Optional<GitMetadataSettings>) =
+            gitMetadataSettings(gitMetadataSettings.orElse(null))
+
+        /**
+         * Optional settings for collecting git metadata. By default, will collect all git metadata
+         * fields allowed in org-level settings.
+         */
+        fun gitMetadataSettings(gitMetadataSettings: JsonField<GitMetadataSettings>) = apply {
+            body.gitMetadataSettings(gitMetadataSettings)
         }
 
         /** Whether the experiment should be public. Defaults to false. */
-        fun isPublic(isPublic: Boolean) = apply { this.isPublic = isPublic }
+        fun isPublic(isPublic: Boolean?) = apply { body.isPublic(isPublic) }
+
+        /** Whether the experiment should be public. Defaults to false. */
+        fun isPublic(isPublic: Boolean) = isPublic(isPublic as Boolean?)
+
+        /** Whether the experiment should be public. Defaults to false. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun isPublic(isPublic: Optional<Boolean>) = isPublic(isPublic.orElse(null) as Boolean?)
+
+        /** Whether the experiment should be public. Defaults to false. */
+        fun isPublic(isPublic: JsonField<Boolean>) = apply { body.isPublic(isPublic) }
 
         /**
          * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
          * in which case there is no max concurrency.
          */
-        fun maxConcurrency(maxConcurrency: Double) = apply { this.maxConcurrency = maxConcurrency }
+        fun maxConcurrency(maxConcurrency: Double?) = apply { body.maxConcurrency(maxConcurrency) }
+
+        /**
+         * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
+         * in which case there is no max concurrency.
+         */
+        fun maxConcurrency(maxConcurrency: Double) = maxConcurrency(maxConcurrency as Double?)
+
+        /**
+         * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
+         * in which case there is no max concurrency.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun maxConcurrency(maxConcurrency: Optional<Double>) =
+            maxConcurrency(maxConcurrency.orElse(null) as Double?)
+
+        /**
+         * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
+         * in which case there is no max concurrency.
+         */
+        fun maxConcurrency(maxConcurrency: JsonField<Double>) = apply {
+            body.maxConcurrency(maxConcurrency)
+        }
 
         /**
          * Optional experiment-level metadata to store about the evaluation. You can later use this
          * to slice & dice across experiments.
          */
-        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+        fun metadata(metadata: Metadata) = apply { body.metadata(metadata) }
+
+        /**
+         * Optional experiment-level metadata to store about the evaluation. You can later use this
+         * to slice & dice across experiments.
+         */
+        fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
         /** Metadata about the state of the repo when the experiment was created */
-        fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
+        fun repoInfo(repoInfo: RepoInfo?) = apply { body.repoInfo(repoInfo) }
+
+        /** Metadata about the state of the repo when the experiment was created */
+        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+
+        /** Metadata about the state of the repo when the experiment was created */
+        fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { body.repoInfo(repoInfo) }
 
         /**
          * Whether to stream the results of the eval. If true, the request will return two events:
          * one to indicate the experiment has started, and another upon completion. If false, the
          * request will return the evaluation's summary upon completion.
          */
-        fun stream(stream: Boolean) = apply { this.stream = stream }
+        fun stream(stream: Boolean) = apply { body.stream(stream) }
+
+        /**
+         * Whether to stream the results of the eval. If true, the request will return two events:
+         * one to indicate the experiment has started, and another upon completion. If false, the
+         * request will return the evaluation's summary upon completion.
+         */
+        fun stream(stream: JsonField<Boolean>) = apply { body.stream(stream) }
 
         /**
          * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
          * which case there is no timeout.
          */
-        fun timeout(timeout: Double) = apply { this.timeout = timeout }
+        fun timeout(timeout: Double?) = apply { body.timeout(timeout) }
+
+        /**
+         * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
+         * which case there is no timeout.
+         */
+        fun timeout(timeout: Double) = timeout(timeout as Double?)
+
+        /**
+         * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
+         * which case there is no timeout.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun timeout(timeout: Optional<Double>) = timeout(timeout.orElse(null) as Double?)
+
+        /**
+         * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
+         * which case there is no timeout.
+         */
+        fun timeout(timeout: JsonField<Double>) = apply { body.timeout(timeout) }
 
         /**
          * The number of times to run the evaluator per input. This is useful for evaluating
          * applications that have non-deterministic behavior and gives you both a stronger aggregate
          * measure and a sense of the variance in the results.
          */
-        fun trialCount(trialCount: Double) = apply { this.trialCount = trialCount }
+        fun trialCount(trialCount: Double?) = apply { body.trialCount(trialCount) }
+
+        /**
+         * The number of times to run the evaluator per input. This is useful for evaluating
+         * applications that have non-deterministic behavior and gives you both a stronger aggregate
+         * measure and a sense of the variance in the results.
+         */
+        fun trialCount(trialCount: Double) = trialCount(trialCount as Double?)
+
+        /**
+         * The number of times to run the evaluator per input. This is useful for evaluating
+         * applications that have non-deterministic behavior and gives you both a stronger aggregate
+         * measure and a sense of the variance in the results.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun trialCount(trialCount: Optional<Double>) =
+            trialCount(trialCount.orElse(null) as Double?)
+
+        /**
+         * The number of times to run the evaluator per input. This is useful for evaluating
+         * applications that have non-deterministic behavior and gives you both a stronger aggregate
+         * measure and a sense of the variance in the results.
+         */
+        fun trialCount(trialCount: JsonField<Double>) = apply { body.trialCount(trialCount) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -678,51 +1283,15 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): EvalCreateParams =
             EvalCreateParams(
-                checkNotNull(data) { "`data` is required but was not set" },
-                checkNotNull(projectId) { "`projectId` is required but was not set" },
-                scores.toImmutable(),
-                checkNotNull(task) { "`task` is required but was not set" },
-                baseExperimentId,
-                baseExperimentName,
-                experimentName,
-                gitMetadataSettings,
-                isPublic,
-                maxConcurrency,
-                metadata,
-                repoInfo,
-                stream,
-                timeout,
-                trialCount,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
+    /** The dataset to use */
     @JsonDeserialize(using = Data.Deserializer::class)
     @JsonSerialize(using = Data.Serializer::class)
     class Data
@@ -732,10 +1301,9 @@ constructor(
         private val _json: JsonValue? = null,
     ) {
 
-        private var validated: Boolean = false
-
         /** Dataset id */
         fun datasetId(): Optional<DatasetId> = Optional.ofNullable(datasetId)
+
         /** Project and dataset name */
         fun projectDatasetName(): Optional<ProjectDatasetName> =
             Optional.ofNullable(projectDatasetName)
@@ -744,8 +1312,10 @@ constructor(
 
         fun isProjectDatasetName(): Boolean = projectDatasetName != null
 
+        /** Dataset id */
         fun asDatasetId(): DatasetId = datasetId.getOrThrow("datasetId")
 
+        /** Project and dataset name */
         fun asProjectDatasetName(): ProjectDatasetName =
             projectDatasetName.getOrThrow("projectDatasetName")
 
@@ -759,15 +1329,25 @@ constructor(
             }
         }
 
+        private var validated: Boolean = false
+
         fun validate(): Data = apply {
-            if (!validated) {
-                if (datasetId == null && projectDatasetName == null) {
-                    throw BraintrustInvalidDataException("Unknown Data: $_json")
-                }
-                datasetId?.validate()
-                projectDatasetName?.validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accept(
+                object : Visitor<Unit> {
+                    override fun visitDatasetId(datasetId: DatasetId) {
+                        datasetId.validate()
+                    }
+
+                    override fun visitProjectDatasetName(projectDatasetName: ProjectDatasetName) {
+                        projectDatasetName.validate()
+                    }
+                }
+            )
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -790,25 +1370,39 @@ constructor(
 
         companion object {
 
+            /** Dataset id */
             @JvmStatic fun ofDatasetId(datasetId: DatasetId) = Data(datasetId = datasetId)
 
+            /** Project and dataset name */
             @JvmStatic
             fun ofProjectDatasetName(projectDatasetName: ProjectDatasetName) =
                 Data(projectDatasetName = projectDatasetName)
         }
 
+        /** An interface that defines how to map each variant of [Data] to a value of type [T]. */
         interface Visitor<out T> {
 
+            /** Dataset id */
             fun visitDatasetId(datasetId: DatasetId): T
 
+            /** Project and dataset name */
             fun visitProjectDatasetName(projectDatasetName: ProjectDatasetName): T
 
+            /**
+             * Maps an unknown variant of [Data] to a value of type [T].
+             *
+             * An instance of [Data] can contain an unknown variant if it was deserialized from data
+             * that doesn't match any known variant. For example, if the SDK is on an older version
+             * than the API, then the API may respond with new variants that the SDK is unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw BraintrustInvalidDataException("Unknown Data: $json")
             }
         }
 
-        class Deserializer : BaseDeserializer<Data>(Data::class) {
+        internal class Deserializer : BaseDeserializer<Data>(Data::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Data {
                 val json = JsonValue.fromJsonNode(node)
@@ -826,7 +1420,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Data>(Data::class) {
+        internal class Serializer : BaseSerializer<Data>(Data::class) {
 
             override fun serialize(
                 value: Data,
@@ -844,29 +1438,36 @@ constructor(
         }
 
         /** Dataset id */
-        @JsonDeserialize(builder = DatasetId.Builder::class)
         @NoAutoDetect
         class DatasetId
+        @JsonCreator
         private constructor(
-            private val datasetId: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("dataset_id")
+            @ExcludeMissing
+            private val datasetId: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             fun datasetId(): String = datasetId.getRequired("dataset_id")
 
-            @JsonProperty("dataset_id") @ExcludeMissing fun _datasetId() = datasetId
+            @JsonProperty("dataset_id")
+            @ExcludeMissing
+            fun _datasetId(): JsonField<String> = datasetId
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): DatasetId = apply {
-                if (!validated) {
-                    datasetId()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                datasetId()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -876,31 +1477,29 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [DatasetId]. */
+            class Builder internal constructor() {
 
-                private var datasetId: JsonField<String> = JsonMissing.of()
+                private var datasetId: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(datasetId: DatasetId) = apply {
                     this.datasetId = datasetId.datasetId
-                    additionalProperties(datasetId.additionalProperties)
+                    additionalProperties = datasetId.additionalProperties.toMutableMap()
                 }
 
                 fun datasetId(datasetId: String) = datasetId(JsonField.of(datasetId))
 
-                @JsonProperty("dataset_id")
-                @ExcludeMissing
                 fun datasetId(datasetId: JsonField<String>) = apply { this.datasetId = datasetId }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -908,7 +1507,19 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): DatasetId = DatasetId(datasetId, additionalProperties.toImmutable())
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                fun build(): DatasetId =
+                    DatasetId(
+                        checkRequired("datasetId", datasetId),
+                        additionalProperties.toImmutable()
+                    )
             }
 
             override fun equals(other: Any?): Boolean {
@@ -930,35 +1541,46 @@ constructor(
         }
 
         /** Project and dataset name */
-        @JsonDeserialize(builder = ProjectDatasetName.Builder::class)
         @NoAutoDetect
         class ProjectDatasetName
+        @JsonCreator
         private constructor(
-            private val projectName: JsonField<String>,
-            private val datasetName: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("dataset_name")
+            @ExcludeMissing
+            private val datasetName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("project_name")
+            @ExcludeMissing
+            private val projectName: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
-
-            fun projectName(): String = projectName.getRequired("project_name")
 
             fun datasetName(): String = datasetName.getRequired("dataset_name")
 
-            @JsonProperty("project_name") @ExcludeMissing fun _projectName() = projectName
+            fun projectName(): String = projectName.getRequired("project_name")
 
-            @JsonProperty("dataset_name") @ExcludeMissing fun _datasetName() = datasetName
+            @JsonProperty("dataset_name")
+            @ExcludeMissing
+            fun _datasetName(): JsonField<String> = datasetName
+
+            @JsonProperty("project_name")
+            @ExcludeMissing
+            fun _projectName(): JsonField<String> = projectName
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): ProjectDatasetName = apply {
-                if (!validated) {
-                    projectName()
-                    datasetName()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                datasetName()
+                projectName()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -968,43 +1590,39 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [ProjectDatasetName]. */
+            class Builder internal constructor() {
 
-                private var projectName: JsonField<String> = JsonMissing.of()
-                private var datasetName: JsonField<String> = JsonMissing.of()
+                private var datasetName: JsonField<String>? = null
+                private var projectName: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(projectDatasetName: ProjectDatasetName) = apply {
-                    this.projectName = projectDatasetName.projectName
-                    this.datasetName = projectDatasetName.datasetName
-                    additionalProperties(projectDatasetName.additionalProperties)
-                }
-
-                fun projectName(projectName: String) = projectName(JsonField.of(projectName))
-
-                @JsonProperty("project_name")
-                @ExcludeMissing
-                fun projectName(projectName: JsonField<String>) = apply {
-                    this.projectName = projectName
+                    datasetName = projectDatasetName.datasetName
+                    projectName = projectDatasetName.projectName
+                    additionalProperties = projectDatasetName.additionalProperties.toMutableMap()
                 }
 
                 fun datasetName(datasetName: String) = datasetName(JsonField.of(datasetName))
 
-                @JsonProperty("dataset_name")
-                @ExcludeMissing
                 fun datasetName(datasetName: JsonField<String>) = apply {
                     this.datasetName = datasetName
                 }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                fun projectName(projectName: String) = projectName(JsonField.of(projectName))
+
+                fun projectName(projectName: JsonField<String>) = apply {
+                    this.projectName = projectName
                 }
 
-                @JsonAnySetter
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1012,10 +1630,18 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): ProjectDatasetName =
                     ProjectDatasetName(
-                        projectName,
-                        datasetName,
+                        checkRequired("datasetName", datasetName),
+                        checkRequired("projectName", projectName),
                         additionalProperties.toImmutable(),
                     )
             }
@@ -1025,20 +1651,21 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ProjectDatasetName && projectName == other.projectName && datasetName == other.datasetName && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is ProjectDatasetName && datasetName == other.datasetName && projectName == other.projectName && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(projectName, datasetName, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(datasetName, projectName, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ProjectDatasetName{projectName=$projectName, datasetName=$datasetName, additionalProperties=$additionalProperties}"
+                "ProjectDatasetName{datasetName=$datasetName, projectName=$projectName, additionalProperties=$additionalProperties}"
         }
     }
 
+    /** The function to evaluate */
     @JsonDeserialize(using = Score.Deserializer::class)
     @JsonSerialize(using = Score.Serializer::class)
     class Score
@@ -1052,18 +1679,21 @@ constructor(
         private val _json: JsonValue? = null,
     ) {
 
-        private var validated: Boolean = false
-
         /** Function id */
         fun functionId(): Optional<FunctionId> = Optional.ofNullable(functionId)
+
         /** Project name and slug */
         fun projectSlug(): Optional<ProjectSlug> = Optional.ofNullable(projectSlug)
+
         /** Global function name */
         fun globalFunction(): Optional<GlobalFunction> = Optional.ofNullable(globalFunction)
+
         /** Prompt session id */
         fun promptSessionId(): Optional<PromptSessionId> = Optional.ofNullable(promptSessionId)
+
         /** Inline code function */
         fun inlineCode(): Optional<InlineCode> = Optional.ofNullable(inlineCode)
+
         /** Inline prompt definition */
         fun inlinePrompt(): Optional<InlinePrompt> = Optional.ofNullable(inlinePrompt)
 
@@ -1079,16 +1709,22 @@ constructor(
 
         fun isInlinePrompt(): Boolean = inlinePrompt != null
 
+        /** Function id */
         fun asFunctionId(): FunctionId = functionId.getOrThrow("functionId")
 
+        /** Project name and slug */
         fun asProjectSlug(): ProjectSlug = projectSlug.getOrThrow("projectSlug")
 
+        /** Global function name */
         fun asGlobalFunction(): GlobalFunction = globalFunction.getOrThrow("globalFunction")
 
+        /** Prompt session id */
         fun asPromptSessionId(): PromptSessionId = promptSessionId.getOrThrow("promptSessionId")
 
+        /** Inline code function */
         fun asInlineCode(): InlineCode = inlineCode.getOrThrow("inlineCode")
 
+        /** Inline prompt definition */
         fun asInlinePrompt(): InlinePrompt = inlinePrompt.getOrThrow("inlinePrompt")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
@@ -1105,26 +1741,41 @@ constructor(
             }
         }
 
+        private var validated: Boolean = false
+
         fun validate(): Score = apply {
-            if (!validated) {
-                if (
-                    functionId == null &&
-                        projectSlug == null &&
-                        globalFunction == null &&
-                        promptSessionId == null &&
-                        inlineCode == null &&
-                        inlinePrompt == null
-                ) {
-                    throw BraintrustInvalidDataException("Unknown Score: $_json")
-                }
-                functionId?.validate()
-                projectSlug?.validate()
-                globalFunction?.validate()
-                promptSessionId?.validate()
-                inlineCode?.validate()
-                inlinePrompt?.validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accept(
+                object : Visitor<Unit> {
+                    override fun visitFunctionId(functionId: FunctionId) {
+                        functionId.validate()
+                    }
+
+                    override fun visitProjectSlug(projectSlug: ProjectSlug) {
+                        projectSlug.validate()
+                    }
+
+                    override fun visitGlobalFunction(globalFunction: GlobalFunction) {
+                        globalFunction.validate()
+                    }
+
+                    override fun visitPromptSessionId(promptSessionId: PromptSessionId) {
+                        promptSessionId.validate()
+                    }
+
+                    override fun visitInlineCode(inlineCode: InlineCode) {
+                        inlineCode.validate()
+                    }
+
+                    override fun visitInlinePrompt(inlinePrompt: InlinePrompt) {
+                        inlinePrompt.validate()
+                    }
+                }
+            )
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1151,45 +1802,68 @@ constructor(
 
         companion object {
 
+            /** Function id */
             @JvmStatic fun ofFunctionId(functionId: FunctionId) = Score(functionId = functionId)
 
+            /** Project name and slug */
             @JvmStatic
             fun ofProjectSlug(projectSlug: ProjectSlug) = Score(projectSlug = projectSlug)
 
+            /** Global function name */
             @JvmStatic
             fun ofGlobalFunction(globalFunction: GlobalFunction) =
                 Score(globalFunction = globalFunction)
 
+            /** Prompt session id */
             @JvmStatic
             fun ofPromptSessionId(promptSessionId: PromptSessionId) =
                 Score(promptSessionId = promptSessionId)
 
+            /** Inline code function */
             @JvmStatic fun ofInlineCode(inlineCode: InlineCode) = Score(inlineCode = inlineCode)
 
+            /** Inline prompt definition */
             @JvmStatic
             fun ofInlinePrompt(inlinePrompt: InlinePrompt) = Score(inlinePrompt = inlinePrompt)
         }
 
+        /** An interface that defines how to map each variant of [Score] to a value of type [T]. */
         interface Visitor<out T> {
 
+            /** Function id */
             fun visitFunctionId(functionId: FunctionId): T
 
+            /** Project name and slug */
             fun visitProjectSlug(projectSlug: ProjectSlug): T
 
+            /** Global function name */
             fun visitGlobalFunction(globalFunction: GlobalFunction): T
 
+            /** Prompt session id */
             fun visitPromptSessionId(promptSessionId: PromptSessionId): T
 
+            /** Inline code function */
             fun visitInlineCode(inlineCode: InlineCode): T
 
+            /** Inline prompt definition */
             fun visitInlinePrompt(inlinePrompt: InlinePrompt): T
 
+            /**
+             * Maps an unknown variant of [Score] to a value of type [T].
+             *
+             * An instance of [Score] can contain an unknown variant if it was deserialized from
+             * data that doesn't match any known variant. For example, if the SDK is on an older
+             * version than the API, then the API may respond with new variants that the SDK is
+             * unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw BraintrustInvalidDataException("Unknown Score: $json")
             }
         }
 
-        class Deserializer : BaseDeserializer<Score>(Score::class) {
+        internal class Deserializer : BaseDeserializer<Score>(Score::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Score {
                 val json = JsonValue.fromJsonNode(node)
@@ -1223,7 +1897,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Score>(Score::class) {
+        internal class Serializer : BaseSerializer<Score>(Score::class) {
 
             override fun serialize(
                 value: Score,
@@ -1244,16 +1918,19 @@ constructor(
         }
 
         /** Function id */
-        @JsonDeserialize(builder = FunctionId.Builder::class)
         @NoAutoDetect
         class FunctionId
+        @JsonCreator
         private constructor(
-            private val functionId: JsonField<String>,
-            private val version: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("function_id")
+            @ExcludeMissing
+            private val functionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version")
+            @ExcludeMissing
+            private val version: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The ID of the function */
             fun functionId(): String = functionId.getRequired("function_id")
@@ -1262,21 +1939,27 @@ constructor(
             fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
 
             /** The ID of the function */
-            @JsonProperty("function_id") @ExcludeMissing fun _functionId() = functionId
+            @JsonProperty("function_id")
+            @ExcludeMissing
+            fun _functionId(): JsonField<String> = functionId
 
             /** The version of the function */
-            @JsonProperty("version") @ExcludeMissing fun _version() = version
+            @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): FunctionId = apply {
-                if (!validated) {
-                    functionId()
-                    version()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                functionId()
+                version()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1286,25 +1969,24 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [FunctionId]. */
+            class Builder internal constructor() {
 
-                private var functionId: JsonField<String> = JsonMissing.of()
+                private var functionId: JsonField<String>? = null
                 private var version: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(functionId: FunctionId) = apply {
                     this.functionId = functionId.functionId
-                    this.version = functionId.version
-                    additionalProperties(functionId.additionalProperties)
+                    version = functionId.version
+                    additionalProperties = functionId.additionalProperties.toMutableMap()
                 }
 
                 /** The ID of the function */
                 fun functionId(functionId: String) = functionId(JsonField.of(functionId))
 
                 /** The ID of the function */
-                @JsonProperty("function_id")
-                @ExcludeMissing
                 fun functionId(functionId: JsonField<String>) = apply {
                     this.functionId = functionId
                 }
@@ -1313,18 +1995,15 @@ constructor(
                 fun version(version: String) = version(JsonField.of(version))
 
                 /** The version of the function */
-                @JsonProperty("version")
-                @ExcludeMissing
                 fun version(version: JsonField<String>) = apply { this.version = version }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1332,9 +2011,17 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): FunctionId =
                     FunctionId(
-                        functionId,
+                        checkRequired("functionId", functionId),
                         version,
                         additionalProperties.toImmutable(),
                     )
@@ -1359,17 +2046,22 @@ constructor(
         }
 
         /** Project name and slug */
-        @JsonDeserialize(builder = ProjectSlug.Builder::class)
         @NoAutoDetect
         class ProjectSlug
+        @JsonCreator
         private constructor(
-            private val projectName: JsonField<String>,
-            private val slug: JsonField<String>,
-            private val version: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("project_name")
+            @ExcludeMissing
+            private val projectName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("slug")
+            @ExcludeMissing
+            private val slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version")
+            @ExcludeMissing
+            private val version: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The name of the project containing the function */
             fun projectName(): String = projectName.getRequired("project_name")
@@ -1381,25 +2073,31 @@ constructor(
             fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
 
             /** The name of the project containing the function */
-            @JsonProperty("project_name") @ExcludeMissing fun _projectName() = projectName
+            @JsonProperty("project_name")
+            @ExcludeMissing
+            fun _projectName(): JsonField<String> = projectName
 
             /** The slug of the function */
-            @JsonProperty("slug") @ExcludeMissing fun _slug() = slug
+            @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
             /** The version of the function */
-            @JsonProperty("version") @ExcludeMissing fun _version() = version
+            @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): ProjectSlug = apply {
-                if (!validated) {
-                    projectName()
-                    slug()
-                    version()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                projectName()
+                slug()
+                version()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1409,27 +2107,26 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [ProjectSlug]. */
+            class Builder internal constructor() {
 
-                private var projectName: JsonField<String> = JsonMissing.of()
-                private var slug: JsonField<String> = JsonMissing.of()
+                private var projectName: JsonField<String>? = null
+                private var slug: JsonField<String>? = null
                 private var version: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(projectSlug: ProjectSlug) = apply {
-                    this.projectName = projectSlug.projectName
-                    this.slug = projectSlug.slug
-                    this.version = projectSlug.version
-                    additionalProperties(projectSlug.additionalProperties)
+                    projectName = projectSlug.projectName
+                    slug = projectSlug.slug
+                    version = projectSlug.version
+                    additionalProperties = projectSlug.additionalProperties.toMutableMap()
                 }
 
                 /** The name of the project containing the function */
                 fun projectName(projectName: String) = projectName(JsonField.of(projectName))
 
                 /** The name of the project containing the function */
-                @JsonProperty("project_name")
-                @ExcludeMissing
                 fun projectName(projectName: JsonField<String>) = apply {
                     this.projectName = projectName
                 }
@@ -1438,26 +2135,21 @@ constructor(
                 fun slug(slug: String) = slug(JsonField.of(slug))
 
                 /** The slug of the function */
-                @JsonProperty("slug")
-                @ExcludeMissing
                 fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
                 /** The version of the function */
                 fun version(version: String) = version(JsonField.of(version))
 
                 /** The version of the function */
-                @JsonProperty("version")
-                @ExcludeMissing
                 fun version(version: JsonField<String>) = apply { this.version = version }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1465,10 +2157,18 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): ProjectSlug =
                     ProjectSlug(
-                        projectName,
-                        slug,
+                        checkRequired("projectName", projectName),
+                        checkRequired("slug", slug),
                         version,
                         additionalProperties.toImmutable(),
                     )
@@ -1493,15 +2193,16 @@ constructor(
         }
 
         /** Global function name */
-        @JsonDeserialize(builder = GlobalFunction.Builder::class)
         @NoAutoDetect
         class GlobalFunction
+        @JsonCreator
         private constructor(
-            private val globalFunction: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("global_function")
+            @ExcludeMissing
+            private val globalFunction: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /**
              * The name of the global function. Currently, the global namespace includes the
@@ -1513,17 +2214,23 @@ constructor(
              * The name of the global function. Currently, the global namespace includes the
              * functions in autoevals
              */
-            @JsonProperty("global_function") @ExcludeMissing fun _globalFunction() = globalFunction
+            @JsonProperty("global_function")
+            @ExcludeMissing
+            fun _globalFunction(): JsonField<String> = globalFunction
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): GlobalFunction = apply {
-                if (!validated) {
-                    globalFunction()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                globalFunction()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1533,15 +2240,16 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [GlobalFunction]. */
+            class Builder internal constructor() {
 
-                private var globalFunction: JsonField<String> = JsonMissing.of()
+                private var globalFunction: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(globalFunction: GlobalFunction) = apply {
                     this.globalFunction = globalFunction.globalFunction
-                    additionalProperties(globalFunction.additionalProperties)
+                    additionalProperties = globalFunction.additionalProperties.toMutableMap()
                 }
 
                 /**
@@ -1555,20 +2263,17 @@ constructor(
                  * The name of the global function. Currently, the global namespace includes the
                  * functions in autoevals
                  */
-                @JsonProperty("global_function")
-                @ExcludeMissing
                 fun globalFunction(globalFunction: JsonField<String>) = apply {
                     this.globalFunction = globalFunction
                 }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1576,8 +2281,19 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): GlobalFunction =
-                    GlobalFunction(globalFunction, additionalProperties.toImmutable())
+                    GlobalFunction(
+                        checkRequired("globalFunction", globalFunction),
+                        additionalProperties.toImmutable()
+                    )
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1599,52 +2315,61 @@ constructor(
         }
 
         /** Prompt session id */
-        @JsonDeserialize(builder = PromptSessionId.Builder::class)
         @NoAutoDetect
         class PromptSessionId
+        @JsonCreator
         private constructor(
-            private val promptSessionId: JsonField<String>,
-            private val promptSessionFunctionId: JsonField<String>,
-            private val version: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("prompt_session_function_id")
+            @ExcludeMissing
+            private val promptSessionFunctionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("prompt_session_id")
+            @ExcludeMissing
+            private val promptSessionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version")
+            @ExcludeMissing
+            private val version: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
-
-            /** The ID of the prompt session */
-            fun promptSessionId(): String = promptSessionId.getRequired("prompt_session_id")
 
             /** The ID of the function in the prompt session */
             fun promptSessionFunctionId(): String =
                 promptSessionFunctionId.getRequired("prompt_session_function_id")
 
+            /** The ID of the prompt session */
+            fun promptSessionId(): String = promptSessionId.getRequired("prompt_session_id")
+
             /** The version of the function */
             fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
-
-            /** The ID of the prompt session */
-            @JsonProperty("prompt_session_id")
-            @ExcludeMissing
-            fun _promptSessionId() = promptSessionId
 
             /** The ID of the function in the prompt session */
             @JsonProperty("prompt_session_function_id")
             @ExcludeMissing
-            fun _promptSessionFunctionId() = promptSessionFunctionId
+            fun _promptSessionFunctionId(): JsonField<String> = promptSessionFunctionId
+
+            /** The ID of the prompt session */
+            @JsonProperty("prompt_session_id")
+            @ExcludeMissing
+            fun _promptSessionId(): JsonField<String> = promptSessionId
 
             /** The version of the function */
-            @JsonProperty("version") @ExcludeMissing fun _version() = version
+            @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): PromptSessionId = apply {
-                if (!validated) {
-                    promptSessionId()
-                    promptSessionFunctionId()
-                    version()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                promptSessionFunctionId()
+                promptSessionId()
+                version()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1654,30 +2379,20 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [PromptSessionId]. */
+            class Builder internal constructor() {
 
-                private var promptSessionId: JsonField<String> = JsonMissing.of()
-                private var promptSessionFunctionId: JsonField<String> = JsonMissing.of()
+                private var promptSessionFunctionId: JsonField<String>? = null
+                private var promptSessionId: JsonField<String>? = null
                 private var version: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(promptSessionId: PromptSessionId) = apply {
+                    promptSessionFunctionId = promptSessionId.promptSessionFunctionId
                     this.promptSessionId = promptSessionId.promptSessionId
-                    this.promptSessionFunctionId = promptSessionId.promptSessionFunctionId
-                    this.version = promptSessionId.version
-                    additionalProperties(promptSessionId.additionalProperties)
-                }
-
-                /** The ID of the prompt session */
-                fun promptSessionId(promptSessionId: String) =
-                    promptSessionId(JsonField.of(promptSessionId))
-
-                /** The ID of the prompt session */
-                @JsonProperty("prompt_session_id")
-                @ExcludeMissing
-                fun promptSessionId(promptSessionId: JsonField<String>) = apply {
-                    this.promptSessionId = promptSessionId
+                    version = promptSessionId.version
+                    additionalProperties = promptSessionId.additionalProperties.toMutableMap()
                 }
 
                 /** The ID of the function in the prompt session */
@@ -1685,28 +2400,32 @@ constructor(
                     promptSessionFunctionId(JsonField.of(promptSessionFunctionId))
 
                 /** The ID of the function in the prompt session */
-                @JsonProperty("prompt_session_function_id")
-                @ExcludeMissing
                 fun promptSessionFunctionId(promptSessionFunctionId: JsonField<String>) = apply {
                     this.promptSessionFunctionId = promptSessionFunctionId
+                }
+
+                /** The ID of the prompt session */
+                fun promptSessionId(promptSessionId: String) =
+                    promptSessionId(JsonField.of(promptSessionId))
+
+                /** The ID of the prompt session */
+                fun promptSessionId(promptSessionId: JsonField<String>) = apply {
+                    this.promptSessionId = promptSessionId
                 }
 
                 /** The version of the function */
                 fun version(version: String) = version(JsonField.of(version))
 
                 /** The version of the function */
-                @JsonProperty("version")
-                @ExcludeMissing
                 fun version(version: JsonField<String>) = apply { this.version = version }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1714,10 +2433,18 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): PromptSessionId =
                     PromptSessionId(
-                        promptSessionId,
-                        promptSessionFunctionId,
+                        checkRequired("promptSessionFunctionId", promptSessionFunctionId),
+                        checkRequired("promptSessionId", promptSessionId),
                         version,
                         additionalProperties.toImmutable(),
                     )
@@ -1728,59 +2455,70 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is PromptSessionId && promptSessionId == other.promptSessionId && promptSessionFunctionId == other.promptSessionFunctionId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is PromptSessionId && promptSessionFunctionId == other.promptSessionFunctionId && promptSessionId == other.promptSessionId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(promptSessionId, promptSessionFunctionId, version, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(promptSessionFunctionId, promptSessionId, version, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "PromptSessionId{promptSessionId=$promptSessionId, promptSessionFunctionId=$promptSessionFunctionId, version=$version, additionalProperties=$additionalProperties}"
+                "PromptSessionId{promptSessionFunctionId=$promptSessionFunctionId, promptSessionId=$promptSessionId, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Inline code function */
-        @JsonDeserialize(builder = InlineCode.Builder::class)
         @NoAutoDetect
         class InlineCode
+        @JsonCreator
         private constructor(
-            private val inlineContext: JsonField<InlineContext>,
-            private val code: JsonField<String>,
-            private val name: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("code")
+            @ExcludeMissing
+            private val code: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("inline_context")
+            @ExcludeMissing
+            private val inlineContext: JsonField<InlineContext> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
-
-            fun inlineContext(): InlineContext = inlineContext.getRequired("inline_context")
 
             /** The inline code to execute */
             fun code(): String = code.getRequired("code")
 
+            fun inlineContext(): InlineContext = inlineContext.getRequired("inline_context")
+
             /** The name of the inline code function */
             fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-            @JsonProperty("inline_context") @ExcludeMissing fun _inlineContext() = inlineContext
-
             /** The inline code to execute */
-            @JsonProperty("code") @ExcludeMissing fun _code() = code
+            @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
+
+            @JsonProperty("inline_context")
+            @ExcludeMissing
+            fun _inlineContext(): JsonField<InlineContext> = inlineContext
 
             /** The name of the inline code function */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): InlineCode = apply {
-                if (!validated) {
-                    inlineContext().validate()
-                    code()
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                code()
+                inlineContext().validate()
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1790,54 +2528,51 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [InlineCode]. */
+            class Builder internal constructor() {
 
-                private var inlineContext: JsonField<InlineContext> = JsonMissing.of()
-                private var code: JsonField<String> = JsonMissing.of()
+                private var code: JsonField<String>? = null
+                private var inlineContext: JsonField<InlineContext>? = null
                 private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(inlineCode: InlineCode) = apply {
-                    this.inlineContext = inlineCode.inlineContext
-                    this.code = inlineCode.code
-                    this.name = inlineCode.name
-                    additionalProperties(inlineCode.additionalProperties)
-                }
-
-                fun inlineContext(inlineContext: InlineContext) =
-                    inlineContext(JsonField.of(inlineContext))
-
-                @JsonProperty("inline_context")
-                @ExcludeMissing
-                fun inlineContext(inlineContext: JsonField<InlineContext>) = apply {
-                    this.inlineContext = inlineContext
+                    code = inlineCode.code
+                    inlineContext = inlineCode.inlineContext
+                    name = inlineCode.name
+                    additionalProperties = inlineCode.additionalProperties.toMutableMap()
                 }
 
                 /** The inline code to execute */
                 fun code(code: String) = code(JsonField.of(code))
 
                 /** The inline code to execute */
-                @JsonProperty("code")
-                @ExcludeMissing
                 fun code(code: JsonField<String>) = apply { this.code = code }
 
-                /** The name of the inline code function */
-                fun name(name: String) = name(JsonField.of(name))
+                fun inlineContext(inlineContext: InlineContext) =
+                    inlineContext(JsonField.of(inlineContext))
+
+                fun inlineContext(inlineContext: JsonField<InlineContext>) = apply {
+                    this.inlineContext = inlineContext
+                }
 
                 /** The name of the inline code function */
-                @JsonProperty("name")
-                @ExcludeMissing
+                fun name(name: String?) = name(JsonField.ofNullable(name))
+
+                /** The name of the inline code function */
+                fun name(name: Optional<String>) = name(name.orElse(null))
+
+                /** The name of the inline code function */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1845,44 +2580,61 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): InlineCode =
                     InlineCode(
-                        inlineContext,
-                        code,
+                        checkRequired("code", code),
+                        checkRequired("inlineContext", inlineContext),
                         name,
                         additionalProperties.toImmutable(),
                     )
             }
 
-            @JsonDeserialize(builder = InlineContext.Builder::class)
             @NoAutoDetect
             class InlineContext
+            @JsonCreator
             private constructor(
-                private val runtime: JsonField<Runtime>,
-                private val version: JsonField<String>,
-                private val additionalProperties: Map<String, JsonValue>,
+                @JsonProperty("runtime")
+                @ExcludeMissing
+                private val runtime: JsonField<Runtime> = JsonMissing.of(),
+                @JsonProperty("version")
+                @ExcludeMissing
+                private val version: JsonField<String> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
-
-                private var validated: Boolean = false
 
                 fun runtime(): Runtime = runtime.getRequired("runtime")
 
                 fun version(): String = version.getRequired("version")
 
-                @JsonProperty("runtime") @ExcludeMissing fun _runtime() = runtime
+                @JsonProperty("runtime")
+                @ExcludeMissing
+                fun _runtime(): JsonField<Runtime> = runtime
 
-                @JsonProperty("version") @ExcludeMissing fun _version() = version
+                @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+                private var validated: Boolean = false
+
                 fun validate(): InlineContext = apply {
-                    if (!validated) {
-                        runtime()
-                        version()
-                        validated = true
+                    if (validated) {
+                        return@apply
                     }
+
+                    runtime()
+                    version()
+                    validated = true
                 }
 
                 fun toBuilder() = Builder().from(this)
@@ -1892,39 +2644,35 @@ constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                /** A builder for [InlineContext]. */
+                class Builder internal constructor() {
 
-                    private var runtime: JsonField<Runtime> = JsonMissing.of()
-                    private var version: JsonField<String> = JsonMissing.of()
+                    private var runtime: JsonField<Runtime>? = null
+                    private var version: JsonField<String>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(inlineContext: InlineContext) = apply {
-                        this.runtime = inlineContext.runtime
-                        this.version = inlineContext.version
-                        additionalProperties(inlineContext.additionalProperties)
+                        runtime = inlineContext.runtime
+                        version = inlineContext.version
+                        additionalProperties = inlineContext.additionalProperties.toMutableMap()
                     }
 
                     fun runtime(runtime: Runtime) = runtime(JsonField.of(runtime))
 
-                    @JsonProperty("runtime")
-                    @ExcludeMissing
                     fun runtime(runtime: JsonField<Runtime>) = apply { this.runtime = runtime }
 
                     fun version(version: String) = version(JsonField.of(version))
 
-                    @JsonProperty("version")
-                    @ExcludeMissing
                     fun version(version: JsonField<String>) = apply { this.version = version }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
+                        putAllAdditionalProperties(additionalProperties)
                     }
 
-                    @JsonAnySetter
                     fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
+                        additionalProperties.put(key, value)
                     }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1932,10 +2680,18 @@ constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
                     fun build(): InlineContext =
                         InlineContext(
-                            runtime,
-                            version,
+                            checkRequired("runtime", runtime),
+                            checkRequired("version", version),
                             additionalProperties.toImmutable(),
                         )
                 }
@@ -1946,8 +2702,82 @@ constructor(
                     private val value: JsonField<String>,
                 ) : Enum {
 
+                    /**
+                     * Returns this class instance's raw value.
+                     *
+                     * This is usually only useful if this instance was deserialized from data that
+                     * doesn't match any known member, and you want to know that value. For example,
+                     * if the SDK is on an older version than the API, then the API may respond with
+                     * new members that the SDK is unaware of.
+                     */
                     @com.fasterxml.jackson.annotation.JsonValue
                     fun _value(): JsonField<String> = value
+
+                    companion object {
+
+                        @JvmField val NODE = of("node")
+
+                        @JvmField val PYTHON = of("python")
+
+                        @JvmStatic fun of(value: String) = Runtime(JsonField.of(value))
+                    }
+
+                    /** An enum containing [Runtime]'s known values. */
+                    enum class Known {
+                        NODE,
+                        PYTHON,
+                    }
+
+                    /**
+                     * An enum containing [Runtime]'s known values, as well as an [_UNKNOWN] member.
+                     *
+                     * An instance of [Runtime] can contain an unknown value in a couple of cases:
+                     * - It was deserialized from data that doesn't match any known member. For
+                     *   example, if the SDK is on an older version than the API, then the API may
+                     *   respond with new members that the SDK is unaware of.
+                     * - It was constructed with an arbitrary value using the [of] method.
+                     */
+                    enum class Value {
+                        NODE,
+                        PYTHON,
+                        /**
+                         * An enum member indicating that [Runtime] was instantiated with an unknown
+                         * value.
+                         */
+                        _UNKNOWN,
+                    }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value, or
+                     * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                     *
+                     * Use the [known] method instead if you're certain the value is always known or
+                     * if you want to throw for the unknown case.
+                     */
+                    fun value(): Value =
+                        when (this) {
+                            NODE -> Value.NODE
+                            PYTHON -> Value.PYTHON
+                            else -> Value._UNKNOWN
+                        }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value.
+                     *
+                     * Use the [value] method instead if you're uncertain the value is always known
+                     * and don't want to throw for the unknown case.
+                     *
+                     * @throws BraintrustInvalidDataException if this class instance's value is a
+                     *   not a known member.
+                     */
+                    fun known(): Known =
+                        when (this) {
+                            NODE -> Known.NODE
+                            PYTHON -> Known.PYTHON
+                            else -> throw BraintrustInvalidDataException("Unknown Runtime: $value")
+                        }
+
+                    fun asString(): String = _value().asStringOrThrow()
 
                     override fun equals(other: Any?): Boolean {
                         if (this === other) {
@@ -1960,42 +2790,6 @@ constructor(
                     override fun hashCode() = value.hashCode()
 
                     override fun toString() = value.toString()
-
-                    companion object {
-
-                        @JvmField val NODE = Runtime(JsonField.of("node"))
-
-                        @JvmField val PYTHON = Runtime(JsonField.of("python"))
-
-                        @JvmStatic fun of(value: String) = Runtime(JsonField.of(value))
-                    }
-
-                    enum class Known {
-                        NODE,
-                        PYTHON,
-                    }
-
-                    enum class Value {
-                        NODE,
-                        PYTHON,
-                        _UNKNOWN,
-                    }
-
-                    fun value(): Value =
-                        when (this) {
-                            NODE -> Value.NODE
-                            PYTHON -> Value.PYTHON
-                            else -> Value._UNKNOWN
-                        }
-
-                    fun known(): Known =
-                        when (this) {
-                            NODE -> Known.NODE
-                            PYTHON -> Known.PYTHON
-                            else -> throw BraintrustInvalidDataException("Unknown Runtime: $value")
-                        }
-
-                    fun asString(): String = _value().asStringOrThrow()
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -2021,30 +2815,33 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InlineCode && inlineContext == other.inlineContext && code == other.code && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is InlineCode && code == other.code && inlineContext == other.inlineContext && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(inlineContext, code, name, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(code, inlineContext, name, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "InlineCode{inlineContext=$inlineContext, code=$code, name=$name, additionalProperties=$additionalProperties}"
+                "InlineCode{code=$code, inlineContext=$inlineContext, name=$name, additionalProperties=$additionalProperties}"
         }
 
         /** Inline prompt definition */
-        @JsonDeserialize(builder = InlinePrompt.Builder::class)
         @NoAutoDetect
         class InlinePrompt
+        @JsonCreator
         private constructor(
-            private val inlinePrompt: JsonField<PromptData>,
-            private val name: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("inline_prompt")
+            @ExcludeMissing
+            private val inlinePrompt: JsonField<PromptData> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The prompt, model, and its parameters */
             fun inlinePrompt(): Optional<PromptData> =
@@ -2054,21 +2851,27 @@ constructor(
             fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
             /** The prompt, model, and its parameters */
-            @JsonProperty("inline_prompt") @ExcludeMissing fun _inlinePrompt() = inlinePrompt
+            @JsonProperty("inline_prompt")
+            @ExcludeMissing
+            fun _inlinePrompt(): JsonField<PromptData> = inlinePrompt
 
             /** The name of the inline prompt */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): InlinePrompt = apply {
-                if (!validated) {
-                    inlinePrompt().map { it.validate() }
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                inlinePrompt().ifPresent { it.validate() }
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -2078,46 +2881,49 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [InlinePrompt]. */
+            class Builder internal constructor() {
 
-                private var inlinePrompt: JsonField<PromptData> = JsonMissing.of()
+                private var inlinePrompt: JsonField<PromptData>? = null
                 private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(inlinePrompt: InlinePrompt) = apply {
                     this.inlinePrompt = inlinePrompt.inlinePrompt
-                    this.name = inlinePrompt.name
-                    additionalProperties(inlinePrompt.additionalProperties)
+                    name = inlinePrompt.name
+                    additionalProperties = inlinePrompt.additionalProperties.toMutableMap()
                 }
 
                 /** The prompt, model, and its parameters */
-                fun inlinePrompt(inlinePrompt: PromptData) =
-                    inlinePrompt(JsonField.of(inlinePrompt))
+                fun inlinePrompt(inlinePrompt: PromptData?) =
+                    inlinePrompt(JsonField.ofNullable(inlinePrompt))
 
                 /** The prompt, model, and its parameters */
-                @JsonProperty("inline_prompt")
-                @ExcludeMissing
+                fun inlinePrompt(inlinePrompt: Optional<PromptData>) =
+                    inlinePrompt(inlinePrompt.orElse(null))
+
+                /** The prompt, model, and its parameters */
                 fun inlinePrompt(inlinePrompt: JsonField<PromptData>) = apply {
                     this.inlinePrompt = inlinePrompt
                 }
 
                 /** The name of the inline prompt */
-                fun name(name: String) = name(JsonField.of(name))
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The name of the inline prompt */
-                @JsonProperty("name")
-                @ExcludeMissing
+                fun name(name: Optional<String>) = name(name.orElse(null))
+
+                /** The name of the inline prompt */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2125,9 +2931,17 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): InlinePrompt =
                     InlinePrompt(
-                        inlinePrompt,
+                        checkRequired("inlinePrompt", inlinePrompt),
                         name,
                         additionalProperties.toImmutable(),
                     )
@@ -2152,6 +2966,7 @@ constructor(
         }
     }
 
+    /** The function to evaluate */
     @JsonDeserialize(using = Task.Deserializer::class)
     @JsonSerialize(using = Task.Serializer::class)
     class Task
@@ -2165,18 +2980,21 @@ constructor(
         private val _json: JsonValue? = null,
     ) {
 
-        private var validated: Boolean = false
-
         /** Function id */
         fun functionId(): Optional<FunctionId> = Optional.ofNullable(functionId)
+
         /** Project name and slug */
         fun projectSlug(): Optional<ProjectSlug> = Optional.ofNullable(projectSlug)
+
         /** Global function name */
         fun globalFunction(): Optional<GlobalFunction> = Optional.ofNullable(globalFunction)
+
         /** Prompt session id */
         fun promptSessionId(): Optional<PromptSessionId> = Optional.ofNullable(promptSessionId)
+
         /** Inline code function */
         fun inlineCode(): Optional<InlineCode> = Optional.ofNullable(inlineCode)
+
         /** Inline prompt definition */
         fun inlinePrompt(): Optional<InlinePrompt> = Optional.ofNullable(inlinePrompt)
 
@@ -2192,16 +3010,22 @@ constructor(
 
         fun isInlinePrompt(): Boolean = inlinePrompt != null
 
+        /** Function id */
         fun asFunctionId(): FunctionId = functionId.getOrThrow("functionId")
 
+        /** Project name and slug */
         fun asProjectSlug(): ProjectSlug = projectSlug.getOrThrow("projectSlug")
 
+        /** Global function name */
         fun asGlobalFunction(): GlobalFunction = globalFunction.getOrThrow("globalFunction")
 
+        /** Prompt session id */
         fun asPromptSessionId(): PromptSessionId = promptSessionId.getOrThrow("promptSessionId")
 
+        /** Inline code function */
         fun asInlineCode(): InlineCode = inlineCode.getOrThrow("inlineCode")
 
+        /** Inline prompt definition */
         fun asInlinePrompt(): InlinePrompt = inlinePrompt.getOrThrow("inlinePrompt")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
@@ -2218,26 +3042,41 @@ constructor(
             }
         }
 
+        private var validated: Boolean = false
+
         fun validate(): Task = apply {
-            if (!validated) {
-                if (
-                    functionId == null &&
-                        projectSlug == null &&
-                        globalFunction == null &&
-                        promptSessionId == null &&
-                        inlineCode == null &&
-                        inlinePrompt == null
-                ) {
-                    throw BraintrustInvalidDataException("Unknown Task: $_json")
-                }
-                functionId?.validate()
-                projectSlug?.validate()
-                globalFunction?.validate()
-                promptSessionId?.validate()
-                inlineCode?.validate()
-                inlinePrompt?.validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accept(
+                object : Visitor<Unit> {
+                    override fun visitFunctionId(functionId: FunctionId) {
+                        functionId.validate()
+                    }
+
+                    override fun visitProjectSlug(projectSlug: ProjectSlug) {
+                        projectSlug.validate()
+                    }
+
+                    override fun visitGlobalFunction(globalFunction: GlobalFunction) {
+                        globalFunction.validate()
+                    }
+
+                    override fun visitPromptSessionId(promptSessionId: PromptSessionId) {
+                        promptSessionId.validate()
+                    }
+
+                    override fun visitInlineCode(inlineCode: InlineCode) {
+                        inlineCode.validate()
+                    }
+
+                    override fun visitInlinePrompt(inlinePrompt: InlinePrompt) {
+                        inlinePrompt.validate()
+                    }
+                }
+            )
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -2264,44 +3103,66 @@ constructor(
 
         companion object {
 
+            /** Function id */
             @JvmStatic fun ofFunctionId(functionId: FunctionId) = Task(functionId = functionId)
 
+            /** Project name and slug */
             @JvmStatic fun ofProjectSlug(projectSlug: ProjectSlug) = Task(projectSlug = projectSlug)
 
+            /** Global function name */
             @JvmStatic
             fun ofGlobalFunction(globalFunction: GlobalFunction) =
                 Task(globalFunction = globalFunction)
 
+            /** Prompt session id */
             @JvmStatic
             fun ofPromptSessionId(promptSessionId: PromptSessionId) =
                 Task(promptSessionId = promptSessionId)
 
+            /** Inline code function */
             @JvmStatic fun ofInlineCode(inlineCode: InlineCode) = Task(inlineCode = inlineCode)
 
+            /** Inline prompt definition */
             @JvmStatic
             fun ofInlinePrompt(inlinePrompt: InlinePrompt) = Task(inlinePrompt = inlinePrompt)
         }
 
+        /** An interface that defines how to map each variant of [Task] to a value of type [T]. */
         interface Visitor<out T> {
 
+            /** Function id */
             fun visitFunctionId(functionId: FunctionId): T
 
+            /** Project name and slug */
             fun visitProjectSlug(projectSlug: ProjectSlug): T
 
+            /** Global function name */
             fun visitGlobalFunction(globalFunction: GlobalFunction): T
 
+            /** Prompt session id */
             fun visitPromptSessionId(promptSessionId: PromptSessionId): T
 
+            /** Inline code function */
             fun visitInlineCode(inlineCode: InlineCode): T
 
+            /** Inline prompt definition */
             fun visitInlinePrompt(inlinePrompt: InlinePrompt): T
 
+            /**
+             * Maps an unknown variant of [Task] to a value of type [T].
+             *
+             * An instance of [Task] can contain an unknown variant if it was deserialized from data
+             * that doesn't match any known variant. For example, if the SDK is on an older version
+             * than the API, then the API may respond with new variants that the SDK is unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw BraintrustInvalidDataException("Unknown Task: $json")
             }
         }
 
-        class Deserializer : BaseDeserializer<Task>(Task::class) {
+        internal class Deserializer : BaseDeserializer<Task>(Task::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Task {
                 val json = JsonValue.fromJsonNode(node)
@@ -2335,7 +3196,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Task>(Task::class) {
+        internal class Serializer : BaseSerializer<Task>(Task::class) {
 
             override fun serialize(
                 value: Task,
@@ -2356,16 +3217,19 @@ constructor(
         }
 
         /** Function id */
-        @JsonDeserialize(builder = FunctionId.Builder::class)
         @NoAutoDetect
         class FunctionId
+        @JsonCreator
         private constructor(
-            private val functionId: JsonField<String>,
-            private val version: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("function_id")
+            @ExcludeMissing
+            private val functionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version")
+            @ExcludeMissing
+            private val version: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The ID of the function */
             fun functionId(): String = functionId.getRequired("function_id")
@@ -2374,21 +3238,27 @@ constructor(
             fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
 
             /** The ID of the function */
-            @JsonProperty("function_id") @ExcludeMissing fun _functionId() = functionId
+            @JsonProperty("function_id")
+            @ExcludeMissing
+            fun _functionId(): JsonField<String> = functionId
 
             /** The version of the function */
-            @JsonProperty("version") @ExcludeMissing fun _version() = version
+            @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): FunctionId = apply {
-                if (!validated) {
-                    functionId()
-                    version()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                functionId()
+                version()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -2398,25 +3268,24 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [FunctionId]. */
+            class Builder internal constructor() {
 
-                private var functionId: JsonField<String> = JsonMissing.of()
+                private var functionId: JsonField<String>? = null
                 private var version: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(functionId: FunctionId) = apply {
                     this.functionId = functionId.functionId
-                    this.version = functionId.version
-                    additionalProperties(functionId.additionalProperties)
+                    version = functionId.version
+                    additionalProperties = functionId.additionalProperties.toMutableMap()
                 }
 
                 /** The ID of the function */
                 fun functionId(functionId: String) = functionId(JsonField.of(functionId))
 
                 /** The ID of the function */
-                @JsonProperty("function_id")
-                @ExcludeMissing
                 fun functionId(functionId: JsonField<String>) = apply {
                     this.functionId = functionId
                 }
@@ -2425,18 +3294,15 @@ constructor(
                 fun version(version: String) = version(JsonField.of(version))
 
                 /** The version of the function */
-                @JsonProperty("version")
-                @ExcludeMissing
                 fun version(version: JsonField<String>) = apply { this.version = version }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2444,9 +3310,17 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): FunctionId =
                     FunctionId(
-                        functionId,
+                        checkRequired("functionId", functionId),
                         version,
                         additionalProperties.toImmutable(),
                     )
@@ -2471,17 +3345,22 @@ constructor(
         }
 
         /** Project name and slug */
-        @JsonDeserialize(builder = ProjectSlug.Builder::class)
         @NoAutoDetect
         class ProjectSlug
+        @JsonCreator
         private constructor(
-            private val projectName: JsonField<String>,
-            private val slug: JsonField<String>,
-            private val version: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("project_name")
+            @ExcludeMissing
+            private val projectName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("slug")
+            @ExcludeMissing
+            private val slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version")
+            @ExcludeMissing
+            private val version: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The name of the project containing the function */
             fun projectName(): String = projectName.getRequired("project_name")
@@ -2493,25 +3372,31 @@ constructor(
             fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
 
             /** The name of the project containing the function */
-            @JsonProperty("project_name") @ExcludeMissing fun _projectName() = projectName
+            @JsonProperty("project_name")
+            @ExcludeMissing
+            fun _projectName(): JsonField<String> = projectName
 
             /** The slug of the function */
-            @JsonProperty("slug") @ExcludeMissing fun _slug() = slug
+            @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
             /** The version of the function */
-            @JsonProperty("version") @ExcludeMissing fun _version() = version
+            @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): ProjectSlug = apply {
-                if (!validated) {
-                    projectName()
-                    slug()
-                    version()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                projectName()
+                slug()
+                version()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -2521,27 +3406,26 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [ProjectSlug]. */
+            class Builder internal constructor() {
 
-                private var projectName: JsonField<String> = JsonMissing.of()
-                private var slug: JsonField<String> = JsonMissing.of()
+                private var projectName: JsonField<String>? = null
+                private var slug: JsonField<String>? = null
                 private var version: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(projectSlug: ProjectSlug) = apply {
-                    this.projectName = projectSlug.projectName
-                    this.slug = projectSlug.slug
-                    this.version = projectSlug.version
-                    additionalProperties(projectSlug.additionalProperties)
+                    projectName = projectSlug.projectName
+                    slug = projectSlug.slug
+                    version = projectSlug.version
+                    additionalProperties = projectSlug.additionalProperties.toMutableMap()
                 }
 
                 /** The name of the project containing the function */
                 fun projectName(projectName: String) = projectName(JsonField.of(projectName))
 
                 /** The name of the project containing the function */
-                @JsonProperty("project_name")
-                @ExcludeMissing
                 fun projectName(projectName: JsonField<String>) = apply {
                     this.projectName = projectName
                 }
@@ -2550,26 +3434,21 @@ constructor(
                 fun slug(slug: String) = slug(JsonField.of(slug))
 
                 /** The slug of the function */
-                @JsonProperty("slug")
-                @ExcludeMissing
                 fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
                 /** The version of the function */
                 fun version(version: String) = version(JsonField.of(version))
 
                 /** The version of the function */
-                @JsonProperty("version")
-                @ExcludeMissing
                 fun version(version: JsonField<String>) = apply { this.version = version }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2577,10 +3456,18 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): ProjectSlug =
                     ProjectSlug(
-                        projectName,
-                        slug,
+                        checkRequired("projectName", projectName),
+                        checkRequired("slug", slug),
                         version,
                         additionalProperties.toImmutable(),
                     )
@@ -2605,15 +3492,16 @@ constructor(
         }
 
         /** Global function name */
-        @JsonDeserialize(builder = GlobalFunction.Builder::class)
         @NoAutoDetect
         class GlobalFunction
+        @JsonCreator
         private constructor(
-            private val globalFunction: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("global_function")
+            @ExcludeMissing
+            private val globalFunction: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /**
              * The name of the global function. Currently, the global namespace includes the
@@ -2625,17 +3513,23 @@ constructor(
              * The name of the global function. Currently, the global namespace includes the
              * functions in autoevals
              */
-            @JsonProperty("global_function") @ExcludeMissing fun _globalFunction() = globalFunction
+            @JsonProperty("global_function")
+            @ExcludeMissing
+            fun _globalFunction(): JsonField<String> = globalFunction
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): GlobalFunction = apply {
-                if (!validated) {
-                    globalFunction()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                globalFunction()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -2645,15 +3539,16 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [GlobalFunction]. */
+            class Builder internal constructor() {
 
-                private var globalFunction: JsonField<String> = JsonMissing.of()
+                private var globalFunction: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(globalFunction: GlobalFunction) = apply {
                     this.globalFunction = globalFunction.globalFunction
-                    additionalProperties(globalFunction.additionalProperties)
+                    additionalProperties = globalFunction.additionalProperties.toMutableMap()
                 }
 
                 /**
@@ -2667,20 +3562,17 @@ constructor(
                  * The name of the global function. Currently, the global namespace includes the
                  * functions in autoevals
                  */
-                @JsonProperty("global_function")
-                @ExcludeMissing
                 fun globalFunction(globalFunction: JsonField<String>) = apply {
                     this.globalFunction = globalFunction
                 }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2688,8 +3580,19 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): GlobalFunction =
-                    GlobalFunction(globalFunction, additionalProperties.toImmutable())
+                    GlobalFunction(
+                        checkRequired("globalFunction", globalFunction),
+                        additionalProperties.toImmutable()
+                    )
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2711,52 +3614,61 @@ constructor(
         }
 
         /** Prompt session id */
-        @JsonDeserialize(builder = PromptSessionId.Builder::class)
         @NoAutoDetect
         class PromptSessionId
+        @JsonCreator
         private constructor(
-            private val promptSessionId: JsonField<String>,
-            private val promptSessionFunctionId: JsonField<String>,
-            private val version: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("prompt_session_function_id")
+            @ExcludeMissing
+            private val promptSessionFunctionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("prompt_session_id")
+            @ExcludeMissing
+            private val promptSessionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version")
+            @ExcludeMissing
+            private val version: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
-
-            /** The ID of the prompt session */
-            fun promptSessionId(): String = promptSessionId.getRequired("prompt_session_id")
 
             /** The ID of the function in the prompt session */
             fun promptSessionFunctionId(): String =
                 promptSessionFunctionId.getRequired("prompt_session_function_id")
 
+            /** The ID of the prompt session */
+            fun promptSessionId(): String = promptSessionId.getRequired("prompt_session_id")
+
             /** The version of the function */
             fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
-
-            /** The ID of the prompt session */
-            @JsonProperty("prompt_session_id")
-            @ExcludeMissing
-            fun _promptSessionId() = promptSessionId
 
             /** The ID of the function in the prompt session */
             @JsonProperty("prompt_session_function_id")
             @ExcludeMissing
-            fun _promptSessionFunctionId() = promptSessionFunctionId
+            fun _promptSessionFunctionId(): JsonField<String> = promptSessionFunctionId
+
+            /** The ID of the prompt session */
+            @JsonProperty("prompt_session_id")
+            @ExcludeMissing
+            fun _promptSessionId(): JsonField<String> = promptSessionId
 
             /** The version of the function */
-            @JsonProperty("version") @ExcludeMissing fun _version() = version
+            @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): PromptSessionId = apply {
-                if (!validated) {
-                    promptSessionId()
-                    promptSessionFunctionId()
-                    version()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                promptSessionFunctionId()
+                promptSessionId()
+                version()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -2766,30 +3678,20 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [PromptSessionId]. */
+            class Builder internal constructor() {
 
-                private var promptSessionId: JsonField<String> = JsonMissing.of()
-                private var promptSessionFunctionId: JsonField<String> = JsonMissing.of()
+                private var promptSessionFunctionId: JsonField<String>? = null
+                private var promptSessionId: JsonField<String>? = null
                 private var version: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(promptSessionId: PromptSessionId) = apply {
+                    promptSessionFunctionId = promptSessionId.promptSessionFunctionId
                     this.promptSessionId = promptSessionId.promptSessionId
-                    this.promptSessionFunctionId = promptSessionId.promptSessionFunctionId
-                    this.version = promptSessionId.version
-                    additionalProperties(promptSessionId.additionalProperties)
-                }
-
-                /** The ID of the prompt session */
-                fun promptSessionId(promptSessionId: String) =
-                    promptSessionId(JsonField.of(promptSessionId))
-
-                /** The ID of the prompt session */
-                @JsonProperty("prompt_session_id")
-                @ExcludeMissing
-                fun promptSessionId(promptSessionId: JsonField<String>) = apply {
-                    this.promptSessionId = promptSessionId
+                    version = promptSessionId.version
+                    additionalProperties = promptSessionId.additionalProperties.toMutableMap()
                 }
 
                 /** The ID of the function in the prompt session */
@@ -2797,28 +3699,32 @@ constructor(
                     promptSessionFunctionId(JsonField.of(promptSessionFunctionId))
 
                 /** The ID of the function in the prompt session */
-                @JsonProperty("prompt_session_function_id")
-                @ExcludeMissing
                 fun promptSessionFunctionId(promptSessionFunctionId: JsonField<String>) = apply {
                     this.promptSessionFunctionId = promptSessionFunctionId
+                }
+
+                /** The ID of the prompt session */
+                fun promptSessionId(promptSessionId: String) =
+                    promptSessionId(JsonField.of(promptSessionId))
+
+                /** The ID of the prompt session */
+                fun promptSessionId(promptSessionId: JsonField<String>) = apply {
+                    this.promptSessionId = promptSessionId
                 }
 
                 /** The version of the function */
                 fun version(version: String) = version(JsonField.of(version))
 
                 /** The version of the function */
-                @JsonProperty("version")
-                @ExcludeMissing
                 fun version(version: JsonField<String>) = apply { this.version = version }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2826,10 +3732,18 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): PromptSessionId =
                     PromptSessionId(
-                        promptSessionId,
-                        promptSessionFunctionId,
+                        checkRequired("promptSessionFunctionId", promptSessionFunctionId),
+                        checkRequired("promptSessionId", promptSessionId),
                         version,
                         additionalProperties.toImmutable(),
                     )
@@ -2840,59 +3754,70 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is PromptSessionId && promptSessionId == other.promptSessionId && promptSessionFunctionId == other.promptSessionFunctionId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is PromptSessionId && promptSessionFunctionId == other.promptSessionFunctionId && promptSessionId == other.promptSessionId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(promptSessionId, promptSessionFunctionId, version, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(promptSessionFunctionId, promptSessionId, version, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "PromptSessionId{promptSessionId=$promptSessionId, promptSessionFunctionId=$promptSessionFunctionId, version=$version, additionalProperties=$additionalProperties}"
+                "PromptSessionId{promptSessionFunctionId=$promptSessionFunctionId, promptSessionId=$promptSessionId, version=$version, additionalProperties=$additionalProperties}"
         }
 
         /** Inline code function */
-        @JsonDeserialize(builder = InlineCode.Builder::class)
         @NoAutoDetect
         class InlineCode
+        @JsonCreator
         private constructor(
-            private val inlineContext: JsonField<InlineContext>,
-            private val code: JsonField<String>,
-            private val name: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("code")
+            @ExcludeMissing
+            private val code: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("inline_context")
+            @ExcludeMissing
+            private val inlineContext: JsonField<InlineContext> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
-
-            fun inlineContext(): InlineContext = inlineContext.getRequired("inline_context")
 
             /** The inline code to execute */
             fun code(): String = code.getRequired("code")
 
+            fun inlineContext(): InlineContext = inlineContext.getRequired("inline_context")
+
             /** The name of the inline code function */
             fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-            @JsonProperty("inline_context") @ExcludeMissing fun _inlineContext() = inlineContext
-
             /** The inline code to execute */
-            @JsonProperty("code") @ExcludeMissing fun _code() = code
+            @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
+
+            @JsonProperty("inline_context")
+            @ExcludeMissing
+            fun _inlineContext(): JsonField<InlineContext> = inlineContext
 
             /** The name of the inline code function */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): InlineCode = apply {
-                if (!validated) {
-                    inlineContext().validate()
-                    code()
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                code()
+                inlineContext().validate()
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -2902,54 +3827,51 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [InlineCode]. */
+            class Builder internal constructor() {
 
-                private var inlineContext: JsonField<InlineContext> = JsonMissing.of()
-                private var code: JsonField<String> = JsonMissing.of()
+                private var code: JsonField<String>? = null
+                private var inlineContext: JsonField<InlineContext>? = null
                 private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(inlineCode: InlineCode) = apply {
-                    this.inlineContext = inlineCode.inlineContext
-                    this.code = inlineCode.code
-                    this.name = inlineCode.name
-                    additionalProperties(inlineCode.additionalProperties)
-                }
-
-                fun inlineContext(inlineContext: InlineContext) =
-                    inlineContext(JsonField.of(inlineContext))
-
-                @JsonProperty("inline_context")
-                @ExcludeMissing
-                fun inlineContext(inlineContext: JsonField<InlineContext>) = apply {
-                    this.inlineContext = inlineContext
+                    code = inlineCode.code
+                    inlineContext = inlineCode.inlineContext
+                    name = inlineCode.name
+                    additionalProperties = inlineCode.additionalProperties.toMutableMap()
                 }
 
                 /** The inline code to execute */
                 fun code(code: String) = code(JsonField.of(code))
 
                 /** The inline code to execute */
-                @JsonProperty("code")
-                @ExcludeMissing
                 fun code(code: JsonField<String>) = apply { this.code = code }
 
-                /** The name of the inline code function */
-                fun name(name: String) = name(JsonField.of(name))
+                fun inlineContext(inlineContext: InlineContext) =
+                    inlineContext(JsonField.of(inlineContext))
+
+                fun inlineContext(inlineContext: JsonField<InlineContext>) = apply {
+                    this.inlineContext = inlineContext
+                }
 
                 /** The name of the inline code function */
-                @JsonProperty("name")
-                @ExcludeMissing
+                fun name(name: String?) = name(JsonField.ofNullable(name))
+
+                /** The name of the inline code function */
+                fun name(name: Optional<String>) = name(name.orElse(null))
+
+                /** The name of the inline code function */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2957,44 +3879,61 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): InlineCode =
                     InlineCode(
-                        inlineContext,
-                        code,
+                        checkRequired("code", code),
+                        checkRequired("inlineContext", inlineContext),
                         name,
                         additionalProperties.toImmutable(),
                     )
             }
 
-            @JsonDeserialize(builder = InlineContext.Builder::class)
             @NoAutoDetect
             class InlineContext
+            @JsonCreator
             private constructor(
-                private val runtime: JsonField<Runtime>,
-                private val version: JsonField<String>,
-                private val additionalProperties: Map<String, JsonValue>,
+                @JsonProperty("runtime")
+                @ExcludeMissing
+                private val runtime: JsonField<Runtime> = JsonMissing.of(),
+                @JsonProperty("version")
+                @ExcludeMissing
+                private val version: JsonField<String> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
-
-                private var validated: Boolean = false
 
                 fun runtime(): Runtime = runtime.getRequired("runtime")
 
                 fun version(): String = version.getRequired("version")
 
-                @JsonProperty("runtime") @ExcludeMissing fun _runtime() = runtime
+                @JsonProperty("runtime")
+                @ExcludeMissing
+                fun _runtime(): JsonField<Runtime> = runtime
 
-                @JsonProperty("version") @ExcludeMissing fun _version() = version
+                @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+                private var validated: Boolean = false
+
                 fun validate(): InlineContext = apply {
-                    if (!validated) {
-                        runtime()
-                        version()
-                        validated = true
+                    if (validated) {
+                        return@apply
                     }
+
+                    runtime()
+                    version()
+                    validated = true
                 }
 
                 fun toBuilder() = Builder().from(this)
@@ -3004,39 +3943,35 @@ constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                /** A builder for [InlineContext]. */
+                class Builder internal constructor() {
 
-                    private var runtime: JsonField<Runtime> = JsonMissing.of()
-                    private var version: JsonField<String> = JsonMissing.of()
+                    private var runtime: JsonField<Runtime>? = null
+                    private var version: JsonField<String>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(inlineContext: InlineContext) = apply {
-                        this.runtime = inlineContext.runtime
-                        this.version = inlineContext.version
-                        additionalProperties(inlineContext.additionalProperties)
+                        runtime = inlineContext.runtime
+                        version = inlineContext.version
+                        additionalProperties = inlineContext.additionalProperties.toMutableMap()
                     }
 
                     fun runtime(runtime: Runtime) = runtime(JsonField.of(runtime))
 
-                    @JsonProperty("runtime")
-                    @ExcludeMissing
                     fun runtime(runtime: JsonField<Runtime>) = apply { this.runtime = runtime }
 
                     fun version(version: String) = version(JsonField.of(version))
 
-                    @JsonProperty("version")
-                    @ExcludeMissing
                     fun version(version: JsonField<String>) = apply { this.version = version }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
+                        putAllAdditionalProperties(additionalProperties)
                     }
 
-                    @JsonAnySetter
                     fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
+                        additionalProperties.put(key, value)
                     }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3044,10 +3979,18 @@ constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
                     fun build(): InlineContext =
                         InlineContext(
-                            runtime,
-                            version,
+                            checkRequired("runtime", runtime),
+                            checkRequired("version", version),
                             additionalProperties.toImmutable(),
                         )
                 }
@@ -3058,8 +4001,82 @@ constructor(
                     private val value: JsonField<String>,
                 ) : Enum {
 
+                    /**
+                     * Returns this class instance's raw value.
+                     *
+                     * This is usually only useful if this instance was deserialized from data that
+                     * doesn't match any known member, and you want to know that value. For example,
+                     * if the SDK is on an older version than the API, then the API may respond with
+                     * new members that the SDK is unaware of.
+                     */
                     @com.fasterxml.jackson.annotation.JsonValue
                     fun _value(): JsonField<String> = value
+
+                    companion object {
+
+                        @JvmField val NODE = of("node")
+
+                        @JvmField val PYTHON = of("python")
+
+                        @JvmStatic fun of(value: String) = Runtime(JsonField.of(value))
+                    }
+
+                    /** An enum containing [Runtime]'s known values. */
+                    enum class Known {
+                        NODE,
+                        PYTHON,
+                    }
+
+                    /**
+                     * An enum containing [Runtime]'s known values, as well as an [_UNKNOWN] member.
+                     *
+                     * An instance of [Runtime] can contain an unknown value in a couple of cases:
+                     * - It was deserialized from data that doesn't match any known member. For
+                     *   example, if the SDK is on an older version than the API, then the API may
+                     *   respond with new members that the SDK is unaware of.
+                     * - It was constructed with an arbitrary value using the [of] method.
+                     */
+                    enum class Value {
+                        NODE,
+                        PYTHON,
+                        /**
+                         * An enum member indicating that [Runtime] was instantiated with an unknown
+                         * value.
+                         */
+                        _UNKNOWN,
+                    }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value, or
+                     * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                     *
+                     * Use the [known] method instead if you're certain the value is always known or
+                     * if you want to throw for the unknown case.
+                     */
+                    fun value(): Value =
+                        when (this) {
+                            NODE -> Value.NODE
+                            PYTHON -> Value.PYTHON
+                            else -> Value._UNKNOWN
+                        }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value.
+                     *
+                     * Use the [value] method instead if you're uncertain the value is always known
+                     * and don't want to throw for the unknown case.
+                     *
+                     * @throws BraintrustInvalidDataException if this class instance's value is a
+                     *   not a known member.
+                     */
+                    fun known(): Known =
+                        when (this) {
+                            NODE -> Known.NODE
+                            PYTHON -> Known.PYTHON
+                            else -> throw BraintrustInvalidDataException("Unknown Runtime: $value")
+                        }
+
+                    fun asString(): String = _value().asStringOrThrow()
 
                     override fun equals(other: Any?): Boolean {
                         if (this === other) {
@@ -3072,42 +4089,6 @@ constructor(
                     override fun hashCode() = value.hashCode()
 
                     override fun toString() = value.toString()
-
-                    companion object {
-
-                        @JvmField val NODE = Runtime(JsonField.of("node"))
-
-                        @JvmField val PYTHON = Runtime(JsonField.of("python"))
-
-                        @JvmStatic fun of(value: String) = Runtime(JsonField.of(value))
-                    }
-
-                    enum class Known {
-                        NODE,
-                        PYTHON,
-                    }
-
-                    enum class Value {
-                        NODE,
-                        PYTHON,
-                        _UNKNOWN,
-                    }
-
-                    fun value(): Value =
-                        when (this) {
-                            NODE -> Value.NODE
-                            PYTHON -> Value.PYTHON
-                            else -> Value._UNKNOWN
-                        }
-
-                    fun known(): Known =
-                        when (this) {
-                            NODE -> Known.NODE
-                            PYTHON -> Known.PYTHON
-                            else -> throw BraintrustInvalidDataException("Unknown Runtime: $value")
-                        }
-
-                    fun asString(): String = _value().asStringOrThrow()
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -3133,30 +4114,33 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InlineCode && inlineContext == other.inlineContext && code == other.code && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is InlineCode && code == other.code && inlineContext == other.inlineContext && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(inlineContext, code, name, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(code, inlineContext, name, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "InlineCode{inlineContext=$inlineContext, code=$code, name=$name, additionalProperties=$additionalProperties}"
+                "InlineCode{code=$code, inlineContext=$inlineContext, name=$name, additionalProperties=$additionalProperties}"
         }
 
         /** Inline prompt definition */
-        @JsonDeserialize(builder = InlinePrompt.Builder::class)
         @NoAutoDetect
         class InlinePrompt
+        @JsonCreator
         private constructor(
-            private val inlinePrompt: JsonField<PromptData>,
-            private val name: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("inline_prompt")
+            @ExcludeMissing
+            private val inlinePrompt: JsonField<PromptData> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The prompt, model, and its parameters */
             fun inlinePrompt(): Optional<PromptData> =
@@ -3166,21 +4150,27 @@ constructor(
             fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
             /** The prompt, model, and its parameters */
-            @JsonProperty("inline_prompt") @ExcludeMissing fun _inlinePrompt() = inlinePrompt
+            @JsonProperty("inline_prompt")
+            @ExcludeMissing
+            fun _inlinePrompt(): JsonField<PromptData> = inlinePrompt
 
             /** The name of the inline prompt */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): InlinePrompt = apply {
-                if (!validated) {
-                    inlinePrompt().map { it.validate() }
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                inlinePrompt().ifPresent { it.validate() }
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -3190,46 +4180,49 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [InlinePrompt]. */
+            class Builder internal constructor() {
 
-                private var inlinePrompt: JsonField<PromptData> = JsonMissing.of()
+                private var inlinePrompt: JsonField<PromptData>? = null
                 private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(inlinePrompt: InlinePrompt) = apply {
                     this.inlinePrompt = inlinePrompt.inlinePrompt
-                    this.name = inlinePrompt.name
-                    additionalProperties(inlinePrompt.additionalProperties)
+                    name = inlinePrompt.name
+                    additionalProperties = inlinePrompt.additionalProperties.toMutableMap()
                 }
 
                 /** The prompt, model, and its parameters */
-                fun inlinePrompt(inlinePrompt: PromptData) =
-                    inlinePrompt(JsonField.of(inlinePrompt))
+                fun inlinePrompt(inlinePrompt: PromptData?) =
+                    inlinePrompt(JsonField.ofNullable(inlinePrompt))
 
                 /** The prompt, model, and its parameters */
-                @JsonProperty("inline_prompt")
-                @ExcludeMissing
+                fun inlinePrompt(inlinePrompt: Optional<PromptData>) =
+                    inlinePrompt(inlinePrompt.orElse(null))
+
+                /** The prompt, model, and its parameters */
                 fun inlinePrompt(inlinePrompt: JsonField<PromptData>) = apply {
                     this.inlinePrompt = inlinePrompt
                 }
 
                 /** The name of the inline prompt */
-                fun name(name: String) = name(JsonField.of(name))
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The name of the inline prompt */
-                @JsonProperty("name")
-                @ExcludeMissing
+                fun name(name: Optional<String>) = name(name.orElse(null))
+
+                /** The name of the inline prompt */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3237,9 +4230,17 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): InlinePrompt =
                     InlinePrompt(
-                        inlinePrompt,
+                        checkRequired("inlinePrompt", inlinePrompt),
                         name,
                         additionalProperties.toImmutable(),
                     )
@@ -3268,22 +4269,43 @@ constructor(
      * Optional settings for collecting git metadata. By default, will collect all git metadata
      * fields allowed in org-level settings.
      */
-    @JsonDeserialize(builder = GitMetadataSettings.Builder::class)
     @NoAutoDetect
     class GitMetadataSettings
+    @JsonCreator
     private constructor(
-        private val collect: Collect?,
-        private val fields: List<Field>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("collect")
+        @ExcludeMissing
+        private val collect: JsonField<Collect> = JsonMissing.of(),
+        @JsonProperty("fields")
+        @ExcludeMissing
+        private val fields: JsonField<List<Field>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("collect") fun collect(): Collect? = collect
+        fun collect(): Collect = collect.getRequired("collect")
 
-        @JsonProperty("fields") fun fields(): List<Field>? = fields
+        fun fields(): Optional<List<Field>> = Optional.ofNullable(fields.getNullable("fields"))
+
+        @JsonProperty("collect") @ExcludeMissing fun _collect(): JsonField<Collect> = collect
+
+        @JsonProperty("fields") @ExcludeMissing fun _fields(): JsonField<List<Field>> = fields
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): GitMetadataSettings = apply {
+            if (validated) {
+                return@apply
+            }
+
+            collect()
+            fields()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -3292,42 +4314,66 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [GitMetadataSettings]. */
+        class Builder internal constructor() {
 
-            private var collect: Collect? = null
-            private var fields: List<Field>? = null
+            private var collect: JsonField<Collect>? = null
+            private var fields: JsonField<MutableList<Field>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(gitMetadataSettings: GitMetadataSettings) = apply {
-                this.collect = gitMetadataSettings.collect
-                this.fields = gitMetadataSettings.fields
-                additionalProperties(gitMetadataSettings.additionalProperties)
+                collect = gitMetadataSettings.collect
+                fields = gitMetadataSettings.fields.map { it.toMutableList() }
+                additionalProperties = gitMetadataSettings.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("collect")
-            fun collect(collect: Collect) = apply { this.collect = collect }
+            fun collect(collect: Collect) = collect(JsonField.of(collect))
 
-            @JsonProperty("fields") fun fields(fields: List<Field>) = apply { this.fields = fields }
+            fun collect(collect: JsonField<Collect>) = apply { this.collect = collect }
+
+            fun fields(fields: List<Field>) = fields(JsonField.of(fields))
+
+            fun fields(fields: JsonField<List<Field>>) = apply {
+                this.fields = fields.map { it.toMutableList() }
+            }
+
+            fun addField(field: Field) = apply {
+                fields =
+                    (fields ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(field)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): GitMetadataSettings =
                 GitMetadataSettings(
-                    checkNotNull(collect) { "`collect` is required but was not set" },
-                    fields?.toImmutable(),
+                    checkRequired("collect", collect),
+                    (fields ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -3338,7 +4384,86 @@ constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val ALL = of("all")
+
+                @JvmField val NONE = of("none")
+
+                @JvmField val SOME = of("some")
+
+                @JvmStatic fun of(value: String) = Collect(JsonField.of(value))
+            }
+
+            /** An enum containing [Collect]'s known values. */
+            enum class Known {
+                ALL,
+                NONE,
+                SOME,
+            }
+
+            /**
+             * An enum containing [Collect]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Collect] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                ALL,
+                NONE,
+                SOME,
+                /**
+                 * An enum member indicating that [Collect] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    ALL -> Value.ALL
+                    NONE -> Value.NONE
+                    SOME -> Value.SOME
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws BraintrustInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    ALL -> Known.ALL
+                    NONE -> Known.NONE
+                    SOME -> Known.SOME
+                    else -> throw BraintrustInvalidDataException("Unknown Collect: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -3351,48 +4476,6 @@ constructor(
             override fun hashCode() = value.hashCode()
 
             override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val ALL = Collect(JsonField.of("all"))
-
-                @JvmField val NONE = Collect(JsonField.of("none"))
-
-                @JvmField val SOME = Collect(JsonField.of("some"))
-
-                @JvmStatic fun of(value: String) = Collect(JsonField.of(value))
-            }
-
-            enum class Known {
-                ALL,
-                NONE,
-                SOME,
-            }
-
-            enum class Value {
-                ALL,
-                NONE,
-                SOME,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    ALL -> Value.ALL
-                    NONE -> Value.NONE
-                    SOME -> Value.SOME
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    ALL -> Known.ALL
-                    NONE -> Known.NONE
-                    SOME -> Known.SOME
-                    else -> throw BraintrustInvalidDataException("Unknown Collect: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
         }
 
         class Field
@@ -3401,43 +4484,40 @@ constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Field && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
 
             companion object {
 
-                @JvmField val COMMIT = Field(JsonField.of("commit"))
+                @JvmField val COMMIT = of("commit")
 
-                @JvmField val BRANCH = Field(JsonField.of("branch"))
+                @JvmField val BRANCH = of("branch")
 
-                @JvmField val TAG = Field(JsonField.of("tag"))
+                @JvmField val TAG = of("tag")
 
-                @JvmField val DIRTY = Field(JsonField.of("dirty"))
+                @JvmField val DIRTY = of("dirty")
 
-                @JvmField val AUTHOR_NAME = Field(JsonField.of("author_name"))
+                @JvmField val AUTHOR_NAME = of("author_name")
 
-                @JvmField val AUTHOR_EMAIL = Field(JsonField.of("author_email"))
+                @JvmField val AUTHOR_EMAIL = of("author_email")
 
-                @JvmField val COMMIT_MESSAGE = Field(JsonField.of("commit_message"))
+                @JvmField val COMMIT_MESSAGE = of("commit_message")
 
-                @JvmField val COMMIT_TIME = Field(JsonField.of("commit_time"))
+                @JvmField val COMMIT_TIME = of("commit_time")
 
-                @JvmField val GIT_DIFF = Field(JsonField.of("git_diff"))
+                @JvmField val GIT_DIFF = of("git_diff")
 
                 @JvmStatic fun of(value: String) = Field(JsonField.of(value))
             }
 
+            /** An enum containing [Field]'s known values. */
             enum class Known {
                 COMMIT,
                 BRANCH,
@@ -3450,6 +4530,15 @@ constructor(
                 GIT_DIFF,
             }
 
+            /**
+             * An enum containing [Field]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Field] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
                 COMMIT,
                 BRANCH,
@@ -3460,9 +4549,19 @@ constructor(
                 COMMIT_MESSAGE,
                 COMMIT_TIME,
                 GIT_DIFF,
+                /**
+                 * An enum member indicating that [Field] was instantiated with an unknown value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
                     COMMIT -> Value.COMMIT
@@ -3477,6 +4576,15 @@ constructor(
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws BraintrustInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
             fun known(): Known =
                 when (this) {
                     COMMIT -> Known.COMMIT
@@ -3492,6 +4600,18 @@ constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Field && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -3516,16 +4636,27 @@ constructor(
      * Optional experiment-level metadata to store about the evaluation. You can later use this to
      * slice & dice across experiments.
      */
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -3534,27 +4665,33 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Metadata]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                additionalProperties(metadata.additionalProperties)
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(additionalProperties.toImmutable())
@@ -3582,11 +4719,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is EvalCreateParams && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is EvalCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, repoInfo, stream, timeout, trialCount, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "EvalCreateParams{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "EvalCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -3,35 +3,46 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 import java.util.Optional
 
+/** Summarize experiment */
 class ExperimentSummarizeParams
-constructor(
+private constructor(
     private val experimentId: String,
     private val comparisonExperimentId: String?,
     private val summarizeScores: Boolean?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Experiment id */
     fun experimentId(): String = experimentId
 
+    /**
+     * The experiment to compare against, if summarizing scores and metrics. If omitted, will fall
+     * back to the `base_exp_id` stored in the experiment metadata, and then to the most recent
+     * experiment run in the same project. Must pass `summarize_scores=true` for this id to be used
+     */
     fun comparisonExperimentId(): Optional<String> = Optional.ofNullable(comparisonExperimentId)
 
+    /**
+     * Whether to summarize the scores and metrics. If false (or omitted), only the metadata will be
+     * returned.
+     */
     fun summarizeScores(): Optional<Boolean> = Optional.ofNullable(summarizeScores)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.comparisonExperimentId?.let {
             queryParams.put("comparison_experiment_id", listOf(it.toString()))
@@ -55,8 +66,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ExperimentSummarizeParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var experimentId: String? = null
         private var comparisonExperimentId: String? = null
@@ -82,17 +94,40 @@ constructor(
          * recent experiment run in the same project. Must pass `summarize_scores=true` for this id
          * to be used
          */
-        fun comparisonExperimentId(comparisonExperimentId: String) = apply {
+        fun comparisonExperimentId(comparisonExperimentId: String?) = apply {
             this.comparisonExperimentId = comparisonExperimentId
+        }
+
+        /**
+         * The experiment to compare against, if summarizing scores and metrics. If omitted, will
+         * fall back to the `base_exp_id` stored in the experiment metadata, and then to the most
+         * recent experiment run in the same project. Must pass `summarize_scores=true` for this id
+         * to be used
+         */
+        fun comparisonExperimentId(comparisonExperimentId: Optional<String>) =
+            comparisonExperimentId(comparisonExperimentId.orElse(null))
+
+        /**
+         * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
+         * will be returned.
+         */
+        fun summarizeScores(summarizeScores: Boolean?) = apply {
+            this.summarizeScores = summarizeScores
         }
 
         /**
          * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
          * will be returned.
          */
-        fun summarizeScores(summarizeScores: Boolean) = apply {
-            this.summarizeScores = summarizeScores
-        }
+        fun summarizeScores(summarizeScores: Boolean) = summarizeScores(summarizeScores as Boolean?)
+
+        /**
+         * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
+         * will be returned.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun summarizeScores(summarizeScores: Optional<Boolean>) =
+            summarizeScores(summarizeScores.orElse(null) as Boolean?)
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -194,7 +229,7 @@ constructor(
 
         fun build(): ExperimentSummarizeParams =
             ExperimentSummarizeParams(
-                checkNotNull(experimentId) { "`experimentId` is required but was not set" },
+                checkRequired("experimentId", experimentId),
                 comparisonExperimentId,
                 summarizeScores,
                 additionalHeaders.build(),

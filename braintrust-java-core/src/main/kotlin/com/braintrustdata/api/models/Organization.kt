@@ -7,30 +7,40 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Organization.Builder::class)
 @NoAutoDetect
 class Organization
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val name: JsonField<String>,
-    private val apiUrl: JsonField<String>,
-    private val isUniversalApi: JsonField<Boolean>,
-    private val proxyUrl: JsonField<String>,
-    private val realtimeUrl: JsonField<String>,
-    private val created: JsonField<OffsetDateTime>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("api_url")
+    @ExcludeMissing
+    private val apiUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("created")
+    @ExcludeMissing
+    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("is_universal_api")
+    @ExcludeMissing
+    private val isUniversalApi: JsonField<Boolean> = JsonMissing.of(),
+    @JsonProperty("proxy_url")
+    @ExcludeMissing
+    private val proxyUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("realtime_url")
+    @ExcludeMissing
+    private val realtimeUrl: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** Unique identifier for the organization */
     fun id(): String = id.getRequired("id")
@@ -40,6 +50,9 @@ private constructor(
 
     fun apiUrl(): Optional<String> = Optional.ofNullable(apiUrl.getNullable("api_url"))
 
+    /** Date of organization creation */
+    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+
     fun isUniversalApi(): Optional<Boolean> =
         Optional.ofNullable(isUniversalApi.getNullable("is_universal_api"))
 
@@ -48,41 +61,46 @@ private constructor(
     fun realtimeUrl(): Optional<String> =
         Optional.ofNullable(realtimeUrl.getNullable("realtime_url"))
 
-    /** Date of organization creation */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
-
     /** Unique identifier for the organization */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** Name of the organization */
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    @JsonProperty("api_url") @ExcludeMissing fun _apiUrl() = apiUrl
-
-    @JsonProperty("is_universal_api") @ExcludeMissing fun _isUniversalApi() = isUniversalApi
-
-    @JsonProperty("proxy_url") @ExcludeMissing fun _proxyUrl() = proxyUrl
-
-    @JsonProperty("realtime_url") @ExcludeMissing fun _realtimeUrl() = realtimeUrl
+    @JsonProperty("api_url") @ExcludeMissing fun _apiUrl(): JsonField<String> = apiUrl
 
     /** Date of organization creation */
-    @JsonProperty("created") @ExcludeMissing fun _created() = created
+    @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
+
+    @JsonProperty("is_universal_api")
+    @ExcludeMissing
+    fun _isUniversalApi(): JsonField<Boolean> = isUniversalApi
+
+    @JsonProperty("proxy_url") @ExcludeMissing fun _proxyUrl(): JsonField<String> = proxyUrl
+
+    @JsonProperty("realtime_url")
+    @ExcludeMissing
+    fun _realtimeUrl(): JsonField<String> = realtimeUrl
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): Organization = apply {
-        if (!validated) {
-            id()
-            name()
-            apiUrl()
-            isUniversalApi()
-            proxyUrl()
-            realtimeUrl()
-            created()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        name()
+        apiUrl()
+        created()
+        isUniversalApi()
+        proxyUrl()
+        realtimeUrl()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -92,100 +110,110 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [Organization]. */
+    class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var name: JsonField<String> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var name: JsonField<String>? = null
         private var apiUrl: JsonField<String> = JsonMissing.of()
+        private var created: JsonField<OffsetDateTime> = JsonMissing.of()
         private var isUniversalApi: JsonField<Boolean> = JsonMissing.of()
         private var proxyUrl: JsonField<String> = JsonMissing.of()
         private var realtimeUrl: JsonField<String> = JsonMissing.of()
-        private var created: JsonField<OffsetDateTime> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(organization: Organization) = apply {
-            this.id = organization.id
-            this.name = organization.name
-            this.apiUrl = organization.apiUrl
-            this.isUniversalApi = organization.isUniversalApi
-            this.proxyUrl = organization.proxyUrl
-            this.realtimeUrl = organization.realtimeUrl
-            this.created = organization.created
-            additionalProperties(organization.additionalProperties)
+            id = organization.id
+            name = organization.name
+            apiUrl = organization.apiUrl
+            created = organization.created
+            isUniversalApi = organization.isUniversalApi
+            proxyUrl = organization.proxyUrl
+            realtimeUrl = organization.realtimeUrl
+            additionalProperties = organization.additionalProperties.toMutableMap()
         }
 
         /** Unique identifier for the organization */
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the organization */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Name of the organization */
         fun name(name: String) = name(JsonField.of(name))
 
         /** Name of the organization */
-        @JsonProperty("name")
-        @ExcludeMissing
         fun name(name: JsonField<String>) = apply { this.name = name }
 
-        fun apiUrl(apiUrl: String) = apiUrl(JsonField.of(apiUrl))
+        fun apiUrl(apiUrl: String?) = apiUrl(JsonField.ofNullable(apiUrl))
 
-        @JsonProperty("api_url")
-        @ExcludeMissing
+        fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.orElse(null))
+
         fun apiUrl(apiUrl: JsonField<String>) = apply { this.apiUrl = apiUrl }
 
-        fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(JsonField.of(isUniversalApi))
+        /** Date of organization creation */
+        fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
-        @JsonProperty("is_universal_api")
-        @ExcludeMissing
+        /** Date of organization creation */
+        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+
+        /** Date of organization creation */
+        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
+
+        fun isUniversalApi(isUniversalApi: Boolean?) =
+            isUniversalApi(JsonField.ofNullable(isUniversalApi))
+
+        fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(isUniversalApi as Boolean?)
+
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun isUniversalApi(isUniversalApi: Optional<Boolean>) =
+            isUniversalApi(isUniversalApi.orElse(null) as Boolean?)
+
         fun isUniversalApi(isUniversalApi: JsonField<Boolean>) = apply {
             this.isUniversalApi = isUniversalApi
         }
 
-        fun proxyUrl(proxyUrl: String) = proxyUrl(JsonField.of(proxyUrl))
+        fun proxyUrl(proxyUrl: String?) = proxyUrl(JsonField.ofNullable(proxyUrl))
 
-        @JsonProperty("proxy_url")
-        @ExcludeMissing
+        fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.orElse(null))
+
         fun proxyUrl(proxyUrl: JsonField<String>) = apply { this.proxyUrl = proxyUrl }
 
-        fun realtimeUrl(realtimeUrl: String) = realtimeUrl(JsonField.of(realtimeUrl))
+        fun realtimeUrl(realtimeUrl: String?) = realtimeUrl(JsonField.ofNullable(realtimeUrl))
 
-        @JsonProperty("realtime_url")
-        @ExcludeMissing
+        fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.orElse(null))
+
         fun realtimeUrl(realtimeUrl: JsonField<String>) = apply { this.realtimeUrl = realtimeUrl }
-
-        /** Date of organization creation */
-        fun created(created: OffsetDateTime) = created(JsonField.of(created))
-
-        /** Date of organization creation */
-        @JsonProperty("created")
-        @ExcludeMissing
-        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): Organization =
             Organization(
-                id,
-                name,
+                checkRequired("id", id),
+                checkRequired("name", name),
                 apiUrl,
+                created,
                 isUniversalApi,
                 proxyUrl,
                 realtimeUrl,
-                created,
                 additionalProperties.toImmutable(),
             )
     }
@@ -195,15 +223,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Organization && id == other.id && name == other.name && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && created == other.created && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Organization && id == other.id && name == other.name && apiUrl == other.apiUrl && created == other.created && isUniversalApi == other.isUniversalApi && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, apiUrl, isUniversalApi, proxyUrl, realtimeUrl, created, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, name, apiUrl, created, isUniversalApi, proxyUrl, realtimeUrl, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Organization{id=$id, name=$name, apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, created=$created, additionalProperties=$additionalProperties}"
+        "Organization{id=$id, name=$name, apiUrl=$apiUrl, created=$created, isUniversalApi=$isUniversalApi, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalProperties=$additionalProperties}"
 }

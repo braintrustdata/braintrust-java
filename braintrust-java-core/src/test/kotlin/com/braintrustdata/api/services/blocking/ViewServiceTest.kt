@@ -4,9 +4,16 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.models.ViewCreateParams
+import com.braintrustdata.api.models.ViewData
+import com.braintrustdata.api.models.ViewDataSearch
+import com.braintrustdata.api.models.ViewDeleteParams
 import com.braintrustdata.api.models.ViewListParams
+import com.braintrustdata.api.models.ViewOptions
+import com.braintrustdata.api.models.ViewReplaceParams
+import com.braintrustdata.api.models.ViewRetrieveParams
+import com.braintrustdata.api.models.ViewUpdateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -32,9 +39,17 @@ class ViewServiceTest {
                     .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .options(
                         ViewOptions.builder()
-                            .columnOrder(listOf("string"))
-                            .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                            .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                            .addColumnOrder("string")
+                            .columnSizing(
+                                ViewOptions.ColumnSizing.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(0))
+                                    .build()
+                            )
+                            .columnVisibility(
+                                ViewOptions.ColumnVisibility.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(true))
+                                    .build()
+                            )
                             .build()
                     )
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -42,10 +57,10 @@ class ViewServiceTest {
                         ViewData.builder()
                             .search(
                                 ViewDataSearch.builder()
-                                    .filter(listOf(JsonNull.of()))
-                                    .match(listOf(JsonNull.of()))
-                                    .sort(listOf(JsonNull.of()))
-                                    .tag(listOf(JsonNull.of()))
+                                    .addFilter(JsonValue.from(mapOf<String, Any>()))
+                                    .addMatch(JsonValue.from(mapOf<String, Any>()))
+                                    .addSort(JsonValue.from(mapOf<String, Any>()))
+                                    .addTag(JsonValue.from(mapOf<String, Any>()))
                                     .build()
                             )
                             .build()
@@ -93,9 +108,17 @@ class ViewServiceTest {
                     .name("name")
                     .options(
                         ViewOptions.builder()
-                            .columnOrder(listOf("string"))
-                            .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                            .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                            .addColumnOrder("string")
+                            .columnSizing(
+                                ViewOptions.ColumnSizing.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(0))
+                                    .build()
+                            )
+                            .columnVisibility(
+                                ViewOptions.ColumnVisibility.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(true))
+                                    .build()
+                            )
                             .build()
                     )
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -103,10 +126,10 @@ class ViewServiceTest {
                         ViewData.builder()
                             .search(
                                 ViewDataSearch.builder()
-                                    .filter(listOf(JsonNull.of()))
-                                    .match(listOf(JsonNull.of()))
-                                    .sort(listOf(JsonNull.of()))
-                                    .tag(listOf(JsonNull.of()))
+                                    .addFilter(JsonValue.from(mapOf<String, Any>()))
+                                    .addMatch(JsonValue.from(mapOf<String, Any>()))
+                                    .addSort(JsonValue.from(mapOf<String, Any>()))
+                                    .addTag(JsonValue.from(mapOf<String, Any>()))
                                     .build()
                             )
                             .build()
@@ -175,9 +198,17 @@ class ViewServiceTest {
                     .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .options(
                         ViewOptions.builder()
-                            .columnOrder(listOf("string"))
-                            .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                            .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                            .addColumnOrder("string")
+                            .columnSizing(
+                                ViewOptions.ColumnSizing.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(0))
+                                    .build()
+                            )
+                            .columnVisibility(
+                                ViewOptions.ColumnVisibility.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(true))
+                                    .build()
+                            )
                             .build()
                     )
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -185,10 +216,10 @@ class ViewServiceTest {
                         ViewData.builder()
                             .search(
                                 ViewDataSearch.builder()
-                                    .filter(listOf(JsonNull.of()))
-                                    .match(listOf(JsonNull.of()))
-                                    .sort(listOf(JsonNull.of()))
-                                    .tag(listOf(JsonNull.of()))
+                                    .addFilter(JsonValue.from(mapOf<String, Any>()))
+                                    .addMatch(JsonValue.from(mapOf<String, Any>()))
+                                    .addSort(JsonValue.from(mapOf<String, Any>()))
+                                    .addTag(JsonValue.from(mapOf<String, Any>()))
                                     .build()
                             )
                             .build()

@@ -2,47 +2,60 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class DatasetCreateParamsTest {
 
     @Test
-    fun createDatasetCreateParams() {
+    fun create() {
         DatasetCreateParams.builder()
             .name("x")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .description("description")
-            .metadata(DatasetCreateParams.Metadata.builder().build())
+            .metadata(
+                DatasetCreateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             DatasetCreateParams.builder()
                 .name("x")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .description("description")
-                .metadata(DatasetCreateParams.Metadata.builder().build())
+                .metadata(
+                    DatasetCreateParams.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.description()).isEqualTo("description")
-        assertThat(body.metadata()).isEqualTo(DatasetCreateParams.Metadata.builder().build())
+        assertThat(body.description()).contains("description")
+        assertThat(body.metadata())
+            .contains(
+                DatasetCreateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             DatasetCreateParams.builder()
                 .name("x")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

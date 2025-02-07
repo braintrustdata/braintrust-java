@@ -15,7 +15,7 @@ class SummarizeDatasetResponseTest {
                 .datasetUrl("https://example.com")
                 .projectName("project_name")
                 .projectUrl("https://example.com")
-                .dataSummary(DataSummary.builder().totalRecords(123L).build())
+                .dataSummary(DataSummary.builder().totalRecords(0L).build())
                 .build()
         assertThat(summarizeDatasetResponse).isNotNull
         assertThat(summarizeDatasetResponse.datasetName()).isEqualTo("dataset_name")
@@ -23,6 +23,6 @@ class SummarizeDatasetResponseTest {
         assertThat(summarizeDatasetResponse.projectName()).isEqualTo("project_name")
         assertThat(summarizeDatasetResponse.projectUrl()).isEqualTo("https://example.com")
         assertThat(summarizeDatasetResponse.dataSummary())
-            .contains(DataSummary.builder().totalRecords(123L).build())
+            .contains(DataSummary.builder().totalRecords(0L).build())
     }
 }

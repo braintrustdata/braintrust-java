@@ -3,24 +3,25 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 
+/** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
 class TopLevelHelloWorldParams
-constructor(
+private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
@@ -29,8 +30,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [TopLevelHelloWorldParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
