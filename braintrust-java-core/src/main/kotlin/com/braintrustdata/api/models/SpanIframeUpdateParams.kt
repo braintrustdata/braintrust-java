@@ -3,57 +3,74 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Partially update a span_iframe object. Specify the fields to update in the payload. Any
+ * object-type fields will be deep-merged with existing content. Currently we do not support
+ * removing fields or setting them to null.
+ */
 class SpanIframeUpdateParams
-constructor(
+private constructor(
     private val spanIframeId: String,
-    private val name: String?,
-    private val postMessage: Boolean?,
-    private val url: String?,
+    private val body: SpanIframeUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** SpanIframe id */
     fun spanIframeId(): String = spanIframeId
 
-    fun name(): Optional<String> = Optional.ofNullable(name)
+    /** Name of the span iframe */
+    fun name(): Optional<String> = body.name()
 
-    fun postMessage(): Optional<Boolean> = Optional.ofNullable(postMessage)
+    /**
+     * Whether to post messages to the iframe containing the span's data. This is useful when you
+     * want to render more data than fits in the URL.
+     */
+    fun postMessage(): Optional<Boolean> = body.postMessage()
 
-    fun url(): Optional<String> = Optional.ofNullable(url)
+    /** URL to embed the project viewer in an iframe */
+    fun url(): Optional<String> = body.url()
+
+    /** Name of the span iframe */
+    fun _name(): JsonField<String> = body._name()
+
+    /**
+     * Whether to post messages to the iframe containing the span's data. This is useful when you
+     * want to render more data than fits in the URL.
+     */
+    fun _postMessage(): JsonField<Boolean> = body._postMessage()
+
+    /** URL to embed the project viewer in an iframe */
+    fun _url(): JsonField<String> = body._url()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): SpanIframeUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): SpanIframeUpdateBody {
-        return SpanIframeUpdateBody(
-            name,
-            postMessage,
-            url,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -62,31 +79,64 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = SpanIframeUpdateBody.Builder::class)
     @NoAutoDetect
     class SpanIframeUpdateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val postMessage: Boolean?,
-        private val url: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("post_message")
+        @ExcludeMissing
+        private val postMessage: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("url") @ExcludeMissing private val url: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Name of the span iframe */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
          * you want to render more data than fits in the URL.
          */
-        @JsonProperty("post_message") fun postMessage(): Boolean? = postMessage
+        fun postMessage(): Optional<Boolean> =
+            Optional.ofNullable(postMessage.getNullable("post_message"))
 
         /** URL to embed the project viewer in an iframe */
-        @JsonProperty("url") fun url(): String? = url
+        fun url(): Optional<String> = Optional.ofNullable(url.getNullable("url"))
+
+        /** Name of the span iframe */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Whether to post messages to the iframe containing the span's data. This is useful when
+         * you want to render more data than fits in the URL.
+         */
+        @JsonProperty("post_message")
+        @ExcludeMissing
+        fun _postMessage(): JsonField<Boolean> = postMessage
+
+        /** URL to embed the project viewer in an iframe */
+        @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SpanIframeUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            postMessage()
+            url()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -95,46 +145,85 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [SpanIframeUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var name: String? = null
-            private var postMessage: Boolean? = null
-            private var url: String? = null
+            private var name: JsonField<String> = JsonMissing.of()
+            private var postMessage: JsonField<Boolean> = JsonMissing.of()
+            private var url: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(spanIframeUpdateBody: SpanIframeUpdateBody) = apply {
-                this.name = spanIframeUpdateBody.name
-                this.postMessage = spanIframeUpdateBody.postMessage
-                this.url = spanIframeUpdateBody.url
-                additionalProperties(spanIframeUpdateBody.additionalProperties)
+                name = spanIframeUpdateBody.name
+                postMessage = spanIframeUpdateBody.postMessage
+                url = spanIframeUpdateBody.url
+                additionalProperties = spanIframeUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** Name of the span iframe */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** Name of the span iframe */
+            fun name(name: Optional<String>) = name(name.orElse(null))
+
+            /** Name of the span iframe */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
              * Whether to post messages to the iframe containing the span's data. This is useful
              * when you want to render more data than fits in the URL.
              */
-            @JsonProperty("post_message")
-            fun postMessage(postMessage: Boolean) = apply { this.postMessage = postMessage }
+            fun postMessage(postMessage: Boolean?) = postMessage(JsonField.ofNullable(postMessage))
+
+            /**
+             * Whether to post messages to the iframe containing the span's data. This is useful
+             * when you want to render more data than fits in the URL.
+             */
+            fun postMessage(postMessage: Boolean) = postMessage(postMessage as Boolean?)
+
+            /**
+             * Whether to post messages to the iframe containing the span's data. This is useful
+             * when you want to render more data than fits in the URL.
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun postMessage(postMessage: Optional<Boolean>) =
+                postMessage(postMessage.orElse(null) as Boolean?)
+
+            /**
+             * Whether to post messages to the iframe containing the span's data. This is useful
+             * when you want to render more data than fits in the URL.
+             */
+            fun postMessage(postMessage: JsonField<Boolean>) = apply {
+                this.postMessage = postMessage
+            }
 
             /** URL to embed the project viewer in an iframe */
-            @JsonProperty("url") fun url(url: String) = apply { this.url = url }
+            fun url(url: String?) = url(JsonField.ofNullable(url))
+
+            /** URL to embed the project viewer in an iframe */
+            fun url(url: Optional<String>) = url(url.orElse(null))
+
+            /** URL to embed the project viewer in an iframe */
+            fun url(url: JsonField<String>) = apply { this.url = url }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SpanIframeUpdateBody =
@@ -171,43 +260,88 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [SpanIframeUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var spanIframeId: String? = null
-        private var name: String? = null
-        private var postMessage: Boolean? = null
-        private var url: String? = null
+        private var body: SpanIframeUpdateBody.Builder = SpanIframeUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(spanIframeUpdateParams: SpanIframeUpdateParams) = apply {
             spanIframeId = spanIframeUpdateParams.spanIframeId
-            name = spanIframeUpdateParams.name
-            postMessage = spanIframeUpdateParams.postMessage
-            url = spanIframeUpdateParams.url
+            body = spanIframeUpdateParams.body.toBuilder()
             additionalHeaders = spanIframeUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = spanIframeUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                spanIframeUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** SpanIframe id */
         fun spanIframeId(spanIframeId: String) = apply { this.spanIframeId = spanIframeId }
 
         /** Name of the span iframe */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String?) = apply { body.name(name) }
+
+        /** Name of the span iframe */
+        fun name(name: Optional<String>) = name(name.orElse(null))
+
+        /** Name of the span iframe */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
          * you want to render more data than fits in the URL.
          */
-        fun postMessage(postMessage: Boolean) = apply { this.postMessage = postMessage }
+        fun postMessage(postMessage: Boolean?) = apply { body.postMessage(postMessage) }
+
+        /**
+         * Whether to post messages to the iframe containing the span's data. This is useful when
+         * you want to render more data than fits in the URL.
+         */
+        fun postMessage(postMessage: Boolean) = postMessage(postMessage as Boolean?)
+
+        /**
+         * Whether to post messages to the iframe containing the span's data. This is useful when
+         * you want to render more data than fits in the URL.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun postMessage(postMessage: Optional<Boolean>) =
+            postMessage(postMessage.orElse(null) as Boolean?)
+
+        /**
+         * Whether to post messages to the iframe containing the span's data. This is useful when
+         * you want to render more data than fits in the URL.
+         */
+        fun postMessage(postMessage: JsonField<Boolean>) = apply { body.postMessage(postMessage) }
 
         /** URL to embed the project viewer in an iframe */
-        fun url(url: String) = apply { this.url = url }
+        fun url(url: String?) = apply { body.url(url) }
+
+        /** URL to embed the project viewer in an iframe */
+        fun url(url: Optional<String>) = url(url.orElse(null))
+
+        /** URL to embed the project viewer in an iframe */
+        fun url(url: JsonField<String>) = apply { body.url(url) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -307,37 +441,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): SpanIframeUpdateParams =
             SpanIframeUpdateParams(
-                checkNotNull(spanIframeId) { "`spanIframeId` is required but was not set" },
-                name,
-                postMessage,
-                url,
+                checkRequired("spanIframeId", spanIframeId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -346,11 +455,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeUpdateParams && spanIframeId == other.spanIframeId && name == other.name && postMessage == other.postMessage && url == other.url && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SpanIframeUpdateParams && spanIframeId == other.spanIframeId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, name, postMessage, url, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SpanIframeUpdateParams{spanIframeId=$spanIframeId, name=$name, postMessage=$postMessage, url=$url, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SpanIframeUpdateParams{spanIframeId=$spanIframeId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

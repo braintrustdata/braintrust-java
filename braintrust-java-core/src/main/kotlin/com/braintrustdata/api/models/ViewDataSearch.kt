@@ -7,55 +7,66 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = ViewDataSearch.Builder::class)
 @NoAutoDetect
 class ViewDataSearch
+@JsonCreator
 private constructor(
-    private val filter: JsonField<List<JsonValue?>>,
-    private val tag: JsonField<List<JsonValue?>>,
-    private val match: JsonField<List<JsonValue?>>,
-    private val sort: JsonField<List<JsonValue?>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("filter")
+    @ExcludeMissing
+    private val filter: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonProperty("match")
+    @ExcludeMissing
+    private val match: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonProperty("sort")
+    @ExcludeMissing
+    private val sort: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonProperty("tag")
+    @ExcludeMissing
+    private val tag: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    private var validated: Boolean = false
-
     fun filter(): Optional<List<JsonValue?>> = Optional.ofNullable(filter.getNullable("filter"))
-
-    fun tag(): Optional<List<JsonValue?>> = Optional.ofNullable(tag.getNullable("tag"))
 
     fun match(): Optional<List<JsonValue?>> = Optional.ofNullable(match.getNullable("match"))
 
     fun sort(): Optional<List<JsonValue?>> = Optional.ofNullable(sort.getNullable("sort"))
 
-    @JsonProperty("filter") @ExcludeMissing fun _filter() = filter
+    fun tag(): Optional<List<JsonValue?>> = Optional.ofNullable(tag.getNullable("tag"))
 
-    @JsonProperty("tag") @ExcludeMissing fun _tag() = tag
+    @JsonProperty("filter") @ExcludeMissing fun _filter(): JsonField<List<JsonValue?>> = filter
 
-    @JsonProperty("match") @ExcludeMissing fun _match() = match
+    @JsonProperty("match") @ExcludeMissing fun _match(): JsonField<List<JsonValue?>> = match
 
-    @JsonProperty("sort") @ExcludeMissing fun _sort() = sort
+    @JsonProperty("sort") @ExcludeMissing fun _sort(): JsonField<List<JsonValue?>> = sort
+
+    @JsonProperty("tag") @ExcludeMissing fun _tag(): JsonField<List<JsonValue?>> = tag
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ViewDataSearch = apply {
-        if (!validated) {
-            filter()
-            tag()
-            match()
-            sort()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        filter()
+        match()
+        sort()
+        tag()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -65,67 +76,133 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [ViewDataSearch]. */
+    class Builder internal constructor() {
 
-        private var filter: JsonField<List<JsonValue?>> = JsonMissing.of()
-        private var tag: JsonField<List<JsonValue?>> = JsonMissing.of()
-        private var match: JsonField<List<JsonValue?>> = JsonMissing.of()
-        private var sort: JsonField<List<JsonValue?>> = JsonMissing.of()
+        private var filter: JsonField<MutableList<JsonValue?>>? = null
+        private var match: JsonField<MutableList<JsonValue?>>? = null
+        private var sort: JsonField<MutableList<JsonValue?>>? = null
+        private var tag: JsonField<MutableList<JsonValue?>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(viewDataSearch: ViewDataSearch) = apply {
-            this.filter = viewDataSearch.filter
-            this.tag = viewDataSearch.tag
-            this.match = viewDataSearch.match
-            this.sort = viewDataSearch.sort
-            additionalProperties(viewDataSearch.additionalProperties)
+            filter = viewDataSearch.filter.map { it.toMutableList() }
+            match = viewDataSearch.match.map { it.toMutableList() }
+            sort = viewDataSearch.sort.map { it.toMutableList() }
+            tag = viewDataSearch.tag.map { it.toMutableList() }
+            additionalProperties = viewDataSearch.additionalProperties.toMutableMap()
         }
 
-        fun filter(filter: List<JsonValue?>) = filter(JsonField.of(filter))
+        fun filter(filter: List<JsonValue?>?) = filter(JsonField.ofNullable(filter))
 
-        @JsonProperty("filter")
-        @ExcludeMissing
-        fun filter(filter: JsonField<List<JsonValue?>>) = apply { this.filter = filter }
+        fun filter(filter: Optional<List<JsonValue?>>) = filter(filter.orElse(null))
 
-        fun tag(tag: List<JsonValue?>) = tag(JsonField.of(tag))
+        fun filter(filter: JsonField<List<JsonValue?>>) = apply {
+            this.filter = filter.map { it.toMutableList() }
+        }
 
-        @JsonProperty("tag")
-        @ExcludeMissing
-        fun tag(tag: JsonField<List<JsonValue?>>) = apply { this.tag = tag }
+        fun addFilter(filter: JsonValue) = apply {
+            this.filter =
+                (this.filter ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(filter)
+                }
+        }
 
-        fun match(match: List<JsonValue?>) = match(JsonField.of(match))
+        fun match(match: List<JsonValue?>?) = match(JsonField.ofNullable(match))
 
-        @JsonProperty("match")
-        @ExcludeMissing
-        fun match(match: JsonField<List<JsonValue?>>) = apply { this.match = match }
+        fun match(match: Optional<List<JsonValue?>>) = match(match.orElse(null))
 
-        fun sort(sort: List<JsonValue?>) = sort(JsonField.of(sort))
+        fun match(match: JsonField<List<JsonValue?>>) = apply {
+            this.match = match.map { it.toMutableList() }
+        }
 
-        @JsonProperty("sort")
-        @ExcludeMissing
-        fun sort(sort: JsonField<List<JsonValue?>>) = apply { this.sort = sort }
+        fun addMatch(match: JsonValue) = apply {
+            this.match =
+                (this.match ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(match)
+                }
+        }
+
+        fun sort(sort: List<JsonValue?>?) = sort(JsonField.ofNullable(sort))
+
+        fun sort(sort: Optional<List<JsonValue?>>) = sort(sort.orElse(null))
+
+        fun sort(sort: JsonField<List<JsonValue?>>) = apply {
+            this.sort = sort.map { it.toMutableList() }
+        }
+
+        fun addSort(sort: JsonValue) = apply {
+            this.sort =
+                (this.sort ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(sort)
+                }
+        }
+
+        fun tag(tag: List<JsonValue?>?) = tag(JsonField.ofNullable(tag))
+
+        fun tag(tag: Optional<List<JsonValue?>>) = tag(tag.orElse(null))
+
+        fun tag(tag: JsonField<List<JsonValue?>>) = apply {
+            this.tag = tag.map { it.toMutableList() }
+        }
+
+        fun addTag(tag: JsonValue) = apply {
+            this.tag =
+                (this.tag ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(tag)
+                }
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): ViewDataSearch =
             ViewDataSearch(
-                filter.map { it.toImmutable() },
-                tag.map { it.toImmutable() },
-                match.map { it.toImmutable() },
-                sort.map { it.toImmutable() },
+                (filter ?: JsonMissing.of()).map { it.toImmutable() },
+                (match ?: JsonMissing.of()).map { it.toImmutable() },
+                (sort ?: JsonMissing.of()).map { it.toImmutable() },
+                (tag ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }
@@ -135,15 +212,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewDataSearch && filter == other.filter && tag == other.tag && match == other.match && sort == other.sort && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ViewDataSearch && filter == other.filter && match == other.match && sort == other.sort && tag == other.tag && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(filter, tag, match, sort, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(filter, match, sort, tag, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ViewDataSearch{filter=$filter, tag=$tag, match=$match, sort=$sort, additionalProperties=$additionalProperties}"
+        "ViewDataSearch{filter=$filter, match=$match, sort=$sort, tag=$tag, additionalProperties=$additionalProperties}"
 }

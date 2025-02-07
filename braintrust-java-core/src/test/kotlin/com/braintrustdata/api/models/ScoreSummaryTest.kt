@@ -11,17 +11,17 @@ class ScoreSummaryTest {
     fun createScoreSummary() {
         val scoreSummary =
             ScoreSummary.builder()
-                .improvements(123L)
+                .improvements(0L)
                 .name("name")
-                .regressions(123L)
-                .score(1.0)
-                .diff(1.0)
+                .regressions(0L)
+                .score(0.0)
+                .diff(-1.0)
                 .build()
         assertThat(scoreSummary).isNotNull
-        assertThat(scoreSummary.improvements()).isEqualTo(123L)
+        assertThat(scoreSummary.improvements()).isEqualTo(0L)
         assertThat(scoreSummary.name()).isEqualTo("name")
-        assertThat(scoreSummary.regressions()).isEqualTo(123L)
-        assertThat(scoreSummary.score()).isEqualTo(1.0)
-        assertThat(scoreSummary.diff()).contains(1.0)
+        assertThat(scoreSummary.regressions()).isEqualTo(0L)
+        assertThat(scoreSummary.score()).isEqualTo(0.0)
+        assertThat(scoreSummary.diff()).contains(-1.0)
     }
 }

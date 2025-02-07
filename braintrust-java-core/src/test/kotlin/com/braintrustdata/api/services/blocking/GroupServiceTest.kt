@@ -4,8 +4,12 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.models.GroupCreateParams
+import com.braintrustdata.api.models.GroupDeleteParams
 import com.braintrustdata.api.models.GroupListParams
+import com.braintrustdata.api.models.GroupReplaceParams
+import com.braintrustdata.api.models.GroupRetrieveParams
+import com.braintrustdata.api.models.GroupUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -25,8 +29,8 @@ class GroupServiceTest {
                 GroupCreateParams.builder()
                     .name("x")
                     .description("description")
-                    .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                    .addMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .addMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .orgName("org_name")
                     .build()
             )
@@ -64,12 +68,12 @@ class GroupServiceTest {
             groupService.update(
                 GroupUpdateParams.builder()
                     .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .addMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .addMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                    .addAddMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .addAddMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .description("description")
                     .name("x")
-                    .removeMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .removeMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                    .addRemoveMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .addRemoveMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
         println(group)
@@ -118,8 +122,8 @@ class GroupServiceTest {
                 GroupReplaceParams.builder()
                     .name("x")
                     .description("description")
-                    .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                    .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                    .addMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .addMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .orgName("org_name")
                     .build()
             )

@@ -13,21 +13,15 @@ class CodeBundleTest {
             CodeBundle.builder()
                 .bundleId("bundle_id")
                 .location(
-                    CodeBundle.Location.ofExperiment(
-                        CodeBundle.Location.Experiment.builder()
-                            .evalName("eval_name")
-                            .position(
-                                CodeBundle.Location.Experiment.Position.ofType(
-                                    CodeBundle.Location.Experiment.Position.Type.builder()
-                                        .type(
-                                            CodeBundle.Location.Experiment.Position.Type.Type.TASK
-                                        )
-                                        .build()
-                                )
-                            )
-                            .type(CodeBundle.Location.Experiment.Type.EXPERIMENT)
-                            .build()
-                    )
+                    CodeBundle.Location.Experiment.builder()
+                        .evalName("eval_name")
+                        .position(
+                            CodeBundle.Location.Experiment.Position.Type.builder()
+                                .type(CodeBundle.Location.Experiment.Position.Type.InnerType.TASK)
+                                .build()
+                        )
+                        .type(CodeBundle.Location.Experiment.Type.EXPERIMENT)
+                        .build()
                 )
                 .runtimeContext(
                     CodeBundle.RuntimeContext.builder()
@@ -45,11 +39,9 @@ class CodeBundleTest {
                     CodeBundle.Location.Experiment.builder()
                         .evalName("eval_name")
                         .position(
-                            CodeBundle.Location.Experiment.Position.ofType(
-                                CodeBundle.Location.Experiment.Position.Type.builder()
-                                    .type(CodeBundle.Location.Experiment.Position.Type.Type.TASK)
-                                    .build()
-                            )
+                            CodeBundle.Location.Experiment.Position.Type.builder()
+                                .type(CodeBundle.Location.Experiment.Position.Type.InnerType.TASK)
+                                .build()
                         )
                         .type(CodeBundle.Location.Experiment.Type.EXPERIMENT)
                         .build()

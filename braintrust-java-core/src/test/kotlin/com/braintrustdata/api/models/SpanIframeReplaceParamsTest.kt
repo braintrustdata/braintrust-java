@@ -2,14 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class SpanIframeReplaceParamsTest {
 
     @Test
-    fun createSpanIframeReplaceParams() {
+    fun create() {
         SpanIframeReplaceParams.builder()
             .name("name")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -20,7 +19,7 @@ class SpanIframeReplaceParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SpanIframeReplaceParams.builder()
                 .name("name")
@@ -29,24 +28,24 @@ class SpanIframeReplaceParamsTest {
                 .description("description")
                 .postMessage(true)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.url()).isEqualTo("url")
-        assertThat(body.description()).isEqualTo("description")
-        assertThat(body.postMessage()).isEqualTo(true)
+        assertThat(body.description()).contains("description")
+        assertThat(body.postMessage()).contains(true)
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             SpanIframeReplaceParams.builder()
                 .name("name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .url("url")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

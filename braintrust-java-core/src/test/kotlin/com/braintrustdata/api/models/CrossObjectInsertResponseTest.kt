@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,16 +12,58 @@ class CrossObjectInsertResponseTest {
     fun createCrossObjectInsertResponse() {
         val crossObjectInsertResponse =
             CrossObjectInsertResponse.builder()
-                .dataset(CrossObjectInsertResponse.Dataset.builder().build())
-                .experiment(CrossObjectInsertResponse.Experiment.builder().build())
-                .projectLogs(CrossObjectInsertResponse.ProjectLogs.builder().build())
+                .dataset(
+                    CrossObjectInsertResponse.Dataset.builder()
+                        .putAdditionalProperty(
+                            "foo",
+                            JsonValue.from(mapOf("row_ids" to listOf("string")))
+                        )
+                        .build()
+                )
+                .experiment(
+                    CrossObjectInsertResponse.Experiment.builder()
+                        .putAdditionalProperty(
+                            "foo",
+                            JsonValue.from(mapOf("row_ids" to listOf("string")))
+                        )
+                        .build()
+                )
+                .projectLogs(
+                    CrossObjectInsertResponse.ProjectLogs.builder()
+                        .putAdditionalProperty(
+                            "foo",
+                            JsonValue.from(mapOf("row_ids" to listOf("string")))
+                        )
+                        .build()
+                )
                 .build()
         assertThat(crossObjectInsertResponse).isNotNull
         assertThat(crossObjectInsertResponse.dataset())
-            .contains(CrossObjectInsertResponse.Dataset.builder().build())
+            .contains(
+                CrossObjectInsertResponse.Dataset.builder()
+                    .putAdditionalProperty(
+                        "foo",
+                        JsonValue.from(mapOf("row_ids" to listOf("string")))
+                    )
+                    .build()
+            )
         assertThat(crossObjectInsertResponse.experiment())
-            .contains(CrossObjectInsertResponse.Experiment.builder().build())
+            .contains(
+                CrossObjectInsertResponse.Experiment.builder()
+                    .putAdditionalProperty(
+                        "foo",
+                        JsonValue.from(mapOf("row_ids" to listOf("string")))
+                    )
+                    .build()
+            )
         assertThat(crossObjectInsertResponse.projectLogs())
-            .contains(CrossObjectInsertResponse.ProjectLogs.builder().build())
+            .contains(
+                CrossObjectInsertResponse.ProjectLogs.builder()
+                    .putAdditionalProperty(
+                        "foo",
+                        JsonValue.from(mapOf("row_ids" to listOf("string")))
+                    )
+                    .build()
+            )
     }
 }

@@ -4,38 +4,41 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonCreator
 import java.util.Objects
 
+/** Get a view object by its id */
 class ViewRetrieveParams
-constructor(
+private constructor(
     private val viewId: String,
     private val objectId: String,
     private val objectType: ObjectType,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** View id */
     fun viewId(): String = viewId
 
+    /** The id of the object the ACL applies to */
     fun objectId(): String = objectId
 
+    /** The object type that the ACL applies to */
     fun objectType(): ObjectType = objectType
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.objectId.let { queryParams.put("object_id", listOf(it.toString())) }
         this.objectType.let { queryParams.put("object_type", listOf(it.toString())) }
@@ -57,8 +60,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ViewRetrieveParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var viewId: String? = null
         private var objectId: String? = null
@@ -184,61 +188,59 @@ constructor(
 
         fun build(): ViewRetrieveParams =
             ViewRetrieveParams(
-                checkNotNull(viewId) { "`viewId` is required but was not set" },
-                checkNotNull(objectId) { "`objectId` is required but was not set" },
-                checkNotNull(objectType) { "`objectType` is required but was not set" },
+                checkRequired("viewId", viewId),
+                checkRequired("objectId", objectId),
+                checkRequired("objectType", objectType),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
 
+    /** The object type that the ACL applies to */
     class ObjectType
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
 
         companion object {
 
-            @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+            @JvmField val ORGANIZATION = of("organization")
 
-            @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+            @JvmField val PROJECT = of("project")
 
-            @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+            @JvmField val EXPERIMENT = of("experiment")
 
-            @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+            @JvmField val DATASET = of("dataset")
 
-            @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+            @JvmField val PROMPT = of("prompt")
 
-            @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+            @JvmField val PROMPT_SESSION = of("prompt_session")
 
-            @JvmField val GROUP = ObjectType(JsonField.of("group"))
+            @JvmField val GROUP = of("group")
 
-            @JvmField val ROLE = ObjectType(JsonField.of("role"))
+            @JvmField val ROLE = of("role")
 
-            @JvmField val ORG_MEMBER = ObjectType(JsonField.of("org_member"))
+            @JvmField val ORG_MEMBER = of("org_member")
 
-            @JvmField val PROJECT_LOG = ObjectType(JsonField.of("project_log"))
+            @JvmField val PROJECT_LOG = of("project_log")
 
-            @JvmField val ORG_PROJECT = ObjectType(JsonField.of("org_project"))
+            @JvmField val ORG_PROJECT = of("org_project")
 
             @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
         }
 
+        /** An enum containing [ObjectType]'s known values. */
         enum class Known {
             ORGANIZATION,
             PROJECT,
@@ -253,6 +255,15 @@ constructor(
             ORG_PROJECT,
         }
 
+        /**
+         * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ObjectType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             ORGANIZATION,
             PROJECT,
@@ -265,9 +276,19 @@ constructor(
             ORG_MEMBER,
             PROJECT_LOG,
             ORG_PROJECT,
+            /**
+             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 ORGANIZATION -> Value.ORGANIZATION
@@ -284,6 +305,15 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
         fun known(): Known =
             when (this) {
                 ORGANIZATION -> Known.ORGANIZATION
@@ -301,6 +331,18 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

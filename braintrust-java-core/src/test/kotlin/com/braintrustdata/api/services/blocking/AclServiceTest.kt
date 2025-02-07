@@ -4,8 +4,12 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.models.AclBatchUpdateParams
+import com.braintrustdata.api.models.AclCreateParams
+import com.braintrustdata.api.models.AclDeleteParams
+import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListParams
+import com.braintrustdata.api.models.AclRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -98,35 +102,31 @@ class AclServiceTest {
         val aclBatchUpdateResponse =
             aclService.batchUpdate(
                 AclBatchUpdateParams.builder()
-                    .addAcls(
-                        listOf(
-                            AclBatchUpdateParams.AddAcl.builder()
-                                .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .objectType(AclBatchUpdateParams.AddAcl.ObjectType.ORGANIZATION)
-                                .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .permission(AclBatchUpdateParams.AddAcl.Permission.CREATE)
-                                .restrictObjectType(
-                                    AclBatchUpdateParams.AddAcl.RestrictObjectType.ORGANIZATION
-                                )
-                                .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .build()
-                        )
+                    .addAddAcl(
+                        AclBatchUpdateParams.AddAcl.builder()
+                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .objectType(AclBatchUpdateParams.AddAcl.ObjectType.ORGANIZATION)
+                            .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .permission(AclBatchUpdateParams.AddAcl.Permission.CREATE)
+                            .restrictObjectType(
+                                AclBatchUpdateParams.AddAcl.RestrictObjectType.ORGANIZATION
+                            )
+                            .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .build()
                     )
-                    .removeAcls(
-                        listOf(
-                            AclBatchUpdateParams.RemoveAcl.builder()
-                                .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .objectType(AclBatchUpdateParams.RemoveAcl.ObjectType.ORGANIZATION)
-                                .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .permission(AclBatchUpdateParams.RemoveAcl.Permission.CREATE)
-                                .restrictObjectType(
-                                    AclBatchUpdateParams.RemoveAcl.RestrictObjectType.ORGANIZATION
-                                )
-                                .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                                .build()
-                        )
+                    .addRemoveAcl(
+                        AclBatchUpdateParams.RemoveAcl.builder()
+                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .objectType(AclBatchUpdateParams.RemoveAcl.ObjectType.ORGANIZATION)
+                            .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .permission(AclBatchUpdateParams.RemoveAcl.Permission.CREATE)
+                            .restrictObjectType(
+                                AclBatchUpdateParams.RemoveAcl.RestrictObjectType.ORGANIZATION
+                            )
+                            .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .build()
                     )
                     .build()
             )

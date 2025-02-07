@@ -3,45 +3,51 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 
+/** Insert a set of events into the project logs */
 class ProjectLogInsertParams
-constructor(
+private constructor(
     private val projectId: String,
-    private val events: List<InsertProjectLogsEvent>,
+    private val body: ProjectLogInsertBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** Project id */
     fun projectId(): String = projectId
 
-    fun events(): List<InsertProjectLogsEvent> = events
+    /** A list of project logs events to insert */
+    fun events(): List<InsertProjectLogsEvent> = body.events()
+
+    /** A list of project logs events to insert */
+    fun _events(): JsonField<List<InsertProjectLogsEvent>> = body._events()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): ProjectLogInsertBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): ProjectLogInsertBody {
-        return ProjectLogInsertBody(events, additionalBodyProperties)
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -50,20 +56,39 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = ProjectLogInsertBody.Builder::class)
     @NoAutoDetect
     class ProjectLogInsertBody
+    @JsonCreator
     internal constructor(
-        private val events: List<InsertProjectLogsEvent>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("events")
+        @ExcludeMissing
+        private val events: JsonField<List<InsertProjectLogsEvent>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A list of project logs events to insert */
-        @JsonProperty("events") fun events(): List<InsertProjectLogsEvent>? = events
+        fun events(): List<InsertProjectLogsEvent> = events.getRequired("events")
+
+        /** A list of project logs events to insert */
+        @JsonProperty("events")
+        @ExcludeMissing
+        fun _events(): JsonField<List<InsertProjectLogsEvent>> = events
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ProjectLogInsertBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            events().forEach { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -72,38 +97,62 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ProjectLogInsertBody]. */
+        class Builder internal constructor() {
 
-            private var events: List<InsertProjectLogsEvent>? = null
+            private var events: JsonField<MutableList<InsertProjectLogsEvent>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(projectLogInsertBody: ProjectLogInsertBody) = apply {
-                this.events = projectLogInsertBody.events
-                additionalProperties(projectLogInsertBody.additionalProperties)
+                events = projectLogInsertBody.events.map { it.toMutableList() }
+                additionalProperties = projectLogInsertBody.additionalProperties.toMutableMap()
             }
 
             /** A list of project logs events to insert */
-            @JsonProperty("events")
-            fun events(events: List<InsertProjectLogsEvent>) = apply { this.events = events }
+            fun events(events: List<InsertProjectLogsEvent>) = events(JsonField.of(events))
+
+            /** A list of project logs events to insert */
+            fun events(events: JsonField<List<InsertProjectLogsEvent>>) = apply {
+                this.events = events.map { it.toMutableList() }
+            }
+
+            /** A list of project logs events to insert */
+            fun addEvent(event: InsertProjectLogsEvent) = apply {
+                events =
+                    (events ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(event)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): ProjectLogInsertBody =
                 ProjectLogInsertBody(
-                    checkNotNull(events) { "`events` is required but was not set" }.toImmutable(),
+                    checkRequired("events", events).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -133,36 +182,53 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ProjectLogInsertParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
-        private var events: MutableList<InsertProjectLogsEvent> = mutableListOf()
+        private var body: ProjectLogInsertBody.Builder = ProjectLogInsertBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectLogInsertParams: ProjectLogInsertParams) = apply {
             projectId = projectLogInsertParams.projectId
-            events = projectLogInsertParams.events.toMutableList()
+            body = projectLogInsertParams.body.toBuilder()
             additionalHeaders = projectLogInsertParams.additionalHeaders.toBuilder()
             additionalQueryParams = projectLogInsertParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                projectLogInsertParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Project id */
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
         /** A list of project logs events to insert */
-        fun events(events: List<InsertProjectLogsEvent>) = apply {
-            this.events.clear()
-            this.events.addAll(events)
-        }
+        fun events(events: List<InsertProjectLogsEvent>) = apply { body.events(events) }
 
         /** A list of project logs events to insert */
-        fun addEvent(event: InsertProjectLogsEvent) = apply { this.events.add(event) }
+        fun events(events: JsonField<List<InsertProjectLogsEvent>>) = apply { body.events(events) }
+
+        /** A list of project logs events to insert */
+        fun addEvent(event: InsertProjectLogsEvent) = apply { body.addEvent(event) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -262,35 +328,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ProjectLogInsertParams =
             ProjectLogInsertParams(
-                checkNotNull(projectId) { "`projectId` is required but was not set" },
-                events.toImmutable(),
+                checkRequired("projectId", projectId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -299,11 +342,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectLogInsertParams && projectId == other.projectId && events == other.events && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectLogInsertParams && projectId == other.projectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, events, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ProjectLogInsertParams{projectId=$projectId, events=$events, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectLogInsertParams{projectId=$projectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
