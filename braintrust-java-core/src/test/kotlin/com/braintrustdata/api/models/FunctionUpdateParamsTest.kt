@@ -25,9 +25,36 @@ class FunctionUpdateParamsTest {
                         PromptOptions.builder()
                             .model("model")
                             .params(
-                                PromptOptions.Params.AnthropicModelParams.builder()
+                                PromptOptions.Params.OpenAIModelParams.builder()
+                                    .frequencyPenalty(0.0)
+                                    .functionCall(
+                                        PromptOptions.Params.OpenAIModelParams.FunctionCall
+                                            .UnionMember0
+                                            .AUTO
+                                    )
                                     .maxTokens(0.0)
+                                    .n(0.0)
+                                    .presencePenalty(0.0)
+                                    .responseFormat(
+                                        PromptOptions.Params.OpenAIModelParams.ResponseFormat
+                                            .JsonObject
+                                            .builder()
+                                            .type(
+                                                PromptOptions.Params.OpenAIModelParams
+                                                    .ResponseFormat
+                                                    .JsonObject
+                                                    .Type
+                                                    .JSON_OBJECT
+                                            )
+                                            .build()
+                                    )
+                                    .addStop("string")
                                     .temperature(0.0)
+                                    .toolChoice(
+                                        PromptOptions.Params.OpenAIModelParams.ToolChoice
+                                            .UnionMember0
+                                            .AUTO
+                                    )
                                     .topP(0.0)
                                     .useCache(true)
                                     .build()
@@ -89,9 +116,36 @@ class FunctionUpdateParamsTest {
                             PromptOptions.builder()
                                 .model("model")
                                 .params(
-                                    PromptOptions.Params.AnthropicModelParams.builder()
+                                    PromptOptions.Params.OpenAIModelParams.builder()
+                                        .frequencyPenalty(0.0)
+                                        .functionCall(
+                                            PromptOptions.Params.OpenAIModelParams.FunctionCall
+                                                .UnionMember0
+                                                .AUTO
+                                        )
                                         .maxTokens(0.0)
+                                        .n(0.0)
+                                        .presencePenalty(0.0)
+                                        .responseFormat(
+                                            PromptOptions.Params.OpenAIModelParams.ResponseFormat
+                                                .JsonObject
+                                                .builder()
+                                                .type(
+                                                    PromptOptions.Params.OpenAIModelParams
+                                                        .ResponseFormat
+                                                        .JsonObject
+                                                        .Type
+                                                        .JSON_OBJECT
+                                                )
+                                                .build()
+                                        )
+                                        .addStop("string")
                                         .temperature(0.0)
+                                        .toolChoice(
+                                            PromptOptions.Params.OpenAIModelParams.ToolChoice
+                                                .UnionMember0
+                                                .AUTO
+                                        )
                                         .topP(0.0)
                                         .useCache(true)
                                         .build()
@@ -152,9 +206,36 @@ class FunctionUpdateParamsTest {
                         PromptOptions.builder()
                             .model("model")
                             .params(
-                                PromptOptions.Params.AnthropicModelParams.builder()
+                                PromptOptions.Params.OpenAIModelParams.builder()
+                                    .frequencyPenalty(0.0)
+                                    .functionCall(
+                                        PromptOptions.Params.OpenAIModelParams.FunctionCall
+                                            .UnionMember0
+                                            .AUTO
+                                    )
                                     .maxTokens(0.0)
+                                    .n(0.0)
+                                    .presencePenalty(0.0)
+                                    .responseFormat(
+                                        PromptOptions.Params.OpenAIModelParams.ResponseFormat
+                                            .JsonObject
+                                            .builder()
+                                            .type(
+                                                PromptOptions.Params.OpenAIModelParams
+                                                    .ResponseFormat
+                                                    .JsonObject
+                                                    .Type
+                                                    .JSON_OBJECT
+                                            )
+                                            .build()
+                                    )
+                                    .addStop("string")
                                     .temperature(0.0)
+                                    .toolChoice(
+                                        PromptOptions.Params.OpenAIModelParams.ToolChoice
+                                            .UnionMember0
+                                            .AUTO
+                                    )
                                     .topP(0.0)
                                     .useCache(true)
                                     .build()
