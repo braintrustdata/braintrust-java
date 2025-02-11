@@ -2,14 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ProjectUpdateParamsTest {
 
     @Test
-    fun createProjectUpdateParams() {
+    fun create() {
         ProjectUpdateParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .name("name")
@@ -18,25 +17,25 @@ class ProjectUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ProjectUpdateParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
                 .settings(ProjectSettings.builder().comparisonKey("comparison_key").build())
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).contains("name")
         assertThat(body.settings())
-            .isEqualTo(ProjectSettings.builder().comparisonKey("comparison_key").build())
+            .contains(ProjectSettings.builder().comparisonKey("comparison_key").build())
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ProjectUpdateParams.builder().projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

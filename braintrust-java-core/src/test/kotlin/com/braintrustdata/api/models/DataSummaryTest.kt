@@ -9,8 +9,8 @@ class DataSummaryTest {
 
     @Test
     fun createDataSummary() {
-        val dataSummary = DataSummary.builder().totalRecords(123L).build()
+        val dataSummary = DataSummary.builder().totalRecords(0L).build()
         assertThat(dataSummary).isNotNull
-        assertThat(dataSummary.totalRecords()).isEqualTo(123L)
+        assertThat(dataSummary.totalRecords()).isEqualTo(0L)
     }
 }

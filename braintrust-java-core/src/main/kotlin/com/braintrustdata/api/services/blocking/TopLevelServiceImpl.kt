@@ -10,11 +10,12 @@ import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
+import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.TopLevelHelloWorldParams
 
 class TopLevelServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : TopLevelService {
 
@@ -31,13 +32,9 @@ constructor(
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("v1")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response.use { helloWorldHandler.handle(it) }
-        }
+                .prepare(clientOptions, params)
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response.use { helloWorldHandler.handle(it) }
     }
 }

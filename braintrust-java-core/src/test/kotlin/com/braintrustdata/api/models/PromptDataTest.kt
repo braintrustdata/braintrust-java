@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -15,47 +16,12 @@ class PromptDataTest {
                     PromptOptions.builder()
                         .model("model")
                         .params(
-                            PromptOptions.Params.ofOpenAIModelParams(
-                                PromptOptions.Params.OpenAIModelParams.builder()
-                                    .frequencyPenalty(42.23)
-                                    .functionCall(
-                                        PromptOptions.Params.OpenAIModelParams.FunctionCall.ofAuto(
-                                            PromptOptions.Params.OpenAIModelParams.FunctionCall.Auto
-                                                .AUTO
-                                        )
-                                    )
-                                    .maxTokens(42.23)
-                                    .n(42.23)
-                                    .presencePenalty(42.23)
-                                    .responseFormat(
-                                        PromptOptions.Params.OpenAIModelParams.ResponseFormat
-                                            .ofJsonObject(
-                                                PromptOptions.Params.OpenAIModelParams
-                                                    .ResponseFormat
-                                                    .JsonObject
-                                                    .builder()
-                                                    .type(
-                                                        PromptOptions.Params.OpenAIModelParams
-                                                            .ResponseFormat
-                                                            .JsonObject
-                                                            .Type
-                                                            .JSON_OBJECT
-                                                    )
-                                                    .build()
-                                            )
-                                    )
-                                    .stop(listOf("string"))
-                                    .temperature(42.23)
-                                    .toolChoice(
-                                        PromptOptions.Params.OpenAIModelParams.ToolChoice.ofAuto(
-                                            PromptOptions.Params.OpenAIModelParams.ToolChoice.Auto
-                                                .AUTO
-                                        )
-                                    )
-                                    .topP(42.23)
-                                    .useCache(true)
-                                    .build()
-                            )
+                            PromptOptions.Params.AnthropicModelParams.builder()
+                                .maxTokens(0.0)
+                                .temperature(0.0)
+                                .topP(0.0)
+                                .useCache(true)
+                                .build()
                         )
                         .position("position")
                         .build()
@@ -69,28 +35,26 @@ class PromptDataTest {
                 )
                 .parser(
                     PromptData.Parser.builder()
-                        .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                        .choiceScores(
+                            PromptData.Parser.ChoiceScores.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
                         .type(PromptData.Parser.Type.LLM_CLASSIFIER)
                         .useCot(true)
                         .build()
                 )
                 .prompt(
-                    PromptData.Prompt.ofCompletion(
-                        PromptData.Prompt.Completion.builder()
-                            .content("content")
-                            .type(PromptData.Prompt.Completion.Type.COMPLETION)
-                            .build()
-                    )
+                    PromptData.Prompt.Completion.builder()
+                        .content("content")
+                        .type(PromptData.Prompt.Completion.Type.COMPLETION)
+                        .build()
                 )
-                .toolFunctions(
-                    listOf(
-                        PromptData.ToolFunction.ofFunction(
-                            PromptData.ToolFunction.Function.builder()
-                                .id("id")
-                                .type(PromptData.ToolFunction.Function.Type.FUNCTION)
-                                .build()
-                        )
-                    )
+                .addToolFunction(
+                    PromptData.ToolFunction.Function.builder()
+                        .id("id")
+                        .type(PromptData.ToolFunction.Function.Type.FUNCTION)
+                        .build()
                 )
                 .build()
         assertThat(promptData).isNotNull
@@ -99,45 +63,12 @@ class PromptDataTest {
                 PromptOptions.builder()
                     .model("model")
                     .params(
-                        PromptOptions.Params.ofOpenAIModelParams(
-                            PromptOptions.Params.OpenAIModelParams.builder()
-                                .frequencyPenalty(42.23)
-                                .functionCall(
-                                    PromptOptions.Params.OpenAIModelParams.FunctionCall.ofAuto(
-                                        PromptOptions.Params.OpenAIModelParams.FunctionCall.Auto
-                                            .AUTO
-                                    )
-                                )
-                                .maxTokens(42.23)
-                                .n(42.23)
-                                .presencePenalty(42.23)
-                                .responseFormat(
-                                    PromptOptions.Params.OpenAIModelParams.ResponseFormat
-                                        .ofJsonObject(
-                                            PromptOptions.Params.OpenAIModelParams.ResponseFormat
-                                                .JsonObject
-                                                .builder()
-                                                .type(
-                                                    PromptOptions.Params.OpenAIModelParams
-                                                        .ResponseFormat
-                                                        .JsonObject
-                                                        .Type
-                                                        .JSON_OBJECT
-                                                )
-                                                .build()
-                                        )
-                                )
-                                .stop(listOf("string"))
-                                .temperature(42.23)
-                                .toolChoice(
-                                    PromptOptions.Params.OpenAIModelParams.ToolChoice.ofAuto(
-                                        PromptOptions.Params.OpenAIModelParams.ToolChoice.Auto.AUTO
-                                    )
-                                )
-                                .topP(42.23)
-                                .useCache(true)
-                                .build()
-                        )
+                        PromptOptions.Params.AnthropicModelParams.builder()
+                            .maxTokens(0.0)
+                            .temperature(0.0)
+                            .topP(0.0)
+                            .useCache(true)
+                            .build()
                     )
                     .position("position")
                     .build()
@@ -153,7 +84,11 @@ class PromptDataTest {
         assertThat(promptData.parser())
             .contains(
                 PromptData.Parser.builder()
-                    .choiceScores(PromptData.Parser.ChoiceScores.builder().build())
+                    .choiceScores(
+                        PromptData.Parser.ChoiceScores.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
                     .type(PromptData.Parser.Type.LLM_CLASSIFIER)
                     .useCot(true)
                     .build()

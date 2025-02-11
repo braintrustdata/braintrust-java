@@ -7,23 +7,27 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 
-@JsonDeserialize(builder = AclBatchUpdateResponse.Builder::class)
 @NoAutoDetect
 class AclBatchUpdateResponse
+@JsonCreator
 private constructor(
-    private val addedAcls: JsonField<List<Acl>>,
-    private val removedAcls: JsonField<List<Acl>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("added_acls")
+    @ExcludeMissing
+    private val addedAcls: JsonField<List<Acl>> = JsonMissing.of(),
+    @JsonProperty("removed_acls")
+    @ExcludeMissing
+    private val removedAcls: JsonField<List<Acl>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /**
      * An ACL grants a certain permission or role to a certain user or group on an object.
@@ -59,7 +63,7 @@ private constructor(
      * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
      * ACL, as part of a direct permission grant or as part of a role.
      */
-    @JsonProperty("added_acls") @ExcludeMissing fun _addedAcls() = addedAcls
+    @JsonProperty("added_acls") @ExcludeMissing fun _addedAcls(): JsonField<List<Acl>> = addedAcls
 
     /**
      * An ACL grants a certain permission or role to a certain user or group on an object.
@@ -71,18 +75,24 @@ private constructor(
      * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
      * ACL, as part of a direct permission grant or as part of a role.
      */
-    @JsonProperty("removed_acls") @ExcludeMissing fun _removedAcls() = removedAcls
+    @JsonProperty("removed_acls")
+    @ExcludeMissing
+    fun _removedAcls(): JsonField<List<Acl>> = removedAcls
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): AclBatchUpdateResponse = apply {
-        if (!validated) {
-            addedAcls().forEach { it.validate() }
-            removedAcls().forEach { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        addedAcls().forEach { it.validate() }
+        removedAcls().forEach { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -92,17 +102,18 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [AclBatchUpdateResponse]. */
+    class Builder internal constructor() {
 
-        private var addedAcls: JsonField<List<Acl>> = JsonMissing.of()
-        private var removedAcls: JsonField<List<Acl>> = JsonMissing.of()
+        private var addedAcls: JsonField<MutableList<Acl>>? = null
+        private var removedAcls: JsonField<MutableList<Acl>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(aclBatchUpdateResponse: AclBatchUpdateResponse) = apply {
-            this.addedAcls = aclBatchUpdateResponse.addedAcls
-            this.removedAcls = aclBatchUpdateResponse.removedAcls
-            additionalProperties(aclBatchUpdateResponse.additionalProperties)
+            addedAcls = aclBatchUpdateResponse.addedAcls.map { it.toMutableList() }
+            removedAcls = aclBatchUpdateResponse.removedAcls.map { it.toMutableList() }
+            additionalProperties = aclBatchUpdateResponse.additionalProperties.toMutableMap()
         }
 
         /**
@@ -127,9 +138,32 @@ private constructor(
          * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
          * the ACL, as part of a direct permission grant or as part of a role.
          */
-        @JsonProperty("added_acls")
-        @ExcludeMissing
-        fun addedAcls(addedAcls: JsonField<List<Acl>>) = apply { this.addedAcls = addedAcls }
+        fun addedAcls(addedAcls: JsonField<List<Acl>>) = apply {
+            this.addedAcls = addedAcls.map { it.toMutableList() }
+        }
+
+        /**
+         * An ACL grants a certain permission or role to a certain user or group on an object.
+         *
+         * ACLs are inherited across the object hierarchy. So for example, if a user has read
+         * permissions on a project, they will also have read permissions on any experiment,
+         * dataset, etc. created within that project.
+         *
+         * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
+         * the ACL, as part of a direct permission grant or as part of a role.
+         */
+        fun addAddedAcl(addedAcl: Acl) = apply {
+            addedAcls =
+                (addedAcls ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(addedAcl)
+                }
+        }
 
         /**
          * An ACL grants a certain permission or role to a certain user or group on an object.
@@ -153,30 +187,56 @@ private constructor(
          * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
          * the ACL, as part of a direct permission grant or as part of a role.
          */
-        @JsonProperty("removed_acls")
-        @ExcludeMissing
         fun removedAcls(removedAcls: JsonField<List<Acl>>) = apply {
-            this.removedAcls = removedAcls
+            this.removedAcls = removedAcls.map { it.toMutableList() }
+        }
+
+        /**
+         * An ACL grants a certain permission or role to a certain user or group on an object.
+         *
+         * ACLs are inherited across the object hierarchy. So for example, if a user has read
+         * permissions on a project, they will also have read permissions on any experiment,
+         * dataset, etc. created within that project.
+         *
+         * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
+         * the ACL, as part of a direct permission grant or as part of a role.
+         */
+        fun addRemovedAcl(removedAcl: Acl) = apply {
+            removedAcls =
+                (removedAcls ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(removedAcl)
+                }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): AclBatchUpdateResponse =
             AclBatchUpdateResponse(
-                addedAcls.map { it.toImmutable() },
-                removedAcls.map { it.toImmutable() },
+                checkRequired("addedAcls", addedAcls).map { it.toImmutable() },
+                checkRequired("removedAcls", removedAcls).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }

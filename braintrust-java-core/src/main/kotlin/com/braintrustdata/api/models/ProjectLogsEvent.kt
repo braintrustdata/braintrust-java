@@ -8,46 +8,73 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = ProjectLogsEvent.Builder::class)
 @NoAutoDetect
 class ProjectLogsEvent
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val _xactId: JsonField<String>,
-    private val created: JsonField<OffsetDateTime>,
-    private val orgId: JsonField<String>,
-    private val projectId: JsonField<String>,
-    private val logId: JsonField<LogId>,
-    private val input: JsonValue,
-    private val output: JsonValue,
-    private val expected: JsonValue,
-    private val error: JsonValue,
-    private val scores: JsonField<Scores>,
-    private val metadata: JsonField<Metadata>,
-    private val tags: JsonField<List<String>>,
-    private val metrics: JsonField<Metrics>,
-    private val context: JsonField<Context>,
-    private val spanId: JsonField<String>,
-    private val spanParents: JsonField<List<String>>,
-    private val rootSpanId: JsonField<String>,
-    private val isRoot: JsonField<Boolean>,
-    private val spanAttributes: JsonField<SpanAttributes>,
-    private val origin: JsonField<Origin>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("_xact_id")
+    @ExcludeMissing
+    private val _xactId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("created")
+    @ExcludeMissing
+    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("log_id") @ExcludeMissing private val logId: JsonField<LogId> = JsonMissing.of(),
+    @JsonProperty("org_id") @ExcludeMissing private val orgId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("project_id")
+    @ExcludeMissing
+    private val projectId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("root_span_id")
+    @ExcludeMissing
+    private val rootSpanId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("span_id")
+    @ExcludeMissing
+    private val spanId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("context")
+    @ExcludeMissing
+    private val context: JsonField<Context> = JsonMissing.of(),
+    @JsonProperty("error") @ExcludeMissing private val error: JsonValue = JsonMissing.of(),
+    @JsonProperty("expected") @ExcludeMissing private val expected: JsonValue = JsonMissing.of(),
+    @JsonProperty("input") @ExcludeMissing private val input: JsonValue = JsonMissing.of(),
+    @JsonProperty("is_root")
+    @ExcludeMissing
+    private val isRoot: JsonField<Boolean> = JsonMissing.of(),
+    @JsonProperty("metadata")
+    @ExcludeMissing
+    private val metadata: JsonField<Metadata> = JsonMissing.of(),
+    @JsonProperty("metrics")
+    @ExcludeMissing
+    private val metrics: JsonField<Metrics> = JsonMissing.of(),
+    @JsonProperty("origin")
+    @ExcludeMissing
+    private val origin: JsonField<Origin> = JsonMissing.of(),
+    @JsonProperty("output") @ExcludeMissing private val output: JsonValue = JsonMissing.of(),
+    @JsonProperty("scores")
+    @ExcludeMissing
+    private val scores: JsonField<Scores> = JsonMissing.of(),
+    @JsonProperty("span_attributes")
+    @ExcludeMissing
+    private val spanAttributes: JsonField<SpanAttributes> = JsonMissing.of(),
+    @JsonProperty("span_parents")
+    @ExcludeMissing
+    private val spanParents: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("tags")
+    @ExcludeMissing
+    private val tags: JsonField<List<String>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /**
      * A unique identifier for the project logs event. If you don't provide one, BrainTrust will
@@ -65,26 +92,34 @@ private constructor(
     /** The timestamp the project logs event was created */
     fun created(): OffsetDateTime = created.getRequired("created")
 
+    /** A literal 'g' which identifies the log as a project log */
+    fun logId(): LogId = logId.getRequired("log_id")
+
     /** Unique id for the organization that the project belongs under */
     fun orgId(): String = orgId.getRequired("org_id")
 
     /** Unique identifier for the project */
     fun projectId(): String = projectId.getRequired("project_id")
 
-    /** A literal 'g' which identifies the log as a project log */
-    fun logId(): LogId = logId.getRequired("log_id")
-
-    /** The arguments that uniquely define a user input (an arbitrary, JSON serializable object). */
-    fun input(): JsonValue = input
+    /** A unique identifier for the trace this project logs event belongs to */
+    fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
 
     /**
-     * The output of your application, including post-processing (an arbitrary, JSON serializable
-     * object), that allows you to determine whether the result is correct or not. For example, in
-     * an app that generates SQL queries, the `output` should be the _result_ of the SQL query
-     * generated by the model, not the query itself, because there may be multiple valid queries
-     * that answer a single question.
+     * A unique identifier used to link different project logs events together as part of a full
+     * trace. See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full
+     * details on tracing
      */
-    fun output(): JsonValue = output
+    fun spanId(): String = spanId.getRequired("span_id")
+
+    /**
+     * Context is additional information about the code that produced the project logs event. It is
+     * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
+     * location in code which produced the project logs event
+     */
+    fun context(): Optional<Context> = Optional.ofNullable(context.getNullable("context"))
+
+    /** The error that occurred, if any. */
+    @JsonProperty("error") @ExcludeMissing fun _error(): JsonValue = error
 
     /**
      * The ground truth value (an arbitrary, JSON serializable object) that you'd compare to
@@ -94,10 +129,41 @@ private constructor(
      * analyses. However, we may later use these values to re-score outputs or fine-tune your
      * models.
      */
-    fun expected(): JsonValue = expected
+    @JsonProperty("expected") @ExcludeMissing fun _expected(): JsonValue = expected
 
-    /** The error that occurred, if any. */
-    fun error(): JsonValue = error
+    /** The arguments that uniquely define a user input (an arbitrary, JSON serializable object). */
+    @JsonProperty("input") @ExcludeMissing fun _input(): JsonValue = input
+
+    /** Whether this span is a root span */
+    fun isRoot(): Optional<Boolean> = Optional.ofNullable(isRoot.getNullable("is_root"))
+
+    /**
+     * A dictionary with additional data about the test example, model outputs, or just about
+     * anything else that's relevant, that you can use to help find and analyze examples later. For
+     * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
+     * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
+     * must be strings
+     */
+    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+
+    /**
+     * Metrics are numerical measurements tracking the execution of the code that produced the
+     * project logs event. Use "start" and "end" to track the time span over which the project logs
+     * event was produced
+     */
+    fun metrics(): Optional<Metrics> = Optional.ofNullable(metrics.getNullable("metrics"))
+
+    /** Indicates the event was copied from another object. */
+    fun origin(): Optional<Origin> = Optional.ofNullable(origin.getNullable("origin"))
+
+    /**
+     * The output of your application, including post-processing (an arbitrary, JSON serializable
+     * object), that allows you to determine whether the result is correct or not. For example, in
+     * an app that generates SQL queries, the `output` should be the _result_ of the SQL query
+     * generated by the model, not the query itself, because there may be multiple valid queries
+     * that answer a single question.
+     */
+    @JsonProperty("output") @ExcludeMissing fun _output(): JsonValue = output
 
     /**
      * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a variety
@@ -110,38 +176,9 @@ private constructor(
      */
     fun scores(): Optional<Scores> = Optional.ofNullable(scores.getNullable("scores"))
 
-    /**
-     * A dictionary with additional data about the test example, model outputs, or just about
-     * anything else that's relevant, that you can use to help find and analyze examples later. For
-     * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
-     * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
-     * must be strings
-     */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
-
-    /** A list of tags to log */
-    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
-
-    /**
-     * Metrics are numerical measurements tracking the execution of the code that produced the
-     * project logs event. Use "start" and "end" to track the time span over which the project logs
-     * event was produced
-     */
-    fun metrics(): Optional<Metrics> = Optional.ofNullable(metrics.getNullable("metrics"))
-
-    /**
-     * Context is additional information about the code that produced the project logs event. It is
-     * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
-     * location in code which produced the project logs event
-     */
-    fun context(): Optional<Context> = Optional.ofNullable(context.getNullable("context"))
-
-    /**
-     * A unique identifier used to link different project logs events together as part of a full
-     * trace. See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full
-     * details on tracing
-     */
-    fun spanId(): String = spanId.getRequired("span_id")
+    /** Human-identifying attributes of the span, such as name, type, etc. */
+    fun spanAttributes(): Optional<SpanAttributes> =
+        Optional.ofNullable(spanAttributes.getNullable("span_attributes"))
 
     /**
      * An array of the parent `span_ids` of this project logs event. This should be empty for the
@@ -150,68 +187,72 @@ private constructor(
     fun spanParents(): Optional<List<String>> =
         Optional.ofNullable(spanParents.getNullable("span_parents"))
 
-    /** A unique identifier for the trace this project logs event belongs to */
-    fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
-
-    /** Whether this span is a root span */
-    fun isRoot(): Optional<Boolean> = Optional.ofNullable(isRoot.getNullable("is_root"))
-
-    /** Human-identifying attributes of the span, such as name, type, etc. */
-    fun spanAttributes(): Optional<SpanAttributes> =
-        Optional.ofNullable(spanAttributes.getNullable("span_attributes"))
-
-    /** Indicates the event was copied from another object. */
-    fun origin(): Optional<Origin> = Optional.ofNullable(origin.getNullable("origin"))
+    /** A list of tags to log */
+    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
     /**
      * A unique identifier for the project logs event. If you don't provide one, BrainTrust will
      * generate one for you
      */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
      * The transaction id of an event is unique to the network operation that processed the event
      * insertion. Transaction ids are monotonically increasing over time and can be used to retrieve
      * a versioned snapshot of the project logs (see the `version` parameter)
      */
-    @JsonProperty("_xact_id") @ExcludeMissing fun __xactId() = _xactId
+    @JsonProperty("_xact_id") @ExcludeMissing fun __xactId(): JsonField<String> = _xactId
 
     /** The timestamp the project logs event was created */
-    @JsonProperty("created") @ExcludeMissing fun _created() = created
-
-    /** Unique id for the organization that the project belongs under */
-    @JsonProperty("org_id") @ExcludeMissing fun _orgId() = orgId
-
-    /** Unique identifier for the project */
-    @JsonProperty("project_id") @ExcludeMissing fun _projectId() = projectId
+    @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
     /** A literal 'g' which identifies the log as a project log */
-    @JsonProperty("log_id") @ExcludeMissing fun _logId() = logId
+    @JsonProperty("log_id") @ExcludeMissing fun _logId(): JsonField<LogId> = logId
 
-    /** The arguments that uniquely define a user input (an arbitrary, JSON serializable object). */
-    @JsonProperty("input") @ExcludeMissing fun _input() = input
+    /** Unique id for the organization that the project belongs under */
+    @JsonProperty("org_id") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
 
-    /**
-     * The output of your application, including post-processing (an arbitrary, JSON serializable
-     * object), that allows you to determine whether the result is correct or not. For example, in
-     * an app that generates SQL queries, the `output` should be the _result_ of the SQL query
-     * generated by the model, not the query itself, because there may be multiple valid queries
-     * that answer a single question.
-     */
-    @JsonProperty("output") @ExcludeMissing fun _output() = output
+    /** Unique identifier for the project */
+    @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+
+    /** A unique identifier for the trace this project logs event belongs to */
+    @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId(): JsonField<String> = rootSpanId
 
     /**
-     * The ground truth value (an arbitrary, JSON serializable object) that you'd compare to
-     * `output` to determine if your `output` value is correct or not. Braintrust currently does not
-     * compare `output` to `expected` for you, since there are so many different ways to do that
-     * correctly. Instead, these values are just used to help you navigate while digging into
-     * analyses. However, we may later use these values to re-score outputs or fine-tune your
-     * models.
+     * A unique identifier used to link different project logs events together as part of a full
+     * trace. See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full
+     * details on tracing
      */
-    @JsonProperty("expected") @ExcludeMissing fun _expected() = expected
+    @JsonProperty("span_id") @ExcludeMissing fun _spanId(): JsonField<String> = spanId
 
-    /** The error that occurred, if any. */
-    @JsonProperty("error") @ExcludeMissing fun _error() = error
+    /**
+     * Context is additional information about the code that produced the project logs event. It is
+     * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
+     * location in code which produced the project logs event
+     */
+    @JsonProperty("context") @ExcludeMissing fun _context(): JsonField<Context> = context
+
+    /** Whether this span is a root span */
+    @JsonProperty("is_root") @ExcludeMissing fun _isRoot(): JsonField<Boolean> = isRoot
+
+    /**
+     * A dictionary with additional data about the test example, model outputs, or just about
+     * anything else that's relevant, that you can use to help find and analyze examples later. For
+     * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
+     * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
+     * must be strings
+     */
+    @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+    /**
+     * Metrics are numerical measurements tracking the execution of the code that produced the
+     * project logs event. Use "start" and "end" to track the time span over which the project logs
+     * event was produced
+     */
+    @JsonProperty("metrics") @ExcludeMissing fun _metrics(): JsonField<Metrics> = metrics
+
+    /** Indicates the event was copied from another object. */
+    @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<Origin> = origin
 
     /**
      * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a variety
@@ -222,88 +263,53 @@ private constructor(
      * whether the summarization was covering similar concepts or not. You can use these scores to
      * help you sort, filter, and compare logs.
      */
-    @JsonProperty("scores") @ExcludeMissing fun _scores() = scores
+    @JsonProperty("scores") @ExcludeMissing fun _scores(): JsonField<Scores> = scores
 
-    /**
-     * A dictionary with additional data about the test example, model outputs, or just about
-     * anything else that's relevant, that you can use to help find and analyze examples later. For
-     * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
-     * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
-     * must be strings
-     */
-    @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
-
-    /** A list of tags to log */
-    @JsonProperty("tags") @ExcludeMissing fun _tags() = tags
-
-    /**
-     * Metrics are numerical measurements tracking the execution of the code that produced the
-     * project logs event. Use "start" and "end" to track the time span over which the project logs
-     * event was produced
-     */
-    @JsonProperty("metrics") @ExcludeMissing fun _metrics() = metrics
-
-    /**
-     * Context is additional information about the code that produced the project logs event. It is
-     * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
-     * location in code which produced the project logs event
-     */
-    @JsonProperty("context") @ExcludeMissing fun _context() = context
-
-    /**
-     * A unique identifier used to link different project logs events together as part of a full
-     * trace. See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full
-     * details on tracing
-     */
-    @JsonProperty("span_id") @ExcludeMissing fun _spanId() = spanId
+    /** Human-identifying attributes of the span, such as name, type, etc. */
+    @JsonProperty("span_attributes")
+    @ExcludeMissing
+    fun _spanAttributes(): JsonField<SpanAttributes> = spanAttributes
 
     /**
      * An array of the parent `span_ids` of this project logs event. This should be empty for the
      * root span of a trace, and should most often contain just one parent element for subspans
      */
-    @JsonProperty("span_parents") @ExcludeMissing fun _spanParents() = spanParents
+    @JsonProperty("span_parents")
+    @ExcludeMissing
+    fun _spanParents(): JsonField<List<String>> = spanParents
 
-    /** A unique identifier for the trace this project logs event belongs to */
-    @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId() = rootSpanId
-
-    /** Whether this span is a root span */
-    @JsonProperty("is_root") @ExcludeMissing fun _isRoot() = isRoot
-
-    /** Human-identifying attributes of the span, such as name, type, etc. */
-    @JsonProperty("span_attributes") @ExcludeMissing fun _spanAttributes() = spanAttributes
-
-    /** Indicates the event was copied from another object. */
-    @JsonProperty("origin") @ExcludeMissing fun _origin() = origin
+    /** A list of tags to log */
+    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ProjectLogsEvent = apply {
-        if (!validated) {
-            id()
-            _xactId()
-            created()
-            orgId()
-            projectId()
-            logId()
-            input()
-            output()
-            expected()
-            error()
-            scores().map { it.validate() }
-            metadata().map { it.validate() }
-            tags()
-            metrics().map { it.validate() }
-            context().map { it.validate() }
-            spanId()
-            spanParents()
-            rootSpanId()
-            isRoot()
-            spanAttributes().map { it.validate() }
-            origin().map { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        _xactId()
+        created()
+        logId()
+        orgId()
+        projectId()
+        rootSpanId()
+        spanId()
+        context().ifPresent { it.validate() }
+        isRoot()
+        metadata().ifPresent { it.validate() }
+        metrics().ifPresent { it.validate() }
+        origin().ifPresent { it.validate() }
+        scores().ifPresent { it.validate() }
+        spanAttributes().ifPresent { it.validate() }
+        spanParents()
+        tags()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -313,55 +319,56 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [ProjectLogsEvent]. */
+    class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var _xactId: JsonField<String> = JsonMissing.of()
-        private var created: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var orgId: JsonField<String> = JsonMissing.of()
-        private var projectId: JsonField<String> = JsonMissing.of()
-        private var logId: JsonField<LogId> = JsonMissing.of()
-        private var input: JsonValue = JsonMissing.of()
-        private var output: JsonValue = JsonMissing.of()
-        private var expected: JsonValue = JsonMissing.of()
-        private var error: JsonValue = JsonMissing.of()
-        private var scores: JsonField<Scores> = JsonMissing.of()
-        private var metadata: JsonField<Metadata> = JsonMissing.of()
-        private var tags: JsonField<List<String>> = JsonMissing.of()
-        private var metrics: JsonField<Metrics> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var _xactId: JsonField<String>? = null
+        private var created: JsonField<OffsetDateTime>? = null
+        private var logId: JsonField<LogId>? = null
+        private var orgId: JsonField<String>? = null
+        private var projectId: JsonField<String>? = null
+        private var rootSpanId: JsonField<String>? = null
+        private var spanId: JsonField<String>? = null
         private var context: JsonField<Context> = JsonMissing.of()
-        private var spanId: JsonField<String> = JsonMissing.of()
-        private var spanParents: JsonField<List<String>> = JsonMissing.of()
-        private var rootSpanId: JsonField<String> = JsonMissing.of()
+        private var error: JsonValue = JsonMissing.of()
+        private var expected: JsonValue = JsonMissing.of()
+        private var input: JsonValue = JsonMissing.of()
         private var isRoot: JsonField<Boolean> = JsonMissing.of()
-        private var spanAttributes: JsonField<SpanAttributes> = JsonMissing.of()
+        private var metadata: JsonField<Metadata> = JsonMissing.of()
+        private var metrics: JsonField<Metrics> = JsonMissing.of()
         private var origin: JsonField<Origin> = JsonMissing.of()
+        private var output: JsonValue = JsonMissing.of()
+        private var scores: JsonField<Scores> = JsonMissing.of()
+        private var spanAttributes: JsonField<SpanAttributes> = JsonMissing.of()
+        private var spanParents: JsonField<MutableList<String>>? = null
+        private var tags: JsonField<MutableList<String>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectLogsEvent: ProjectLogsEvent) = apply {
-            this.id = projectLogsEvent.id
-            this._xactId = projectLogsEvent._xactId
-            this.created = projectLogsEvent.created
-            this.orgId = projectLogsEvent.orgId
-            this.projectId = projectLogsEvent.projectId
-            this.logId = projectLogsEvent.logId
-            this.input = projectLogsEvent.input
-            this.output = projectLogsEvent.output
-            this.expected = projectLogsEvent.expected
-            this.error = projectLogsEvent.error
-            this.scores = projectLogsEvent.scores
-            this.metadata = projectLogsEvent.metadata
-            this.tags = projectLogsEvent.tags
-            this.metrics = projectLogsEvent.metrics
-            this.context = projectLogsEvent.context
-            this.spanId = projectLogsEvent.spanId
-            this.spanParents = projectLogsEvent.spanParents
-            this.rootSpanId = projectLogsEvent.rootSpanId
-            this.isRoot = projectLogsEvent.isRoot
-            this.spanAttributes = projectLogsEvent.spanAttributes
-            this.origin = projectLogsEvent.origin
-            additionalProperties(projectLogsEvent.additionalProperties)
+            id = projectLogsEvent.id
+            _xactId = projectLogsEvent._xactId
+            created = projectLogsEvent.created
+            logId = projectLogsEvent.logId
+            orgId = projectLogsEvent.orgId
+            projectId = projectLogsEvent.projectId
+            rootSpanId = projectLogsEvent.rootSpanId
+            spanId = projectLogsEvent.spanId
+            context = projectLogsEvent.context
+            error = projectLogsEvent.error
+            expected = projectLogsEvent.expected
+            input = projectLogsEvent.input
+            isRoot = projectLogsEvent.isRoot
+            metadata = projectLogsEvent.metadata
+            metrics = projectLogsEvent.metrics
+            origin = projectLogsEvent.origin
+            output = projectLogsEvent.output
+            scores = projectLogsEvent.scores
+            spanAttributes = projectLogsEvent.spanAttributes
+            spanParents = projectLogsEvent.spanParents.map { it.toMutableList() }
+            tags = projectLogsEvent.tags.map { it.toMutableList() }
+            additionalProperties = projectLogsEvent.additionalProperties.toMutableMap()
         }
 
         /**
@@ -374,7 +381,7 @@ private constructor(
          * A unique identifier for the project logs event. If you don't provide one, BrainTrust will
          * generate one for you
          */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
          * The transaction id of an event is unique to the network operation that processed the
@@ -388,160 +395,37 @@ private constructor(
          * event insertion. Transaction ids are monotonically increasing over time and can be used
          * to retrieve a versioned snapshot of the project logs (see the `version` parameter)
          */
-        @JsonProperty("_xact_id")
-        @ExcludeMissing
         fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
 
         /** The timestamp the project logs event was created */
         fun created(created: OffsetDateTime) = created(JsonField.of(created))
 
         /** The timestamp the project logs event was created */
-        @JsonProperty("created")
-        @ExcludeMissing
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
+
+        /** A literal 'g' which identifies the log as a project log */
+        fun logId(logId: LogId) = logId(JsonField.of(logId))
+
+        /** A literal 'g' which identifies the log as a project log */
+        fun logId(logId: JsonField<LogId>) = apply { this.logId = logId }
 
         /** Unique id for the organization that the project belongs under */
         fun orgId(orgId: String) = orgId(JsonField.of(orgId))
 
         /** Unique id for the organization that the project belongs under */
-        @JsonProperty("org_id")
-        @ExcludeMissing
         fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         /** Unique identifier for the project */
         fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
         /** Unique identifier for the project */
-        @JsonProperty("project_id")
-        @ExcludeMissing
         fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
-        /** A literal 'g' which identifies the log as a project log */
-        fun logId(logId: LogId) = logId(JsonField.of(logId))
+        /** A unique identifier for the trace this project logs event belongs to */
+        fun rootSpanId(rootSpanId: String) = rootSpanId(JsonField.of(rootSpanId))
 
-        /** A literal 'g' which identifies the log as a project log */
-        @JsonProperty("log_id")
-        @ExcludeMissing
-        fun logId(logId: JsonField<LogId>) = apply { this.logId = logId }
-
-        /**
-         * The arguments that uniquely define a user input (an arbitrary, JSON serializable object).
-         */
-        @JsonProperty("input")
-        @ExcludeMissing
-        fun input(input: JsonValue) = apply { this.input = input }
-
-        /**
-         * The output of your application, including post-processing (an arbitrary, JSON
-         * serializable object), that allows you to determine whether the result is correct or not.
-         * For example, in an app that generates SQL queries, the `output` should be the _result_ of
-         * the SQL query generated by the model, not the query itself, because there may be multiple
-         * valid queries that answer a single question.
-         */
-        @JsonProperty("output")
-        @ExcludeMissing
-        fun output(output: JsonValue) = apply { this.output = output }
-
-        /**
-         * The ground truth value (an arbitrary, JSON serializable object) that you'd compare to
-         * `output` to determine if your `output` value is correct or not. Braintrust currently does
-         * not compare `output` to `expected` for you, since there are so many different ways to do
-         * that correctly. Instead, these values are just used to help you navigate while digging
-         * into analyses. However, we may later use these values to re-score outputs or fine-tune
-         * your models.
-         */
-        @JsonProperty("expected")
-        @ExcludeMissing
-        fun expected(expected: JsonValue) = apply { this.expected = expected }
-
-        /** The error that occurred, if any. */
-        @JsonProperty("error")
-        @ExcludeMissing
-        fun error(error: JsonValue) = apply { this.error = error }
-
-        /**
-         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
-         * variety of signals that help you determine how accurate the outputs are compared to what
-         * you expect and diagnose failures. For example, a summarization app might have one score
-         * that tells you how accurate the summary is, and another that measures the word similarity
-         * between the generated and grouth truth summary. The word similarity score could help you
-         * determine whether the summarization was covering similar concepts or not. You can use
-         * these scores to help you sort, filter, and compare logs.
-         */
-        fun scores(scores: Scores) = scores(JsonField.of(scores))
-
-        /**
-         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
-         * variety of signals that help you determine how accurate the outputs are compared to what
-         * you expect and diagnose failures. For example, a summarization app might have one score
-         * that tells you how accurate the summary is, and another that measures the word similarity
-         * between the generated and grouth truth summary. The word similarity score could help you
-         * determine whether the summarization was covering similar concepts or not. You can use
-         * these scores to help you sort, filter, and compare logs.
-         */
-        @JsonProperty("scores")
-        @ExcludeMissing
-        fun scores(scores: JsonField<Scores>) = apply { this.scores = scores }
-
-        /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
-         */
-        fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
-
-        /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
-         */
-        @JsonProperty("metadata")
-        @ExcludeMissing
-        fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
-
-        /** A list of tags to log */
-        fun tags(tags: List<String>) = tags(JsonField.of(tags))
-
-        /** A list of tags to log */
-        @JsonProperty("tags")
-        @ExcludeMissing
-        fun tags(tags: JsonField<List<String>>) = apply { this.tags = tags }
-
-        /**
-         * Metrics are numerical measurements tracking the execution of the code that produced the
-         * project logs event. Use "start" and "end" to track the time span over which the project
-         * logs event was produced
-         */
-        fun metrics(metrics: Metrics) = metrics(JsonField.of(metrics))
-
-        /**
-         * Metrics are numerical measurements tracking the execution of the code that produced the
-         * project logs event. Use "start" and "end" to track the time span over which the project
-         * logs event was produced
-         */
-        @JsonProperty("metrics")
-        @ExcludeMissing
-        fun metrics(metrics: JsonField<Metrics>) = apply { this.metrics = metrics }
-
-        /**
-         * Context is additional information about the code that produced the project logs event. It
-         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
-         * track the location in code which produced the project logs event
-         */
-        fun context(context: Context) = context(JsonField.of(context))
-
-        /**
-         * Context is additional information about the code that produced the project logs event. It
-         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
-         * track the location in code which produced the project logs event
-         */
-        @JsonProperty("context")
-        @ExcludeMissing
-        fun context(context: JsonField<Context>) = apply { this.context = context }
+        /** A unique identifier for the trace this project logs event belongs to */
+        fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
 
         /**
          * A unique identifier used to link different project logs events together as part of a full
@@ -555,111 +439,357 @@ private constructor(
          * trace. See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full
          * details on tracing
          */
-        @JsonProperty("span_id")
-        @ExcludeMissing
         fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
 
         /**
-         * An array of the parent `span_ids` of this project logs event. This should be empty for
-         * the root span of a trace, and should most often contain just one parent element for
-         * subspans
+         * Context is additional information about the code that produced the project logs event. It
+         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
+         * track the location in code which produced the project logs event
          */
-        fun spanParents(spanParents: List<String>) = spanParents(JsonField.of(spanParents))
+        fun context(context: Context?) = context(JsonField.ofNullable(context))
 
         /**
-         * An array of the parent `span_ids` of this project logs event. This should be empty for
-         * the root span of a trace, and should most often contain just one parent element for
-         * subspans
+         * Context is additional information about the code that produced the project logs event. It
+         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
+         * track the location in code which produced the project logs event
          */
-        @JsonProperty("span_parents")
-        @ExcludeMissing
-        fun spanParents(spanParents: JsonField<List<String>>) = apply {
-            this.spanParents = spanParents
-        }
+        fun context(context: Optional<Context>) = context(context.orElse(null))
 
-        /** A unique identifier for the trace this project logs event belongs to */
-        fun rootSpanId(rootSpanId: String) = rootSpanId(JsonField.of(rootSpanId))
+        /**
+         * Context is additional information about the code that produced the project logs event. It
+         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
+         * track the location in code which produced the project logs event
+         */
+        fun context(context: JsonField<Context>) = apply { this.context = context }
 
-        /** A unique identifier for the trace this project logs event belongs to */
-        @JsonProperty("root_span_id")
-        @ExcludeMissing
-        fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
+        /** The error that occurred, if any. */
+        fun error(error: JsonValue) = apply { this.error = error }
+
+        /**
+         * The ground truth value (an arbitrary, JSON serializable object) that you'd compare to
+         * `output` to determine if your `output` value is correct or not. Braintrust currently does
+         * not compare `output` to `expected` for you, since there are so many different ways to do
+         * that correctly. Instead, these values are just used to help you navigate while digging
+         * into analyses. However, we may later use these values to re-score outputs or fine-tune
+         * your models.
+         */
+        fun expected(expected: JsonValue) = apply { this.expected = expected }
+
+        /**
+         * The arguments that uniquely define a user input (an arbitrary, JSON serializable object).
+         */
+        fun input(input: JsonValue) = apply { this.input = input }
 
         /** Whether this span is a root span */
-        fun isRoot(isRoot: Boolean) = isRoot(JsonField.of(isRoot))
+        fun isRoot(isRoot: Boolean?) = isRoot(JsonField.ofNullable(isRoot))
 
         /** Whether this span is a root span */
-        @JsonProperty("is_root")
-        @ExcludeMissing
+        fun isRoot(isRoot: Boolean) = isRoot(isRoot as Boolean?)
+
+        /** Whether this span is a root span */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.orElse(null) as Boolean?)
+
+        /** Whether this span is a root span */
         fun isRoot(isRoot: JsonField<Boolean>) = apply { this.isRoot = isRoot }
 
-        /** Human-identifying attributes of the span, such as name, type, etc. */
-        fun spanAttributes(spanAttributes: SpanAttributes) =
-            spanAttributes(JsonField.of(spanAttributes))
+        /**
+         * A dictionary with additional data about the test example, model outputs, or just about
+         * anything else that's relevant, that you can use to help find and analyze examples later.
+         * For example, you could log the `prompt`, example's `id`, or anything else that would be
+         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
+         * but its keys must be strings
+         */
+        fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+        /**
+         * A dictionary with additional data about the test example, model outputs, or just about
+         * anything else that's relevant, that you can use to help find and analyze examples later.
+         * For example, you could log the `prompt`, example's `id`, or anything else that would be
+         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
+         * but its keys must be strings
+         */
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+        /**
+         * A dictionary with additional data about the test example, model outputs, or just about
+         * anything else that's relevant, that you can use to help find and analyze examples later.
+         * For example, you could log the `prompt`, example's `id`, or anything else that would be
+         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
+         * but its keys must be strings
+         */
+        fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+
+        /**
+         * Metrics are numerical measurements tracking the execution of the code that produced the
+         * project logs event. Use "start" and "end" to track the time span over which the project
+         * logs event was produced
+         */
+        fun metrics(metrics: Metrics?) = metrics(JsonField.ofNullable(metrics))
+
+        /**
+         * Metrics are numerical measurements tracking the execution of the code that produced the
+         * project logs event. Use "start" and "end" to track the time span over which the project
+         * logs event was produced
+         */
+        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.orElse(null))
+
+        /**
+         * Metrics are numerical measurements tracking the execution of the code that produced the
+         * project logs event. Use "start" and "end" to track the time span over which the project
+         * logs event was produced
+         */
+        fun metrics(metrics: JsonField<Metrics>) = apply { this.metrics = metrics }
+
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
+
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
+
+        /**
+         * The output of your application, including post-processing (an arbitrary, JSON
+         * serializable object), that allows you to determine whether the result is correct or not.
+         * For example, in an app that generates SQL queries, the `output` should be the _result_ of
+         * the SQL query generated by the model, not the query itself, because there may be multiple
+         * valid queries that answer a single question.
+         */
+        fun output(output: JsonValue) = apply { this.output = output }
+
+        /**
+         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
+         * variety of signals that help you determine how accurate the outputs are compared to what
+         * you expect and diagnose failures. For example, a summarization app might have one score
+         * that tells you how accurate the summary is, and another that measures the word similarity
+         * between the generated and grouth truth summary. The word similarity score could help you
+         * determine whether the summarization was covering similar concepts or not. You can use
+         * these scores to help you sort, filter, and compare logs.
+         */
+        fun scores(scores: Scores?) = scores(JsonField.ofNullable(scores))
+
+        /**
+         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
+         * variety of signals that help you determine how accurate the outputs are compared to what
+         * you expect and diagnose failures. For example, a summarization app might have one score
+         * that tells you how accurate the summary is, and another that measures the word similarity
+         * between the generated and grouth truth summary. The word similarity score could help you
+         * determine whether the summarization was covering similar concepts or not. You can use
+         * these scores to help you sort, filter, and compare logs.
+         */
+        fun scores(scores: Optional<Scores>) = scores(scores.orElse(null))
+
+        /**
+         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
+         * variety of signals that help you determine how accurate the outputs are compared to what
+         * you expect and diagnose failures. For example, a summarization app might have one score
+         * that tells you how accurate the summary is, and another that measures the word similarity
+         * between the generated and grouth truth summary. The word similarity score could help you
+         * determine whether the summarization was covering similar concepts or not. You can use
+         * these scores to help you sort, filter, and compare logs.
+         */
+        fun scores(scores: JsonField<Scores>) = apply { this.scores = scores }
 
         /** Human-identifying attributes of the span, such as name, type, etc. */
-        @JsonProperty("span_attributes")
-        @ExcludeMissing
+        fun spanAttributes(spanAttributes: SpanAttributes?) =
+            spanAttributes(JsonField.ofNullable(spanAttributes))
+
+        /** Human-identifying attributes of the span, such as name, type, etc. */
+        fun spanAttributes(spanAttributes: Optional<SpanAttributes>) =
+            spanAttributes(spanAttributes.orElse(null))
+
+        /** Human-identifying attributes of the span, such as name, type, etc. */
         fun spanAttributes(spanAttributes: JsonField<SpanAttributes>) = apply {
             this.spanAttributes = spanAttributes
         }
 
-        /** Indicates the event was copied from another object. */
-        fun origin(origin: Origin) = origin(JsonField.of(origin))
+        /**
+         * An array of the parent `span_ids` of this project logs event. This should be empty for
+         * the root span of a trace, and should most often contain just one parent element for
+         * subspans
+         */
+        fun spanParents(spanParents: List<String>?) = spanParents(JsonField.ofNullable(spanParents))
 
-        /** Indicates the event was copied from another object. */
-        @JsonProperty("origin")
-        @ExcludeMissing
-        fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
+        /**
+         * An array of the parent `span_ids` of this project logs event. This should be empty for
+         * the root span of a trace, and should most often contain just one parent element for
+         * subspans
+         */
+        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.orElse(null))
+
+        /**
+         * An array of the parent `span_ids` of this project logs event. This should be empty for
+         * the root span of a trace, and should most often contain just one parent element for
+         * subspans
+         */
+        fun spanParents(spanParents: JsonField<List<String>>) = apply {
+            this.spanParents = spanParents.map { it.toMutableList() }
+        }
+
+        /**
+         * An array of the parent `span_ids` of this project logs event. This should be empty for
+         * the root span of a trace, and should most often contain just one parent element for
+         * subspans
+         */
+        fun addSpanParent(spanParent: String) = apply {
+            spanParents =
+                (spanParents ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(spanParent)
+                }
+        }
+
+        /** A list of tags to log */
+        fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
+
+        /** A list of tags to log */
+        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+
+        /** A list of tags to log */
+        fun tags(tags: JsonField<List<String>>) = apply {
+            this.tags = tags.map { it.toMutableList() }
+        }
+
+        /** A list of tags to log */
+        fun addTag(tag: String) = apply {
+            tags =
+                (tags ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(tag)
+                }
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): ProjectLogsEvent =
             ProjectLogsEvent(
-                id,
-                _xactId,
-                created,
-                orgId,
-                projectId,
-                logId,
-                input,
-                output,
-                expected,
-                error,
-                scores,
-                metadata,
-                tags.map { it.toImmutable() },
-                metrics,
+                checkRequired("id", id),
+                checkRequired("_xactId", _xactId),
+                checkRequired("created", created),
+                checkRequired("logId", logId),
+                checkRequired("orgId", orgId),
+                checkRequired("projectId", projectId),
+                checkRequired("rootSpanId", rootSpanId),
+                checkRequired("spanId", spanId),
                 context,
-                spanId,
-                spanParents.map { it.toImmutable() },
-                rootSpanId,
+                error,
+                expected,
+                input,
                 isRoot,
-                spanAttributes,
+                metadata,
+                metrics,
                 origin,
+                output,
+                scores,
+                spanAttributes,
+                (spanParents ?: JsonMissing.of()).map { it.toImmutable() },
+                (tags ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }
 
+    /** A literal 'g' which identifies the log as a project log */
     class LogId
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val G = of("g")
+
+            @JvmStatic fun of(value: String) = LogId(JsonField.of(value))
+        }
+
+        /** An enum containing [LogId]'s known values. */
+        enum class Known {
+            G,
+        }
+
+        /**
+         * An enum containing [LogId]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [LogId] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            G,
+            /** An enum member indicating that [LogId] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                G -> Value.G
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                G -> Known.G
+                else -> throw BraintrustInvalidDataException("Unknown LogId: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -672,36 +802,6 @@ private constructor(
         override fun hashCode() = value.hashCode()
 
         override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val G = LogId(JsonField.of("g"))
-
-            @JvmStatic fun of(value: String) = LogId(JsonField.of(value))
-        }
-
-        enum class Known {
-            G,
-        }
-
-        enum class Value {
-            G,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                G -> Value.G
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                G -> Known.G
-                else -> throw BraintrustInvalidDataException("Unknown LogId: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
     }
 
     /**
@@ -709,52 +809,65 @@ private constructor(
      * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
      * location in code which produced the project logs event
      */
-    @JsonDeserialize(builder = Context.Builder::class)
     @NoAutoDetect
     class Context
+    @JsonCreator
     private constructor(
-        private val callerFunctionname: JsonField<String>,
-        private val callerFilename: JsonField<String>,
-        private val callerLineno: JsonField<Long>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("caller_filename")
+        @ExcludeMissing
+        private val callerFilename: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("caller_functionname")
+        @ExcludeMissing
+        private val callerFunctionname: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("caller_lineno")
+        @ExcludeMissing
+        private val callerLineno: JsonField<Long> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
-
-        /** The function in code which created the project logs event */
-        fun callerFunctionname(): Optional<String> =
-            Optional.ofNullable(callerFunctionname.getNullable("caller_functionname"))
 
         /** Name of the file in code where the project logs event was created */
         fun callerFilename(): Optional<String> =
             Optional.ofNullable(callerFilename.getNullable("caller_filename"))
 
+        /** The function in code which created the project logs event */
+        fun callerFunctionname(): Optional<String> =
+            Optional.ofNullable(callerFunctionname.getNullable("caller_functionname"))
+
         /** Line of code where the project logs event was created */
         fun callerLineno(): Optional<Long> =
             Optional.ofNullable(callerLineno.getNullable("caller_lineno"))
 
+        /** Name of the file in code where the project logs event was created */
+        @JsonProperty("caller_filename")
+        @ExcludeMissing
+        fun _callerFilename(): JsonField<String> = callerFilename
+
         /** The function in code which created the project logs event */
         @JsonProperty("caller_functionname")
         @ExcludeMissing
-        fun _callerFunctionname() = callerFunctionname
-
-        /** Name of the file in code where the project logs event was created */
-        @JsonProperty("caller_filename") @ExcludeMissing fun _callerFilename() = callerFilename
+        fun _callerFunctionname(): JsonField<String> = callerFunctionname
 
         /** Line of code where the project logs event was created */
-        @JsonProperty("caller_lineno") @ExcludeMissing fun _callerLineno() = callerLineno
+        @JsonProperty("caller_lineno")
+        @ExcludeMissing
+        fun _callerLineno(): JsonField<Long> = callerLineno
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Context = apply {
-            if (!validated) {
-                callerFunctionname()
-                callerFilename()
-                callerLineno()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            callerFilename()
+            callerFunctionname()
+            callerLineno()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -764,71 +877,87 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Context]. */
+        class Builder internal constructor() {
 
-            private var callerFunctionname: JsonField<String> = JsonMissing.of()
             private var callerFilename: JsonField<String> = JsonMissing.of()
+            private var callerFunctionname: JsonField<String> = JsonMissing.of()
             private var callerLineno: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(context: Context) = apply {
-                this.callerFunctionname = context.callerFunctionname
-                this.callerFilename = context.callerFilename
-                this.callerLineno = context.callerLineno
-                additionalProperties(context.additionalProperties)
-            }
-
-            /** The function in code which created the project logs event */
-            fun callerFunctionname(callerFunctionname: String) =
-                callerFunctionname(JsonField.of(callerFunctionname))
-
-            /** The function in code which created the project logs event */
-            @JsonProperty("caller_functionname")
-            @ExcludeMissing
-            fun callerFunctionname(callerFunctionname: JsonField<String>) = apply {
-                this.callerFunctionname = callerFunctionname
+                callerFilename = context.callerFilename
+                callerFunctionname = context.callerFunctionname
+                callerLineno = context.callerLineno
+                additionalProperties = context.additionalProperties.toMutableMap()
             }
 
             /** Name of the file in code where the project logs event was created */
-            fun callerFilename(callerFilename: String) =
-                callerFilename(JsonField.of(callerFilename))
+            fun callerFilename(callerFilename: String?) =
+                callerFilename(JsonField.ofNullable(callerFilename))
 
             /** Name of the file in code where the project logs event was created */
-            @JsonProperty("caller_filename")
-            @ExcludeMissing
+            fun callerFilename(callerFilename: Optional<String>) =
+                callerFilename(callerFilename.orElse(null))
+
+            /** Name of the file in code where the project logs event was created */
             fun callerFilename(callerFilename: JsonField<String>) = apply {
                 this.callerFilename = callerFilename
             }
 
-            /** Line of code where the project logs event was created */
-            fun callerLineno(callerLineno: Long) = callerLineno(JsonField.of(callerLineno))
+            /** The function in code which created the project logs event */
+            fun callerFunctionname(callerFunctionname: String?) =
+                callerFunctionname(JsonField.ofNullable(callerFunctionname))
+
+            /** The function in code which created the project logs event */
+            fun callerFunctionname(callerFunctionname: Optional<String>) =
+                callerFunctionname(callerFunctionname.orElse(null))
+
+            /** The function in code which created the project logs event */
+            fun callerFunctionname(callerFunctionname: JsonField<String>) = apply {
+                this.callerFunctionname = callerFunctionname
+            }
 
             /** Line of code where the project logs event was created */
-            @JsonProperty("caller_lineno")
-            @ExcludeMissing
+            fun callerLineno(callerLineno: Long?) = callerLineno(JsonField.ofNullable(callerLineno))
+
+            /** Line of code where the project logs event was created */
+            fun callerLineno(callerLineno: Long) = callerLineno(callerLineno as Long?)
+
+            /** Line of code where the project logs event was created */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun callerLineno(callerLineno: Optional<Long>) =
+                callerLineno(callerLineno.orElse(null) as Long?)
+
+            /** Line of code where the project logs event was created */
             fun callerLineno(callerLineno: JsonField<Long>) = apply {
                 this.callerLineno = callerLineno
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Context =
                 Context(
-                    callerFunctionname,
                     callerFilename,
+                    callerFunctionname,
                     callerLineno,
                     additionalProperties.toImmutable(),
                 )
@@ -839,17 +968,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Context && callerFunctionname == other.callerFunctionname && callerFilename == other.callerFilename && callerLineno == other.callerLineno && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Context && callerFilename == other.callerFilename && callerFunctionname == other.callerFunctionname && callerLineno == other.callerLineno && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(callerFunctionname, callerFilename, callerLineno, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(callerFilename, callerFunctionname, callerLineno, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Context{callerFunctionname=$callerFunctionname, callerFilename=$callerFilename, callerLineno=$callerLineno, additionalProperties=$additionalProperties}"
+            "Context{callerFilename=$callerFilename, callerFunctionname=$callerFunctionname, callerLineno=$callerLineno, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -859,23 +988,26 @@ private constructor(
      * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
      * must be strings
      */
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Metadata = apply {
-            if (!validated) {
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -885,27 +1017,33 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Metadata]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                additionalProperties(metadata.additionalProperties)
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(additionalProperties.toImmutable())
@@ -933,28 +1071,55 @@ private constructor(
      * project logs event. Use "start" and "end" to track the time span over which the project logs
      * event was produced
      */
-    @JsonDeserialize(builder = Metrics.Builder::class)
     @NoAutoDetect
     class Metrics
+    @JsonCreator
     private constructor(
-        private val start: JsonField<Double>,
-        private val end: JsonField<Double>,
-        private val promptTokens: JsonField<Long>,
-        private val completionTokens: JsonField<Long>,
-        private val tokens: JsonField<Long>,
-        private val callerFunctionname: JsonValue,
-        private val callerFilename: JsonValue,
-        private val callerLineno: JsonValue,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("caller_filename")
+        @ExcludeMissing
+        private val callerFilename: JsonValue = JsonMissing.of(),
+        @JsonProperty("caller_functionname")
+        @ExcludeMissing
+        private val callerFunctionname: JsonValue = JsonMissing.of(),
+        @JsonProperty("caller_lineno")
+        @ExcludeMissing
+        private val callerLineno: JsonValue = JsonMissing.of(),
+        @JsonProperty("completion_tokens")
+        @ExcludeMissing
+        private val completionTokens: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("end") @ExcludeMissing private val end: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("prompt_tokens")
+        @ExcludeMissing
+        private val promptTokens: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("start")
+        @ExcludeMissing
+        private val start: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("tokens")
+        @ExcludeMissing
+        private val tokens: JsonField<Long> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
+        /** This metric is deprecated */
+        @JsonProperty("caller_filename")
+        @ExcludeMissing
+        fun _callerFilename(): JsonValue = callerFilename
+
+        /** This metric is deprecated */
+        @JsonProperty("caller_functionname")
+        @ExcludeMissing
+        fun _callerFunctionname(): JsonValue = callerFunctionname
+
+        /** This metric is deprecated */
+        @JsonProperty("caller_lineno") @ExcludeMissing fun _callerLineno(): JsonValue = callerLineno
 
         /**
-         * A unix timestamp recording when the section of code which produced the project logs event
-         * started
+         * The number of tokens in the completion generated by the model (only set if this is an LLM
+         * span)
          */
-        fun start(): Optional<Double> = Optional.ofNullable(start.getNullable("start"))
+        fun completionTokens(): Optional<Long> =
+            Optional.ofNullable(completionTokens.getNullable("completion_tokens"))
 
         /**
          * A unix timestamp recording when the section of code which produced the project logs event
@@ -970,41 +1135,13 @@ private constructor(
             Optional.ofNullable(promptTokens.getNullable("prompt_tokens"))
 
         /**
-         * The number of tokens in the completion generated by the model (only set if this is an LLM
-         * span)
-         */
-        fun completionTokens(): Optional<Long> =
-            Optional.ofNullable(completionTokens.getNullable("completion_tokens"))
-
-        /** The total number of tokens in the input and output of the project logs event. */
-        fun tokens(): Optional<Long> = Optional.ofNullable(tokens.getNullable("tokens"))
-
-        /** This metric is deprecated */
-        fun callerFunctionname(): JsonValue = callerFunctionname
-
-        /** This metric is deprecated */
-        fun callerFilename(): JsonValue = callerFilename
-
-        /** This metric is deprecated */
-        fun callerLineno(): JsonValue = callerLineno
-
-        /**
          * A unix timestamp recording when the section of code which produced the project logs event
          * started
          */
-        @JsonProperty("start") @ExcludeMissing fun _start() = start
+        fun start(): Optional<Double> = Optional.ofNullable(start.getNullable("start"))
 
-        /**
-         * A unix timestamp recording when the section of code which produced the project logs event
-         * finished
-         */
-        @JsonProperty("end") @ExcludeMissing fun _end() = end
-
-        /**
-         * The number of tokens in the prompt used to generate the project logs event (only set if
-         * this is an LLM span)
-         */
-        @JsonProperty("prompt_tokens") @ExcludeMissing fun _promptTokens() = promptTokens
+        /** The total number of tokens in the input and output of the project logs event. */
+        fun tokens(): Optional<Long> = Optional.ofNullable(tokens.getNullable("tokens"))
 
         /**
          * The number of tokens in the completion generated by the model (only set if this is an LLM
@@ -1012,38 +1149,48 @@ private constructor(
          */
         @JsonProperty("completion_tokens")
         @ExcludeMissing
-        fun _completionTokens() = completionTokens
+        fun _completionTokens(): JsonField<Long> = completionTokens
+
+        /**
+         * A unix timestamp recording when the section of code which produced the project logs event
+         * finished
+         */
+        @JsonProperty("end") @ExcludeMissing fun _end(): JsonField<Double> = end
+
+        /**
+         * The number of tokens in the prompt used to generate the project logs event (only set if
+         * this is an LLM span)
+         */
+        @JsonProperty("prompt_tokens")
+        @ExcludeMissing
+        fun _promptTokens(): JsonField<Long> = promptTokens
+
+        /**
+         * A unix timestamp recording when the section of code which produced the project logs event
+         * started
+         */
+        @JsonProperty("start") @ExcludeMissing fun _start(): JsonField<Double> = start
 
         /** The total number of tokens in the input and output of the project logs event. */
-        @JsonProperty("tokens") @ExcludeMissing fun _tokens() = tokens
-
-        /** This metric is deprecated */
-        @JsonProperty("caller_functionname")
-        @ExcludeMissing
-        fun _callerFunctionname() = callerFunctionname
-
-        /** This metric is deprecated */
-        @JsonProperty("caller_filename") @ExcludeMissing fun _callerFilename() = callerFilename
-
-        /** This metric is deprecated */
-        @JsonProperty("caller_lineno") @ExcludeMissing fun _callerLineno() = callerLineno
+        @JsonProperty("tokens") @ExcludeMissing fun _tokens(): JsonField<Long> = tokens
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Metrics = apply {
-            if (!validated) {
-                start()
-                end()
-                promptTokens()
-                completionTokens()
-                tokens()
-                callerFunctionname()
-                callerFilename()
-                callerLineno()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            completionTokens()
+            end()
+            promptTokens()
+            start()
+            tokens()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1053,143 +1200,195 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Metrics]. */
+        class Builder internal constructor() {
 
-            private var start: JsonField<Double> = JsonMissing.of()
+            private var callerFilename: JsonValue = JsonMissing.of()
+            private var callerFunctionname: JsonValue = JsonMissing.of()
+            private var callerLineno: JsonValue = JsonMissing.of()
+            private var completionTokens: JsonField<Long> = JsonMissing.of()
             private var end: JsonField<Double> = JsonMissing.of()
             private var promptTokens: JsonField<Long> = JsonMissing.of()
-            private var completionTokens: JsonField<Long> = JsonMissing.of()
+            private var start: JsonField<Double> = JsonMissing.of()
             private var tokens: JsonField<Long> = JsonMissing.of()
-            private var callerFunctionname: JsonValue = JsonMissing.of()
-            private var callerFilename: JsonValue = JsonMissing.of()
-            private var callerLineno: JsonValue = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metrics: Metrics) = apply {
-                this.start = metrics.start
-                this.end = metrics.end
-                this.promptTokens = metrics.promptTokens
-                this.completionTokens = metrics.completionTokens
-                this.tokens = metrics.tokens
-                this.callerFunctionname = metrics.callerFunctionname
-                this.callerFilename = metrics.callerFilename
-                this.callerLineno = metrics.callerLineno
-                additionalProperties(metrics.additionalProperties)
+                callerFilename = metrics.callerFilename
+                callerFunctionname = metrics.callerFunctionname
+                callerLineno = metrics.callerLineno
+                completionTokens = metrics.completionTokens
+                end = metrics.end
+                promptTokens = metrics.promptTokens
+                start = metrics.start
+                tokens = metrics.tokens
+                additionalProperties = metrics.additionalProperties.toMutableMap()
             }
 
-            /**
-             * A unix timestamp recording when the section of code which produced the project logs
-             * event started
-             */
-            fun start(start: Double) = start(JsonField.of(start))
-
-            /**
-             * A unix timestamp recording when the section of code which produced the project logs
-             * event started
-             */
-            @JsonProperty("start")
-            @ExcludeMissing
-            fun start(start: JsonField<Double>) = apply { this.start = start }
-
-            /**
-             * A unix timestamp recording when the section of code which produced the project logs
-             * event finished
-             */
-            fun end(end: Double) = end(JsonField.of(end))
-
-            /**
-             * A unix timestamp recording when the section of code which produced the project logs
-             * event finished
-             */
-            @JsonProperty("end")
-            @ExcludeMissing
-            fun end(end: JsonField<Double>) = apply { this.end = end }
-
-            /**
-             * The number of tokens in the prompt used to generate the project logs event (only set
-             * if this is an LLM span)
-             */
-            fun promptTokens(promptTokens: Long) = promptTokens(JsonField.of(promptTokens))
-
-            /**
-             * The number of tokens in the prompt used to generate the project logs event (only set
-             * if this is an LLM span)
-             */
-            @JsonProperty("prompt_tokens")
-            @ExcludeMissing
-            fun promptTokens(promptTokens: JsonField<Long>) = apply {
-                this.promptTokens = promptTokens
+            /** This metric is deprecated */
+            fun callerFilename(callerFilename: JsonValue) = apply {
+                this.callerFilename = callerFilename
             }
+
+            /** This metric is deprecated */
+            fun callerFunctionname(callerFunctionname: JsonValue) = apply {
+                this.callerFunctionname = callerFunctionname
+            }
+
+            /** This metric is deprecated */
+            fun callerLineno(callerLineno: JsonValue) = apply { this.callerLineno = callerLineno }
+
+            /**
+             * The number of tokens in the completion generated by the model (only set if this is an
+             * LLM span)
+             */
+            fun completionTokens(completionTokens: Long?) =
+                completionTokens(JsonField.ofNullable(completionTokens))
 
             /**
              * The number of tokens in the completion generated by the model (only set if this is an
              * LLM span)
              */
             fun completionTokens(completionTokens: Long) =
-                completionTokens(JsonField.of(completionTokens))
+                completionTokens(completionTokens as Long?)
 
             /**
              * The number of tokens in the completion generated by the model (only set if this is an
              * LLM span)
              */
-            @JsonProperty("completion_tokens")
-            @ExcludeMissing
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun completionTokens(completionTokens: Optional<Long>) =
+                completionTokens(completionTokens.orElse(null) as Long?)
+
+            /**
+             * The number of tokens in the completion generated by the model (only set if this is an
+             * LLM span)
+             */
             fun completionTokens(completionTokens: JsonField<Long>) = apply {
                 this.completionTokens = completionTokens
             }
 
-            /** The total number of tokens in the input and output of the project logs event. */
-            fun tokens(tokens: Long) = tokens(JsonField.of(tokens))
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event finished
+             */
+            fun end(end: Double?) = end(JsonField.ofNullable(end))
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event finished
+             */
+            fun end(end: Double) = end(end as Double?)
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event finished
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun end(end: Optional<Double>) = end(end.orElse(null) as Double?)
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event finished
+             */
+            fun end(end: JsonField<Double>) = apply { this.end = end }
+
+            /**
+             * The number of tokens in the prompt used to generate the project logs event (only set
+             * if this is an LLM span)
+             */
+            fun promptTokens(promptTokens: Long?) = promptTokens(JsonField.ofNullable(promptTokens))
+
+            /**
+             * The number of tokens in the prompt used to generate the project logs event (only set
+             * if this is an LLM span)
+             */
+            fun promptTokens(promptTokens: Long) = promptTokens(promptTokens as Long?)
+
+            /**
+             * The number of tokens in the prompt used to generate the project logs event (only set
+             * if this is an LLM span)
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun promptTokens(promptTokens: Optional<Long>) =
+                promptTokens(promptTokens.orElse(null) as Long?)
+
+            /**
+             * The number of tokens in the prompt used to generate the project logs event (only set
+             * if this is an LLM span)
+             */
+            fun promptTokens(promptTokens: JsonField<Long>) = apply {
+                this.promptTokens = promptTokens
+            }
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event started
+             */
+            fun start(start: Double?) = start(JsonField.ofNullable(start))
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event started
+             */
+            fun start(start: Double) = start(start as Double?)
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event started
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun start(start: Optional<Double>) = start(start.orElse(null) as Double?)
+
+            /**
+             * A unix timestamp recording when the section of code which produced the project logs
+             * event started
+             */
+            fun start(start: JsonField<Double>) = apply { this.start = start }
 
             /** The total number of tokens in the input and output of the project logs event. */
-            @JsonProperty("tokens")
-            @ExcludeMissing
+            fun tokens(tokens: Long?) = tokens(JsonField.ofNullable(tokens))
+
+            /** The total number of tokens in the input and output of the project logs event. */
+            fun tokens(tokens: Long) = tokens(tokens as Long?)
+
+            /** The total number of tokens in the input and output of the project logs event. */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun tokens(tokens: Optional<Long>) = tokens(tokens.orElse(null) as Long?)
+
+            /** The total number of tokens in the input and output of the project logs event. */
             fun tokens(tokens: JsonField<Long>) = apply { this.tokens = tokens }
-
-            /** This metric is deprecated */
-            @JsonProperty("caller_functionname")
-            @ExcludeMissing
-            fun callerFunctionname(callerFunctionname: JsonValue) = apply {
-                this.callerFunctionname = callerFunctionname
-            }
-
-            /** This metric is deprecated */
-            @JsonProperty("caller_filename")
-            @ExcludeMissing
-            fun callerFilename(callerFilename: JsonValue) = apply {
-                this.callerFilename = callerFilename
-            }
-
-            /** This metric is deprecated */
-            @JsonProperty("caller_lineno")
-            @ExcludeMissing
-            fun callerLineno(callerLineno: JsonValue) = apply { this.callerLineno = callerLineno }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Metrics =
                 Metrics(
-                    start,
+                    callerFilename,
+                    callerFunctionname,
+                    callerLineno,
+                    completionTokens,
                     end,
                     promptTokens,
-                    completionTokens,
+                    start,
                     tokens,
-                    callerFunctionname,
-                    callerFilename,
-                    callerLineno,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -1199,38 +1398,37 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metrics && start == other.start && end == other.end && promptTokens == other.promptTokens && completionTokens == other.completionTokens && tokens == other.tokens && callerFunctionname == other.callerFunctionname && callerFilename == other.callerFilename && callerLineno == other.callerLineno && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metrics && callerFilename == other.callerFilename && callerFunctionname == other.callerFunctionname && callerLineno == other.callerLineno && completionTokens == other.completionTokens && end == other.end && promptTokens == other.promptTokens && start == other.start && tokens == other.tokens && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(start, end, promptTokens, completionTokens, tokens, callerFunctionname, callerFilename, callerLineno, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(callerFilename, callerFunctionname, callerLineno, completionTokens, end, promptTokens, start, tokens, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Metrics{start=$start, end=$end, promptTokens=$promptTokens, completionTokens=$completionTokens, tokens=$tokens, callerFunctionname=$callerFunctionname, callerFilename=$callerFilename, callerLineno=$callerLineno, additionalProperties=$additionalProperties}"
+            "Metrics{callerFilename=$callerFilename, callerFunctionname=$callerFunctionname, callerLineno=$callerLineno, completionTokens=$completionTokens, end=$end, promptTokens=$promptTokens, start=$start, tokens=$tokens, additionalProperties=$additionalProperties}"
     }
 
     /** Indicates the event was copied from another object. */
-    @JsonDeserialize(builder = Origin.Builder::class)
     @NoAutoDetect
     class Origin
+    @JsonCreator
     private constructor(
-        private val objectType: JsonField<ObjectType>,
-        private val objectId: JsonField<String>,
-        private val id: JsonField<String>,
-        private val _xactId: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("_xact_id")
+        @ExcludeMissing
+        private val _xactId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_id")
+        @ExcludeMissing
+        private val objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        private val objectType: JsonField<ObjectType> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
-
-        /** Type of the object the event is originating from. */
-        fun objectType(): ObjectType = objectType.getRequired("object_type")
-
-        /** ID of the object the event is originating from. */
-        fun objectId(): String = objectId.getRequired("object_id")
 
         /** ID of the original event. */
         fun id(): String = id.getRequired("id")
@@ -1238,30 +1436,42 @@ private constructor(
         /** Transaction ID of the original event. */
         fun _xactId(): String = _xactId.getRequired("_xact_id")
 
-        /** Type of the object the event is originating from. */
-        @JsonProperty("object_type") @ExcludeMissing fun _objectType() = objectType
-
         /** ID of the object the event is originating from. */
-        @JsonProperty("object_id") @ExcludeMissing fun _objectId() = objectId
+        fun objectId(): String = objectId.getRequired("object_id")
+
+        /** Type of the object the event is originating from. */
+        fun objectType(): ObjectType = objectType.getRequired("object_type")
 
         /** ID of the original event. */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
         /** Transaction ID of the original event. */
-        @JsonProperty("_xact_id") @ExcludeMissing fun __xactId() = _xactId
+        @JsonProperty("_xact_id") @ExcludeMissing fun __xactId(): JsonField<String> = _xactId
+
+        /** ID of the object the event is originating from. */
+        @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
+
+        /** Type of the object the event is originating from. */
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        fun _objectType(): JsonField<ObjectType> = objectType
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Origin = apply {
-            if (!validated) {
-                objectType()
-                objectId()
-                id()
-                _xactId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            id()
+            _xactId()
+            objectId()
+            objectType()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1271,118 +1481,114 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Origin]. */
+        class Builder internal constructor() {
 
-            private var objectType: JsonField<ObjectType> = JsonMissing.of()
-            private var objectId: JsonField<String> = JsonMissing.of()
-            private var id: JsonField<String> = JsonMissing.of()
-            private var _xactId: JsonField<String> = JsonMissing.of()
+            private var id: JsonField<String>? = null
+            private var _xactId: JsonField<String>? = null
+            private var objectId: JsonField<String>? = null
+            private var objectType: JsonField<ObjectType>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(origin: Origin) = apply {
-                this.objectType = origin.objectType
-                this.objectId = origin.objectId
-                this.id = origin.id
-                this._xactId = origin._xactId
-                additionalProperties(origin.additionalProperties)
+                id = origin.id
+                _xactId = origin._xactId
+                objectId = origin.objectId
+                objectType = origin.objectType
+                additionalProperties = origin.additionalProperties.toMutableMap()
             }
-
-            /** Type of the object the event is originating from. */
-            fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
-
-            /** Type of the object the event is originating from. */
-            @JsonProperty("object_type")
-            @ExcludeMissing
-            fun objectType(objectType: JsonField<ObjectType>) = apply {
-                this.objectType = objectType
-            }
-
-            /** ID of the object the event is originating from. */
-            fun objectId(objectId: String) = objectId(JsonField.of(objectId))
-
-            /** ID of the object the event is originating from. */
-            @JsonProperty("object_id")
-            @ExcludeMissing
-            fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
             /** ID of the original event. */
             fun id(id: String) = id(JsonField.of(id))
 
             /** ID of the original event. */
-            @JsonProperty("id")
-            @ExcludeMissing
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             /** Transaction ID of the original event. */
             fun _xactId(_xactId: String) = _xactId(JsonField.of(_xactId))
 
             /** Transaction ID of the original event. */
-            @JsonProperty("_xact_id")
-            @ExcludeMissing
             fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
+
+            /** ID of the object the event is originating from. */
+            fun objectId(objectId: String) = objectId(JsonField.of(objectId))
+
+            /** ID of the object the event is originating from. */
+            fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
+
+            /** Type of the object the event is originating from. */
+            fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
+
+            /** Type of the object the event is originating from. */
+            fun objectType(objectType: JsonField<ObjectType>) = apply {
+                this.objectType = objectType
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Origin =
                 Origin(
-                    objectType,
-                    objectId,
-                    id,
-                    _xactId,
+                    checkRequired("id", id),
+                    checkRequired("_xactId", _xactId),
+                    checkRequired("objectId", objectId),
+                    checkRequired("objectType", objectType),
                     additionalProperties.toImmutable(),
                 )
         }
 
+        /** Type of the object the event is originating from. */
         class ObjectType
         @JsonCreator
         private constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
 
             companion object {
 
-                @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+                @JvmField val EXPERIMENT = of("experiment")
 
-                @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+                @JvmField val DATASET = of("dataset")
 
-                @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+                @JvmField val PROMPT = of("prompt")
 
-                @JvmField val FUNCTION = ObjectType(JsonField.of("function"))
+                @JvmField val FUNCTION = of("function")
 
-                @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+                @JvmField val PROMPT_SESSION = of("prompt_session")
 
-                @JvmField val PROJECT_LOGS = ObjectType(JsonField.of("project_logs"))
+                @JvmField val PROJECT_LOGS = of("project_logs")
 
                 @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
             }
 
+            /** An enum containing [ObjectType]'s known values. */
             enum class Known {
                 EXPERIMENT,
                 DATASET,
@@ -1392,6 +1598,15 @@ private constructor(
                 PROJECT_LOGS,
             }
 
+            /**
+             * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [ObjectType] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
                 EXPERIMENT,
                 DATASET,
@@ -1399,9 +1614,20 @@ private constructor(
                 FUNCTION,
                 PROMPT_SESSION,
                 PROJECT_LOGS,
+                /**
+                 * An enum member indicating that [ObjectType] was instantiated with an unknown
+                 * value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
                     EXPERIMENT -> Value.EXPERIMENT
@@ -1413,6 +1639,15 @@ private constructor(
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws BraintrustInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
             fun known(): Known =
                 when (this) {
                     EXPERIMENT -> Known.EXPERIMENT
@@ -1425,6 +1660,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1432,17 +1679,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Origin && objectType == other.objectType && objectId == other.objectId && id == other.id && _xactId == other._xactId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Origin && id == other.id && _xactId == other._xactId && objectId == other.objectId && objectType == other.objectType && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(objectType, objectId, id, _xactId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, _xactId, objectId, objectType, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Origin{objectType=$objectType, objectId=$objectId, id=$id, _xactId=$_xactId, additionalProperties=$additionalProperties}"
+            "Origin{id=$id, _xactId=$_xactId, objectId=$objectId, objectType=$objectType, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -1454,23 +1701,26 @@ private constructor(
      * whether the summarization was covering similar concepts or not. You can use these scores to
      * help you sort, filter, and compare logs.
      */
-    @JsonDeserialize(builder = Scores.Builder::class)
     @NoAutoDetect
     class Scores
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Scores = apply {
-            if (!validated) {
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1480,27 +1730,33 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Scores]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(scores: Scores) = apply {
-                additionalProperties(scores.additionalProperties)
+                additionalProperties = scores.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Scores = Scores(additionalProperties.toImmutable())
@@ -1528,15 +1784,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectLogsEvent && id == other.id && _xactId == other._xactId && created == other.created && orgId == other.orgId && projectId == other.projectId && logId == other.logId && input == other.input && output == other.output && expected == other.expected && error == other.error && scores == other.scores && metadata == other.metadata && tags == other.tags && metrics == other.metrics && context == other.context && spanId == other.spanId && spanParents == other.spanParents && rootSpanId == other.rootSpanId && isRoot == other.isRoot && spanAttributes == other.spanAttributes && origin == other.origin && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectLogsEvent && id == other.id && _xactId == other._xactId && created == other.created && logId == other.logId && orgId == other.orgId && projectId == other.projectId && rootSpanId == other.rootSpanId && spanId == other.spanId && context == other.context && error == other.error && expected == other.expected && input == other.input && isRoot == other.isRoot && metadata == other.metadata && metrics == other.metrics && origin == other.origin && output == other.output && scores == other.scores && spanAttributes == other.spanAttributes && spanParents == other.spanParents && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _xactId, created, orgId, projectId, logId, input, output, expected, error, scores, metadata, tags, metrics, context, spanId, spanParents, rootSpanId, isRoot, spanAttributes, origin, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, _xactId, created, logId, orgId, projectId, rootSpanId, spanId, context, error, expected, input, isRoot, metadata, metrics, origin, output, scores, spanAttributes, spanParents, tags, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ProjectLogsEvent{id=$id, _xactId=$_xactId, created=$created, orgId=$orgId, projectId=$projectId, logId=$logId, input=$input, output=$output, expected=$expected, error=$error, scores=$scores, metadata=$metadata, tags=$tags, metrics=$metrics, context=$context, spanId=$spanId, spanParents=$spanParents, rootSpanId=$rootSpanId, isRoot=$isRoot, spanAttributes=$spanAttributes, origin=$origin, additionalProperties=$additionalProperties}"
+        "ProjectLogsEvent{id=$id, _xactId=$_xactId, created=$created, logId=$logId, orgId=$orgId, projectId=$projectId, rootSpanId=$rootSpanId, spanId=$spanId, context=$context, error=$error, expected=$expected, input=$input, isRoot=$isRoot, metadata=$metadata, metrics=$metrics, origin=$origin, output=$output, scores=$scores, spanAttributes=$spanAttributes, spanParents=$spanParents, tags=$tags, additionalProperties=$additionalProperties}"
 }

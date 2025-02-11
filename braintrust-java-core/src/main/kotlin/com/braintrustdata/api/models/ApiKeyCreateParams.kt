@@ -3,73 +3,115 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Create a new api_key. It is possible to have multiple API keys with the same name. There is no
+ * de-duplication
+ */
 class ApiKeyCreateParams
-constructor(
-    private val name: String,
-    private val orgName: String?,
+private constructor(
+    private val body: ApiKeyCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun name(): String = name
+    /** Name of the api key. Does not have to be unique */
+    fun name(): String = body.name()
 
-    fun orgName(): Optional<String> = Optional.ofNullable(orgName)
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, you may specify the name of the organization the
+     * API key belongs in.
+     */
+    fun orgName(): Optional<String> = body.orgName()
+
+    /** Name of the api key. Does not have to be unique */
+    fun _name(): JsonField<String> = body._name()
+
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, you may specify the name of the organization the
+     * API key belongs in.
+     */
+    fun _orgName(): JsonField<String> = body._orgName()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): ApiKeyCreateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): ApiKeyCreateBody {
-        return ApiKeyCreateBody(
-            name,
-            orgName,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @JsonDeserialize(builder = ApiKeyCreateBody.Builder::class)
     @NoAutoDetect
     class ApiKeyCreateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val orgName: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("org_name")
+        @ExcludeMissing
+        private val orgName: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Name of the api key. Does not have to be unique */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String = name.getRequired("name")
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the API key belongs in.
          */
-        @JsonProperty("org_name") fun orgName(): String? = orgName
+        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+
+        /** Name of the api key. Does not have to be unique */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the API key belongs in.
+         */
+        @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ApiKeyCreateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            orgName()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -78,47 +120,69 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ApiKeyCreateBody]. */
+        class Builder internal constructor() {
 
-            private var name: String? = null
-            private var orgName: String? = null
+            private var name: JsonField<String>? = null
+            private var orgName: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(apiKeyCreateBody: ApiKeyCreateBody) = apply {
-                this.name = apiKeyCreateBody.name
-                this.orgName = apiKeyCreateBody.orgName
-                additionalProperties(apiKeyCreateBody.additionalProperties)
+                name = apiKeyCreateBody.name
+                orgName = apiKeyCreateBody.orgName
+                additionalProperties = apiKeyCreateBody.additionalProperties.toMutableMap()
             }
 
             /** Name of the api key. Does not have to be unique */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** Name of the api key. Does not have to be unique */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
              * your API key belongs to multiple organizations, you may specify the name of the
              * organization the API key belongs in.
              */
-            @JsonProperty("org_name")
-            fun orgName(orgName: String) = apply { this.orgName = orgName }
+            fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, you may specify the name of the
+             * organization the API key belongs in.
+             */
+            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, you may specify the name of the
+             * organization the API key belongs in.
+             */
+            fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): ApiKeyCreateBody =
                 ApiKeyCreateBody(
-                    checkNotNull(name) { "`name` is required but was not set" },
+                    checkRequired("name", name),
                     orgName,
                     additionalProperties.toImmutable(),
                 )
@@ -149,33 +213,66 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ApiKeyCreateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
-        private var name: String? = null
-        private var orgName: String? = null
+        private var body: ApiKeyCreateBody.Builder = ApiKeyCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(apiKeyCreateParams: ApiKeyCreateParams) = apply {
-            name = apiKeyCreateParams.name
-            orgName = apiKeyCreateParams.orgName
+            body = apiKeyCreateParams.body.toBuilder()
             additionalHeaders = apiKeyCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = apiKeyCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = apiKeyCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the api key. Does not have to be unique */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply { body.name(name) }
+
+        /** Name of the api key. Does not have to be unique */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the API key belongs in.
          */
-        fun orgName(orgName: String) = apply { this.orgName = orgName }
+        fun orgName(orgName: String?) = apply { body.orgName(orgName) }
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the API key belongs in.
+         */
+        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the API key belongs in.
+         */
+        fun orgName(orgName: JsonField<String>) = apply { body.orgName(orgName) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -275,35 +372,11 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ApiKeyCreateParams =
             ApiKeyCreateParams(
-                checkNotNull(name) { "`name` is required but was not set" },
-                orgName,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -312,11 +385,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ApiKeyCreateParams && name == other.name && orgName == other.orgName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ApiKeyCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, orgName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ApiKeyCreateParams{name=$name, orgName=$orgName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ApiKeyCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

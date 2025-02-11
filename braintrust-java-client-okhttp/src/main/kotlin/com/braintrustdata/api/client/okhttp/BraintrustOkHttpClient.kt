@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
+import java.util.Optional
 
 class BraintrustOkHttpClient private constructor() {
 
@@ -21,7 +22,8 @@ class BraintrustOkHttpClient private constructor() {
         @JvmStatic fun fromEnv(): BraintrustClient = builder().fromEnv().build()
     }
 
-    class Builder {
+    /** A builder for [BraintrustOkHttpClient]. */
+    class Builder internal constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()
         private var baseUrl: String = ClientOptions.PRODUCTION_URL
@@ -129,6 +131,8 @@ class BraintrustOkHttpClient private constructor() {
         }
 
         fun apiKey(apiKey: String?) = apply { clientOptions.apiKey(apiKey) }
+
+        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.orElse(null))
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 

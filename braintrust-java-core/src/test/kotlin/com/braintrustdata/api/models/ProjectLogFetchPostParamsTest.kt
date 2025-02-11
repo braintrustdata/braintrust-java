@@ -2,18 +2,17 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ProjectLogFetchPostParamsTest {
 
     @Test
-    fun createProjectLogFetchPostParams() {
+    fun create() {
         ProjectLogFetchPostParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .cursor("cursor")
-            .limit(123L)
+            .limit(0L)
             .maxRootSpanId("max_root_span_id")
             .maxXactId("max_xact_id")
             .version("version")
@@ -21,32 +20,32 @@ class ProjectLogFetchPostParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ProjectLogFetchPostParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .cursor("cursor")
-                .limit(123L)
+                .limit(0L)
                 .maxRootSpanId("max_root_span_id")
                 .maxXactId("max_xact_id")
                 .version("version")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.cursor()).isEqualTo("cursor")
-        assertThat(body.limit()).isEqualTo(123L)
-        assertThat(body.maxRootSpanId()).isEqualTo("max_root_span_id")
-        assertThat(body.maxXactId()).isEqualTo("max_xact_id")
-        assertThat(body.version()).isEqualTo("version")
+        assertThat(body.cursor()).contains("cursor")
+        assertThat(body.limit()).contains(0L)
+        assertThat(body.maxRootSpanId()).contains("max_root_span_id")
+        assertThat(body.maxXactId()).contains("max_xact_id")
+        assertThat(body.version()).contains("version")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ProjectLogFetchPostParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

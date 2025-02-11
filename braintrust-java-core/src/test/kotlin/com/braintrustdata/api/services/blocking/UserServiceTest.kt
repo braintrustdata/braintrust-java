@@ -4,8 +4,8 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.*
 import com.braintrustdata.api.models.UserListParams
+import com.braintrustdata.api.models.UserRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

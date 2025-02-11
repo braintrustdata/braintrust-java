@@ -4,11 +4,46 @@ package com.braintrustdata.api.client
 
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.getPackageVersion
-import com.braintrustdata.api.models.*
-import com.braintrustdata.api.services.blocking.*
+import com.braintrustdata.api.services.blocking.AclService
+import com.braintrustdata.api.services.blocking.AclServiceImpl
+import com.braintrustdata.api.services.blocking.AiSecretService
+import com.braintrustdata.api.services.blocking.AiSecretServiceImpl
+import com.braintrustdata.api.services.blocking.ApiKeyService
+import com.braintrustdata.api.services.blocking.ApiKeyServiceImpl
+import com.braintrustdata.api.services.blocking.DatasetService
+import com.braintrustdata.api.services.blocking.DatasetServiceImpl
+import com.braintrustdata.api.services.blocking.EnvVarService
+import com.braintrustdata.api.services.blocking.EnvVarServiceImpl
+import com.braintrustdata.api.services.blocking.EvalService
+import com.braintrustdata.api.services.blocking.EvalServiceImpl
+import com.braintrustdata.api.services.blocking.ExperimentService
+import com.braintrustdata.api.services.blocking.ExperimentServiceImpl
+import com.braintrustdata.api.services.blocking.FunctionService
+import com.braintrustdata.api.services.blocking.FunctionServiceImpl
+import com.braintrustdata.api.services.blocking.GroupService
+import com.braintrustdata.api.services.blocking.GroupServiceImpl
+import com.braintrustdata.api.services.blocking.OrganizationService
+import com.braintrustdata.api.services.blocking.OrganizationServiceImpl
+import com.braintrustdata.api.services.blocking.ProjectScoreService
+import com.braintrustdata.api.services.blocking.ProjectScoreServiceImpl
+import com.braintrustdata.api.services.blocking.ProjectService
+import com.braintrustdata.api.services.blocking.ProjectServiceImpl
+import com.braintrustdata.api.services.blocking.ProjectTagService
+import com.braintrustdata.api.services.blocking.ProjectTagServiceImpl
+import com.braintrustdata.api.services.blocking.PromptService
+import com.braintrustdata.api.services.blocking.PromptServiceImpl
+import com.braintrustdata.api.services.blocking.RoleService
+import com.braintrustdata.api.services.blocking.RoleServiceImpl
+import com.braintrustdata.api.services.blocking.SpanIframeService
+import com.braintrustdata.api.services.blocking.SpanIframeServiceImpl
+import com.braintrustdata.api.services.blocking.TopLevelService
+import com.braintrustdata.api.services.blocking.TopLevelServiceImpl
+import com.braintrustdata.api.services.blocking.UserService
+import com.braintrustdata.api.services.blocking.UserServiceImpl
+import com.braintrustdata.api.services.blocking.ViewService
+import com.braintrustdata.api.services.blocking.ViewServiceImpl
 
-class BraintrustClientImpl
-constructor(
+class BraintrustClientImpl(
     private val clientOptions: ClientOptions,
 ) : BraintrustClient {
 
@@ -116,4 +151,6 @@ constructor(
     override fun envVars(): EnvVarService = envVars
 
     override fun evals(): EvalService = evals
+
+    override fun close() = clientOptions.httpClient.close()
 }

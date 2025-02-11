@@ -3,27 +3,30 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 
+/** Get a role object by its id */
 class RoleRetrieveParams
-constructor(
+private constructor(
     private val roleId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Role id */
     fun roleId(): String = roleId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -39,8 +42,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [RoleRetrieveParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var roleId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -156,7 +160,7 @@ constructor(
 
         fun build(): RoleRetrieveParams =
             RoleRetrieveParams(
-                checkNotNull(roleId) { "`roleId` is required but was not set" },
+                checkRequired("roleId", roleId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

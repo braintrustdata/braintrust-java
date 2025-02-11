@@ -2,8 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -11,57 +10,61 @@ import org.junit.jupiter.api.Test
 class DatasetInsertParamsTest {
 
     @Test
-    fun createDatasetInsertParams() {
+    fun create() {
         DatasetInsertParams.builder()
             .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .events(
-                listOf(
-                    InsertDatasetEvent.builder()
-                        .id("id")
-                        ._isMerge(true)
-                        ._mergePaths(listOf(listOf("string")))
-                        ._objectDelete(true)
-                        ._parentId("_parent_id")
-                        .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .expected(JsonNull.of())
-                        .input(JsonNull.of())
-                        .metadata(InsertDatasetEvent.Metadata.builder().build())
-                        .rootSpanId("root_span_id")
-                        .spanId("span_id")
-                        .spanParents(listOf("string"))
-                        .tags(listOf("string"))
-                        .build()
-                )
+            .addEvent(
+                InsertDatasetEvent.builder()
+                    .id("id")
+                    ._isMerge(true)
+                    .addMergePath(listOf("string"))
+                    ._objectDelete(true)
+                    ._parentId("_parent_id")
+                    .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .expected(JsonValue.from(mapOf<String, Any>()))
+                    .input(JsonValue.from(mapOf<String, Any>()))
+                    .metadata(
+                        InsertDatasetEvent.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .rootSpanId("root_span_id")
+                    .spanId("span_id")
+                    .addSpanParent("string")
+                    .addTag("string")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             DatasetInsertParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .events(
-                    listOf(
-                        InsertDatasetEvent.builder()
-                            .id("id")
-                            ._isMerge(true)
-                            ._mergePaths(listOf(listOf("string")))
-                            ._objectDelete(true)
-                            ._parentId("_parent_id")
-                            .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .expected(JsonNull.of())
-                            .input(JsonNull.of())
-                            .metadata(InsertDatasetEvent.Metadata.builder().build())
-                            .rootSpanId("root_span_id")
-                            .spanId("span_id")
-                            .spanParents(listOf("string"))
-                            .tags(listOf("string"))
-                            .build()
-                    )
+                .addEvent(
+                    InsertDatasetEvent.builder()
+                        .id("id")
+                        ._isMerge(true)
+                        .addMergePath(listOf("string"))
+                        ._objectDelete(true)
+                        ._parentId("_parent_id")
+                        .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .input(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            InsertDatasetEvent.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .rootSpanId("root_span_id")
+                        .spanId("span_id")
+                        .addSpanParent("string")
+                        .addTag("string")
+                        .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.events())
             .isEqualTo(
@@ -69,30 +72,34 @@ class DatasetInsertParamsTest {
                     InsertDatasetEvent.builder()
                         .id("id")
                         ._isMerge(true)
-                        ._mergePaths(listOf(listOf("string")))
+                        .addMergePath(listOf("string"))
                         ._objectDelete(true)
                         ._parentId("_parent_id")
                         .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .expected(JsonNull.of())
-                        .input(JsonNull.of())
-                        .metadata(InsertDatasetEvent.Metadata.builder().build())
+                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .input(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            InsertDatasetEvent.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .rootSpanId("root_span_id")
                         .spanId("span_id")
-                        .spanParents(listOf("string"))
-                        .tags(listOf("string"))
+                        .addSpanParent("string")
+                        .addTag("string")
                         .build()
                 )
             )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             DatasetInsertParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .events(listOf(InsertDatasetEvent.builder().build()))
+                .addEvent(InsertDatasetEvent.builder().build())
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.events()).isEqualTo(listOf(InsertDatasetEvent.builder().build()))
     }
@@ -102,7 +109,7 @@ class DatasetInsertParamsTest {
         val params =
             DatasetInsertParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .events(listOf(InsertDatasetEvent.builder().build()))
+                .addEvent(InsertDatasetEvent.builder().build())
                 .build()
         assertThat(params).isNotNull
         // path param "datasetId"

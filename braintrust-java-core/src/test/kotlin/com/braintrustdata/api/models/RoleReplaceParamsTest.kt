@@ -2,57 +2,52 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class RoleReplaceParamsTest {
 
     @Test
-    fun createRoleReplaceParams() {
+    fun create() {
         RoleReplaceParams.builder()
             .name("x")
             .description("description")
-            .memberPermissions(
-                listOf(
-                    RoleReplaceParams.MemberPermission.builder()
-                        .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                        )
-                        .build()
-                )
+            .addMemberPermission(
+                RoleReplaceParams.MemberPermission.builder()
+                    .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
+                    .restrictObjectType(
+                        RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
+                    )
+                    .build()
             )
-            .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .orgName("org_name")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             RoleReplaceParams.builder()
                 .name("x")
                 .description("description")
-                .memberPermissions(
-                    listOf(
-                        RoleReplaceParams.MemberPermission.builder()
-                            .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
-                            .restrictObjectType(
-                                RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                            )
-                            .build()
-                    )
+                .addMemberPermission(
+                    RoleReplaceParams.MemberPermission.builder()
+                        .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
+                        .restrictObjectType(
+                            RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
+                        )
+                        .build()
                 )
-                .memberRoles(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .orgName("org_name")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
-        assertThat(body.description()).isEqualTo("description")
+        assertThat(body.description()).contains("description")
         assertThat(body.memberPermissions())
-            .isEqualTo(
+            .contains(
                 listOf(
                     RoleReplaceParams.MemberPermission.builder()
                         .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
@@ -62,14 +57,14 @@ class RoleReplaceParamsTest {
                         .build()
                 )
             )
-        assertThat(body.memberRoles()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        assertThat(body.orgName()).isEqualTo("org_name")
+        assertThat(body.memberRoles()).contains(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+        assertThat(body.orgName()).contains("org_name")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = RoleReplaceParams.builder().name("x").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
     }

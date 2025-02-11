@@ -2,15 +2,14 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ViewUpdateParamsTest {
 
     @Test
-    fun createViewUpdateParams() {
+    fun create() {
         ViewUpdateParams.builder()
             .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -18,9 +17,17 @@ class ViewUpdateParamsTest {
             .name("name")
             .options(
                 ViewOptions.builder()
-                    .columnOrder(listOf("string"))
-                    .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                    .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                    .addColumnOrder("string")
+                    .columnSizing(
+                        ViewOptions.ColumnSizing.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .columnVisibility(
+                        ViewOptions.ColumnVisibility.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(true))
+                            .build()
+                    )
                     .build()
             )
             .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -28,10 +35,10 @@ class ViewUpdateParamsTest {
                 ViewData.builder()
                     .search(
                         ViewDataSearch.builder()
-                            .filter(listOf(JsonNull.of()))
-                            .match(listOf(JsonNull.of()))
-                            .sort(listOf(JsonNull.of()))
-                            .tag(listOf(JsonNull.of()))
+                            .addFilter(JsonValue.from(mapOf<String, Any>()))
+                            .addMatch(JsonValue.from(mapOf<String, Any>()))
+                            .addSort(JsonValue.from(mapOf<String, Any>()))
+                            .addTag(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
                     .build()
@@ -41,7 +48,7 @@ class ViewUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ViewUpdateParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -50,9 +57,17 @@ class ViewUpdateParamsTest {
                 .name("name")
                 .options(
                     ViewOptions.builder()
-                        .columnOrder(listOf("string"))
-                        .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                        .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                        .addColumnOrder("string")
+                        .columnSizing(
+                            ViewOptions.ColumnSizing.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
+                        .columnVisibility(
+                            ViewOptions.ColumnVisibility.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(true))
+                                .build()
+                        )
                         .build()
                 )
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -60,55 +75,63 @@ class ViewUpdateParamsTest {
                     ViewData.builder()
                         .search(
                             ViewDataSearch.builder()
-                                .filter(listOf(JsonNull.of()))
-                                .match(listOf(JsonNull.of()))
-                                .sort(listOf(JsonNull.of()))
-                                .tag(listOf(JsonNull.of()))
+                                .addFilter(JsonValue.from(mapOf<String, Any>()))
+                                .addMatch(JsonValue.from(mapOf<String, Any>()))
+                                .addSort(JsonValue.from(mapOf<String, Any>()))
+                                .addTag(JsonValue.from(mapOf<String, Any>()))
                                 .build()
                         )
                         .build()
                 )
                 .viewType(ViewUpdateParams.ViewType.PROJECTS)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(ViewUpdateParams.ObjectType.ORGANIZATION)
-        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.name()).contains("name")
         assertThat(body.options())
-            .isEqualTo(
+            .contains(
                 ViewOptions.builder()
-                    .columnOrder(listOf("string"))
-                    .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                    .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
-                    .build()
-            )
-        assertThat(body.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.viewData())
-            .isEqualTo(
-                ViewData.builder()
-                    .search(
-                        ViewDataSearch.builder()
-                            .filter(listOf(JsonNull.of()))
-                            .match(listOf(JsonNull.of()))
-                            .sort(listOf(JsonNull.of()))
-                            .tag(listOf(JsonNull.of()))
+                    .addColumnOrder("string")
+                    .columnSizing(
+                        ViewOptions.ColumnSizing.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .columnVisibility(
+                        ViewOptions.ColumnVisibility.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(true))
                             .build()
                     )
                     .build()
             )
-        assertThat(body.viewType()).isEqualTo(ViewUpdateParams.ViewType.PROJECTS)
+        assertThat(body.userId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.viewData())
+            .contains(
+                ViewData.builder()
+                    .search(
+                        ViewDataSearch.builder()
+                            .addFilter(JsonValue.from(mapOf<String, Any>()))
+                            .addMatch(JsonValue.from(mapOf<String, Any>()))
+                            .addSort(JsonValue.from(mapOf<String, Any>()))
+                            .addTag(JsonValue.from(mapOf<String, Any>()))
+                            .build()
+                    )
+                    .build()
+            )
+        assertThat(body.viewType()).contains(ViewUpdateParams.ViewType.PROJECTS)
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ViewUpdateParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectType(ViewUpdateParams.ObjectType.ORGANIZATION)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(ViewUpdateParams.ObjectType.ORGANIZATION)

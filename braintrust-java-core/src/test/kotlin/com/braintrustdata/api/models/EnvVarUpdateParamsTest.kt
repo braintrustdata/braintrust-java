@@ -2,14 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class EnvVarUpdateParamsTest {
 
     @Test
-    fun createEnvVarUpdateParams() {
+    fun create() {
         EnvVarUpdateParams.builder()
             .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .name("name")
@@ -18,27 +17,27 @@ class EnvVarUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             EnvVarUpdateParams.builder()
                 .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
                 .value("value")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
-        assertThat(body.value()).isEqualTo("value")
+        assertThat(body.value()).contains("value")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             EnvVarUpdateParams.builder()
                 .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
     }

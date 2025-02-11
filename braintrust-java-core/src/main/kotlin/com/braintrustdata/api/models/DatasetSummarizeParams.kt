@@ -3,32 +3,35 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 import java.util.Optional
 
+/** Summarize dataset */
 class DatasetSummarizeParams
-constructor(
+private constructor(
     private val datasetId: String,
     private val summarizeData: Boolean?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Dataset id */
     fun datasetId(): String = datasetId
 
+    /** Whether to summarize the data. If false (or omitted), only the metadata will be returned. */
     fun summarizeData(): Optional<Boolean> = Optional.ofNullable(summarizeData)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.summarizeData?.let { queryParams.put("summarize_data", listOf(it.toString())) }
         queryParams.putAll(additionalQueryParams)
@@ -49,8 +52,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [DatasetSummarizeParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var datasetId: String? = null
         private var summarizeData: Boolean? = null
@@ -71,7 +75,19 @@ constructor(
         /**
          * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
          */
-        fun summarizeData(summarizeData: Boolean) = apply { this.summarizeData = summarizeData }
+        fun summarizeData(summarizeData: Boolean?) = apply { this.summarizeData = summarizeData }
+
+        /**
+         * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
+         */
+        fun summarizeData(summarizeData: Boolean) = summarizeData(summarizeData as Boolean?)
+
+        /**
+         * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun summarizeData(summarizeData: Optional<Boolean>) =
+            summarizeData(summarizeData.orElse(null) as Boolean?)
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -173,7 +189,7 @@ constructor(
 
         fun build(): DatasetSummarizeParams =
             DatasetSummarizeParams(
-                checkNotNull(datasetId) { "`datasetId` is required but was not set" },
+                checkRequired("datasetId", datasetId),
                 summarizeData,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),

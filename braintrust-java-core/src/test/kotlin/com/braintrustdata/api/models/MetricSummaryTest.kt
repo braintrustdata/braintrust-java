@@ -11,19 +11,19 @@ class MetricSummaryTest {
     fun createMetricSummary() {
         val metricSummary =
             MetricSummary.builder()
-                .improvements(123L)
-                .metric(42.23)
+                .improvements(0L)
+                .metric(0.0)
                 .name("name")
-                .regressions(123L)
+                .regressions(0L)
                 .unit("unit")
-                .diff(42.23)
+                .diff(0.0)
                 .build()
         assertThat(metricSummary).isNotNull
-        assertThat(metricSummary.improvements()).isEqualTo(123L)
-        assertThat(metricSummary.metric()).isEqualTo(42.23)
+        assertThat(metricSummary.improvements()).isEqualTo(0L)
+        assertThat(metricSummary.metric()).isEqualTo(0.0)
         assertThat(metricSummary.name()).isEqualTo("name")
-        assertThat(metricSummary.regressions()).isEqualTo(123L)
+        assertThat(metricSummary.regressions()).isEqualTo(0L)
         assertThat(metricSummary.unit()).isEqualTo("unit")
-        assertThat(metricSummary.diff()).contains(42.23)
+        assertThat(metricSummary.diff()).contains(0.0)
     }
 }

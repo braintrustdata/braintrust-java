@@ -6,11 +6,11 @@ import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.JsonNode
@@ -21,8 +21,12 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * List out all datasets. The datasets are sorted by creation date, with the most recently-created
+ * datasets coming first
+ */
 class DatasetListParams
-constructor(
+private constructor(
     private val datasetName: String?,
     private val endingBefore: String?,
     private val ids: Ids?,
@@ -33,32 +37,54 @@ constructor(
     private val startingAfter: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Name of the dataset to search for */
     fun datasetName(): Optional<String> = Optional.ofNullable(datasetName)
 
+    /**
+     * Pagination cursor id.
+     *
+     * For example, if the initial item in the last page you fetched had an id of `foo`, pass
+     * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
+     * `starting_after` and `ending_before`
+     */
     fun endingBefore(): Optional<String> = Optional.ofNullable(endingBefore)
 
+    /**
+     * Filter search results to a particular set of object IDs. To specify a list of IDs, include
+     * the query param multiple times
+     */
     fun ids(): Optional<Ids> = Optional.ofNullable(ids)
 
+    /** Limit the number of objects to return */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
+    /** Filter search results to within a particular organization */
     fun orgName(): Optional<String> = Optional.ofNullable(orgName)
 
+    /** Project id */
     fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
+    /** Name of the project to search for */
     fun projectName(): Optional<String> = Optional.ofNullable(projectName)
 
+    /**
+     * Pagination cursor id.
+     *
+     * For example, if the final item in the last page you fetched had an id of `foo`, pass
+     * `starting_after=foo` to fetch the next page. Note: you may only pass one of `starting_after`
+     * and `ending_before`
+     */
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.datasetName?.let { queryParams.put("dataset_name", listOf(it.toString())) }
         this.endingBefore?.let { queryParams.put("ending_before", listOf(it.toString())) }
@@ -79,8 +105,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [DatasetListParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var datasetName: String? = null
         private var endingBefore: String? = null
@@ -108,7 +135,10 @@ constructor(
         }
 
         /** Name of the dataset to search for */
-        fun datasetName(datasetName: String) = apply { this.datasetName = datasetName }
+        fun datasetName(datasetName: String?) = apply { this.datasetName = datasetName }
+
+        /** Name of the dataset to search for */
+        fun datasetName(datasetName: Optional<String>) = datasetName(datasetName.orElse(null))
 
         /**
          * Pagination cursor id.
@@ -117,37 +147,68 @@ constructor(
          * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun endingBefore(endingBefore: String) = apply { this.endingBefore = endingBefore }
+        fun endingBefore(endingBefore: String?) = apply { this.endingBefore = endingBefore }
+
+        /**
+         * Pagination cursor id.
+         *
+         * For example, if the initial item in the last page you fetched had an id of `foo`, pass
+         * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
+         * `starting_after` and `ending_before`
+         */
+        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.orElse(null))
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Ids) = apply { this.ids = ids }
+        fun ids(ids: Ids?) = apply { this.ids = ids }
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(string: String) = apply { this.ids = Ids.ofString(string) }
+        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun idsOfStrings(strings: List<String>) = apply { this.ids = Ids.ofStrings(strings) }
+        fun ids(string: String) = ids(Ids.ofString(string))
+
+        /**
+         * Filter search results to a particular set of object IDs. To specify a list of IDs,
+         * include the query param multiple times
+         */
+        fun idsOfStrings(strings: List<String>) = ids(Ids.ofStrings(strings))
 
         /** Limit the number of objects to return */
-        fun limit(limit: Long) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply { this.limit = limit }
+
+        /** Limit the number of objects to return */
+        fun limit(limit: Long) = limit(limit as Long?)
+
+        /** Limit the number of objects to return */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
 
         /** Filter search results to within a particular organization */
-        fun orgName(orgName: String) = apply { this.orgName = orgName }
+        fun orgName(orgName: String?) = apply { this.orgName = orgName }
+
+        /** Filter search results to within a particular organization */
+        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
 
         /** Project id */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Project id */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.orElse(null))
 
         /** Name of the project to search for */
-        fun projectName(projectName: String) = apply { this.projectName = projectName }
+        fun projectName(projectName: String?) = apply { this.projectName = projectName }
+
+        /** Name of the project to search for */
+        fun projectName(projectName: Optional<String>) = projectName(projectName.orElse(null))
 
         /**
          * Pagination cursor id.
@@ -156,7 +217,17 @@ constructor(
          * `starting_after=foo` to fetch the next page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun startingAfter(startingAfter: String) = apply { this.startingAfter = startingAfter }
+        fun startingAfter(startingAfter: String?) = apply { this.startingAfter = startingAfter }
+
+        /**
+         * Pagination cursor id.
+         *
+         * For example, if the final item in the last page you fetched had an id of `foo`, pass
+         * `starting_after=foo` to fetch the next page. Note: you may only pass one of
+         * `starting_after` and `ending_before`
+         */
+        fun startingAfter(startingAfter: Optional<String>) =
+            startingAfter(startingAfter.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -271,6 +342,10 @@ constructor(
             )
     }
 
+    /**
+     * Filter search results to a particular set of object IDs. To specify a list of IDs, include
+     * the query param multiple times
+     */
     @JsonDeserialize(using = Ids.Deserializer::class)
     @JsonSerialize(using = Ids.Serializer::class)
     class Ids
@@ -279,8 +354,6 @@ constructor(
         private val strings: List<String>? = null,
         private val _json: JsonValue? = null,
     ) {
-
-        private var validated: Boolean = false
 
         fun string(): Optional<String> = Optional.ofNullable(string)
 
@@ -301,15 +374,6 @@ constructor(
                 string != null -> visitor.visitString(string)
                 strings != null -> visitor.visitStrings(strings)
                 else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Ids = apply {
-            if (!validated) {
-                if (string == null && strings == null) {
-                    throw BraintrustInvalidDataException("Unknown Ids: $_json")
-                }
-                validated = true
             }
         }
 
@@ -338,18 +402,28 @@ constructor(
             @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
         }
 
+        /** An interface that defines how to map each variant of [Ids] to a value of type [T]. */
         interface Visitor<out T> {
 
             fun visitString(string: String): T
 
             fun visitStrings(strings: List<String>): T
 
+            /**
+             * Maps an unknown variant of [Ids] to a value of type [T].
+             *
+             * An instance of [Ids] can contain an unknown variant if it was deserialized from data
+             * that doesn't match any known variant. For example, if the SDK is on an older version
+             * than the API, then the API may respond with new variants that the SDK is unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw BraintrustInvalidDataException("Unknown Ids: $json")
             }
         }
 
-        class Deserializer : BaseDeserializer<Ids>(Ids::class) {
+        internal class Deserializer : BaseDeserializer<Ids>(Ids::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Ids {
                 val json = JsonValue.fromJsonNode(node)
@@ -365,7 +439,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Ids>(Ids::class) {
+        internal class Serializer : BaseSerializer<Ids>(Ids::class) {
 
             override fun serialize(
                 value: Ids,

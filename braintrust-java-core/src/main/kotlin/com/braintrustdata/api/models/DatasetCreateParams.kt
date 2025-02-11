@@ -3,85 +3,134 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Create a new dataset. If there is an existing dataset in the project with the same name as the
+ * one specified in the request, will return the existing dataset unmodified
+ */
 class DatasetCreateParams
-constructor(
-    private val name: String,
-    private val projectId: String,
-    private val description: String?,
-    private val metadata: Metadata?,
+private constructor(
+    private val body: DatasetCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun name(): String = name
+    /** Name of the dataset. Within a project, dataset names are unique */
+    fun name(): String = body.name()
 
-    fun projectId(): String = projectId
+    /** Unique identifier for the project that the dataset belongs under */
+    fun projectId(): String = body.projectId()
 
-    fun description(): Optional<String> = Optional.ofNullable(description)
+    /** Textual description of the dataset */
+    fun description(): Optional<String> = body.description()
 
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
+    /** User-controlled metadata about the dataset */
+    fun metadata(): Optional<Metadata> = body.metadata()
+
+    /** Name of the dataset. Within a project, dataset names are unique */
+    fun _name(): JsonField<String> = body._name()
+
+    /** Unique identifier for the project that the dataset belongs under */
+    fun _projectId(): JsonField<String> = body._projectId()
+
+    /** Textual description of the dataset */
+    fun _description(): JsonField<String> = body._description()
+
+    /** User-controlled metadata about the dataset */
+    fun _metadata(): JsonField<Metadata> = body._metadata()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): DatasetCreateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): DatasetCreateBody {
-        return DatasetCreateBody(
-            name,
-            projectId,
-            description,
-            metadata,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @JsonDeserialize(builder = DatasetCreateBody.Builder::class)
     @NoAutoDetect
     class DatasetCreateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val projectId: String?,
-        private val description: String?,
-        private val metadata: Metadata?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_id")
+        @ExcludeMissing
+        private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        private val metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Name of the dataset. Within a project, dataset names are unique */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String = name.getRequired("name")
 
         /** Unique identifier for the project that the dataset belongs under */
-        @JsonProperty("project_id") fun projectId(): String? = projectId
+        fun projectId(): String = projectId.getRequired("project_id")
 
         /** Textual description of the dataset */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
 
         /** User-controlled metadata about the dataset */
-        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
+        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+
+        /** Name of the dataset. Within a project, dataset names are unique */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /** Unique identifier for the project that the dataset belongs under */
+        @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+
+        /** Textual description of the dataset */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /** User-controlled metadata about the dataset */
+        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): DatasetCreateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            projectId()
+            description()
+            metadata().ifPresent { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -90,56 +139,79 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [DatasetCreateBody]. */
+        class Builder internal constructor() {
 
-            private var name: String? = null
-            private var projectId: String? = null
-            private var description: String? = null
-            private var metadata: Metadata? = null
+            private var name: JsonField<String>? = null
+            private var projectId: JsonField<String>? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var metadata: JsonField<Metadata> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(datasetCreateBody: DatasetCreateBody) = apply {
-                this.name = datasetCreateBody.name
-                this.projectId = datasetCreateBody.projectId
-                this.description = datasetCreateBody.description
-                this.metadata = datasetCreateBody.metadata
-                additionalProperties(datasetCreateBody.additionalProperties)
+                name = datasetCreateBody.name
+                projectId = datasetCreateBody.projectId
+                description = datasetCreateBody.description
+                metadata = datasetCreateBody.metadata
+                additionalProperties = datasetCreateBody.additionalProperties.toMutableMap()
             }
 
             /** Name of the dataset. Within a project, dataset names are unique */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** Name of the dataset. Within a project, dataset names are unique */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** Unique identifier for the project that the dataset belongs under */
-            @JsonProperty("project_id")
-            fun projectId(projectId: String) = apply { this.projectId = projectId }
+            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+            /** Unique identifier for the project that the dataset belongs under */
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
             /** Textual description of the dataset */
-            @JsonProperty("description")
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** Textual description of the dataset */
+            fun description(description: Optional<String>) = description(description.orElse(null))
+
+            /** Textual description of the dataset */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
 
             /** User-controlled metadata about the dataset */
-            @JsonProperty("metadata")
-            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+            /** User-controlled metadata about the dataset */
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+            /** User-controlled metadata about the dataset */
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): DatasetCreateBody =
                 DatasetCreateBody(
-                    checkNotNull(name) { "`name` is required but was not set" },
-                    checkNotNull(projectId) { "`projectId` is required but was not set" },
+                    checkRequired("name", name),
+                    checkRequired("projectId", projectId),
                     description,
                     metadata,
                     additionalProperties.toImmutable(),
@@ -171,39 +243,69 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [DatasetCreateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
-        private var name: String? = null
-        private var projectId: String? = null
-        private var description: String? = null
-        private var metadata: Metadata? = null
+        private var body: DatasetCreateBody.Builder = DatasetCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(datasetCreateParams: DatasetCreateParams) = apply {
-            name = datasetCreateParams.name
-            projectId = datasetCreateParams.projectId
-            description = datasetCreateParams.description
-            metadata = datasetCreateParams.metadata
+            body = datasetCreateParams.body.toBuilder()
             additionalHeaders = datasetCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = datasetCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = datasetCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the dataset. Within a project, dataset names are unique */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply { body.name(name) }
+
+        /** Name of the dataset. Within a project, dataset names are unique */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** Unique identifier for the project that the dataset belongs under */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+
+        /** Unique identifier for the project that the dataset belongs under */
+        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
 
         /** Textual description of the dataset */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String?) = apply { body.description(description) }
+
+        /** Textual description of the dataset */
+        fun description(description: Optional<String>) = description(description.orElse(null))
+
+        /** Textual description of the dataset */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** User-controlled metadata about the dataset */
-        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+        fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
+
+        /** User-controlled metadata about the dataset */
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+        /** User-controlled metadata about the dataset */
+        fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -303,51 +405,36 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): DatasetCreateParams =
             DatasetCreateParams(
-                checkNotNull(name) { "`name` is required but was not set" },
-                checkNotNull(projectId) { "`projectId` is required but was not set" },
-                description,
-                metadata,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
     /** User-controlled metadata about the dataset */
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -356,27 +443,33 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Metadata]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                additionalProperties(metadata.additionalProperties)
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(additionalProperties.toImmutable())
@@ -404,11 +497,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetCreateParams && name == other.name && projectId == other.projectId && description == other.description && metadata == other.metadata && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is DatasetCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, projectId, description, metadata, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "DatasetCreateParams{name=$name, projectId=$projectId, description=$description, metadata=$metadata, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "DatasetCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

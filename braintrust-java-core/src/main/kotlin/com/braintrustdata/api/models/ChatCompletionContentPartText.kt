@@ -8,45 +8,48 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = ChatCompletionContentPartText.Builder::class)
 @NoAutoDetect
 class ChatCompletionContentPartText
+@JsonCreator
 private constructor(
-    private val text: JsonField<String>,
-    private val type: JsonField<Type>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("text") @ExcludeMissing private val text: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
-
-    fun text(): Optional<String> = Optional.ofNullable(text.getNullable("text"))
 
     fun type(): Type = type.getRequired("type")
 
-    @JsonProperty("text") @ExcludeMissing fun _text() = text
+    fun text(): Optional<String> = Optional.ofNullable(text.getNullable("text"))
 
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+    @JsonProperty("text") @ExcludeMissing fun _text(): JsonField<String> = text
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ChatCompletionContentPartText = apply {
-        if (!validated) {
-            text()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        type()
+        text()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -56,49 +59,51 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [ChatCompletionContentPartText]. */
+    class Builder internal constructor() {
 
+        private var type: JsonField<Type>? = null
         private var text: JsonField<String> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(chatCompletionContentPartText: ChatCompletionContentPartText) = apply {
-            this.text = chatCompletionContentPartText.text
-            this.type = chatCompletionContentPartText.type
-            additionalProperties(chatCompletionContentPartText.additionalProperties)
+            type = chatCompletionContentPartText.type
+            text = chatCompletionContentPartText.text
+            additionalProperties = chatCompletionContentPartText.additionalProperties.toMutableMap()
         }
-
-        fun text(text: String) = text(JsonField.of(text))
-
-        @JsonProperty("text")
-        @ExcludeMissing
-        fun text(text: JsonField<String>) = apply { this.text = text }
 
         fun type(type: Type) = type(JsonField.of(type))
 
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
+
+        fun text(text: String) = text(JsonField.of(text))
+
+        fun text(text: JsonField<String>) = apply { this.text = text }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): ChatCompletionContentPartText =
             ChatCompletionContentPartText(
+                checkRequired("type", type),
                 text,
-                type,
                 additionalProperties.toImmutable(),
             )
     }
@@ -109,7 +114,72 @@ private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val TEXT = of("text")
+
+            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+        }
+
+        /** An enum containing [Type]'s known values. */
+        enum class Known {
+            TEXT,
+        }
+
+        /**
+         * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Type] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            TEXT,
+            /** An enum member indicating that [Type] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                TEXT -> Value.TEXT
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                TEXT -> Known.TEXT
+                else -> throw BraintrustInvalidDataException("Unknown Type: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -122,36 +192,6 @@ private constructor(
         override fun hashCode() = value.hashCode()
 
         override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val TEXT = Type(JsonField.of("text"))
-
-            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-        }
-
-        enum class Known {
-            TEXT,
-        }
-
-        enum class Value {
-            TEXT,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                TEXT -> Value.TEXT
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                TEXT -> Known.TEXT
-                else -> throw BraintrustInvalidDataException("Unknown Type: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -159,15 +199,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ChatCompletionContentPartText && text == other.text && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ChatCompletionContentPartText && type == other.type && text == other.text && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(text, type, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(type, text, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ChatCompletionContentPartText{text=$text, type=$type, additionalProperties=$additionalProperties}"
+        "ChatCompletionContentPartText{type=$type, text=$text, additionalProperties=$additionalProperties}"
 }

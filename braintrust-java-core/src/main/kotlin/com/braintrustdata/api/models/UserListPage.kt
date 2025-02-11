@@ -7,17 +7,22 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.services.blocking.UserService
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/**
+ * List out all users. The users are sorted by creation date, with the most recently-created users
+ * coming first
+ */
 class UserListPage
 private constructor(
     private val usersService: UserService,
@@ -79,15 +84,14 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Response.Builder::class)
     @NoAutoDetect
     class Response
+    @JsonCreator
     constructor(
-        private val objects: JsonField<List<User>>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("objects") private val objects: JsonField<List<User>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         fun objects(): List<User> = objects.getNullable("objects") ?: listOf()
 
@@ -98,11 +102,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                objects().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            objects().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -138,10 +146,8 @@ private constructor(
 
             fun objects(objects: List<User>) = objects(JsonField.of(objects))
 
-            @JsonProperty("objects")
             fun objects(objects: JsonField<List<User>>) = apply { this.objects = objects }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
             }
@@ -150,8 +156,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: UserListPage,
     ) : Iterable<User> {
 

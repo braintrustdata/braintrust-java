@@ -2,54 +2,53 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class GroupUpdateParamsTest {
 
     @Test
-    fun createGroupUpdateParams() {
+    fun create() {
         GroupUpdateParams.builder()
             .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .addMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-            .addMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .addAddMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .addAddMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .description("description")
             .name("x")
-            .removeMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-            .removeMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .addRemoveMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .addRemoveMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             GroupUpdateParams.builder()
                 .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .addMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                .addMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .addAddMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addAddMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .description("description")
                 .name("x")
-                .removeMemberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                .removeMemberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .addRemoveMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addRemoveMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.addMemberGroups()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        assertThat(body.addMemberUsers()).isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        assertThat(body.description()).isEqualTo("description")
-        assertThat(body.name()).isEqualTo("x")
+        assertThat(body.addMemberGroups()).contains(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+        assertThat(body.addMemberUsers()).contains(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+        assertThat(body.description()).contains("description")
+        assertThat(body.name()).contains("x")
         assertThat(body.removeMemberGroups())
-            .isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .contains(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
         assertThat(body.removeMemberUsers())
-            .isEqualTo(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+            .contains(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             GroupUpdateParams.builder().groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

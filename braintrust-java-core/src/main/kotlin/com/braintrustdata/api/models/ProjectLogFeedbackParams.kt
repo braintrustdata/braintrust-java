@@ -3,45 +3,51 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 
+/** Log feedback for a set of project logs events */
 class ProjectLogFeedbackParams
-constructor(
+private constructor(
     private val projectId: String,
-    private val feedback: List<FeedbackProjectLogsItem>,
+    private val body: ProjectLogFeedbackBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** Project id */
     fun projectId(): String = projectId
 
-    fun feedback(): List<FeedbackProjectLogsItem> = feedback
+    /** A list of project logs feedback items */
+    fun feedback(): List<FeedbackProjectLogsItem> = body.feedback()
+
+    /** A list of project logs feedback items */
+    fun _feedback(): JsonField<List<FeedbackProjectLogsItem>> = body._feedback()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): ProjectLogFeedbackBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): ProjectLogFeedbackBody {
-        return ProjectLogFeedbackBody(feedback, additionalBodyProperties)
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -50,20 +56,39 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = ProjectLogFeedbackBody.Builder::class)
     @NoAutoDetect
     class ProjectLogFeedbackBody
+    @JsonCreator
     internal constructor(
-        private val feedback: List<FeedbackProjectLogsItem>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("feedback")
+        @ExcludeMissing
+        private val feedback: JsonField<List<FeedbackProjectLogsItem>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A list of project logs feedback items */
-        @JsonProperty("feedback") fun feedback(): List<FeedbackProjectLogsItem>? = feedback
+        fun feedback(): List<FeedbackProjectLogsItem> = feedback.getRequired("feedback")
+
+        /** A list of project logs feedback items */
+        @JsonProperty("feedback")
+        @ExcludeMissing
+        fun _feedback(): JsonField<List<FeedbackProjectLogsItem>> = feedback
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ProjectLogFeedbackBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            feedback().forEach { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -72,41 +97,62 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ProjectLogFeedbackBody]. */
+        class Builder internal constructor() {
 
-            private var feedback: List<FeedbackProjectLogsItem>? = null
+            private var feedback: JsonField<MutableList<FeedbackProjectLogsItem>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(projectLogFeedbackBody: ProjectLogFeedbackBody) = apply {
-                this.feedback = projectLogFeedbackBody.feedback
-                additionalProperties(projectLogFeedbackBody.additionalProperties)
+                feedback = projectLogFeedbackBody.feedback.map { it.toMutableList() }
+                additionalProperties = projectLogFeedbackBody.additionalProperties.toMutableMap()
             }
 
             /** A list of project logs feedback items */
-            @JsonProperty("feedback")
-            fun feedback(feedback: List<FeedbackProjectLogsItem>) = apply {
-                this.feedback = feedback
+            fun feedback(feedback: List<FeedbackProjectLogsItem>) = feedback(JsonField.of(feedback))
+
+            /** A list of project logs feedback items */
+            fun feedback(feedback: JsonField<List<FeedbackProjectLogsItem>>) = apply {
+                this.feedback = feedback.map { it.toMutableList() }
+            }
+
+            /** A list of project logs feedback items */
+            fun addFeedback(feedback: FeedbackProjectLogsItem) = apply {
+                this.feedback =
+                    (this.feedback ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(feedback)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): ProjectLogFeedbackBody =
                 ProjectLogFeedbackBody(
-                    checkNotNull(feedback) { "`feedback` is required but was not set" }
-                        .toImmutable(),
+                    checkRequired("feedback", feedback).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -136,36 +182,55 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ProjectLogFeedbackParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
-        private var feedback: MutableList<FeedbackProjectLogsItem> = mutableListOf()
+        private var body: ProjectLogFeedbackBody.Builder = ProjectLogFeedbackBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectLogFeedbackParams: ProjectLogFeedbackParams) = apply {
             projectId = projectLogFeedbackParams.projectId
-            feedback = projectLogFeedbackParams.feedback.toMutableList()
+            body = projectLogFeedbackParams.body.toBuilder()
             additionalHeaders = projectLogFeedbackParams.additionalHeaders.toBuilder()
             additionalQueryParams = projectLogFeedbackParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                projectLogFeedbackParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Project id */
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
         /** A list of project logs feedback items */
-        fun feedback(feedback: List<FeedbackProjectLogsItem>) = apply {
-            this.feedback.clear()
-            this.feedback.addAll(feedback)
+        fun feedback(feedback: List<FeedbackProjectLogsItem>) = apply { body.feedback(feedback) }
+
+        /** A list of project logs feedback items */
+        fun feedback(feedback: JsonField<List<FeedbackProjectLogsItem>>) = apply {
+            body.feedback(feedback)
         }
 
         /** A list of project logs feedback items */
-        fun addFeedback(feedback: FeedbackProjectLogsItem) = apply { this.feedback.add(feedback) }
+        fun addFeedback(feedback: FeedbackProjectLogsItem) = apply { body.addFeedback(feedback) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -265,35 +330,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ProjectLogFeedbackParams =
             ProjectLogFeedbackParams(
-                checkNotNull(projectId) { "`projectId` is required but was not set" },
-                feedback.toImmutable(),
+                checkRequired("projectId", projectId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -302,11 +344,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectLogFeedbackParams && projectId == other.projectId && feedback == other.feedback && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectLogFeedbackParams && projectId == other.projectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, feedback, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ProjectLogFeedbackParams{projectId=$projectId, feedback=$feedback, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectLogFeedbackParams{projectId=$projectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

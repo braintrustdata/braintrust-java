@@ -3,98 +3,167 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Create a new ai_secret. If there is an existing ai_secret with the same name as the one specified
+ * in the request, will return the existing ai_secret unmodified
+ */
 class AiSecretCreateParams
-constructor(
-    private val name: String,
-    private val metadata: Metadata?,
-    private val orgName: String?,
-    private val secret: String?,
-    private val type: String?,
+private constructor(
+    private val body: AiSecretCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun name(): String = name
+    /** Name of the AI secret */
+    fun name(): String = body.name()
 
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
+    fun metadata(): Optional<Metadata> = body.metadata()
 
-    fun orgName(): Optional<String> = Optional.ofNullable(orgName)
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, you may specify the name of the organization the
+     * AI Secret belongs in.
+     */
+    fun orgName(): Optional<String> = body.orgName()
 
-    fun secret(): Optional<String> = Optional.ofNullable(secret)
+    /**
+     * Secret value. If omitted in a PUT request, the existing secret value will be left intact, not
+     * replaced with null.
+     */
+    fun secret(): Optional<String> = body.secret()
 
-    fun type(): Optional<String> = Optional.ofNullable(type)
+    fun type(): Optional<String> = body.type()
+
+    /** Name of the AI secret */
+    fun _name(): JsonField<String> = body._name()
+
+    fun _metadata(): JsonField<Metadata> = body._metadata()
+
+    /**
+     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
+     * API key belongs to multiple organizations, you may specify the name of the organization the
+     * AI Secret belongs in.
+     */
+    fun _orgName(): JsonField<String> = body._orgName()
+
+    /**
+     * Secret value. If omitted in a PUT request, the existing secret value will be left intact, not
+     * replaced with null.
+     */
+    fun _secret(): JsonField<String> = body._secret()
+
+    fun _type(): JsonField<String> = body._type()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): AiSecretCreateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): AiSecretCreateBody {
-        return AiSecretCreateBody(
-            name,
-            metadata,
-            orgName,
-            secret,
-            type,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @JsonDeserialize(builder = AiSecretCreateBody.Builder::class)
     @NoAutoDetect
     class AiSecretCreateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val metadata: Metadata?,
-        private val orgName: String?,
-        private val secret: String?,
-        private val type: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        private val metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("org_name")
+        @ExcludeMissing
+        private val orgName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("secret")
+        @ExcludeMissing
+        private val secret: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("type")
+        @ExcludeMissing
+        private val type: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Name of the AI secret */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String = name.getRequired("name")
 
-        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
+        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the AI Secret belongs in.
          */
-        @JsonProperty("org_name") fun orgName(): String? = orgName
+        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
 
         /**
          * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
          * not replaced with null.
          */
-        @JsonProperty("secret") fun secret(): String? = secret
+        fun secret(): Optional<String> = Optional.ofNullable(secret.getNullable("secret"))
 
-        @JsonProperty("type") fun type(): String? = type
+        fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
+
+        /** Name of the AI secret */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the AI Secret belongs in.
+         */
+        @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
+
+        /**
+         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
+         * not replaced with null.
+         */
+        @JsonProperty("secret") @ExcludeMissing fun _secret(): JsonField<String> = secret
+
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): AiSecretCreateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            metadata().ifPresent { it.validate() }
+            orgName()
+            secret()
+            type()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -103,64 +172,105 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [AiSecretCreateBody]. */
+        class Builder internal constructor() {
 
-            private var name: String? = null
-            private var metadata: Metadata? = null
-            private var orgName: String? = null
-            private var secret: String? = null
-            private var type: String? = null
+            private var name: JsonField<String>? = null
+            private var metadata: JsonField<Metadata> = JsonMissing.of()
+            private var orgName: JsonField<String> = JsonMissing.of()
+            private var secret: JsonField<String> = JsonMissing.of()
+            private var type: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(aiSecretCreateBody: AiSecretCreateBody) = apply {
-                this.name = aiSecretCreateBody.name
-                this.metadata = aiSecretCreateBody.metadata
-                this.orgName = aiSecretCreateBody.orgName
-                this.secret = aiSecretCreateBody.secret
-                this.type = aiSecretCreateBody.type
-                additionalProperties(aiSecretCreateBody.additionalProperties)
+                name = aiSecretCreateBody.name
+                metadata = aiSecretCreateBody.metadata
+                orgName = aiSecretCreateBody.orgName
+                secret = aiSecretCreateBody.secret
+                type = aiSecretCreateBody.type
+                additionalProperties = aiSecretCreateBody.additionalProperties.toMutableMap()
             }
 
             /** Name of the AI secret */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = name(JsonField.of(name))
 
-            @JsonProperty("metadata")
-            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+            /** Name of the AI secret */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
              * your API key belongs to multiple organizations, you may specify the name of the
              * organization the AI Secret belongs in.
              */
-            @JsonProperty("org_name")
-            fun orgName(orgName: String) = apply { this.orgName = orgName }
+            fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, you may specify the name of the
+             * organization the AI Secret belongs in.
+             */
+            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, you may specify the name of the
+             * organization the AI Secret belongs in.
+             */
+            fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
 
             /**
              * Secret value. If omitted in a PUT request, the existing secret value will be left
              * intact, not replaced with null.
              */
-            @JsonProperty("secret") fun secret(secret: String) = apply { this.secret = secret }
+            fun secret(secret: String?) = secret(JsonField.ofNullable(secret))
 
-            @JsonProperty("type") fun type(type: String) = apply { this.type = type }
+            /**
+             * Secret value. If omitted in a PUT request, the existing secret value will be left
+             * intact, not replaced with null.
+             */
+            fun secret(secret: Optional<String>) = secret(secret.orElse(null))
+
+            /**
+             * Secret value. If omitted in a PUT request, the existing secret value will be left
+             * intact, not replaced with null.
+             */
+            fun secret(secret: JsonField<String>) = apply { this.secret = secret }
+
+            fun type(type: String?) = type(JsonField.ofNullable(type))
+
+            fun type(type: Optional<String>) = type(type.orElse(null))
+
+            fun type(type: JsonField<String>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): AiSecretCreateBody =
                 AiSecretCreateBody(
-                    checkNotNull(name) { "`name` is required but was not set" },
+                    checkRequired("name", name),
                     metadata,
                     orgName,
                     secret,
@@ -194,49 +304,96 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [AiSecretCreateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
-        private var name: String? = null
-        private var metadata: Metadata? = null
-        private var orgName: String? = null
-        private var secret: String? = null
-        private var type: String? = null
+        private var body: AiSecretCreateBody.Builder = AiSecretCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(aiSecretCreateParams: AiSecretCreateParams) = apply {
-            name = aiSecretCreateParams.name
-            metadata = aiSecretCreateParams.metadata
-            orgName = aiSecretCreateParams.orgName
-            secret = aiSecretCreateParams.secret
-            type = aiSecretCreateParams.type
+            body = aiSecretCreateParams.body.toBuilder()
             additionalHeaders = aiSecretCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = aiSecretCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = aiSecretCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Name of the AI secret */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply { body.name(name) }
 
-        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+        /** Name of the AI secret */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
+
+        fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
+
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+        fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the AI Secret belongs in.
          */
-        fun orgName(orgName: String) = apply { this.orgName = orgName }
+        fun orgName(orgName: String?) = apply { body.orgName(orgName) }
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the AI Secret belongs in.
+         */
+        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the AI Secret belongs in.
+         */
+        fun orgName(orgName: JsonField<String>) = apply { body.orgName(orgName) }
 
         /**
          * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
          * not replaced with null.
          */
-        fun secret(secret: String) = apply { this.secret = secret }
+        fun secret(secret: String?) = apply { body.secret(secret) }
 
-        fun type(type: String) = apply { this.type = type }
+        /**
+         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
+         * not replaced with null.
+         */
+        fun secret(secret: Optional<String>) = secret(secret.orElse(null))
+
+        /**
+         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
+         * not replaced with null.
+         */
+        fun secret(secret: JsonField<String>) = apply { body.secret(secret) }
+
+        fun type(type: String?) = apply { body.type(type) }
+
+        fun type(type: Optional<String>) = type(type.orElse(null))
+
+        fun type(type: JsonField<String>) = apply { body.type(type) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -336,51 +493,35 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): AiSecretCreateParams =
             AiSecretCreateParams(
-                checkNotNull(name) { "`name` is required but was not set" },
-                metadata,
-                orgName,
-                secret,
-                type,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -389,27 +530,33 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Metadata]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                additionalProperties(metadata.additionalProperties)
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(additionalProperties.toImmutable())
@@ -437,11 +584,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AiSecretCreateParams && name == other.name && metadata == other.metadata && orgName == other.orgName && secret == other.secret && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is AiSecretCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, metadata, orgName, secret, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "AiSecretCreateParams{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "AiSecretCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
