@@ -2,38 +2,28 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class EvalCreateParamsTest {
 
     @Test
-    fun createEvalCreateParams() {
+    fun create() {
         EvalCreateParams.builder()
-            .data(
-                EvalCreateParams.Data.ofDatasetId(
-                    EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build()
-                )
-            )
+            .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
             .projectId("project_id")
-            .scores(
-                listOf(
-                    EvalCreateParams.Score.ofFunctionId(
-                        EvalCreateParams.Score.FunctionId.builder()
-                            .functionId("function_id")
-                            .version("version")
-                            .build()
-                    )
-                )
+            .addScore(
+                EvalCreateParams.Score.FunctionId.builder()
+                    .functionId("function_id")
+                    .version("version")
+                    .build()
             )
             .task(
-                EvalCreateParams.Task.ofFunctionId(
-                    EvalCreateParams.Task.FunctionId.builder()
-                        .functionId("function_id")
-                        .version("version")
-                        .build()
-                )
+                EvalCreateParams.Task.FunctionId.builder()
+                    .functionId("function_id")
+                    .version("version")
+                    .build()
             )
             .baseExperimentId("base_experiment_id")
             .baseExperimentName("base_experiment_name")
@@ -41,12 +31,16 @@ class EvalCreateParamsTest {
             .gitMetadataSettings(
                 EvalCreateParams.GitMetadataSettings.builder()
                     .collect(EvalCreateParams.GitMetadataSettings.Collect.ALL)
-                    .fields(listOf(EvalCreateParams.GitMetadataSettings.Field.COMMIT))
+                    .addField(EvalCreateParams.GitMetadataSettings.Field.COMMIT)
                     .build()
             )
             .isPublic(true)
-            .maxConcurrency(42.23)
-            .metadata(EvalCreateParams.Metadata.builder().build())
+            .maxConcurrency(0.0)
+            .metadata(
+                EvalCreateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
             .repoInfo(
                 RepoInfo.builder()
                     .authorEmail("author_email")
@@ -61,38 +55,28 @@ class EvalCreateParamsTest {
                     .build()
             )
             .stream(true)
-            .timeout(42.23)
-            .trialCount(42.23)
+            .timeout(0.0)
+            .trialCount(0.0)
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             EvalCreateParams.builder()
-                .data(
-                    EvalCreateParams.Data.ofDatasetId(
-                        EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build()
-                    )
-                )
+                .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
                 .projectId("project_id")
-                .scores(
-                    listOf(
-                        EvalCreateParams.Score.ofFunctionId(
-                            EvalCreateParams.Score.FunctionId.builder()
-                                .functionId("function_id")
-                                .version("version")
-                                .build()
-                        )
-                    )
+                .addScore(
+                    EvalCreateParams.Score.FunctionId.builder()
+                        .functionId("function_id")
+                        .version("version")
+                        .build()
                 )
                 .task(
-                    EvalCreateParams.Task.ofFunctionId(
-                        EvalCreateParams.Task.FunctionId.builder()
-                            .functionId("function_id")
-                            .version("version")
-                            .build()
-                    )
+                    EvalCreateParams.Task.FunctionId.builder()
+                        .functionId("function_id")
+                        .version("version")
+                        .build()
                 )
                 .baseExperimentId("base_experiment_id")
                 .baseExperimentName("base_experiment_name")
@@ -100,12 +84,16 @@ class EvalCreateParamsTest {
                 .gitMetadataSettings(
                     EvalCreateParams.GitMetadataSettings.builder()
                         .collect(EvalCreateParams.GitMetadataSettings.Collect.ALL)
-                        .fields(listOf(EvalCreateParams.GitMetadataSettings.Field.COMMIT))
+                        .addField(EvalCreateParams.GitMetadataSettings.Field.COMMIT)
                         .build()
                 )
                 .isPublic(true)
-                .maxConcurrency(42.23)
-                .metadata(EvalCreateParams.Metadata.builder().build())
+                .maxConcurrency(0.0)
+                .metadata(
+                    EvalCreateParams.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .repoInfo(
                     RepoInfo.builder()
                         .authorEmail("author_email")
@@ -120,10 +108,10 @@ class EvalCreateParamsTest {
                         .build()
                 )
                 .stream(true)
-                .timeout(42.23)
-                .trialCount(42.23)
+                .timeout(0.0)
+                .trialCount(0.0)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.data())
             .isEqualTo(
@@ -152,21 +140,26 @@ class EvalCreateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.baseExperimentId()).isEqualTo("base_experiment_id")
-        assertThat(body.baseExperimentName()).isEqualTo("base_experiment_name")
-        assertThat(body.experimentName()).isEqualTo("experiment_name")
+        assertThat(body.baseExperimentId()).contains("base_experiment_id")
+        assertThat(body.baseExperimentName()).contains("base_experiment_name")
+        assertThat(body.experimentName()).contains("experiment_name")
         assertThat(body.gitMetadataSettings())
-            .isEqualTo(
+            .contains(
                 EvalCreateParams.GitMetadataSettings.builder()
                     .collect(EvalCreateParams.GitMetadataSettings.Collect.ALL)
-                    .fields(listOf(EvalCreateParams.GitMetadataSettings.Field.COMMIT))
+                    .addField(EvalCreateParams.GitMetadataSettings.Field.COMMIT)
                     .build()
             )
-        assertThat(body.isPublic()).isEqualTo(true)
-        assertThat(body.maxConcurrency()).isEqualTo(42.23)
-        assertThat(body.metadata()).isEqualTo(EvalCreateParams.Metadata.builder().build())
+        assertThat(body.isPublic()).contains(true)
+        assertThat(body.maxConcurrency()).contains(0.0)
+        assertThat(body.metadata())
+            .contains(
+                EvalCreateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
         assertThat(body.repoInfo())
-            .isEqualTo(
+            .contains(
                 RepoInfo.builder()
                     .authorEmail("author_email")
                     .authorName("author_name")
@@ -179,37 +172,23 @@ class EvalCreateParamsTest {
                     .tag("tag")
                     .build()
             )
-        assertThat(body.stream()).isEqualTo(true)
-        assertThat(body.timeout()).isEqualTo(42.23)
-        assertThat(body.trialCount()).isEqualTo(42.23)
+        assertThat(body.stream()).contains(true)
+        assertThat(body.timeout()).contains(0.0)
+        assertThat(body.trialCount()).contains(0.0)
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             EvalCreateParams.builder()
-                .data(
-                    EvalCreateParams.Data.ofDatasetId(
-                        EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build()
-                    )
-                )
+                .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
                 .projectId("project_id")
-                .scores(
-                    listOf(
-                        EvalCreateParams.Score.ofFunctionId(
-                            EvalCreateParams.Score.FunctionId.builder()
-                                .functionId("function_id")
-                                .build()
-                        )
-                    )
+                .addScore(
+                    EvalCreateParams.Score.FunctionId.builder().functionId("function_id").build()
                 )
-                .task(
-                    EvalCreateParams.Task.ofFunctionId(
-                        EvalCreateParams.Task.FunctionId.builder().functionId("function_id").build()
-                    )
-                )
+                .task(EvalCreateParams.Task.FunctionId.builder().functionId("function_id").build())
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.data())
             .isEqualTo(

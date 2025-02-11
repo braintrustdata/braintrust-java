@@ -3,27 +3,30 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 
+/** Get an experiment object by its id */
 class ExperimentRetrieveParams
-constructor(
+private constructor(
     private val experimentId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Experiment id */
     fun experimentId(): String = experimentId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -39,8 +42,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ExperimentRetrieveParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var experimentId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -156,7 +160,7 @@ constructor(
 
         fun build(): ExperimentRetrieveParams =
             ExperimentRetrieveParams(
-                checkNotNull(experimentId) { "`experimentId` is required but was not set" },
+                checkRequired("experimentId", experimentId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

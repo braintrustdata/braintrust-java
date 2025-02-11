@@ -3,18 +3,17 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class PromptListParamsTest {
 
     @Test
-    fun createPromptListParams() {
+    fun create() {
         PromptListParams.builder()
             .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .ids(PromptListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-            .limit(123L)
+            .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .limit(0L)
             .orgName("org_name")
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .projectName("project_name")
@@ -26,12 +25,12 @@ class PromptListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             PromptListParams.builder()
                 .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .ids(PromptListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                .limit(123L)
+                .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .limit(0L)
                 .orgName("org_name")
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .projectName("project_name")
@@ -46,7 +45,7 @@ class PromptListParamsTest {
             "ids",
             PromptListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString()
         )
-        expected.put("limit", "123")
+        expected.put("limit", "0")
         expected.put("org_name", "org_name")
         expected.put("project_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put("project_name", "project_name")
@@ -54,13 +53,13 @@ class PromptListParamsTest {
         expected.put("slug", "slug")
         expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put("version", "version")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = PromptListParams.builder().build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }

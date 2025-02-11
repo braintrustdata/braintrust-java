@@ -18,8 +18,8 @@ class GroupTest {
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .description("description")
-                .memberGroups(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                .memberUsers(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .addMemberGroup("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         assertThat(group).isNotNull

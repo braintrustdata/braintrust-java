@@ -2,53 +2,64 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ExperimentFeedbackParamsTest {
 
     @Test
-    fun createExperimentFeedbackParams() {
+    fun create() {
         ExperimentFeedbackParams.builder()
             .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .feedback(
-                listOf(
-                    FeedbackExperimentItem.builder()
-                        .id("id")
-                        .comment("comment")
-                        .expected(JsonNull.of())
-                        .metadata(FeedbackExperimentItem.Metadata.builder().build())
-                        .scores(FeedbackExperimentItem.Scores.builder().build())
-                        .source(FeedbackExperimentItem.Source.APP)
-                        .tags(listOf("string"))
-                        .build()
-                )
+            .addFeedback(
+                FeedbackExperimentItem.builder()
+                    .id("id")
+                    .comment("comment")
+                    .expected(JsonValue.from(mapOf<String, Any>()))
+                    .metadata(
+                        FeedbackExperimentItem.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .scores(
+                        FeedbackExperimentItem.Scores.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .source(FeedbackExperimentItem.Source.APP)
+                    .addTag("string")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ExperimentFeedbackParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(
-                    listOf(
-                        FeedbackExperimentItem.builder()
-                            .id("id")
-                            .comment("comment")
-                            .expected(JsonNull.of())
-                            .metadata(FeedbackExperimentItem.Metadata.builder().build())
-                            .scores(FeedbackExperimentItem.Scores.builder().build())
-                            .source(FeedbackExperimentItem.Source.APP)
-                            .tags(listOf("string"))
-                            .build()
-                    )
+                .addFeedback(
+                    FeedbackExperimentItem.builder()
+                        .id("id")
+                        .comment("comment")
+                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            FeedbackExperimentItem.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .scores(
+                            FeedbackExperimentItem.Scores.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
+                        .source(FeedbackExperimentItem.Source.APP)
+                        .addTag("string")
+                        .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(
@@ -56,24 +67,32 @@ class ExperimentFeedbackParamsTest {
                     FeedbackExperimentItem.builder()
                         .id("id")
                         .comment("comment")
-                        .expected(JsonNull.of())
-                        .metadata(FeedbackExperimentItem.Metadata.builder().build())
-                        .scores(FeedbackExperimentItem.Scores.builder().build())
+                        .expected(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            FeedbackExperimentItem.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .scores(
+                            FeedbackExperimentItem.Scores.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
                         .source(FeedbackExperimentItem.Source.APP)
-                        .tags(listOf("string"))
+                        .addTag("string")
                         .build()
                 )
             )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ExperimentFeedbackParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(FeedbackExperimentItem.builder().id("id").build()))
+                .addFeedback(FeedbackExperimentItem.builder().id("id").build())
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(listOf(FeedbackExperimentItem.builder().id("id").build()))
@@ -84,7 +103,7 @@ class ExperimentFeedbackParamsTest {
         val params =
             ExperimentFeedbackParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .feedback(listOf(FeedbackExperimentItem.builder().id("id").build()))
+                .addFeedback(FeedbackExperimentItem.builder().id("id").build())
                 .build()
         assertThat(params).isNotNull
         // path param "experimentId"

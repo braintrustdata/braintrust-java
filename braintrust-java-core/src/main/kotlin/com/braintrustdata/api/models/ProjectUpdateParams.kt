@@ -3,53 +3,68 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Partially update a project object. Specify the fields to update in the payload. Any object-type
+ * fields will be deep-merged with existing content. Currently we do not support removing fields or
+ * setting them to null.
+ */
 class ProjectUpdateParams
-constructor(
+private constructor(
     private val projectId: String,
-    private val name: String?,
-    private val settings: ProjectSettings?,
+    private val body: ProjectUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** Project id */
     fun projectId(): String = projectId
 
-    fun name(): Optional<String> = Optional.ofNullable(name)
+    /** Name of the project */
+    fun name(): Optional<String> = body.name()
 
-    fun settings(): Optional<ProjectSettings> = Optional.ofNullable(settings)
+    /**
+     * Project settings. Patch operations replace all settings, so make sure you include all
+     * settings you want to keep.
+     */
+    fun settings(): Optional<ProjectSettings> = body.settings()
+
+    /** Name of the project */
+    fun _name(): JsonField<String> = body._name()
+
+    /**
+     * Project settings. Patch operations replace all settings, so make sure you include all
+     * settings you want to keep.
+     */
+    fun _settings(): JsonField<ProjectSettings> = body._settings()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): ProjectUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): ProjectUpdateBody {
-        return ProjectUpdateBody(
-            name,
-            settings,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -58,27 +73,56 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = ProjectUpdateBody.Builder::class)
     @NoAutoDetect
     class ProjectUpdateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val settings: ProjectSettings?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("settings")
+        @ExcludeMissing
+        private val settings: JsonField<ProjectSettings> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Name of the project */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /**
          * Project settings. Patch operations replace all settings, so make sure you include all
          * settings you want to keep.
          */
-        @JsonProperty("settings") fun settings(): ProjectSettings? = settings
+        fun settings(): Optional<ProjectSettings> =
+            Optional.ofNullable(settings.getNullable("settings"))
+
+        /** Name of the project */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Project settings. Patch operations replace all settings, so make sure you include all
+         * settings you want to keep.
+         */
+        @JsonProperty("settings")
+        @ExcludeMissing
+        fun _settings(): JsonField<ProjectSettings> = settings
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ProjectUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            settings().ifPresent { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -87,41 +131,64 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ProjectUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var name: String? = null
-            private var settings: ProjectSettings? = null
+            private var name: JsonField<String> = JsonMissing.of()
+            private var settings: JsonField<ProjectSettings> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(projectUpdateBody: ProjectUpdateBody) = apply {
-                this.name = projectUpdateBody.name
-                this.settings = projectUpdateBody.settings
-                additionalProperties(projectUpdateBody.additionalProperties)
+                name = projectUpdateBody.name
+                settings = projectUpdateBody.settings
+                additionalProperties = projectUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** Name of the project */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** Name of the project */
+            fun name(name: Optional<String>) = name(name.orElse(null))
+
+            /** Name of the project */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
              * Project settings. Patch operations replace all settings, so make sure you include all
              * settings you want to keep.
              */
-            @JsonProperty("settings")
-            fun settings(settings: ProjectSettings) = apply { this.settings = settings }
+            fun settings(settings: ProjectSettings?) = settings(JsonField.ofNullable(settings))
+
+            /**
+             * Project settings. Patch operations replace all settings, so make sure you include all
+             * settings you want to keep.
+             */
+            fun settings(settings: Optional<ProjectSettings>) = settings(settings.orElse(null))
+
+            /**
+             * Project settings. Patch operations replace all settings, so make sure you include all
+             * settings you want to keep.
+             */
+            fun settings(settings: JsonField<ProjectSettings>) = apply { this.settings = settings }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ProjectUpdateBody =
@@ -157,37 +224,71 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ProjectUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
-        private var name: String? = null
-        private var settings: ProjectSettings? = null
+        private var body: ProjectUpdateBody.Builder = ProjectUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectUpdateParams: ProjectUpdateParams) = apply {
             projectId = projectUpdateParams.projectId
-            name = projectUpdateParams.name
-            settings = projectUpdateParams.settings
+            body = projectUpdateParams.body.toBuilder()
             additionalHeaders = projectUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = projectUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = projectUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Project id */
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
         /** Name of the project */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String?) = apply { body.name(name) }
+
+        /** Name of the project */
+        fun name(name: Optional<String>) = name(name.orElse(null))
+
+        /** Name of the project */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
          * Project settings. Patch operations replace all settings, so make sure you include all
          * settings you want to keep.
          */
-        fun settings(settings: ProjectSettings) = apply { this.settings = settings }
+        fun settings(settings: ProjectSettings?) = apply { body.settings(settings) }
+
+        /**
+         * Project settings. Patch operations replace all settings, so make sure you include all
+         * settings you want to keep.
+         */
+        fun settings(settings: Optional<ProjectSettings>) = settings(settings.orElse(null))
+
+        /**
+         * Project settings. Patch operations replace all settings, so make sure you include all
+         * settings you want to keep.
+         */
+        fun settings(settings: JsonField<ProjectSettings>) = apply { body.settings(settings) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -287,36 +388,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ProjectUpdateParams =
             ProjectUpdateParams(
-                checkNotNull(projectId) { "`projectId` is required but was not set" },
-                name,
-                settings,
+                checkRequired("projectId", projectId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -325,11 +402,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectUpdateParams && projectId == other.projectId && name == other.name && settings == other.settings && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectUpdateParams && projectId == other.projectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, name, settings, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ProjectUpdateParams{projectId=$projectId, name=$name, settings=$settings, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectUpdateParams{projectId=$projectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

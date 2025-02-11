@@ -2,14 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class UserRetrieveParamsTest {
 
     @Test
-    fun createUserRetrieveParams() {
+    fun create() {
         UserRetrieveParams.builder().userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
     }
 

@@ -7,29 +7,31 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
 /** Options for the view in the app */
-@JsonDeserialize(builder = ViewOptions.Builder::class)
 @NoAutoDetect
 class ViewOptions
+@JsonCreator
 private constructor(
-    private val columnVisibility: JsonField<ColumnVisibility>,
-    private val columnOrder: JsonField<List<String>>,
-    private val columnSizing: JsonField<ColumnSizing>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("columnOrder")
+    @ExcludeMissing
+    private val columnOrder: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("columnSizing")
+    @ExcludeMissing
+    private val columnSizing: JsonField<ColumnSizing> = JsonMissing.of(),
+    @JsonProperty("columnVisibility")
+    @ExcludeMissing
+    private val columnVisibility: JsonField<ColumnVisibility> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
-
-    fun columnVisibility(): Optional<ColumnVisibility> =
-        Optional.ofNullable(columnVisibility.getNullable("columnVisibility"))
 
     fun columnOrder(): Optional<List<String>> =
         Optional.ofNullable(columnOrder.getNullable("columnOrder"))
@@ -37,23 +39,36 @@ private constructor(
     fun columnSizing(): Optional<ColumnSizing> =
         Optional.ofNullable(columnSizing.getNullable("columnSizing"))
 
-    @JsonProperty("columnVisibility") @ExcludeMissing fun _columnVisibility() = columnVisibility
+    fun columnVisibility(): Optional<ColumnVisibility> =
+        Optional.ofNullable(columnVisibility.getNullable("columnVisibility"))
 
-    @JsonProperty("columnOrder") @ExcludeMissing fun _columnOrder() = columnOrder
+    @JsonProperty("columnOrder")
+    @ExcludeMissing
+    fun _columnOrder(): JsonField<List<String>> = columnOrder
 
-    @JsonProperty("columnSizing") @ExcludeMissing fun _columnSizing() = columnSizing
+    @JsonProperty("columnSizing")
+    @ExcludeMissing
+    fun _columnSizing(): JsonField<ColumnSizing> = columnSizing
+
+    @JsonProperty("columnVisibility")
+    @ExcludeMissing
+    fun _columnVisibility(): JsonField<ColumnVisibility> = columnVisibility
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ViewOptions = apply {
-        if (!validated) {
-            columnVisibility().map { it.validate() }
-            columnOrder()
-            columnSizing().map { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        columnOrder()
+        columnSizing().ifPresent { it.validate() }
+        columnVisibility().ifPresent { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -63,86 +78,111 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [ViewOptions]. */
+    class Builder internal constructor() {
 
-        private var columnVisibility: JsonField<ColumnVisibility> = JsonMissing.of()
-        private var columnOrder: JsonField<List<String>> = JsonMissing.of()
+        private var columnOrder: JsonField<MutableList<String>>? = null
         private var columnSizing: JsonField<ColumnSizing> = JsonMissing.of()
+        private var columnVisibility: JsonField<ColumnVisibility> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(viewOptions: ViewOptions) = apply {
-            this.columnVisibility = viewOptions.columnVisibility
-            this.columnOrder = viewOptions.columnOrder
-            this.columnSizing = viewOptions.columnSizing
-            additionalProperties(viewOptions.additionalProperties)
+            columnOrder = viewOptions.columnOrder.map { it.toMutableList() }
+            columnSizing = viewOptions.columnSizing
+            columnVisibility = viewOptions.columnVisibility
+            additionalProperties = viewOptions.additionalProperties.toMutableMap()
         }
 
-        fun columnVisibility(columnVisibility: ColumnVisibility) =
-            columnVisibility(JsonField.of(columnVisibility))
+        fun columnOrder(columnOrder: List<String>?) = columnOrder(JsonField.ofNullable(columnOrder))
 
-        @JsonProperty("columnVisibility")
-        @ExcludeMissing
-        fun columnVisibility(columnVisibility: JsonField<ColumnVisibility>) = apply {
-            this.columnVisibility = columnVisibility
-        }
+        fun columnOrder(columnOrder: Optional<List<String>>) = columnOrder(columnOrder.orElse(null))
 
-        fun columnOrder(columnOrder: List<String>) = columnOrder(JsonField.of(columnOrder))
-
-        @JsonProperty("columnOrder")
-        @ExcludeMissing
         fun columnOrder(columnOrder: JsonField<List<String>>) = apply {
-            this.columnOrder = columnOrder
+            this.columnOrder = columnOrder.map { it.toMutableList() }
         }
 
-        fun columnSizing(columnSizing: ColumnSizing) = columnSizing(JsonField.of(columnSizing))
+        fun addColumnOrder(columnOrder: String) = apply {
+            this.columnOrder =
+                (this.columnOrder ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(columnOrder)
+                }
+        }
 
-        @JsonProperty("columnSizing")
-        @ExcludeMissing
+        fun columnSizing(columnSizing: ColumnSizing?) =
+            columnSizing(JsonField.ofNullable(columnSizing))
+
+        fun columnSizing(columnSizing: Optional<ColumnSizing>) =
+            columnSizing(columnSizing.orElse(null))
+
         fun columnSizing(columnSizing: JsonField<ColumnSizing>) = apply {
             this.columnSizing = columnSizing
         }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+        fun columnVisibility(columnVisibility: ColumnVisibility?) =
+            columnVisibility(JsonField.ofNullable(columnVisibility))
+
+        fun columnVisibility(columnVisibility: Optional<ColumnVisibility>) =
+            columnVisibility(columnVisibility.orElse(null))
+
+        fun columnVisibility(columnVisibility: JsonField<ColumnVisibility>) = apply {
+            this.columnVisibility = columnVisibility
         }
 
-        @JsonAnySetter
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
+
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): ViewOptions =
             ViewOptions(
-                columnVisibility,
-                columnOrder.map { it.toImmutable() },
+                (columnOrder ?: JsonMissing.of()).map { it.toImmutable() },
                 columnSizing,
+                columnVisibility,
                 additionalProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = ColumnSizing.Builder::class)
     @NoAutoDetect
     class ColumnSizing
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): ColumnSizing = apply {
-            if (!validated) {
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -152,27 +192,33 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ColumnSizing]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(columnSizing: ColumnSizing) = apply {
-                additionalProperties(columnSizing.additionalProperties)
+                additionalProperties = columnSizing.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ColumnSizing = ColumnSizing(additionalProperties.toImmutable())
@@ -195,23 +241,26 @@ private constructor(
         override fun toString() = "ColumnSizing{additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = ColumnVisibility.Builder::class)
     @NoAutoDetect
     class ColumnVisibility
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): ColumnVisibility = apply {
-            if (!validated) {
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -221,27 +270,33 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ColumnVisibility]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(columnVisibility: ColumnVisibility) = apply {
-                additionalProperties(columnVisibility.additionalProperties)
+                additionalProperties = columnVisibility.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ColumnVisibility = ColumnVisibility(additionalProperties.toImmutable())
@@ -269,15 +324,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewOptions && columnVisibility == other.columnVisibility && columnOrder == other.columnOrder && columnSizing == other.columnSizing && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ViewOptions && columnOrder == other.columnOrder && columnSizing == other.columnSizing && columnVisibility == other.columnVisibility && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(columnVisibility, columnOrder, columnSizing, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(columnOrder, columnSizing, columnVisibility, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ViewOptions{columnVisibility=$columnVisibility, columnOrder=$columnOrder, columnSizing=$columnSizing, additionalProperties=$additionalProperties}"
+        "ViewOptions{columnOrder=$columnOrder, columnSizing=$columnSizing, columnVisibility=$columnVisibility, additionalProperties=$additionalProperties}"
 }

@@ -5,54 +5,57 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 
+/** Delete a view object by its id */
 class ViewDeleteParams
-constructor(
+private constructor(
     private val viewId: String,
-    private val objectId: String,
-    private val objectType: ObjectType,
+    private val body: ViewDeleteBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** View id */
     fun viewId(): String = viewId
 
-    fun objectId(): String = objectId
+    /** The id of the object the view applies to */
+    fun objectId(): String = body.objectId()
 
-    fun objectType(): ObjectType = objectType
+    /** The object type that the ACL applies to */
+    fun objectType(): ObjectType = body.objectType()
+
+    /** The id of the object the view applies to */
+    fun _objectId(): JsonField<String> = body._objectId()
+
+    /** The object type that the ACL applies to */
+    fun _objectType(): JsonField<ObjectType> = body._objectType()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): ViewDeleteBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): ViewDeleteBody {
-        return ViewDeleteBody(
-            objectId,
-            objectType,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -61,24 +64,49 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = ViewDeleteBody.Builder::class)
     @NoAutoDetect
     class ViewDeleteBody
+    @JsonCreator
     internal constructor(
-        private val objectId: String?,
-        private val objectType: ObjectType?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("object_id")
+        @ExcludeMissing
+        private val objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        private val objectType: JsonField<ObjectType> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The id of the object the view applies to */
-        @JsonProperty("object_id") fun objectId(): String? = objectId
+        fun objectId(): String = objectId.getRequired("object_id")
 
         /** The object type that the ACL applies to */
-        @JsonProperty("object_type") fun objectType(): ObjectType? = objectType
+        fun objectType(): ObjectType = objectType.getRequired("object_type")
+
+        /** The id of the object the view applies to */
+        @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
+
+        /** The object type that the ACL applies to */
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        fun _objectType(): JsonField<ObjectType> = objectType
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ViewDeleteBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            objectId()
+            objectType()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -87,45 +115,57 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ViewDeleteBody]. */
+        class Builder internal constructor() {
 
-            private var objectId: String? = null
-            private var objectType: ObjectType? = null
+            private var objectId: JsonField<String>? = null
+            private var objectType: JsonField<ObjectType>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(viewDeleteBody: ViewDeleteBody) = apply {
-                this.objectId = viewDeleteBody.objectId
-                this.objectType = viewDeleteBody.objectType
-                additionalProperties(viewDeleteBody.additionalProperties)
+                objectId = viewDeleteBody.objectId
+                objectType = viewDeleteBody.objectType
+                additionalProperties = viewDeleteBody.additionalProperties.toMutableMap()
             }
 
             /** The id of the object the view applies to */
-            @JsonProperty("object_id")
-            fun objectId(objectId: String) = apply { this.objectId = objectId }
+            fun objectId(objectId: String) = objectId(JsonField.of(objectId))
+
+            /** The id of the object the view applies to */
+            fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
             /** The object type that the ACL applies to */
-            @JsonProperty("object_type")
-            fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
+            fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
+
+            /** The object type that the ACL applies to */
+            fun objectType(objectType: JsonField<ObjectType>) = apply {
+                this.objectType = objectType
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): ViewDeleteBody =
                 ViewDeleteBody(
-                    checkNotNull(objectId) { "`objectId` is required but was not set" },
-                    checkNotNull(objectType) { "`objectType` is required but was not set" },
+                    checkRequired("objectId", objectId),
+                    checkRequired("objectType", objectType),
                     additionalProperties.toImmutable(),
                 )
         }
@@ -155,34 +195,56 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ViewDeleteParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var viewId: String? = null
-        private var objectId: String? = null
-        private var objectType: ObjectType? = null
+        private var body: ViewDeleteBody.Builder = ViewDeleteBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(viewDeleteParams: ViewDeleteParams) = apply {
             viewId = viewDeleteParams.viewId
-            objectId = viewDeleteParams.objectId
-            objectType = viewDeleteParams.objectType
+            body = viewDeleteParams.body.toBuilder()
             additionalHeaders = viewDeleteParams.additionalHeaders.toBuilder()
             additionalQueryParams = viewDeleteParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = viewDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
         /** View id */
         fun viewId(viewId: String) = apply { this.viewId = viewId }
 
         /** The id of the object the view applies to */
-        fun objectId(objectId: String) = apply { this.objectId = objectId }
+        fun objectId(objectId: String) = apply { body.objectId(objectId) }
+
+        /** The id of the object the view applies to */
+        fun objectId(objectId: JsonField<String>) = apply { body.objectId(objectId) }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
+        fun objectType(objectType: ObjectType) = apply { body.objectType(objectType) }
+
+        /** The object type that the ACL applies to */
+        fun objectType(objectType: JsonField<ObjectType>) = apply { body.objectType(objectType) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -282,86 +344,60 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ViewDeleteParams =
             ViewDeleteParams(
-                checkNotNull(viewId) { "`viewId` is required but was not set" },
-                checkNotNull(objectId) { "`objectId` is required but was not set" },
-                checkNotNull(objectType) { "`objectType` is required but was not set" },
+                checkRequired("viewId", viewId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
+    /** The object type that the ACL applies to */
     class ObjectType
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
 
         companion object {
 
-            @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+            @JvmField val ORGANIZATION = of("organization")
 
-            @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+            @JvmField val PROJECT = of("project")
 
-            @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+            @JvmField val EXPERIMENT = of("experiment")
 
-            @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+            @JvmField val DATASET = of("dataset")
 
-            @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+            @JvmField val PROMPT = of("prompt")
 
-            @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+            @JvmField val PROMPT_SESSION = of("prompt_session")
 
-            @JvmField val GROUP = ObjectType(JsonField.of("group"))
+            @JvmField val GROUP = of("group")
 
-            @JvmField val ROLE = ObjectType(JsonField.of("role"))
+            @JvmField val ROLE = of("role")
 
-            @JvmField val ORG_MEMBER = ObjectType(JsonField.of("org_member"))
+            @JvmField val ORG_MEMBER = of("org_member")
 
-            @JvmField val PROJECT_LOG = ObjectType(JsonField.of("project_log"))
+            @JvmField val PROJECT_LOG = of("project_log")
 
-            @JvmField val ORG_PROJECT = ObjectType(JsonField.of("org_project"))
+            @JvmField val ORG_PROJECT = of("org_project")
 
             @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
         }
 
+        /** An enum containing [ObjectType]'s known values. */
         enum class Known {
             ORGANIZATION,
             PROJECT,
@@ -376,6 +412,15 @@ constructor(
             ORG_PROJECT,
         }
 
+        /**
+         * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ObjectType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             ORGANIZATION,
             PROJECT,
@@ -388,9 +433,19 @@ constructor(
             ORG_MEMBER,
             PROJECT_LOG,
             ORG_PROJECT,
+            /**
+             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 ORGANIZATION -> Value.ORGANIZATION
@@ -407,6 +462,15 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
         fun known(): Known =
             when (this) {
                 ORGANIZATION -> Known.ORGANIZATION
@@ -424,6 +488,18 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -431,11 +507,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewDeleteParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ViewDeleteParams && viewId == other.viewId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ViewDeleteParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ViewDeleteParams{viewId=$viewId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

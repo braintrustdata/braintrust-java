@@ -2,14 +2,13 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class OrganizationUpdateParamsTest {
 
     @Test
-    fun createOrganizationUpdateParams() {
+    fun create() {
         OrganizationUpdateParams.builder()
             .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .apiUrl("api_url")
@@ -21,7 +20,7 @@ class OrganizationUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             OrganizationUpdateParams.builder()
                 .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -31,22 +30,22 @@ class OrganizationUpdateParamsTest {
                 .proxyUrl("proxy_url")
                 .realtimeUrl("realtime_url")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
-        assertThat(body.apiUrl()).isEqualTo("api_url")
-        assertThat(body.isUniversalApi()).isEqualTo(true)
-        assertThat(body.name()).isEqualTo("name")
-        assertThat(body.proxyUrl()).isEqualTo("proxy_url")
-        assertThat(body.realtimeUrl()).isEqualTo("realtime_url")
+        assertThat(body.apiUrl()).contains("api_url")
+        assertThat(body.isUniversalApi()).contains(true)
+        assertThat(body.name()).contains("name")
+        assertThat(body.proxyUrl()).contains("proxy_url")
+        assertThat(body.realtimeUrl()).contains("realtime_url")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             OrganizationUpdateParams.builder()
                 .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

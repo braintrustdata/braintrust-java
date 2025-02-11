@@ -3,65 +3,72 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Partially update an organization object. Specify the fields to update in the payload. Any
+ * object-type fields will be deep-merged with existing content. Currently we do not support
+ * removing fields or setting them to null.
+ */
 class OrganizationUpdateParams
-constructor(
+private constructor(
     private val organizationId: String,
-    private val apiUrl: String?,
-    private val isUniversalApi: Boolean?,
-    private val name: String?,
-    private val proxyUrl: String?,
-    private val realtimeUrl: String?,
+    private val body: OrganizationUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** Organization id */
     fun organizationId(): String = organizationId
 
-    fun apiUrl(): Optional<String> = Optional.ofNullable(apiUrl)
+    fun apiUrl(): Optional<String> = body.apiUrl()
 
-    fun isUniversalApi(): Optional<Boolean> = Optional.ofNullable(isUniversalApi)
+    fun isUniversalApi(): Optional<Boolean> = body.isUniversalApi()
 
-    fun name(): Optional<String> = Optional.ofNullable(name)
+    /** Name of the organization */
+    fun name(): Optional<String> = body.name()
 
-    fun proxyUrl(): Optional<String> = Optional.ofNullable(proxyUrl)
+    fun proxyUrl(): Optional<String> = body.proxyUrl()
 
-    fun realtimeUrl(): Optional<String> = Optional.ofNullable(realtimeUrl)
+    fun realtimeUrl(): Optional<String> = body.realtimeUrl()
+
+    fun _apiUrl(): JsonField<String> = body._apiUrl()
+
+    fun _isUniversalApi(): JsonField<Boolean> = body._isUniversalApi()
+
+    /** Name of the organization */
+    fun _name(): JsonField<String> = body._name()
+
+    fun _proxyUrl(): JsonField<String> = body._proxyUrl()
+
+    fun _realtimeUrl(): JsonField<String> = body._realtimeUrl()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): OrganizationUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): OrganizationUpdateBody {
-        return OrganizationUpdateBody(
-            apiUrl,
-            isUniversalApi,
-            name,
-            proxyUrl,
-            realtimeUrl,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -70,32 +77,75 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = OrganizationUpdateBody.Builder::class)
     @NoAutoDetect
     class OrganizationUpdateBody
+    @JsonCreator
     internal constructor(
-        private val apiUrl: String?,
-        private val isUniversalApi: Boolean?,
-        private val name: String?,
-        private val proxyUrl: String?,
-        private val realtimeUrl: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("api_url")
+        @ExcludeMissing
+        private val apiUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("is_universal_api")
+        @ExcludeMissing
+        private val isUniversalApi: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("proxy_url")
+        @ExcludeMissing
+        private val proxyUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("realtime_url")
+        @ExcludeMissing
+        private val realtimeUrl: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("api_url") fun apiUrl(): String? = apiUrl
+        fun apiUrl(): Optional<String> = Optional.ofNullable(apiUrl.getNullable("api_url"))
 
-        @JsonProperty("is_universal_api") fun isUniversalApi(): Boolean? = isUniversalApi
+        fun isUniversalApi(): Optional<Boolean> =
+            Optional.ofNullable(isUniversalApi.getNullable("is_universal_api"))
 
         /** Name of the organization */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        @JsonProperty("proxy_url") fun proxyUrl(): String? = proxyUrl
+        fun proxyUrl(): Optional<String> = Optional.ofNullable(proxyUrl.getNullable("proxy_url"))
 
-        @JsonProperty("realtime_url") fun realtimeUrl(): String? = realtimeUrl
+        fun realtimeUrl(): Optional<String> =
+            Optional.ofNullable(realtimeUrl.getNullable("realtime_url"))
+
+        @JsonProperty("api_url") @ExcludeMissing fun _apiUrl(): JsonField<String> = apiUrl
+
+        @JsonProperty("is_universal_api")
+        @ExcludeMissing
+        fun _isUniversalApi(): JsonField<Boolean> = isUniversalApi
+
+        /** Name of the organization */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonProperty("proxy_url") @ExcludeMissing fun _proxyUrl(): JsonField<String> = proxyUrl
+
+        @JsonProperty("realtime_url")
+        @ExcludeMissing
+        fun _realtimeUrl(): JsonField<String> = realtimeUrl
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): OrganizationUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            apiUrl()
+            isUniversalApi()
+            name()
+            proxyUrl()
+            realtimeUrl()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -104,53 +154,85 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [OrganizationUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var apiUrl: String? = null
-            private var isUniversalApi: Boolean? = null
-            private var name: String? = null
-            private var proxyUrl: String? = null
-            private var realtimeUrl: String? = null
+            private var apiUrl: JsonField<String> = JsonMissing.of()
+            private var isUniversalApi: JsonField<Boolean> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
+            private var proxyUrl: JsonField<String> = JsonMissing.of()
+            private var realtimeUrl: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(organizationUpdateBody: OrganizationUpdateBody) = apply {
-                this.apiUrl = organizationUpdateBody.apiUrl
-                this.isUniversalApi = organizationUpdateBody.isUniversalApi
-                this.name = organizationUpdateBody.name
-                this.proxyUrl = organizationUpdateBody.proxyUrl
-                this.realtimeUrl = organizationUpdateBody.realtimeUrl
-                additionalProperties(organizationUpdateBody.additionalProperties)
+                apiUrl = organizationUpdateBody.apiUrl
+                isUniversalApi = organizationUpdateBody.isUniversalApi
+                name = organizationUpdateBody.name
+                proxyUrl = organizationUpdateBody.proxyUrl
+                realtimeUrl = organizationUpdateBody.realtimeUrl
+                additionalProperties = organizationUpdateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("api_url") fun apiUrl(apiUrl: String) = apply { this.apiUrl = apiUrl }
+            fun apiUrl(apiUrl: String?) = apiUrl(JsonField.ofNullable(apiUrl))
 
-            @JsonProperty("is_universal_api")
-            fun isUniversalApi(isUniversalApi: Boolean) = apply {
+            fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.orElse(null))
+
+            fun apiUrl(apiUrl: JsonField<String>) = apply { this.apiUrl = apiUrl }
+
+            fun isUniversalApi(isUniversalApi: Boolean?) =
+                isUniversalApi(JsonField.ofNullable(isUniversalApi))
+
+            fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(isUniversalApi as Boolean?)
+
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun isUniversalApi(isUniversalApi: Optional<Boolean>) =
+                isUniversalApi(isUniversalApi.orElse(null) as Boolean?)
+
+            fun isUniversalApi(isUniversalApi: JsonField<Boolean>) = apply {
                 this.isUniversalApi = isUniversalApi
             }
 
             /** Name of the organization */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            @JsonProperty("proxy_url")
-            fun proxyUrl(proxyUrl: String) = apply { this.proxyUrl = proxyUrl }
+            /** Name of the organization */
+            fun name(name: Optional<String>) = name(name.orElse(null))
 
-            @JsonProperty("realtime_url")
-            fun realtimeUrl(realtimeUrl: String) = apply { this.realtimeUrl = realtimeUrl }
+            /** Name of the organization */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            fun proxyUrl(proxyUrl: String?) = proxyUrl(JsonField.ofNullable(proxyUrl))
+
+            fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.orElse(null))
+
+            fun proxyUrl(proxyUrl: JsonField<String>) = apply { this.proxyUrl = proxyUrl }
+
+            fun realtimeUrl(realtimeUrl: String?) = realtimeUrl(JsonField.ofNullable(realtimeUrl))
+
+            fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.orElse(null))
+
+            fun realtimeUrl(realtimeUrl: JsonField<String>) = apply {
+                this.realtimeUrl = realtimeUrl
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): OrganizationUpdateBody =
@@ -189,46 +271,83 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [OrganizationUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var organizationId: String? = null
-        private var apiUrl: String? = null
-        private var isUniversalApi: Boolean? = null
-        private var name: String? = null
-        private var proxyUrl: String? = null
-        private var realtimeUrl: String? = null
+        private var body: OrganizationUpdateBody.Builder = OrganizationUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(organizationUpdateParams: OrganizationUpdateParams) = apply {
             organizationId = organizationUpdateParams.organizationId
-            apiUrl = organizationUpdateParams.apiUrl
-            isUniversalApi = organizationUpdateParams.isUniversalApi
-            name = organizationUpdateParams.name
-            proxyUrl = organizationUpdateParams.proxyUrl
-            realtimeUrl = organizationUpdateParams.realtimeUrl
+            body = organizationUpdateParams.body.toBuilder()
             additionalHeaders = organizationUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = organizationUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                organizationUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Organization id */
         fun organizationId(organizationId: String) = apply { this.organizationId = organizationId }
 
-        fun apiUrl(apiUrl: String) = apply { this.apiUrl = apiUrl }
+        fun apiUrl(apiUrl: String?) = apply { body.apiUrl(apiUrl) }
 
-        fun isUniversalApi(isUniversalApi: Boolean) = apply { this.isUniversalApi = isUniversalApi }
+        fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.orElse(null))
+
+        fun apiUrl(apiUrl: JsonField<String>) = apply { body.apiUrl(apiUrl) }
+
+        fun isUniversalApi(isUniversalApi: Boolean?) = apply { body.isUniversalApi(isUniversalApi) }
+
+        fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(isUniversalApi as Boolean?)
+
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun isUniversalApi(isUniversalApi: Optional<Boolean>) =
+            isUniversalApi(isUniversalApi.orElse(null) as Boolean?)
+
+        fun isUniversalApi(isUniversalApi: JsonField<Boolean>) = apply {
+            body.isUniversalApi(isUniversalApi)
+        }
 
         /** Name of the organization */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String?) = apply { body.name(name) }
 
-        fun proxyUrl(proxyUrl: String) = apply { this.proxyUrl = proxyUrl }
+        /** Name of the organization */
+        fun name(name: Optional<String>) = name(name.orElse(null))
 
-        fun realtimeUrl(realtimeUrl: String) = apply { this.realtimeUrl = realtimeUrl }
+        /** Name of the organization */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
+
+        fun proxyUrl(proxyUrl: String?) = apply { body.proxyUrl(proxyUrl) }
+
+        fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.orElse(null))
+
+        fun proxyUrl(proxyUrl: JsonField<String>) = apply { body.proxyUrl(proxyUrl) }
+
+        fun realtimeUrl(realtimeUrl: String?) = apply { body.realtimeUrl(realtimeUrl) }
+
+        fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.orElse(null))
+
+        fun realtimeUrl(realtimeUrl: JsonField<String>) = apply { body.realtimeUrl(realtimeUrl) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -328,39 +447,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): OrganizationUpdateParams =
             OrganizationUpdateParams(
-                checkNotNull(organizationId) { "`organizationId` is required but was not set" },
-                apiUrl,
-                isUniversalApi,
-                name,
-                proxyUrl,
-                realtimeUrl,
+                checkRequired("organizationId", organizationId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -369,11 +461,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationId, apiUrl, isUniversalApi, name, proxyUrl, realtimeUrl, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "OrganizationUpdateParams{organizationId=$organizationId, apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "OrganizationUpdateParams{organizationId=$organizationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

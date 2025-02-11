@@ -7,38 +7,44 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 
-@JsonDeserialize(builder = EnvVarListResponse.Builder::class)
 @NoAutoDetect
 class EnvVarListResponse
+@JsonCreator
 private constructor(
-    private val objects: JsonField<List<EnvVar>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("objects")
+    @ExcludeMissing
+    private val objects: JsonField<List<EnvVar>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** A list of env_var objects */
     fun objects(): List<EnvVar> = objects.getRequired("objects")
 
     /** A list of env_var objects */
-    @JsonProperty("objects") @ExcludeMissing fun _objects() = objects
+    @JsonProperty("objects") @ExcludeMissing fun _objects(): JsonField<List<EnvVar>> = objects
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): EnvVarListResponse = apply {
-        if (!validated) {
-            objects().forEach { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        objects().forEach { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -48,41 +54,64 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [EnvVarListResponse]. */
+    class Builder internal constructor() {
 
-        private var objects: JsonField<List<EnvVar>> = JsonMissing.of()
+        private var objects: JsonField<MutableList<EnvVar>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(envVarListResponse: EnvVarListResponse) = apply {
-            this.objects = envVarListResponse.objects
-            additionalProperties(envVarListResponse.additionalProperties)
+            objects = envVarListResponse.objects.map { it.toMutableList() }
+            additionalProperties = envVarListResponse.additionalProperties.toMutableMap()
         }
 
         /** A list of env_var objects */
         fun objects(objects: List<EnvVar>) = objects(JsonField.of(objects))
 
         /** A list of env_var objects */
-        @JsonProperty("objects")
-        @ExcludeMissing
-        fun objects(objects: JsonField<List<EnvVar>>) = apply { this.objects = objects }
+        fun objects(objects: JsonField<List<EnvVar>>) = apply {
+            this.objects = objects.map { it.toMutableList() }
+        }
+
+        /** A list of env_var objects */
+        fun addObject(object_: EnvVar) = apply {
+            objects =
+                (objects ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(object_)
+                }
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): EnvVarListResponse =
-            EnvVarListResponse(objects.map { it.toImmutable() }, additionalProperties.toImmutable())
+            EnvVarListResponse(
+                checkRequired("objects", objects).map { it.toImmutable() },
+                additionalProperties.toImmutable()
+            )
     }
 
     override fun equals(other: Any?): Boolean {

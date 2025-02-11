@@ -3,14 +3,13 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class DatasetSummarizeParamsTest {
 
     @Test
-    fun createDatasetSummarizeParams() {
+    fun create() {
         DatasetSummarizeParams.builder()
             .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .summarizeData(true)
@@ -18,7 +17,7 @@ class DatasetSummarizeParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             DatasetSummarizeParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -26,17 +25,17 @@ class DatasetSummarizeParamsTest {
                 .build()
         val expected = QueryParams.builder()
         expected.put("summarize_data", "true")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             DatasetSummarizeParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

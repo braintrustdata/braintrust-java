@@ -8,27 +8,25 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
 /** Human-identifying attributes of the span, such as name, type, etc. */
-@JsonDeserialize(builder = SpanAttributes.Builder::class)
 @NoAutoDetect
 class SpanAttributes
+@JsonCreator
 private constructor(
-    private val name: JsonField<String>,
-    private val type: JsonField<Type>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** Name of the span, for display purposes only */
     fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
@@ -37,21 +35,25 @@ private constructor(
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
     /** Name of the span, for display purposes only */
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /** Type of the span, for display purposes only */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): SpanAttributes = apply {
-        if (!validated) {
-            name()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        name()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -61,7 +63,8 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [SpanAttributes]. */
+    class Builder internal constructor() {
 
         private var name: JsonField<String> = JsonMissing.of()
         private var type: JsonField<Type> = JsonMissing.of()
@@ -69,39 +72,46 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(spanAttributes: SpanAttributes) = apply {
-            this.name = spanAttributes.name
-            this.type = spanAttributes.type
-            additionalProperties(spanAttributes.additionalProperties)
+            name = spanAttributes.name
+            type = spanAttributes.type
+            additionalProperties = spanAttributes.additionalProperties.toMutableMap()
         }
 
         /** Name of the span, for display purposes only */
-        fun name(name: String) = name(JsonField.of(name))
+        fun name(name: String?) = name(JsonField.ofNullable(name))
 
         /** Name of the span, for display purposes only */
-        @JsonProperty("name")
-        @ExcludeMissing
+        fun name(name: Optional<String>) = name(name.orElse(null))
+
+        /** Name of the span, for display purposes only */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Type of the span, for display purposes only */
-        fun type(type: Type) = type(JsonField.of(type))
+        fun type(type: Type?) = type(JsonField.ofNullable(type))
 
         /** Type of the span, for display purposes only */
-        @JsonProperty("type")
-        @ExcludeMissing
+        fun type(type: Optional<Type>) = type(type.orElse(null))
+
+        /** Type of the span, for display purposes only */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): SpanAttributes =
@@ -112,43 +122,41 @@ private constructor(
             )
     }
 
+    /** Type of the span, for display purposes only */
     class Type
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
 
         companion object {
 
-            @JvmField val LLM = Type(JsonField.of("llm"))
+            @JvmField val LLM = of("llm")
 
-            @JvmField val SCORE = Type(JsonField.of("score"))
+            @JvmField val SCORE = of("score")
 
-            @JvmField val FUNCTION = Type(JsonField.of("function"))
+            @JvmField val FUNCTION = of("function")
 
-            @JvmField val EVAL = Type(JsonField.of("eval"))
+            @JvmField val EVAL = of("eval")
 
-            @JvmField val TASK = Type(JsonField.of("task"))
+            @JvmField val TASK = of("task")
 
-            @JvmField val TOOL = Type(JsonField.of("tool"))
+            @JvmField val TOOL = of("tool")
 
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }
 
+        /** An enum containing [Type]'s known values. */
         enum class Known {
             LLM,
             SCORE,
@@ -158,6 +166,15 @@ private constructor(
             TOOL,
         }
 
+        /**
+         * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Type] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             LLM,
             SCORE,
@@ -165,9 +182,17 @@ private constructor(
             EVAL,
             TASK,
             TOOL,
+            /** An enum member indicating that [Type] was instantiated with an unknown value. */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 LLM -> Value.LLM
@@ -179,6 +204,15 @@ private constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
         fun known(): Known =
             when (this) {
                 LLM -> Known.LLM
@@ -191,6 +225,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

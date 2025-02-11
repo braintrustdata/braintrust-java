@@ -3,14 +3,13 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ExperimentSummarizeParamsTest {
 
     @Test
-    fun createExperimentSummarizeParams() {
+    fun create() {
         ExperimentSummarizeParams.builder()
             .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .comparisonExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -19,7 +18,7 @@ class ExperimentSummarizeParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             ExperimentSummarizeParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -29,17 +28,17 @@ class ExperimentSummarizeParamsTest {
         val expected = QueryParams.builder()
         expected.put("comparison_experiment_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put("summarize_scores", "true")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             ExperimentSummarizeParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

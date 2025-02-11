@@ -4,7 +4,9 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.models.EvalCreateParams
+import com.braintrustdata.api.models.RepoInfo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -22,31 +24,19 @@ class EvalServiceTest {
         val summarizeExperimentResponse =
             evalService.create(
                 EvalCreateParams.builder()
-                    .data(
-                        EvalCreateParams.Data.ofDatasetId(
-                            EvalCreateParams.Data.DatasetId.builder()
-                                .datasetId("dataset_id")
-                                .build()
-                        )
-                    )
+                    .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
                     .projectId("project_id")
-                    .scores(
-                        listOf(
-                            EvalCreateParams.Score.ofFunctionId(
-                                EvalCreateParams.Score.FunctionId.builder()
-                                    .functionId("function_id")
-                                    .version("version")
-                                    .build()
-                            )
-                        )
+                    .addScore(
+                        EvalCreateParams.Score.FunctionId.builder()
+                            .functionId("function_id")
+                            .version("version")
+                            .build()
                     )
                     .task(
-                        EvalCreateParams.Task.ofFunctionId(
-                            EvalCreateParams.Task.FunctionId.builder()
-                                .functionId("function_id")
-                                .version("version")
-                                .build()
-                        )
+                        EvalCreateParams.Task.FunctionId.builder()
+                            .functionId("function_id")
+                            .version("version")
+                            .build()
                     )
                     .baseExperimentId("base_experiment_id")
                     .baseExperimentName("base_experiment_name")
@@ -54,12 +44,16 @@ class EvalServiceTest {
                     .gitMetadataSettings(
                         EvalCreateParams.GitMetadataSettings.builder()
                             .collect(EvalCreateParams.GitMetadataSettings.Collect.ALL)
-                            .fields(listOf(EvalCreateParams.GitMetadataSettings.Field.COMMIT))
+                            .addField(EvalCreateParams.GitMetadataSettings.Field.COMMIT)
                             .build()
                     )
                     .isPublic(true)
-                    .maxConcurrency(42.23)
-                    .metadata(EvalCreateParams.Metadata.builder().build())
+                    .maxConcurrency(0.0)
+                    .metadata(
+                        EvalCreateParams.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .repoInfo(
                         RepoInfo.builder()
                             .authorEmail("author_email")
@@ -74,8 +68,8 @@ class EvalServiceTest {
                             .build()
                     )
                     .stream(true)
-                    .timeout(42.23)
-                    .trialCount(42.23)
+                    .timeout(0.0)
+                    .trialCount(0.0)
                     .build()
             )
         println(summarizeExperimentResponse)

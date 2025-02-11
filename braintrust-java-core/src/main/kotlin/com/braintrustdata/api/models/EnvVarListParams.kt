@@ -8,11 +8,11 @@ import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.ObjectCodec
@@ -24,8 +24,12 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * List out all env_vars. The env_vars are sorted by creation date, with the most recently-created
+ * env_vars coming first
+ */
 class EnvVarListParams
-constructor(
+private constructor(
     private val envVarName: String?,
     private val ids: Ids?,
     private val limit: Long?,
@@ -33,26 +37,33 @@ constructor(
     private val objectType: ObjectType?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Name of the env_var to search for */
     fun envVarName(): Optional<String> = Optional.ofNullable(envVarName)
 
+    /**
+     * Filter search results to a particular set of object IDs. To specify a list of IDs, include
+     * the query param multiple times
+     */
     fun ids(): Optional<Ids> = Optional.ofNullable(ids)
 
+    /** Limit the number of objects to return */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
+    /** The id of the object the environment variable is scoped for */
     fun objectId(): Optional<String> = Optional.ofNullable(objectId)
 
+    /** The type of the object the environment variable is scoped for */
     fun objectType(): Optional<ObjectType> = Optional.ofNullable(objectType)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.envVarName?.let { queryParams.put("env_var_name", listOf(it.toString())) }
         this.ids?.let { queryParams.put("ids", listOf(it.toString())) }
@@ -70,8 +81,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [EnvVarListParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var envVarName: String? = null
         private var ids: Ids? = null
@@ -93,34 +105,56 @@ constructor(
         }
 
         /** Name of the env_var to search for */
-        fun envVarName(envVarName: String) = apply { this.envVarName = envVarName }
+        fun envVarName(envVarName: String?) = apply { this.envVarName = envVarName }
+
+        /** Name of the env_var to search for */
+        fun envVarName(envVarName: Optional<String>) = envVarName(envVarName.orElse(null))
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Ids) = apply { this.ids = ids }
+        fun ids(ids: Ids?) = apply { this.ids = ids }
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(string: String) = apply { this.ids = Ids.ofString(string) }
+        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun idsOfStrings(strings: List<String>) = apply { this.ids = Ids.ofStrings(strings) }
+        fun ids(string: String) = ids(Ids.ofString(string))
+
+        /**
+         * Filter search results to a particular set of object IDs. To specify a list of IDs,
+         * include the query param multiple times
+         */
+        fun idsOfStrings(strings: List<String>) = ids(Ids.ofStrings(strings))
 
         /** Limit the number of objects to return */
-        fun limit(limit: Long) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply { this.limit = limit }
+
+        /** Limit the number of objects to return */
+        fun limit(limit: Long) = limit(limit as Long?)
+
+        /** Limit the number of objects to return */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
 
         /** The id of the object the environment variable is scoped for */
-        fun objectId(objectId: String) = apply { this.objectId = objectId }
+        fun objectId(objectId: String?) = apply { this.objectId = objectId }
+
+        /** The id of the object the environment variable is scoped for */
+        fun objectId(objectId: Optional<String>) = objectId(objectId.orElse(null))
 
         /** The type of the object the environment variable is scoped for */
-        fun objectType(objectType: ObjectType) = apply { this.objectType = objectType }
+        fun objectType(objectType: ObjectType?) = apply { this.objectType = objectType }
+
+        /** The type of the object the environment variable is scoped for */
+        fun objectType(objectType: Optional<ObjectType>) = objectType(objectType.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -232,6 +266,10 @@ constructor(
             )
     }
 
+    /**
+     * Filter search results to a particular set of object IDs. To specify a list of IDs, include
+     * the query param multiple times
+     */
     @JsonDeserialize(using = Ids.Deserializer::class)
     @JsonSerialize(using = Ids.Serializer::class)
     class Ids
@@ -240,8 +278,6 @@ constructor(
         private val strings: List<String>? = null,
         private val _json: JsonValue? = null,
     ) {
-
-        private var validated: Boolean = false
 
         fun string(): Optional<String> = Optional.ofNullable(string)
 
@@ -262,15 +298,6 @@ constructor(
                 string != null -> visitor.visitString(string)
                 strings != null -> visitor.visitStrings(strings)
                 else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Ids = apply {
-            if (!validated) {
-                if (string == null && strings == null) {
-                    throw BraintrustInvalidDataException("Unknown Ids: $_json")
-                }
-                validated = true
             }
         }
 
@@ -299,18 +326,28 @@ constructor(
             @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
         }
 
+        /** An interface that defines how to map each variant of [Ids] to a value of type [T]. */
         interface Visitor<out T> {
 
             fun visitString(string: String): T
 
             fun visitStrings(strings: List<String>): T
 
+            /**
+             * Maps an unknown variant of [Ids] to a value of type [T].
+             *
+             * An instance of [Ids] can contain an unknown variant if it was deserialized from data
+             * that doesn't match any known variant. For example, if the SDK is on an older version
+             * than the API, then the API may respond with new variants that the SDK is unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw BraintrustInvalidDataException("Unknown Ids: $json")
             }
         }
 
-        class Deserializer : BaseDeserializer<Ids>(Ids::class) {
+        internal class Deserializer : BaseDeserializer<Ids>(Ids::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Ids {
                 val json = JsonValue.fromJsonNode(node)
@@ -326,7 +363,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Ids>(Ids::class) {
+        internal class Serializer : BaseSerializer<Ids>(Ids::class) {
 
             override fun serialize(
                 value: Ids,
@@ -343,13 +380,93 @@ constructor(
         }
     }
 
+    /** The type of the object the environment variable is scoped for */
     class ObjectType
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val ORGANIZATION = of("organization")
+
+            @JvmField val PROJECT = of("project")
+
+            @JvmField val FUNCTION = of("function")
+
+            @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
+        }
+
+        /** An enum containing [ObjectType]'s known values. */
+        enum class Known {
+            ORGANIZATION,
+            PROJECT,
+            FUNCTION,
+        }
+
+        /**
+         * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ObjectType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            ORGANIZATION,
+            PROJECT,
+            FUNCTION,
+            /**
+             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                ORGANIZATION -> Value.ORGANIZATION
+                PROJECT -> Value.PROJECT
+                FUNCTION -> Value.FUNCTION
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                ORGANIZATION -> Known.ORGANIZATION
+                PROJECT -> Known.PROJECT
+                FUNCTION -> Known.FUNCTION
+                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -362,48 +479,6 @@ constructor(
         override fun hashCode() = value.hashCode()
 
         override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
-
-            @JvmField val PROJECT = ObjectType(JsonField.of("project"))
-
-            @JvmField val FUNCTION = ObjectType(JsonField.of("function"))
-
-            @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
-        }
-
-        enum class Known {
-            ORGANIZATION,
-            PROJECT,
-            FUNCTION,
-        }
-
-        enum class Value {
-            ORGANIZATION,
-            PROJECT,
-            FUNCTION,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                ORGANIZATION -> Value.ORGANIZATION
-                PROJECT -> Value.PROJECT
-                FUNCTION -> Value.FUNCTION
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                ORGANIZATION -> Known.ORGANIZATION
-                PROJECT -> Known.PROJECT
-                FUNCTION -> Known.FUNCTION
-                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
     }
 
     override fun equals(other: Any?): Boolean {

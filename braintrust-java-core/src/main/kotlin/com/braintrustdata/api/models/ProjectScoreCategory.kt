@@ -7,24 +7,24 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 
 /** For categorical-type project scores, defines a single category */
-@JsonDeserialize(builder = ProjectScoreCategory.Builder::class)
 @NoAutoDetect
 class ProjectScoreCategory
+@JsonCreator
 private constructor(
-    private val name: JsonField<String>,
-    private val value: JsonField<Double>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("value") @ExcludeMissing private val value: JsonField<Double> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** Name of the category */
     fun name(): String = name.getRequired("name")
@@ -33,21 +33,25 @@ private constructor(
     fun value(): Double = value.getRequired("value")
 
     /** Name of the category */
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /** Numerical value of the category. Must be between 0 and 1, inclusive */
-    @JsonProperty("value") @ExcludeMissing fun _value() = value
+    @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Double> = value
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ProjectScoreCategory = apply {
-        if (!validated) {
-            name()
-            value()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        name()
+        value()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -57,53 +61,55 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [ProjectScoreCategory]. */
+    class Builder internal constructor() {
 
-        private var name: JsonField<String> = JsonMissing.of()
-        private var value: JsonField<Double> = JsonMissing.of()
+        private var name: JsonField<String>? = null
+        private var value: JsonField<Double>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectScoreCategory: ProjectScoreCategory) = apply {
-            this.name = projectScoreCategory.name
-            this.value = projectScoreCategory.value
-            additionalProperties(projectScoreCategory.additionalProperties)
+            name = projectScoreCategory.name
+            value = projectScoreCategory.value
+            additionalProperties = projectScoreCategory.additionalProperties.toMutableMap()
         }
 
         /** Name of the category */
         fun name(name: String) = name(JsonField.of(name))
 
         /** Name of the category */
-        @JsonProperty("name")
-        @ExcludeMissing
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Numerical value of the category. Must be between 0 and 1, inclusive */
         fun value(value: Double) = value(JsonField.of(value))
 
         /** Numerical value of the category. Must be between 0 and 1, inclusive */
-        @JsonProperty("value")
-        @ExcludeMissing
         fun value(value: JsonField<Double>) = apply { this.value = value }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): ProjectScoreCategory =
             ProjectScoreCategory(
-                name,
-                value,
+                checkRequired("name", name),
+                checkRequired("value", value),
                 additionalProperties.toImmutable(),
             )
     }

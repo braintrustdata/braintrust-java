@@ -7,38 +7,43 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
 /** The view definition */
-@JsonDeserialize(builder = ViewData.Builder::class)
 @NoAutoDetect
 class ViewData
+@JsonCreator
 private constructor(
-    private val search: JsonField<ViewDataSearch>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("search")
+    @ExcludeMissing
+    private val search: JsonField<ViewDataSearch> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun search(): Optional<ViewDataSearch> = Optional.ofNullable(search.getNullable("search"))
 
-    @JsonProperty("search") @ExcludeMissing fun _search() = search
+    @JsonProperty("search") @ExcludeMissing fun _search(): JsonField<ViewDataSearch> = search
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ViewData = apply {
-        if (!validated) {
-            search().map { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        search().ifPresent { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -48,35 +53,41 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [ViewData]. */
+    class Builder internal constructor() {
 
         private var search: JsonField<ViewDataSearch> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(viewData: ViewData) = apply {
-            this.search = viewData.search
-            additionalProperties(viewData.additionalProperties)
+            search = viewData.search
+            additionalProperties = viewData.additionalProperties.toMutableMap()
         }
 
-        fun search(search: ViewDataSearch) = search(JsonField.of(search))
+        fun search(search: ViewDataSearch?) = search(JsonField.ofNullable(search))
 
-        @JsonProperty("search")
-        @ExcludeMissing
+        fun search(search: Optional<ViewDataSearch>) = search(search.orElse(null))
+
         fun search(search: JsonField<ViewDataSearch>) = apply { this.search = search }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): ViewData = ViewData(search, additionalProperties.toImmutable())

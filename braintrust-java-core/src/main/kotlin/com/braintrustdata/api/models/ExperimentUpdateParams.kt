@@ -3,77 +3,110 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.ExcludeMissing
+import com.braintrustdata.api.core.JsonField
+import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Partially update an experiment object. Specify the fields to update in the payload. Any
+ * object-type fields will be deep-merged with existing content. Currently we do not support
+ * removing fields or setting them to null.
+ */
 class ExperimentUpdateParams
-constructor(
+private constructor(
     private val experimentId: String,
-    private val baseExpId: String?,
-    private val datasetId: String?,
-    private val datasetVersion: String?,
-    private val description: String?,
-    private val metadata: Metadata?,
-    private val name: String?,
-    private val public_: Boolean?,
-    private val repoInfo: RepoInfo?,
+    private val body: ExperimentUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
+    /** Experiment id */
     fun experimentId(): String = experimentId
 
-    fun baseExpId(): Optional<String> = Optional.ofNullable(baseExpId)
+    /** Id of default base experiment to compare against when viewing this experiment */
+    fun baseExpId(): Optional<String> = body.baseExpId()
 
-    fun datasetId(): Optional<String> = Optional.ofNullable(datasetId)
+    /** Identifier of the linked dataset, or null if the experiment is not linked to a dataset */
+    fun datasetId(): Optional<String> = body.datasetId()
 
-    fun datasetVersion(): Optional<String> = Optional.ofNullable(datasetVersion)
+    /**
+     * Version number of the linked dataset the experiment was run against. This can be used to
+     * reproduce the experiment after the dataset has been modified.
+     */
+    fun datasetVersion(): Optional<String> = body.datasetVersion()
 
-    fun description(): Optional<String> = Optional.ofNullable(description)
+    /** Textual description of the experiment */
+    fun description(): Optional<String> = body.description()
 
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
+    /** User-controlled metadata about the experiment */
+    fun metadata(): Optional<Metadata> = body.metadata()
 
-    fun name(): Optional<String> = Optional.ofNullable(name)
+    /** Name of the experiment. Within a project, experiment names are unique */
+    fun name(): Optional<String> = body.name()
 
-    fun public_(): Optional<Boolean> = Optional.ofNullable(public_)
+    /**
+     * Whether or not the experiment is public. Public experiments can be viewed by anybody inside
+     * or outside the organization
+     */
+    fun public_(): Optional<Boolean> = body.public_()
 
-    fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo)
+    /** Metadata about the state of the repo when the experiment was created */
+    fun repoInfo(): Optional<RepoInfo> = body.repoInfo()
+
+    /** Id of default base experiment to compare against when viewing this experiment */
+    fun _baseExpId(): JsonField<String> = body._baseExpId()
+
+    /** Identifier of the linked dataset, or null if the experiment is not linked to a dataset */
+    fun _datasetId(): JsonField<String> = body._datasetId()
+
+    /**
+     * Version number of the linked dataset the experiment was run against. This can be used to
+     * reproduce the experiment after the dataset has been modified.
+     */
+    fun _datasetVersion(): JsonField<String> = body._datasetVersion()
+
+    /** Textual description of the experiment */
+    fun _description(): JsonField<String> = body._description()
+
+    /** User-controlled metadata about the experiment */
+    fun _metadata(): JsonField<Metadata> = body._metadata()
+
+    /** Name of the experiment. Within a project, experiment names are unique */
+    fun _name(): JsonField<String> = body._name()
+
+    /**
+     * Whether or not the experiment is public. Public experiments can be viewed by anybody inside
+     * or outside the organization
+     */
+    fun _public_(): JsonField<Boolean> = body._public_()
+
+    /** Metadata about the state of the repo when the experiment was created */
+    fun _repoInfo(): JsonField<RepoInfo> = body._repoInfo()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JvmSynthetic internal fun _body(): ExperimentUpdateBody = body
 
-    @JvmSynthetic
-    internal fun getBody(): ExperimentUpdateBody {
-        return ExperimentUpdateBody(
-            baseExpId,
-            datasetId,
-            datasetVersion,
-            description,
-            metadata,
-            name,
-            public_,
-            repoInfo,
-            additionalBodyProperties,
-        )
-    }
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -82,56 +115,130 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = ExperimentUpdateBody.Builder::class)
     @NoAutoDetect
     class ExperimentUpdateBody
+    @JsonCreator
     internal constructor(
-        private val baseExpId: String?,
-        private val datasetId: String?,
-        private val datasetVersion: String?,
-        private val description: String?,
-        private val metadata: Metadata?,
-        private val name: String?,
-        private val public_: Boolean?,
-        private val repoInfo: RepoInfo?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("base_exp_id")
+        @ExcludeMissing
+        private val baseExpId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dataset_id")
+        @ExcludeMissing
+        private val datasetId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dataset_version")
+        @ExcludeMissing
+        private val datasetVersion: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        private val metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("public")
+        @ExcludeMissing
+        private val public_: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("repo_info")
+        @ExcludeMissing
+        private val repoInfo: JsonField<RepoInfo> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Id of default base experiment to compare against when viewing this experiment */
-        @JsonProperty("base_exp_id") fun baseExpId(): String? = baseExpId
+        fun baseExpId(): Optional<String> =
+            Optional.ofNullable(baseExpId.getNullable("base_exp_id"))
 
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
          */
-        @JsonProperty("dataset_id") fun datasetId(): String? = datasetId
+        fun datasetId(): Optional<String> = Optional.ofNullable(datasetId.getNullable("dataset_id"))
 
         /**
          * Version number of the linked dataset the experiment was run against. This can be used to
          * reproduce the experiment after the dataset has been modified.
          */
-        @JsonProperty("dataset_version") fun datasetVersion(): String? = datasetVersion
+        fun datasetVersion(): Optional<String> =
+            Optional.ofNullable(datasetVersion.getNullable("dataset_version"))
 
         /** Textual description of the experiment */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
 
         /** User-controlled metadata about the experiment */
-        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
+        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
         /** Name of the experiment. Within a project, experiment names are unique */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /**
          * Whether or not the experiment is public. Public experiments can be viewed by anybody
          * inside or outside the organization
          */
-        @JsonProperty("public") fun public_(): Boolean? = public_
+        fun public_(): Optional<Boolean> = Optional.ofNullable(public_.getNullable("public"))
 
         /** Metadata about the state of the repo when the experiment was created */
-        @JsonProperty("repo_info") fun repoInfo(): RepoInfo? = repoInfo
+        fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo.getNullable("repo_info"))
+
+        /** Id of default base experiment to compare against when viewing this experiment */
+        @JsonProperty("base_exp_id") @ExcludeMissing fun _baseExpId(): JsonField<String> = baseExpId
+
+        /**
+         * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
+         */
+        @JsonProperty("dataset_id") @ExcludeMissing fun _datasetId(): JsonField<String> = datasetId
+
+        /**
+         * Version number of the linked dataset the experiment was run against. This can be used to
+         * reproduce the experiment after the dataset has been modified.
+         */
+        @JsonProperty("dataset_version")
+        @ExcludeMissing
+        fun _datasetVersion(): JsonField<String> = datasetVersion
+
+        /** Textual description of the experiment */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /** User-controlled metadata about the experiment */
+        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+        /** Name of the experiment. Within a project, experiment names are unique */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Whether or not the experiment is public. Public experiments can be viewed by anybody
+         * inside or outside the organization
+         */
+        @JsonProperty("public") @ExcludeMissing fun _public_(): JsonField<Boolean> = public_
+
+        /** Metadata about the state of the repo when the experiment was created */
+        @JsonProperty("repo_info") @ExcludeMissing fun _repoInfo(): JsonField<RepoInfo> = repoInfo
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ExperimentUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            baseExpId()
+            datasetId()
+            datasetVersion()
+            description()
+            metadata().ifPresent { it.validate() }
+            name()
+            public_()
+            repoInfo().ifPresent { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -140,84 +247,161 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ExperimentUpdateBody]. */
+        class Builder internal constructor() {
 
-            private var baseExpId: String? = null
-            private var datasetId: String? = null
-            private var datasetVersion: String? = null
-            private var description: String? = null
-            private var metadata: Metadata? = null
-            private var name: String? = null
-            private var public_: Boolean? = null
-            private var repoInfo: RepoInfo? = null
+            private var baseExpId: JsonField<String> = JsonMissing.of()
+            private var datasetId: JsonField<String> = JsonMissing.of()
+            private var datasetVersion: JsonField<String> = JsonMissing.of()
+            private var description: JsonField<String> = JsonMissing.of()
+            private var metadata: JsonField<Metadata> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
+            private var public_: JsonField<Boolean> = JsonMissing.of()
+            private var repoInfo: JsonField<RepoInfo> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(experimentUpdateBody: ExperimentUpdateBody) = apply {
-                this.baseExpId = experimentUpdateBody.baseExpId
-                this.datasetId = experimentUpdateBody.datasetId
-                this.datasetVersion = experimentUpdateBody.datasetVersion
-                this.description = experimentUpdateBody.description
-                this.metadata = experimentUpdateBody.metadata
-                this.name = experimentUpdateBody.name
-                this.public_ = experimentUpdateBody.public_
-                this.repoInfo = experimentUpdateBody.repoInfo
-                additionalProperties(experimentUpdateBody.additionalProperties)
+                baseExpId = experimentUpdateBody.baseExpId
+                datasetId = experimentUpdateBody.datasetId
+                datasetVersion = experimentUpdateBody.datasetVersion
+                description = experimentUpdateBody.description
+                metadata = experimentUpdateBody.metadata
+                name = experimentUpdateBody.name
+                public_ = experimentUpdateBody.public_
+                repoInfo = experimentUpdateBody.repoInfo
+                additionalProperties = experimentUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** Id of default base experiment to compare against when viewing this experiment */
-            @JsonProperty("base_exp_id")
-            fun baseExpId(baseExpId: String) = apply { this.baseExpId = baseExpId }
+            fun baseExpId(baseExpId: String?) = baseExpId(JsonField.ofNullable(baseExpId))
+
+            /** Id of default base experiment to compare against when viewing this experiment */
+            fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.orElse(null))
+
+            /** Id of default base experiment to compare against when viewing this experiment */
+            fun baseExpId(baseExpId: JsonField<String>) = apply { this.baseExpId = baseExpId }
 
             /**
              * Identifier of the linked dataset, or null if the experiment is not linked to a
              * dataset
              */
-            @JsonProperty("dataset_id")
-            fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+            fun datasetId(datasetId: String?) = datasetId(JsonField.ofNullable(datasetId))
+
+            /**
+             * Identifier of the linked dataset, or null if the experiment is not linked to a
+             * dataset
+             */
+            fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.orElse(null))
+
+            /**
+             * Identifier of the linked dataset, or null if the experiment is not linked to a
+             * dataset
+             */
+            fun datasetId(datasetId: JsonField<String>) = apply { this.datasetId = datasetId }
 
             /**
              * Version number of the linked dataset the experiment was run against. This can be used
              * to reproduce the experiment after the dataset has been modified.
              */
-            @JsonProperty("dataset_version")
-            fun datasetVersion(datasetVersion: String) = apply {
+            fun datasetVersion(datasetVersion: String?) =
+                datasetVersion(JsonField.ofNullable(datasetVersion))
+
+            /**
+             * Version number of the linked dataset the experiment was run against. This can be used
+             * to reproduce the experiment after the dataset has been modified.
+             */
+            fun datasetVersion(datasetVersion: Optional<String>) =
+                datasetVersion(datasetVersion.orElse(null))
+
+            /**
+             * Version number of the linked dataset the experiment was run against. This can be used
+             * to reproduce the experiment after the dataset has been modified.
+             */
+            fun datasetVersion(datasetVersion: JsonField<String>) = apply {
                 this.datasetVersion = datasetVersion
             }
 
             /** Textual description of the experiment */
-            @JsonProperty("description")
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** Textual description of the experiment */
+            fun description(description: Optional<String>) = description(description.orElse(null))
+
+            /** Textual description of the experiment */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
 
             /** User-controlled metadata about the experiment */
-            @JsonProperty("metadata")
-            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+            /** User-controlled metadata about the experiment */
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+            /** User-controlled metadata about the experiment */
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /** Name of the experiment. Within a project, experiment names are unique */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** Name of the experiment. Within a project, experiment names are unique */
+            fun name(name: Optional<String>) = name(name.orElse(null))
+
+            /** Name of the experiment. Within a project, experiment names are unique */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
              * Whether or not the experiment is public. Public experiments can be viewed by anybody
              * inside or outside the organization
              */
-            @JsonProperty("public") fun public_(public_: Boolean) = apply { this.public_ = public_ }
+            fun public_(public_: Boolean?) = public_(JsonField.ofNullable(public_))
+
+            /**
+             * Whether or not the experiment is public. Public experiments can be viewed by anybody
+             * inside or outside the organization
+             */
+            fun public_(public_: Boolean) = public_(public_ as Boolean?)
+
+            /**
+             * Whether or not the experiment is public. Public experiments can be viewed by anybody
+             * inside or outside the organization
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun public_(public_: Optional<Boolean>) = public_(public_.orElse(null) as Boolean?)
+
+            /**
+             * Whether or not the experiment is public. Public experiments can be viewed by anybody
+             * inside or outside the organization
+             */
+            fun public_(public_: JsonField<Boolean>) = apply { this.public_ = public_ }
 
             /** Metadata about the state of the repo when the experiment was created */
-            @JsonProperty("repo_info")
-            fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
+            fun repoInfo(repoInfo: RepoInfo?) = repoInfo(JsonField.ofNullable(repoInfo))
+
+            /** Metadata about the state of the repo when the experiment was created */
+            fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+
+            /** Metadata about the state of the repo when the experiment was created */
+            fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { this.repoInfo = repoInfo }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ExperimentUpdateBody =
@@ -259,73 +443,150 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ExperimentUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var experimentId: String? = null
-        private var baseExpId: String? = null
-        private var datasetId: String? = null
-        private var datasetVersion: String? = null
-        private var description: String? = null
-        private var metadata: Metadata? = null
-        private var name: String? = null
-        private var public_: Boolean? = null
-        private var repoInfo: RepoInfo? = null
+        private var body: ExperimentUpdateBody.Builder = ExperimentUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(experimentUpdateParams: ExperimentUpdateParams) = apply {
             experimentId = experimentUpdateParams.experimentId
-            baseExpId = experimentUpdateParams.baseExpId
-            datasetId = experimentUpdateParams.datasetId
-            datasetVersion = experimentUpdateParams.datasetVersion
-            description = experimentUpdateParams.description
-            metadata = experimentUpdateParams.metadata
-            name = experimentUpdateParams.name
-            public_ = experimentUpdateParams.public_
-            repoInfo = experimentUpdateParams.repoInfo
+            body = experimentUpdateParams.body.toBuilder()
             additionalHeaders = experimentUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = experimentUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                experimentUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** Experiment id */
         fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
 
         /** Id of default base experiment to compare against when viewing this experiment */
-        fun baseExpId(baseExpId: String) = apply { this.baseExpId = baseExpId }
+        fun baseExpId(baseExpId: String?) = apply { body.baseExpId(baseExpId) }
+
+        /** Id of default base experiment to compare against when viewing this experiment */
+        fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.orElse(null))
+
+        /** Id of default base experiment to compare against when viewing this experiment */
+        fun baseExpId(baseExpId: JsonField<String>) = apply { body.baseExpId(baseExpId) }
 
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
          */
-        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+        fun datasetId(datasetId: String?) = apply { body.datasetId(datasetId) }
+
+        /**
+         * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
+         */
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.orElse(null))
+
+        /**
+         * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
+         */
+        fun datasetId(datasetId: JsonField<String>) = apply { body.datasetId(datasetId) }
 
         /**
          * Version number of the linked dataset the experiment was run against. This can be used to
          * reproduce the experiment after the dataset has been modified.
          */
-        fun datasetVersion(datasetVersion: String) = apply { this.datasetVersion = datasetVersion }
+        fun datasetVersion(datasetVersion: String?) = apply { body.datasetVersion(datasetVersion) }
+
+        /**
+         * Version number of the linked dataset the experiment was run against. This can be used to
+         * reproduce the experiment after the dataset has been modified.
+         */
+        fun datasetVersion(datasetVersion: Optional<String>) =
+            datasetVersion(datasetVersion.orElse(null))
+
+        /**
+         * Version number of the linked dataset the experiment was run against. This can be used to
+         * reproduce the experiment after the dataset has been modified.
+         */
+        fun datasetVersion(datasetVersion: JsonField<String>) = apply {
+            body.datasetVersion(datasetVersion)
+        }
 
         /** Textual description of the experiment */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String?) = apply { body.description(description) }
+
+        /** Textual description of the experiment */
+        fun description(description: Optional<String>) = description(description.orElse(null))
+
+        /** Textual description of the experiment */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** User-controlled metadata about the experiment */
-        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+        fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
+
+        /** User-controlled metadata about the experiment */
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+
+        /** User-controlled metadata about the experiment */
+        fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
         /** Name of the experiment. Within a project, experiment names are unique */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String?) = apply { body.name(name) }
+
+        /** Name of the experiment. Within a project, experiment names are unique */
+        fun name(name: Optional<String>) = name(name.orElse(null))
+
+        /** Name of the experiment. Within a project, experiment names are unique */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
          * Whether or not the experiment is public. Public experiments can be viewed by anybody
          * inside or outside the organization
          */
-        fun public_(public_: Boolean) = apply { this.public_ = public_ }
+        fun public_(public_: Boolean?) = apply { body.public_(public_) }
+
+        /**
+         * Whether or not the experiment is public. Public experiments can be viewed by anybody
+         * inside or outside the organization
+         */
+        fun public_(public_: Boolean) = public_(public_ as Boolean?)
+
+        /**
+         * Whether or not the experiment is public. Public experiments can be viewed by anybody
+         * inside or outside the organization
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun public_(public_: Optional<Boolean>) = public_(public_.orElse(null) as Boolean?)
+
+        /**
+         * Whether or not the experiment is public. Public experiments can be viewed by anybody
+         * inside or outside the organization
+         */
+        fun public_(public_: JsonField<Boolean>) = apply { body.public_(public_) }
 
         /** Metadata about the state of the repo when the experiment was created */
-        fun repoInfo(repoInfo: RepoInfo) = apply { this.repoInfo = repoInfo }
+        fun repoInfo(repoInfo: RepoInfo?) = apply { body.repoInfo(repoInfo) }
+
+        /** Metadata about the state of the repo when the experiment was created */
+        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+
+        /** Metadata about the state of the repo when the experiment was created */
+        fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { body.repoInfo(repoInfo) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -425,56 +686,37 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ExperimentUpdateParams =
             ExperimentUpdateParams(
-                checkNotNull(experimentId) { "`experimentId` is required but was not set" },
-                baseExpId,
-                datasetId,
-                datasetVersion,
-                description,
-                metadata,
-                name,
-                public_,
-                repoInfo,
+                checkRequired("experimentId", experimentId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
     /** User-controlled metadata about the experiment */
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -483,27 +725,33 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Metadata]. */
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                additionalProperties(metadata.additionalProperties)
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(additionalProperties.toImmutable())
@@ -531,11 +779,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentUpdateParams && experimentId == other.experimentId && baseExpId == other.baseExpId && datasetId == other.datasetId && datasetVersion == other.datasetVersion && description == other.description && metadata == other.metadata && name == other.name && public_ == other.public_ && repoInfo == other.repoInfo && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ExperimentUpdateParams && experimentId == other.experimentId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, baseExpId, datasetId, datasetVersion, description, metadata, name, public_, repoInfo, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ExperimentUpdateParams{experimentId=$experimentId, baseExpId=$baseExpId, datasetId=$datasetId, datasetVersion=$datasetVersion, description=$description, metadata=$metadata, name=$name, public_=$public_, repoInfo=$repoInfo, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ExperimentUpdateParams{experimentId=$experimentId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

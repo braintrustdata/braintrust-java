@@ -2,8 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.JsonNull
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.Test
 class ViewCreateParamsTest {
 
     @Test
-    fun createViewCreateParams() {
+    fun create() {
         ViewCreateParams.builder()
             .name("name")
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -20,9 +19,17 @@ class ViewCreateParamsTest {
             .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
             .options(
                 ViewOptions.builder()
-                    .columnOrder(listOf("string"))
-                    .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                    .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                    .addColumnOrder("string")
+                    .columnSizing(
+                        ViewOptions.ColumnSizing.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .columnVisibility(
+                        ViewOptions.ColumnVisibility.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(true))
+                            .build()
+                    )
                     .build()
             )
             .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -30,10 +37,10 @@ class ViewCreateParamsTest {
                 ViewData.builder()
                     .search(
                         ViewDataSearch.builder()
-                            .filter(listOf(JsonNull.of()))
-                            .match(listOf(JsonNull.of()))
-                            .sort(listOf(JsonNull.of()))
-                            .tag(listOf(JsonNull.of()))
+                            .addFilter(JsonValue.from(mapOf<String, Any>()))
+                            .addMatch(JsonValue.from(mapOf<String, Any>()))
+                            .addSort(JsonValue.from(mapOf<String, Any>()))
+                            .addTag(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
                     .build()
@@ -42,7 +49,7 @@ class ViewCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ViewCreateParams.builder()
                 .name("name")
@@ -52,9 +59,17 @@ class ViewCreateParamsTest {
                 .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .options(
                     ViewOptions.builder()
-                        .columnOrder(listOf("string"))
-                        .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                        .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                        .addColumnOrder("string")
+                        .columnSizing(
+                            ViewOptions.ColumnSizing.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
+                        .columnVisibility(
+                            ViewOptions.ColumnVisibility.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(true))
+                                .build()
+                        )
                         .build()
                 )
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -62,40 +77,48 @@ class ViewCreateParamsTest {
                     ViewData.builder()
                         .search(
                             ViewDataSearch.builder()
-                                .filter(listOf(JsonNull.of()))
-                                .match(listOf(JsonNull.of()))
-                                .sort(listOf(JsonNull.of()))
-                                .tag(listOf(JsonNull.of()))
+                                .addFilter(JsonValue.from(mapOf<String, Any>()))
+                                .addMatch(JsonValue.from(mapOf<String, Any>()))
+                                .addSort(JsonValue.from(mapOf<String, Any>()))
+                                .addTag(JsonValue.from(mapOf<String, Any>()))
                                 .build()
                         )
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(ViewCreateParams.ObjectType.ORGANIZATION)
-        assertThat(body.viewType()).isEqualTo(ViewCreateParams.ViewType.PROJECTS)
-        assertThat(body.deletedAt()).isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+        assertThat(body.viewType()).contains(ViewCreateParams.ViewType.PROJECTS)
+        assertThat(body.deletedAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(body.options())
-            .isEqualTo(
+            .contains(
                 ViewOptions.builder()
-                    .columnOrder(listOf("string"))
-                    .columnSizing(ViewOptions.ColumnSizing.builder().build())
-                    .columnVisibility(ViewOptions.ColumnVisibility.builder().build())
+                    .addColumnOrder("string")
+                    .columnSizing(
+                        ViewOptions.ColumnSizing.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .columnVisibility(
+                        ViewOptions.ColumnVisibility.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(true))
+                            .build()
+                    )
                     .build()
             )
-        assertThat(body.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.userId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.viewData())
-            .isEqualTo(
+            .contains(
                 ViewData.builder()
                     .search(
                         ViewDataSearch.builder()
-                            .filter(listOf(JsonNull.of()))
-                            .match(listOf(JsonNull.of()))
-                            .sort(listOf(JsonNull.of()))
-                            .tag(listOf(JsonNull.of()))
+                            .addFilter(JsonValue.from(mapOf<String, Any>()))
+                            .addMatch(JsonValue.from(mapOf<String, Any>()))
+                            .addSort(JsonValue.from(mapOf<String, Any>()))
+                            .addTag(JsonValue.from(mapOf<String, Any>()))
                             .build()
                     )
                     .build()
@@ -103,17 +126,19 @@ class ViewCreateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ViewCreateParams.builder()
                 .name("name")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectType(ViewCreateParams.ObjectType.ORGANIZATION)
+                .viewType(ViewCreateParams.ViewType.PROJECTS)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(ViewCreateParams.ObjectType.ORGANIZATION)
+        assertThat(body.viewType()).contains(ViewCreateParams.ViewType.PROJECTS)
     }
 }

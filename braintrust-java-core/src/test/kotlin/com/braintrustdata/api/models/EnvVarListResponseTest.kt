@@ -12,17 +12,15 @@ class EnvVarListResponseTest {
     fun createEnvVarListResponse() {
         val envVarListResponse =
             EnvVarListResponse.builder()
-                .objects(
-                    listOf(
-                        EnvVar.builder()
-                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .name("name")
-                            .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(EnvVar.ObjectType.ORGANIZATION)
-                            .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .used(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .build()
-                    )
+                .addObject(
+                    EnvVar.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .name("name")
+                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .objectType(EnvVar.ObjectType.ORGANIZATION)
+                        .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .used(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .build()
                 )
                 .build()
         assertThat(envVarListResponse).isNotNull

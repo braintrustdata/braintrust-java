@@ -3,27 +3,30 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.models.*
 import java.util.Objects
 
+/** Get an api_key object by its id */
 class ApiKeyRetrieveParams
-constructor(
+private constructor(
     private val apiKeyId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** ApiKey id */
     fun apiKeyId(): String = apiKeyId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -39,8 +42,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ApiKeyRetrieveParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var apiKeyId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -156,7 +160,7 @@ constructor(
 
         fun build(): ApiKeyRetrieveParams =
             ApiKeyRetrieveParams(
-                checkNotNull(apiKeyId) { "`apiKeyId` is required but was not set" },
+                checkRequired("apiKeyId", apiKeyId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

@@ -8,11 +8,12 @@ import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.braintrustdata.api.models.*
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.ObjectCodec
@@ -24,8 +25,12 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * List out all acls. The acls are sorted by creation date, with the most recently-created acls
+ * coming first
+ */
 class AclListParams
-constructor(
+private constructor(
     private val objectId: String,
     private val objectType: ObjectType,
     private val endingBefore: String?,
@@ -34,28 +39,48 @@ constructor(
     private val startingAfter: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** The id of the object the ACL applies to */
     fun objectId(): String = objectId
 
+    /** The object type that the ACL applies to */
     fun objectType(): ObjectType = objectType
 
+    /**
+     * Pagination cursor id.
+     *
+     * For example, if the initial item in the last page you fetched had an id of `foo`, pass
+     * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
+     * `starting_after` and `ending_before`
+     */
     fun endingBefore(): Optional<String> = Optional.ofNullable(endingBefore)
 
+    /**
+     * Filter search results to a particular set of object IDs. To specify a list of IDs, include
+     * the query param multiple times
+     */
     fun ids(): Optional<Ids> = Optional.ofNullable(ids)
 
+    /** Limit the number of objects to return */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
+    /**
+     * Pagination cursor id.
+     *
+     * For example, if the final item in the last page you fetched had an id of `foo`, pass
+     * `starting_after=foo` to fetch the next page. Note: you may only pass one of `starting_after`
+     * and `ending_before`
+     */
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.objectId.let { queryParams.put("object_id", listOf(it.toString())) }
         this.objectType.let { queryParams.put("object_type", listOf(it.toString())) }
@@ -74,8 +99,9 @@ constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [AclListParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var objectId: String? = null
         private var objectType: ObjectType? = null
@@ -111,28 +137,50 @@ constructor(
          * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun endingBefore(endingBefore: String) = apply { this.endingBefore = endingBefore }
+        fun endingBefore(endingBefore: String?) = apply { this.endingBefore = endingBefore }
+
+        /**
+         * Pagination cursor id.
+         *
+         * For example, if the initial item in the last page you fetched had an id of `foo`, pass
+         * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
+         * `starting_after` and `ending_before`
+         */
+        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.orElse(null))
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Ids) = apply { this.ids = ids }
+        fun ids(ids: Ids?) = apply { this.ids = ids }
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(string: String) = apply { this.ids = Ids.ofString(string) }
+        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun idsOfStrings(strings: List<String>) = apply { this.ids = Ids.ofStrings(strings) }
+        fun ids(string: String) = ids(Ids.ofString(string))
+
+        /**
+         * Filter search results to a particular set of object IDs. To specify a list of IDs,
+         * include the query param multiple times
+         */
+        fun idsOfStrings(strings: List<String>) = ids(Ids.ofStrings(strings))
 
         /** Limit the number of objects to return */
-        fun limit(limit: Long) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply { this.limit = limit }
+
+        /** Limit the number of objects to return */
+        fun limit(limit: Long) = limit(limit as Long?)
+
+        /** Limit the number of objects to return */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
 
         /**
          * Pagination cursor id.
@@ -141,7 +189,17 @@ constructor(
          * `starting_after=foo` to fetch the next page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun startingAfter(startingAfter: String) = apply { this.startingAfter = startingAfter }
+        fun startingAfter(startingAfter: String?) = apply { this.startingAfter = startingAfter }
+
+        /**
+         * Pagination cursor id.
+         *
+         * For example, if the final item in the last page you fetched had an id of `foo`, pass
+         * `starting_after=foo` to fetch the next page. Note: you may only pass one of
+         * `starting_after` and `ending_before`
+         */
+        fun startingAfter(startingAfter: Optional<String>) =
+            startingAfter(startingAfter.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -243,8 +301,8 @@ constructor(
 
         fun build(): AclListParams =
             AclListParams(
-                checkNotNull(objectId) { "`objectId` is required but was not set" },
-                checkNotNull(objectType) { "`objectType` is required but was not set" },
+                checkRequired("objectId", objectId),
+                checkRequired("objectType", objectType),
                 endingBefore,
                 ids,
                 limit,
@@ -254,53 +312,51 @@ constructor(
             )
     }
 
+    /** The object type that the ACL applies to */
     class ObjectType
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
 
         companion object {
 
-            @JvmField val ORGANIZATION = ObjectType(JsonField.of("organization"))
+            @JvmField val ORGANIZATION = of("organization")
 
-            @JvmField val PROJECT = ObjectType(JsonField.of("project"))
+            @JvmField val PROJECT = of("project")
 
-            @JvmField val EXPERIMENT = ObjectType(JsonField.of("experiment"))
+            @JvmField val EXPERIMENT = of("experiment")
 
-            @JvmField val DATASET = ObjectType(JsonField.of("dataset"))
+            @JvmField val DATASET = of("dataset")
 
-            @JvmField val PROMPT = ObjectType(JsonField.of("prompt"))
+            @JvmField val PROMPT = of("prompt")
 
-            @JvmField val PROMPT_SESSION = ObjectType(JsonField.of("prompt_session"))
+            @JvmField val PROMPT_SESSION = of("prompt_session")
 
-            @JvmField val GROUP = ObjectType(JsonField.of("group"))
+            @JvmField val GROUP = of("group")
 
-            @JvmField val ROLE = ObjectType(JsonField.of("role"))
+            @JvmField val ROLE = of("role")
 
-            @JvmField val ORG_MEMBER = ObjectType(JsonField.of("org_member"))
+            @JvmField val ORG_MEMBER = of("org_member")
 
-            @JvmField val PROJECT_LOG = ObjectType(JsonField.of("project_log"))
+            @JvmField val PROJECT_LOG = of("project_log")
 
-            @JvmField val ORG_PROJECT = ObjectType(JsonField.of("org_project"))
+            @JvmField val ORG_PROJECT = of("org_project")
 
             @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
         }
 
+        /** An enum containing [ObjectType]'s known values. */
         enum class Known {
             ORGANIZATION,
             PROJECT,
@@ -315,6 +371,15 @@ constructor(
             ORG_PROJECT,
         }
 
+        /**
+         * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ObjectType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             ORGANIZATION,
             PROJECT,
@@ -327,9 +392,19 @@ constructor(
             ORG_MEMBER,
             PROJECT_LOG,
             ORG_PROJECT,
+            /**
+             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 ORGANIZATION -> Value.ORGANIZATION
@@ -346,6 +421,15 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
         fun known(): Known =
             when (this) {
                 ORGANIZATION -> Known.ORGANIZATION
@@ -363,8 +447,24 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
+    /**
+     * Filter search results to a particular set of object IDs. To specify a list of IDs, include
+     * the query param multiple times
+     */
     @JsonDeserialize(using = Ids.Deserializer::class)
     @JsonSerialize(using = Ids.Serializer::class)
     class Ids
@@ -373,8 +473,6 @@ constructor(
         private val strings: List<String>? = null,
         private val _json: JsonValue? = null,
     ) {
-
-        private var validated: Boolean = false
 
         fun string(): Optional<String> = Optional.ofNullable(string)
 
@@ -395,15 +493,6 @@ constructor(
                 string != null -> visitor.visitString(string)
                 strings != null -> visitor.visitStrings(strings)
                 else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Ids = apply {
-            if (!validated) {
-                if (string == null && strings == null) {
-                    throw BraintrustInvalidDataException("Unknown Ids: $_json")
-                }
-                validated = true
             }
         }
 
@@ -432,18 +521,28 @@ constructor(
             @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
         }
 
+        /** An interface that defines how to map each variant of [Ids] to a value of type [T]. */
         interface Visitor<out T> {
 
             fun visitString(string: String): T
 
             fun visitStrings(strings: List<String>): T
 
+            /**
+             * Maps an unknown variant of [Ids] to a value of type [T].
+             *
+             * An instance of [Ids] can contain an unknown variant if it was deserialized from data
+             * that doesn't match any known variant. For example, if the SDK is on an older version
+             * than the API, then the API may respond with new variants that the SDK is unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw BraintrustInvalidDataException("Unknown Ids: $json")
             }
         }
 
-        class Deserializer : BaseDeserializer<Ids>(Ids::class) {
+        internal class Deserializer : BaseDeserializer<Ids>(Ids::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Ids {
                 val json = JsonValue.fromJsonNode(node)
@@ -459,7 +558,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Ids>(Ids::class) {
+        internal class Serializer : BaseSerializer<Ids>(Ids::class) {
 
             override fun serialize(
                 value: Ids,

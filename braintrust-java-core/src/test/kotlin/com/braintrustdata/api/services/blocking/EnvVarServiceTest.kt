@@ -4,7 +4,12 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.*
+import com.braintrustdata.api.models.EnvVarCreateParams
+import com.braintrustdata.api.models.EnvVarDeleteParams
+import com.braintrustdata.api.models.EnvVarListParams
+import com.braintrustdata.api.models.EnvVarReplaceParams
+import com.braintrustdata.api.models.EnvVarRetrieveParams
+import com.braintrustdata.api.models.EnvVarUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -82,7 +87,8 @@ class EnvVarServiceTest {
             envVarService.list(
                 EnvVarListParams.builder()
                     .envVarName("env_var_name")
-                    .limit(123L)
+                    .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .limit(0L)
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .objectType(EnvVarListParams.ObjectType.ORGANIZATION)
                     .build()
