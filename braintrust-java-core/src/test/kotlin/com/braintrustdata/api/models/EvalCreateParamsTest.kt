@@ -111,7 +111,9 @@ class EvalCreateParamsTest {
                 .timeout(0.0)
                 .trialCount(0.0)
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.data())
             .isEqualTo(
@@ -188,7 +190,9 @@ class EvalCreateParamsTest {
                 )
                 .task(EvalCreateParams.Task.FunctionId.builder().functionId("function_id").build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.data())
             .isEqualTo(

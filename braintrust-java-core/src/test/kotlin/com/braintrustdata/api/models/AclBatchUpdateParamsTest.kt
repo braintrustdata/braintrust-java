@@ -68,7 +68,9 @@ class AclBatchUpdateParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.addAcls())
             .contains(
@@ -107,7 +109,9 @@ class AclBatchUpdateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = AclBatchUpdateParams.builder().build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 }

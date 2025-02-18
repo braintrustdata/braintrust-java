@@ -41,7 +41,7 @@ import java.util.Optional
  */
 class EvalCreateParams
 private constructor(
-    private val body: EvalCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -200,16 +200,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): EvalCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class EvalCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
         @JsonProperty("project_id")
         @ExcludeMissing
@@ -427,7 +427,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): EvalCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -457,7 +457,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [EvalCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var data: JsonField<Data>? = null
@@ -478,23 +478,23 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(evalCreateBody: EvalCreateBody) = apply {
-                data = evalCreateBody.data
-                projectId = evalCreateBody.projectId
-                scores = evalCreateBody.scores.map { it.toMutableList() }
-                task = evalCreateBody.task
-                baseExperimentId = evalCreateBody.baseExperimentId
-                baseExperimentName = evalCreateBody.baseExperimentName
-                experimentName = evalCreateBody.experimentName
-                gitMetadataSettings = evalCreateBody.gitMetadataSettings
-                isPublic = evalCreateBody.isPublic
-                maxConcurrency = evalCreateBody.maxConcurrency
-                metadata = evalCreateBody.metadata
-                repoInfo = evalCreateBody.repoInfo
-                stream = evalCreateBody.stream
-                timeout = evalCreateBody.timeout
-                trialCount = evalCreateBody.trialCount
-                additionalProperties = evalCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                data = body.data
+                projectId = body.projectId
+                scores = body.scores.map { it.toMutableList() }
+                task = body.task
+                baseExperimentId = body.baseExperimentId
+                baseExperimentName = body.baseExperimentName
+                experimentName = body.experimentName
+                gitMetadataSettings = body.gitMetadataSettings
+                isPublic = body.isPublic
+                maxConcurrency = body.maxConcurrency
+                metadata = body.metadata
+                repoInfo = body.repoInfo
+                stream = body.stream
+                timeout = body.timeout
+                trialCount = body.trialCount
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The dataset to use */
@@ -818,8 +818,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): EvalCreateBody =
-                EvalCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("data", data),
                     checkRequired("projectId", projectId),
                     checkRequired("scores", scores).map { it.toImmutable() },
@@ -844,7 +844,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is EvalCreateBody && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -854,7 +854,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "EvalCreateBody{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalProperties=$additionalProperties}"
+            "Body{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -868,7 +868,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: EvalCreateBody.Builder = EvalCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

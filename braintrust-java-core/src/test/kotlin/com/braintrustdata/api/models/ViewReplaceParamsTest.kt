@@ -86,7 +86,9 @@ class ViewReplaceParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -134,7 +136,9 @@ class ViewReplaceParamsTest {
                 .objectType(ViewReplaceParams.ObjectType.ORGANIZATION)
                 .viewType(ViewReplaceParams.ViewType.PROJECTS)
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

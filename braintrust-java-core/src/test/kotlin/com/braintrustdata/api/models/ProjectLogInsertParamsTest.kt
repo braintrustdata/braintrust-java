@@ -125,7 +125,9 @@ class ProjectLogInsertParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.events())
             .isEqualTo(
@@ -192,7 +194,9 @@ class ProjectLogInsertParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addEvent(InsertProjectLogsEvent.builder().build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.events()).isEqualTo(listOf(InsertProjectLogsEvent.builder().build()))
     }

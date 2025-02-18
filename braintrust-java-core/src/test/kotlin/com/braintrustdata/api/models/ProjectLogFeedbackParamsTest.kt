@@ -59,7 +59,9 @@ class ProjectLogFeedbackParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(
@@ -92,7 +94,9 @@ class ProjectLogFeedbackParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addFeedback(FeedbackProjectLogsItem.builder().id("id").build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
