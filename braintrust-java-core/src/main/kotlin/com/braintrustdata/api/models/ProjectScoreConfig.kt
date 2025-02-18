@@ -136,19 +136,11 @@ private constructor(
         }
 
         fun build(): ProjectScoreConfig =
-            ProjectScoreConfig(
-                destination,
-                multiSelect,
-                online,
-                additionalProperties.toImmutable(),
-            )
+            ProjectScoreConfig(destination, multiSelect, online, additionalProperties.toImmutable())
     }
 
-    class Destination
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Destination @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -169,7 +161,7 @@ private constructor(
 
         /** An enum containing [Destination]'s known values. */
         enum class Known {
-            EXPECTED,
+            EXPECTED
         }
 
         /**

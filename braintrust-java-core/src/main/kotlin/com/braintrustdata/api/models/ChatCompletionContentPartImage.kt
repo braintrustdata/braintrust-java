@@ -196,18 +196,10 @@ private constructor(
             }
 
             fun build(): ImageUrl =
-                ImageUrl(
-                    checkRequired("url", url),
-                    detail,
-                    additionalProperties.toImmutable(),
-                )
+                ImageUrl(checkRequired("url", url), detail, additionalProperties.toImmutable())
         }
 
-        class Detail
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Detail @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -321,11 +313,7 @@ private constructor(
             "ImageUrl{url=$url, detail=$detail, additionalProperties=$additionalProperties}"
     }
 
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -346,7 +334,7 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            IMAGE_URL,
+            IMAGE_URL
         }
 
         /**

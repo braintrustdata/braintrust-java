@@ -25,14 +25,14 @@ interface AiSecretServiceAsync {
     @JvmOverloads
     fun create(
         params: AiSecretCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /** Get an ai_secret object by its id */
     @JvmOverloads
     fun retrieve(
         params: AiSecretRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /**
@@ -43,7 +43,7 @@ interface AiSecretServiceAsync {
     @JvmOverloads
     fun update(
         params: AiSecretUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /**
@@ -53,21 +53,21 @@ interface AiSecretServiceAsync {
     @JvmOverloads
     fun list(
         params: AiSecretListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AiSecretListPageAsync>
 
     /** Delete an ai_secret object by its id */
     @JvmOverloads
     fun delete(
         params: AiSecretDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /** Delete a single ai_secret */
     @JvmOverloads
     fun findAndDelete(
         params: AiSecretFindAndDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /**
@@ -77,6 +77,6 @@ interface AiSecretServiceAsync {
     @JvmOverloads
     fun replace(
         params: AiSecretReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 }

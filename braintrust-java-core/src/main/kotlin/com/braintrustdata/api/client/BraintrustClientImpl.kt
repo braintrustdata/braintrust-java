@@ -43,9 +43,7 @@ import com.braintrustdata.api.services.blocking.UserServiceImpl
 import com.braintrustdata.api.services.blocking.ViewService
 import com.braintrustdata.api.services.blocking.ViewServiceImpl
 
-class BraintrustClientImpl(
-    private val clientOptions: ClientOptions,
-) : BraintrustClient {
+class BraintrustClientImpl(private val clientOptions: ClientOptions) : BraintrustClient {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

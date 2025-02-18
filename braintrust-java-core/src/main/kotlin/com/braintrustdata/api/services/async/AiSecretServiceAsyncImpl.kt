@@ -24,10 +24,8 @@ import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class AiSecretServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AiSecretServiceAsync {
+class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AiSecretServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -40,7 +38,7 @@ internal constructor(
      */
     override fun create(
         params: AiSecretCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AISecret> {
         val request =
             HttpRequest.builder()
@@ -68,7 +66,7 @@ internal constructor(
     /** Get an ai_secret object by its id */
     override fun retrieve(
         params: AiSecretRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AISecret> {
         val request =
             HttpRequest.builder()
@@ -99,7 +97,7 @@ internal constructor(
      */
     override fun update(
         params: AiSecretUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AISecret> {
         val request =
             HttpRequest.builder()
@@ -131,7 +129,7 @@ internal constructor(
      */
     override fun list(
         params: AiSecretListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AiSecretListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -159,7 +157,7 @@ internal constructor(
     /** Delete an ai_secret object by its id */
     override fun delete(
         params: AiSecretDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AISecret> {
         val request =
             HttpRequest.builder()
@@ -187,7 +185,7 @@ internal constructor(
     /** Delete a single ai_secret */
     override fun findAndDelete(
         params: AiSecretFindAndDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AISecret> {
         val request =
             HttpRequest.builder()
@@ -218,7 +216,7 @@ internal constructor(
      */
     override fun replace(
         params: AiSecretReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AISecret> {
         val request =
             HttpRequest.builder()

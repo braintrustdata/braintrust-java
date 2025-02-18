@@ -21,7 +21,7 @@ interface OrganizationService {
     @JvmOverloads
     fun retrieve(
         params: OrganizationRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Organization
 
     /**
@@ -32,7 +32,7 @@ interface OrganizationService {
     @JvmOverloads
     fun update(
         params: OrganizationUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Organization
 
     /**
@@ -42,13 +42,13 @@ interface OrganizationService {
     @JvmOverloads
     fun list(
         params: OrganizationListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): OrganizationListPage
 
     /** Delete an organization object by its id */
     @JvmOverloads
     fun delete(
         params: OrganizationDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Organization
 }

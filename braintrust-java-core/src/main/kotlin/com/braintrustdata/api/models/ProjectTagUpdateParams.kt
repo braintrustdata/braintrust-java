@@ -200,12 +200,7 @@ private constructor(
             }
 
             fun build(): ProjectTagUpdateBody =
-                ProjectTagUpdateBody(
-                    color,
-                    description,
-                    name,
-                    additionalProperties.toImmutable(),
-                )
+                ProjectTagUpdateBody(color, description, name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

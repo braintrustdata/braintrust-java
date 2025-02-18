@@ -27,14 +27,14 @@ interface FunctionServiceAsync {
     @JvmOverloads
     fun create(
         params: FunctionCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
     /** Get a function object by its id */
     @JvmOverloads
     fun retrieve(
         params: FunctionRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
     /**
@@ -45,7 +45,7 @@ interface FunctionServiceAsync {
     @JvmOverloads
     fun update(
         params: FunctionUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
     /**
@@ -55,21 +55,21 @@ interface FunctionServiceAsync {
     @JvmOverloads
     fun list(
         params: FunctionListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FunctionListPageAsync>
 
     /** Delete a function object by its id */
     @JvmOverloads
     fun delete(
         params: FunctionDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
     /** Invoke a function. */
     @JvmOverloads
     fun invoke(
         params: FunctionInvokeParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Optional<FunctionInvokeResponse>>
 
     /**
@@ -80,6 +80,6 @@ interface FunctionServiceAsync {
     @JvmOverloads
     fun replace(
         params: FunctionReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 }

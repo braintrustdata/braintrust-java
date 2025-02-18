@@ -508,7 +508,7 @@ private constructor(
             override fun serialize(
                 value: Email,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)
@@ -625,7 +625,7 @@ private constructor(
             override fun serialize(
                 value: FamilyName,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)
@@ -742,7 +742,7 @@ private constructor(
             override fun serialize(
                 value: GivenName,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)
@@ -856,7 +856,7 @@ private constructor(
             override fun serialize(
                 value: Ids,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)

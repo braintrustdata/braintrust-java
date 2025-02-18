@@ -31,14 +31,14 @@ interface ExperimentService {
     @JvmOverloads
     fun create(
         params: ExperimentCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Experiment
 
     /** Get an experiment object by its id */
     @JvmOverloads
     fun retrieve(
         params: ExperimentRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Experiment
 
     /**
@@ -49,7 +49,7 @@ interface ExperimentService {
     @JvmOverloads
     fun update(
         params: ExperimentUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Experiment
 
     /**
@@ -59,21 +59,21 @@ interface ExperimentService {
     @JvmOverloads
     fun list(
         params: ExperimentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ExperimentListPage
 
     /** Delete an experiment object by its id */
     @JvmOverloads
     fun delete(
         params: ExperimentDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Experiment
 
     /** Log feedback for a set of experiment events */
     @JvmOverloads
     fun feedback(
         params: ExperimentFeedbackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FeedbackResponseSchema
 
     /**
@@ -84,7 +84,7 @@ interface ExperimentService {
     @JvmOverloads
     fun fetch(
         params: ExperimentFetchParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchExperimentEventsResponse
 
     /**
@@ -95,20 +95,20 @@ interface ExperimentService {
     @JvmOverloads
     fun fetchPost(
         params: ExperimentFetchPostParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchExperimentEventsResponse
 
     /** Insert a set of events into the experiment */
     @JvmOverloads
     fun insert(
         params: ExperimentInsertParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InsertEventsResponse
 
     /** Summarize experiment */
     @JvmOverloads
     fun summarize(
         params: ExperimentSummarizeParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SummarizeExperimentResponse
 }

@@ -77,11 +77,7 @@ private constructor(
 
         @JvmStatic
         fun of(rolesService: RoleService, params: RoleListParams, response: Response) =
-            RoleListPage(
-                rolesService,
-                params,
-                response,
-            )
+            RoleListPage(rolesService, params, response)
     }
 
     @NoAutoDetect
@@ -156,9 +152,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: RoleListPage,
-    ) : Iterable<Role> {
+    class AutoPager(private val firstPage: RoleListPage) : Iterable<Role> {
 
         override fun iterator(): Iterator<Role> = iterator {
             var page = firstPage

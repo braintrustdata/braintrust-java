@@ -522,11 +522,8 @@ private constructor(
          *
          * Permissions can be assigned to to objects on an individual basis, or grouped into roles
          */
-        class Permission
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Permission @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -656,9 +653,7 @@ private constructor(
         /** The object type that the ACL applies to */
         class RestrictObjectType
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.

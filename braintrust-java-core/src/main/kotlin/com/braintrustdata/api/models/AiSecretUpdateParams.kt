@@ -201,13 +201,7 @@ private constructor(
             }
 
             fun build(): AiSecretUpdateBody =
-                AiSecretUpdateBody(
-                    metadata,
-                    name,
-                    secret,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+                AiSecretUpdateBody(metadata, name, secret, type, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -413,7 +407,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
     ) {
 
         @JsonAnyGetter

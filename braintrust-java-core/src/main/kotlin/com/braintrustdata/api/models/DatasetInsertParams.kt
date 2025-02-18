@@ -153,7 +153,7 @@ private constructor(
             fun build(): DatasetInsertBody =
                 DatasetInsertBody(
                     checkRequired("events", events).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

@@ -24,14 +24,14 @@ interface SpanIframeServiceAsync {
     @JvmOverloads
     fun create(
         params: SpanIframeCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
     /** Get a span_iframe object by its id */
     @JvmOverloads
     fun retrieve(
         params: SpanIframeRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
     /**
@@ -42,7 +42,7 @@ interface SpanIframeServiceAsync {
     @JvmOverloads
     fun update(
         params: SpanIframeUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
     /**
@@ -52,14 +52,14 @@ interface SpanIframeServiceAsync {
     @JvmOverloads
     fun list(
         params: SpanIframeListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIframeListPageAsync>
 
     /** Delete a span_iframe object by its id */
     @JvmOverloads
     fun delete(
         params: SpanIframeDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
     /**
@@ -69,6 +69,6 @@ interface SpanIframeServiceAsync {
     @JvmOverloads
     fun replace(
         params: SpanIframeReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 }

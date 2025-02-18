@@ -24,14 +24,14 @@ interface GroupServiceAsync {
     @JvmOverloads
     fun create(
         params: GroupCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
     /** Get a group object by its id */
     @JvmOverloads
     fun retrieve(
         params: GroupRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
     /**
@@ -42,7 +42,7 @@ interface GroupServiceAsync {
     @JvmOverloads
     fun update(
         params: GroupUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
     /**
@@ -52,14 +52,14 @@ interface GroupServiceAsync {
     @JvmOverloads
     fun list(
         params: GroupListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<GroupListPageAsync>
 
     /** Delete a group object by its id */
     @JvmOverloads
     fun delete(
         params: GroupDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
     /**
@@ -69,6 +69,6 @@ interface GroupServiceAsync {
     @JvmOverloads
     fun replace(
         params: GroupReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 }

@@ -77,11 +77,7 @@ private constructor(
 
         @JvmStatic
         fun of(promptsService: PromptService, params: PromptListParams, response: Response) =
-            PromptListPage(
-                promptsService,
-                params,
-                response,
-            )
+            PromptListPage(promptsService, params, response)
     }
 
     @NoAutoDetect
@@ -156,9 +152,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: PromptListPage,
-    ) : Iterable<Prompt> {
+    class AutoPager(private val firstPage: PromptListPage) : Iterable<Prompt> {
 
         override fun iterator(): Iterator<Prompt> = iterator {
             var page = firstPage

@@ -20,7 +20,7 @@ interface LogServiceAsync {
     @JvmOverloads
     fun feedback(
         params: ProjectLogFeedbackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FeedbackResponseSchema>
 
     /**
@@ -31,7 +31,7 @@ interface LogServiceAsync {
     @JvmOverloads
     fun fetch(
         params: ProjectLogFetchParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse>
 
     /**
@@ -42,13 +42,13 @@ interface LogServiceAsync {
     @JvmOverloads
     fun fetchPost(
         params: ProjectLogFetchPostParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse>
 
     /** Insert a set of events into the project logs */
     @JvmOverloads
     fun insert(
         params: ProjectLogInsertParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InsertEventsResponse>
 }

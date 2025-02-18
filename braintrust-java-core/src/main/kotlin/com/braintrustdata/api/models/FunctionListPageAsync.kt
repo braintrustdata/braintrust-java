@@ -88,13 +88,8 @@ private constructor(
         fun of(
             functionsService: FunctionServiceAsync,
             params: FunctionListParams,
-            response: Response
-        ) =
-            FunctionListPageAsync(
-                functionsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = FunctionListPageAsync(functionsService, params, response)
     }
 
     @NoAutoDetect
@@ -169,14 +164,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: FunctionListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: FunctionListPageAsync) {
 
         fun forEach(action: Predicate<Function>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<FunctionListPageAsync>>.forEach(
                 action: (Function) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -185,7 +178,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

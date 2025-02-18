@@ -32,14 +32,14 @@ interface DatasetServiceAsync {
     @JvmOverloads
     fun create(
         params: DatasetCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
     /** Get a dataset object by its id */
     @JvmOverloads
     fun retrieve(
         params: DatasetRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
     /**
@@ -50,7 +50,7 @@ interface DatasetServiceAsync {
     @JvmOverloads
     fun update(
         params: DatasetUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
     /**
@@ -60,21 +60,21 @@ interface DatasetServiceAsync {
     @JvmOverloads
     fun list(
         params: DatasetListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DatasetListPageAsync>
 
     /** Delete a dataset object by its id */
     @JvmOverloads
     fun delete(
         params: DatasetDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
     /** Log feedback for a set of dataset events */
     @JvmOverloads
     fun feedback(
         params: DatasetFeedbackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FeedbackResponseSchema>
 
     /**
@@ -85,7 +85,7 @@ interface DatasetServiceAsync {
     @JvmOverloads
     fun fetch(
         params: DatasetFetchParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchDatasetEventsResponse>
 
     /**
@@ -96,20 +96,20 @@ interface DatasetServiceAsync {
     @JvmOverloads
     fun fetchPost(
         params: DatasetFetchPostParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchDatasetEventsResponse>
 
     /** Insert a set of events into the dataset */
     @JvmOverloads
     fun insert(
         params: DatasetInsertParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InsertEventsResponse>
 
     /** Summarize dataset */
     @JvmOverloads
     fun summarize(
         params: DatasetSummarizeParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SummarizeDatasetResponse>
 }

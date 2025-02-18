@@ -153,7 +153,7 @@ private constructor(
             fun build(): DatasetFeedbackBody =
                 DatasetFeedbackBody(
                     checkRequired("feedback", feedback).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

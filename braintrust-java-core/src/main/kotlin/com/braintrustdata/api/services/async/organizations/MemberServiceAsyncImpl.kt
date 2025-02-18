@@ -17,10 +17,8 @@ import com.braintrustdata.api.models.OrganizationMemberUpdateParams
 import com.braintrustdata.api.models.PatchOrganizationMembersOutput
 import java.util.concurrent.CompletableFuture
 
-class MemberServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : MemberServiceAsync {
+class MemberServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    MemberServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Modify organization membership */
     override fun update(
         params: OrganizationMemberUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<PatchOrganizationMembersOutput> {
         val request =
             HttpRequest.builder()

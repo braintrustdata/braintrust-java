@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 
-class GroupServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : GroupService {
+class GroupServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    GroupService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 

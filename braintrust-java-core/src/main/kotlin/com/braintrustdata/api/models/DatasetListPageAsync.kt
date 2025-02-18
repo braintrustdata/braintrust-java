@@ -88,13 +88,8 @@ private constructor(
         fun of(
             datasetsService: DatasetServiceAsync,
             params: DatasetListParams,
-            response: Response
-        ) =
-            DatasetListPageAsync(
-                datasetsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = DatasetListPageAsync(datasetsService, params, response)
     }
 
     @NoAutoDetect
@@ -169,14 +164,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: DatasetListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: DatasetListPageAsync) {
 
         fun forEach(action: Predicate<Dataset>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<DatasetListPageAsync>>.forEach(
                 action: (Dataset) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -185,7 +178,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

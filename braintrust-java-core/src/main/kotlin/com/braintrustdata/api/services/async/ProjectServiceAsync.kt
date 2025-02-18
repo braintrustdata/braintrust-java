@@ -26,14 +26,14 @@ interface ProjectServiceAsync {
     @JvmOverloads
     fun create(
         params: ProjectCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
     /** Get a project object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
     /**
@@ -44,7 +44,7 @@ interface ProjectServiceAsync {
     @JvmOverloads
     fun update(
         params: ProjectUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
     /**
@@ -54,13 +54,13 @@ interface ProjectServiceAsync {
     @JvmOverloads
     fun list(
         params: ProjectListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectListPageAsync>
 
     /** Delete a project object by its id */
     @JvmOverloads
     fun delete(
         params: ProjectDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 }

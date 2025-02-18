@@ -24,10 +24,8 @@ import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
 import java.util.concurrent.CompletableFuture
 
-class AclServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AclServiceAsync {
+class AclServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AclServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -40,7 +38,7 @@ internal constructor(
      */
     override fun create(
         params: AclCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Acl> {
         val request =
             HttpRequest.builder()
@@ -68,7 +66,7 @@ internal constructor(
     /** Get an acl object by its id */
     override fun retrieve(
         params: AclRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Acl> {
         val request =
             HttpRequest.builder()
@@ -99,7 +97,7 @@ internal constructor(
      */
     override fun list(
         params: AclListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AclListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -127,7 +125,7 @@ internal constructor(
     /** Delete an acl object by its id */
     override fun delete(
         params: AclDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Acl> {
         val request =
             HttpRequest.builder()
@@ -158,7 +156,7 @@ internal constructor(
      */
     override fun batchUpdate(
         params: AclBatchUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AclBatchUpdateResponse> {
         val request =
             HttpRequest.builder()
@@ -186,7 +184,7 @@ internal constructor(
     /** Delete a single acl */
     override fun findAndDelete(
         params: AclFindAndDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Acl> {
         val request =
             HttpRequest.builder()

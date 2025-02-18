@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.ProjectScoreRetrieveParams
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class ProjectScoreServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProjectScoreServiceAsync {
+class ProjectScoreServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProjectScoreServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -40,7 +38,7 @@ internal constructor(
      */
     override fun create(
         params: ProjectScoreCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectScore> {
         val request =
             HttpRequest.builder()
@@ -68,7 +66,7 @@ internal constructor(
     /** Get a project_score object by its id */
     override fun retrieve(
         params: ProjectScoreRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectScore> {
         val request =
             HttpRequest.builder()
@@ -99,7 +97,7 @@ internal constructor(
      */
     override fun update(
         params: ProjectScoreUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectScore> {
         val request =
             HttpRequest.builder()
@@ -131,7 +129,7 @@ internal constructor(
      */
     override fun list(
         params: ProjectScoreListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectScoreListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -159,7 +157,7 @@ internal constructor(
     /** Delete a project_score object by its id */
     override fun delete(
         params: ProjectScoreDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectScore> {
         val request =
             HttpRequest.builder()
@@ -191,7 +189,7 @@ internal constructor(
      */
     override fun replace(
         params: ProjectScoreReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectScore> {
         val request =
             HttpRequest.builder()
