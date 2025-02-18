@@ -28,7 +28,9 @@ class GroupCreateParamsTest {
                 .addMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .orgName("org_name")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
         assertThat(body.description()).contains("description")
@@ -40,7 +42,9 @@ class GroupCreateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = GroupCreateParams.builder().name("x").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
     }

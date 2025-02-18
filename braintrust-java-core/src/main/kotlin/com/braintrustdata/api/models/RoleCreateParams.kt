@@ -28,7 +28,7 @@ import java.util.Optional
  */
 class RoleCreateParams
 private constructor(
-    private val body: RoleCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -87,16 +87,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): RoleCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class RoleCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -179,7 +179,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): RoleCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -199,7 +199,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [RoleCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -210,13 +210,13 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(roleCreateBody: RoleCreateBody) = apply {
-                name = roleCreateBody.name
-                description = roleCreateBody.description
-                memberPermissions = roleCreateBody.memberPermissions.map { it.toMutableList() }
-                memberRoles = roleCreateBody.memberRoles.map { it.toMutableList() }
-                orgName = roleCreateBody.orgName
-                additionalProperties = roleCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                description = body.description
+                memberPermissions = body.memberPermissions.map { it.toMutableList() }
+                memberRoles = body.memberRoles.map { it.toMutableList() }
+                orgName = body.orgName
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the role */
@@ -350,8 +350,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): RoleCreateBody =
-                RoleCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     description,
                     (memberPermissions ?: JsonMissing.of()).map { it.toImmutable() },
@@ -366,7 +366,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RoleCreateBody && name == other.name && description == other.description && memberPermissions == other.memberPermissions && memberRoles == other.memberRoles && orgName == other.orgName && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && description == other.description && memberPermissions == other.memberPermissions && memberRoles == other.memberRoles && orgName == other.orgName && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -376,7 +376,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "RoleCreateBody{name=$name, description=$description, memberPermissions=$memberPermissions, memberRoles=$memberRoles, orgName=$orgName, additionalProperties=$additionalProperties}"
+            "Body{name=$name, description=$description, memberPermissions=$memberPermissions, memberRoles=$memberRoles, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -390,7 +390,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: RoleCreateBody.Builder = RoleCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

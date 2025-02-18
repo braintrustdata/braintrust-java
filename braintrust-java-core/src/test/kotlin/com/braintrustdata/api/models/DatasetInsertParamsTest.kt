@@ -64,7 +64,9 @@ class DatasetInsertParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.events())
             .isEqualTo(
@@ -99,7 +101,9 @@ class DatasetInsertParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addEvent(InsertDatasetEvent.builder().build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.events()).isEqualTo(listOf(InsertDatasetEvent.builder().build()))
     }

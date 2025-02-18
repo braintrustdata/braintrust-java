@@ -127,7 +127,9 @@ class ExperimentInsertParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.events())
             .isEqualTo(
@@ -195,7 +197,9 @@ class ExperimentInsertParamsTest {
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addEvent(InsertExperimentEvent.builder().build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.events()).isEqualTo(listOf(InsertExperimentEvent.builder().build()))
     }

@@ -37,7 +37,9 @@ class AiSecretUpdateParamsTest {
                 .secret("secret")
                 .type("type")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.metadata())
             .contains(
@@ -56,7 +58,9 @@ class AiSecretUpdateParamsTest {
             AiSecretUpdateParams.builder()
                 .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 

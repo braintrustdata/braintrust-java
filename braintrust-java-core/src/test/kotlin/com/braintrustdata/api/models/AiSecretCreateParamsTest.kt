@@ -37,7 +37,9 @@ class AiSecretCreateParamsTest {
                 .secret("secret")
                 .type("type")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.metadata())
@@ -54,7 +56,9 @@ class AiSecretCreateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = AiSecretCreateParams.builder().name("name").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
     }

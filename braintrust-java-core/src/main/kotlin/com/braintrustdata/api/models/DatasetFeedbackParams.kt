@@ -23,7 +23,7 @@ import java.util.Objects
 class DatasetFeedbackParams
 private constructor(
     private val datasetId: String,
-    private val body: DatasetFeedbackBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -43,7 +43,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): DatasetFeedbackBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -57,9 +57,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class DatasetFeedbackBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("feedback")
         @ExcludeMissing
         private val feedback: JsonField<List<FeedbackDatasetItem>> = JsonMissing.of(),
@@ -81,7 +81,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): DatasetFeedbackBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -97,16 +97,16 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [DatasetFeedbackBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var feedback: JsonField<MutableList<FeedbackDatasetItem>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(datasetFeedbackBody: DatasetFeedbackBody) = apply {
-                feedback = datasetFeedbackBody.feedback.map { it.toMutableList() }
-                additionalProperties = datasetFeedbackBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                feedback = body.feedback.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** A list of dataset feedback items */
@@ -150,8 +150,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): DatasetFeedbackBody =
-                DatasetFeedbackBody(
+            fun build(): Body =
+                Body(
                     checkRequired("feedback", feedback).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
@@ -162,7 +162,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is DatasetFeedbackBody && feedback == other.feedback && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && feedback == other.feedback && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -172,7 +172,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "DatasetFeedbackBody{feedback=$feedback, additionalProperties=$additionalProperties}"
+            "Body{feedback=$feedback, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -187,7 +187,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var datasetId: String? = null
-        private var body: DatasetFeedbackBody.Builder = DatasetFeedbackBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

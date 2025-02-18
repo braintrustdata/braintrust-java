@@ -28,7 +28,7 @@ import java.util.Optional
  */
 class AclCreateParams
 private constructor(
-    private val body: AclCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -95,7 +95,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): AclCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -112,9 +112,9 @@ private constructor(
      * ACL, as part of a direct permission grant or as part of a role.
      */
     @NoAutoDetect
-    class AclCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("object_id")
         @ExcludeMissing
         private val objectId: JsonField<String> = JsonMissing.of(),
@@ -218,7 +218,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): AclCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -240,7 +240,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [AclCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var objectId: JsonField<String>? = null
@@ -253,15 +253,15 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(aclCreateBody: AclCreateBody) = apply {
-                objectId = aclCreateBody.objectId
-                objectType = aclCreateBody.objectType
-                groupId = aclCreateBody.groupId
-                permission = aclCreateBody.permission
-                restrictObjectType = aclCreateBody.restrictObjectType
-                roleId = aclCreateBody.roleId
-                userId = aclCreateBody.userId
-                additionalProperties = aclCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                objectId = body.objectId
+                objectType = body.objectType
+                groupId = body.groupId
+                permission = body.permission
+                restrictObjectType = body.restrictObjectType
+                roleId = body.roleId
+                userId = body.userId
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The id of the object the ACL applies to */
@@ -390,8 +390,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): AclCreateBody =
-                AclCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("objectId", objectId),
                     checkRequired("objectType", objectType),
                     groupId,
@@ -408,7 +408,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AclCreateBody && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -418,7 +418,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AclCreateBody{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
+            "Body{objectId=$objectId, objectType=$objectType, groupId=$groupId, permission=$permission, restrictObjectType=$restrictObjectType, roleId=$roleId, userId=$userId, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -432,7 +432,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: AclCreateBody.Builder = AclCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

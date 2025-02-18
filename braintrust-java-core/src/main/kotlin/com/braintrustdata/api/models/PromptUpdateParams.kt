@@ -28,7 +28,7 @@ import java.util.Optional
 class PromptUpdateParams
 private constructor(
     private val promptId: String,
-    private val body: PromptUpdateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -72,7 +72,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): PromptUpdateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -86,9 +86,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class PromptUpdateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("description")
         @ExcludeMissing
         private val description: JsonField<String> = JsonMissing.of(),
@@ -150,7 +150,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): PromptUpdateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -170,7 +170,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [PromptUpdateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
@@ -181,13 +181,13 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(promptUpdateBody: PromptUpdateBody) = apply {
-                description = promptUpdateBody.description
-                name = promptUpdateBody.name
-                promptData = promptUpdateBody.promptData
-                slug = promptUpdateBody.slug
-                tags = promptUpdateBody.tags.map { it.toMutableList() }
-                additionalProperties = promptUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                description = body.description
+                name = body.name
+                promptData = body.promptData
+                slug = body.slug
+                tags = body.tags.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Textual description of the prompt */
@@ -274,8 +274,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): PromptUpdateBody =
-                PromptUpdateBody(
+            fun build(): Body =
+                Body(
                     description,
                     name,
                     promptData,
@@ -290,7 +290,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PromptUpdateBody && description == other.description && name == other.name && promptData == other.promptData && slug == other.slug && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && description == other.description && name == other.name && promptData == other.promptData && slug == other.slug && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -300,7 +300,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PromptUpdateBody{description=$description, name=$name, promptData=$promptData, slug=$slug, tags=$tags, additionalProperties=$additionalProperties}"
+            "Body{description=$description, name=$name, promptData=$promptData, slug=$slug, tags=$tags, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -315,7 +315,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var promptId: String? = null
-        private var body: PromptUpdateBody.Builder = PromptUpdateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
