@@ -22,10 +22,7 @@ import com.braintrustdata.api.models.RoleReplaceParams
 import com.braintrustdata.api.models.RoleRetrieveParams
 import com.braintrustdata.api.models.RoleUpdateParams
 
-class RoleServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : RoleService {
+class RoleServiceImpl internal constructor(private val clientOptions: ClientOptions) : RoleService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 

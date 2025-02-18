@@ -433,7 +433,7 @@ private constructor(
             override fun serialize(
                 value: AiSecretType,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)
@@ -547,7 +547,7 @@ private constructor(
             override fun serialize(
                 value: Ids,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)

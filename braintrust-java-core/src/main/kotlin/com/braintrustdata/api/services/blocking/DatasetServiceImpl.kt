@@ -30,10 +30,8 @@ import com.braintrustdata.api.models.FetchDatasetEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeDatasetResponse
 
-class DatasetServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : DatasetService {
+class DatasetServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    DatasetService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -163,7 +161,7 @@ internal constructor(
     /** Log feedback for a set of dataset events */
     override fun feedback(
         params: DatasetFeedbackParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): FeedbackResponseSchema {
         val request =
             HttpRequest.builder()
@@ -193,7 +191,7 @@ internal constructor(
      */
     override fun fetch(
         params: DatasetFetchParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): FetchDatasetEventsResponse {
         val request =
             HttpRequest.builder()
@@ -222,7 +220,7 @@ internal constructor(
      */
     override fun fetchPost(
         params: DatasetFetchPostParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): FetchDatasetEventsResponse {
         val request =
             HttpRequest.builder()
@@ -247,7 +245,7 @@ internal constructor(
     /** Insert a set of events into the dataset */
     override fun insert(
         params: DatasetInsertParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): InsertEventsResponse {
         val request =
             HttpRequest.builder()
@@ -273,7 +271,7 @@ internal constructor(
     /** Summarize dataset */
     override fun summarize(
         params: DatasetSummarizeParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SummarizeDatasetResponse {
         val request =
             HttpRequest.builder()

@@ -234,11 +234,7 @@ private constructor(
             "Function{arguments=$arguments, name=$name, additionalProperties=$additionalProperties}"
     }
 
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -259,7 +255,7 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            FUNCTION,
+            FUNCTION
         }
 
         /**

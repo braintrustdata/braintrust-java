@@ -14,6 +14,6 @@ interface MemberService {
     @JvmOverloads
     fun update(
         params: OrganizationMemberUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): PatchOrganizationMembersOutput
 }

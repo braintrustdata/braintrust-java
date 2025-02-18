@@ -24,14 +24,14 @@ interface EnvVarServiceAsync {
     @JvmOverloads
     fun create(
         params: EnvVarCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 
     /** Get an env_var object by its id */
     @JvmOverloads
     fun retrieve(
         params: EnvVarRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 
     /**
@@ -42,7 +42,7 @@ interface EnvVarServiceAsync {
     @JvmOverloads
     fun update(
         params: EnvVarUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 
     /**
@@ -52,14 +52,14 @@ interface EnvVarServiceAsync {
     @JvmOverloads
     fun list(
         params: EnvVarListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVarListResponse>
 
     /** Delete an env_var object by its id */
     @JvmOverloads
     fun delete(
         params: EnvVarDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 
     /**
@@ -69,6 +69,6 @@ interface EnvVarServiceAsync {
     @JvmOverloads
     fun replace(
         params: EnvVarReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 }

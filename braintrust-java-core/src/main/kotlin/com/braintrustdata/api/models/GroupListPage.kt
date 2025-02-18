@@ -77,11 +77,7 @@ private constructor(
 
         @JvmStatic
         fun of(groupsService: GroupService, params: GroupListParams, response: Response) =
-            GroupListPage(
-                groupsService,
-                params,
-                response,
-            )
+            GroupListPage(groupsService, params, response)
     }
 
     @NoAutoDetect
@@ -156,9 +152,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: GroupListPage,
-    ) : Iterable<Group> {
+    class AutoPager(private val firstPage: GroupListPage) : Iterable<Group> {
 
         override fun iterator(): Iterator<Group> = iterator {
             var page = firstPage

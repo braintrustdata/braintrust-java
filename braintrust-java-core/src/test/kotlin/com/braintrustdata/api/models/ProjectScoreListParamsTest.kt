@@ -41,7 +41,7 @@ class ProjectScoreListParamsTest {
         expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put(
             "ids",
-            ProjectScoreListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString()
+            ProjectScoreListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
         )
         expected.put("limit", "0")
         expected.put("org_name", "org_name")
@@ -53,7 +53,7 @@ class ProjectScoreListParamsTest {
             ProjectScoreListParams.ScoreType.ofProject(
                     ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER.toString()
                 )
-                .toString()
+                .toString(),
         )
         expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(params._queryParams()).isEqualTo(expected.build())

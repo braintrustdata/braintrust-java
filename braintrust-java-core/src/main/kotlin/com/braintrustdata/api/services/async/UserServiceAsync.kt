@@ -17,7 +17,7 @@ interface UserServiceAsync {
     @JvmOverloads
     fun retrieve(
         params: UserRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<User>
 
     /**
@@ -27,6 +27,6 @@ interface UserServiceAsync {
     @JvmOverloads
     fun list(
         params: UserListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UserListPageAsync>
 }

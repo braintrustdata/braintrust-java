@@ -24,14 +24,14 @@ interface AiSecretService {
     @JvmOverloads
     fun create(
         params: AiSecretCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /** Get an ai_secret object by its id */
     @JvmOverloads
     fun retrieve(
         params: AiSecretRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /**
@@ -42,7 +42,7 @@ interface AiSecretService {
     @JvmOverloads
     fun update(
         params: AiSecretUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /**
@@ -52,21 +52,21 @@ interface AiSecretService {
     @JvmOverloads
     fun list(
         params: AiSecretListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AiSecretListPage
 
     /** Delete an ai_secret object by its id */
     @JvmOverloads
     fun delete(
         params: AiSecretDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /** Delete a single ai_secret */
     @JvmOverloads
     fun findAndDelete(
         params: AiSecretFindAndDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /**
@@ -76,6 +76,6 @@ interface AiSecretService {
     @JvmOverloads
     fun replace(
         params: AiSecretReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 }

@@ -24,14 +24,14 @@ interface ViewServiceAsync {
     @JvmOverloads
     fun create(
         params: ViewCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
 
     /** Get a view object by its id */
     @JvmOverloads
     fun retrieve(
         params: ViewRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
 
     /**
@@ -42,7 +42,7 @@ interface ViewServiceAsync {
     @JvmOverloads
     fun update(
         params: ViewUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
 
     /**
@@ -52,14 +52,14 @@ interface ViewServiceAsync {
     @JvmOverloads
     fun list(
         params: ViewListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ViewListPageAsync>
 
     /** Delete a view object by its id */
     @JvmOverloads
     fun delete(
         params: ViewDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
 
     /**
@@ -69,6 +69,6 @@ interface ViewServiceAsync {
     @JvmOverloads
     fun replace(
         params: ViewReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
 }

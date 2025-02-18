@@ -24,14 +24,14 @@ interface ProjectTagServiceAsync {
     @JvmOverloads
     fun create(
         params: ProjectTagCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTag>
 
     /** Get a project_tag object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectTagRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTag>
 
     /**
@@ -42,7 +42,7 @@ interface ProjectTagServiceAsync {
     @JvmOverloads
     fun update(
         params: ProjectTagUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTag>
 
     /**
@@ -52,14 +52,14 @@ interface ProjectTagServiceAsync {
     @JvmOverloads
     fun list(
         params: ProjectTagListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTagListPageAsync>
 
     /** Delete a project_tag object by its id */
     @JvmOverloads
     fun delete(
         params: ProjectTagDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTag>
 
     /**
@@ -70,6 +70,6 @@ interface ProjectTagServiceAsync {
     @JvmOverloads
     fun replace(
         params: ProjectTagReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTag>
 }

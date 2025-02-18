@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.PromptRetrieveParams
 import com.braintrustdata.api.models.PromptUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class PromptServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PromptServiceAsync {
+class PromptServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    PromptServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: PromptCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Prompt> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
     /** Get a prompt object by its id */
     override fun retrieve(
         params: PromptRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Prompt> {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
      */
     override fun update(
         params: PromptUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Prompt> {
         val request =
             HttpRequest.builder()
@@ -130,7 +128,7 @@ internal constructor(
      */
     override fun list(
         params: PromptListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<PromptListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -158,7 +156,7 @@ internal constructor(
     /** Delete a prompt object by its id */
     override fun delete(
         params: PromptDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Prompt> {
         val request =
             HttpRequest.builder()
@@ -189,7 +187,7 @@ internal constructor(
      */
     override fun replace(
         params: PromptReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Prompt> {
         val request =
             HttpRequest.builder()

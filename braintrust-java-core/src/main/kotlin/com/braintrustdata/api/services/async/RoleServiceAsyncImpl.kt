@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.RoleRetrieveParams
 import com.braintrustdata.api.models.RoleUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class RoleServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : RoleServiceAsync {
+class RoleServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    RoleServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: RoleCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Role> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
     /** Get a role object by its id */
     override fun retrieve(
         params: RoleRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Role> {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
      */
     override fun update(
         params: RoleUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Role> {
         val request =
             HttpRequest.builder()
@@ -130,7 +128,7 @@ internal constructor(
      */
     override fun list(
         params: RoleListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<RoleListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -158,7 +156,7 @@ internal constructor(
     /** Delete a role object by its id */
     override fun delete(
         params: RoleDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Role> {
         val request =
             HttpRequest.builder()
@@ -189,7 +187,7 @@ internal constructor(
      */
     override fun replace(
         params: RoleReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Role> {
         val request =
             HttpRequest.builder()

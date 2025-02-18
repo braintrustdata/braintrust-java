@@ -23,14 +23,14 @@ interface SpanIframeService {
     @JvmOverloads
     fun create(
         params: SpanIframeCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
     /** Get a span_iframe object by its id */
     @JvmOverloads
     fun retrieve(
         params: SpanIframeRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
     /**
@@ -41,7 +41,7 @@ interface SpanIframeService {
     @JvmOverloads
     fun update(
         params: SpanIframeUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
     /**
@@ -51,14 +51,14 @@ interface SpanIframeService {
     @JvmOverloads
     fun list(
         params: SpanIframeListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIframeListPage
 
     /** Delete a span_iframe object by its id */
     @JvmOverloads
     fun delete(
         params: SpanIframeDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
     /**
@@ -68,6 +68,6 @@ interface SpanIframeService {
     @JvmOverloads
     fun replace(
         params: SpanIframeReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 }

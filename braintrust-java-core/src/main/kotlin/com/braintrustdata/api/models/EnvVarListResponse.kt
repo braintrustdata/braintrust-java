@@ -110,7 +110,7 @@ private constructor(
         fun build(): EnvVarListResponse =
             EnvVarListResponse(
                 checkRequired("objects", objects).map { it.toImmutable() },
-                additionalProperties.toImmutable()
+                additionalProperties.toImmutable(),
             )
     }
 

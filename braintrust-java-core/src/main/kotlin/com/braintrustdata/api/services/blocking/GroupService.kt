@@ -23,14 +23,14 @@ interface GroupService {
     @JvmOverloads
     fun create(
         params: GroupCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
     /** Get a group object by its id */
     @JvmOverloads
     fun retrieve(
         params: GroupRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
     /**
@@ -41,7 +41,7 @@ interface GroupService {
     @JvmOverloads
     fun update(
         params: GroupUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
     /**
@@ -51,14 +51,14 @@ interface GroupService {
     @JvmOverloads
     fun list(
         params: GroupListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): GroupListPage
 
     /** Delete a group object by its id */
     @JvmOverloads
     fun delete(
         params: GroupDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
     /**
@@ -68,6 +68,6 @@ interface GroupService {
     @JvmOverloads
     fun replace(
         params: GroupReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 }

@@ -661,11 +661,7 @@ private constructor(
     }
 
     /** The object type that the ACL applies to */
-    class ObjectType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -810,11 +806,7 @@ private constructor(
     }
 
     /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
-    class Permission
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Permission @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -946,9 +938,7 @@ private constructor(
      */
     class RestrictObjectType
     @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

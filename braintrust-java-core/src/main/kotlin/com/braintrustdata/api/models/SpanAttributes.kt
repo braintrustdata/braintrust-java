@@ -114,20 +114,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): SpanAttributes =
-            SpanAttributes(
-                name,
-                type,
-                additionalProperties.toImmutable(),
-            )
+        fun build(): SpanAttributes = SpanAttributes(name, type, additionalProperties.toImmutable())
     }
 
     /** Type of the span, for display purposes only */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

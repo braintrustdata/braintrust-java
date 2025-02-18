@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.EnvVarReplaceParams
 import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
 
-class EnvVarServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EnvVarService {
+class EnvVarServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    EnvVarService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -110,7 +108,7 @@ internal constructor(
      */
     override fun list(
         params: EnvVarListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): EnvVarListResponse {
         val request =
             HttpRequest.builder()

@@ -1284,11 +1284,7 @@ private constructor(
         }
 
         fun build(): EvalCreateParams =
-            EvalCreateParams(
-                body.build(),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            EvalCreateParams(body.build(), additionalHeaders.build(), additionalQueryParams.build())
     }
 
     /** The dataset to use */
@@ -1425,7 +1421,7 @@ private constructor(
             override fun serialize(
                 value: Data,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.datasetId != null -> generator.writeObject(value.datasetId)
@@ -1518,7 +1514,7 @@ private constructor(
                 fun build(): DatasetId =
                     DatasetId(
                         checkRequired("datasetId", datasetId),
-                        additionalProperties.toImmutable()
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1902,7 +1898,7 @@ private constructor(
             override fun serialize(
                 value: Score,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.functionId != null -> generator.writeObject(value.functionId)
@@ -2292,7 +2288,7 @@ private constructor(
                 fun build(): GlobalFunction =
                     GlobalFunction(
                         checkRequired("globalFunction", globalFunction),
-                        additionalProperties.toImmutable()
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -2698,9 +2694,7 @@ private constructor(
 
                 class Runtime
                 @JsonCreator
-                private constructor(
-                    private val value: JsonField<String>,
-                ) : Enum {
+                private constructor(private val value: JsonField<String>) : Enum {
 
                     /**
                      * Returns this class instance's raw value.
@@ -3201,7 +3195,7 @@ private constructor(
             override fun serialize(
                 value: Task,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.functionId != null -> generator.writeObject(value.functionId)
@@ -3591,7 +3585,7 @@ private constructor(
                 fun build(): GlobalFunction =
                     GlobalFunction(
                         checkRequired("globalFunction", globalFunction),
-                        additionalProperties.toImmutable()
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -3997,9 +3991,7 @@ private constructor(
 
                 class Runtime
                 @JsonCreator
-                private constructor(
-                    private val value: JsonField<String>,
-                ) : Enum {
+                private constructor(private val value: JsonField<String>) : Enum {
 
                     /**
                      * Returns this class instance's raw value.
@@ -4378,11 +4370,8 @@ private constructor(
                 )
         }
 
-        class Collect
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Collect @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -4478,11 +4467,7 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        class Field
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Field @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -4641,7 +4626,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
     ) {
 
         @JsonAnyGetter

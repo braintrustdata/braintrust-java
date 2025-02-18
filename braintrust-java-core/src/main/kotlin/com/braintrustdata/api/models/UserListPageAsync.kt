@@ -80,11 +80,7 @@ private constructor(
 
         @JvmStatic
         fun of(usersService: UserServiceAsync, params: UserListParams, response: Response) =
-            UserListPageAsync(
-                usersService,
-                params,
-                response,
-            )
+            UserListPageAsync(usersService, params, response)
     }
 
     @NoAutoDetect
@@ -159,14 +155,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: UserListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: UserListPageAsync) {
 
         fun forEach(action: Predicate<User>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<UserListPageAsync>>.forEach(
                 action: (User) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -175,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

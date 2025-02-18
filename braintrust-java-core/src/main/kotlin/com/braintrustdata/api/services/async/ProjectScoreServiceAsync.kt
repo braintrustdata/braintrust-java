@@ -25,14 +25,14 @@ interface ProjectScoreServiceAsync {
     @JvmOverloads
     fun create(
         params: ProjectScoreCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
     /** Get a project_score object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectScoreRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
     /**
@@ -43,7 +43,7 @@ interface ProjectScoreServiceAsync {
     @JvmOverloads
     fun update(
         params: ProjectScoreUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
     /**
@@ -53,14 +53,14 @@ interface ProjectScoreServiceAsync {
     @JvmOverloads
     fun list(
         params: ProjectScoreListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScoreListPageAsync>
 
     /** Delete a project_score object by its id */
     @JvmOverloads
     fun delete(
         params: ProjectScoreDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
     /**
@@ -71,6 +71,6 @@ interface ProjectScoreServiceAsync {
     @JvmOverloads
     fun replace(
         params: ProjectScoreReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 }

@@ -25,14 +25,14 @@ interface AclServiceAsync {
     @JvmOverloads
     fun create(
         params: AclCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
 
     /** Get an acl object by its id */
     @JvmOverloads
     fun retrieve(
         params: AclRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
 
     /**
@@ -42,14 +42,14 @@ interface AclServiceAsync {
     @JvmOverloads
     fun list(
         params: AclListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AclListPageAsync>
 
     /** Delete an acl object by its id */
     @JvmOverloads
     fun delete(
         params: AclDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
 
     /**
@@ -59,13 +59,13 @@ interface AclServiceAsync {
     @JvmOverloads
     fun batchUpdate(
         params: AclBatchUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AclBatchUpdateResponse>
 
     /** Delete a single acl */
     @JvmOverloads
     fun findAndDelete(
         params: AclFindAndDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
 }

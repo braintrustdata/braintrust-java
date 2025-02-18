@@ -23,10 +23,8 @@ import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class OrganizationServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : OrganizationServiceAsync {
+class OrganizationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    OrganizationServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -40,7 +38,7 @@ internal constructor(
     /** Get an organization object by its id */
     override fun retrieve(
         params: OrganizationRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Organization> {
         val request =
             HttpRequest.builder()
@@ -71,7 +69,7 @@ internal constructor(
      */
     override fun update(
         params: OrganizationUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Organization> {
         val request =
             HttpRequest.builder()
@@ -103,7 +101,7 @@ internal constructor(
      */
     override fun list(
         params: OrganizationListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<OrganizationListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -131,7 +129,7 @@ internal constructor(
     /** Delete an organization object by its id */
     override fun delete(
         params: OrganizationDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Organization> {
         val request =
             HttpRequest.builder()

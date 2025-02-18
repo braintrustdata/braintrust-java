@@ -153,7 +153,7 @@ private constructor(
             fun build(): ExperimentInsertBody =
                 ExperimentInsertBody(
                     checkRequired("events", events).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

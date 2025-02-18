@@ -24,14 +24,14 @@ interface PromptServiceAsync {
     @JvmOverloads
     fun create(
         params: PromptCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
     /** Get a prompt object by its id */
     @JvmOverloads
     fun retrieve(
         params: PromptRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
     /**
@@ -42,7 +42,7 @@ interface PromptServiceAsync {
     @JvmOverloads
     fun update(
         params: PromptUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
     /**
@@ -52,14 +52,14 @@ interface PromptServiceAsync {
     @JvmOverloads
     fun list(
         params: PromptListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PromptListPageAsync>
 
     /** Delete a prompt object by its id */
     @JvmOverloads
     fun delete(
         params: PromptDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
     /**
@@ -69,6 +69,6 @@ interface PromptServiceAsync {
     @JvmOverloads
     fun replace(
         params: PromptReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 }

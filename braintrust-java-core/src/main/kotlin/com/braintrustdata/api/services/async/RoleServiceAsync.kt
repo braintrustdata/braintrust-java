@@ -24,14 +24,14 @@ interface RoleServiceAsync {
     @JvmOverloads
     fun create(
         params: RoleCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 
     /** Get a role object by its id */
     @JvmOverloads
     fun retrieve(
         params: RoleRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 
     /**
@@ -42,7 +42,7 @@ interface RoleServiceAsync {
     @JvmOverloads
     fun update(
         params: RoleUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 
     /**
@@ -52,14 +52,14 @@ interface RoleServiceAsync {
     @JvmOverloads
     fun list(
         params: RoleListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RoleListPageAsync>
 
     /** Delete a role object by its id */
     @JvmOverloads
     fun delete(
         params: RoleDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 
     /**
@@ -69,6 +69,6 @@ interface RoleServiceAsync {
     @JvmOverloads
     fun replace(
         params: RoleReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 }

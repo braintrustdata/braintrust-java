@@ -31,14 +31,14 @@ interface DatasetService {
     @JvmOverloads
     fun create(
         params: DatasetCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Dataset
 
     /** Get a dataset object by its id */
     @JvmOverloads
     fun retrieve(
         params: DatasetRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Dataset
 
     /**
@@ -49,7 +49,7 @@ interface DatasetService {
     @JvmOverloads
     fun update(
         params: DatasetUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Dataset
 
     /**
@@ -59,21 +59,21 @@ interface DatasetService {
     @JvmOverloads
     fun list(
         params: DatasetListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): DatasetListPage
 
     /** Delete a dataset object by its id */
     @JvmOverloads
     fun delete(
         params: DatasetDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Dataset
 
     /** Log feedback for a set of dataset events */
     @JvmOverloads
     fun feedback(
         params: DatasetFeedbackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FeedbackResponseSchema
 
     /**
@@ -84,7 +84,7 @@ interface DatasetService {
     @JvmOverloads
     fun fetch(
         params: DatasetFetchParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchDatasetEventsResponse
 
     /**
@@ -95,20 +95,20 @@ interface DatasetService {
     @JvmOverloads
     fun fetchPost(
         params: DatasetFetchPostParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchDatasetEventsResponse
 
     /** Insert a set of events into the dataset */
     @JvmOverloads
     fun insert(
         params: DatasetInsertParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InsertEventsResponse
 
     /** Summarize dataset */
     @JvmOverloads
     fun summarize(
         params: DatasetSummarizeParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SummarizeDatasetResponse
 }

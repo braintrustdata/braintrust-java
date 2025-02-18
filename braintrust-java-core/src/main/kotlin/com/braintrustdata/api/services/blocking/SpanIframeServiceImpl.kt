@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
 
-class SpanIframeServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : SpanIframeService {
+class SpanIframeServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    SpanIframeService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -38,7 +36,7 @@ internal constructor(
      */
     override fun create(
         params: SpanIframeCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SpanIFrame {
         val request =
             HttpRequest.builder()
@@ -63,7 +61,7 @@ internal constructor(
     /** Get a span_iframe object by its id */
     override fun retrieve(
         params: SpanIframeRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SpanIFrame {
         val request =
             HttpRequest.builder()
@@ -91,7 +89,7 @@ internal constructor(
      */
     override fun update(
         params: SpanIframeUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SpanIFrame {
         val request =
             HttpRequest.builder()
@@ -120,7 +118,7 @@ internal constructor(
      */
     override fun list(
         params: SpanIframeListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SpanIframeListPage {
         val request =
             HttpRequest.builder()
@@ -145,7 +143,7 @@ internal constructor(
     /** Delete a span_iframe object by its id */
     override fun delete(
         params: SpanIframeDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SpanIFrame {
         val request =
             HttpRequest.builder()
@@ -173,7 +171,7 @@ internal constructor(
      */
     override fun replace(
         params: SpanIframeReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SpanIFrame {
         val request =
             HttpRequest.builder()

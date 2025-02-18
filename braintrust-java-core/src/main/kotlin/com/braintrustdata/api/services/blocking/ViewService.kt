@@ -23,14 +23,14 @@ interface ViewService {
     @JvmOverloads
     fun create(
         params: ViewCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): View
 
     /** Get a view object by its id */
     @JvmOverloads
     fun retrieve(
         params: ViewRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): View
 
     /**
@@ -41,7 +41,7 @@ interface ViewService {
     @JvmOverloads
     fun update(
         params: ViewUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): View
 
     /**
@@ -51,14 +51,14 @@ interface ViewService {
     @JvmOverloads
     fun list(
         params: ViewListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ViewListPage
 
     /** Delete a view object by its id */
     @JvmOverloads
     fun delete(
         params: ViewDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): View
 
     /**
@@ -68,6 +68,6 @@ interface ViewService {
     @JvmOverloads
     fun replace(
         params: ViewReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): View
 }
