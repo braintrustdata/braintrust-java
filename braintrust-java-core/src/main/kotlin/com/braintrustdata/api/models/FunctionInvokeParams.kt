@@ -36,7 +36,7 @@ import java.util.Optional
 class FunctionInvokeParams
 private constructor(
     private val functionId: String,
-    private val body: FunctionInvokeBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -89,7 +89,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): FunctionInvokeBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -104,9 +104,9 @@ private constructor(
 
     /** The request to invoke a function */
     @NoAutoDetect
-    class FunctionInvokeBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("input") @ExcludeMissing private val input: JsonValue = JsonMissing.of(),
         @JsonProperty("messages")
         @ExcludeMissing
@@ -173,7 +173,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): FunctionInvokeBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -193,7 +193,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [FunctionInvokeBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var input: JsonValue = JsonMissing.of()
@@ -205,14 +205,14 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(functionInvokeBody: FunctionInvokeBody) = apply {
-                input = functionInvokeBody.input
-                messages = functionInvokeBody.messages.map { it.toMutableList() }
-                mode = functionInvokeBody.mode
-                parent = functionInvokeBody.parent
-                stream = functionInvokeBody.stream
-                version = functionInvokeBody.version
-                additionalProperties = functionInvokeBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                input = body.input
+                messages = body.messages.map { it.toMutableList() }
+                mode = body.mode
+                parent = body.parent
+                stream = body.stream
+                version = body.version
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Argument to the function, which can be any JSON serializable value */
@@ -331,8 +331,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): FunctionInvokeBody =
-                FunctionInvokeBody(
+            fun build(): Body =
+                Body(
                     input,
                     (messages ?: JsonMissing.of()).map { it.toImmutable() },
                     mode,
@@ -348,7 +348,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is FunctionInvokeBody && input == other.input && messages == other.messages && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && input == other.input && messages == other.messages && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -358,7 +358,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "FunctionInvokeBody{input=$input, messages=$messages, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
+            "Body{input=$input, messages=$messages, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -373,7 +373,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var functionId: String? = null
-        private var body: FunctionInvokeBody.Builder = FunctionInvokeBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

@@ -26,7 +26,7 @@ import java.util.Optional
  */
 class DatasetCreateParams
 private constructor(
-    private val body: DatasetCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -61,16 +61,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): DatasetCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class DatasetCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -120,7 +120,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): DatasetCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -139,7 +139,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [DatasetCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -149,12 +149,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(datasetCreateBody: DatasetCreateBody) = apply {
-                name = datasetCreateBody.name
-                projectId = datasetCreateBody.projectId
-                description = datasetCreateBody.description
-                metadata = datasetCreateBody.metadata
-                additionalProperties = datasetCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                projectId = body.projectId
+                description = body.description
+                metadata = body.metadata
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the dataset. Within a project, dataset names are unique */
@@ -208,8 +208,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): DatasetCreateBody =
-                DatasetCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     checkRequired("projectId", projectId),
                     description,
@@ -223,7 +223,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is DatasetCreateBody && name == other.name && projectId == other.projectId && description == other.description && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && description == other.description && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -233,7 +233,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "DatasetCreateBody{name=$name, projectId=$projectId, description=$description, metadata=$metadata, additionalProperties=$additionalProperties}"
+            "Body{name=$name, projectId=$projectId, description=$description, metadata=$metadata, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -247,7 +247,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: DatasetCreateBody.Builder = DatasetCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

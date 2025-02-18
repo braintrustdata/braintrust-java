@@ -28,7 +28,7 @@ import java.util.Optional
  */
 class AclBatchUpdateParams
 private constructor(
-    private val body: AclBatchUpdateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -87,16 +87,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): AclBatchUpdateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class AclBatchUpdateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("add_acls")
         @ExcludeMissing
         private val addAcls: JsonField<List<AddAcl>> = JsonMissing.of(),
@@ -164,7 +164,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): AclBatchUpdateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -181,7 +181,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [AclBatchUpdateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var addAcls: JsonField<MutableList<AddAcl>>? = null
@@ -189,10 +189,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(aclBatchUpdateBody: AclBatchUpdateBody) = apply {
-                addAcls = aclBatchUpdateBody.addAcls.map { it.toMutableList() }
-                removeAcls = aclBatchUpdateBody.removeAcls.map { it.toMutableList() }
-                additionalProperties = aclBatchUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                addAcls = body.addAcls.map { it.toMutableList() }
+                removeAcls = body.removeAcls.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /**
@@ -346,8 +346,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): AclBatchUpdateBody =
-                AclBatchUpdateBody(
+            fun build(): Body =
+                Body(
                     (addAcls ?: JsonMissing.of()).map { it.toImmutable() },
                     (removeAcls ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
@@ -359,7 +359,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AclBatchUpdateBody && addAcls == other.addAcls && removeAcls == other.removeAcls && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && addAcls == other.addAcls && removeAcls == other.removeAcls && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -369,7 +369,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AclBatchUpdateBody{addAcls=$addAcls, removeAcls=$removeAcls, additionalProperties=$additionalProperties}"
+            "Body{addAcls=$addAcls, removeAcls=$removeAcls, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -383,7 +383,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: AclBatchUpdateBody.Builder = AclBatchUpdateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

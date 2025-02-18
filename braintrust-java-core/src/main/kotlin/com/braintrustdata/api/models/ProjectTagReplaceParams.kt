@@ -27,7 +27,7 @@ import java.util.Optional
  */
 class ProjectTagReplaceParams
 private constructor(
-    private val body: ProjectTagReplaceBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -62,16 +62,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): ProjectTagReplaceBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class ProjectTagReplaceBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -121,7 +121,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): ProjectTagReplaceBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -140,7 +140,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ProjectTagReplaceBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -150,12 +150,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(projectTagReplaceBody: ProjectTagReplaceBody) = apply {
-                name = projectTagReplaceBody.name
-                projectId = projectTagReplaceBody.projectId
-                color = projectTagReplaceBody.color
-                description = projectTagReplaceBody.description
-                additionalProperties = projectTagReplaceBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                projectId = body.projectId
+                color = body.color
+                description = body.description
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the project tag */
@@ -209,8 +209,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ProjectTagReplaceBody =
-                ProjectTagReplaceBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     checkRequired("projectId", projectId),
                     color,
@@ -224,7 +224,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectTagReplaceBody && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -234,7 +234,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ProjectTagReplaceBody{name=$name, projectId=$projectId, color=$color, description=$description, additionalProperties=$additionalProperties}"
+            "Body{name=$name, projectId=$projectId, color=$color, description=$description, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -248,7 +248,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: ProjectTagReplaceBody.Builder = ProjectTagReplaceBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

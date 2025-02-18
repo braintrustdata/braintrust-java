@@ -15,7 +15,9 @@ class AiSecretFindAndDeleteParamsTest {
     @Test
     fun body() {
         val params = AiSecretFindAndDeleteParams.builder().name("name").orgName("org_name").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.orgName()).contains("org_name")
@@ -24,7 +26,9 @@ class AiSecretFindAndDeleteParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = AiSecretFindAndDeleteParams.builder().name("name").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
     }

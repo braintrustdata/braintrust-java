@@ -26,7 +26,7 @@ import java.util.Optional
  */
 class SpanIframeCreateParams
 private constructor(
-    private val body: SpanIframeCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -73,16 +73,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SpanIframeCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SpanIframeCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -148,7 +148,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SpanIframeCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -168,7 +168,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [SpanIframeCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -179,13 +179,13 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(spanIframeCreateBody: SpanIframeCreateBody) = apply {
-                name = spanIframeCreateBody.name
-                projectId = spanIframeCreateBody.projectId
-                url = spanIframeCreateBody.url
-                description = spanIframeCreateBody.description
-                postMessage = spanIframeCreateBody.postMessage
-                additionalProperties = spanIframeCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                projectId = body.projectId
+                url = body.url
+                description = body.description
+                postMessage = body.postMessage
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the span iframe */
@@ -264,8 +264,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SpanIframeCreateBody =
-                SpanIframeCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     checkRequired("projectId", projectId),
                     checkRequired("url", url),
@@ -280,7 +280,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SpanIframeCreateBody && name == other.name && projectId == other.projectId && url == other.url && description == other.description && postMessage == other.postMessage && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && url == other.url && description == other.description && postMessage == other.postMessage && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -290,7 +290,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SpanIframeCreateBody{name=$name, projectId=$projectId, url=$url, description=$description, postMessage=$postMessage, additionalProperties=$additionalProperties}"
+            "Body{name=$name, projectId=$projectId, url=$url, description=$description, postMessage=$postMessage, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -304,7 +304,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SpanIframeCreateBody.Builder = SpanIframeCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

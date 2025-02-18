@@ -29,7 +29,7 @@ import java.util.Optional
  */
 class ViewCreateParams
 private constructor(
-    private val body: ViewCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -88,16 +88,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): ViewCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class ViewCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -185,7 +185,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): ViewCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -208,7 +208,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ViewCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -222,16 +222,16 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(viewCreateBody: ViewCreateBody) = apply {
-                name = viewCreateBody.name
-                objectId = viewCreateBody.objectId
-                objectType = viewCreateBody.objectType
-                viewType = viewCreateBody.viewType
-                deletedAt = viewCreateBody.deletedAt
-                options = viewCreateBody.options
-                userId = viewCreateBody.userId
-                viewData = viewCreateBody.viewData
-                additionalProperties = viewCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                objectId = body.objectId
+                objectType = body.objectType
+                viewType = body.viewType
+                deletedAt = body.deletedAt
+                options = body.options
+                userId = body.userId
+                viewData = body.viewData
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the view */
@@ -320,8 +320,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ViewCreateBody =
-                ViewCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     checkRequired("objectId", objectId),
                     checkRequired("objectType", objectType),
@@ -339,7 +339,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewCreateBody && name == other.name && objectId == other.objectId && objectType == other.objectType && viewType == other.viewType && deletedAt == other.deletedAt && options == other.options && userId == other.userId && viewData == other.viewData && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && objectId == other.objectId && objectType == other.objectType && viewType == other.viewType && deletedAt == other.deletedAt && options == other.options && userId == other.userId && viewData == other.viewData && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -349,7 +349,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ViewCreateBody{name=$name, objectId=$objectId, objectType=$objectType, viewType=$viewType, deletedAt=$deletedAt, options=$options, userId=$userId, viewData=$viewData, additionalProperties=$additionalProperties}"
+            "Body{name=$name, objectId=$objectId, objectType=$objectType, viewType=$viewType, deletedAt=$deletedAt, options=$options, userId=$userId, viewData=$viewData, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -363,7 +363,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: ViewCreateBody.Builder = ViewCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

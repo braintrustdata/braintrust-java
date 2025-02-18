@@ -23,7 +23,7 @@ import java.util.Objects
 class ExperimentInsertParams
 private constructor(
     private val experimentId: String,
-    private val body: ExperimentInsertBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -43,7 +43,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): ExperimentInsertBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -57,9 +57,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class ExperimentInsertBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("events")
         @ExcludeMissing
         private val events: JsonField<List<InsertExperimentEvent>> = JsonMissing.of(),
@@ -81,7 +81,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): ExperimentInsertBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -97,16 +97,16 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ExperimentInsertBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var events: JsonField<MutableList<InsertExperimentEvent>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(experimentInsertBody: ExperimentInsertBody) = apply {
-                events = experimentInsertBody.events.map { it.toMutableList() }
-                additionalProperties = experimentInsertBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                events = body.events.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** A list of experiment events to insert */
@@ -150,8 +150,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ExperimentInsertBody =
-                ExperimentInsertBody(
+            fun build(): Body =
+                Body(
                     checkRequired("events", events).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
@@ -162,7 +162,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ExperimentInsertBody && events == other.events && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && events == other.events && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -171,8 +171,7 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "ExperimentInsertBody{events=$events, additionalProperties=$additionalProperties}"
+        override fun toString() = "Body{events=$events, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -187,7 +186,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var experimentId: String? = null
-        private var body: ExperimentInsertBody.Builder = ExperimentInsertBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

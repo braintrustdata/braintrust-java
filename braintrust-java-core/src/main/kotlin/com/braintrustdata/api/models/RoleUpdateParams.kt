@@ -30,7 +30,7 @@ import java.util.Optional
 class RoleUpdateParams
 private constructor(
     private val roleId: String,
-    private val body: RoleUpdateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -82,7 +82,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): RoleUpdateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -96,9 +96,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class RoleUpdateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("add_member_permissions")
         @ExcludeMissing
         private val addMemberPermissions: JsonField<List<AddMemberPermission>> = JsonMissing.of(),
@@ -180,7 +180,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): RoleUpdateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -201,7 +201,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [RoleUpdateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var addMemberPermissions: JsonField<MutableList<AddMemberPermission>>? = null
@@ -214,16 +214,14 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(roleUpdateBody: RoleUpdateBody) = apply {
-                addMemberPermissions =
-                    roleUpdateBody.addMemberPermissions.map { it.toMutableList() }
-                addMemberRoles = roleUpdateBody.addMemberRoles.map { it.toMutableList() }
-                description = roleUpdateBody.description
-                name = roleUpdateBody.name
-                removeMemberPermissions =
-                    roleUpdateBody.removeMemberPermissions.map { it.toMutableList() }
-                removeMemberRoles = roleUpdateBody.removeMemberRoles.map { it.toMutableList() }
-                additionalProperties = roleUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                addMemberPermissions = body.addMemberPermissions.map { it.toMutableList() }
+                addMemberRoles = body.addMemberRoles.map { it.toMutableList() }
+                description = body.description
+                name = body.name
+                removeMemberPermissions = body.removeMemberPermissions.map { it.toMutableList() }
+                removeMemberRoles = body.removeMemberRoles.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** A list of permissions to add to the role */
@@ -377,8 +375,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): RoleUpdateBody =
-                RoleUpdateBody(
+            fun build(): Body =
+                Body(
                     (addMemberPermissions ?: JsonMissing.of()).map { it.toImmutable() },
                     (addMemberRoles ?: JsonMissing.of()).map { it.toImmutable() },
                     description,
@@ -394,7 +392,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RoleUpdateBody && addMemberPermissions == other.addMemberPermissions && addMemberRoles == other.addMemberRoles && description == other.description && name == other.name && removeMemberPermissions == other.removeMemberPermissions && removeMemberRoles == other.removeMemberRoles && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && addMemberPermissions == other.addMemberPermissions && addMemberRoles == other.addMemberRoles && description == other.description && name == other.name && removeMemberPermissions == other.removeMemberPermissions && removeMemberRoles == other.removeMemberRoles && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -404,7 +402,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "RoleUpdateBody{addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalProperties=$additionalProperties}"
+            "Body{addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -419,7 +417,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var roleId: String? = null
-        private var body: RoleUpdateBody.Builder = RoleUpdateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

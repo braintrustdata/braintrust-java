@@ -187,7 +187,9 @@ class FunctionUpdateParamsTest {
                 )
                 .addTag("string")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.description()).contains("description")
         assertThat(body.functionData())
@@ -284,7 +286,9 @@ class FunctionUpdateParamsTest {
             FunctionUpdateParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 
