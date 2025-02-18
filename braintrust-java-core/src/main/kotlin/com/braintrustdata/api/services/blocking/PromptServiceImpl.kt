@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.PromptReplaceParams
 import com.braintrustdata.api.models.PromptRetrieveParams
 import com.braintrustdata.api.models.PromptUpdateParams
 
-class PromptServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PromptService {
+class PromptServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PromptService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 

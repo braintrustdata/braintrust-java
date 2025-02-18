@@ -28,7 +28,7 @@ interface AclService {
     @JvmOverloads
     fun retrieve(
         params: AclRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Acl
 
     /**
@@ -38,7 +38,7 @@ interface AclService {
     @JvmOverloads
     fun list(
         params: AclListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AclListPage
 
     /** Delete an acl object by its id */
@@ -52,13 +52,13 @@ interface AclService {
     @JvmOverloads
     fun batchUpdate(
         params: AclBatchUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AclBatchUpdateResponse
 
     /** Delete a single acl */
     @JvmOverloads
     fun findAndDelete(
         params: AclFindAndDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Acl
 }

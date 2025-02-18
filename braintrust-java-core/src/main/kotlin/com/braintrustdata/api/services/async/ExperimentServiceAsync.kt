@@ -32,14 +32,14 @@ interface ExperimentServiceAsync {
     @JvmOverloads
     fun create(
         params: ExperimentCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
     /** Get an experiment object by its id */
     @JvmOverloads
     fun retrieve(
         params: ExperimentRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
     /**
@@ -50,7 +50,7 @@ interface ExperimentServiceAsync {
     @JvmOverloads
     fun update(
         params: ExperimentUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
     /**
@@ -60,21 +60,21 @@ interface ExperimentServiceAsync {
     @JvmOverloads
     fun list(
         params: ExperimentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ExperimentListPageAsync>
 
     /** Delete an experiment object by its id */
     @JvmOverloads
     fun delete(
         params: ExperimentDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
     /** Log feedback for a set of experiment events */
     @JvmOverloads
     fun feedback(
         params: ExperimentFeedbackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FeedbackResponseSchema>
 
     /**
@@ -85,7 +85,7 @@ interface ExperimentServiceAsync {
     @JvmOverloads
     fun fetch(
         params: ExperimentFetchParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchExperimentEventsResponse>
 
     /**
@@ -96,20 +96,20 @@ interface ExperimentServiceAsync {
     @JvmOverloads
     fun fetchPost(
         params: ExperimentFetchPostParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchExperimentEventsResponse>
 
     /** Insert a set of events into the experiment */
     @JvmOverloads
     fun insert(
         params: ExperimentInsertParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InsertEventsResponse>
 
     /** Summarize experiment */
     @JvmOverloads
     fun summarize(
         params: ExperimentSummarizeParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SummarizeExperimentResponse>
 }

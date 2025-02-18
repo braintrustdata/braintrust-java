@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.ProjectScoreReplaceParams
 import com.braintrustdata.api.models.ProjectScoreRetrieveParams
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
 
-class ProjectScoreServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProjectScoreService {
+class ProjectScoreServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProjectScoreService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: ProjectScoreCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectScore {
         val request =
             HttpRequest.builder()
@@ -64,7 +62,7 @@ internal constructor(
     /** Get a project_score object by its id */
     override fun retrieve(
         params: ProjectScoreRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectScore {
         val request =
             HttpRequest.builder()
@@ -92,7 +90,7 @@ internal constructor(
      */
     override fun update(
         params: ProjectScoreUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectScore {
         val request =
             HttpRequest.builder()
@@ -121,7 +119,7 @@ internal constructor(
      */
     override fun list(
         params: ProjectScoreListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectScoreListPage {
         val request =
             HttpRequest.builder()
@@ -146,7 +144,7 @@ internal constructor(
     /** Delete a project_score object by its id */
     override fun delete(
         params: ProjectScoreDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectScore {
         val request =
             HttpRequest.builder()
@@ -175,7 +173,7 @@ internal constructor(
      */
     override fun replace(
         params: ProjectScoreReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectScore {
         val request =
             HttpRequest.builder()

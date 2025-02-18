@@ -806,7 +806,7 @@ private constructor(
             override fun serialize(
                 value: Message,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.system != null -> generator.writeObject(value.system)
@@ -933,11 +933,8 @@ private constructor(
                     )
             }
 
-            class Role
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Role @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -958,7 +955,7 @@ private constructor(
 
                 /** An enum containing [Role]'s known values. */
                 enum class Known {
-                    SYSTEM,
+                    SYSTEM
                 }
 
                 /**
@@ -1156,11 +1153,8 @@ private constructor(
                     )
             }
 
-            class Role
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Role @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1181,7 +1175,7 @@ private constructor(
 
                 /** An enum containing [Role]'s known values. */
                 enum class Known {
-                    USER,
+                    USER
                 }
 
                 /**
@@ -1369,7 +1363,7 @@ private constructor(
                     override fun serialize(
                         value: Content,
                         generator: JsonGenerator,
-                        provider: SerializerProvider
+                        provider: SerializerProvider,
                     ) {
                         when {
                             value.text != null -> generator.writeObject(value.text)
@@ -1525,7 +1519,7 @@ private constructor(
                         override fun serialize(
                             value: ChatCompletionContentPart,
                             generator: JsonGenerator,
-                            provider: SerializerProvider
+                            provider: SerializerProvider,
                         ) {
                             when {
                                 value.text != null -> generator.writeObject(value.text)
@@ -1735,11 +1729,8 @@ private constructor(
                     )
             }
 
-            class Role
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Role @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1760,7 +1751,7 @@ private constructor(
 
                 /** An enum containing [Role]'s known values. */
                 enum class Known {
-                    ASSISTANT,
+                    ASSISTANT
                 }
 
                 /**
@@ -2077,11 +2068,8 @@ private constructor(
                     )
             }
 
-            class Role
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Role @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -2102,7 +2090,7 @@ private constructor(
 
                 /** An enum containing [Role]'s known values. */
                 enum class Known {
-                    TOOL,
+                    TOOL
                 }
 
                 /**
@@ -2295,11 +2283,8 @@ private constructor(
                     )
             }
 
-            class Role
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Role @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -2320,7 +2305,7 @@ private constructor(
 
                 /** An enum containing [Role]'s known values. */
                 enum class Known {
-                    FUNCTION,
+                    FUNCTION
                 }
 
                 /**
@@ -2500,11 +2485,8 @@ private constructor(
                     )
             }
 
-            class Role
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Role @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -2525,7 +2507,7 @@ private constructor(
 
                 /** An enum containing [Role]'s known values. */
                 enum class Known {
-                    MODEL,
+                    MODEL
                 }
 
                 /**
@@ -2608,11 +2590,7 @@ private constructor(
     }
 
     /** The mode format of the returned value (defaults to 'auto') */
-    class Mode
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Mode @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -2830,7 +2808,7 @@ private constructor(
             override fun serialize(
                 value: Parent,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.spanParentStruct != null -> generator.writeObject(value.spanParentStruct)
@@ -3000,9 +2978,7 @@ private constructor(
 
             class ObjectType
             @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            private constructor(private val value: JsonField<String>) : Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -3099,7 +3075,7 @@ private constructor(
             @JsonCreator
             private constructor(
                 @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
             ) {
 
                 @JsonAnyGetter

@@ -83,11 +83,7 @@ private constructor(
 
         @JvmStatic
         fun of(aiSecretsService: AiSecretService, params: AiSecretListParams, response: Response) =
-            AiSecretListPage(
-                aiSecretsService,
-                params,
-                response,
-            )
+            AiSecretListPage(aiSecretsService, params, response)
     }
 
     @NoAutoDetect
@@ -162,9 +158,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: AiSecretListPage,
-    ) : Iterable<AISecret> {
+    class AutoPager(private val firstPage: AiSecretListPage) : Iterable<AISecret> {
 
         override fun iterator(): Iterator<AISecret> = iterator {
             var page = firstPage

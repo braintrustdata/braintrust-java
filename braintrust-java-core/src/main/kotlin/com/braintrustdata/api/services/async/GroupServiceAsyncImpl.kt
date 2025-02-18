@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class GroupServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : GroupServiceAsync {
+class GroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    GroupServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: GroupCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Group> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
     /** Get a group object by its id */
     override fun retrieve(
         params: GroupRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Group> {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
      */
     override fun update(
         params: GroupUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Group> {
         val request =
             HttpRequest.builder()
@@ -130,7 +128,7 @@ internal constructor(
      */
     override fun list(
         params: GroupListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<GroupListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -158,7 +156,7 @@ internal constructor(
     /** Delete a group object by its id */
     override fun delete(
         params: GroupDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Group> {
         val request =
             HttpRequest.builder()
@@ -189,7 +187,7 @@ internal constructor(
      */
     override fun replace(
         params: GroupReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Group> {
         val request =
             HttpRequest.builder()

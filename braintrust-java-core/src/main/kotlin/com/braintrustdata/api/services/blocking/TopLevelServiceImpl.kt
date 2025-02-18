@@ -14,10 +14,8 @@ import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.TopLevelHelloWorldParams
 
-class TopLevelServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : TopLevelService {
+class TopLevelServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    TopLevelService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -26,7 +24,7 @@ internal constructor(
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
     override fun helloWorld(
         params: TopLevelHelloWorldParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): String {
         val request =
             HttpRequest.builder()

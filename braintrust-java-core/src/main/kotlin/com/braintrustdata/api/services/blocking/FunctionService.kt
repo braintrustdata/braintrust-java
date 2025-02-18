@@ -26,14 +26,14 @@ interface FunctionService {
     @JvmOverloads
     fun create(
         params: FunctionCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Function
 
     /** Get a function object by its id */
     @JvmOverloads
     fun retrieve(
         params: FunctionRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Function
 
     /**
@@ -44,7 +44,7 @@ interface FunctionService {
     @JvmOverloads
     fun update(
         params: FunctionUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Function
 
     /**
@@ -54,21 +54,21 @@ interface FunctionService {
     @JvmOverloads
     fun list(
         params: FunctionListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FunctionListPage
 
     /** Delete a function object by its id */
     @JvmOverloads
     fun delete(
         params: FunctionDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Function
 
     /** Invoke a function. */
     @JvmOverloads
     fun invoke(
         params: FunctionInvokeParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Optional<FunctionInvokeResponse>
 
     /**
@@ -79,6 +79,6 @@ interface FunctionService {
     @JvmOverloads
     fun replace(
         params: FunctionReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Function
 }

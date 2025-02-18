@@ -41,7 +41,7 @@ class ViewListParamsTest {
         expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put(
             "ids",
-            ViewListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString()
+            ViewListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
         )
         expected.put("limit", "0")
         expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

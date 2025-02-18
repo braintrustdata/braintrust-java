@@ -80,11 +80,7 @@ private constructor(
 
         @JvmStatic
         fun of(rolesService: RoleServiceAsync, params: RoleListParams, response: Response) =
-            RoleListPageAsync(
-                rolesService,
-                params,
-                response,
-            )
+            RoleListPageAsync(rolesService, params, response)
     }
 
     @NoAutoDetect
@@ -159,14 +155,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: RoleListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: RoleListPageAsync) {
 
         fun forEach(action: Predicate<Role>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<RoleListPageAsync>>.forEach(
                 action: (Role) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -175,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

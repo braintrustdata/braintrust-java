@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class ProjectTagServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProjectTagServiceAsync {
+class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProjectTagServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: ProjectTagCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectTag> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
     /** Get a project_tag object by its id */
     override fun retrieve(
         params: ProjectTagRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectTag> {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
      */
     override fun update(
         params: ProjectTagUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectTag> {
         val request =
             HttpRequest.builder()
@@ -130,7 +128,7 @@ internal constructor(
      */
     override fun list(
         params: ProjectTagListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectTagListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -158,7 +156,7 @@ internal constructor(
     /** Delete a project_tag object by its id */
     override fun delete(
         params: ProjectTagDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectTag> {
         val request =
             HttpRequest.builder()
@@ -190,7 +188,7 @@ internal constructor(
      */
     override fun replace(
         params: ProjectTagReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectTag> {
         val request =
             HttpRequest.builder()

@@ -80,11 +80,7 @@ private constructor(
 
         @JvmStatic
         fun of(promptsService: PromptServiceAsync, params: PromptListParams, response: Response) =
-            PromptListPageAsync(
-                promptsService,
-                params,
-                response,
-            )
+            PromptListPageAsync(promptsService, params, response)
     }
 
     @NoAutoDetect
@@ -159,14 +155,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: PromptListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: PromptListPageAsync) {
 
         fun forEach(action: Predicate<Prompt>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<PromptListPageAsync>>.forEach(
                 action: (Prompt) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -175,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

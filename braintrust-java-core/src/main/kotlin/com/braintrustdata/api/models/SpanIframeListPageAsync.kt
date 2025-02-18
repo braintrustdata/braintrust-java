@@ -88,13 +88,8 @@ private constructor(
         fun of(
             spanIframesService: SpanIframeServiceAsync,
             params: SpanIframeListParams,
-            response: Response
-        ) =
-            SpanIframeListPageAsync(
-                spanIframesService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = SpanIframeListPageAsync(spanIframesService, params, response)
     }
 
     @NoAutoDetect
@@ -170,14 +165,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: SpanIframeListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: SpanIframeListPageAsync) {
 
         fun forEach(action: Predicate<SpanIFrame>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<SpanIframeListPageAsync>>.forEach(
                 action: (SpanIFrame) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -186,7 +179,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

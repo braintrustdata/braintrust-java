@@ -31,10 +31,8 @@ import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
 
-class ExperimentServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ExperimentServiceAsync {
+class ExperimentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ExperimentServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -47,7 +45,7 @@ internal constructor(
      */
     override fun create(
         params: ExperimentCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Experiment> {
         val request =
             HttpRequest.builder()
@@ -75,7 +73,7 @@ internal constructor(
     /** Get an experiment object by its id */
     override fun retrieve(
         params: ExperimentRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Experiment> {
         val request =
             HttpRequest.builder()
@@ -106,7 +104,7 @@ internal constructor(
      */
     override fun update(
         params: ExperimentUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Experiment> {
         val request =
             HttpRequest.builder()
@@ -138,7 +136,7 @@ internal constructor(
      */
     override fun list(
         params: ExperimentListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ExperimentListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -166,7 +164,7 @@ internal constructor(
     /** Delete an experiment object by its id */
     override fun delete(
         params: ExperimentDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Experiment> {
         val request =
             HttpRequest.builder()
@@ -194,7 +192,7 @@ internal constructor(
     /** Log feedback for a set of experiment events */
     override fun feedback(
         params: ExperimentFeedbackParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FeedbackResponseSchema> {
         val request =
             HttpRequest.builder()
@@ -227,7 +225,7 @@ internal constructor(
      */
     override fun fetch(
         params: ExperimentFetchParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FetchExperimentEventsResponse> {
         val request =
             HttpRequest.builder()
@@ -259,7 +257,7 @@ internal constructor(
      */
     override fun fetchPost(
         params: ExperimentFetchPostParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FetchExperimentEventsResponse> {
         val request =
             HttpRequest.builder()
@@ -287,7 +285,7 @@ internal constructor(
     /** Insert a set of events into the experiment */
     override fun insert(
         params: ExperimentInsertParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<InsertEventsResponse> {
         val request =
             HttpRequest.builder()
@@ -316,7 +314,7 @@ internal constructor(
     /** Summarize experiment */
     override fun summarize(
         params: ExperimentSummarizeParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<SummarizeExperimentResponse> {
         val request =
             HttpRequest.builder()

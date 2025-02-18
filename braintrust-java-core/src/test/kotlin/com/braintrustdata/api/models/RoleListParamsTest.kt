@@ -35,7 +35,7 @@ class RoleListParamsTest {
         expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put(
             "ids",
-            RoleListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString()
+            RoleListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
         )
         expected.put("limit", "0")
         expected.put("org_name", "org_name")

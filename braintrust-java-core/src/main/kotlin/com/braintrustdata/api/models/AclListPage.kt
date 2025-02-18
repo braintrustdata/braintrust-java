@@ -77,11 +77,7 @@ private constructor(
 
         @JvmStatic
         fun of(aclsService: AclService, params: AclListParams, response: Response) =
-            AclListPage(
-                aclsService,
-                params,
-                response,
-            )
+            AclListPage(aclsService, params, response)
     }
 
     @NoAutoDetect
@@ -156,9 +152,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: AclListPage,
-    ) : Iterable<Acl> {
+    class AutoPager(private val firstPage: AclListPage) : Iterable<Acl> {
 
         override fun iterator(): Iterator<Acl> = iterator {
             var page = firstPage

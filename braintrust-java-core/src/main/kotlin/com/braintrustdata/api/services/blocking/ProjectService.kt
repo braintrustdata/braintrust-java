@@ -25,14 +25,14 @@ interface ProjectService {
     @JvmOverloads
     fun create(
         params: ProjectCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Project
 
     /** Get a project object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Project
 
     /**
@@ -43,7 +43,7 @@ interface ProjectService {
     @JvmOverloads
     fun update(
         params: ProjectUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Project
 
     /**
@@ -53,13 +53,13 @@ interface ProjectService {
     @JvmOverloads
     fun list(
         params: ProjectListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectListPage
 
     /** Delete a project object by its id */
     @JvmOverloads
     fun delete(
         params: ProjectDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Project
 }

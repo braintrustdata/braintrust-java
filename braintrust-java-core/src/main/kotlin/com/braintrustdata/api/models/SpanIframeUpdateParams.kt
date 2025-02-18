@@ -227,12 +227,7 @@ private constructor(
             }
 
             fun build(): SpanIframeUpdateBody =
-                SpanIframeUpdateBody(
-                    name,
-                    postMessage,
-                    url,
-                    additionalProperties.toImmutable(),
-                )
+                SpanIframeUpdateBody(name, postMessage, url, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

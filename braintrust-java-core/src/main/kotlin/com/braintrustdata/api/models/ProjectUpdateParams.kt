@@ -192,11 +192,7 @@ private constructor(
             }
 
             fun build(): ProjectUpdateBody =
-                ProjectUpdateBody(
-                    name,
-                    settings,
-                    additionalProperties.toImmutable(),
-                )
+                ProjectUpdateBody(name, settings, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

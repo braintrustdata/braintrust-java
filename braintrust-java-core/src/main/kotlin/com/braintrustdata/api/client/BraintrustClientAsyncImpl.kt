@@ -43,9 +43,7 @@ import com.braintrustdata.api.services.async.UserServiceAsyncImpl
 import com.braintrustdata.api.services.async.ViewServiceAsync
 import com.braintrustdata.api.services.async.ViewServiceAsyncImpl
 
-class BraintrustClientAsyncImpl(
-    private val clientOptions: ClientOptions,
-) : BraintrustClientAsync {
+class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : BraintrustClientAsync {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

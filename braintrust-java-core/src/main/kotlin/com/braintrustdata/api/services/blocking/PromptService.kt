@@ -23,14 +23,14 @@ interface PromptService {
     @JvmOverloads
     fun create(
         params: PromptCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Prompt
 
     /** Get a prompt object by its id */
     @JvmOverloads
     fun retrieve(
         params: PromptRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Prompt
 
     /**
@@ -41,7 +41,7 @@ interface PromptService {
     @JvmOverloads
     fun update(
         params: PromptUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Prompt
 
     /**
@@ -51,14 +51,14 @@ interface PromptService {
     @JvmOverloads
     fun list(
         params: PromptListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): PromptListPage
 
     /** Delete a prompt object by its id */
     @JvmOverloads
     fun delete(
         params: PromptDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Prompt
 
     /**
@@ -68,6 +68,6 @@ interface PromptService {
     @JvmOverloads
     fun replace(
         params: PromptReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Prompt
 }

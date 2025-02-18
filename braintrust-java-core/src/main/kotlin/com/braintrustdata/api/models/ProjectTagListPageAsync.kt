@@ -88,13 +88,8 @@ private constructor(
         fun of(
             projectTagsService: ProjectTagServiceAsync,
             params: ProjectTagListParams,
-            response: Response
-        ) =
-            ProjectTagListPageAsync(
-                projectTagsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = ProjectTagListPageAsync(projectTagsService, params, response)
     }
 
     @NoAutoDetect
@@ -170,14 +165,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ProjectTagListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: ProjectTagListPageAsync) {
 
         fun forEach(action: Predicate<ProjectTag>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<ProjectTagListPageAsync>>.forEach(
                 action: (ProjectTag) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -186,7 +179,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

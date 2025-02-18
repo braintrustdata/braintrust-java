@@ -292,7 +292,7 @@ private constructor(
             override fun serialize(
                 value: Location,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.experiment != null -> generator.writeObject(value.experiment)
@@ -546,7 +546,7 @@ private constructor(
                     override fun serialize(
                         value: Position,
                         generator: JsonGenerator,
-                        provider: SerializerProvider
+                        provider: SerializerProvider,
                     ) {
                         when {
                             value.type != null -> generator.writeObject(value.type)
@@ -639,9 +639,7 @@ private constructor(
 
                     class InnerType
                     @JsonCreator
-                    private constructor(
-                        private val value: JsonField<String>,
-                    ) : Enum {
+                    private constructor(private val value: JsonField<String>) : Enum {
 
                         /**
                          * Returns this class instance's raw value.
@@ -663,7 +661,7 @@ private constructor(
 
                         /** An enum containing [InnerType]'s known values. */
                         enum class Known {
-                            TASK,
+                            TASK
                         }
 
                         /**
@@ -850,9 +848,7 @@ private constructor(
 
                     class Type
                     @JsonCreator
-                    private constructor(
-                        private val value: JsonField<String>,
-                    ) : Enum {
+                    private constructor(private val value: JsonField<String>) : Enum {
 
                         /**
                          * Returns this class instance's raw value.
@@ -874,7 +870,7 @@ private constructor(
 
                         /** An enum containing [Type]'s known values. */
                         enum class Known {
-                            SCORER,
+                            SCORER
                         }
 
                         /**
@@ -958,11 +954,8 @@ private constructor(
                 }
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -983,7 +976,7 @@ private constructor(
 
                 /** An enum containing [Type]'s known values. */
                 enum class Known {
-                    EXPERIMENT,
+                    EXPERIMENT
                 }
 
                 /**
@@ -1161,11 +1154,8 @@ private constructor(
                     )
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1186,7 +1176,7 @@ private constructor(
 
                 /** An enum containing [Type]'s known values. */
                 enum class Known {
-                    FUNCTION,
+                    FUNCTION
                 }
 
                 /**
@@ -1362,11 +1352,8 @@ private constructor(
                 )
         }
 
-        class Runtime
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Runtime @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.

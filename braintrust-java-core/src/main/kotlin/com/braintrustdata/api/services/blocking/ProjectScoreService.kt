@@ -24,14 +24,14 @@ interface ProjectScoreService {
     @JvmOverloads
     fun create(
         params: ProjectScoreCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
     /** Get a project_score object by its id */
     @JvmOverloads
     fun retrieve(
         params: ProjectScoreRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
     /**
@@ -42,7 +42,7 @@ interface ProjectScoreService {
     @JvmOverloads
     fun update(
         params: ProjectScoreUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
     /**
@@ -52,14 +52,14 @@ interface ProjectScoreService {
     @JvmOverloads
     fun list(
         params: ProjectScoreListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScoreListPage
 
     /** Delete a project_score object by its id */
     @JvmOverloads
     fun delete(
         params: ProjectScoreDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
     /**
@@ -70,6 +70,6 @@ interface ProjectScoreService {
     @JvmOverloads
     fun replace(
         params: ProjectScoreReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 }

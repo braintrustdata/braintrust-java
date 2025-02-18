@@ -77,11 +77,7 @@ private constructor(
 
         @JvmStatic
         fun of(apiKeysService: ApiKeyService, params: ApiKeyListParams, response: Response) =
-            ApiKeyListPage(
-                apiKeysService,
-                params,
-                response,
-            )
+            ApiKeyListPage(apiKeysService, params, response)
     }
 
     @NoAutoDetect
@@ -156,9 +152,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ApiKeyListPage,
-    ) : Iterable<ApiKey> {
+    class AutoPager(private val firstPage: ApiKeyListPage) : Iterable<ApiKey> {
 
         override fun iterator(): Iterator<ApiKey> = iterator {
             var page = firstPage

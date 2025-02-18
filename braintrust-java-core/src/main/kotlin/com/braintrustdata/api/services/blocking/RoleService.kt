@@ -23,14 +23,14 @@ interface RoleService {
     @JvmOverloads
     fun create(
         params: RoleCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Role
 
     /** Get a role object by its id */
     @JvmOverloads
     fun retrieve(
         params: RoleRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Role
 
     /**
@@ -41,7 +41,7 @@ interface RoleService {
     @JvmOverloads
     fun update(
         params: RoleUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Role
 
     /**
@@ -51,14 +51,14 @@ interface RoleService {
     @JvmOverloads
     fun list(
         params: RoleListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): RoleListPage
 
     /** Delete a role object by its id */
     @JvmOverloads
     fun delete(
         params: RoleDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Role
 
     /**
@@ -68,6 +68,6 @@ interface RoleService {
     @JvmOverloads
     fun replace(
         params: RoleReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Role
 }

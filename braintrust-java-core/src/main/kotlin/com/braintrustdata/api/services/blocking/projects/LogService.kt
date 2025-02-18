@@ -19,7 +19,7 @@ interface LogService {
     @JvmOverloads
     fun feedback(
         params: ProjectLogFeedbackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FeedbackResponseSchema
 
     /**
@@ -30,7 +30,7 @@ interface LogService {
     @JvmOverloads
     fun fetch(
         params: ProjectLogFetchParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchProjectLogsEventsResponse
 
     /**
@@ -41,13 +41,13 @@ interface LogService {
     @JvmOverloads
     fun fetchPost(
         params: ProjectLogFetchPostParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchProjectLogsEventsResponse
 
     /** Insert a set of events into the project logs */
     @JvmOverloads
     fun insert(
         params: ProjectLogInsertParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InsertEventsResponse
 }

@@ -200,12 +200,7 @@ private constructor(
             }
 
             fun build(): DatasetUpdateBody =
-                DatasetUpdateBody(
-                    description,
-                    metadata,
-                    name,
-                    additionalProperties.toImmutable(),
-                )
+                DatasetUpdateBody(description, metadata, name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -412,7 +407,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
     ) {
 
         @JsonAnyGetter

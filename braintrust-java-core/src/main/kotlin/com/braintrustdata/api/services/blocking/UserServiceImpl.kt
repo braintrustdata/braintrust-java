@@ -17,10 +17,7 @@ import com.braintrustdata.api.models.UserListPage
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 
-class UserServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : UserService {
+class UserServiceImpl internal constructor(private val clientOptions: ClientOptions) : UserService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 

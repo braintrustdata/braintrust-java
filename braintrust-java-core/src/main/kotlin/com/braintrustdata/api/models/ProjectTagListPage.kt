@@ -85,13 +85,8 @@ private constructor(
         fun of(
             projectTagsService: ProjectTagService,
             params: ProjectTagListParams,
-            response: Response
-        ) =
-            ProjectTagListPage(
-                projectTagsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = ProjectTagListPage(projectTagsService, params, response)
     }
 
     @NoAutoDetect
@@ -167,9 +162,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ProjectTagListPage,
-    ) : Iterable<ProjectTag> {
+    class AutoPager(private val firstPage: ProjectTagListPage) : Iterable<ProjectTag> {
 
         override fun iterator(): Iterator<ProjectTag> = iterator {
             var page = firstPage

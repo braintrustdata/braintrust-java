@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class ViewServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ViewServiceAsync {
+class ViewServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ViewServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: ViewCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<View> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
     /** Get a view object by its id */
     override fun retrieve(
         params: ViewRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<View> {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
      */
     override fun update(
         params: ViewUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<View> {
         val request =
             HttpRequest.builder()
@@ -130,7 +128,7 @@ internal constructor(
      */
     override fun list(
         params: ViewListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ViewListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -158,7 +156,7 @@ internal constructor(
     /** Delete a view object by its id */
     override fun delete(
         params: ViewDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<View> {
         val request =
             HttpRequest.builder()
@@ -189,7 +187,7 @@ internal constructor(
      */
     override fun replace(
         params: ViewReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<View> {
         val request =
             HttpRequest.builder()
