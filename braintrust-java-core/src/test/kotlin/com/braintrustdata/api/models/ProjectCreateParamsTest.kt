@@ -15,7 +15,9 @@ class ProjectCreateParamsTest {
     @Test
     fun body() {
         val params = ProjectCreateParams.builder().name("x").orgName("org_name").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
         assertThat(body.orgName()).contains("org_name")
@@ -24,7 +26,9 @@ class ProjectCreateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = ProjectCreateParams.builder().name("x").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("x")
     }

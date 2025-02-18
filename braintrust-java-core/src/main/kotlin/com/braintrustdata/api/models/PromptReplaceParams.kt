@@ -28,7 +28,7 @@ import java.util.Optional
  */
 class PromptReplaceParams
 private constructor(
-    private val body: PromptReplaceBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -79,16 +79,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): PromptReplaceBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class PromptReplaceBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -169,7 +169,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): PromptReplaceBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -191,7 +191,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [PromptReplaceBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -204,15 +204,15 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(promptReplaceBody: PromptReplaceBody) = apply {
-                name = promptReplaceBody.name
-                projectId = promptReplaceBody.projectId
-                slug = promptReplaceBody.slug
-                description = promptReplaceBody.description
-                functionType = promptReplaceBody.functionType
-                promptData = promptReplaceBody.promptData
-                tags = promptReplaceBody.tags.map { it.toMutableList() }
-                additionalProperties = promptReplaceBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                projectId = body.projectId
+                slug = body.slug
+                description = body.description
+                functionType = body.functionType
+                promptData = body.promptData
+                tags = body.tags.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the prompt */
@@ -309,8 +309,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): PromptReplaceBody =
-                PromptReplaceBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     checkRequired("projectId", projectId),
                     checkRequired("slug", slug),
@@ -327,7 +327,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PromptReplaceBody && name == other.name && projectId == other.projectId && slug == other.slug && description == other.description && functionType == other.functionType && promptData == other.promptData && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && slug == other.slug && description == other.description && functionType == other.functionType && promptData == other.promptData && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -337,7 +337,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PromptReplaceBody{name=$name, projectId=$projectId, slug=$slug, description=$description, functionType=$functionType, promptData=$promptData, tags=$tags, additionalProperties=$additionalProperties}"
+            "Body{name=$name, projectId=$projectId, slug=$slug, description=$description, functionType=$functionType, promptData=$promptData, tags=$tags, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -351,7 +351,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: PromptReplaceBody.Builder = PromptReplaceBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

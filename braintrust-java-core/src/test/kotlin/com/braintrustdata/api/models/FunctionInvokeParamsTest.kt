@@ -83,7 +83,9 @@ class FunctionInvokeParamsTest {
                 .stream(true)
                 .version("version")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.messages())
@@ -132,7 +134,9 @@ class FunctionInvokeParamsTest {
             FunctionInvokeParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 

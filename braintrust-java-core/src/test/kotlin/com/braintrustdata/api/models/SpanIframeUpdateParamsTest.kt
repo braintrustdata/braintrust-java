@@ -26,7 +26,9 @@ class SpanIframeUpdateParamsTest {
                 .postMessage(true)
                 .url("url")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).contains("name")
         assertThat(body.postMessage()).contains(true)
@@ -39,7 +41,9 @@ class SpanIframeUpdateParamsTest {
             SpanIframeUpdateParams.builder()
                 .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 

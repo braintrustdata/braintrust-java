@@ -24,7 +24,9 @@ class EnvVarUpdateParamsTest {
                 .name("name")
                 .value("value")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
         assertThat(body.value()).contains("value")
@@ -37,7 +39,9 @@ class EnvVarUpdateParamsTest {
                 .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("name")
     }

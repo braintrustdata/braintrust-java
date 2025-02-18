@@ -24,7 +24,9 @@ class ProjectUpdateParamsTest {
                 .name("name")
                 .settings(ProjectSettings.builder().comparisonKey("comparison_key").build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.name()).contains("name")
         assertThat(body.settings())
@@ -35,7 +37,9 @@ class ProjectUpdateParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             ProjectUpdateParams.builder().projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 

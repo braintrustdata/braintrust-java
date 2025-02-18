@@ -28,7 +28,7 @@ import java.util.Optional
 class AiSecretUpdateParams
 private constructor(
     private val aiSecretId: String,
-    private val body: AiSecretUpdateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -60,7 +60,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): AiSecretUpdateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -74,9 +74,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class AiSecretUpdateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("metadata")
         @ExcludeMissing
         private val metadata: JsonField<Metadata> = JsonMissing.of(),
@@ -117,7 +117,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): AiSecretUpdateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -136,7 +136,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [AiSecretUpdateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var metadata: JsonField<Metadata> = JsonMissing.of()
@@ -146,12 +146,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(aiSecretUpdateBody: AiSecretUpdateBody) = apply {
-                metadata = aiSecretUpdateBody.metadata
-                name = aiSecretUpdateBody.name
-                secret = aiSecretUpdateBody.secret
-                type = aiSecretUpdateBody.type
-                additionalProperties = aiSecretUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                metadata = body.metadata
+                name = body.name
+                secret = body.secret
+                type = body.type
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
@@ -200,8 +200,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): AiSecretUpdateBody =
-                AiSecretUpdateBody(metadata, name, secret, type, additionalProperties.toImmutable())
+            fun build(): Body =
+                Body(metadata, name, secret, type, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -209,7 +209,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AiSecretUpdateBody && metadata == other.metadata && name == other.name && secret == other.secret && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && metadata == other.metadata && name == other.name && secret == other.secret && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -219,7 +219,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AiSecretUpdateBody{metadata=$metadata, name=$name, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
+            "Body{metadata=$metadata, name=$name, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -234,7 +234,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var aiSecretId: String? = null
-        private var body: AiSecretUpdateBody.Builder = AiSecretUpdateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

@@ -47,7 +47,9 @@ class DatasetFeedbackParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(
@@ -74,7 +76,9 @@ class DatasetFeedbackParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addFeedback(FeedbackDatasetItem.builder().id("id").build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(listOf(FeedbackDatasetItem.builder().id("id").build()))

@@ -26,7 +26,7 @@ import java.util.Optional
  */
 class AiSecretReplaceParams
 private constructor(
-    private val body: AiSecretReplaceBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -77,16 +77,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): AiSecretReplaceBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class AiSecretReplaceBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
@@ -152,7 +152,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): AiSecretReplaceBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -172,7 +172,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [AiSecretReplaceBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
@@ -183,13 +183,13 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(aiSecretReplaceBody: AiSecretReplaceBody) = apply {
-                name = aiSecretReplaceBody.name
-                metadata = aiSecretReplaceBody.metadata
-                orgName = aiSecretReplaceBody.orgName
-                secret = aiSecretReplaceBody.secret
-                type = aiSecretReplaceBody.type
-                additionalProperties = aiSecretReplaceBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                name = body.name
+                metadata = body.metadata
+                orgName = body.orgName
+                secret = body.secret
+                type = body.type
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Name of the AI secret */
@@ -268,8 +268,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): AiSecretReplaceBody =
-                AiSecretReplaceBody(
+            fun build(): Body =
+                Body(
                     checkRequired("name", name),
                     metadata,
                     orgName,
@@ -284,7 +284,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AiSecretReplaceBody && name == other.name && metadata == other.metadata && orgName == other.orgName && secret == other.secret && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && metadata == other.metadata && orgName == other.orgName && secret == other.secret && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -294,7 +294,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AiSecretReplaceBody{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
+            "Body{name=$name, metadata=$metadata, orgName=$orgName, secret=$secret, type=$type, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -308,7 +308,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: AiSecretReplaceBody.Builder = AiSecretReplaceBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

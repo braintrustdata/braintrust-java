@@ -56,7 +56,9 @@ class OrganizationMemberUpdateParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.inviteUsers())
             .contains(
@@ -84,7 +86,9 @@ class OrganizationMemberUpdateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = OrganizationMemberUpdateParams.builder().build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 }
