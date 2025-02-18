@@ -23,14 +23,14 @@ interface ApiKeyServiceAsync {
     @JvmOverloads
     fun create(
         params: ApiKeyCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CreateApiKeyOutput>
 
     /** Get an api_key object by its id */
     @JvmOverloads
     fun retrieve(
         params: ApiKeyRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKey>
 
     /**
@@ -40,13 +40,13 @@ interface ApiKeyServiceAsync {
     @JvmOverloads
     fun list(
         params: ApiKeyListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKeyListPageAsync>
 
     /** Delete an api_key object by its id */
     @JvmOverloads
     fun delete(
         params: ApiKeyDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKey>
 }

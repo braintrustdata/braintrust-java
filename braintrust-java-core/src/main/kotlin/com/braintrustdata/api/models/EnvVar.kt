@@ -202,11 +202,7 @@ private constructor(
     }
 
     /** The type of the object the environment variable is scoped for */
-    class ObjectType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

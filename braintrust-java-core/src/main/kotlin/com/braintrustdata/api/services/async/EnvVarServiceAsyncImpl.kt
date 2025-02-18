@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class EnvVarServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EnvVarServiceAsync {
+class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    EnvVarServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
      */
     override fun create(
         params: EnvVarCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EnvVar> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
     /** Get an env_var object by its id */
     override fun retrieve(
         params: EnvVarRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EnvVar> {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
      */
     override fun update(
         params: EnvVarUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EnvVar> {
         val request =
             HttpRequest.builder()
@@ -129,7 +127,7 @@ internal constructor(
      */
     override fun list(
         params: EnvVarListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EnvVarListResponse> {
         val request =
             HttpRequest.builder()
@@ -156,7 +154,7 @@ internal constructor(
     /** Delete an env_var object by its id */
     override fun delete(
         params: EnvVarDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EnvVar> {
         val request =
             HttpRequest.builder()
@@ -187,7 +185,7 @@ internal constructor(
      */
     override fun replace(
         params: EnvVarReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EnvVar> {
         val request =
             HttpRequest.builder()

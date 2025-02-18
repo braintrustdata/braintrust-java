@@ -23,10 +23,8 @@ import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.blocking.projects.LogService
 import com.braintrustdata.api.services.blocking.projects.LogServiceImpl
 
-class ProjectServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProjectService {
+class ProjectServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProjectService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 

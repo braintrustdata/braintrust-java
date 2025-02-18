@@ -33,7 +33,7 @@ class EnvVarListParamsTest {
         expected.put("env_var_name", "env_var_name")
         expected.put(
             "ids",
-            EnvVarListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString()
+            EnvVarListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
         )
         expected.put("limit", "0")
         expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

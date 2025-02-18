@@ -85,13 +85,8 @@ private constructor(
         fun of(
             organizationsService: OrganizationService,
             params: OrganizationListParams,
-            response: Response
-        ) =
-            OrganizationListPage(
-                organizationsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = OrganizationListPage(organizationsService, params, response)
     }
 
     @NoAutoDetect
@@ -167,9 +162,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: OrganizationListPage,
-    ) : Iterable<Organization> {
+    class AutoPager(private val firstPage: OrganizationListPage) : Iterable<Organization> {
 
         override fun iterator(): Iterator<Organization> = iterator {
             var page = firstPage

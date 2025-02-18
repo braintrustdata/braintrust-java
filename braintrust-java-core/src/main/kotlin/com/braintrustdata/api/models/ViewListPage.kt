@@ -77,11 +77,7 @@ private constructor(
 
         @JvmStatic
         fun of(viewsService: ViewService, params: ViewListParams, response: Response) =
-            ViewListPage(
-                viewsService,
-                params,
-                response,
-            )
+            ViewListPage(viewsService, params, response)
     }
 
     @NoAutoDetect
@@ -156,9 +152,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ViewListPage,
-    ) : Iterable<View> {
+    class AutoPager(private val firstPage: ViewListPage) : Iterable<View> {
 
         override fun iterator(): Iterator<View> = iterator {
             var page = firstPage

@@ -92,15 +92,11 @@ private constructor(
         fun build(): FeedbackResponseSchema =
             FeedbackResponseSchema(
                 checkRequired("status", status),
-                additionalProperties.toImmutable()
+                additionalProperties.toImmutable(),
             )
     }
 
-    class Status
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -121,7 +117,7 @@ private constructor(
 
         /** An enum containing [Status]'s known values. */
         enum class Known {
-            SUCCESS,
+            SUCCESS
         }
 
         /**

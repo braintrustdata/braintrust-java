@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.blocking.organizations.MemberService
 import com.braintrustdata.api.services.blocking.organizations.MemberServiceImpl
 
-class OrganizationServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : OrganizationService {
+class OrganizationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    OrganizationService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -39,7 +37,7 @@ internal constructor(
     /** Get an organization object by its id */
     override fun retrieve(
         params: OrganizationRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): Organization {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
      */
     override fun update(
         params: OrganizationUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): Organization {
         val request =
             HttpRequest.builder()
@@ -96,7 +94,7 @@ internal constructor(
      */
     override fun list(
         params: OrganizationListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): OrganizationListPage {
         val request =
             HttpRequest.builder()
@@ -121,7 +119,7 @@ internal constructor(
     /** Delete an organization object by its id */
     override fun delete(
         params: OrganizationDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): Organization {
         val request =
             HttpRequest.builder()

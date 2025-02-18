@@ -22,14 +22,14 @@ interface ApiKeyService {
     @JvmOverloads
     fun create(
         params: ApiKeyCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateApiKeyOutput
 
     /** Get an api_key object by its id */
     @JvmOverloads
     fun retrieve(
         params: ApiKeyRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ApiKey
 
     /**
@@ -39,13 +39,13 @@ interface ApiKeyService {
     @JvmOverloads
     fun list(
         params: ApiKeyListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ApiKeyListPage
 
     /** Delete an api_key object by its id */
     @JvmOverloads
     fun delete(
         params: ApiKeyDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ApiKey
 }

@@ -83,11 +83,7 @@ private constructor(
 
         @JvmStatic
         fun of(projectsService: ProjectService, params: ProjectListParams, response: Response) =
-            ProjectListPage(
-                projectsService,
-                params,
-                response,
-            )
+            ProjectListPage(projectsService, params, response)
     }
 
     @NoAutoDetect
@@ -162,9 +158,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ProjectListPage,
-    ) : Iterable<Project> {
+    class AutoPager(private val firstPage: ProjectListPage) : Iterable<Project> {
 
         override fun iterator(): Iterator<Project> = iterator {
             var page = firstPage

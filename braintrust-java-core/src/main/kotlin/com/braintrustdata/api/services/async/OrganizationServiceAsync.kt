@@ -22,7 +22,7 @@ interface OrganizationServiceAsync {
     @JvmOverloads
     fun retrieve(
         params: OrganizationRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Organization>
 
     /**
@@ -33,7 +33,7 @@ interface OrganizationServiceAsync {
     @JvmOverloads
     fun update(
         params: OrganizationUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Organization>
 
     /**
@@ -43,13 +43,13 @@ interface OrganizationServiceAsync {
     @JvmOverloads
     fun list(
         params: OrganizationListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<OrganizationListPageAsync>
 
     /** Delete an organization object by its id */
     @JvmOverloads
     fun delete(
         params: OrganizationDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Organization>
 }

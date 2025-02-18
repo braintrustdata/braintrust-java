@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
 import java.util.concurrent.CompletableFuture
 
-class ApiKeyServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ApiKeyServiceAsync {
+class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ApiKeyServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -38,7 +36,7 @@ internal constructor(
      */
     override fun create(
         params: ApiKeyCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<CreateApiKeyOutput> {
         val request =
             HttpRequest.builder()
@@ -66,7 +64,7 @@ internal constructor(
     /** Get an api_key object by its id */
     override fun retrieve(
         params: ApiKeyRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ApiKey> {
         val request =
             HttpRequest.builder()
@@ -97,7 +95,7 @@ internal constructor(
      */
     override fun list(
         params: ApiKeyListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ApiKeyListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -125,7 +123,7 @@ internal constructor(
     /** Delete an api_key object by its id */
     override fun delete(
         params: ApiKeyDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ApiKey> {
         val request =
             HttpRequest.builder()

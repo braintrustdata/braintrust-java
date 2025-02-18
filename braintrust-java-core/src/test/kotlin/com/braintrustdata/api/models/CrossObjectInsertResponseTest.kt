@@ -16,7 +16,7 @@ class CrossObjectInsertResponseTest {
                     CrossObjectInsertResponse.Dataset.builder()
                         .putAdditionalProperty(
                             "foo",
-                            JsonValue.from(mapOf("row_ids" to listOf("string")))
+                            JsonValue.from(mapOf("row_ids" to listOf("string"))),
                         )
                         .build()
                 )
@@ -24,7 +24,7 @@ class CrossObjectInsertResponseTest {
                     CrossObjectInsertResponse.Experiment.builder()
                         .putAdditionalProperty(
                             "foo",
-                            JsonValue.from(mapOf("row_ids" to listOf("string")))
+                            JsonValue.from(mapOf("row_ids" to listOf("string"))),
                         )
                         .build()
                 )
@@ -32,7 +32,7 @@ class CrossObjectInsertResponseTest {
                     CrossObjectInsertResponse.ProjectLogs.builder()
                         .putAdditionalProperty(
                             "foo",
-                            JsonValue.from(mapOf("row_ids" to listOf("string")))
+                            JsonValue.from(mapOf("row_ids" to listOf("string"))),
                         )
                         .build()
                 )
@@ -43,7 +43,7 @@ class CrossObjectInsertResponseTest {
                 CrossObjectInsertResponse.Dataset.builder()
                     .putAdditionalProperty(
                         "foo",
-                        JsonValue.from(mapOf("row_ids" to listOf("string")))
+                        JsonValue.from(mapOf("row_ids" to listOf("string"))),
                     )
                     .build()
             )
@@ -52,7 +52,7 @@ class CrossObjectInsertResponseTest {
                 CrossObjectInsertResponse.Experiment.builder()
                     .putAdditionalProperty(
                         "foo",
-                        JsonValue.from(mapOf("row_ids" to listOf("string")))
+                        JsonValue.from(mapOf("row_ids" to listOf("string"))),
                     )
                     .build()
             )
@@ -61,7 +61,7 @@ class CrossObjectInsertResponseTest {
                 CrossObjectInsertResponse.ProjectLogs.builder()
                     .putAdditionalProperty(
                         "foo",
-                        JsonValue.from(mapOf("row_ids" to listOf("string")))
+                        JsonValue.from(mapOf("row_ids" to listOf("string"))),
                     )
                     .build()
             )

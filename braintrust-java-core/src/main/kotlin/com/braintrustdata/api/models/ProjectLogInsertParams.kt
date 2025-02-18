@@ -153,7 +153,7 @@ private constructor(
             fun build(): ProjectLogInsertBody =
                 ProjectLogInsertBody(
                     checkRequired("events", events).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

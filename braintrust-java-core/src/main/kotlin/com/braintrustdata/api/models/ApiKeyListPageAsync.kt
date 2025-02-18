@@ -80,11 +80,7 @@ private constructor(
 
         @JvmStatic
         fun of(apiKeysService: ApiKeyServiceAsync, params: ApiKeyListParams, response: Response) =
-            ApiKeyListPageAsync(
-                apiKeysService,
-                params,
-                response,
-            )
+            ApiKeyListPageAsync(apiKeysService, params, response)
     }
 
     @NoAutoDetect
@@ -159,14 +155,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ApiKeyListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: ApiKeyListPageAsync) {
 
         fun forEach(action: Predicate<ApiKey>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<ApiKeyListPageAsync>>.forEach(
                 action: (ApiKey) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -175,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

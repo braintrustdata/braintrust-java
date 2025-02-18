@@ -17,10 +17,8 @@ import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
 
-class EvalServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EvalServiceAsync {
+class EvalServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    EvalServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -37,7 +35,7 @@ internal constructor(
      */
     override fun create(
         params: EvalCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<SummarizeExperimentResponse> {
         val request =
             HttpRequest.builder()

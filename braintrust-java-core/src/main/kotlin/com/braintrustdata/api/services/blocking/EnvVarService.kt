@@ -23,14 +23,14 @@ interface EnvVarService {
     @JvmOverloads
     fun create(
         params: EnvVarCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVar
 
     /** Get an env_var object by its id */
     @JvmOverloads
     fun retrieve(
         params: EnvVarRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVar
 
     /**
@@ -41,7 +41,7 @@ interface EnvVarService {
     @JvmOverloads
     fun update(
         params: EnvVarUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVar
 
     /**
@@ -51,14 +51,14 @@ interface EnvVarService {
     @JvmOverloads
     fun list(
         params: EnvVarListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVarListResponse
 
     /** Delete an env_var object by its id */
     @JvmOverloads
     fun delete(
         params: EnvVarDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVar
 
     /**
@@ -68,6 +68,6 @@ interface EnvVarService {
     @JvmOverloads
     fun replace(
         params: EnvVarReplaceParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVar
 }

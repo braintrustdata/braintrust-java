@@ -80,11 +80,7 @@ private constructor(
 
         @JvmStatic
         fun of(viewsService: ViewServiceAsync, params: ViewListParams, response: Response) =
-            ViewListPageAsync(
-                viewsService,
-                params,
-                response,
-            )
+            ViewListPageAsync(viewsService, params, response)
     }
 
     @NoAutoDetect
@@ -159,14 +155,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ViewListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: ViewListPageAsync) {
 
         fun forEach(action: Predicate<View>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<ViewListPageAsync>>.forEach(
                 action: (View) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -175,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

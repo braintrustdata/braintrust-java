@@ -18,10 +18,8 @@ import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 import java.util.concurrent.CompletableFuture
 
-class UserServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : UserServiceAsync {
+class UserServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    UserServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Get a user object by its id */
     override fun retrieve(
         params: UserRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<User> {
         val request =
             HttpRequest.builder()
@@ -62,7 +60,7 @@ internal constructor(
      */
     override fun list(
         params: UserListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<UserListPageAsync> {
         val request =
             HttpRequest.builder()

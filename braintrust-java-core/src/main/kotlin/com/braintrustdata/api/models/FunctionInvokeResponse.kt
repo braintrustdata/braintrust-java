@@ -16,7 +16,7 @@ import java.util.Objects
 class FunctionInvokeResponse
 @JsonCreator
 private constructor(
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
 ) {
 
     @JsonAnyGetter

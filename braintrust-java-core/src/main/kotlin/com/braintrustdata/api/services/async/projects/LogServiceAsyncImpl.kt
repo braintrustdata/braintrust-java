@@ -22,10 +22,8 @@ import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
 import java.util.concurrent.CompletableFuture
 
-class LogServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : LogServiceAsync {
+class LogServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    LogServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -35,7 +33,7 @@ internal constructor(
     /** Log feedback for a set of project logs events */
     override fun feedback(
         params: ProjectLogFeedbackParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FeedbackResponseSchema> {
         val request =
             HttpRequest.builder()
@@ -68,7 +66,7 @@ internal constructor(
      */
     override fun fetch(
         params: ProjectLogFetchParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FetchProjectLogsEventsResponse> {
         val request =
             HttpRequest.builder()
@@ -100,7 +98,7 @@ internal constructor(
      */
     override fun fetchPost(
         params: ProjectLogFetchPostParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FetchProjectLogsEventsResponse> {
         val request =
             HttpRequest.builder()
@@ -128,7 +126,7 @@ internal constructor(
     /** Insert a set of events into the project logs */
     override fun insert(
         params: ProjectLogInsertParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<InsertEventsResponse> {
         val request =
             HttpRequest.builder()

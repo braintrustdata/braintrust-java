@@ -30,7 +30,7 @@ class SummarizeExperimentResponseTest {
                                     "unit" to "unit",
                                     "diff" to 0,
                                 )
-                            )
+                            ),
                         )
                         .build()
                 )
@@ -46,7 +46,7 @@ class SummarizeExperimentResponseTest {
                                     "score" to 0,
                                     "diff" to -1,
                                 )
-                            )
+                            ),
                         )
                         .build()
                 )
@@ -72,7 +72,7 @@ class SummarizeExperimentResponseTest {
                                 "unit" to "unit",
                                 "diff" to 0,
                             )
-                        )
+                        ),
                     )
                     .build()
             )
@@ -89,7 +89,7 @@ class SummarizeExperimentResponseTest {
                                 "score" to 0,
                                 "diff" to -1,
                             )
-                        )
+                        ),
                     )
                     .build()
             )

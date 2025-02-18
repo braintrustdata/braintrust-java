@@ -21,10 +21,8 @@ import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
 
-class ApiKeyServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ApiKeyService {
+class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    ApiKeyService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -37,7 +35,7 @@ internal constructor(
      */
     override fun create(
         params: ApiKeyCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CreateApiKeyOutput {
         val request =
             HttpRequest.builder()

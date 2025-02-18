@@ -16,7 +16,7 @@ interface UserService {
     @JvmOverloads
     fun retrieve(
         params: UserRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): User
 
     /**
@@ -26,6 +26,6 @@ interface UserService {
     @JvmOverloads
     fun list(
         params: UserListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): UserListPage
 }

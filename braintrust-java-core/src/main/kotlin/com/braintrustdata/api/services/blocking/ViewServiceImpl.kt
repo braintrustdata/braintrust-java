@@ -22,10 +22,7 @@ import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
 
-class ViewServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ViewService {
+class ViewServiceImpl internal constructor(private val clientOptions: ClientOptions) : ViewService {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 

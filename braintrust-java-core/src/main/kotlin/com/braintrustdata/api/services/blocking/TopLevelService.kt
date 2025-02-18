@@ -13,6 +13,6 @@ interface TopLevelService {
     @JvmOverloads
     fun helloWorld(
         params: TopLevelHelloWorldParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): String
 }

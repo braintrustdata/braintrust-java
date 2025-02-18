@@ -471,7 +471,7 @@ private constructor(
             override fun serialize(
                 value: Ids,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.string != null -> generator.writeObject(value.string)
@@ -597,7 +597,7 @@ private constructor(
             override fun serialize(
                 value: ScoreType,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.project != null -> generator.writeObject(value.project)
@@ -612,9 +612,7 @@ private constructor(
         /** The type of the configured score */
         class ProjectScoreType
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -733,9 +731,7 @@ private constructor(
         /** The type of the configured score */
         class ProjectScoreType
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.

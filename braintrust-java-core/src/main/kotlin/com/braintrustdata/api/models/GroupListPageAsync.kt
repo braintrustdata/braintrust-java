@@ -80,11 +80,7 @@ private constructor(
 
         @JvmStatic
         fun of(groupsService: GroupServiceAsync, params: GroupListParams, response: Response) =
-            GroupListPageAsync(
-                groupsService,
-                params,
-                response,
-            )
+            GroupListPageAsync(groupsService, params, response)
     }
 
     @NoAutoDetect
@@ -159,14 +155,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: GroupListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: GroupListPageAsync) {
 
         fun forEach(action: Predicate<Group>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<GroupListPageAsync>>.forEach(
                 action: (Group) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -175,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

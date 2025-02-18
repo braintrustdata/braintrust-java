@@ -26,10 +26,8 @@ import com.braintrustdata.api.models.FunctionUpdateParams
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
-class FunctionServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : FunctionServiceAsync {
+class FunctionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    FunctionServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -42,7 +40,7 @@ internal constructor(
      */
     override fun create(
         params: FunctionCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Function> {
         val request =
             HttpRequest.builder()
@@ -70,7 +68,7 @@ internal constructor(
     /** Get a function object by its id */
     override fun retrieve(
         params: FunctionRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Function> {
         val request =
             HttpRequest.builder()
@@ -101,7 +99,7 @@ internal constructor(
      */
     override fun update(
         params: FunctionUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Function> {
         val request =
             HttpRequest.builder()
@@ -133,7 +131,7 @@ internal constructor(
      */
     override fun list(
         params: FunctionListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<FunctionListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -161,7 +159,7 @@ internal constructor(
     /** Delete a function object by its id */
     override fun delete(
         params: FunctionDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Function> {
         val request =
             HttpRequest.builder()
@@ -190,7 +188,7 @@ internal constructor(
     /** Invoke a function. */
     override fun invoke(
         params: FunctionInvokeParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Optional<FunctionInvokeResponse>> {
         val request =
             HttpRequest.builder()
@@ -222,7 +220,7 @@ internal constructor(
      */
     override fun replace(
         params: FunctionReplaceParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Function> {
         val request =
             HttpRequest.builder()

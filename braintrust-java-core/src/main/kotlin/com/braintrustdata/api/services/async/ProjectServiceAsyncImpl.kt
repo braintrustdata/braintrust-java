@@ -24,10 +24,8 @@ import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import com.braintrustdata.api.services.async.projects.LogServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class ProjectServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProjectServiceAsync {
+class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProjectServiceAsync {
 
     private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
@@ -44,7 +42,7 @@ internal constructor(
      */
     override fun create(
         params: ProjectCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Project> {
         val request =
             HttpRequest.builder()
@@ -72,7 +70,7 @@ internal constructor(
     /** Get a project object by its id */
     override fun retrieve(
         params: ProjectRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Project> {
         val request =
             HttpRequest.builder()
@@ -103,7 +101,7 @@ internal constructor(
      */
     override fun update(
         params: ProjectUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Project> {
         val request =
             HttpRequest.builder()
@@ -135,7 +133,7 @@ internal constructor(
      */
     override fun list(
         params: ProjectListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -163,7 +161,7 @@ internal constructor(
     /** Delete a project object by its id */
     override fun delete(
         params: ProjectDeleteParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Project> {
         val request =
             HttpRequest.builder()
