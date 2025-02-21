@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -27,7 +28,7 @@ class ProjectUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.name()).contains("name")
         assertThat(body.settings())
             .contains(ProjectSettings.builder().comparisonKey("comparison_key").build())
@@ -40,7 +41,7 @@ class ProjectUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
     }
 
     @Test

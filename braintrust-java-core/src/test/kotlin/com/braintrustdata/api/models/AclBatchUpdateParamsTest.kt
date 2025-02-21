@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -71,7 +72,7 @@ class AclBatchUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.addAcls())
             .contains(
                 listOf(
@@ -112,6 +113,6 @@ class AclBatchUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
     }
 }

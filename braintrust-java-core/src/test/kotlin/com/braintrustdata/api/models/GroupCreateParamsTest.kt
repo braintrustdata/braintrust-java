@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -31,7 +32,7 @@ class GroupCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.name()).isEqualTo("x")
         assertThat(body.description()).contains("description")
         assertThat(body.memberGroups()).contains(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
@@ -45,7 +46,7 @@ class GroupCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.name()).isEqualTo("x")
     }
 }

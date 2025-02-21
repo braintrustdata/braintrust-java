@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -33,7 +34,7 @@ class OrganizationUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.apiUrl()).contains("api_url")
         assertThat(body.isUniversalApi()).contains(true)
         assertThat(body.name()).contains("name")
@@ -50,7 +51,7 @@ class OrganizationUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
     }
 
     @Test
