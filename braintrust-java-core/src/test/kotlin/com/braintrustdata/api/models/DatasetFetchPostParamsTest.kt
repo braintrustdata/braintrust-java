@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -33,7 +34,7 @@ class DatasetFetchPostParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.cursor()).contains("cursor")
         assertThat(body.limit()).contains(0L)
         assertThat(body.maxRootSpanId()).contains("max_root_span_id")
@@ -50,7 +51,7 @@ class DatasetFetchPostParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
     }
 
     @Test
