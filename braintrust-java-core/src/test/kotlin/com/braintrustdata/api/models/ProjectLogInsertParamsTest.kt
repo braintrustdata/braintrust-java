@@ -4,6 +4,7 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -128,7 +129,7 @@ class ProjectLogInsertParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.events())
             .isEqualTo(
                 listOf(
@@ -197,7 +198,7 @@ class ProjectLogInsertParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.events()).isEqualTo(listOf(InsertProjectLogsEvent.builder().build()))
     }
 
