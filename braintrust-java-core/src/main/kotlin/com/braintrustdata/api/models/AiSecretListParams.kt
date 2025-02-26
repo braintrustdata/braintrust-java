@@ -96,6 +96,8 @@ private constructor(
 
     companion object {
 
+        fun none(): AiSecretListParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

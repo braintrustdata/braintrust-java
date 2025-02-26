@@ -42,9 +42,16 @@ interface OrganizationServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: OrganizationListParams,
+        params: OrganizationListParams = OrganizationListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<OrganizationListPageAsync>
+
+    /**
+     * List out all organizations. The organizations are sorted by creation date, with the most
+     * recently-created organizations coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<OrganizationListPageAsync> =
+        list(OrganizationListParams.none(), requestOptions)
 
     /** Delete an organization object by its id */
     @JvmOverloads

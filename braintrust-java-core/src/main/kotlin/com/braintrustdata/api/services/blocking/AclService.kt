@@ -51,9 +51,16 @@ interface AclService {
      */
     @JvmOverloads
     fun batchUpdate(
-        params: AclBatchUpdateParams,
+        params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AclBatchUpdateResponse
+
+    /**
+     * Batch update acls. This operation is idempotent, so adding acls which already exist will have
+     * no effect, and removing acls which do not exist will have no effect.
+     */
+    fun batchUpdate(requestOptions: RequestOptions): AclBatchUpdateResponse =
+        batchUpdate(AclBatchUpdateParams.none(), requestOptions)
 
     /** Delete a single acl */
     @JvmOverloads

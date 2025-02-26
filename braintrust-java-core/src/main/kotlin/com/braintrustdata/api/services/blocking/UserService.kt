@@ -25,7 +25,14 @@ interface UserService {
      */
     @JvmOverloads
     fun list(
-        params: UserListParams,
+        params: UserListParams = UserListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UserListPage
+
+    /**
+     * List out all users. The users are sorted by creation date, with the most recently-created
+     * users coming first
+     */
+    fun list(requestOptions: RequestOptions): UserListPage =
+        list(UserListParams.none(), requestOptions)
 }

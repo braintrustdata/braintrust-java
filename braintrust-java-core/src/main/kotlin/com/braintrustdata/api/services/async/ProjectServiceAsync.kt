@@ -53,9 +53,16 @@ interface ProjectServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: ProjectListParams,
+        params: ProjectListParams = ProjectListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectListPageAsync>
+
+    /**
+     * List out all projects. The projects are sorted by creation date, with the most
+     * recently-created projects coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<ProjectListPageAsync> =
+        list(ProjectListParams.none(), requestOptions)
 
     /** Delete a project object by its id */
     @JvmOverloads

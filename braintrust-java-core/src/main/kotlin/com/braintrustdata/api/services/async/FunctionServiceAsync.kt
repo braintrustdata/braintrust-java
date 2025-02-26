@@ -54,9 +54,16 @@ interface FunctionServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: FunctionListParams,
+        params: FunctionListParams = FunctionListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FunctionListPageAsync>
+
+    /**
+     * List out all functions. The functions are sorted by creation date, with the most
+     * recently-created functions coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<FunctionListPageAsync> =
+        list(FunctionListParams.none(), requestOptions)
 
     /** Delete a function object by its id */
     @JvmOverloads

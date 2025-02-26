@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.RoleCreateParams
 import com.braintrustdata.api.models.RoleDeleteParams
-import com.braintrustdata.api.models.RoleListParams
 import com.braintrustdata.api.models.RoleReplaceParams
 import com.braintrustdata.api.models.RoleRetrieveParams
 import com.braintrustdata.api.models.RoleUpdateParams
@@ -108,7 +107,7 @@ class RoleServiceTest {
                 .apiKey("My API Key")
                 .build()
         val roleService = client.roles()
-        val response = roleService.list(RoleListParams.builder().build())
+        val response = roleService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

@@ -12,7 +12,11 @@ interface TopLevelService {
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
     @JvmOverloads
     fun helloWorld(
-        params: TopLevelHelloWorldParams,
+        params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
+
+    /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
+    fun helloWorld(requestOptions: RequestOptions): String =
+        helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 }

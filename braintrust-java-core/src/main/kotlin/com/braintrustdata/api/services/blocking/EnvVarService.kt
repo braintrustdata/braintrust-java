@@ -50,9 +50,16 @@ interface EnvVarService {
      */
     @JvmOverloads
     fun list(
-        params: EnvVarListParams,
+        params: EnvVarListParams = EnvVarListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): EnvVarListResponse
+
+    /**
+     * List out all env_vars. The env_vars are sorted by creation date, with the most
+     * recently-created env_vars coming first
+     */
+    fun list(requestOptions: RequestOptions): EnvVarListResponse =
+        list(EnvVarListParams.none(), requestOptions)
 
     /** Delete an env_var object by its id */
     @JvmOverloads
