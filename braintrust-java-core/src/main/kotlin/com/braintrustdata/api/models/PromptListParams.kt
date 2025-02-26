@@ -117,7 +117,7 @@ private constructor(
 
     companion object {
 
-        fun none(): PromptListParams = builder().build()
+        @JvmStatic fun none(): PromptListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

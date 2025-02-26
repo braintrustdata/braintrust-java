@@ -92,7 +92,7 @@ private constructor(
 
     companion object {
 
-        fun none(): ApiKeyListParams = builder().build()
+        @JvmStatic fun none(): ApiKeyListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

@@ -376,7 +376,7 @@ private constructor(
 
     companion object {
 
-        fun none(): AclBatchUpdateParams = builder().build()
+        @JvmStatic fun none(): AclBatchUpdateParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

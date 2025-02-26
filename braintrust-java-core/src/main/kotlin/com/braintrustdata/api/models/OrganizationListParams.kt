@@ -87,7 +87,7 @@ private constructor(
 
     companion object {
 
-        fun none(): OrganizationListParams = builder().build()
+        @JvmStatic fun none(): OrganizationListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
