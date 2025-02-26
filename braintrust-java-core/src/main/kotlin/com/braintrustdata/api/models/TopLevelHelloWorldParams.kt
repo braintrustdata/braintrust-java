@@ -27,7 +27,7 @@ private constructor(
 
     companion object {
 
-        fun none(): TopLevelHelloWorldParams = builder().build()
+        @JvmStatic fun none(): TopLevelHelloWorldParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
