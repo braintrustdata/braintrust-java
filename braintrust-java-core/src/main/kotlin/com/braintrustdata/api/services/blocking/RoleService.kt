@@ -50,9 +50,16 @@ interface RoleService {
      */
     @JvmOverloads
     fun list(
-        params: RoleListParams,
+        params: RoleListParams = RoleListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RoleListPage
+
+    /**
+     * List out all roles. The roles are sorted by creation date, with the most recently-created
+     * roles coming first
+     */
+    fun list(requestOptions: RequestOptions): RoleListPage =
+        list(RoleListParams.none(), requestOptions)
 
     /** Delete a role object by its id */
     @JvmOverloads

@@ -13,7 +13,11 @@ interface TopLevelServiceAsync {
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
     @JvmOverloads
     fun helloWorld(
-        params: TopLevelHelloWorldParams,
+        params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<String>
+
+    /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
+    fun helloWorld(requestOptions: RequestOptions): CompletableFuture<String> =
+        helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 }

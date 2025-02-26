@@ -8,7 +8,6 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.PromptCreateParams
 import com.braintrustdata.api.models.PromptData
 import com.braintrustdata.api.models.PromptDeleteParams
-import com.braintrustdata.api.models.PromptListParams
 import com.braintrustdata.api.models.PromptOptions
 import com.braintrustdata.api.models.PromptReplaceParams
 import com.braintrustdata.api.models.PromptRetrieveParams
@@ -242,7 +241,7 @@ class PromptServiceTest {
                 .apiKey("My API Key")
                 .build()
         val promptService = client.prompts()
-        val response = promptService.list(PromptListParams.builder().build())
+        val response = promptService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

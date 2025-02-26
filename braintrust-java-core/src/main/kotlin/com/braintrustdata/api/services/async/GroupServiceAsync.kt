@@ -51,9 +51,16 @@ interface GroupServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: GroupListParams,
+        params: GroupListParams = GroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<GroupListPageAsync>
+
+    /**
+     * List out all groups. The groups are sorted by creation date, with the most recently-created
+     * groups coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<GroupListPageAsync> =
+        list(GroupListParams.none(), requestOptions)
 
     /** Delete a group object by its id */
     @JvmOverloads

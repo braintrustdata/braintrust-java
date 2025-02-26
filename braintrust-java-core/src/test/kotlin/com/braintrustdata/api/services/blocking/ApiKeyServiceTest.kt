@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.ApiKeyCreateParams
 import com.braintrustdata.api.models.ApiKeyDeleteParams
-import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -56,7 +55,7 @@ class ApiKeyServiceTest {
                 .apiKey("My API Key")
                 .build()
         val apiKeyService = client.apiKeys()
-        val response = apiKeyService.list(ApiKeyListParams.builder().build())
+        val response = apiKeyService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

@@ -117,6 +117,8 @@ private constructor(
 
     companion object {
 
+        fun none(): FunctionListParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.GroupCreateParams
 import com.braintrustdata.api.models.GroupDeleteParams
-import com.braintrustdata.api.models.GroupListParams
 import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
@@ -88,7 +87,7 @@ class GroupServiceTest {
                 .apiKey("My API Key")
                 .build()
         val groupService = client.groups()
-        val response = groupService.list(GroupListParams.builder().build())
+        val response = groupService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

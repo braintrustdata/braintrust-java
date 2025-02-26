@@ -50,9 +50,16 @@ interface PromptService {
      */
     @JvmOverloads
     fun list(
-        params: PromptListParams,
+        params: PromptListParams = PromptListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PromptListPage
+
+    /**
+     * List out all prompts. The prompts are sorted by creation date, with the most recently-created
+     * prompts coming first
+     */
+    fun list(requestOptions: RequestOptions): PromptListPage =
+        list(PromptListParams.none(), requestOptions)
 
     /** Delete a prompt object by its id */
     @JvmOverloads

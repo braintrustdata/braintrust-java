@@ -58,9 +58,16 @@ interface DatasetService {
      */
     @JvmOverloads
     fun list(
-        params: DatasetListParams,
+        params: DatasetListParams = DatasetListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DatasetListPage
+
+    /**
+     * List out all datasets. The datasets are sorted by creation date, with the most
+     * recently-created datasets coming first
+     */
+    fun list(requestOptions: RequestOptions): DatasetListPage =
+        list(DatasetListParams.none(), requestOptions)
 
     /** Delete a dataset object by its id */
     @JvmOverloads

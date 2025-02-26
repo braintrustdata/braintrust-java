@@ -50,9 +50,16 @@ interface GroupService {
      */
     @JvmOverloads
     fun list(
-        params: GroupListParams,
+        params: GroupListParams = GroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): GroupListPage
+
+    /**
+     * List out all groups. The groups are sorted by creation date, with the most recently-created
+     * groups coming first
+     */
+    fun list(requestOptions: RequestOptions): GroupListPage =
+        list(GroupListParams.none(), requestOptions)
 
     /** Delete a group object by its id */
     @JvmOverloads
