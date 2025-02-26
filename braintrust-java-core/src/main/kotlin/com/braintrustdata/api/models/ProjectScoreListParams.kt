@@ -110,7 +110,7 @@ private constructor(
 
     companion object {
 
-        fun none(): ProjectScoreListParams = builder().build()
+        @JvmStatic fun none(): ProjectScoreListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

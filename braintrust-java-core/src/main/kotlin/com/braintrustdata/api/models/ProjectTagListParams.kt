@@ -102,7 +102,7 @@ private constructor(
 
     companion object {
 
-        fun none(): ProjectTagListParams = builder().build()
+        @JvmStatic fun none(): ProjectTagListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

@@ -92,7 +92,7 @@ private constructor(
 
     companion object {
 
-        fun none(): GroupListParams = builder().build()
+        @JvmStatic fun none(): GroupListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

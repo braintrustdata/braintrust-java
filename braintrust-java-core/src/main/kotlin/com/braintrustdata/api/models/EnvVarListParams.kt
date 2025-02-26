@@ -78,7 +78,7 @@ private constructor(
 
     companion object {
 
-        fun none(): EnvVarListParams = builder().build()
+        @JvmStatic fun none(): EnvVarListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
