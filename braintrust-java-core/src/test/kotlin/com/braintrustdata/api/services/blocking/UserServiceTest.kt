@@ -4,7 +4,6 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -36,7 +35,7 @@ class UserServiceTest {
                 .apiKey("My API Key")
                 .build()
         val userService = client.users()
-        val response = userService.list(UserListParams.builder().build())
+        val response = userService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

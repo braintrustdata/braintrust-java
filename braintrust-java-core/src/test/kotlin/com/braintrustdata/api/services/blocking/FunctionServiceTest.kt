@@ -8,7 +8,6 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.FunctionCreateParams
 import com.braintrustdata.api.models.FunctionDeleteParams
 import com.braintrustdata.api.models.FunctionInvokeParams
-import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
@@ -265,7 +264,7 @@ class FunctionServiceTest {
                 .apiKey("My API Key")
                 .build()
         val functionService = client.functions()
-        val response = functionService.list(FunctionListParams.builder().build())
+        val response = functionService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

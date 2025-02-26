@@ -92,6 +92,8 @@ private constructor(
 
     companion object {
 
+        fun none(): RoleListParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

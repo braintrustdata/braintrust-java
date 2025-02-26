@@ -11,7 +11,6 @@ import com.braintrustdata.api.models.ExperimentFeedbackParams
 import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
 import com.braintrustdata.api.models.ExperimentInsertParams
-import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
@@ -137,7 +136,7 @@ class ExperimentServiceTest {
                 .apiKey("My API Key")
                 .build()
         val experimentService = client.experiments()
-        val response = experimentService.list(ExperimentListParams.builder().build())
+        val response = experimentService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

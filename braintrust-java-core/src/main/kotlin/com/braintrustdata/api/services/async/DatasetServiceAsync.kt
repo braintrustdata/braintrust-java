@@ -59,9 +59,16 @@ interface DatasetServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: DatasetListParams,
+        params: DatasetListParams = DatasetListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DatasetListPageAsync>
+
+    /**
+     * List out all datasets. The datasets are sorted by creation date, with the most
+     * recently-created datasets coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<DatasetListPageAsync> =
+        list(DatasetListParams.none(), requestOptions)
 
     /** Delete a dataset object by its id */
     @JvmOverloads

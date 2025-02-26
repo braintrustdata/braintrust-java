@@ -51,9 +51,16 @@ interface ProjectScoreService {
      */
     @JvmOverloads
     fun list(
-        params: ProjectScoreListParams,
+        params: ProjectScoreListParams = ProjectScoreListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScoreListPage
+
+    /**
+     * List out all project_scores. The project_scores are sorted by creation date, with the most
+     * recently-created project_scores coming first
+     */
+    fun list(requestOptions: RequestOptions): ProjectScoreListPage =
+        list(ProjectScoreListParams.none(), requestOptions)
 
     /** Delete a project_score object by its id */
     @JvmOverloads

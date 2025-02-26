@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.ProjectTagCreateParams
 import com.braintrustdata.api.models.ProjectTagDeleteParams
-import com.braintrustdata.api.models.ProjectTagListParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
@@ -84,7 +83,7 @@ class ProjectTagServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectTagService = client.projectTags()
-        val response = projectTagService.list(ProjectTagListParams.builder().build())
+        val response = projectTagService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

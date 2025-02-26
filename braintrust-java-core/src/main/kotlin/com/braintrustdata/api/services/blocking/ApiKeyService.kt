@@ -38,9 +38,16 @@ interface ApiKeyService {
      */
     @JvmOverloads
     fun list(
-        params: ApiKeyListParams,
+        params: ApiKeyListParams = ApiKeyListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ApiKeyListPage
+
+    /**
+     * List out all api_keys. The api_keys are sorted by creation date, with the most
+     * recently-created api_keys coming first
+     */
+    fun list(requestOptions: RequestOptions): ApiKeyListPage =
+        list(ApiKeyListParams.none(), requestOptions)
 
     /** Delete an api_key object by its id */
     @JvmOverloads

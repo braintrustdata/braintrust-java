@@ -5,7 +5,6 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.OrganizationDeleteParams
-import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
 import org.junit.jupiter.api.Test
@@ -63,7 +62,7 @@ class OrganizationServiceTest {
                 .apiKey("My API Key")
                 .build()
         val organizationService = client.organizations()
-        val response = organizationService.list(OrganizationListParams.builder().build())
+        val response = organizationService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

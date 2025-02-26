@@ -50,9 +50,16 @@ interface ProjectTagService {
      */
     @JvmOverloads
     fun list(
-        params: ProjectTagListParams,
+        params: ProjectTagListParams = ProjectTagListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectTagListPage
+
+    /**
+     * List out all project_tags. The project_tags are sorted by creation date, with the most
+     * recently-created project_tags coming first
+     */
+    fun list(requestOptions: RequestOptions): ProjectTagListPage =
+        list(ProjectTagListParams.none(), requestOptions)
 
     /** Delete a project_tag object by its id */
     @JvmOverloads

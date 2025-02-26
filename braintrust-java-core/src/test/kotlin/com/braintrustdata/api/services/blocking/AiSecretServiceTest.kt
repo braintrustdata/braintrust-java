@@ -8,7 +8,6 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.AiSecretCreateParams
 import com.braintrustdata.api.models.AiSecretDeleteParams
 import com.braintrustdata.api.models.AiSecretFindAndDeleteParams
-import com.braintrustdata.api.models.AiSecretListParams
 import com.braintrustdata.api.models.AiSecretReplaceParams
 import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
@@ -96,7 +95,7 @@ class AiSecretServiceTest {
                 .apiKey("My API Key")
                 .build()
         val aiSecretService = client.aiSecrets()
-        val response = aiSecretService.list(AiSecretListParams.builder().build())
+        val response = aiSecretService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

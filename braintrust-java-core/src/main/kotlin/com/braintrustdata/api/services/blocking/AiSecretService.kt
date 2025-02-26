@@ -51,9 +51,16 @@ interface AiSecretService {
      */
     @JvmOverloads
     fun list(
-        params: AiSecretListParams,
+        params: AiSecretListParams = AiSecretListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AiSecretListPage
+
+    /**
+     * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
+     * recently-created ai_secrets coming first
+     */
+    fun list(requestOptions: RequestOptions): AiSecretListPage =
+        list(AiSecretListParams.none(), requestOptions)
 
     /** Delete an ai_secret object by its id */
     @JvmOverloads

@@ -59,9 +59,16 @@ interface ExperimentServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: ExperimentListParams,
+        params: ExperimentListParams = ExperimentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ExperimentListPageAsync>
+
+    /**
+     * List out all experiments. The experiments are sorted by creation date, with the most
+     * recently-created experiments coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<ExperimentListPageAsync> =
+        list(ExperimentListParams.none(), requestOptions)
 
     /** Delete an experiment object by its id */
     @JvmOverloads

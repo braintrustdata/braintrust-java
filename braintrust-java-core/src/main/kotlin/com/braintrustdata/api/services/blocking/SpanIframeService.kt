@@ -50,9 +50,16 @@ interface SpanIframeService {
      */
     @JvmOverloads
     fun list(
-        params: SpanIframeListParams,
+        params: SpanIframeListParams = SpanIframeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIframeListPage
+
+    /**
+     * List out all span_iframes. The span_iframes are sorted by creation date, with the most
+     * recently-created span_iframes coming first
+     */
+    fun list(requestOptions: RequestOptions): SpanIframeListPage =
+        list(SpanIframeListParams.none(), requestOptions)
 
     /** Delete a span_iframe object by its id */
     @JvmOverloads

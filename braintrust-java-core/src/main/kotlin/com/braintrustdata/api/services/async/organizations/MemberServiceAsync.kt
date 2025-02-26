@@ -14,7 +14,11 @@ interface MemberServiceAsync {
     /** Modify organization membership */
     @JvmOverloads
     fun update(
-        params: OrganizationMemberUpdateParams,
+        params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PatchOrganizationMembersOutput>
+
+    /** Modify organization membership */
+    fun update(requestOptions: RequestOptions): CompletableFuture<PatchOrganizationMembersOutput> =
+        update(OrganizationMemberUpdateParams.none(), requestOptions)
 }
