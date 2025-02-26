@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.SpanIframeCreateParams
 import com.braintrustdata.api.models.SpanIframeDeleteParams
-import com.braintrustdata.api.models.SpanIframeListParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
@@ -85,7 +84,7 @@ class SpanIframeServiceTest {
                 .apiKey("My API Key")
                 .build()
         val spanIframeService = client.spanIframes()
-        val response = spanIframeService.list(SpanIframeListParams.builder().build())
+        val response = spanIframeService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

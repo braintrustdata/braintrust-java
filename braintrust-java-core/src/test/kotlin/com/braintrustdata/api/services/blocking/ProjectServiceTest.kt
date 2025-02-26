@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
-import com.braintrustdata.api.models.ProjectListParams
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectSettings
 import com.braintrustdata.api.models.ProjectUpdateParams
@@ -78,7 +77,7 @@ class ProjectServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectService = client.projects()
-        val response = projectService.list(ProjectListParams.builder().build())
+        val response = projectService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

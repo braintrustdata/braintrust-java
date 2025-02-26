@@ -58,9 +58,16 @@ interface ExperimentService {
      */
     @JvmOverloads
     fun list(
-        params: ExperimentListParams,
+        params: ExperimentListParams = ExperimentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ExperimentListPage
+
+    /**
+     * List out all experiments. The experiments are sorted by creation date, with the most
+     * recently-created experiments coming first
+     */
+    fun list(requestOptions: RequestOptions): ExperimentListPage =
+        list(ExperimentListParams.none(), requestOptions)
 
     /** Delete an experiment object by its id */
     @JvmOverloads

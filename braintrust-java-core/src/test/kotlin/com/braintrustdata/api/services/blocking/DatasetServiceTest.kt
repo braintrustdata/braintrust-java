@@ -11,7 +11,6 @@ import com.braintrustdata.api.models.DatasetFeedbackParams
 import com.braintrustdata.api.models.DatasetFetchParams
 import com.braintrustdata.api.models.DatasetFetchPostParams
 import com.braintrustdata.api.models.DatasetInsertParams
-import com.braintrustdata.api.models.DatasetListParams
 import com.braintrustdata.api.models.DatasetRetrieveParams
 import com.braintrustdata.api.models.DatasetSummarizeParams
 import com.braintrustdata.api.models.DatasetUpdateParams
@@ -100,7 +99,7 @@ class DatasetServiceTest {
                 .apiKey("My API Key")
                 .build()
         val datasetService = client.datasets()
-        val response = datasetService.list(DatasetListParams.builder().build())
+        val response = datasetService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

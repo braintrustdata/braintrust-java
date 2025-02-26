@@ -9,7 +9,6 @@ import com.braintrustdata.api.models.ProjectScoreCategory
 import com.braintrustdata.api.models.ProjectScoreConfig
 import com.braintrustdata.api.models.ProjectScoreCreateParams
 import com.braintrustdata.api.models.ProjectScoreDeleteParams
-import com.braintrustdata.api.models.ProjectScoreListParams
 import com.braintrustdata.api.models.ProjectScoreReplaceParams
 import com.braintrustdata.api.models.ProjectScoreRetrieveParams
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
@@ -131,7 +130,7 @@ class ProjectScoreServiceTest {
                 .apiKey("My API Key")
                 .build()
         val projectScoreService = client.projectScores()
-        val response = projectScoreService.list(ProjectScoreListParams.builder().build())
+        val response = projectScoreService.list()
         println(response)
         response.objects().forEach { it.validate() }
     }

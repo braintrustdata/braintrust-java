@@ -26,7 +26,14 @@ interface UserServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: UserListParams,
+        params: UserListParams = UserListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UserListPageAsync>
+
+    /**
+     * List out all users. The users are sorted by creation date, with the most recently-created
+     * users coming first
+     */
+    fun list(requestOptions: RequestOptions): CompletableFuture<UserListPageAsync> =
+        list(UserListParams.none(), requestOptions)
 }
