@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.RepoInfo
@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class EvalServiceTest {
+class EvalServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val evalService = client.evals()
+        val evalServiceAsync = client.evals()
 
-        val summarizeExperimentResponse =
-            evalService.create(
+        val summarizeExperimentResponseFuture =
+            evalServiceAsync.create(
                 EvalCreateParams.builder()
                     .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
                     .projectId("project_id")
@@ -74,6 +74,7 @@ class EvalServiceTest {
                     .build()
             )
 
+        val summarizeExperimentResponse = summarizeExperimentResponseFuture.get()
         summarizeExperimentResponse.validate()
     }
 }

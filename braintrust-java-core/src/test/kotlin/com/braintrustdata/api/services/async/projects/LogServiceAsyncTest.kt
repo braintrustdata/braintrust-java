@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking.projects
+package com.braintrustdata.api.services.async.projects
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.FeedbackProjectLogsItem
 import com.braintrustdata.api.models.InsertProjectLogsEvent
@@ -17,19 +17,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class LogServiceTest {
+class LogServiceAsyncTest {
 
     @Test
     fun feedback() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val logService = client.projects().logs()
+        val logServiceAsync = client.projects().logs()
 
-        val feedbackResponseSchema =
-            logService.feedback(
+        val feedbackResponseSchemaFuture =
+            logServiceAsync.feedback(
                 ProjectLogFeedbackParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addFeedback(
@@ -54,20 +54,21 @@ class LogServiceTest {
                     .build()
             )
 
+        val feedbackResponseSchema = feedbackResponseSchemaFuture.get()
         feedbackResponseSchema.validate()
     }
 
     @Test
     fun fetch() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val logService = client.projects().logs()
+        val logServiceAsync = client.projects().logs()
 
-        val fetchProjectLogsEventsResponse =
-            logService.fetch(
+        val fetchProjectLogsEventsResponseFuture =
+            logServiceAsync.fetch(
                 ProjectLogFetchParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(0L)
@@ -77,20 +78,21 @@ class LogServiceTest {
                     .build()
             )
 
+        val fetchProjectLogsEventsResponse = fetchProjectLogsEventsResponseFuture.get()
         fetchProjectLogsEventsResponse.validate()
     }
 
     @Test
     fun fetchPost() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val logService = client.projects().logs()
+        val logServiceAsync = client.projects().logs()
 
-        val fetchProjectLogsEventsResponse =
-            logService.fetchPost(
+        val fetchProjectLogsEventsResponseFuture =
+            logServiceAsync.fetchPost(
                 ProjectLogFetchPostParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
@@ -101,20 +103,21 @@ class LogServiceTest {
                     .build()
             )
 
+        val fetchProjectLogsEventsResponse = fetchProjectLogsEventsResponseFuture.get()
         fetchProjectLogsEventsResponse.validate()
     }
 
     @Test
     fun insert() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val logService = client.projects().logs()
+        val logServiceAsync = client.projects().logs()
 
-        val insertEventsResponse =
-            logService.insert(
+        val insertEventsResponseFuture =
+            logServiceAsync.insert(
                 ProjectLogInsertParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addEvent(
@@ -173,6 +176,7 @@ class LogServiceTest {
                     .build()
             )
 
+        val insertEventsResponse = insertEventsResponseFuture.get()
         insertEventsResponse.validate()
     }
 }
