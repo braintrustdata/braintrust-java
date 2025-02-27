@@ -1,27 +1,27 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking.organizations
+package com.braintrustdata.api.services.async.organizations
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class MemberServiceTest {
+class MemberServiceAsyncTest {
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val memberService = client.organizations().members()
+        val memberServiceAsync = client.organizations().members()
 
-        val patchOrganizationMembersOutput =
-            memberService.update(
+        val patchOrganizationMembersOutputFuture =
+            memberServiceAsync.update(
                 OrganizationMemberUpdateParams.builder()
                     .inviteUsers(
                         OrganizationMemberUpdateParams.InviteUsers.builder()
@@ -45,6 +45,7 @@ class MemberServiceTest {
                     .build()
             )
 
+        val patchOrganizationMembersOutput = patchOrganizationMembersOutputFuture.get()
         patchOrganizationMembersOutput.validate()
     }
 }

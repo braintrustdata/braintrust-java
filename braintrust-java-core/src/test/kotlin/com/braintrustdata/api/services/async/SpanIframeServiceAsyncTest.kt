@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.SpanIframeCreateParams
 import com.braintrustdata.api.models.SpanIframeDeleteParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class SpanIframeServiceTest {
+class SpanIframeServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val spanIframeService = client.spanIframes()
+        val spanIframeServiceAsync = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.create(
+        val spanIFrameFuture =
+            spanIframeServiceAsync.create(
                 SpanIframeCreateParams.builder()
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -35,39 +35,41 @@ class SpanIframeServiceTest {
                     .build()
             )
 
+        val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()
     }
 
     @Test
     fun retrieve() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val spanIframeService = client.spanIframes()
+        val spanIframeServiceAsync = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.retrieve(
+        val spanIFrameFuture =
+            spanIframeServiceAsync.retrieve(
                 SpanIframeRetrieveParams.builder()
                     .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()
     }
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val spanIframeService = client.spanIframes()
+        val spanIframeServiceAsync = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.update(
+        val spanIFrameFuture =
+            spanIframeServiceAsync.update(
                 SpanIframeUpdateParams.builder()
                     .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .name("name")
@@ -76,53 +78,56 @@ class SpanIframeServiceTest {
                     .build()
             )
 
+        val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()
     }
 
     @Test
     fun list() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val spanIframeService = client.spanIframes()
+        val spanIframeServiceAsync = client.spanIframes()
 
-        val page = spanIframeService.list()
+        val pageFuture = spanIframeServiceAsync.list()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 
     @Test
     fun delete() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val spanIframeService = client.spanIframes()
+        val spanIframeServiceAsync = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.delete(
+        val spanIFrameFuture =
+            spanIframeServiceAsync.delete(
                 SpanIframeDeleteParams.builder()
                     .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()
     }
 
     @Test
     fun replace() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val spanIframeService = client.spanIframes()
+        val spanIframeServiceAsync = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.replace(
+        val spanIFrameFuture =
+            spanIframeServiceAsync.replace(
                 SpanIframeReplaceParams.builder()
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -132,6 +137,7 @@ class SpanIframeServiceTest {
                     .build()
             )
 
+        val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()
     }
 }
