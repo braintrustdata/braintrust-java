@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.DatasetCreateParams
 import com.braintrustdata.api.models.DatasetDeleteParams
@@ -21,19 +21,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class DatasetServiceTest {
+class DatasetServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val dataset =
-            datasetService.create(
+        val datasetFuture =
+            datasetServiceAsync.create(
                 DatasetCreateParams.builder()
                     .name("x")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -46,39 +46,41 @@ class DatasetServiceTest {
                     .build()
             )
 
+        val dataset = datasetFuture.get()
         dataset.validate()
     }
 
     @Test
     fun retrieve() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val dataset =
-            datasetService.retrieve(
+        val datasetFuture =
+            datasetServiceAsync.retrieve(
                 DatasetRetrieveParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val dataset = datasetFuture.get()
         dataset.validate()
     }
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val dataset =
-            datasetService.update(
+        val datasetFuture =
+            datasetServiceAsync.update(
                 DatasetUpdateParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .description("description")
@@ -91,53 +93,56 @@ class DatasetServiceTest {
                     .build()
             )
 
+        val dataset = datasetFuture.get()
         dataset.validate()
     }
 
     @Test
     fun list() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val page = datasetService.list()
+        val pageFuture = datasetServiceAsync.list()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 
     @Test
     fun delete() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val dataset =
-            datasetService.delete(
+        val datasetFuture =
+            datasetServiceAsync.delete(
                 DatasetDeleteParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val dataset = datasetFuture.get()
         dataset.validate()
     }
 
     @Test
     fun feedback() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val feedbackResponseSchema =
-            datasetService.feedback(
+        val feedbackResponseSchemaFuture =
+            datasetServiceAsync.feedback(
                 DatasetFeedbackParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addFeedback(
@@ -156,20 +161,21 @@ class DatasetServiceTest {
                     .build()
             )
 
+        val feedbackResponseSchema = feedbackResponseSchemaFuture.get()
         feedbackResponseSchema.validate()
     }
 
     @Test
     fun fetch() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val fetchDatasetEventsResponse =
-            datasetService.fetch(
+        val fetchDatasetEventsResponseFuture =
+            datasetServiceAsync.fetch(
                 DatasetFetchParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(0L)
@@ -179,20 +185,21 @@ class DatasetServiceTest {
                     .build()
             )
 
+        val fetchDatasetEventsResponse = fetchDatasetEventsResponseFuture.get()
         fetchDatasetEventsResponse.validate()
     }
 
     @Test
     fun fetchPost() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val fetchDatasetEventsResponse =
-            datasetService.fetchPost(
+        val fetchDatasetEventsResponseFuture =
+            datasetServiceAsync.fetchPost(
                 DatasetFetchPostParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
@@ -203,20 +210,21 @@ class DatasetServiceTest {
                     .build()
             )
 
+        val fetchDatasetEventsResponse = fetchDatasetEventsResponseFuture.get()
         fetchDatasetEventsResponse.validate()
     }
 
     @Test
     fun insert() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val insertEventsResponse =
-            datasetService.insert(
+        val insertEventsResponseFuture =
+            datasetServiceAsync.insert(
                 DatasetInsertParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addEvent(
@@ -243,26 +251,28 @@ class DatasetServiceTest {
                     .build()
             )
 
+        val insertEventsResponse = insertEventsResponseFuture.get()
         insertEventsResponse.validate()
     }
 
     @Test
     fun summarize() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val datasetService = client.datasets()
+        val datasetServiceAsync = client.datasets()
 
-        val summarizeDatasetResponse =
-            datasetService.summarize(
+        val summarizeDatasetResponseFuture =
+            datasetServiceAsync.summarize(
                 DatasetSummarizeParams.builder()
                     .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .summarizeData(true)
                     .build()
             )
 
+        val summarizeDatasetResponse = summarizeDatasetResponseFuture.get()
         summarizeDatasetResponse.validate()
     }
 }

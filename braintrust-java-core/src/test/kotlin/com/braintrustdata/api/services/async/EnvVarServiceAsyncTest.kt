@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.EnvVarCreateParams
 import com.braintrustdata.api.models.EnvVarDeleteParams
 import com.braintrustdata.api.models.EnvVarListParams
@@ -14,19 +14,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class EnvVarServiceTest {
+class EnvVarServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val envVarService = client.envVars()
+        val envVarServiceAsync = client.envVars()
 
-        val envVar =
-            envVarService.create(
+        val envVarFuture =
+            envVarServiceAsync.create(
                 EnvVarCreateParams.builder()
                     .name("name")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -35,39 +35,41 @@ class EnvVarServiceTest {
                     .build()
             )
 
+        val envVar = envVarFuture.get()
         envVar.validate()
     }
 
     @Test
     fun retrieve() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val envVarService = client.envVars()
+        val envVarServiceAsync = client.envVars()
 
-        val envVar =
-            envVarService.retrieve(
+        val envVarFuture =
+            envVarServiceAsync.retrieve(
                 EnvVarRetrieveParams.builder()
                     .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val envVar = envVarFuture.get()
         envVar.validate()
     }
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val envVarService = client.envVars()
+        val envVarServiceAsync = client.envVars()
 
-        val envVar =
-            envVarService.update(
+        val envVarFuture =
+            envVarServiceAsync.update(
                 EnvVarUpdateParams.builder()
                     .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .name("name")
@@ -75,20 +77,21 @@ class EnvVarServiceTest {
                     .build()
             )
 
+        val envVar = envVarFuture.get()
         envVar.validate()
     }
 
     @Test
     fun list() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val envVarService = client.envVars()
+        val envVarServiceAsync = client.envVars()
 
-        val envVar =
-            envVarService.list(
+        val envVarFuture =
+            envVarServiceAsync.list(
                 EnvVarListParams.builder()
                     .envVarName("env_var_name")
                     .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -98,39 +101,41 @@ class EnvVarServiceTest {
                     .build()
             )
 
+        val envVar = envVarFuture.get()
         envVar.validate()
     }
 
     @Test
     fun delete() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val envVarService = client.envVars()
+        val envVarServiceAsync = client.envVars()
 
-        val envVar =
-            envVarService.delete(
+        val envVarFuture =
+            envVarServiceAsync.delete(
                 EnvVarDeleteParams.builder()
                     .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val envVar = envVarFuture.get()
         envVar.validate()
     }
 
     @Test
     fun replace() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val envVarService = client.envVars()
+        val envVarServiceAsync = client.envVars()
 
-        val envVar =
-            envVarService.replace(
+        val envVarFuture =
+            envVarServiceAsync.replace(
                 EnvVarReplaceParams.builder()
                     .name("name")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -139,6 +144,7 @@ class EnvVarServiceTest {
                     .build()
             )
 
+        val envVar = envVarFuture.get()
         envVar.validate()
     }
 }

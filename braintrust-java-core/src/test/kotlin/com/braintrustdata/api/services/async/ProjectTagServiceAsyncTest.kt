@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.ProjectTagCreateParams
 import com.braintrustdata.api.models.ProjectTagDeleteParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ProjectTagServiceTest {
+class ProjectTagServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTags()
+        val projectTagServiceAsync = client.projectTags()
 
-        val projectTag =
-            projectTagService.create(
+        val projectTagFuture =
+            projectTagServiceAsync.create(
                 ProjectTagCreateParams.builder()
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -34,39 +34,41 @@ class ProjectTagServiceTest {
                     .build()
             )
 
+        val projectTag = projectTagFuture.get()
         projectTag.validate()
     }
 
     @Test
     fun retrieve() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTags()
+        val projectTagServiceAsync = client.projectTags()
 
-        val projectTag =
-            projectTagService.retrieve(
+        val projectTagFuture =
+            projectTagServiceAsync.retrieve(
                 ProjectTagRetrieveParams.builder()
                     .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val projectTag = projectTagFuture.get()
         projectTag.validate()
     }
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTags()
+        val projectTagServiceAsync = client.projectTags()
 
-        val projectTag =
-            projectTagService.update(
+        val projectTagFuture =
+            projectTagServiceAsync.update(
                 ProjectTagUpdateParams.builder()
                     .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .color("color")
@@ -75,53 +77,56 @@ class ProjectTagServiceTest {
                     .build()
             )
 
+        val projectTag = projectTagFuture.get()
         projectTag.validate()
     }
 
     @Test
     fun list() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTags()
+        val projectTagServiceAsync = client.projectTags()
 
-        val page = projectTagService.list()
+        val pageFuture = projectTagServiceAsync.list()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 
     @Test
     fun delete() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTags()
+        val projectTagServiceAsync = client.projectTags()
 
-        val projectTag =
-            projectTagService.delete(
+        val projectTagFuture =
+            projectTagServiceAsync.delete(
                 ProjectTagDeleteParams.builder()
                     .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val projectTag = projectTagFuture.get()
         projectTag.validate()
     }
 
     @Test
     fun replace() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val projectTagService = client.projectTags()
+        val projectTagServiceAsync = client.projectTags()
 
-        val projectTag =
-            projectTagService.replace(
+        val projectTagFuture =
+            projectTagServiceAsync.replace(
                 ProjectTagReplaceParams.builder()
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -130,6 +135,7 @@ class ProjectTagServiceTest {
                     .build()
             )
 
+        val projectTag = projectTagFuture.get()
         projectTag.validate()
     }
 }
