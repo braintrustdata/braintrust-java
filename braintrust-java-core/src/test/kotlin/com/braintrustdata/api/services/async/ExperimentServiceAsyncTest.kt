@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.ExperimentCreateParams
 import com.braintrustdata.api.models.ExperimentDeleteParams
@@ -23,19 +23,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ExperimentServiceTest {
+class ExperimentServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val experiment =
-            experimentService.create(
+        val experimentFuture =
+            experimentServiceAsync.create(
                 ExperimentCreateParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .baseExpId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -66,39 +66,41 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val experiment = experimentFuture.get()
         experiment.validate()
     }
 
     @Test
     fun retrieve() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val experiment =
-            experimentService.retrieve(
+        val experimentFuture =
+            experimentServiceAsync.retrieve(
                 ExperimentRetrieveParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val experiment = experimentFuture.get()
         experiment.validate()
     }
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val experiment =
-            experimentService.update(
+        val experimentFuture =
+            experimentServiceAsync.update(
                 ExperimentUpdateParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .baseExpId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -128,53 +130,56 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val experiment = experimentFuture.get()
         experiment.validate()
     }
 
     @Test
     fun list() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val page = experimentService.list()
+        val pageFuture = experimentServiceAsync.list()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 
     @Test
     fun delete() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val experiment =
-            experimentService.delete(
+        val experimentFuture =
+            experimentServiceAsync.delete(
                 ExperimentDeleteParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
             )
 
+        val experiment = experimentFuture.get()
         experiment.validate()
     }
 
     @Test
     fun feedback() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val feedbackResponseSchema =
-            experimentService.feedback(
+        val feedbackResponseSchemaFuture =
+            experimentServiceAsync.feedback(
                 ExperimentFeedbackParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addFeedback(
@@ -199,20 +204,21 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val feedbackResponseSchema = feedbackResponseSchemaFuture.get()
         feedbackResponseSchema.validate()
     }
 
     @Test
     fun fetch() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val fetchExperimentEventsResponse =
-            experimentService.fetch(
+        val fetchExperimentEventsResponseFuture =
+            experimentServiceAsync.fetch(
                 ExperimentFetchParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(0L)
@@ -222,20 +228,21 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val fetchExperimentEventsResponse = fetchExperimentEventsResponseFuture.get()
         fetchExperimentEventsResponse.validate()
     }
 
     @Test
     fun fetchPost() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val fetchExperimentEventsResponse =
-            experimentService.fetchPost(
+        val fetchExperimentEventsResponseFuture =
+            experimentServiceAsync.fetchPost(
                 ExperimentFetchPostParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .cursor("cursor")
@@ -246,20 +253,21 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val fetchExperimentEventsResponse = fetchExperimentEventsResponseFuture.get()
         fetchExperimentEventsResponse.validate()
     }
 
     @Test
     fun insert() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val insertEventsResponse =
-            experimentService.insert(
+        val insertEventsResponseFuture =
+            experimentServiceAsync.insert(
                 ExperimentInsertParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addEvent(
@@ -319,20 +327,21 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val insertEventsResponse = insertEventsResponseFuture.get()
         insertEventsResponse.validate()
     }
 
     @Test
     fun summarize() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val experimentService = client.experiments()
+        val experimentServiceAsync = client.experiments()
 
-        val summarizeExperimentResponse =
-            experimentService.summarize(
+        val summarizeExperimentResponseFuture =
+            experimentServiceAsync.summarize(
                 ExperimentSummarizeParams.builder()
                     .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .comparisonExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -340,6 +349,7 @@ class ExperimentServiceTest {
                     .build()
             )
 
+        val summarizeExperimentResponse = summarizeExperimentResponseFuture.get()
         summarizeExperimentResponse.validate()
     }
 }

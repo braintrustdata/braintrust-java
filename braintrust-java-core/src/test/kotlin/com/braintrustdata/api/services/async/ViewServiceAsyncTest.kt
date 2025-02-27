@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.braintrustdata.api.services.blocking
+package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
-import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.ViewCreateParams
 import com.braintrustdata.api.models.ViewData
@@ -19,19 +19,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ViewServiceTest {
+class ViewServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.views()
+        val viewServiceAsync = client.views()
 
-        val view =
-            viewService.create(
+        val viewFuture =
+            viewServiceAsync.create(
                 ViewCreateParams.builder()
                     .name("name")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -69,20 +69,21 @@ class ViewServiceTest {
                     .build()
             )
 
+        val view = viewFuture.get()
         view.validate()
     }
 
     @Test
     fun retrieve() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.views()
+        val viewServiceAsync = client.views()
 
-        val view =
-            viewService.retrieve(
+        val viewFuture =
+            viewServiceAsync.retrieve(
                 ViewRetrieveParams.builder()
                     .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -90,20 +91,21 @@ class ViewServiceTest {
                     .build()
             )
 
+        val view = viewFuture.get()
         view.validate()
     }
 
     @Test
     fun update() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.views()
+        val viewServiceAsync = client.views()
 
-        val view =
-            viewService.update(
+        val viewFuture =
+            viewServiceAsync.update(
                 ViewUpdateParams.builder()
                     .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -141,40 +143,42 @@ class ViewServiceTest {
                     .build()
             )
 
+        val view = viewFuture.get()
         view.validate()
     }
 
     @Test
     fun list() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.views()
+        val viewServiceAsync = client.views()
 
-        val page =
-            viewService.list(
+        val pageFuture =
+            viewServiceAsync.list(
                 ViewListParams.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .objectType(ViewListParams.ObjectType.ORGANIZATION)
                     .build()
             )
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 
     @Test
     fun delete() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.views()
+        val viewServiceAsync = client.views()
 
-        val view =
-            viewService.delete(
+        val viewFuture =
+            viewServiceAsync.delete(
                 ViewDeleteParams.builder()
                     .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -182,20 +186,21 @@ class ViewServiceTest {
                     .build()
             )
 
+        val view = viewFuture.get()
         view.validate()
     }
 
     @Test
     fun replace() {
         val client =
-            BraintrustOkHttpClient.builder()
+            BraintrustOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
-        val viewService = client.views()
+        val viewServiceAsync = client.views()
 
-        val view =
-            viewService.replace(
+        val viewFuture =
+            viewServiceAsync.replace(
                 ViewReplaceParams.builder()
                     .name("name")
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -233,6 +238,7 @@ class ViewServiceTest {
                     .build()
             )
 
+        val view = viewFuture.get()
         view.validate()
     }
 }
