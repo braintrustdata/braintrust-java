@@ -10,7 +10,7 @@ The Braintrust Java SDK provides convenient access to the Braintrust REST API fr
 
 The Braintrust Java SDK is similar to the Braintrust Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec).
 
