@@ -157,6 +157,35 @@ CompletableFuture<Project> project = client.projects().create(params);
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
 
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Java classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```java
+import com.braintrustdata.api.core.http.Headers;
+import com.braintrustdata.api.core.http.HttpResponseFor;
+import com.braintrustdata.api.models.Project;
+import com.braintrustdata.api.models.ProjectCreateParams;
+
+ProjectCreateParams params = ProjectCreateParams.builder()
+    .name("foobar")
+    .build();
+HttpResponseFor<Project> project = client.projects().withRawResponse().create(params);
+
+int statusCode = project.statusCode();
+Headers headers = project.headers();
+```
+
+You can still deserialize the response into an instance of a Java class if needed:
+
+```java
+import com.braintrustdata.api.models.Project;
+
+Project parsedProject = project.parse();
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
