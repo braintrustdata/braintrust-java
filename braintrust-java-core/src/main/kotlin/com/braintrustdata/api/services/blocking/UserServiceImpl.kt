@@ -10,6 +10,8 @@ import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
+import com.braintrustdata.api.core.http.HttpResponseFor
+import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.User
@@ -19,53 +21,77 @@ import com.braintrustdata.api.models.UserRetrieveParams
 
 class UserServiceImpl internal constructor(private val clientOptions: ClientOptions) : UserService {
 
-    private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
-
-    private val retrieveHandler: Handler<User> =
-        jsonHandler<User>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
-
-    /** Get a user object by its id */
-    override fun retrieve(params: UserRetrieveParams, requestOptions: RequestOptions): User {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("v1", "user", params.getPathParam(0))
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { retrieveHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
-            }
+    private val withRawResponse: UserService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
     }
 
-    private val listHandler: Handler<UserListPage.Response> =
-        jsonHandler<UserListPage.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    override fun withRawResponse(): UserService.WithRawResponse = withRawResponse
 
-    /**
-     * List out all users. The users are sorted by creation date, with the most recently-created
-     * users coming first
-     */
-    override fun list(params: UserListParams, requestOptions: RequestOptions): UserListPage {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("v1", "user")
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { listHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
+    override fun retrieve(params: UserRetrieveParams, requestOptions: RequestOptions): User =
+        // get /v1/user/{user_id}
+        withRawResponse().retrieve(params, requestOptions).parse()
+
+    override fun list(params: UserListParams, requestOptions: RequestOptions): UserListPage =
+        // get /v1/user
+        withRawResponse().list(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        UserService.WithRawResponse {
+
+        private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
+
+        private val retrieveHandler: Handler<User> =
+            jsonHandler<User>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun retrieve(
+            params: UserRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<User> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("v1", "user", params.getPathParam(0))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
             }
-            .let { UserListPage.of(this, params, it) }
+        }
+
+        private val listHandler: Handler<UserListPage.Response> =
+            jsonHandler<UserListPage.Response>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun list(
+            params: UserListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<UserListPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("v1", "user")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+                    .let { UserListPage.of(UserServiceImpl(clientOptions), params, it) }
+            }
+        }
     }
 }

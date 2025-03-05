@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.ProjectTag
 import com.braintrustdata.api.models.ProjectTagCreateParams
 import com.braintrustdata.api.models.ProjectTagDeleteParams
@@ -13,9 +14,15 @@ import com.braintrustdata.api.models.ProjectTagListParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
+import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ProjectTagServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new project_tag. If there is an existing project_tag in the project with the same
@@ -79,4 +86,87 @@ interface ProjectTagServiceAsync {
         params: ProjectTagReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectTag>
+
+    /**
+     * A view of [ProjectTagServiceAsync] that provides access to raw HTTP responses for each
+     * method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/project_tag`, but is otherwise the same as
+         * [ProjectTagServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: ProjectTagCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectTag>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/project_tag/{project_tag_id}`, but is otherwise
+         * the same as [ProjectTagServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: ProjectTagRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectTag>>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/project_tag/{project_tag_id}`, but is
+         * otherwise the same as [ProjectTagServiceAsync.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: ProjectTagUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectTag>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/project_tag`, but is otherwise the same as
+         * [ProjectTagServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: ProjectTagListParams = ProjectTagListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectTagListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/project_tag`, but is otherwise the same as
+         * [ProjectTagServiceAsync.list].
+         */
+        @MustBeClosed
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<ProjectTagListPageAsync>> =
+            list(ProjectTagListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/project_tag/{project_tag_id}`, but is
+         * otherwise the same as [ProjectTagServiceAsync.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: ProjectTagDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectTag>>
+
+        /**
+         * Returns a raw HTTP response for `put /v1/project_tag`, but is otherwise the same as
+         * [ProjectTagServiceAsync.replace].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: ProjectTagReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectTag>>
+    }
 }

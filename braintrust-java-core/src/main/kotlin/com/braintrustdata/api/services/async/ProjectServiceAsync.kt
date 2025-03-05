@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
@@ -13,9 +14,15 @@ import com.braintrustdata.api.models.ProjectListParams
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
+import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ProjectServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     fun logs(): LogServiceAsync
 
@@ -70,4 +77,77 @@ interface ProjectServiceAsync {
         params: ProjectDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
+
+    /**
+     * A view of [ProjectServiceAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        fun logs(): LogServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /v1/project`, but is otherwise the same as
+         * [ProjectServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: ProjectCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Project>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/project/{project_id}`, but is otherwise the same
+         * as [ProjectServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: ProjectRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Project>>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/project/{project_id}`, but is otherwise the
+         * same as [ProjectServiceAsync.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: ProjectUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Project>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/project`, but is otherwise the same as
+         * [ProjectServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: ProjectListParams = ProjectListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/project`, but is otherwise the same as
+         * [ProjectServiceAsync.list].
+         */
+        @MustBeClosed
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
+            list(ProjectListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/project/{project_id}`, but is otherwise the
+         * same as [ProjectServiceAsync.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: ProjectDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Project>>
+    }
 }

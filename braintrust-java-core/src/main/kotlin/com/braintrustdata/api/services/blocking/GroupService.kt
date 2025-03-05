@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Group
 import com.braintrustdata.api.models.GroupCreateParams
 import com.braintrustdata.api.models.GroupDeleteParams
@@ -13,8 +14,14 @@ import com.braintrustdata.api.models.GroupListParams
 import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
+import com.google.errorprone.annotations.MustBeClosed
 
 interface GroupService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new group. If there is an existing group with the same name as the one specified in
@@ -77,4 +84,82 @@ interface GroupService {
         params: GroupReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
+
+    /** A view of [GroupService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/group`, but is otherwise the same as
+         * [GroupService.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: GroupCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Group>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/group/{group_id}`, but is otherwise the same as
+         * [GroupService.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: GroupRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Group>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/group/{group_id}`, but is otherwise the same
+         * as [GroupService.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: GroupUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Group>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/group`, but is otherwise the same as
+         * [GroupService.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: GroupListParams = GroupListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<GroupListPage>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/group`, but is otherwise the same as
+         * [GroupService.list].
+         */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<GroupListPage> =
+            list(GroupListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/group/{group_id}`, but is otherwise the same
+         * as [GroupService.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: GroupDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Group>
+
+        /**
+         * Returns a raw HTTP response for `put /v1/group`, but is otherwise the same as
+         * [GroupService.replace].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: GroupReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Group>
+    }
 }

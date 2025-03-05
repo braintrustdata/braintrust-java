@@ -46,6 +46,11 @@ interface BraintrustClient {
      */
     fun async(): BraintrustClientAsync
 
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
     fun topLevel(): TopLevelService
 
     fun projects(): ProjectService
@@ -96,4 +101,46 @@ interface BraintrustClient {
      * method.
      */
     fun close()
+
+    /** A view of [BraintrustClient] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        fun topLevel(): TopLevelService.WithRawResponse
+
+        fun projects(): ProjectService.WithRawResponse
+
+        fun experiments(): ExperimentService.WithRawResponse
+
+        fun datasets(): DatasetService.WithRawResponse
+
+        fun prompts(): PromptService.WithRawResponse
+
+        fun roles(): RoleService.WithRawResponse
+
+        fun groups(): GroupService.WithRawResponse
+
+        fun acls(): AclService.WithRawResponse
+
+        fun users(): UserService.WithRawResponse
+
+        fun projectScores(): ProjectScoreService.WithRawResponse
+
+        fun projectTags(): ProjectTagService.WithRawResponse
+
+        fun spanIframes(): SpanIframeService.WithRawResponse
+
+        fun functions(): FunctionService.WithRawResponse
+
+        fun views(): ViewService.WithRawResponse
+
+        fun organizations(): OrganizationService.WithRawResponse
+
+        fun apiKeys(): ApiKeyService.WithRawResponse
+
+        fun aiSecrets(): AiSecretService.WithRawResponse
+
+        fun envVars(): EnvVarService.WithRawResponse
+
+        fun evals(): EvalService.WithRawResponse
+    }
 }
