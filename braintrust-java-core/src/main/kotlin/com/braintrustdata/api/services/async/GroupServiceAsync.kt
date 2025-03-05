@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Group
 import com.braintrustdata.api.models.GroupCreateParams
 import com.braintrustdata.api.models.GroupDeleteParams
@@ -13,9 +14,15 @@ import com.braintrustdata.api.models.GroupListParams
 import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
+import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface GroupServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new group. If there is an existing group with the same name as the one specified in
@@ -78,4 +85,84 @@ interface GroupServiceAsync {
         params: GroupReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
+
+    /** A view of [GroupServiceAsync] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/group`, but is otherwise the same as
+         * [GroupServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: GroupCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Group>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/group/{group_id}`, but is otherwise the same as
+         * [GroupServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: GroupRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Group>>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/group/{group_id}`, but is otherwise the same
+         * as [GroupServiceAsync.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: GroupUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Group>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/group`, but is otherwise the same as
+         * [GroupServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: GroupListParams = GroupListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<GroupListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/group`, but is otherwise the same as
+         * [GroupServiceAsync.list].
+         */
+        @MustBeClosed
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<GroupListPageAsync>> =
+            list(GroupListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/group/{group_id}`, but is otherwise the same
+         * as [GroupServiceAsync.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: GroupDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Group>>
+
+        /**
+         * Returns a raw HTTP response for `put /v1/group`, but is otherwise the same as
+         * [GroupServiceAsync.replace].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: GroupReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Group>>
+    }
 }
