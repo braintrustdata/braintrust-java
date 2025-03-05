@@ -33,6 +33,7 @@ class TopLevelServiceAsyncImpl internal constructor(private val clientOptions: C
                 .addPathSegments("v1")
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         return request
             .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
             .thenApply { response -> response.use { helloWorldHandler.handle(it) } }
