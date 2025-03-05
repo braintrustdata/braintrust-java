@@ -100,6 +100,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AclBatchUpdateResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .addedAcls()
+         * .removedAcls()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

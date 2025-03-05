@@ -185,6 +185,16 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .name()
+             * .projectId()
+             * .scoreType()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -322,6 +332,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectScoreCreateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .name()
+         * .projectId()
+         * .scoreType()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -869,6 +889,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Weighted]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -950,6 +971,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [NullableVariant]. */
                 @JvmStatic fun builder() = Builder()
             }
 

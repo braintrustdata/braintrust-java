@@ -29,6 +29,7 @@ private constructor(
 
         @JvmStatic fun none(): TopLevelHelloWorldParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [TopLevelHelloWorldParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -126,6 +126,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PromptListPage]. */
             @JvmStatic fun builder() = Builder()
         }
 

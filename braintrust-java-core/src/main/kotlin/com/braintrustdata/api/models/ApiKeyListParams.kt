@@ -94,6 +94,7 @@ private constructor(
 
         @JvmStatic fun none(): ApiKeyListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [ApiKeyListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -455,6 +455,17 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .data()
+             * .projectId()
+             * .scores()
+             * .task()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -856,6 +867,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [EvalCreateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .data()
+         * .projectId()
+         * .scores()
+         * .task()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -1465,6 +1487,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [DatasetId].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .datasetId()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1578,6 +1608,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [ProjectDatasetName].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .datasetName()
+                 * .projectName()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1957,6 +1996,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [FunctionId].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .functionId()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2095,6 +2142,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [ProjectSlug].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .projectName()
+                 * .slug()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2228,6 +2284,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [GlobalFunction].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .globalFunction()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2367,6 +2431,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [PromptSessionId].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .promptSessionFunctionId()
+                 * .promptSessionId()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2516,6 +2589,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [InlineCode].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .code()
+                 * .inlineContext()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2632,6 +2714,15 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of [InlineContext].
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .runtime()
+                     * .version()
+                     * ```
+                     */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -2879,6 +2970,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [InlinePrompt].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .inlinePrompt()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3266,6 +3365,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [FunctionId].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .functionId()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3404,6 +3511,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [ProjectSlug].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .projectName()
+                 * .slug()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3537,6 +3653,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [GlobalFunction].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .globalFunction()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3676,6 +3800,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [PromptSessionId].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .promptSessionFunctionId()
+                 * .promptSessionId()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3825,6 +3958,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [InlineCode].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .code()
+                 * .inlineContext()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3941,6 +4083,15 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of [InlineContext].
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .runtime()
+                     * .version()
+                     * ```
+                     */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -4188,6 +4339,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [InlinePrompt].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .inlinePrompt()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -4322,6 +4481,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [GitMetadataSettings].
+             *
+             * The following fields are required:
+             * ```java
+             * .collect()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -4684,6 +4851,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Metadata]. */
             @JvmStatic fun builder() = Builder()
         }
 

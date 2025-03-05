@@ -199,6 +199,20 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [DatasetEvent].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * ._xactId()
+         * .created()
+         * .datasetId()
+         * .projectId()
+         * .rootSpanId()
+         * .spanId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -449,6 +463,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Metadata]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -568,6 +583,17 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Origin].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * ._xactId()
+             * .objectId()
+             * .objectType()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

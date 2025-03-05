@@ -79,6 +79,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [PatchOrganizationMembersOutput].
+         *
+         * The following fields are required:
+         * ```java
+         * .orgId()
+         * .status()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

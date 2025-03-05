@@ -80,6 +80,7 @@ private constructor(
 
         @JvmStatic fun none(): EnvVarListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [EnvVarListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -77,6 +77,9 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CrossObjectInsertResponse].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -180,6 +183,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Dataset]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -259,6 +263,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Experiment]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -338,6 +343,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [ProjectLogs]. */
             @JvmStatic fun builder() = Builder()
         }
 

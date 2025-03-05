@@ -199,6 +199,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -386,6 +387,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [RoleUpdateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .roleId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -689,6 +698,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [AddMemberPermission].
+             *
+             * The following fields are required:
+             * ```java
+             * .permission()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1149,6 +1166,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [RemoveMemberPermission].
+             *
+             * The following fields are required:
+             * ```java
+             * .permission()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

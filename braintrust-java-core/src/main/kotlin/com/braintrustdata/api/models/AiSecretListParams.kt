@@ -98,6 +98,7 @@ private constructor(
 
         @JvmStatic fun none(): AiSecretListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [AiSecretListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
