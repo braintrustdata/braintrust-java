@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Organization
 import com.braintrustdata.api.models.OrganizationDeleteParams
 import com.braintrustdata.api.models.OrganizationListPage
@@ -12,8 +13,14 @@ import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.blocking.organizations.MemberService
+import com.google.errorprone.annotations.MustBeClosed
 
 interface OrganizationService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     fun members(): MemberService
 
@@ -58,4 +65,64 @@ interface OrganizationService {
         params: OrganizationDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Organization
+
+    /**
+     * A view of [OrganizationService] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        fun members(): MemberService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /v1/organization/{organization_id}`, but is
+         * otherwise the same as [OrganizationService.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: OrganizationRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Organization>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/organization/{organization_id}`, but is
+         * otherwise the same as [OrganizationService.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: OrganizationUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Organization>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
+         * [OrganizationService.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: OrganizationListParams = OrganizationListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<OrganizationListPage>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
+         * [OrganizationService.list].
+         */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<OrganizationListPage> =
+            list(OrganizationListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/organization/{organization_id}`, but is
+         * otherwise the same as [OrganizationService.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: OrganizationDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Organization>
+    }
 }

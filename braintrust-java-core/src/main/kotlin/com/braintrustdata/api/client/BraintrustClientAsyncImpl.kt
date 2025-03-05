@@ -56,6 +56,10 @@ class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : Brai
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: BraintrustClient by lazy { BraintrustClientImpl(clientOptions) }
 
+    private val withRawResponse: BraintrustClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val topLevel: TopLevelServiceAsync by lazy {
         TopLevelServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -124,6 +128,8 @@ class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : Brai
 
     override fun sync(): BraintrustClient = sync
 
+    override fun withRawResponse(): BraintrustClientAsync.WithRawResponse = withRawResponse
+
     override fun topLevel(): TopLevelServiceAsync = topLevel
 
     override fun projects(): ProjectServiceAsync = projects
@@ -163,4 +169,122 @@ class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : Brai
     override fun evals(): EvalServiceAsync = evals
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        BraintrustClientAsync.WithRawResponse {
+
+        private val topLevel: TopLevelServiceAsync.WithRawResponse by lazy {
+            TopLevelServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val projects: ProjectServiceAsync.WithRawResponse by lazy {
+            ProjectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val experiments: ExperimentServiceAsync.WithRawResponse by lazy {
+            ExperimentServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val datasets: DatasetServiceAsync.WithRawResponse by lazy {
+            DatasetServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val prompts: PromptServiceAsync.WithRawResponse by lazy {
+            PromptServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val roles: RoleServiceAsync.WithRawResponse by lazy {
+            RoleServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val groups: GroupServiceAsync.WithRawResponse by lazy {
+            GroupServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val acls: AclServiceAsync.WithRawResponse by lazy {
+            AclServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val users: UserServiceAsync.WithRawResponse by lazy {
+            UserServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val projectScores: ProjectScoreServiceAsync.WithRawResponse by lazy {
+            ProjectScoreServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val projectTags: ProjectTagServiceAsync.WithRawResponse by lazy {
+            ProjectTagServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val spanIframes: SpanIframeServiceAsync.WithRawResponse by lazy {
+            SpanIframeServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val functions: FunctionServiceAsync.WithRawResponse by lazy {
+            FunctionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val views: ViewServiceAsync.WithRawResponse by lazy {
+            ViewServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val organizations: OrganizationServiceAsync.WithRawResponse by lazy {
+            OrganizationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val apiKeys: ApiKeyServiceAsync.WithRawResponse by lazy {
+            ApiKeyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val aiSecrets: AiSecretServiceAsync.WithRawResponse by lazy {
+            AiSecretServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val envVars: EnvVarServiceAsync.WithRawResponse by lazy {
+            EnvVarServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val evals: EvalServiceAsync.WithRawResponse by lazy {
+            EvalServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun topLevel(): TopLevelServiceAsync.WithRawResponse = topLevel
+
+        override fun projects(): ProjectServiceAsync.WithRawResponse = projects
+
+        override fun experiments(): ExperimentServiceAsync.WithRawResponse = experiments
+
+        override fun datasets(): DatasetServiceAsync.WithRawResponse = datasets
+
+        override fun prompts(): PromptServiceAsync.WithRawResponse = prompts
+
+        override fun roles(): RoleServiceAsync.WithRawResponse = roles
+
+        override fun groups(): GroupServiceAsync.WithRawResponse = groups
+
+        override fun acls(): AclServiceAsync.WithRawResponse = acls
+
+        override fun users(): UserServiceAsync.WithRawResponse = users
+
+        override fun projectScores(): ProjectScoreServiceAsync.WithRawResponse = projectScores
+
+        override fun projectTags(): ProjectTagServiceAsync.WithRawResponse = projectTags
+
+        override fun spanIframes(): SpanIframeServiceAsync.WithRawResponse = spanIframes
+
+        override fun functions(): FunctionServiceAsync.WithRawResponse = functions
+
+        override fun views(): ViewServiceAsync.WithRawResponse = views
+
+        override fun organizations(): OrganizationServiceAsync.WithRawResponse = organizations
+
+        override fun apiKeys(): ApiKeyServiceAsync.WithRawResponse = apiKeys
+
+        override fun aiSecrets(): AiSecretServiceAsync.WithRawResponse = aiSecrets
+
+        override fun envVars(): EnvVarServiceAsync.WithRawResponse = envVars
+
+        override fun evals(): EvalServiceAsync.WithRawResponse = evals
+    }
 }

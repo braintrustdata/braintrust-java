@@ -5,10 +5,17 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.SummarizeExperimentResponse
+import com.google.errorprone.annotations.MustBeClosed
 
 interface EvalService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Launch an evaluation. This is the API-equivalent of the `Eval` function that is built into
@@ -22,4 +29,19 @@ interface EvalService {
         params: EvalCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SummarizeExperimentResponse
+
+    /** A view of [EvalService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/eval`, but is otherwise the same as
+         * [EvalService.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: EvalCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SummarizeExperimentResponse>
+    }
 }

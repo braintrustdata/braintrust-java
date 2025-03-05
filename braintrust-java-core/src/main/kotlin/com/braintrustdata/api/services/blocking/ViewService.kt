@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.View
 import com.braintrustdata.api.models.ViewCreateParams
 import com.braintrustdata.api.models.ViewDeleteParams
@@ -13,8 +14,14 @@ import com.braintrustdata.api.models.ViewListParams
 import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
+import com.google.errorprone.annotations.MustBeClosed
 
 interface ViewService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new view. If there is an existing view with the same name as the one specified in
@@ -70,4 +77,74 @@ interface ViewService {
         params: ViewReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): View
+
+    /** A view of [ViewService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/view`, but is otherwise the same as
+         * [ViewService.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: ViewCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/view/{view_id}`, but is otherwise the same as
+         * [ViewService.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: ViewRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/view/{view_id}`, but is otherwise the same as
+         * [ViewService.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: ViewUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/view`, but is otherwise the same as
+         * [ViewService.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: ViewListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ViewListPage>
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/view/{view_id}`, but is otherwise the same as
+         * [ViewService.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: ViewDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View>
+
+        /**
+         * Returns a raw HTTP response for `put /v1/view`, but is otherwise the same as
+         * [ViewService.replace].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: ViewReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View>
+    }
 }

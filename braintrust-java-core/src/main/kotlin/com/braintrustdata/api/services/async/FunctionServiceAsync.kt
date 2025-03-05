@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Function
 import com.braintrustdata.api.models.FunctionCreateParams
 import com.braintrustdata.api.models.FunctionDeleteParams
@@ -15,10 +16,16 @@ import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
+import com.google.errorprone.annotations.MustBeClosed
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
 interface FunctionServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new function. If there is an existing function in the project with the same slug as
@@ -89,4 +96,97 @@ interface FunctionServiceAsync {
         params: FunctionReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
+
+    /**
+     * A view of [FunctionServiceAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/function`, but is otherwise the same as
+         * [FunctionServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: FunctionCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/function/{function_id}`, but is otherwise the
+         * same as [FunctionServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: FunctionRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/function/{function_id}`, but is otherwise the
+         * same as [FunctionServiceAsync.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: FunctionUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/function`, but is otherwise the same as
+         * [FunctionServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: FunctionListParams = FunctionListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/function`, but is otherwise the same as
+         * [FunctionServiceAsync.list].
+         */
+        @MustBeClosed
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
+            list(FunctionListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/function/{function_id}`, but is otherwise the
+         * same as [FunctionServiceAsync.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: FunctionDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
+
+        /**
+         * Returns a raw HTTP response for `post /v1/function/{function_id}/invoke`, but is
+         * otherwise the same as [FunctionServiceAsync.invoke].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun invoke(
+            params: FunctionInvokeParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>>
+
+        /**
+         * Returns a raw HTTP response for `put /v1/function`, but is otherwise the same as
+         * [FunctionServiceAsync.replace].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: FunctionReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
+    }
 }

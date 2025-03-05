@@ -56,6 +56,10 @@ class BraintrustClientImpl(private val clientOptions: ClientOptions) : Braintrus
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val async: BraintrustClientAsync by lazy { BraintrustClientAsyncImpl(clientOptions) }
 
+    private val withRawResponse: BraintrustClient.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val topLevel: TopLevelService by lazy {
         TopLevelServiceImpl(clientOptionsWithUserAgent)
     }
@@ -112,6 +116,8 @@ class BraintrustClientImpl(private val clientOptions: ClientOptions) : Braintrus
 
     override fun async(): BraintrustClientAsync = async
 
+    override fun withRawResponse(): BraintrustClient.WithRawResponse = withRawResponse
+
     override fun topLevel(): TopLevelService = topLevel
 
     override fun projects(): ProjectService = projects
@@ -151,4 +157,122 @@ class BraintrustClientImpl(private val clientOptions: ClientOptions) : Braintrus
     override fun evals(): EvalService = evals
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        BraintrustClient.WithRawResponse {
+
+        private val topLevel: TopLevelService.WithRawResponse by lazy {
+            TopLevelServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val projects: ProjectService.WithRawResponse by lazy {
+            ProjectServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val experiments: ExperimentService.WithRawResponse by lazy {
+            ExperimentServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val datasets: DatasetService.WithRawResponse by lazy {
+            DatasetServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val prompts: PromptService.WithRawResponse by lazy {
+            PromptServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val roles: RoleService.WithRawResponse by lazy {
+            RoleServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val groups: GroupService.WithRawResponse by lazy {
+            GroupServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val acls: AclService.WithRawResponse by lazy {
+            AclServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val users: UserService.WithRawResponse by lazy {
+            UserServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val projectScores: ProjectScoreService.WithRawResponse by lazy {
+            ProjectScoreServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val projectTags: ProjectTagService.WithRawResponse by lazy {
+            ProjectTagServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val spanIframes: SpanIframeService.WithRawResponse by lazy {
+            SpanIframeServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val functions: FunctionService.WithRawResponse by lazy {
+            FunctionServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val views: ViewService.WithRawResponse by lazy {
+            ViewServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val organizations: OrganizationService.WithRawResponse by lazy {
+            OrganizationServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val apiKeys: ApiKeyService.WithRawResponse by lazy {
+            ApiKeyServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val aiSecrets: AiSecretService.WithRawResponse by lazy {
+            AiSecretServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val envVars: EnvVarService.WithRawResponse by lazy {
+            EnvVarServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val evals: EvalService.WithRawResponse by lazy {
+            EvalServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun topLevel(): TopLevelService.WithRawResponse = topLevel
+
+        override fun projects(): ProjectService.WithRawResponse = projects
+
+        override fun experiments(): ExperimentService.WithRawResponse = experiments
+
+        override fun datasets(): DatasetService.WithRawResponse = datasets
+
+        override fun prompts(): PromptService.WithRawResponse = prompts
+
+        override fun roles(): RoleService.WithRawResponse = roles
+
+        override fun groups(): GroupService.WithRawResponse = groups
+
+        override fun acls(): AclService.WithRawResponse = acls
+
+        override fun users(): UserService.WithRawResponse = users
+
+        override fun projectScores(): ProjectScoreService.WithRawResponse = projectScores
+
+        override fun projectTags(): ProjectTagService.WithRawResponse = projectTags
+
+        override fun spanIframes(): SpanIframeService.WithRawResponse = spanIframes
+
+        override fun functions(): FunctionService.WithRawResponse = functions
+
+        override fun views(): ViewService.WithRawResponse = views
+
+        override fun organizations(): OrganizationService.WithRawResponse = organizations
+
+        override fun apiKeys(): ApiKeyService.WithRawResponse = apiKeys
+
+        override fun aiSecrets(): AiSecretService.WithRawResponse = aiSecrets
+
+        override fun envVars(): EnvVarService.WithRawResponse = envVars
+
+        override fun evals(): EvalService.WithRawResponse = evals
+    }
 }
