@@ -32,6 +32,7 @@ class TopLevelServiceImpl internal constructor(private val clientOptions: Client
                 .addPathSegments("v1")
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response.use { helloWorldHandler.handle(it) }
     }
