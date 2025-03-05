@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.immutableEmptyMap
@@ -585,14 +586,8 @@ private constructor(
 
                 fun addStop(stop: String) = apply {
                     this.stop =
-                        (this.stop ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(stop)
+                        (this.stop ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("stop", it).add(stop)
                         }
                 }
 
@@ -2908,14 +2903,8 @@ private constructor(
 
                 fun addStopSequence(stopSequence: String) = apply {
                     stopSequences =
-                        (stopSequences ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(stopSequence)
+                        (stopSequences ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("stopSequences", it).add(stopSequence)
                         }
                 }
 

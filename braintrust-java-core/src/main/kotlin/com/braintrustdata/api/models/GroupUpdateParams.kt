@@ -8,6 +8,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -233,14 +234,8 @@ private constructor(
             /** A list of group IDs to add to the group's inheriting-from set */
             fun addAddMemberGroup(addMemberGroup: String) = apply {
                 addMemberGroups =
-                    (addMemberGroups ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(addMemberGroup)
+                    (addMemberGroups ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("addMemberGroups", it).add(addMemberGroup)
                     }
             }
 
@@ -260,14 +255,8 @@ private constructor(
             /** A list of user IDs to add to the group */
             fun addAddMemberUser(addMemberUser: String) = apply {
                 addMemberUsers =
-                    (addMemberUsers ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(addMemberUser)
+                    (addMemberUsers ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("addMemberUsers", it).add(addMemberUser)
                     }
             }
 
@@ -307,14 +296,8 @@ private constructor(
             /** A list of group IDs to remove from the group's inheriting-from set */
             fun addRemoveMemberGroup(removeMemberGroup: String) = apply {
                 removeMemberGroups =
-                    (removeMemberGroups ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(removeMemberGroup)
+                    (removeMemberGroups ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("removeMemberGroups", it).add(removeMemberGroup)
                     }
             }
 
@@ -334,14 +317,8 @@ private constructor(
             /** A list of user IDs to remove from the group */
             fun addRemoveMemberUser(removeMemberUser: String) = apply {
                 removeMemberUsers =
-                    (removeMemberUsers ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(removeMemberUser)
+                    (removeMemberUsers ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("removeMemberUsers", it).add(removeMemberUser)
                     }
             }
 

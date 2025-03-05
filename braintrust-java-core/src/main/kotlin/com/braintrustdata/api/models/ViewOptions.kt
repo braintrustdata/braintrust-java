@@ -7,6 +7,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -104,14 +105,8 @@ private constructor(
 
         fun addColumnOrder(columnOrder: String) = apply {
             this.columnOrder =
-                (this.columnOrder ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(columnOrder)
+                (this.columnOrder ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("columnOrder", it).add(columnOrder)
                 }
         }
 

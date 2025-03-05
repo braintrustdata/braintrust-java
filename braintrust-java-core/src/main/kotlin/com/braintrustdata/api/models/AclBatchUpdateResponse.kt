@@ -7,6 +7,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
@@ -154,14 +155,8 @@ private constructor(
          */
         fun addAddedAcl(addedAcl: Acl) = apply {
             addedAcls =
-                (addedAcls ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(addedAcl)
+                (addedAcls ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("addedAcls", it).add(addedAcl)
                 }
         }
 
@@ -203,14 +198,8 @@ private constructor(
          */
         fun addRemovedAcl(removedAcl: Acl) = apply {
             removedAcls =
-                (removedAcls ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(removedAcl)
+                (removedAcls ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("removedAcls", it).add(removedAcl)
                 }
         }
 
