@@ -39,6 +39,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [GroupRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .groupId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

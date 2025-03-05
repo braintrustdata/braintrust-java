@@ -39,6 +39,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectTagRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .projectTagId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -179,6 +179,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -367,6 +368,7 @@ private constructor(
 
         @JvmStatic fun none(): AclBatchUpdateParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [AclBatchUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -744,6 +746,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [AddAcl].
+             *
+             * The following fields are required:
+             * ```java
+             * .objectId()
+             * .objectType()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1530,6 +1541,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [RemoveAcl].
+             *
+             * The following fields are required:
+             * ```java
+             * .objectId()
+             * .objectType()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

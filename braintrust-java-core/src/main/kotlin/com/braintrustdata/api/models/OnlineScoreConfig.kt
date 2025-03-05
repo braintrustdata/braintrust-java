@@ -103,6 +103,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [OnlineScoreConfig].
+         *
+         * The following fields are required:
+         * ```java
+         * .samplingRate()
+         * .scorers()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -396,6 +405,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Function].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -608,6 +626,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Global].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 

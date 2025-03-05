@@ -177,6 +177,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Acl].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * ._objectOrgId()
+         * .objectId()
+         * .objectType()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

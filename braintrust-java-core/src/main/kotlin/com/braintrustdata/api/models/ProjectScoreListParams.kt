@@ -112,6 +112,7 @@ private constructor(
 
         @JvmStatic fun none(): ProjectScoreListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [ProjectScoreListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

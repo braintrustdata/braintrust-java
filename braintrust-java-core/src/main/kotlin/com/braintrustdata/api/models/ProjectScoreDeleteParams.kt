@@ -49,6 +49,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectScoreDeleteParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .projectScoreId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

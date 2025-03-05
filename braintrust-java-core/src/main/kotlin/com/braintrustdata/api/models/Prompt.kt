@@ -179,6 +179,20 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Prompt].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * ._xactId()
+         * .logId()
+         * .name()
+         * .orgId()
+         * .projectId()
+         * .slug()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -605,6 +619,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Metadata]. */
             @JvmStatic fun builder() = Builder()
         }
 

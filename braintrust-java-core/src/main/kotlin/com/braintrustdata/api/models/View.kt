@@ -146,6 +146,18 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [View].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .name()
+         * .objectId()
+         * .objectType()
+         * .viewType()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

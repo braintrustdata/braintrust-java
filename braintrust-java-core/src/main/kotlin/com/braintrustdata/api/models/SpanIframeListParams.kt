@@ -94,6 +94,7 @@ private constructor(
 
         @JvmStatic fun none(): SpanIframeListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [SpanIframeListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
