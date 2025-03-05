@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.immutableEmptyMap
@@ -142,14 +143,8 @@ private constructor(
         /** The list of scorers to use for online scoring */
         fun addScorer(scorer: Scorer) = apply {
             scorers =
-                (scorers ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(scorer)
+                (scorers ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("scorers", it).add(scorer)
                 }
         }
 
@@ -192,14 +187,8 @@ private constructor(
         /** Trigger online scoring on any spans with a name in this list */
         fun addApplyToSpanName(applyToSpanName: String) = apply {
             applyToSpanNames =
-                (applyToSpanNames ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(applyToSpanName)
+                (applyToSpanNames ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("applyToSpanNames", it).add(applyToSpanName)
                 }
         }
 

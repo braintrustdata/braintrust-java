@@ -7,6 +7,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -104,14 +105,8 @@ private constructor(
 
         fun addFilter(filter: JsonValue) = apply {
             this.filter =
-                (this.filter ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(filter)
+                (this.filter ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("filter", it).add(filter)
                 }
         }
 
@@ -125,14 +120,8 @@ private constructor(
 
         fun addMatch(match: JsonValue) = apply {
             this.match =
-                (this.match ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(match)
+                (this.match ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("match", it).add(match)
                 }
         }
 
@@ -146,14 +135,8 @@ private constructor(
 
         fun addSort(sort: JsonValue) = apply {
             this.sort =
-                (this.sort ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(sort)
+                (this.sort ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("sort", it).add(sort)
                 }
         }
 
@@ -167,15 +150,7 @@ private constructor(
 
         fun addTag(tag: JsonValue) = apply {
             this.tag =
-                (this.tag ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(tag)
-                }
+                (this.tag ?: JsonField.of(mutableListOf())).also { checkKnown("tag", it).add(tag) }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

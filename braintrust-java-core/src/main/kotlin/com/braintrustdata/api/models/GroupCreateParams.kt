@@ -8,6 +8,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -270,14 +271,8 @@ private constructor(
              */
             fun addMemberGroup(memberGroup: String) = apply {
                 memberGroups =
-                    (memberGroups ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(memberGroup)
+                    (memberGroups ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("memberGroups", it).add(memberGroup)
                     }
             }
 
@@ -297,14 +292,8 @@ private constructor(
             /** Ids of users which belong to this group */
             fun addMemberUser(memberUser: String) = apply {
                 memberUsers =
-                    (memberUsers ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(memberUser)
+                    (memberUsers ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("memberUsers", it).add(memberUser)
                     }
             }
 
