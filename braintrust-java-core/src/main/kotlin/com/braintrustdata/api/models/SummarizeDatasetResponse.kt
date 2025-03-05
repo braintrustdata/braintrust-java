@@ -100,6 +100,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SummarizeDatasetResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .datasetName()
+         * .datasetUrl()
+         * .projectName()
+         * .projectUrl()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

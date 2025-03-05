@@ -198,6 +198,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Experiment].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .name()
+         * .projectId()
+         * .public_()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -444,6 +455,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Metadata]. */
             @JvmStatic fun builder() = Builder()
         }
 

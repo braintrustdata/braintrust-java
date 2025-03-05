@@ -104,6 +104,7 @@ private constructor(
 
         @JvmStatic fun none(): ExperimentListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [ExperimentListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

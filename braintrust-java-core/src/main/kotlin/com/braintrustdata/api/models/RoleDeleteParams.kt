@@ -49,6 +49,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [RoleDeleteParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .roleId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

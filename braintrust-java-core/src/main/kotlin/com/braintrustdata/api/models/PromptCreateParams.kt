@@ -189,6 +189,16 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .name()
+             * .projectId()
+             * .slug()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -337,6 +347,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PromptCreateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .name()
+         * .projectId()
+         * .slug()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

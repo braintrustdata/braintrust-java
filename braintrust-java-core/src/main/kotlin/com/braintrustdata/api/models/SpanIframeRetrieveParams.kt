@@ -39,6 +39,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SpanIframeRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .spanIframeId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

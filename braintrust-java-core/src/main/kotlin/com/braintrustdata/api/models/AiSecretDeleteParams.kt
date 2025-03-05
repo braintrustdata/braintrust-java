@@ -49,6 +49,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AiSecretDeleteParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .aiSecretId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

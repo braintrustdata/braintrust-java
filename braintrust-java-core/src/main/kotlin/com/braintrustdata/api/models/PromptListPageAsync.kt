@@ -129,6 +129,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PromptListPageAsync]. */
             @JvmStatic fun builder() = Builder()
         }
 

@@ -73,6 +73,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [FetchDatasetEventsResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .events()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

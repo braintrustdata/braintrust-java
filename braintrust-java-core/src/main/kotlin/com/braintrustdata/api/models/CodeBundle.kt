@@ -90,6 +90,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CodeBundle].
+         *
+         * The following fields are required:
+         * ```java
+         * .bundleId()
+         * .location()
+         * .runtimeContext()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -355,6 +365,16 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Experiment].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .evalName()
+                 * .position()
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -591,6 +611,14 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Type].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .type()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -802,6 +830,15 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Scorer].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .index()
+                         * .type()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -1135,6 +1172,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Function].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .index()
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1348,6 +1394,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [RuntimeContext].
+             *
+             * The following fields are required:
+             * ```java
+             * .runtime()
+             * .version()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

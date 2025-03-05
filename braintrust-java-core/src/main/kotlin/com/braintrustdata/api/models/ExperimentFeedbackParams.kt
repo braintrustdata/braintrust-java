@@ -95,6 +95,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .feedback()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -174,6 +182,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ExperimentFeedbackParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .experimentId()
+         * .feedback()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

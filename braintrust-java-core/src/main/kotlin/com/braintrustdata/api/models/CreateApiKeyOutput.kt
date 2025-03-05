@@ -105,6 +105,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CreateApiKeyOutput].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .key()
+         * .name()
+         * .previewName()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

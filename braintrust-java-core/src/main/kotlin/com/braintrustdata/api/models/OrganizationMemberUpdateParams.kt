@@ -168,6 +168,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -310,6 +311,10 @@ private constructor(
 
         @JvmStatic fun none(): OrganizationMemberUpdateParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [OrganizationMemberUpdateParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -623,6 +628,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [InviteUsers]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -856,6 +862,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [RemoveUsers]. */
             @JvmStatic fun builder() = Builder()
         }
 
