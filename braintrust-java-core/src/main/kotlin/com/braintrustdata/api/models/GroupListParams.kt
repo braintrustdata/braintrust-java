@@ -94,6 +94,7 @@ private constructor(
 
         @JvmStatic fun none(): GroupListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [GroupListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

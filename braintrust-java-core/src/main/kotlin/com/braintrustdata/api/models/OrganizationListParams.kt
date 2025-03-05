@@ -89,6 +89,7 @@ private constructor(
 
         @JvmStatic fun none(): OrganizationListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [OrganizationListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

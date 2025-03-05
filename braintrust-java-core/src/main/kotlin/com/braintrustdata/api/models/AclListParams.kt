@@ -96,6 +96,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AclListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .objectId()
+         * .objectType()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

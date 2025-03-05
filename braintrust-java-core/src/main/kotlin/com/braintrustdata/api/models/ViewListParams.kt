@@ -106,6 +106,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ViewListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .objectId()
+         * .objectType()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

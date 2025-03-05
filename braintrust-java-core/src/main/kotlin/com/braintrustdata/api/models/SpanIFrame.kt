@@ -140,6 +140,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SpanIFrame].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .name()
+         * .projectId()
+         * .url()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

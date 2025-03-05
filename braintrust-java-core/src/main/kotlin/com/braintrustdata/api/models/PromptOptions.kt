@@ -77,6 +77,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PromptOptions]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -489,6 +490,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [OpenAIModelParams].
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -935,6 +939,14 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Function].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .name()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -1228,6 +1240,14 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [JsonObject].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .type()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -1440,6 +1460,15 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [JsonSchema].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .jsonSchema()
+                         * .type()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -1567,6 +1596,15 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerJsonSchema].
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .name()
+                             * ```
+                             */
                             @JvmStatic fun builder() = Builder()
                         }
 
@@ -1677,6 +1715,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [Schema].
+                                 */
                                 @JvmStatic fun builder() = Builder()
                             }
 
@@ -1907,6 +1949,14 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Text].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .type()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -2098,6 +2148,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [NullableVariant].
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -2452,6 +2506,15 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Function].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .function()
+                         * .type()
+                         * ```
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -2545,6 +2608,15 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerFunction].
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .name()
+                             * ```
+                             */
                             @JvmStatic fun builder() = Builder()
                         }
 
@@ -2848,6 +2920,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [AnthropicModelParams].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .maxTokens()
+                 * .temperature()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3048,6 +3129,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [GoogleModelParams].
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3203,6 +3287,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [WindowAiModelParams].
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -3322,6 +3409,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [JsCompletionParams].
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 

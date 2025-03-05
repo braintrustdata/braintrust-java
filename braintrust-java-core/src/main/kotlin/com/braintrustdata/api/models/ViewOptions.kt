@@ -76,6 +76,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [ViewOptions]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -184,6 +185,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [ColumnSizing]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -262,6 +264,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [ColumnVisibility]. */
             @JvmStatic fun builder() = Builder()
         }
 

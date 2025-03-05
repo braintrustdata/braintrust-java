@@ -99,6 +99,18 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [MetricSummary].
+         *
+         * The following fields are required:
+         * ```java
+         * .improvements()
+         * .metric()
+         * .name()
+         * .regressions()
+         * .unit()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

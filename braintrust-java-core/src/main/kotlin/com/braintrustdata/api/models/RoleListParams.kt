@@ -94,6 +94,7 @@ private constructor(
 
         @JvmStatic fun none(): RoleListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [RoleListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

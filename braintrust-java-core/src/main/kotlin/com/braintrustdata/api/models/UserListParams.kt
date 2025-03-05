@@ -113,6 +113,7 @@ private constructor(
 
         @JvmStatic fun none(): UserListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [UserListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

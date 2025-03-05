@@ -107,6 +107,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Organization].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .name()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

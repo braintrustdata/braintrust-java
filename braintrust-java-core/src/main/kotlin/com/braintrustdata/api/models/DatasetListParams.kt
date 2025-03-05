@@ -104,6 +104,7 @@ private constructor(
 
         @JvmStatic fun none(): DatasetListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [DatasetListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

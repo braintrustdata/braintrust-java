@@ -122,6 +122,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SummarizeExperimentResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .experimentName()
+         * .experimentUrl()
+         * .projectName()
+         * .projectUrl()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -267,6 +278,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Metrics]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -346,6 +358,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Scores]. */
             @JvmStatic fun builder() = Builder()
         }
 

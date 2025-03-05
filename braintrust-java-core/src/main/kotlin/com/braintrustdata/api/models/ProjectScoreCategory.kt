@@ -58,6 +58,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectScoreCategory].
+         *
+         * The following fields are required:
+         * ```java
+         * .name()
+         * .value()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

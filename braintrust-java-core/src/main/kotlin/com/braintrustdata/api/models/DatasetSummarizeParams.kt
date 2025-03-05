@@ -49,6 +49,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [DatasetSummarizeParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .datasetId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

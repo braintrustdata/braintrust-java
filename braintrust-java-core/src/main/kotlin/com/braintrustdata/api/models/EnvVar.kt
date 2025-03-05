@@ -103,6 +103,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [EnvVar].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .name()
+         * .objectId()
+         * .objectType()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

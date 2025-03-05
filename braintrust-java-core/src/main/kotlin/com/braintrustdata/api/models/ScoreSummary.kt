@@ -89,6 +89,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ScoreSummary].
+         *
+         * The following fields are required:
+         * ```java
+         * .improvements()
+         * .name()
+         * .regressions()
+         * .score()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

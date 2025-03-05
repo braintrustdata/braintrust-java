@@ -74,6 +74,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [ViewDataSearch]. */
         @JvmStatic fun builder() = Builder()
     }
 
