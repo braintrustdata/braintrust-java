@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -252,14 +253,8 @@ private constructor(
             /** (permission, restrict_object_type) tuples which belong to this role */
             fun addMemberPermission(memberPermission: MemberPermission) = apply {
                 memberPermissions =
-                    (memberPermissions ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(memberPermission)
+                    (memberPermissions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("memberPermissions", it).add(memberPermission)
                     }
             }
 
@@ -299,14 +294,8 @@ private constructor(
              */
             fun addMemberRole(memberRole: String) = apply {
                 memberRoles =
-                    (memberRoles ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(memberRole)
+                    (memberRoles ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("memberRoles", it).add(memberRole)
                     }
             }
 

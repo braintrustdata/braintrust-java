@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -241,14 +242,8 @@ private constructor(
             /** A list of permissions to add to the role */
             fun addAddMemberPermission(addMemberPermission: AddMemberPermission) = apply {
                 addMemberPermissions =
-                    (addMemberPermissions ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(addMemberPermission)
+                    (addMemberPermissions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("addMemberPermissions", it).add(addMemberPermission)
                     }
             }
 
@@ -268,14 +263,8 @@ private constructor(
             /** A list of role IDs to add to the role's inheriting-from set */
             fun addAddMemberRole(addMemberRole: String) = apply {
                 addMemberRoles =
-                    (addMemberRoles ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(addMemberRole)
+                    (addMemberRoles ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("addMemberRoles", it).add(addMemberRole)
                     }
             }
 
@@ -318,14 +307,8 @@ private constructor(
             /** A list of permissions to remove from the role */
             fun addRemoveMemberPermission(removeMemberPermission: RemoveMemberPermission) = apply {
                 removeMemberPermissions =
-                    (removeMemberPermissions ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(removeMemberPermission)
+                    (removeMemberPermissions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("removeMemberPermissions", it).add(removeMemberPermission)
                     }
             }
 
@@ -345,14 +328,8 @@ private constructor(
             /** A list of role IDs to remove from the role's inheriting-from set */
             fun addRemoveMemberRole(removeMemberRole: String) = apply {
                 removeMemberRoles =
-                    (removeMemberRoles ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(removeMemberRole)
+                    (removeMemberRoles ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("removeMemberRoles", it).add(removeMemberRole)
                     }
             }
 

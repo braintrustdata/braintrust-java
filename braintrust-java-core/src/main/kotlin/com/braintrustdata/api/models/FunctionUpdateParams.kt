@@ -11,6 +11,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
@@ -263,15 +264,7 @@ private constructor(
             /** A list of tags for the prompt */
             fun addTag(tag: String) = apply {
                 tags =
-                    (tags ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(tag)
-                    }
+                    (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
