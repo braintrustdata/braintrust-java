@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.View
 import com.braintrustdata.api.models.ViewCreateParams
 import com.braintrustdata.api.models.ViewDeleteParams
@@ -13,9 +14,15 @@ import com.braintrustdata.api.models.ViewListParams
 import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
+import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ViewServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new view. If there is an existing view with the same name as the one specified in
@@ -71,4 +78,74 @@ interface ViewServiceAsync {
         params: ViewReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
+
+    /** A view of [ViewServiceAsync] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/view`, but is otherwise the same as
+         * [ViewServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: ViewCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<View>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/view/{view_id}`, but is otherwise the same as
+         * [ViewServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: ViewRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<View>>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/view/{view_id}`, but is otherwise the same as
+         * [ViewServiceAsync.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: ViewUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<View>>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/view`, but is otherwise the same as
+         * [ViewServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: ViewListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ViewListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/view/{view_id}`, but is otherwise the same as
+         * [ViewServiceAsync.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: ViewDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<View>>
+
+        /**
+         * Returns a raw HTTP response for `put /v1/view`, but is otherwise the same as
+         * [ViewServiceAsync.replace].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: ViewReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<View>>
+    }
 }

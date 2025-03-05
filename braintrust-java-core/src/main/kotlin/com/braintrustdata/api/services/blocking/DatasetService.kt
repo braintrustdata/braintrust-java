@@ -5,6 +5,7 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Dataset
 import com.braintrustdata.api.models.DatasetCreateParams
 import com.braintrustdata.api.models.DatasetDeleteParams
@@ -21,8 +22,14 @@ import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchDatasetEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeDatasetResponse
+import com.google.errorprone.annotations.MustBeClosed
 
 interface DatasetService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Create a new dataset. If there is an existing dataset in the project with the same name as
@@ -118,4 +125,126 @@ interface DatasetService {
         params: DatasetSummarizeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SummarizeDatasetResponse
+
+    /** A view of [DatasetService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /v1/dataset`, but is otherwise the same as
+         * [DatasetService.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: DatasetCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Dataset>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/dataset/{dataset_id}`, but is otherwise the same
+         * as [DatasetService.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: DatasetRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Dataset>
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/dataset/{dataset_id}`, but is otherwise the
+         * same as [DatasetService.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: DatasetUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Dataset>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/dataset`, but is otherwise the same as
+         * [DatasetService.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: DatasetListParams = DatasetListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DatasetListPage>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/dataset`, but is otherwise the same as
+         * [DatasetService.list].
+         */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<DatasetListPage> =
+            list(DatasetListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/dataset/{dataset_id}`, but is otherwise the
+         * same as [DatasetService.delete].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: DatasetDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Dataset>
+
+        /**
+         * Returns a raw HTTP response for `post /v1/dataset/{dataset_id}/feedback`, but is
+         * otherwise the same as [DatasetService.feedback].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun feedback(
+            params: DatasetFeedbackParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FeedbackResponseSchema>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/dataset/{dataset_id}/fetch`, but is otherwise
+         * the same as [DatasetService.fetch].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun fetch(
+            params: DatasetFetchParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FetchDatasetEventsResponse>
+
+        /**
+         * Returns a raw HTTP response for `post /v1/dataset/{dataset_id}/fetch`, but is otherwise
+         * the same as [DatasetService.fetchPost].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun fetchPost(
+            params: DatasetFetchPostParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FetchDatasetEventsResponse>
+
+        /**
+         * Returns a raw HTTP response for `post /v1/dataset/{dataset_id}/insert`, but is otherwise
+         * the same as [DatasetService.insert].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun insert(
+            params: DatasetInsertParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<InsertEventsResponse>
+
+        /**
+         * Returns a raw HTTP response for `get /v1/dataset/{dataset_id}/summarize`, but is
+         * otherwise the same as [DatasetService.summarize].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun summarize(
+            params: DatasetSummarizeParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SummarizeDatasetResponse>
+    }
 }
