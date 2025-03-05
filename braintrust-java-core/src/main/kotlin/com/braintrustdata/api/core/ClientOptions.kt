@@ -23,8 +23,10 @@ private constructor(
     @get:JvmName("responseValidation") val responseValidation: Boolean,
     @get:JvmName("timeout") val timeout: Timeout,
     @get:JvmName("maxRetries") val maxRetries: Int,
-    @get:JvmName("apiKey") val apiKey: String?,
+    private val apiKey: String?,
 ) {
+
+    fun apiKey(): Optional<String> = Optional.ofNullable(apiKey)
 
     fun toBuilder() = Builder().from(this)
 
