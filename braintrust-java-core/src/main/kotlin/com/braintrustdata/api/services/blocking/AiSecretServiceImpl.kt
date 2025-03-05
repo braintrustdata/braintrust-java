@@ -11,8 +11,8 @@ import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
+import com.braintrustdata.api.core.http.json
 import com.braintrustdata.api.core.http.parseable
-import com.braintrustdata.api.core.json
 import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.AISecret

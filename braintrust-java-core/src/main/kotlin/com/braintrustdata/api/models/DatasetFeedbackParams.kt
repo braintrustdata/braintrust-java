@@ -8,6 +8,7 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -120,14 +121,8 @@ private constructor(
             /** A list of dataset feedback items */
             fun addFeedback(feedback: FeedbackDatasetItem) = apply {
                 this.feedback =
-                    (this.feedback ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(feedback)
+                    (this.feedback ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("feedback", it).add(feedback)
                     }
             }
 

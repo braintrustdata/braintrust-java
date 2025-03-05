@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
+import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.immutableEmptyMap
@@ -162,14 +163,8 @@ private constructor(
 
         fun addToolFunction(toolFunction: ToolFunction) = apply {
             toolFunctions =
-                (toolFunctions ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(toolFunction)
+                (toolFunctions ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("toolFunctions", it).add(toolFunction)
                 }
         }
 
@@ -1088,14 +1083,8 @@ private constructor(
 
                 fun addMessage(message: Message) = apply {
                     messages =
-                        (messages ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(message)
+                        (messages ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("messages", it).add(message)
                         }
                 }
 
@@ -2321,14 +2310,8 @@ private constructor(
 
                         fun addToolCall(toolCall: ChatCompletionMessageToolCall) = apply {
                             toolCalls =
-                                (toolCalls ?: JsonField.of(mutableListOf())).apply {
-                                    asKnown()
-                                        .orElseThrow {
-                                            IllegalStateException(
-                                                "Field was set to non-list type: ${javaClass.simpleName}"
-                                            )
-                                        }
-                                        .add(toolCall)
+                                (toolCalls ?: JsonField.of(mutableListOf())).also {
+                                    checkKnown("toolCalls", it).add(toolCall)
                                 }
                         }
 
