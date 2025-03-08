@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -25,7 +23,10 @@ interface EvalServiceAsync {
      * results along with a link to the experiment. To learn more about evals, see the
      * [Evals guide](https://www.braintrust.dev/docs/guides/evals).
      */
-    @JvmOverloads
+    fun create(params: EvalCreateParams): CompletableFuture<SummarizeExperimentResponse> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: EvalCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -38,7 +39,13 @@ interface EvalServiceAsync {
          * Returns a raw HTTP response for `post /v1/eval`, but is otherwise the same as
          * [EvalServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: EvalCreateParams
+        ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: EvalCreateParams,

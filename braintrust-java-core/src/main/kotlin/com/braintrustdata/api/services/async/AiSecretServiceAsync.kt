@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -29,14 +27,20 @@ interface AiSecretServiceAsync {
      * Create a new ai_secret. If there is an existing ai_secret with the same name as the one
      * specified in the request, will return the existing ai_secret unmodified
      */
-    @JvmOverloads
+    fun create(params: AiSecretCreateParams): CompletableFuture<AISecret> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: AiSecretCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /** Get an ai_secret object by its id */
-    @JvmOverloads
+    fun retrieve(params: AiSecretRetrieveParams): CompletableFuture<AISecret> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: AiSecretRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,7 +51,10 @@ interface AiSecretServiceAsync {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: AiSecretUpdateParams): CompletableFuture<AISecret> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: AiSecretUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -57,28 +64,38 @@ interface AiSecretServiceAsync {
      * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
      * recently-created ai_secrets coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<AiSecretListPageAsync> = list(AiSecretListParams.none())
+
+    /** @see [list] */
     fun list(
         params: AiSecretListParams = AiSecretListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AiSecretListPageAsync>
 
-    /**
-     * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
-     * recently-created ai_secrets coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: AiSecretListParams = AiSecretListParams.none()
+    ): CompletableFuture<AiSecretListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<AiSecretListPageAsync> =
         list(AiSecretListParams.none(), requestOptions)
 
     /** Delete an ai_secret object by its id */
-    @JvmOverloads
+    fun delete(params: AiSecretDeleteParams): CompletableFuture<AISecret> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: AiSecretDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
     /** Delete a single ai_secret */
-    @JvmOverloads
+    fun findAndDelete(params: AiSecretFindAndDeleteParams): CompletableFuture<AISecret> =
+        findAndDelete(params, RequestOptions.none())
+
+    /** @see [findAndDelete] */
     fun findAndDelete(
         params: AiSecretFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -88,7 +105,10 @@ interface AiSecretServiceAsync {
      * Create or replace ai_secret. If there is an existing ai_secret with the same name as the one
      * specified in the request, will replace the existing ai_secret with the provided fields
      */
-    @JvmOverloads
+    fun replace(params: AiSecretReplaceParams): CompletableFuture<AISecret> =
+        replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: AiSecretReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -103,7 +123,11 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `post /v1/ai_secret`, but is otherwise the same as
          * [AiSecretServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: AiSecretCreateParams): CompletableFuture<HttpResponseFor<AISecret>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: AiSecretCreateParams,
@@ -114,7 +138,11 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `get /v1/ai_secret/{ai_secret_id}`, but is otherwise the
          * same as [AiSecretServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: AiSecretRetrieveParams): CompletableFuture<HttpResponseFor<AISecret>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: AiSecretRetrieveParams,
@@ -125,7 +153,11 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `patch /v1/ai_secret/{ai_secret_id}`, but is otherwise
          * the same as [AiSecretServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: AiSecretUpdateParams): CompletableFuture<HttpResponseFor<AISecret>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: AiSecretUpdateParams,
@@ -136,17 +168,25 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `get /v1/ai_secret`, but is otherwise the same as
          * [AiSecretServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>> =
+            list(AiSecretListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: AiSecretListParams = AiSecretListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/ai_secret`, but is otherwise the same as
-         * [AiSecretServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: AiSecretListParams = AiSecretListParams.none()
+        ): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -157,7 +197,11 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `delete /v1/ai_secret/{ai_secret_id}`, but is otherwise
          * the same as [AiSecretServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: AiSecretDeleteParams): CompletableFuture<HttpResponseFor<AISecret>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: AiSecretDeleteParams,
@@ -168,7 +212,13 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `delete /v1/ai_secret`, but is otherwise the same as
          * [AiSecretServiceAsync.findAndDelete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun findAndDelete(
+            params: AiSecretFindAndDeleteParams
+        ): CompletableFuture<HttpResponseFor<AISecret>> =
+            findAndDelete(params, RequestOptions.none())
+
+        /** @see [findAndDelete] */
         @MustBeClosed
         fun findAndDelete(
             params: AiSecretFindAndDeleteParams,
@@ -179,7 +229,11 @@ interface AiSecretServiceAsync {
          * Returns a raw HTTP response for `put /v1/ai_secret`, but is otherwise the same as
          * [AiSecretServiceAsync.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: AiSecretReplaceParams): CompletableFuture<HttpResponseFor<AISecret>> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: AiSecretReplaceParams,

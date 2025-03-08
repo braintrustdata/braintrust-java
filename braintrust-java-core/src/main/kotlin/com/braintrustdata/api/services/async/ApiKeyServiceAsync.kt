@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -27,14 +25,20 @@ interface ApiKeyServiceAsync {
      * Create a new api_key. It is possible to have multiple API keys with the same name. There is
      * no de-duplication
      */
-    @JvmOverloads
+    fun create(params: ApiKeyCreateParams): CompletableFuture<CreateApiKeyOutput> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: ApiKeyCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CreateApiKeyOutput>
 
     /** Get an api_key object by its id */
-    @JvmOverloads
+    fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<ApiKey> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: ApiKeyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -44,21 +48,28 @@ interface ApiKeyServiceAsync {
      * List out all api_keys. The api_keys are sorted by creation date, with the most
      * recently-created api_keys coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<ApiKeyListPageAsync> = list(ApiKeyListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ApiKeyListParams = ApiKeyListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKeyListPageAsync>
 
-    /**
-     * List out all api_keys. The api_keys are sorted by creation date, with the most
-     * recently-created api_keys coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: ApiKeyListParams = ApiKeyListParams.none()
+    ): CompletableFuture<ApiKeyListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<ApiKeyListPageAsync> =
         list(ApiKeyListParams.none(), requestOptions)
 
     /** Delete an api_key object by its id */
-    @JvmOverloads
+    fun delete(params: ApiKeyDeleteParams): CompletableFuture<ApiKey> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: ApiKeyDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -73,7 +84,13 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `post /v1/api_key`, but is otherwise the same as
          * [ApiKeyServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: ApiKeyCreateParams
+        ): CompletableFuture<HttpResponseFor<CreateApiKeyOutput>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: ApiKeyCreateParams,
@@ -84,7 +101,11 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `get /v1/api_key/{api_key_id}`, but is otherwise the same
          * as [ApiKeyServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<HttpResponseFor<ApiKey>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: ApiKeyRetrieveParams,
@@ -95,17 +116,25 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `get /v1/api_key`, but is otherwise the same as
          * [ApiKeyServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
+            list(ApiKeyListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ApiKeyListParams = ApiKeyListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/api_key`, but is otherwise the same as
-         * [ApiKeyServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ApiKeyListParams = ApiKeyListParams.none()
+        ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -116,7 +145,11 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `delete /v1/api_key/{api_key_id}`, but is otherwise the
          * same as [ApiKeyServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: ApiKeyDeleteParams): CompletableFuture<HttpResponseFor<ApiKey>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: ApiKeyDeleteParams,

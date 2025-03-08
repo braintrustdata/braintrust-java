@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -17,13 +15,19 @@ interface TopLevelService {
     fun withRawResponse(): WithRawResponse
 
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
-    @JvmOverloads
+    fun helloWorld(): String = helloWorld(TopLevelHelloWorldParams.none())
+
+    /** @see [helloWorld] */
     fun helloWorld(
         params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
 
-    /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
+    /** @see [helloWorld] */
+    fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()): String =
+        helloWorld(params, RequestOptions.none())
+
+    /** @see [helloWorld] */
     fun helloWorld(requestOptions: RequestOptions): String =
         helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 
@@ -34,17 +38,23 @@ interface TopLevelService {
          * Returns a raw HTTP response for `get /v1`, but is otherwise the same as
          * [TopLevelService.helloWorld].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun helloWorld(): HttpResponseFor<String> = helloWorld(TopLevelHelloWorldParams.none())
+
+        /** @see [helloWorld] */
         @MustBeClosed
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String>
 
-        /**
-         * Returns a raw HTTP response for `get /v1`, but is otherwise the same as
-         * [TopLevelService.helloWorld].
-         */
+        /** @see [helloWorld] */
+        @MustBeClosed
+        fun helloWorld(
+            params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
+        ): HttpResponseFor<String> = helloWorld(params, RequestOptions.none())
+
+        /** @see [helloWorld] */
         @MustBeClosed
         fun helloWorld(requestOptions: RequestOptions): HttpResponseFor<String> =
             helloWorld(TopLevelHelloWorldParams.none(), requestOptions)

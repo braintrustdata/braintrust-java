@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -25,7 +23,10 @@ interface OrganizationService {
     fun members(): MemberService
 
     /** Get an organization object by its id */
-    @JvmOverloads
+    fun retrieve(params: OrganizationRetrieveParams): Organization =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: OrganizationRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -36,7 +37,10 @@ interface OrganizationService {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: OrganizationUpdateParams): Organization =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: OrganizationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,21 +50,27 @@ interface OrganizationService {
      * List out all organizations. The organizations are sorted by creation date, with the most
      * recently-created organizations coming first
      */
-    @JvmOverloads
+    fun list(): OrganizationListPage = list(OrganizationListParams.none())
+
+    /** @see [list] */
     fun list(
         params: OrganizationListParams = OrganizationListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): OrganizationListPage
 
-    /**
-     * List out all organizations. The organizations are sorted by creation date, with the most
-     * recently-created organizations coming first
-     */
+    /** @see [list] */
+    fun list(params: OrganizationListParams = OrganizationListParams.none()): OrganizationListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): OrganizationListPage =
         list(OrganizationListParams.none(), requestOptions)
 
     /** Delete an organization object by its id */
-    @JvmOverloads
+    fun delete(params: OrganizationDeleteParams): Organization =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: OrganizationDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -77,7 +87,11 @@ interface OrganizationService {
          * Returns a raw HTTP response for `get /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: OrganizationRetrieveParams): HttpResponseFor<Organization> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: OrganizationRetrieveParams,
@@ -88,7 +102,11 @@ interface OrganizationService {
          * Returns a raw HTTP response for `patch /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: OrganizationUpdateParams): HttpResponseFor<Organization> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: OrganizationUpdateParams,
@@ -99,17 +117,23 @@ interface OrganizationService {
          * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
          * [OrganizationService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): HttpResponseFor<OrganizationListPage> = list(OrganizationListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: OrganizationListParams = OrganizationListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<OrganizationListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
-         * [OrganizationService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: OrganizationListParams = OrganizationListParams.none()
+        ): HttpResponseFor<OrganizationListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<OrganizationListPage> =
             list(OrganizationListParams.none(), requestOptions)
@@ -118,7 +142,11 @@ interface OrganizationService {
          * Returns a raw HTTP response for `delete /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationService.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: OrganizationDeleteParams): HttpResponseFor<Organization> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: OrganizationDeleteParams,
