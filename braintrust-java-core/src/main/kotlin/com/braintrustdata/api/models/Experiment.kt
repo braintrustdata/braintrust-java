@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Experiment
@@ -284,7 +285,7 @@ private constructor(
         fun baseExpId(baseExpId: String?) = baseExpId(JsonField.ofNullable(baseExpId))
 
         /** Id of default base experiment to compare against when viewing this experiment */
-        fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.orElse(null))
+        fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.getOrNull())
 
         /** Id of default base experiment to compare against when viewing this experiment */
         fun baseExpId(baseExpId: JsonField<String>) = apply { this.baseExpId = baseExpId }
@@ -293,7 +294,7 @@ private constructor(
         fun commit(commit: String?) = commit(JsonField.ofNullable(commit))
 
         /** Commit, taken directly from `repo_info.commit` */
-        fun commit(commit: Optional<String>) = commit(commit.orElse(null))
+        fun commit(commit: Optional<String>) = commit(commit.getOrNull())
 
         /** Commit, taken directly from `repo_info.commit` */
         fun commit(commit: JsonField<String>) = apply { this.commit = commit }
@@ -302,7 +303,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of experiment creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of experiment creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -315,7 +316,7 @@ private constructor(
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
          */
-        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.orElse(null))
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
@@ -334,7 +335,7 @@ private constructor(
          * reproduce the experiment after the dataset has been modified.
          */
         fun datasetVersion(datasetVersion: Optional<String>) =
-            datasetVersion(datasetVersion.orElse(null))
+            datasetVersion(datasetVersion.getOrNull())
 
         /**
          * Version number of the linked dataset the experiment was run against. This can be used to
@@ -348,7 +349,7 @@ private constructor(
         fun deletedAt(deletedAt: OffsetDateTime?) = deletedAt(JsonField.ofNullable(deletedAt))
 
         /** Date of experiment deletion, or null if the experiment is still active */
-        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.orElse(null))
+        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.getOrNull())
 
         /** Date of experiment deletion, or null if the experiment is still active */
         fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
@@ -357,7 +358,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the experiment */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the experiment */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -366,7 +367,7 @@ private constructor(
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
         /** User-controlled metadata about the experiment */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /** User-controlled metadata about the experiment */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
@@ -375,7 +376,7 @@ private constructor(
         fun repoInfo(repoInfo: RepoInfo?) = repoInfo(JsonField.ofNullable(repoInfo))
 
         /** Metadata about the state of the repo when the experiment was created */
-        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.getOrNull())
 
         /** Metadata about the state of the repo when the experiment was created */
         fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { this.repoInfo = repoInfo }
@@ -384,7 +385,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Identifies the user who created the experiment */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the experiment */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }

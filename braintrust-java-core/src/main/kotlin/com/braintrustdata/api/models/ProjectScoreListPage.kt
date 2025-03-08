@@ -18,6 +18,7 @@ import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all project_scores. The project_scores are sorted by creation date, with the most
@@ -172,7 +173,7 @@ private constructor(
                 while (index < page.objects().size) {
                     yield(page.objects()[index++])
                 }
-                page = page.getNextPage().orElse(null) ?: break
+                page = page.getNextPage().getOrNull() ?: break
                 index = 0
             }
         }

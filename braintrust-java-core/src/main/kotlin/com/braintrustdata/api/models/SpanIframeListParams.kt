@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all span_iframes. The span_iframes are sorted by creation date, with the most
@@ -139,7 +140,7 @@ private constructor(
          * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.orElse(null))
+        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -151,7 +152,7 @@ private constructor(
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
+        fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -172,21 +173,20 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Limit the number of objects to return */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Filter search results to within a particular organization */
         fun orgName(orgName: String?) = apply { this.orgName = orgName }
 
         /** Filter search results to within a particular organization */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /** Name of the span_iframe to search for */
         fun spanIframeName(spanIframeName: String?) = apply { this.spanIframeName = spanIframeName }
 
         /** Name of the span_iframe to search for */
         fun spanIframeName(spanIframeName: Optional<String>) =
-            spanIframeName(spanIframeName.orElse(null))
+            spanIframeName(spanIframeName.getOrNull())
 
         /**
          * Pagination cursor id.
@@ -205,7 +205,7 @@ private constructor(
          * `starting_after` and `ending_before`
          */
         fun startingAfter(startingAfter: Optional<String>) =
-            startingAfter(startingAfter.orElse(null))
+            startingAfter(startingAfter.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

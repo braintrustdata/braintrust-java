@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Metadata about the state of the repo when the experiment was created */
 @NoAutoDetect
@@ -176,7 +177,7 @@ private constructor(
         fun authorEmail(authorEmail: String?) = authorEmail(JsonField.ofNullable(authorEmail))
 
         /** Email of the author of the most recent commit */
-        fun authorEmail(authorEmail: Optional<String>) = authorEmail(authorEmail.orElse(null))
+        fun authorEmail(authorEmail: Optional<String>) = authorEmail(authorEmail.getOrNull())
 
         /** Email of the author of the most recent commit */
         fun authorEmail(authorEmail: JsonField<String>) = apply { this.authorEmail = authorEmail }
@@ -185,7 +186,7 @@ private constructor(
         fun authorName(authorName: String?) = authorName(JsonField.ofNullable(authorName))
 
         /** Name of the author of the most recent commit */
-        fun authorName(authorName: Optional<String>) = authorName(authorName.orElse(null))
+        fun authorName(authorName: Optional<String>) = authorName(authorName.getOrNull())
 
         /** Name of the author of the most recent commit */
         fun authorName(authorName: JsonField<String>) = apply { this.authorName = authorName }
@@ -194,7 +195,7 @@ private constructor(
         fun branch(branch: String?) = branch(JsonField.ofNullable(branch))
 
         /** Name of the branch the most recent commit belongs to */
-        fun branch(branch: Optional<String>) = branch(branch.orElse(null))
+        fun branch(branch: Optional<String>) = branch(branch.getOrNull())
 
         /** Name of the branch the most recent commit belongs to */
         fun branch(branch: JsonField<String>) = apply { this.branch = branch }
@@ -203,7 +204,7 @@ private constructor(
         fun commit(commit: String?) = commit(JsonField.ofNullable(commit))
 
         /** SHA of most recent commit */
-        fun commit(commit: Optional<String>) = commit(commit.orElse(null))
+        fun commit(commit: Optional<String>) = commit(commit.getOrNull())
 
         /** SHA of most recent commit */
         fun commit(commit: JsonField<String>) = apply { this.commit = commit }
@@ -214,7 +215,7 @@ private constructor(
 
         /** Most recent commit message */
         fun commitMessage(commitMessage: Optional<String>) =
-            commitMessage(commitMessage.orElse(null))
+            commitMessage(commitMessage.getOrNull())
 
         /** Most recent commit message */
         fun commitMessage(commitMessage: JsonField<String>) = apply {
@@ -225,7 +226,7 @@ private constructor(
         fun commitTime(commitTime: String?) = commitTime(JsonField.ofNullable(commitTime))
 
         /** Time of the most recent commit */
-        fun commitTime(commitTime: Optional<String>) = commitTime(commitTime.orElse(null))
+        fun commitTime(commitTime: Optional<String>) = commitTime(commitTime.getOrNull())
 
         /** Time of the most recent commit */
         fun commitTime(commitTime: JsonField<String>) = apply { this.commitTime = commitTime }
@@ -237,8 +238,7 @@ private constructor(
         fun dirty(dirty: Boolean) = dirty(dirty as Boolean?)
 
         /** Whether or not the repo had uncommitted changes when snapshotted */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun dirty(dirty: Optional<Boolean>) = dirty(dirty.orElse(null) as Boolean?)
+        fun dirty(dirty: Optional<Boolean>) = dirty(dirty.getOrNull())
 
         /** Whether or not the repo had uncommitted changes when snapshotted */
         fun dirty(dirty: JsonField<Boolean>) = apply { this.dirty = dirty }
@@ -253,7 +253,7 @@ private constructor(
          * If the repo was dirty when run, this includes the diff between the current state of the
          * repo and the most recent commit.
          */
-        fun gitDiff(gitDiff: Optional<String>) = gitDiff(gitDiff.orElse(null))
+        fun gitDiff(gitDiff: Optional<String>) = gitDiff(gitDiff.getOrNull())
 
         /**
          * If the repo was dirty when run, this includes the diff between the current state of the
@@ -265,7 +265,7 @@ private constructor(
         fun tag(tag: String?) = tag(JsonField.ofNullable(tag))
 
         /** Name of the tag on the most recent commit */
-        fun tag(tag: Optional<String>) = tag(tag.orElse(null))
+        fun tag(tag: Optional<String>) = tag(tag.getOrNull())
 
         /** Name of the tag on the most recent commit */
         fun tag(tag: JsonField<String>) = apply { this.tag = tag }

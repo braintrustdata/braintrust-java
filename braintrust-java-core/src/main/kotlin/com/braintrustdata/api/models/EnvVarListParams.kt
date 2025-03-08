@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all env_vars. The env_vars are sorted by creation date, with the most recently-created
@@ -111,7 +112,7 @@ private constructor(
         fun envVarName(envVarName: String?) = apply { this.envVarName = envVarName }
 
         /** Name of the env_var to search for */
-        fun envVarName(envVarName: Optional<String>) = envVarName(envVarName.orElse(null))
+        fun envVarName(envVarName: Optional<String>) = envVarName(envVarName.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -123,7 +124,7 @@ private constructor(
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
+        fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -144,20 +145,19 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Limit the number of objects to return */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** The id of the object the environment variable is scoped for */
         fun objectId(objectId: String?) = apply { this.objectId = objectId }
 
         /** The id of the object the environment variable is scoped for */
-        fun objectId(objectId: Optional<String>) = objectId(objectId.orElse(null))
+        fun objectId(objectId: Optional<String>) = objectId(objectId.getOrNull())
 
         /** The type of the object the environment variable is scoped for */
         fun objectType(objectType: ObjectType?) = apply { this.objectType = objectType }
 
         /** The type of the object the environment variable is scoped for */
-        fun objectType(objectType: Optional<ObjectType>) = objectType(objectType.orElse(null))
+        fun objectType(objectType: Optional<ObjectType>) = objectType(objectType.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

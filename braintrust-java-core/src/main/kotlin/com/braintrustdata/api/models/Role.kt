@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * A role is a collection of permissions which can be granted as part of an ACL
@@ -225,7 +226,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of role creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of role creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -234,7 +235,7 @@ private constructor(
         fun deletedAt(deletedAt: OffsetDateTime?) = deletedAt(JsonField.ofNullable(deletedAt))
 
         /** Date of role deletion, or null if the role is still active */
-        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.orElse(null))
+        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.getOrNull())
 
         /** Date of role deletion, or null if the role is still active */
         fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
@@ -243,7 +244,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the role */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the role */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -254,7 +255,7 @@ private constructor(
 
         /** (permission, restrict_object_type) tuples which belong to this role */
         fun memberPermissions(memberPermissions: Optional<List<MemberPermission>>) =
-            memberPermissions(memberPermissions.orElse(null))
+            memberPermissions(memberPermissions.getOrNull())
 
         /** (permission, restrict_object_type) tuples which belong to this role */
         fun memberPermissions(memberPermissions: JsonField<List<MemberPermission>>) = apply {
@@ -283,7 +284,7 @@ private constructor(
          * An inheriting role has all the permissions contained in its member roles, as well as all
          * of their inherited permissions
          */
-        fun memberRoles(memberRoles: Optional<List<String>>) = memberRoles(memberRoles.orElse(null))
+        fun memberRoles(memberRoles: Optional<List<String>>) = memberRoles(memberRoles.getOrNull())
 
         /**
          * Ids of the roles this role inherits from
@@ -326,7 +327,7 @@ private constructor(
          *
          * It is forbidden to change the org after creating a role
          */
-        fun orgId(orgId: Optional<String>) = orgId(orgId.orElse(null))
+        fun orgId(orgId: Optional<String>) = orgId(orgId.getOrNull())
 
         /**
          * Unique id for the organization that the role belongs under
@@ -342,7 +343,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Identifies the user who created the role */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the role */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }
@@ -489,7 +490,7 @@ private constructor(
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: Optional<RestrictObjectType>) =
-                restrictObjectType(restrictObjectType.orElse(null))
+                restrictObjectType(restrictObjectType.getOrNull())
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: JsonField<RestrictObjectType>) = apply {

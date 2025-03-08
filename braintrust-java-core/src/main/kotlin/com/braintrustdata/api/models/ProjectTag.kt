@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * A project tag is a user-configured tag for tracking and filtering your experiments, logs, and
@@ -174,7 +175,7 @@ private constructor(
         fun color(color: String?) = color(JsonField.ofNullable(color))
 
         /** Color of the tag for the UI */
-        fun color(color: Optional<String>) = color(color.orElse(null))
+        fun color(color: Optional<String>) = color(color.getOrNull())
 
         /** Color of the tag for the UI */
         fun color(color: JsonField<String>) = apply { this.color = color }
@@ -183,7 +184,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of project tag creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of project tag creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -192,7 +193,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the project tag */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project tag */
         fun description(description: JsonField<String>) = apply { this.description = description }

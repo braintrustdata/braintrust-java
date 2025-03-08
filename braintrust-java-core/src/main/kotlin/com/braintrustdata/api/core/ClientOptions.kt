@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.http.RetryingHttpClient
 import com.fasterxml.jackson.databind.json.JsonMapper
 import java.time.Clock
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class ClientOptions
 private constructor(
@@ -93,7 +94,7 @@ private constructor(
 
         fun apiKey(apiKey: String?) = apply { this.apiKey = apiKey }
 
-        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.orElse(null))
+        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.getOrNull())
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()

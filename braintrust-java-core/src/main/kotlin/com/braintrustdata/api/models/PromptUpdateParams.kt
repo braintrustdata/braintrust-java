@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a prompt object. Specify the fields to update in the payload. Any object-type
@@ -196,7 +197,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the prompt */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the prompt */
             fun description(description: JsonField<String>) = apply {
@@ -207,7 +208,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the prompt */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the prompt */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -216,7 +217,7 @@ private constructor(
             fun promptData(promptData: PromptData?) = promptData(JsonField.ofNullable(promptData))
 
             /** The prompt, model, and its parameters */
-            fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+            fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
             /** The prompt, model, and its parameters */
             fun promptData(promptData: JsonField<PromptData>) = apply {
@@ -227,7 +228,7 @@ private constructor(
             fun slug(slug: String?) = slug(JsonField.ofNullable(slug))
 
             /** Unique identifier for the prompt */
-            fun slug(slug: Optional<String>) = slug(slug.orElse(null))
+            fun slug(slug: Optional<String>) = slug(slug.getOrNull())
 
             /** Unique identifier for the prompt */
             fun slug(slug: JsonField<String>) = apply { this.slug = slug }
@@ -236,7 +237,7 @@ private constructor(
             fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
             /** A list of tags for the prompt */
-            fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+            fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
             /** A list of tags for the prompt */
             fun tags(tags: JsonField<List<String>>) = apply {
@@ -336,7 +337,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the prompt */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the prompt */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -345,7 +346,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the prompt */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the prompt */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -354,7 +355,7 @@ private constructor(
         fun promptData(promptData: PromptData?) = apply { body.promptData(promptData) }
 
         /** The prompt, model, and its parameters */
-        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: JsonField<PromptData>) = apply { body.promptData(promptData) }
@@ -363,7 +364,7 @@ private constructor(
         fun slug(slug: String?) = apply { body.slug(slug) }
 
         /** Unique identifier for the prompt */
-        fun slug(slug: Optional<String>) = slug(slug.orElse(null))
+        fun slug(slug: Optional<String>) = slug(slug.getOrNull())
 
         /** Unique identifier for the prompt */
         fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
@@ -372,7 +373,7 @@ private constructor(
         fun tags(tags: List<String>?) = apply { body.tags(tags) }
 
         /** A list of tags for the prompt */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags for the prompt */
         fun tags(tags: JsonField<List<String>>) = apply { body.tags(tags) }

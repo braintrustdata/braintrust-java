@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CreateApiKeyOutput
@@ -169,7 +170,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of api key creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of api key creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -178,7 +179,7 @@ private constructor(
         fun orgId(orgId: String?) = orgId(JsonField.ofNullable(orgId))
 
         /** Unique identifier for the organization */
-        fun orgId(orgId: Optional<String>) = orgId(orgId.orElse(null))
+        fun orgId(orgId: Optional<String>) = orgId(orgId.getOrNull())
 
         /** Unique identifier for the organization */
         fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
@@ -187,7 +188,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Unique identifier for the user */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Unique identifier for the user */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }

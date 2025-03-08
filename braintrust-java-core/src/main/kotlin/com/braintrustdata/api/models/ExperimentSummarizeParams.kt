@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Summarize experiment */
 class ExperimentSummarizeParams
@@ -113,7 +114,7 @@ private constructor(
          * to be used
          */
         fun comparisonExperimentId(comparisonExperimentId: Optional<String>) =
-            comparisonExperimentId(comparisonExperimentId.orElse(null))
+            comparisonExperimentId(comparisonExperimentId.getOrNull())
 
         /**
          * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
@@ -133,9 +134,8 @@ private constructor(
          * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
          * will be returned.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun summarizeScores(summarizeScores: Optional<Boolean>) =
-            summarizeScores(summarizeScores.orElse(null) as Boolean?)
+            summarizeScores(summarizeScores.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

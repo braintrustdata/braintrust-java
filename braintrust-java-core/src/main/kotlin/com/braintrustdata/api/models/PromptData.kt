@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** The prompt, model, and its parameters */
 @NoAutoDetect
@@ -125,19 +126,19 @@ private constructor(
 
         fun options(options: PromptOptions?) = options(JsonField.ofNullable(options))
 
-        fun options(options: Optional<PromptOptions>) = options(options.orElse(null))
+        fun options(options: Optional<PromptOptions>) = options(options.getOrNull())
 
         fun options(options: JsonField<PromptOptions>) = apply { this.options = options }
 
         fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
-        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+        fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
         fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
 
         fun parser(parser: Parser?) = parser(JsonField.ofNullable(parser))
 
-        fun parser(parser: Optional<Parser>) = parser(parser.orElse(null))
+        fun parser(parser: Optional<Parser>) = parser(parser.getOrNull())
 
         fun parser(parser: JsonField<Parser>) = apply { this.parser = parser }
 
@@ -156,7 +157,7 @@ private constructor(
             toolFunctions(JsonField.ofNullable(toolFunctions))
 
         fun toolFunctions(toolFunctions: Optional<List<ToolFunction>>) =
-            toolFunctions(toolFunctions.orElse(null))
+            toolFunctions(toolFunctions.getOrNull())
 
         fun toolFunctions(toolFunctions: JsonField<List<ToolFunction>>) = apply {
             this.toolFunctions = toolFunctions.map { it.toMutableList() }
@@ -2332,7 +2333,7 @@ private constructor(
 
                         fun content(content: String?) = content(JsonField.ofNullable(content))
 
-                        fun content(content: Optional<String>) = content(content.orElse(null))
+                        fun content(content: Optional<String>) = content(content.getOrNull())
 
                         fun content(content: JsonField<String>) = apply { this.content = content }
 
@@ -2340,7 +2341,7 @@ private constructor(
                             functionCall(JsonField.ofNullable(functionCall))
 
                         fun functionCall(functionCall: Optional<FunctionCall>) =
-                            functionCall(functionCall.orElse(null))
+                            functionCall(functionCall.getOrNull())
 
                         fun functionCall(functionCall: JsonField<FunctionCall>) = apply {
                             this.functionCall = functionCall
@@ -2348,7 +2349,7 @@ private constructor(
 
                         fun name(name: String?) = name(JsonField.ofNullable(name))
 
-                        fun name(name: Optional<String>) = name(name.orElse(null))
+                        fun name(name: Optional<String>) = name(name.getOrNull())
 
                         fun name(name: JsonField<String>) = apply { this.name = name }
 
@@ -2356,7 +2357,7 @@ private constructor(
                             toolCalls(JsonField.ofNullable(toolCalls))
 
                         fun toolCalls(toolCalls: Optional<List<ChatCompletionMessageToolCall>>) =
-                            toolCalls(toolCalls.orElse(null))
+                            toolCalls(toolCalls.getOrNull())
 
                         fun toolCalls(toolCalls: JsonField<List<ChatCompletionMessageToolCall>>) =
                             apply {
@@ -3223,7 +3224,7 @@ private constructor(
 
                         fun content(content: String?) = content(JsonField.ofNullable(content))
 
-                        fun content(content: Optional<String>) = content(content.orElse(null))
+                        fun content(content: Optional<String>) = content(content.getOrNull())
 
                         fun content(content: JsonField<String>) = apply { this.content = content }
 

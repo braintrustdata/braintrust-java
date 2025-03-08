@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ProjectSettings
@@ -76,7 +77,7 @@ private constructor(
 
         /** The key used to join two experiments (defaults to `input`). */
         fun comparisonKey(comparisonKey: Optional<String>) =
-            comparisonKey(comparisonKey.orElse(null))
+            comparisonKey(comparisonKey.getOrNull())
 
         /** The key used to join two experiments (defaults to `input`). */
         fun comparisonKey(comparisonKey: JsonField<String>) = apply {

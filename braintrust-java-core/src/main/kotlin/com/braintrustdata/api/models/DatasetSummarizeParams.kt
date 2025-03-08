@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Summarize dataset */
 class DatasetSummarizeParams
@@ -93,9 +94,8 @@ private constructor(
         /**
          * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun summarizeData(summarizeData: Optional<Boolean>) =
-            summarizeData(summarizeData.orElse(null) as Boolean?)
+            summarizeData(summarizeData.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

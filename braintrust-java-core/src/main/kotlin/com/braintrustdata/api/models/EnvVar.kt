@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class EnvVar
@@ -167,7 +168,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of environment variable creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of environment variable creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -176,7 +177,7 @@ private constructor(
         fun used(used: OffsetDateTime?) = used(JsonField.ofNullable(used))
 
         /** Date the environment variable was last used */
-        fun used(used: Optional<OffsetDateTime>) = used(used.orElse(null))
+        fun used(used: Optional<OffsetDateTime>) = used(used.getOrNull())
 
         /** Date the environment variable was last used */
         fun used(used: JsonField<OffsetDateTime>) = apply { this.used = used }

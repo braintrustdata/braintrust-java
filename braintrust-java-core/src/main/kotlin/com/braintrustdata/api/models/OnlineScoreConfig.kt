@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class OnlineScoreConfig
@@ -171,9 +172,8 @@ private constructor(
         fun applyToRootSpan(applyToRootSpan: Boolean) = applyToRootSpan(applyToRootSpan as Boolean?)
 
         /** Whether to trigger online scoring on the root span of each trace */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun applyToRootSpan(applyToRootSpan: Optional<Boolean>) =
-            applyToRootSpan(applyToRootSpan.orElse(null) as Boolean?)
+            applyToRootSpan(applyToRootSpan.getOrNull())
 
         /** Whether to trigger online scoring on the root span of each trace */
         fun applyToRootSpan(applyToRootSpan: JsonField<Boolean>) = apply {
@@ -186,7 +186,7 @@ private constructor(
 
         /** Trigger online scoring on any spans with a name in this list */
         fun applyToSpanNames(applyToSpanNames: Optional<List<String>>) =
-            applyToSpanNames(applyToSpanNames.orElse(null))
+            applyToSpanNames(applyToSpanNames.getOrNull())
 
         /** Trigger online scoring on any spans with a name in this list */
         fun applyToSpanNames(applyToSpanNames: JsonField<List<String>>) = apply {

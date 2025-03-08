@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class FeedbackDatasetItem
@@ -154,7 +155,7 @@ private constructor(
         fun comment(comment: String?) = comment(JsonField.ofNullable(comment))
 
         /** An optional comment string to log about the dataset event */
-        fun comment(comment: Optional<String>) = comment(comment.orElse(null))
+        fun comment(comment: Optional<String>) = comment(comment.getOrNull())
 
         /** An optional comment string to log about the dataset event */
         fun comment(comment: JsonField<String>) = apply { this.comment = comment }
@@ -171,7 +172,7 @@ private constructor(
          * log it here and access it in the Braintrust UI. Note, this metadata does not correspond
          * to the main event itself, but rather the audit log attached to the event.
          */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
          * A dictionary with additional data about the feedback. If you have a `user_id`, you can
@@ -184,7 +185,7 @@ private constructor(
         fun source(source: Source?) = source(JsonField.ofNullable(source))
 
         /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
-        fun source(source: Optional<Source>) = source(source.orElse(null))
+        fun source(source: Optional<Source>) = source(source.getOrNull())
 
         /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
         fun source(source: JsonField<Source>) = apply { this.source = source }
@@ -193,7 +194,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags to log */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags to log */
         fun tags(tags: JsonField<List<String>>) = apply {

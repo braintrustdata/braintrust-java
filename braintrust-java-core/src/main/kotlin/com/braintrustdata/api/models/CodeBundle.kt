@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CodeBundle
@@ -144,7 +145,7 @@ private constructor(
         fun preview(preview: String?) = preview(JsonField.ofNullable(preview))
 
         /** A preview of the code */
-        fun preview(preview: Optional<String>) = preview(preview.orElse(null))
+        fun preview(preview: Optional<String>) = preview(preview.getOrNull())
 
         /** A preview of the code */
         fun preview(preview: JsonField<String>) = apply { this.preview = preview }
