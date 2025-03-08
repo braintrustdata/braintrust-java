@@ -11,7 +11,7 @@ class AISecretTest {
 
     @Test
     fun createAISecret() {
-        val aISecret =
+        val aiSecret =
             AISecret.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
@@ -25,18 +25,18 @@ class AISecretTest {
                 .previewSecret("preview_secret")
                 .type("type")
                 .build()
-        assertThat(aISecret).isNotNull
-        assertThat(aISecret.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(aISecret.name()).isEqualTo("name")
-        assertThat(aISecret.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(aISecret.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(aISecret.metadata())
+        assertThat(aiSecret).isNotNull
+        assertThat(aiSecret.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(aiSecret.name()).isEqualTo("name")
+        assertThat(aiSecret.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(aiSecret.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+        assertThat(aiSecret.metadata())
             .contains(
                 AISecret.Metadata.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
             )
-        assertThat(aISecret.previewSecret()).contains("preview_secret")
-        assertThat(aISecret.type()).contains("type")
+        assertThat(aiSecret.previewSecret()).contains("preview_secret")
+        assertThat(aiSecret.type()).contains("type")
     }
 }
