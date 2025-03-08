@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -27,14 +25,18 @@ interface PromptService {
      * Create a new prompt. If there is an existing prompt in the project with the same slug as the
      * one specified in the request, will return the existing prompt unmodified
      */
-    @JvmOverloads
+    fun create(params: PromptCreateParams): Prompt = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: PromptCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Prompt
 
     /** Get a prompt object by its id */
-    @JvmOverloads
+    fun retrieve(params: PromptRetrieveParams): Prompt = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: PromptRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -45,7 +47,9 @@ interface PromptService {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: PromptUpdateParams): Prompt = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: PromptUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -55,21 +59,26 @@ interface PromptService {
      * List out all prompts. The prompts are sorted by creation date, with the most recently-created
      * prompts coming first
      */
-    @JvmOverloads
+    fun list(): PromptListPage = list(PromptListParams.none())
+
+    /** @see [list] */
     fun list(
         params: PromptListParams = PromptListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PromptListPage
 
-    /**
-     * List out all prompts. The prompts are sorted by creation date, with the most recently-created
-     * prompts coming first
-     */
+    /** @see [list] */
+    fun list(params: PromptListParams = PromptListParams.none()): PromptListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): PromptListPage =
         list(PromptListParams.none(), requestOptions)
 
     /** Delete a prompt object by its id */
-    @JvmOverloads
+    fun delete(params: PromptDeleteParams): Prompt = delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: PromptDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -79,7 +88,9 @@ interface PromptService {
      * Create or replace prompt. If there is an existing prompt in the project with the same slug as
      * the one specified in the request, will replace the existing prompt with the provided fields
      */
-    @JvmOverloads
+    fun replace(params: PromptReplaceParams): Prompt = replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: PromptReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -92,7 +103,11 @@ interface PromptService {
          * Returns a raw HTTP response for `post /v1/prompt`, but is otherwise the same as
          * [PromptService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: PromptCreateParams): HttpResponseFor<Prompt> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: PromptCreateParams,
@@ -103,7 +118,11 @@ interface PromptService {
          * Returns a raw HTTP response for `get /v1/prompt/{prompt_id}`, but is otherwise the same
          * as [PromptService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: PromptRetrieveParams): HttpResponseFor<Prompt> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: PromptRetrieveParams,
@@ -114,7 +133,11 @@ interface PromptService {
          * Returns a raw HTTP response for `patch /v1/prompt/{prompt_id}`, but is otherwise the same
          * as [PromptService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: PromptUpdateParams): HttpResponseFor<Prompt> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: PromptUpdateParams,
@@ -125,17 +148,22 @@ interface PromptService {
          * Returns a raw HTTP response for `get /v1/prompt`, but is otherwise the same as
          * [PromptService.list].
          */
-        @JvmOverloads
+        @MustBeClosed fun list(): HttpResponseFor<PromptListPage> = list(PromptListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: PromptListParams = PromptListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PromptListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/prompt`, but is otherwise the same as
-         * [PromptService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: PromptListParams = PromptListParams.none()
+        ): HttpResponseFor<PromptListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<PromptListPage> =
             list(PromptListParams.none(), requestOptions)
@@ -144,7 +172,11 @@ interface PromptService {
          * Returns a raw HTTP response for `delete /v1/prompt/{prompt_id}`, but is otherwise the
          * same as [PromptService.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: PromptDeleteParams): HttpResponseFor<Prompt> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: PromptDeleteParams,
@@ -155,7 +187,11 @@ interface PromptService {
          * Returns a raw HTTP response for `put /v1/prompt`, but is otherwise the same as
          * [PromptService.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: PromptReplaceParams): HttpResponseFor<Prompt> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: PromptReplaceParams,

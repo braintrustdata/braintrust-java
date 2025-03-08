@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -28,14 +26,20 @@ interface ViewServiceAsync {
      * Create a new view. If there is an existing view with the same name as the one specified in
      * the request, will return the existing view unmodified
      */
-    @JvmOverloads
+    fun create(params: ViewCreateParams): CompletableFuture<View> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: ViewCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View>
 
     /** Get a view object by its id */
-    @JvmOverloads
+    fun retrieve(params: ViewRetrieveParams): CompletableFuture<View> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: ViewRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +50,10 @@ interface ViewServiceAsync {
      * fields will be deep-merged with existing content. Currently we do not support removing fields
      * or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: ViewUpdateParams): CompletableFuture<View> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: ViewUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,14 +63,20 @@ interface ViewServiceAsync {
      * List out all views. The views are sorted by creation date, with the most recently-created
      * views coming first
      */
-    @JvmOverloads
+    fun list(params: ViewListParams): CompletableFuture<ViewListPageAsync> =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(
         params: ViewListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ViewListPageAsync>
 
     /** Delete a view object by its id */
-    @JvmOverloads
+    fun delete(params: ViewDeleteParams): CompletableFuture<View> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: ViewDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -73,7 +86,10 @@ interface ViewServiceAsync {
      * Create or replace view. If there is an existing view with the same name as the one specified
      * in the request, will replace the existing view with the provided fields
      */
-    @JvmOverloads
+    fun replace(params: ViewReplaceParams): CompletableFuture<View> =
+        replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: ViewReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -86,7 +102,11 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `post /v1/view`, but is otherwise the same as
          * [ViewServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: ViewCreateParams): CompletableFuture<HttpResponseFor<View>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: ViewCreateParams,
@@ -97,7 +117,11 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `get /v1/view/{view_id}`, but is otherwise the same as
          * [ViewServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: ViewRetrieveParams): CompletableFuture<HttpResponseFor<View>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: ViewRetrieveParams,
@@ -108,7 +132,11 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `patch /v1/view/{view_id}`, but is otherwise the same as
          * [ViewServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: ViewUpdateParams): CompletableFuture<HttpResponseFor<View>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: ViewUpdateParams,
@@ -119,7 +147,11 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `get /v1/view`, but is otherwise the same as
          * [ViewServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(params: ViewListParams): CompletableFuture<HttpResponseFor<ViewListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ViewListParams,
@@ -130,7 +162,11 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `delete /v1/view/{view_id}`, but is otherwise the same as
          * [ViewServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: ViewDeleteParams): CompletableFuture<HttpResponseFor<View>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: ViewDeleteParams,
@@ -141,7 +177,11 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `put /v1/view`, but is otherwise the same as
          * [ViewServiceAsync.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: ViewReplaceParams): CompletableFuture<HttpResponseFor<View>> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: ViewReplaceParams,

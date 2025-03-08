@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -28,14 +26,20 @@ interface SpanIframeServiceAsync {
      * Create a new span_iframe. If there is an existing span_iframe with the same name as the one
      * specified in the request, will return the existing span_iframe unmodified
      */
-    @JvmOverloads
+    fun create(params: SpanIframeCreateParams): CompletableFuture<SpanIFrame> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: SpanIframeCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
     /** Get a span_iframe object by its id */
-    @JvmOverloads
+    fun retrieve(params: SpanIframeRetrieveParams): CompletableFuture<SpanIFrame> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: SpanIframeRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +50,10 @@ interface SpanIframeServiceAsync {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: SpanIframeUpdateParams): CompletableFuture<SpanIFrame> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SpanIframeUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,21 +63,28 @@ interface SpanIframeServiceAsync {
      * List out all span_iframes. The span_iframes are sorted by creation date, with the most
      * recently-created span_iframes coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<SpanIframeListPageAsync> = list(SpanIframeListParams.none())
+
+    /** @see [list] */
     fun list(
         params: SpanIframeListParams = SpanIframeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIframeListPageAsync>
 
-    /**
-     * List out all span_iframes. The span_iframes are sorted by creation date, with the most
-     * recently-created span_iframes coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: SpanIframeListParams = SpanIframeListParams.none()
+    ): CompletableFuture<SpanIframeListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<SpanIframeListPageAsync> =
         list(SpanIframeListParams.none(), requestOptions)
 
     /** Delete a span_iframe object by its id */
-    @JvmOverloads
+    fun delete(params: SpanIframeDeleteParams): CompletableFuture<SpanIFrame> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: SpanIframeDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -80,7 +94,10 @@ interface SpanIframeServiceAsync {
      * Create or replace span_iframe. If there is an existing span_iframe with the same name as the
      * one specified in the request, will replace the existing span_iframe with the provided fields
      */
-    @JvmOverloads
+    fun replace(params: SpanIframeReplaceParams): CompletableFuture<SpanIFrame> =
+        replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: SpanIframeReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -96,7 +113,11 @@ interface SpanIframeServiceAsync {
          * Returns a raw HTTP response for `post /v1/span_iframe`, but is otherwise the same as
          * [SpanIframeServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: SpanIframeCreateParams): CompletableFuture<HttpResponseFor<SpanIFrame>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SpanIframeCreateParams,
@@ -107,7 +128,12 @@ interface SpanIframeServiceAsync {
          * Returns a raw HTTP response for `get /v1/span_iframe/{span_iframe_id}`, but is otherwise
          * the same as [SpanIframeServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: SpanIframeRetrieveParams
+        ): CompletableFuture<HttpResponseFor<SpanIFrame>> = retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: SpanIframeRetrieveParams,
@@ -118,7 +144,11 @@ interface SpanIframeServiceAsync {
          * Returns a raw HTTP response for `patch /v1/span_iframe/{span_iframe_id}`, but is
          * otherwise the same as [SpanIframeServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: SpanIframeUpdateParams): CompletableFuture<HttpResponseFor<SpanIFrame>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SpanIframeUpdateParams,
@@ -129,17 +159,25 @@ interface SpanIframeServiceAsync {
          * Returns a raw HTTP response for `get /v1/span_iframe`, but is otherwise the same as
          * [SpanIframeServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>> =
+            list(SpanIframeListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: SpanIframeListParams = SpanIframeListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/span_iframe`, but is otherwise the same as
-         * [SpanIframeServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: SpanIframeListParams = SpanIframeListParams.none()
+        ): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -150,7 +188,11 @@ interface SpanIframeServiceAsync {
          * Returns a raw HTTP response for `delete /v1/span_iframe/{span_iframe_id}`, but is
          * otherwise the same as [SpanIframeServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: SpanIframeDeleteParams): CompletableFuture<HttpResponseFor<SpanIFrame>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: SpanIframeDeleteParams,
@@ -161,7 +203,12 @@ interface SpanIframeServiceAsync {
          * Returns a raw HTTP response for `put /v1/span_iframe`, but is otherwise the same as
          * [SpanIframeServiceAsync.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(
+            params: SpanIframeReplaceParams
+        ): CompletableFuture<HttpResponseFor<SpanIFrame>> = replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: SpanIframeReplaceParams,

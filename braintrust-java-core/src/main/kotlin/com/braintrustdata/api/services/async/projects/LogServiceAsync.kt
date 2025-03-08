@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async.projects
 
 import com.braintrustdata.api.core.RequestOptions
@@ -24,7 +22,10 @@ interface LogServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Log feedback for a set of project logs events */
-    @JvmOverloads
+    fun feedback(params: ProjectLogFeedbackParams): CompletableFuture<FeedbackResponseSchema> =
+        feedback(params, RequestOptions.none())
+
+    /** @see [feedback] */
     fun feedback(
         params: ProjectLogFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -35,7 +36,10 @@ interface LogServiceAsync {
      * the parameters in the URL query rather than in the request body. For more complex queries,
      * use the `POST /btql` endpoint.
      */
-    @JvmOverloads
+    fun fetch(params: ProjectLogFetchParams): CompletableFuture<FetchProjectLogsEventsResponse> =
+        fetch(params, RequestOptions.none())
+
+    /** @see [fetch] */
     fun fetch(
         params: ProjectLogFetchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,14 +50,21 @@ interface LogServiceAsync {
      * parameters in the request body rather than in the URL query. For more complex queries, use
      * the `POST /btql` endpoint.
      */
-    @JvmOverloads
+    fun fetchPost(
+        params: ProjectLogFetchPostParams
+    ): CompletableFuture<FetchProjectLogsEventsResponse> = fetchPost(params, RequestOptions.none())
+
+    /** @see [fetchPost] */
     fun fetchPost(
         params: ProjectLogFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse>
 
     /** Insert a set of events into the project logs */
-    @JvmOverloads
+    fun insert(params: ProjectLogInsertParams): CompletableFuture<InsertEventsResponse> =
+        insert(params, RequestOptions.none())
+
+    /** @see [insert] */
     fun insert(
         params: ProjectLogInsertParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -66,7 +77,13 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/feedback`, but is
          * otherwise the same as [LogServiceAsync.feedback].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun feedback(
+            params: ProjectLogFeedbackParams
+        ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
+            feedback(params, RequestOptions.none())
+
+        /** @see [feedback] */
         @MustBeClosed
         fun feedback(
             params: ProjectLogFeedbackParams,
@@ -77,7 +94,13 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `get /v1/project_logs/{project_id}/fetch`, but is
          * otherwise the same as [LogServiceAsync.fetch].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun fetch(
+            params: ProjectLogFetchParams
+        ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
+            fetch(params, RequestOptions.none())
+
+        /** @see [fetch] */
         @MustBeClosed
         fun fetch(
             params: ProjectLogFetchParams,
@@ -88,7 +111,13 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/fetch`, but is
          * otherwise the same as [LogServiceAsync.fetchPost].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun fetchPost(
+            params: ProjectLogFetchPostParams
+        ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
+            fetchPost(params, RequestOptions.none())
+
+        /** @see [fetchPost] */
         @MustBeClosed
         fun fetchPost(
             params: ProjectLogFetchPostParams,
@@ -99,7 +128,13 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/insert`, but is
          * otherwise the same as [LogServiceAsync.insert].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun insert(
+            params: ProjectLogInsertParams
+        ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
+            insert(params, RequestOptions.none())
+
+        /** @see [insert] */
         @MustBeClosed
         fun insert(
             params: ProjectLogInsertParams,

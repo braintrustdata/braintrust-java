@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -35,14 +33,19 @@ interface ExperimentService {
      * Create a new experiment. If there is an existing experiment in the project with the same name
      * as the one specified in the request, will return the existing experiment unmodified
      */
-    @JvmOverloads
+    fun create(params: ExperimentCreateParams): Experiment = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: ExperimentCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Experiment
 
     /** Get an experiment object by its id */
-    @JvmOverloads
+    fun retrieve(params: ExperimentRetrieveParams): Experiment =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: ExperimentRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -53,7 +56,9 @@ interface ExperimentService {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: ExperimentUpdateParams): Experiment = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: ExperimentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -63,28 +68,36 @@ interface ExperimentService {
      * List out all experiments. The experiments are sorted by creation date, with the most
      * recently-created experiments coming first
      */
-    @JvmOverloads
+    fun list(): ExperimentListPage = list(ExperimentListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ExperimentListParams = ExperimentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ExperimentListPage
 
-    /**
-     * List out all experiments. The experiments are sorted by creation date, with the most
-     * recently-created experiments coming first
-     */
+    /** @see [list] */
+    fun list(params: ExperimentListParams = ExperimentListParams.none()): ExperimentListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): ExperimentListPage =
         list(ExperimentListParams.none(), requestOptions)
 
     /** Delete an experiment object by its id */
-    @JvmOverloads
+    fun delete(params: ExperimentDeleteParams): Experiment = delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: ExperimentDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Experiment
 
     /** Log feedback for a set of experiment events */
-    @JvmOverloads
+    fun feedback(params: ExperimentFeedbackParams): FeedbackResponseSchema =
+        feedback(params, RequestOptions.none())
+
+    /** @see [feedback] */
     fun feedback(
         params: ExperimentFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -95,7 +108,10 @@ interface ExperimentService {
      * parameters in the URL query rather than in the request body. For more complex queries, use
      * the `POST /btql` endpoint.
      */
-    @JvmOverloads
+    fun fetch(params: ExperimentFetchParams): FetchExperimentEventsResponse =
+        fetch(params, RequestOptions.none())
+
+    /** @see [fetch] */
     fun fetch(
         params: ExperimentFetchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -106,21 +122,30 @@ interface ExperimentService {
      * parameters in the request body rather than in the URL query. For more complex queries, use
      * the `POST /btql` endpoint.
      */
-    @JvmOverloads
+    fun fetchPost(params: ExperimentFetchPostParams): FetchExperimentEventsResponse =
+        fetchPost(params, RequestOptions.none())
+
+    /** @see [fetchPost] */
     fun fetchPost(
         params: ExperimentFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): FetchExperimentEventsResponse
 
     /** Insert a set of events into the experiment */
-    @JvmOverloads
+    fun insert(params: ExperimentInsertParams): InsertEventsResponse =
+        insert(params, RequestOptions.none())
+
+    /** @see [insert] */
     fun insert(
         params: ExperimentInsertParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): InsertEventsResponse
 
     /** Summarize experiment */
-    @JvmOverloads
+    fun summarize(params: ExperimentSummarizeParams): SummarizeExperimentResponse =
+        summarize(params, RequestOptions.none())
+
+    /** @see [summarize] */
     fun summarize(
         params: ExperimentSummarizeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -133,7 +158,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `post /v1/experiment`, but is otherwise the same as
          * [ExperimentService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: ExperimentCreateParams): HttpResponseFor<Experiment> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: ExperimentCreateParams,
@@ -144,7 +173,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `get /v1/experiment/{experiment_id}`, but is otherwise
          * the same as [ExperimentService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: ExperimentRetrieveParams): HttpResponseFor<Experiment> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: ExperimentRetrieveParams,
@@ -155,7 +188,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `patch /v1/experiment/{experiment_id}`, but is otherwise
          * the same as [ExperimentService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: ExperimentUpdateParams): HttpResponseFor<Experiment> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: ExperimentUpdateParams,
@@ -166,17 +203,23 @@ interface ExperimentService {
          * Returns a raw HTTP response for `get /v1/experiment`, but is otherwise the same as
          * [ExperimentService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): HttpResponseFor<ExperimentListPage> = list(ExperimentListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ExperimentListParams = ExperimentListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ExperimentListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/experiment`, but is otherwise the same as
-         * [ExperimentService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ExperimentListParams = ExperimentListParams.none()
+        ): HttpResponseFor<ExperimentListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ExperimentListPage> =
             list(ExperimentListParams.none(), requestOptions)
@@ -185,7 +228,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `delete /v1/experiment/{experiment_id}`, but is otherwise
          * the same as [ExperimentService.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: ExperimentDeleteParams): HttpResponseFor<Experiment> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: ExperimentDeleteParams,
@@ -196,7 +243,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `post /v1/experiment/{experiment_id}/feedback`, but is
          * otherwise the same as [ExperimentService.feedback].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun feedback(params: ExperimentFeedbackParams): HttpResponseFor<FeedbackResponseSchema> =
+            feedback(params, RequestOptions.none())
+
+        /** @see [feedback] */
         @MustBeClosed
         fun feedback(
             params: ExperimentFeedbackParams,
@@ -207,7 +258,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `get /v1/experiment/{experiment_id}/fetch`, but is
          * otherwise the same as [ExperimentService.fetch].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun fetch(params: ExperimentFetchParams): HttpResponseFor<FetchExperimentEventsResponse> =
+            fetch(params, RequestOptions.none())
+
+        /** @see [fetch] */
         @MustBeClosed
         fun fetch(
             params: ExperimentFetchParams,
@@ -218,7 +273,12 @@ interface ExperimentService {
          * Returns a raw HTTP response for `post /v1/experiment/{experiment_id}/fetch`, but is
          * otherwise the same as [ExperimentService.fetchPost].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun fetchPost(
+            params: ExperimentFetchPostParams
+        ): HttpResponseFor<FetchExperimentEventsResponse> = fetchPost(params, RequestOptions.none())
+
+        /** @see [fetchPost] */
         @MustBeClosed
         fun fetchPost(
             params: ExperimentFetchPostParams,
@@ -229,7 +289,11 @@ interface ExperimentService {
          * Returns a raw HTTP response for `post /v1/experiment/{experiment_id}/insert`, but is
          * otherwise the same as [ExperimentService.insert].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun insert(params: ExperimentInsertParams): HttpResponseFor<InsertEventsResponse> =
+            insert(params, RequestOptions.none())
+
+        /** @see [insert] */
         @MustBeClosed
         fun insert(
             params: ExperimentInsertParams,
@@ -240,7 +304,12 @@ interface ExperimentService {
          * Returns a raw HTTP response for `get /v1/experiment/{experiment_id}/summarize`, but is
          * otherwise the same as [ExperimentService.summarize].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun summarize(
+            params: ExperimentSummarizeParams
+        ): HttpResponseFor<SummarizeExperimentResponse> = summarize(params, RequestOptions.none())
+
+        /** @see [summarize] */
         @MustBeClosed
         fun summarize(
             params: ExperimentSummarizeParams,

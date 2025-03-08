@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -36,14 +34,20 @@ interface ExperimentServiceAsync {
      * Create a new experiment. If there is an existing experiment in the project with the same name
      * as the one specified in the request, will return the existing experiment unmodified
      */
-    @JvmOverloads
+    fun create(params: ExperimentCreateParams): CompletableFuture<Experiment> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: ExperimentCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
     /** Get an experiment object by its id */
-    @JvmOverloads
+    fun retrieve(params: ExperimentRetrieveParams): CompletableFuture<Experiment> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: ExperimentRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -54,7 +58,10 @@ interface ExperimentServiceAsync {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: ExperimentUpdateParams): CompletableFuture<Experiment> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: ExperimentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -64,28 +71,38 @@ interface ExperimentServiceAsync {
      * List out all experiments. The experiments are sorted by creation date, with the most
      * recently-created experiments coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<ExperimentListPageAsync> = list(ExperimentListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ExperimentListParams = ExperimentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ExperimentListPageAsync>
 
-    /**
-     * List out all experiments. The experiments are sorted by creation date, with the most
-     * recently-created experiments coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: ExperimentListParams = ExperimentListParams.none()
+    ): CompletableFuture<ExperimentListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<ExperimentListPageAsync> =
         list(ExperimentListParams.none(), requestOptions)
 
     /** Delete an experiment object by its id */
-    @JvmOverloads
+    fun delete(params: ExperimentDeleteParams): CompletableFuture<Experiment> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: ExperimentDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
     /** Log feedback for a set of experiment events */
-    @JvmOverloads
+    fun feedback(params: ExperimentFeedbackParams): CompletableFuture<FeedbackResponseSchema> =
+        feedback(params, RequestOptions.none())
+
+    /** @see [feedback] */
     fun feedback(
         params: ExperimentFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -96,7 +113,10 @@ interface ExperimentServiceAsync {
      * parameters in the URL query rather than in the request body. For more complex queries, use
      * the `POST /btql` endpoint.
      */
-    @JvmOverloads
+    fun fetch(params: ExperimentFetchParams): CompletableFuture<FetchExperimentEventsResponse> =
+        fetch(params, RequestOptions.none())
+
+    /** @see [fetch] */
     fun fetch(
         params: ExperimentFetchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -107,21 +127,32 @@ interface ExperimentServiceAsync {
      * parameters in the request body rather than in the URL query. For more complex queries, use
      * the `POST /btql` endpoint.
      */
-    @JvmOverloads
+    fun fetchPost(
+        params: ExperimentFetchPostParams
+    ): CompletableFuture<FetchExperimentEventsResponse> = fetchPost(params, RequestOptions.none())
+
+    /** @see [fetchPost] */
     fun fetchPost(
         params: ExperimentFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchExperimentEventsResponse>
 
     /** Insert a set of events into the experiment */
-    @JvmOverloads
+    fun insert(params: ExperimentInsertParams): CompletableFuture<InsertEventsResponse> =
+        insert(params, RequestOptions.none())
+
+    /** @see [insert] */
     fun insert(
         params: ExperimentInsertParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InsertEventsResponse>
 
     /** Summarize experiment */
-    @JvmOverloads
+    fun summarize(
+        params: ExperimentSummarizeParams
+    ): CompletableFuture<SummarizeExperimentResponse> = summarize(params, RequestOptions.none())
+
+    /** @see [summarize] */
     fun summarize(
         params: ExperimentSummarizeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -137,7 +168,11 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `post /v1/experiment`, but is otherwise the same as
          * [ExperimentServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: ExperimentCreateParams): CompletableFuture<HttpResponseFor<Experiment>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: ExperimentCreateParams,
@@ -148,7 +183,12 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `get /v1/experiment/{experiment_id}`, but is otherwise
          * the same as [ExperimentServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: ExperimentRetrieveParams
+        ): CompletableFuture<HttpResponseFor<Experiment>> = retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: ExperimentRetrieveParams,
@@ -159,7 +199,11 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `patch /v1/experiment/{experiment_id}`, but is otherwise
          * the same as [ExperimentServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: ExperimentUpdateParams): CompletableFuture<HttpResponseFor<Experiment>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: ExperimentUpdateParams,
@@ -170,17 +214,25 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `get /v1/experiment`, but is otherwise the same as
          * [ExperimentServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>> =
+            list(ExperimentListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ExperimentListParams = ExperimentListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/experiment`, but is otherwise the same as
-         * [ExperimentServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ExperimentListParams = ExperimentListParams.none()
+        ): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -191,7 +243,11 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `delete /v1/experiment/{experiment_id}`, but is otherwise
          * the same as [ExperimentServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: ExperimentDeleteParams): CompletableFuture<HttpResponseFor<Experiment>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: ExperimentDeleteParams,
@@ -202,7 +258,13 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `post /v1/experiment/{experiment_id}/feedback`, but is
          * otherwise the same as [ExperimentServiceAsync.feedback].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun feedback(
+            params: ExperimentFeedbackParams
+        ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
+            feedback(params, RequestOptions.none())
+
+        /** @see [feedback] */
         @MustBeClosed
         fun feedback(
             params: ExperimentFeedbackParams,
@@ -213,7 +275,13 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `get /v1/experiment/{experiment_id}/fetch`, but is
          * otherwise the same as [ExperimentServiceAsync.fetch].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun fetch(
+            params: ExperimentFetchParams
+        ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
+            fetch(params, RequestOptions.none())
+
+        /** @see [fetch] */
         @MustBeClosed
         fun fetch(
             params: ExperimentFetchParams,
@@ -224,7 +292,13 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `post /v1/experiment/{experiment_id}/fetch`, but is
          * otherwise the same as [ExperimentServiceAsync.fetchPost].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun fetchPost(
+            params: ExperimentFetchPostParams
+        ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
+            fetchPost(params, RequestOptions.none())
+
+        /** @see [fetchPost] */
         @MustBeClosed
         fun fetchPost(
             params: ExperimentFetchPostParams,
@@ -235,7 +309,13 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `post /v1/experiment/{experiment_id}/insert`, but is
          * otherwise the same as [ExperimentServiceAsync.insert].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun insert(
+            params: ExperimentInsertParams
+        ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
+            insert(params, RequestOptions.none())
+
+        /** @see [insert] */
         @MustBeClosed
         fun insert(
             params: ExperimentInsertParams,
@@ -246,7 +326,13 @@ interface ExperimentServiceAsync {
          * Returns a raw HTTP response for `get /v1/experiment/{experiment_id}/summarize`, but is
          * otherwise the same as [ExperimentServiceAsync.summarize].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun summarize(
+            params: ExperimentSummarizeParams
+        ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
+            summarize(params, RequestOptions.none())
+
+        /** @see [summarize] */
         @MustBeClosed
         fun summarize(
             params: ExperimentSummarizeParams,

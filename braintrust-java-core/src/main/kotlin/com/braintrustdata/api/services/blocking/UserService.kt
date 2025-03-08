@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -20,7 +18,9 @@ interface UserService {
     fun withRawResponse(): WithRawResponse
 
     /** Get a user object by its id */
-    @JvmOverloads
+    fun retrieve(params: UserRetrieveParams): User = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: UserRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -30,16 +30,19 @@ interface UserService {
      * List out all users. The users are sorted by creation date, with the most recently-created
      * users coming first
      */
-    @JvmOverloads
+    fun list(): UserListPage = list(UserListParams.none())
+
+    /** @see [list] */
     fun list(
         params: UserListParams = UserListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UserListPage
 
-    /**
-     * List out all users. The users are sorted by creation date, with the most recently-created
-     * users coming first
-     */
+    /** @see [list] */
+    fun list(params: UserListParams = UserListParams.none()): UserListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): UserListPage =
         list(UserListParams.none(), requestOptions)
 
@@ -50,7 +53,11 @@ interface UserService {
          * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the same as
          * [UserService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: UserRetrieveParams): HttpResponseFor<User> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: UserRetrieveParams,
@@ -61,17 +68,21 @@ interface UserService {
          * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
          * [UserService.list].
          */
-        @JvmOverloads
+        @MustBeClosed fun list(): HttpResponseFor<UserListPage> = list(UserListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: UserListParams = UserListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UserListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
-         * [UserService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(params: UserListParams = UserListParams.none()): HttpResponseFor<UserListPage> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<UserListPage> =
             list(UserListParams.none(), requestOptions)

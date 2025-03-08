@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -28,14 +26,20 @@ interface RoleServiceAsync {
      * Create a new role. If there is an existing role with the same name as the one specified in
      * the request, will return the existing role unmodified
      */
-    @JvmOverloads
+    fun create(params: RoleCreateParams): CompletableFuture<Role> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: RoleCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 
     /** Get a role object by its id */
-    @JvmOverloads
+    fun retrieve(params: RoleRetrieveParams): CompletableFuture<Role> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: RoleRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +50,10 @@ interface RoleServiceAsync {
      * fields will be deep-merged with existing content. Currently we do not support removing fields
      * or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: RoleUpdateParams): CompletableFuture<Role> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: RoleUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,21 +63,27 @@ interface RoleServiceAsync {
      * List out all roles. The roles are sorted by creation date, with the most recently-created
      * roles coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<RoleListPageAsync> = list(RoleListParams.none())
+
+    /** @see [list] */
     fun list(
         params: RoleListParams = RoleListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RoleListPageAsync>
 
-    /**
-     * List out all roles. The roles are sorted by creation date, with the most recently-created
-     * roles coming first
-     */
+    /** @see [list] */
+    fun list(params: RoleListParams = RoleListParams.none()): CompletableFuture<RoleListPageAsync> =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<RoleListPageAsync> =
         list(RoleListParams.none(), requestOptions)
 
     /** Delete a role object by its id */
-    @JvmOverloads
+    fun delete(params: RoleDeleteParams): CompletableFuture<Role> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: RoleDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -80,7 +93,10 @@ interface RoleServiceAsync {
      * Create or replace role. If there is an existing role with the same name as the one specified
      * in the request, will replace the existing role with the provided fields
      */
-    @JvmOverloads
+    fun replace(params: RoleReplaceParams): CompletableFuture<Role> =
+        replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: RoleReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -93,7 +109,11 @@ interface RoleServiceAsync {
          * Returns a raw HTTP response for `post /v1/role`, but is otherwise the same as
          * [RoleServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: RoleCreateParams): CompletableFuture<HttpResponseFor<Role>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: RoleCreateParams,
@@ -104,7 +124,11 @@ interface RoleServiceAsync {
          * Returns a raw HTTP response for `get /v1/role/{role_id}`, but is otherwise the same as
          * [RoleServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: RoleRetrieveParams): CompletableFuture<HttpResponseFor<Role>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: RoleRetrieveParams,
@@ -115,7 +139,11 @@ interface RoleServiceAsync {
          * Returns a raw HTTP response for `patch /v1/role/{role_id}`, but is otherwise the same as
          * [RoleServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: RoleUpdateParams): CompletableFuture<HttpResponseFor<Role>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: RoleUpdateParams,
@@ -126,17 +154,25 @@ interface RoleServiceAsync {
          * Returns a raw HTTP response for `get /v1/role`, but is otherwise the same as
          * [RoleServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<RoleListPageAsync>> =
+            list(RoleListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: RoleListParams = RoleListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RoleListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/role`, but is otherwise the same as
-         * [RoleServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: RoleListParams = RoleListParams.none()
+        ): CompletableFuture<HttpResponseFor<RoleListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -147,7 +183,11 @@ interface RoleServiceAsync {
          * Returns a raw HTTP response for `delete /v1/role/{role_id}`, but is otherwise the same as
          * [RoleServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: RoleDeleteParams): CompletableFuture<HttpResponseFor<Role>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: RoleDeleteParams,
@@ -158,7 +198,11 @@ interface RoleServiceAsync {
          * Returns a raw HTTP response for `put /v1/role`, but is otherwise the same as
          * [RoleServiceAsync.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: RoleReplaceParams): CompletableFuture<HttpResponseFor<Role>> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: RoleReplaceParams,

@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -31,14 +29,20 @@ interface FunctionServiceAsync {
      * Create a new function. If there is an existing function in the project with the same slug as
      * the one specified in the request, will return the existing function unmodified
      */
-    @JvmOverloads
+    fun create(params: FunctionCreateParams): CompletableFuture<Function> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: FunctionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
     /** Get a function object by its id */
-    @JvmOverloads
+    fun retrieve(params: FunctionRetrieveParams): CompletableFuture<Function> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: FunctionRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -49,7 +53,10 @@ interface FunctionServiceAsync {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: FunctionUpdateParams): CompletableFuture<Function> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: FunctionUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -59,28 +66,38 @@ interface FunctionServiceAsync {
      * List out all functions. The functions are sorted by creation date, with the most
      * recently-created functions coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<FunctionListPageAsync> = list(FunctionListParams.none())
+
+    /** @see [list] */
     fun list(
         params: FunctionListParams = FunctionListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FunctionListPageAsync>
 
-    /**
-     * List out all functions. The functions are sorted by creation date, with the most
-     * recently-created functions coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: FunctionListParams = FunctionListParams.none()
+    ): CompletableFuture<FunctionListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<FunctionListPageAsync> =
         list(FunctionListParams.none(), requestOptions)
 
     /** Delete a function object by its id */
-    @JvmOverloads
+    fun delete(params: FunctionDeleteParams): CompletableFuture<Function> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: FunctionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
     /** Invoke a function. */
-    @JvmOverloads
+    fun invoke(params: FunctionInvokeParams): CompletableFuture<Optional<FunctionInvokeResponse>> =
+        invoke(params, RequestOptions.none())
+
+    /** @see [invoke] */
     fun invoke(
         params: FunctionInvokeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -91,7 +108,10 @@ interface FunctionServiceAsync {
      * slug as the one specified in the request, will replace the existing function with the
      * provided fields
      */
-    @JvmOverloads
+    fun replace(params: FunctionReplaceParams): CompletableFuture<Function> =
+        replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: FunctionReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -106,7 +126,11 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `post /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: FunctionCreateParams): CompletableFuture<HttpResponseFor<Function>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: FunctionCreateParams,
@@ -117,7 +141,11 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `get /v1/function/{function_id}`, but is otherwise the
          * same as [FunctionServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: FunctionRetrieveParams): CompletableFuture<HttpResponseFor<Function>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: FunctionRetrieveParams,
@@ -128,7 +156,11 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `patch /v1/function/{function_id}`, but is otherwise the
          * same as [FunctionServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: FunctionUpdateParams): CompletableFuture<HttpResponseFor<Function>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: FunctionUpdateParams,
@@ -139,17 +171,25 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `get /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
+            list(FunctionListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: FunctionListParams = FunctionListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/function`, but is otherwise the same as
-         * [FunctionServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: FunctionListParams = FunctionListParams.none()
+        ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -160,7 +200,11 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `delete /v1/function/{function_id}`, but is otherwise the
          * same as [FunctionServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: FunctionDeleteParams): CompletableFuture<HttpResponseFor<Function>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: FunctionDeleteParams,
@@ -171,7 +215,13 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `post /v1/function/{function_id}/invoke`, but is
          * otherwise the same as [FunctionServiceAsync.invoke].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun invoke(
+            params: FunctionInvokeParams
+        ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
+            invoke(params, RequestOptions.none())
+
+        /** @see [invoke] */
         @MustBeClosed
         fun invoke(
             params: FunctionInvokeParams,
@@ -182,7 +232,11 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `put /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: FunctionReplaceParams): CompletableFuture<HttpResponseFor<Function>> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: FunctionReplaceParams,

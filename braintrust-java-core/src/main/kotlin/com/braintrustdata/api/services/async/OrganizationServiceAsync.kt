@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -26,7 +24,10 @@ interface OrganizationServiceAsync {
     fun members(): MemberServiceAsync
 
     /** Get an organization object by its id */
-    @JvmOverloads
+    fun retrieve(params: OrganizationRetrieveParams): CompletableFuture<Organization> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: OrganizationRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -37,7 +38,10 @@ interface OrganizationServiceAsync {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: OrganizationUpdateParams): CompletableFuture<Organization> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: OrganizationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,21 +51,28 @@ interface OrganizationServiceAsync {
      * List out all organizations. The organizations are sorted by creation date, with the most
      * recently-created organizations coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<OrganizationListPageAsync> = list(OrganizationListParams.none())
+
+    /** @see [list] */
     fun list(
         params: OrganizationListParams = OrganizationListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<OrganizationListPageAsync>
 
-    /**
-     * List out all organizations. The organizations are sorted by creation date, with the most
-     * recently-created organizations coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: OrganizationListParams = OrganizationListParams.none()
+    ): CompletableFuture<OrganizationListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<OrganizationListPageAsync> =
         list(OrganizationListParams.none(), requestOptions)
 
     /** Delete an organization object by its id */
-    @JvmOverloads
+    fun delete(params: OrganizationDeleteParams): CompletableFuture<Organization> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: OrganizationDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -79,7 +90,13 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `get /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: OrganizationRetrieveParams
+        ): CompletableFuture<HttpResponseFor<Organization>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: OrganizationRetrieveParams,
@@ -90,7 +107,12 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `patch /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: OrganizationUpdateParams
+        ): CompletableFuture<HttpResponseFor<Organization>> = update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: OrganizationUpdateParams,
@@ -101,17 +123,25 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
          * [OrganizationServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
+            list(OrganizationListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: OrganizationListParams = OrganizationListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
-         * [OrganizationServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: OrganizationListParams = OrganizationListParams.none()
+        ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -122,7 +152,12 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `delete /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(
+            params: OrganizationDeleteParams
+        ): CompletableFuture<HttpResponseFor<Organization>> = delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: OrganizationDeleteParams,

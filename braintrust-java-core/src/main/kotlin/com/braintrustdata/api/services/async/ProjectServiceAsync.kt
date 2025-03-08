@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -30,14 +28,20 @@ interface ProjectServiceAsync {
      * Create a new project. If there is an existing project with the same name as the one specified
      * in the request, will return the existing project unmodified
      */
-    @JvmOverloads
+    fun create(params: ProjectCreateParams): CompletableFuture<Project> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
     /** Get a project object by its id */
-    @JvmOverloads
+    fun retrieve(params: ProjectRetrieveParams): CompletableFuture<Project> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: ProjectRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,7 +52,10 @@ interface ProjectServiceAsync {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: ProjectUpdateParams): CompletableFuture<Project> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: ProjectUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,21 +65,28 @@ interface ProjectServiceAsync {
      * List out all projects. The projects are sorted by creation date, with the most
      * recently-created projects coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<ProjectListPageAsync> = list(ProjectListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ProjectListParams = ProjectListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectListPageAsync>
 
-    /**
-     * List out all projects. The projects are sorted by creation date, with the most
-     * recently-created projects coming first
-     */
+    /** @see [list] */
+    fun list(
+        params: ProjectListParams = ProjectListParams.none()
+    ): CompletableFuture<ProjectListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProjectListPageAsync> =
         list(ProjectListParams.none(), requestOptions)
 
     /** Delete a project object by its id */
-    @JvmOverloads
+    fun delete(params: ProjectDeleteParams): CompletableFuture<Project> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: ProjectDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -89,7 +103,11 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `post /v1/project`, but is otherwise the same as
          * [ProjectServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: ProjectCreateParams): CompletableFuture<HttpResponseFor<Project>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: ProjectCreateParams,
@@ -100,7 +118,11 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `get /v1/project/{project_id}`, but is otherwise the same
          * as [ProjectServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: ProjectRetrieveParams): CompletableFuture<HttpResponseFor<Project>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: ProjectRetrieveParams,
@@ -111,7 +133,11 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `patch /v1/project/{project_id}`, but is otherwise the
          * same as [ProjectServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: ProjectUpdateParams): CompletableFuture<HttpResponseFor<Project>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: ProjectUpdateParams,
@@ -122,17 +148,25 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `get /v1/project`, but is otherwise the same as
          * [ProjectServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
+            list(ProjectListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/project`, but is otherwise the same as
-         * [ProjectServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ProjectListParams = ProjectListParams.none()
+        ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -143,7 +177,11 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `delete /v1/project/{project_id}`, but is otherwise the
          * same as [ProjectServiceAsync.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: ProjectDeleteParams): CompletableFuture<HttpResponseFor<Project>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: ProjectDeleteParams,

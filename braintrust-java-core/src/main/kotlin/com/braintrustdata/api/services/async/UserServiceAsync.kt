@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -21,7 +19,10 @@ interface UserServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Get a user object by its id */
-    @JvmOverloads
+    fun retrieve(params: UserRetrieveParams): CompletableFuture<User> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: UserRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -31,16 +32,19 @@ interface UserServiceAsync {
      * List out all users. The users are sorted by creation date, with the most recently-created
      * users coming first
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<UserListPageAsync> = list(UserListParams.none())
+
+    /** @see [list] */
     fun list(
         params: UserListParams = UserListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UserListPageAsync>
 
-    /**
-     * List out all users. The users are sorted by creation date, with the most recently-created
-     * users coming first
-     */
+    /** @see [list] */
+    fun list(params: UserListParams = UserListParams.none()): CompletableFuture<UserListPageAsync> =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<UserListPageAsync> =
         list(UserListParams.none(), requestOptions)
 
@@ -51,7 +55,11 @@ interface UserServiceAsync {
          * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the same as
          * [UserServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: UserRetrieveParams): CompletableFuture<HttpResponseFor<User>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: UserRetrieveParams,
@@ -62,17 +70,25 @@ interface UserServiceAsync {
          * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
          * [UserServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<UserListPageAsync>> =
+            list(UserListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: UserListParams = UserListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<UserListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
-         * [UserServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: UserListParams = UserListParams.none()
+        ): CompletableFuture<HttpResponseFor<UserListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
