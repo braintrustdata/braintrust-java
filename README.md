@@ -3,6 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.7.0)
+[![javadoc](https://javadoc.io/badge2/com.braintrustdata.api/braintrust-java/0.7.0/javadoc.svg)](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.7.0)
 
 <!-- x-release-please-end -->
 
@@ -12,7 +13,7 @@ The Braintrust Java SDK is similar to the Braintrust Kotlin SDK but with minor d
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec).
+The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.7.0).
 
 ## Installation
 
