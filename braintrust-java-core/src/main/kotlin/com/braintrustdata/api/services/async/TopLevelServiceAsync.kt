@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.RequestOptions
@@ -18,13 +16,20 @@ interface TopLevelServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
-    @JvmOverloads
+    fun helloWorld(): CompletableFuture<String> = helloWorld(TopLevelHelloWorldParams.none())
+
+    /** @see [helloWorld] */
     fun helloWorld(
         params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<String>
 
-    /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
+    /** @see [helloWorld] */
+    fun helloWorld(
+        params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
+    ): CompletableFuture<String> = helloWorld(params, RequestOptions.none())
+
+    /** @see [helloWorld] */
     fun helloWorld(requestOptions: RequestOptions): CompletableFuture<String> =
         helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 
@@ -37,17 +42,24 @@ interface TopLevelServiceAsync {
          * Returns a raw HTTP response for `get /v1`, but is otherwise the same as
          * [TopLevelServiceAsync.helloWorld].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun helloWorld(): CompletableFuture<HttpResponseFor<String>> =
+            helloWorld(TopLevelHelloWorldParams.none())
+
+        /** @see [helloWorld] */
         @MustBeClosed
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<String>>
 
-        /**
-         * Returns a raw HTTP response for `get /v1`, but is otherwise the same as
-         * [TopLevelServiceAsync.helloWorld].
-         */
+        /** @see [helloWorld] */
+        @MustBeClosed
+        fun helloWorld(
+            params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
+        ): CompletableFuture<HttpResponseFor<String>> = helloWorld(params, RequestOptions.none())
+
+        /** @see [helloWorld] */
         @MustBeClosed
         fun helloWorld(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<String>> =
             helloWorld(TopLevelHelloWorldParams.none(), requestOptions)

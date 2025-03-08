@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.async.organizations
 
 import com.braintrustdata.api.core.RequestOptions
@@ -19,13 +17,21 @@ interface MemberServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Modify organization membership */
-    @JvmOverloads
+    fun update(): CompletableFuture<PatchOrganizationMembersOutput> =
+        update(OrganizationMemberUpdateParams.none())
+
+    /** @see [update] */
     fun update(
         params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PatchOrganizationMembersOutput>
 
-    /** Modify organization membership */
+    /** @see [update] */
+    fun update(
+        params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
+    ): CompletableFuture<PatchOrganizationMembersOutput> = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(requestOptions: RequestOptions): CompletableFuture<PatchOrganizationMembersOutput> =
         update(OrganizationMemberUpdateParams.none(), requestOptions)
 
@@ -38,17 +44,25 @@ interface MemberServiceAsync {
          * Returns a raw HTTP response for `patch /v1/organization/members`, but is otherwise the
          * same as [MemberServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
+            update(OrganizationMemberUpdateParams.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>>
 
-        /**
-         * Returns a raw HTTP response for `patch /v1/organization/members`, but is otherwise the
-         * same as [MemberServiceAsync.update].
-         */
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
+        ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             requestOptions: RequestOptions
