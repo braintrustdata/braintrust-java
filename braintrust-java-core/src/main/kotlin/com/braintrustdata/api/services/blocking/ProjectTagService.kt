@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -27,14 +25,19 @@ interface ProjectTagService {
      * Create a new project_tag. If there is an existing project_tag in the project with the same
      * name as the one specified in the request, will return the existing project_tag unmodified
      */
-    @JvmOverloads
+    fun create(params: ProjectTagCreateParams): ProjectTag = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: ProjectTagCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectTag
 
     /** Get a project_tag object by its id */
-    @JvmOverloads
+    fun retrieve(params: ProjectTagRetrieveParams): ProjectTag =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: ProjectTagRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -45,7 +48,9 @@ interface ProjectTagService {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: ProjectTagUpdateParams): ProjectTag = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: ProjectTagUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -55,21 +60,26 @@ interface ProjectTagService {
      * List out all project_tags. The project_tags are sorted by creation date, with the most
      * recently-created project_tags coming first
      */
-    @JvmOverloads
+    fun list(): ProjectTagListPage = list(ProjectTagListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ProjectTagListParams = ProjectTagListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectTagListPage
 
-    /**
-     * List out all project_tags. The project_tags are sorted by creation date, with the most
-     * recently-created project_tags coming first
-     */
+    /** @see [list] */
+    fun list(params: ProjectTagListParams = ProjectTagListParams.none()): ProjectTagListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): ProjectTagListPage =
         list(ProjectTagListParams.none(), requestOptions)
 
     /** Delete a project_tag object by its id */
-    @JvmOverloads
+    fun delete(params: ProjectTagDeleteParams): ProjectTag = delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: ProjectTagDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -80,7 +90,10 @@ interface ProjectTagService {
      * same name as the one specified in the request, will replace the existing project_tag with the
      * provided fields
      */
-    @JvmOverloads
+    fun replace(params: ProjectTagReplaceParams): ProjectTag =
+        replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: ProjectTagReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -93,7 +106,11 @@ interface ProjectTagService {
          * Returns a raw HTTP response for `post /v1/project_tag`, but is otherwise the same as
          * [ProjectTagService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: ProjectTagCreateParams): HttpResponseFor<ProjectTag> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: ProjectTagCreateParams,
@@ -104,7 +121,11 @@ interface ProjectTagService {
          * Returns a raw HTTP response for `get /v1/project_tag/{project_tag_id}`, but is otherwise
          * the same as [ProjectTagService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: ProjectTagRetrieveParams): HttpResponseFor<ProjectTag> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: ProjectTagRetrieveParams,
@@ -115,7 +136,11 @@ interface ProjectTagService {
          * Returns a raw HTTP response for `patch /v1/project_tag/{project_tag_id}`, but is
          * otherwise the same as [ProjectTagService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: ProjectTagUpdateParams): HttpResponseFor<ProjectTag> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: ProjectTagUpdateParams,
@@ -126,17 +151,23 @@ interface ProjectTagService {
          * Returns a raw HTTP response for `get /v1/project_tag`, but is otherwise the same as
          * [ProjectTagService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): HttpResponseFor<ProjectTagListPage> = list(ProjectTagListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ProjectTagListParams = ProjectTagListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProjectTagListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/project_tag`, but is otherwise the same as
-         * [ProjectTagService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ProjectTagListParams = ProjectTagListParams.none()
+        ): HttpResponseFor<ProjectTagListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProjectTagListPage> =
             list(ProjectTagListParams.none(), requestOptions)
@@ -145,7 +176,11 @@ interface ProjectTagService {
          * Returns a raw HTTP response for `delete /v1/project_tag/{project_tag_id}`, but is
          * otherwise the same as [ProjectTagService.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: ProjectTagDeleteParams): HttpResponseFor<ProjectTag> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: ProjectTagDeleteParams,
@@ -156,7 +191,11 @@ interface ProjectTagService {
          * Returns a raw HTTP response for `put /v1/project_tag`, but is otherwise the same as
          * [ProjectTagService.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: ProjectTagReplaceParams): HttpResponseFor<ProjectTag> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: ProjectTagReplaceParams,

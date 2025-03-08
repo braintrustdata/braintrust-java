@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.RequestOptions
@@ -28,14 +26,18 @@ interface AiSecretService {
      * Create a new ai_secret. If there is an existing ai_secret with the same name as the one
      * specified in the request, will return the existing ai_secret unmodified
      */
-    @JvmOverloads
+    fun create(params: AiSecretCreateParams): AISecret = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: AiSecretCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /** Get an ai_secret object by its id */
-    @JvmOverloads
+    fun retrieve(params: AiSecretRetrieveParams): AISecret = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: AiSecretRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +48,9 @@ interface AiSecretService {
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    @JvmOverloads
+    fun update(params: AiSecretUpdateParams): AISecret = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: AiSecretUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,28 +60,36 @@ interface AiSecretService {
      * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
      * recently-created ai_secrets coming first
      */
-    @JvmOverloads
+    fun list(): AiSecretListPage = list(AiSecretListParams.none())
+
+    /** @see [list] */
     fun list(
         params: AiSecretListParams = AiSecretListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AiSecretListPage
 
-    /**
-     * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
-     * recently-created ai_secrets coming first
-     */
+    /** @see [list] */
+    fun list(params: AiSecretListParams = AiSecretListParams.none()): AiSecretListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): AiSecretListPage =
         list(AiSecretListParams.none(), requestOptions)
 
     /** Delete an ai_secret object by its id */
-    @JvmOverloads
+    fun delete(params: AiSecretDeleteParams): AISecret = delete(params, RequestOptions.none())
+
+    /** @see [delete] */
     fun delete(
         params: AiSecretDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AISecret
 
     /** Delete a single ai_secret */
-    @JvmOverloads
+    fun findAndDelete(params: AiSecretFindAndDeleteParams): AISecret =
+        findAndDelete(params, RequestOptions.none())
+
+    /** @see [findAndDelete] */
     fun findAndDelete(
         params: AiSecretFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -87,7 +99,9 @@ interface AiSecretService {
      * Create or replace ai_secret. If there is an existing ai_secret with the same name as the one
      * specified in the request, will replace the existing ai_secret with the provided fields
      */
-    @JvmOverloads
+    fun replace(params: AiSecretReplaceParams): AISecret = replace(params, RequestOptions.none())
+
+    /** @see [replace] */
     fun replace(
         params: AiSecretReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -100,7 +114,11 @@ interface AiSecretService {
          * Returns a raw HTTP response for `post /v1/ai_secret`, but is otherwise the same as
          * [AiSecretService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: AiSecretCreateParams): HttpResponseFor<AISecret> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: AiSecretCreateParams,
@@ -111,7 +129,11 @@ interface AiSecretService {
          * Returns a raw HTTP response for `get /v1/ai_secret/{ai_secret_id}`, but is otherwise the
          * same as [AiSecretService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: AiSecretRetrieveParams): HttpResponseFor<AISecret> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: AiSecretRetrieveParams,
@@ -122,7 +144,11 @@ interface AiSecretService {
          * Returns a raw HTTP response for `patch /v1/ai_secret/{ai_secret_id}`, but is otherwise
          * the same as [AiSecretService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: AiSecretUpdateParams): HttpResponseFor<AISecret> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: AiSecretUpdateParams,
@@ -133,17 +159,23 @@ interface AiSecretService {
          * Returns a raw HTTP response for `get /v1/ai_secret`, but is otherwise the same as
          * [AiSecretService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): HttpResponseFor<AiSecretListPage> = list(AiSecretListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: AiSecretListParams = AiSecretListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AiSecretListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /v1/ai_secret`, but is otherwise the same as
-         * [AiSecretService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: AiSecretListParams = AiSecretListParams.none()
+        ): HttpResponseFor<AiSecretListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<AiSecretListPage> =
             list(AiSecretListParams.none(), requestOptions)
@@ -152,7 +184,11 @@ interface AiSecretService {
          * Returns a raw HTTP response for `delete /v1/ai_secret/{ai_secret_id}`, but is otherwise
          * the same as [AiSecretService.delete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun delete(params: AiSecretDeleteParams): HttpResponseFor<AISecret> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(
             params: AiSecretDeleteParams,
@@ -163,7 +199,11 @@ interface AiSecretService {
          * Returns a raw HTTP response for `delete /v1/ai_secret`, but is otherwise the same as
          * [AiSecretService.findAndDelete].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun findAndDelete(params: AiSecretFindAndDeleteParams): HttpResponseFor<AISecret> =
+            findAndDelete(params, RequestOptions.none())
+
+        /** @see [findAndDelete] */
         @MustBeClosed
         fun findAndDelete(
             params: AiSecretFindAndDeleteParams,
@@ -174,7 +214,11 @@ interface AiSecretService {
          * Returns a raw HTTP response for `put /v1/ai_secret`, but is otherwise the same as
          * [AiSecretService.replace].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun replace(params: AiSecretReplaceParams): HttpResponseFor<AISecret> =
+            replace(params, RequestOptions.none())
+
+        /** @see [replace] */
         @MustBeClosed
         fun replace(
             params: AiSecretReplaceParams,

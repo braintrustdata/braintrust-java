@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.braintrustdata.api.services.blocking.organizations
 
 import com.braintrustdata.api.core.RequestOptions
@@ -18,13 +16,20 @@ interface MemberService {
     fun withRawResponse(): WithRawResponse
 
     /** Modify organization membership */
-    @JvmOverloads
+    fun update(): PatchOrganizationMembersOutput = update(OrganizationMemberUpdateParams.none())
+
+    /** @see [update] */
     fun update(
         params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PatchOrganizationMembersOutput
 
-    /** Modify organization membership */
+    /** @see [update] */
+    fun update(
+        params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
+    ): PatchOrganizationMembersOutput = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(requestOptions: RequestOptions): PatchOrganizationMembersOutput =
         update(OrganizationMemberUpdateParams.none(), requestOptions)
 
@@ -35,17 +40,24 @@ interface MemberService {
          * Returns a raw HTTP response for `patch /v1/organization/members`, but is otherwise the
          * same as [MemberService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(): HttpResponseFor<PatchOrganizationMembersOutput> =
+            update(OrganizationMemberUpdateParams.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PatchOrganizationMembersOutput>
 
-        /**
-         * Returns a raw HTTP response for `patch /v1/organization/members`, but is otherwise the
-         * same as [MemberService.update].
-         */
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
+        ): HttpResponseFor<PatchOrganizationMembersOutput> = update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             requestOptions: RequestOptions
