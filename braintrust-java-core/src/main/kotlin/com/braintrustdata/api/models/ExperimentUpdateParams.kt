@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update an experiment object. Specify the fields to update in the payload. Any
@@ -278,7 +279,7 @@ private constructor(
             fun baseExpId(baseExpId: String?) = baseExpId(JsonField.ofNullable(baseExpId))
 
             /** Id of default base experiment to compare against when viewing this experiment */
-            fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.orElse(null))
+            fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.getOrNull())
 
             /** Id of default base experiment to compare against when viewing this experiment */
             fun baseExpId(baseExpId: JsonField<String>) = apply { this.baseExpId = baseExpId }
@@ -293,7 +294,7 @@ private constructor(
              * Identifier of the linked dataset, or null if the experiment is not linked to a
              * dataset
              */
-            fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.orElse(null))
+            fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
             /**
              * Identifier of the linked dataset, or null if the experiment is not linked to a
@@ -313,7 +314,7 @@ private constructor(
              * to reproduce the experiment after the dataset has been modified.
              */
             fun datasetVersion(datasetVersion: Optional<String>) =
-                datasetVersion(datasetVersion.orElse(null))
+                datasetVersion(datasetVersion.getOrNull())
 
             /**
              * Version number of the linked dataset the experiment was run against. This can be used
@@ -327,7 +328,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the experiment */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the experiment */
             fun description(description: JsonField<String>) = apply {
@@ -338,7 +339,7 @@ private constructor(
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
             /** User-controlled metadata about the experiment */
-            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
             /** User-controlled metadata about the experiment */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
@@ -347,7 +348,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the experiment. Within a project, experiment names are unique */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the experiment. Within a project, experiment names are unique */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -368,8 +369,7 @@ private constructor(
              * Whether or not the experiment is public. Public experiments can be viewed by anybody
              * inside or outside the organization
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun public_(public_: Optional<Boolean>) = public_(public_.orElse(null) as Boolean?)
+            fun public_(public_: Optional<Boolean>) = public_(public_.getOrNull())
 
             /**
              * Whether or not the experiment is public. Public experiments can be viewed by anybody
@@ -381,7 +381,7 @@ private constructor(
             fun repoInfo(repoInfo: RepoInfo?) = repoInfo(JsonField.ofNullable(repoInfo))
 
             /** Metadata about the state of the repo when the experiment was created */
-            fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+            fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.getOrNull())
 
             /** Metadata about the state of the repo when the experiment was created */
             fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { this.repoInfo = repoInfo }
@@ -476,7 +476,7 @@ private constructor(
         fun baseExpId(baseExpId: String?) = apply { body.baseExpId(baseExpId) }
 
         /** Id of default base experiment to compare against when viewing this experiment */
-        fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.orElse(null))
+        fun baseExpId(baseExpId: Optional<String>) = baseExpId(baseExpId.getOrNull())
 
         /** Id of default base experiment to compare against when viewing this experiment */
         fun baseExpId(baseExpId: JsonField<String>) = apply { body.baseExpId(baseExpId) }
@@ -489,7 +489,7 @@ private constructor(
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
          */
-        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.orElse(null))
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
@@ -507,7 +507,7 @@ private constructor(
          * reproduce the experiment after the dataset has been modified.
          */
         fun datasetVersion(datasetVersion: Optional<String>) =
-            datasetVersion(datasetVersion.orElse(null))
+            datasetVersion(datasetVersion.getOrNull())
 
         /**
          * Version number of the linked dataset the experiment was run against. This can be used to
@@ -521,7 +521,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the experiment */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the experiment */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -530,7 +530,7 @@ private constructor(
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
         /** User-controlled metadata about the experiment */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /** User-controlled metadata about the experiment */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
@@ -539,7 +539,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the experiment. Within a project, experiment names are unique */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the experiment. Within a project, experiment names are unique */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -560,8 +560,7 @@ private constructor(
          * Whether or not the experiment is public. Public experiments can be viewed by anybody
          * inside or outside the organization
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun public_(public_: Optional<Boolean>) = public_(public_.orElse(null) as Boolean?)
+        fun public_(public_: Optional<Boolean>) = public_(public_.getOrNull())
 
         /**
          * Whether or not the experiment is public. Public experiments can be viewed by anybody
@@ -573,7 +572,7 @@ private constructor(
         fun repoInfo(repoInfo: RepoInfo?) = apply { body.repoInfo(repoInfo) }
 
         /** Metadata about the state of the repo when the experiment was created */
-        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.getOrNull())
 
         /** Metadata about the state of the repo when the experiment was created */
         fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { body.repoInfo(repoInfo) }

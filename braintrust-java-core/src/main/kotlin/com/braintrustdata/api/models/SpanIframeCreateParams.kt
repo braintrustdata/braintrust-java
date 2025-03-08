@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create a new span_iframe. If there is an existing span_iframe with the same name as the one
@@ -220,7 +221,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the span iframe */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the span iframe */
             fun description(description: JsonField<String>) = apply {
@@ -243,9 +244,7 @@ private constructor(
              * Whether to post messages to the iframe containing the span's data. This is useful
              * when you want to render more data than fits in the URL.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun postMessage(postMessage: Optional<Boolean>) =
-                postMessage(postMessage.orElse(null) as Boolean?)
+            fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
             /**
              * Whether to post messages to the iframe containing the span's data. This is useful
@@ -357,7 +356,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the span iframe */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the span iframe */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -378,9 +377,7 @@ private constructor(
          * Whether to post messages to the iframe containing the span's data. This is useful when
          * you want to render more data than fits in the URL.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun postMessage(postMessage: Optional<Boolean>) =
-            postMessage(postMessage.orElse(null) as Boolean?)
+        fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when

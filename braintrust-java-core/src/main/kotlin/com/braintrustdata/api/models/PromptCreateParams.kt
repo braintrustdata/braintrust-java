@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create a new prompt. If there is an existing prompt in the project with the same slug as the one
@@ -248,7 +249,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the prompt */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the prompt */
             fun description(description: JsonField<String>) = apply {
@@ -259,7 +260,7 @@ private constructor(
                 functionType(JsonField.ofNullable(functionType))
 
             fun functionType(functionType: Optional<FunctionType>) =
-                functionType(functionType.orElse(null))
+                functionType(functionType.getOrNull())
 
             fun functionType(functionType: JsonField<FunctionType>) = apply {
                 this.functionType = functionType
@@ -269,7 +270,7 @@ private constructor(
             fun promptData(promptData: PromptData?) = promptData(JsonField.ofNullable(promptData))
 
             /** The prompt, model, and its parameters */
-            fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+            fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
             /** The prompt, model, and its parameters */
             fun promptData(promptData: JsonField<PromptData>) = apply {
@@ -280,7 +281,7 @@ private constructor(
             fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
             /** A list of tags for the prompt */
-            fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+            fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
             /** A list of tags for the prompt */
             fun tags(tags: JsonField<List<String>>) = apply {
@@ -397,7 +398,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the prompt */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the prompt */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -405,7 +406,7 @@ private constructor(
         fun functionType(functionType: FunctionType?) = apply { body.functionType(functionType) }
 
         fun functionType(functionType: Optional<FunctionType>) =
-            functionType(functionType.orElse(null))
+            functionType(functionType.getOrNull())
 
         fun functionType(functionType: JsonField<FunctionType>) = apply {
             body.functionType(functionType)
@@ -415,7 +416,7 @@ private constructor(
         fun promptData(promptData: PromptData?) = apply { body.promptData(promptData) }
 
         /** The prompt, model, and its parameters */
-        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: JsonField<PromptData>) = apply { body.promptData(promptData) }
@@ -424,7 +425,7 @@ private constructor(
         fun tags(tags: List<String>?) = apply { body.tags(tags) }
 
         /** A list of tags for the prompt */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags for the prompt */
         fun tags(tags: JsonField<List<String>>) = apply { body.tags(tags) }

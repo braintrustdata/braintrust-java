@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a single ai_secret */
 class AiSecretFindAndDeleteParams
@@ -157,7 +158,7 @@ private constructor(
              * your API key belongs to multiple organizations, you may specify the name of the
              * organization the AI Secret belongs in.
              */
-            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -255,7 +256,7 @@ private constructor(
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the AI Secret belongs in.
          */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a span_iframe object. Specify the fields to update in the payload. Any
@@ -166,7 +167,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the span iframe */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the span iframe */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -187,9 +188,7 @@ private constructor(
              * Whether to post messages to the iframe containing the span's data. This is useful
              * when you want to render more data than fits in the URL.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun postMessage(postMessage: Optional<Boolean>) =
-                postMessage(postMessage.orElse(null) as Boolean?)
+            fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
             /**
              * Whether to post messages to the iframe containing the span's data. This is useful
@@ -203,7 +202,7 @@ private constructor(
             fun url(url: String?) = url(JsonField.ofNullable(url))
 
             /** URL to embed the project viewer in an iframe */
-            fun url(url: Optional<String>) = url(url.orElse(null))
+            fun url(url: Optional<String>) = url(url.getOrNull())
 
             /** URL to embed the project viewer in an iframe */
             fun url(url: JsonField<String>) = apply { this.url = url }
@@ -287,7 +286,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the span iframe */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the span iframe */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -308,9 +307,7 @@ private constructor(
          * Whether to post messages to the iframe containing the span's data. This is useful when
          * you want to render more data than fits in the URL.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun postMessage(postMessage: Optional<Boolean>) =
-            postMessage(postMessage.orElse(null) as Boolean?)
+        fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
@@ -322,7 +319,7 @@ private constructor(
         fun url(url: String?) = apply { body.url(url) }
 
         /** URL to embed the project viewer in an iframe */
-        fun url(url: Optional<String>) = url(url.orElse(null))
+        fun url(url: Optional<String>) = url(url.getOrNull())
 
         /** URL to embed the project viewer in an iframe */
         fun url(url: JsonField<String>) = apply { body.url(url) }

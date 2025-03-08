@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create or replace function. If there is an existing function in the project with the same slug as
@@ -324,7 +325,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the prompt */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the prompt */
             fun description(description: JsonField<String>) = apply {
@@ -337,7 +338,7 @@ private constructor(
 
             /** JSON schema for the function's parameters and return type */
             fun functionSchema(functionSchema: Optional<FunctionSchema>) =
-                functionSchema(functionSchema.orElse(null))
+                functionSchema(functionSchema.getOrNull())
 
             /** JSON schema for the function's parameters and return type */
             fun functionSchema(functionSchema: JsonField<FunctionSchema>) = apply {
@@ -348,7 +349,7 @@ private constructor(
                 functionType(JsonField.ofNullable(functionType))
 
             fun functionType(functionType: Optional<FunctionType>) =
-                functionType(functionType.orElse(null))
+                functionType(functionType.getOrNull())
 
             fun functionType(functionType: JsonField<FunctionType>) = apply {
                 this.functionType = functionType
@@ -356,7 +357,7 @@ private constructor(
 
             fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
-            fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+            fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
             fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
 
@@ -364,7 +365,7 @@ private constructor(
             fun promptData(promptData: PromptData?) = promptData(JsonField.ofNullable(promptData))
 
             /** The prompt, model, and its parameters */
-            fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+            fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
             /** The prompt, model, and its parameters */
             fun promptData(promptData: JsonField<PromptData>) = apply {
@@ -375,7 +376,7 @@ private constructor(
             fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
             /** A list of tags for the prompt */
-            fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+            fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
             /** A list of tags for the prompt */
             fun tags(tags: JsonField<List<String>>) = apply {
@@ -508,7 +509,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the prompt */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the prompt */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -520,7 +521,7 @@ private constructor(
 
         /** JSON schema for the function's parameters and return type */
         fun functionSchema(functionSchema: Optional<FunctionSchema>) =
-            functionSchema(functionSchema.orElse(null))
+            functionSchema(functionSchema.getOrNull())
 
         /** JSON schema for the function's parameters and return type */
         fun functionSchema(functionSchema: JsonField<FunctionSchema>) = apply {
@@ -530,7 +531,7 @@ private constructor(
         fun functionType(functionType: FunctionType?) = apply { body.functionType(functionType) }
 
         fun functionType(functionType: Optional<FunctionType>) =
-            functionType(functionType.orElse(null))
+            functionType(functionType.getOrNull())
 
         fun functionType(functionType: JsonField<FunctionType>) = apply {
             body.functionType(functionType)
@@ -538,7 +539,7 @@ private constructor(
 
         fun origin(origin: Origin?) = apply { body.origin(origin) }
 
-        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+        fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
         fun origin(origin: JsonField<Origin>) = apply { body.origin(origin) }
 
@@ -546,7 +547,7 @@ private constructor(
         fun promptData(promptData: PromptData?) = apply { body.promptData(promptData) }
 
         /** The prompt, model, and its parameters */
-        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: JsonField<PromptData>) = apply { body.promptData(promptData) }
@@ -555,7 +556,7 @@ private constructor(
         fun tags(tags: List<String>?) = apply { body.tags(tags) }
 
         /** A list of tags for the prompt */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags for the prompt */
         fun tags(tags: JsonField<List<String>>) = apply { body.tags(tags) }
@@ -1447,7 +1448,7 @@ private constructor(
                         fun preview(preview: String?) = preview(JsonField.ofNullable(preview))
 
                         /** A preview of the code */
-                        fun preview(preview: Optional<String>) = preview(preview.orElse(null))
+                        fun preview(preview: Optional<String>) = preview(preview.getOrNull())
 
                         /** A preview of the code */
                         fun preview(preview: JsonField<String>) = apply { this.preview = preview }
@@ -2777,9 +2778,7 @@ private constructor(
              * The function exists for internal purposes and should not be displayed in the list of
              * functions.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun internal_(internal_: Optional<Boolean>) =
-                internal_(internal_.orElse(null) as Boolean?)
+            fun internal_(internal_: Optional<Boolean>) = internal_(internal_.getOrNull())
 
             /**
              * The function exists for internal purposes and should not be displayed in the list of

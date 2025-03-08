@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create a new ai_secret. If there is an existing ai_secret with the same name as the one specified
@@ -208,7 +209,7 @@ private constructor(
 
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
@@ -224,7 +225,7 @@ private constructor(
              * your API key belongs to multiple organizations, you may specify the name of the
              * organization the AI Secret belongs in.
              */
-            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -243,7 +244,7 @@ private constructor(
              * Secret value. If omitted in a PUT request, the existing secret value will be left
              * intact, not replaced with null.
              */
-            fun secret(secret: Optional<String>) = secret(secret.orElse(null))
+            fun secret(secret: Optional<String>) = secret(secret.getOrNull())
 
             /**
              * Secret value. If omitted in a PUT request, the existing secret value will be left
@@ -253,7 +254,7 @@ private constructor(
 
             fun type(type: String?) = type(JsonField.ofNullable(type))
 
-            fun type(type: Optional<String>) = type(type.orElse(null))
+            fun type(type: Optional<String>) = type(type.getOrNull())
 
             fun type(type: JsonField<String>) = apply { this.type = type }
 
@@ -343,7 +344,7 @@ private constructor(
 
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
@@ -359,7 +360,7 @@ private constructor(
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the AI Secret belongs in.
          */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -378,7 +379,7 @@ private constructor(
          * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
          * not replaced with null.
          */
-        fun secret(secret: Optional<String>) = secret(secret.orElse(null))
+        fun secret(secret: Optional<String>) = secret(secret.getOrNull())
 
         /**
          * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
@@ -388,7 +389,7 @@ private constructor(
 
         fun type(type: String?) = apply { body.type(type) }
 
-        fun type(type: Optional<String>) = type(type.orElse(null))
+        fun type(type: Optional<String>) = type(type.getOrNull())
 
         fun type(type: JsonField<String>) = apply { body.type(type) }
 

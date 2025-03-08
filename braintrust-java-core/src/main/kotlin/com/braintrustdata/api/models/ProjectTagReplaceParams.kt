@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create or replace project_tag. If there is an existing project_tag in the project with the same
@@ -183,7 +184,7 @@ private constructor(
             fun color(color: String?) = color(JsonField.ofNullable(color))
 
             /** Color of the tag for the UI */
-            fun color(color: Optional<String>) = color(color.orElse(null))
+            fun color(color: Optional<String>) = color(color.getOrNull())
 
             /** Color of the tag for the UI */
             fun color(color: JsonField<String>) = apply { this.color = color }
@@ -192,7 +193,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the project tag */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the project tag */
             fun description(description: JsonField<String>) = apply {
@@ -293,7 +294,7 @@ private constructor(
         fun color(color: String?) = apply { body.color(color) }
 
         /** Color of the tag for the UI */
-        fun color(color: Optional<String>) = color(color.orElse(null))
+        fun color(color: Optional<String>) = color(color.getOrNull())
 
         /** Color of the tag for the UI */
         fun color(color: JsonField<String>) = apply { body.color(color) }
@@ -302,7 +303,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the project tag */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project tag */
         fun description(description: JsonField<String>) = apply { body.description(description) }

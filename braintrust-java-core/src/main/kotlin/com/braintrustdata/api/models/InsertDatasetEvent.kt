@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** A dataset event */
 @NoAutoDetect
@@ -408,7 +409,7 @@ private constructor(
          * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
          * generate one for you
          */
-        fun id(id: Optional<String>) = id(id.orElse(null))
+        fun id(id: Optional<String>) = id(id.getOrNull())
 
         /**
          * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
@@ -456,8 +457,7 @@ private constructor(
          * replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
          * `{"id": "foo", "input": {"b": 11, "c": 20}}`
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun _isMerge(_isMerge: Optional<Boolean>) = _isMerge(_isMerge.orElse(null) as Boolean?)
+        fun _isMerge(_isMerge: Optional<Boolean>) = _isMerge(_isMerge.getOrNull())
 
         /**
          * The `_is_merge` field controls how the row is merged with any existing row with the same
@@ -503,7 +503,7 @@ private constructor(
          * deep-merged `input` and `input.c`.
          */
         fun _mergePaths(_mergePaths: Optional<List<List<String>>>) =
-            _mergePaths(_mergePaths.orElse(null))
+            _mergePaths(_mergePaths.getOrNull())
 
         /**
          * The `_merge_paths` field allows controlling the depth of the merge, when
@@ -559,9 +559,8 @@ private constructor(
          * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not
          * show up in subsequent fetches for this dataset
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun _objectDelete(_objectDelete: Optional<Boolean>) =
-            _objectDelete(_objectDelete.orElse(null) as Boolean?)
+            _objectDelete(_objectDelete.getOrNull())
 
         /**
          * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not
@@ -601,7 +600,7 @@ private constructor(
          *
          * If the row is being merged into an existing row, this field will be ignored.
          */
-        fun _parentId(_parentId: Optional<String>) = _parentId(_parentId.orElse(null))
+        fun _parentId(_parentId: Optional<String>) = _parentId(_parentId.getOrNull())
 
         /**
          * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
@@ -623,7 +622,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** The timestamp the dataset event was created */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** The timestamp the dataset event was created */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -655,7 +654,7 @@ private constructor(
          * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
          * but its keys must be strings
          */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
          * A dictionary with additional data about the test example, model outputs, or just about
@@ -702,7 +701,7 @@ private constructor(
          *
          * If the row is being merged into an existing row, this field will be ignored.
          */
-        fun rootSpanId(rootSpanId: Optional<String>) = rootSpanId(rootSpanId.orElse(null))
+        fun rootSpanId(rootSpanId: Optional<String>) = rootSpanId(rootSpanId.getOrNull())
 
         /**
          * Use span_id, root_span_id, and span_parents as a more explicit alternative to
@@ -759,7 +758,7 @@ private constructor(
          *
          * If the row is being merged into an existing row, this field will be ignored.
          */
-        fun spanId(spanId: Optional<String>) = spanId(spanId.orElse(null))
+        fun spanId(spanId: Optional<String>) = spanId(spanId.getOrNull())
 
         /**
          * Use span_id, root_span_id, and span_parents as a more explicit alternative to
@@ -816,7 +815,7 @@ private constructor(
          *
          * If the row is being merged into an existing row, this field will be ignored.
          */
-        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.orElse(null))
+        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.getOrNull())
 
         /**
          * Use span_id, root_span_id, and span_parents as a more explicit alternative to
@@ -867,7 +866,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags to log */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags to log */
         fun tags(tags: JsonField<List<String>>) = apply {

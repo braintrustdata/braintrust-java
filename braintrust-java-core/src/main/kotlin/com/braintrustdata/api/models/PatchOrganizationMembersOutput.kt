@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class PatchOrganizationMembersOutput
@@ -131,7 +132,7 @@ private constructor(
          * but we will return an error message here
          */
         fun sendEmailError(sendEmailError: Optional<String>) =
-            sendEmailError(sendEmailError.orElse(null))
+            sendEmailError(sendEmailError.getOrNull())
 
         /**
          * If invite emails failed to send for some reason, the patch operation will still complete,

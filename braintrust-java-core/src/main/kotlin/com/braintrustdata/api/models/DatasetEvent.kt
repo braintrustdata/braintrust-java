@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class DatasetEvent
@@ -334,8 +335,7 @@ private constructor(
         fun isRoot(isRoot: Boolean) = isRoot(isRoot as Boolean?)
 
         /** Whether this span is a root span */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.orElse(null) as Boolean?)
+        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.getOrNull())
 
         /** Whether this span is a root span */
         fun isRoot(isRoot: JsonField<Boolean>) = apply { this.isRoot = isRoot }
@@ -356,7 +356,7 @@ private constructor(
          * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
          * but its keys must be strings
          */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
          * A dictionary with additional data about the test example, model outputs, or just about
@@ -371,7 +371,7 @@ private constructor(
         fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
         /** Indicates the event was copied from another object. */
-        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+        fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
         /** Indicates the event was copied from another object. */
         fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
@@ -380,7 +380,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags to log */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags to log */
         fun tags(tags: JsonField<List<String>>) = apply {

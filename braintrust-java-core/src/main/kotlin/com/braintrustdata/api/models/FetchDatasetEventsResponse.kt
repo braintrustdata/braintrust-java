@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class FetchDatasetEventsResponse
@@ -128,7 +129,7 @@ private constructor(
          * Pass this string directly as the `cursor` param to your next fetch request to get the
          * next page of results. Not provided if the returned result set is empty.
          */
-        fun cursor(cursor: Optional<String>) = cursor(cursor.orElse(null))
+        fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
 
         /**
          * Pagination cursor

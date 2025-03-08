@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Summary of an experiment */
 @NoAutoDetect
@@ -194,7 +195,7 @@ private constructor(
 
         /** The experiment which scores are baselined against */
         fun comparisonExperimentName(comparisonExperimentName: Optional<String>) =
-            comparisonExperimentName(comparisonExperimentName.orElse(null))
+            comparisonExperimentName(comparisonExperimentName.getOrNull())
 
         /** The experiment which scores are baselined against */
         fun comparisonExperimentName(comparisonExperimentName: JsonField<String>) = apply {
@@ -205,7 +206,7 @@ private constructor(
         fun metrics(metrics: Metrics?) = metrics(JsonField.ofNullable(metrics))
 
         /** Summary of the experiment's metrics */
-        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.orElse(null))
+        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.getOrNull())
 
         /** Summary of the experiment's metrics */
         fun metrics(metrics: JsonField<Metrics>) = apply { this.metrics = metrics }
@@ -214,7 +215,7 @@ private constructor(
         fun scores(scores: Scores?) = scores(JsonField.ofNullable(scores))
 
         /** Summary of the experiment's scores */
-        fun scores(scores: Optional<Scores>) = scores(scores.orElse(null))
+        fun scores(scores: Optional<Scores>) = scores(scores.getOrNull())
 
         /** Summary of the experiment's scores */
         fun scores(scores: JsonField<Scores>) = apply { this.scores = scores }

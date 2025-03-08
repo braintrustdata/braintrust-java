@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class User
@@ -142,7 +143,7 @@ private constructor(
         fun avatarUrl(avatarUrl: String?) = avatarUrl(JsonField.ofNullable(avatarUrl))
 
         /** URL of the user's Avatar image */
-        fun avatarUrl(avatarUrl: Optional<String>) = avatarUrl(avatarUrl.orElse(null))
+        fun avatarUrl(avatarUrl: Optional<String>) = avatarUrl(avatarUrl.getOrNull())
 
         /** URL of the user's Avatar image */
         fun avatarUrl(avatarUrl: JsonField<String>) = apply { this.avatarUrl = avatarUrl }
@@ -151,7 +152,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of user creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of user creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -160,7 +161,7 @@ private constructor(
         fun email(email: String?) = email(JsonField.ofNullable(email))
 
         /** The user's email */
-        fun email(email: Optional<String>) = email(email.orElse(null))
+        fun email(email: Optional<String>) = email(email.getOrNull())
 
         /** The user's email */
         fun email(email: JsonField<String>) = apply { this.email = email }
@@ -169,7 +170,7 @@ private constructor(
         fun familyName(familyName: String?) = familyName(JsonField.ofNullable(familyName))
 
         /** Family name of the user */
-        fun familyName(familyName: Optional<String>) = familyName(familyName.orElse(null))
+        fun familyName(familyName: Optional<String>) = familyName(familyName.getOrNull())
 
         /** Family name of the user */
         fun familyName(familyName: JsonField<String>) = apply { this.familyName = familyName }
@@ -178,7 +179,7 @@ private constructor(
         fun givenName(givenName: String?) = givenName(JsonField.ofNullable(givenName))
 
         /** Given name of the user */
-        fun givenName(givenName: Optional<String>) = givenName(givenName.orElse(null))
+        fun givenName(givenName: Optional<String>) = givenName(givenName.getOrNull())
 
         /** Given name of the user */
         fun givenName(givenName: JsonField<String>) = apply { this.givenName = givenName }

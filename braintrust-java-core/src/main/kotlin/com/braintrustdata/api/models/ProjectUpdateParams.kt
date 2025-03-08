@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a project object. Specify the fields to update in the payload. Any object-type
@@ -150,7 +151,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the project */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the project */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -165,7 +166,7 @@ private constructor(
              * Project settings. Patch operations replace all settings, so make sure you include all
              * settings you want to keep.
              */
-            fun settings(settings: Optional<ProjectSettings>) = settings(settings.orElse(null))
+            fun settings(settings: Optional<ProjectSettings>) = settings(settings.getOrNull())
 
             /**
              * Project settings. Patch operations replace all settings, so make sure you include all
@@ -252,7 +253,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the project */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the project */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -267,7 +268,7 @@ private constructor(
          * Project settings. Patch operations replace all settings, so make sure you include all
          * settings you want to keep.
          */
-        fun settings(settings: Optional<ProjectSettings>) = settings(settings.orElse(null))
+        fun settings(settings: Optional<ProjectSettings>) = settings(settings.getOrNull())
 
         /**
          * Project settings. Patch operations replace all settings, so make sure you include all
