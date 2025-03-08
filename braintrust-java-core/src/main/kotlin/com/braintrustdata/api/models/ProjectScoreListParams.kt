@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all project_scores. The project_scores are sorted by creation date, with the most
@@ -163,7 +164,7 @@ private constructor(
          * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.orElse(null))
+        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -175,7 +176,7 @@ private constructor(
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
+        fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -196,26 +197,25 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Limit the number of objects to return */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Filter search results to within a particular organization */
         fun orgName(orgName: String?) = apply { this.orgName = orgName }
 
         /** Filter search results to within a particular organization */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /** Project id */
         fun projectId(projectId: String?) = apply { this.projectId = projectId }
 
         /** Project id */
-        fun projectId(projectId: Optional<String>) = projectId(projectId.orElse(null))
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /** Name of the project to search for */
         fun projectName(projectName: String?) = apply { this.projectName = projectName }
 
         /** Name of the project to search for */
-        fun projectName(projectName: Optional<String>) = projectName(projectName.orElse(null))
+        fun projectName(projectName: Optional<String>) = projectName(projectName.getOrNull())
 
         /** Name of the project_score to search for */
         fun projectScoreName(projectScoreName: String?) = apply {
@@ -224,13 +224,13 @@ private constructor(
 
         /** Name of the project_score to search for */
         fun projectScoreName(projectScoreName: Optional<String>) =
-            projectScoreName(projectScoreName.orElse(null))
+            projectScoreName(projectScoreName.getOrNull())
 
         /** The type of the configured score */
         fun scoreType(scoreType: ScoreType?) = apply { this.scoreType = scoreType }
 
         /** The type of the configured score */
-        fun scoreType(scoreType: Optional<ScoreType>) = scoreType(scoreType.orElse(null))
+        fun scoreType(scoreType: Optional<ScoreType>) = scoreType(scoreType.getOrNull())
 
         /** The type of the configured score */
         fun scoreType(project: ScoreType.ProjectScoreType) = scoreType(ScoreType.ofProject(project))
@@ -256,7 +256,7 @@ private constructor(
          * `starting_after` and `ending_before`
          */
         fun startingAfter(startingAfter: Optional<String>) =
-            startingAfter(startingAfter.orElse(null))
+            startingAfter(startingAfter.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

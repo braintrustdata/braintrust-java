@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Project
@@ -168,7 +169,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of project creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of project creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -177,14 +178,14 @@ private constructor(
         fun deletedAt(deletedAt: OffsetDateTime?) = deletedAt(JsonField.ofNullable(deletedAt))
 
         /** Date of project deletion, or null if the project is still active */
-        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.orElse(null))
+        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.getOrNull())
 
         /** Date of project deletion, or null if the project is still active */
         fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
 
         fun settings(settings: ProjectSettings?) = settings(JsonField.ofNullable(settings))
 
-        fun settings(settings: Optional<ProjectSettings>) = settings(settings.orElse(null))
+        fun settings(settings: Optional<ProjectSettings>) = settings(settings.getOrNull())
 
         fun settings(settings: JsonField<ProjectSettings>) = apply { this.settings = settings }
 
@@ -192,7 +193,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Identifies the user who created the project */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the project */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }

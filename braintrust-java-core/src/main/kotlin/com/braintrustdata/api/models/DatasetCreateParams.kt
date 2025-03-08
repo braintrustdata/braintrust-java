@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create a new dataset. If there is an existing dataset in the project with the same name as the
@@ -182,7 +183,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the dataset */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the dataset */
             fun description(description: JsonField<String>) = apply {
@@ -193,7 +194,7 @@ private constructor(
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
             /** User-controlled metadata about the dataset */
-            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
             /** User-controlled metadata about the dataset */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
@@ -292,7 +293,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the dataset */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the dataset */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -301,7 +302,7 @@ private constructor(
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
         /** User-controlled metadata about the dataset */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /** User-controlled metadata about the dataset */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }

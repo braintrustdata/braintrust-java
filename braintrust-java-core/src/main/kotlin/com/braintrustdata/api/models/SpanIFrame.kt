@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class SpanIFrame
@@ -210,7 +211,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of span iframe creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of span iframe creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -219,7 +220,7 @@ private constructor(
         fun deletedAt(deletedAt: OffsetDateTime?) = deletedAt(JsonField.ofNullable(deletedAt))
 
         /** Date of span iframe deletion, or null if the span iframe is still active */
-        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.orElse(null))
+        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.getOrNull())
 
         /** Date of span iframe deletion, or null if the span iframe is still active */
         fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
@@ -228,7 +229,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the span iframe */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the span iframe */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -249,9 +250,7 @@ private constructor(
          * Whether to post messages to the iframe containing the span's data. This is useful when
          * you want to render more data than fits in the URL.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun postMessage(postMessage: Optional<Boolean>) =
-            postMessage(postMessage.orElse(null) as Boolean?)
+        fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
@@ -263,7 +262,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Identifies the user who created the span iframe */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the span iframe */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }

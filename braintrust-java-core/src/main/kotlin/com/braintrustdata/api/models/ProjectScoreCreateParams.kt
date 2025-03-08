@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create a new project_score. If there is an existing project_score in the project with the same
@@ -264,7 +265,7 @@ private constructor(
 
             fun config(config: ProjectScoreConfig?) = config(JsonField.ofNullable(config))
 
-            fun config(config: Optional<ProjectScoreConfig>) = config(config.orElse(null))
+            fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
             fun config(config: JsonField<ProjectScoreConfig>) = apply { this.config = config }
 
@@ -272,7 +273,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the project score */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the project score */
             fun description(description: JsonField<String>) = apply {
@@ -402,7 +403,7 @@ private constructor(
 
         fun config(config: ProjectScoreConfig?) = apply { body.config(config) }
 
-        fun config(config: Optional<ProjectScoreConfig>) = config(config.orElse(null))
+        fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
         fun config(config: JsonField<ProjectScoreConfig>) = apply { body.config(config) }
 
@@ -410,7 +411,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the project score */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project score */
         fun description(description: JsonField<String>) = apply { body.description(description) }

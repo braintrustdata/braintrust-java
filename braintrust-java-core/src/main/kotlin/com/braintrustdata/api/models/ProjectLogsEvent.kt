@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ProjectLogsEvent
@@ -469,7 +470,7 @@ private constructor(
          * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
          * track the location in code which produced the project logs event
          */
-        fun context(context: Optional<Context>) = context(context.orElse(null))
+        fun context(context: Optional<Context>) = context(context.getOrNull())
 
         /**
          * Context is additional information about the code that produced the project logs event. It
@@ -503,8 +504,7 @@ private constructor(
         fun isRoot(isRoot: Boolean) = isRoot(isRoot as Boolean?)
 
         /** Whether this span is a root span */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.orElse(null) as Boolean?)
+        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.getOrNull())
 
         /** Whether this span is a root span */
         fun isRoot(isRoot: JsonField<Boolean>) = apply { this.isRoot = isRoot }
@@ -525,7 +525,7 @@ private constructor(
          * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
          * but its keys must be strings
          */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
          * A dictionary with additional data about the test example, model outputs, or just about
@@ -548,7 +548,7 @@ private constructor(
          * project logs event. Use "start" and "end" to track the time span over which the project
          * logs event was produced
          */
-        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.orElse(null))
+        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.getOrNull())
 
         /**
          * Metrics are numerical measurements tracking the execution of the code that produced the
@@ -561,7 +561,7 @@ private constructor(
         fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
         /** Indicates the event was copied from another object. */
-        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+        fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
         /** Indicates the event was copied from another object. */
         fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
@@ -595,7 +595,7 @@ private constructor(
          * determine whether the summarization was covering similar concepts or not. You can use
          * these scores to help you sort, filter, and compare logs.
          */
-        fun scores(scores: Optional<Scores>) = scores(scores.orElse(null))
+        fun scores(scores: Optional<Scores>) = scores(scores.getOrNull())
 
         /**
          * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
@@ -614,7 +614,7 @@ private constructor(
 
         /** Human-identifying attributes of the span, such as name, type, etc. */
         fun spanAttributes(spanAttributes: Optional<SpanAttributes>) =
-            spanAttributes(spanAttributes.orElse(null))
+            spanAttributes(spanAttributes.getOrNull())
 
         /** Human-identifying attributes of the span, such as name, type, etc. */
         fun spanAttributes(spanAttributes: JsonField<SpanAttributes>) = apply {
@@ -633,7 +633,7 @@ private constructor(
          * the root span of a trace, and should most often contain just one parent element for
          * subspans
          */
-        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.orElse(null))
+        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.getOrNull())
 
         /**
          * An array of the parent `span_ids` of this project logs event. This should be empty for
@@ -660,7 +660,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags to log */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags to log */
         fun tags(tags: JsonField<List<String>>) = apply {
@@ -909,7 +909,7 @@ private constructor(
 
             /** Name of the file in code where the project logs event was created */
             fun callerFilename(callerFilename: Optional<String>) =
-                callerFilename(callerFilename.orElse(null))
+                callerFilename(callerFilename.getOrNull())
 
             /** Name of the file in code where the project logs event was created */
             fun callerFilename(callerFilename: JsonField<String>) = apply {
@@ -922,7 +922,7 @@ private constructor(
 
             /** The function in code which created the project logs event */
             fun callerFunctionname(callerFunctionname: Optional<String>) =
-                callerFunctionname(callerFunctionname.orElse(null))
+                callerFunctionname(callerFunctionname.getOrNull())
 
             /** The function in code which created the project logs event */
             fun callerFunctionname(callerFunctionname: JsonField<String>) = apply {
@@ -936,9 +936,7 @@ private constructor(
             fun callerLineno(callerLineno: Long) = callerLineno(callerLineno as Long?)
 
             /** Line of code where the project logs event was created */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun callerLineno(callerLineno: Optional<Long>) =
-                callerLineno(callerLineno.orElse(null) as Long?)
+            fun callerLineno(callerLineno: Optional<Long>) = callerLineno(callerLineno.getOrNull())
 
             /** Line of code where the project logs event was created */
             fun callerLineno(callerLineno: JsonField<Long>) = apply {
@@ -1269,9 +1267,8 @@ private constructor(
              * The number of tokens in the completion generated by the model (only set if this is an
              * LLM span)
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun completionTokens(completionTokens: Optional<Long>) =
-                completionTokens(completionTokens.orElse(null) as Long?)
+                completionTokens(completionTokens.getOrNull())
 
             /**
              * The number of tokens in the completion generated by the model (only set if this is an
@@ -1297,8 +1294,7 @@ private constructor(
              * A unix timestamp recording when the section of code which produced the project logs
              * event finished
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun end(end: Optional<Double>) = end(end.orElse(null) as Double?)
+            fun end(end: Optional<Double>) = end(end.getOrNull())
 
             /**
              * A unix timestamp recording when the section of code which produced the project logs
@@ -1322,9 +1318,7 @@ private constructor(
              * The number of tokens in the prompt used to generate the project logs event (only set
              * if this is an LLM span)
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun promptTokens(promptTokens: Optional<Long>) =
-                promptTokens(promptTokens.orElse(null) as Long?)
+            fun promptTokens(promptTokens: Optional<Long>) = promptTokens(promptTokens.getOrNull())
 
             /**
              * The number of tokens in the prompt used to generate the project logs event (only set
@@ -1350,8 +1344,7 @@ private constructor(
              * A unix timestamp recording when the section of code which produced the project logs
              * event started
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun start(start: Optional<Double>) = start(start.orElse(null) as Double?)
+            fun start(start: Optional<Double>) = start(start.getOrNull())
 
             /**
              * A unix timestamp recording when the section of code which produced the project logs
@@ -1366,8 +1359,7 @@ private constructor(
             fun tokens(tokens: Long) = tokens(tokens as Long?)
 
             /** The total number of tokens in the input and output of the project logs event. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun tokens(tokens: Optional<Long>) = tokens(tokens.orElse(null) as Long?)
+            fun tokens(tokens: Optional<Long>) = tokens(tokens.getOrNull())
 
             /** The total number of tokens in the input and output of the project logs event. */
             fun tokens(tokens: JsonField<Long>) = apply { this.tokens = tokens }

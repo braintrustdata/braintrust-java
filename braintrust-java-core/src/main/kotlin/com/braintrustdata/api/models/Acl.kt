@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * An ACL grants a certain permission or role to a certain user or group on an object.
@@ -251,7 +252,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of acl creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of acl creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -266,7 +267,7 @@ private constructor(
          * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
          * provided
          */
-        fun groupId(groupId: Optional<String>) = groupId(groupId.orElse(null))
+        fun groupId(groupId: Optional<String>) = groupId(groupId.getOrNull())
 
         /**
          * Id of the group the ACL applies to. Exactly one of `user_id` and `group_id` will be
@@ -278,7 +279,7 @@ private constructor(
         fun permission(permission: Permission?) = permission(JsonField.ofNullable(permission))
 
         /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
-        fun permission(permission: Optional<Permission>) = permission(permission.orElse(null))
+        fun permission(permission: Optional<Permission>) = permission(permission.getOrNull())
 
         /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
         fun permission(permission: JsonField<Permission>) = apply { this.permission = permission }
@@ -295,7 +296,7 @@ private constructor(
          * specified object type. Cannot be set alongside a `role_id`.
          */
         fun restrictObjectType(restrictObjectType: Optional<RestrictObjectType>) =
-            restrictObjectType(restrictObjectType.orElse(null))
+            restrictObjectType(restrictObjectType.getOrNull())
 
         /**
          * When setting a permission directly, optionally restricts the permission grant to just the
@@ -313,7 +314,7 @@ private constructor(
         /**
          * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
          */
-        fun roleId(roleId: Optional<String>) = roleId(roleId.orElse(null))
+        fun roleId(roleId: Optional<String>) = roleId(roleId.getOrNull())
 
         /**
          * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
@@ -330,7 +331,7 @@ private constructor(
          * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
          * provided
          */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /**
          * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be

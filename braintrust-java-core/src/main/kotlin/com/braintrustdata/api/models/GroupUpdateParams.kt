@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a group object. Specify the fields to update in the payload. Any object-type
@@ -225,7 +226,7 @@ private constructor(
 
             /** A list of group IDs to add to the group's inheriting-from set */
             fun addMemberGroups(addMemberGroups: Optional<List<String>>) =
-                addMemberGroups(addMemberGroups.orElse(null))
+                addMemberGroups(addMemberGroups.getOrNull())
 
             /** A list of group IDs to add to the group's inheriting-from set */
             fun addMemberGroups(addMemberGroups: JsonField<List<String>>) = apply {
@@ -246,7 +247,7 @@ private constructor(
 
             /** A list of user IDs to add to the group */
             fun addMemberUsers(addMemberUsers: Optional<List<String>>) =
-                addMemberUsers(addMemberUsers.orElse(null))
+                addMemberUsers(addMemberUsers.getOrNull())
 
             /** A list of user IDs to add to the group */
             fun addMemberUsers(addMemberUsers: JsonField<List<String>>) = apply {
@@ -265,7 +266,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the group */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the group */
             fun description(description: JsonField<String>) = apply {
@@ -276,7 +277,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the group */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the group */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -287,7 +288,7 @@ private constructor(
 
             /** A list of group IDs to remove from the group's inheriting-from set */
             fun removeMemberGroups(removeMemberGroups: Optional<List<String>>) =
-                removeMemberGroups(removeMemberGroups.orElse(null))
+                removeMemberGroups(removeMemberGroups.getOrNull())
 
             /** A list of group IDs to remove from the group's inheriting-from set */
             fun removeMemberGroups(removeMemberGroups: JsonField<List<String>>) = apply {
@@ -308,7 +309,7 @@ private constructor(
 
             /** A list of user IDs to remove from the group */
             fun removeMemberUsers(removeMemberUsers: Optional<List<String>>) =
-                removeMemberUsers(removeMemberUsers.orElse(null))
+                removeMemberUsers(removeMemberUsers.getOrNull())
 
             /** A list of user IDs to remove from the group */
             fun removeMemberUsers(removeMemberUsers: JsonField<List<String>>) = apply {
@@ -414,7 +415,7 @@ private constructor(
 
         /** A list of group IDs to add to the group's inheriting-from set */
         fun addMemberGroups(addMemberGroups: Optional<List<String>>) =
-            addMemberGroups(addMemberGroups.orElse(null))
+            addMemberGroups(addMemberGroups.getOrNull())
 
         /** A list of group IDs to add to the group's inheriting-from set */
         fun addMemberGroups(addMemberGroups: JsonField<List<String>>) = apply {
@@ -433,7 +434,7 @@ private constructor(
 
         /** A list of user IDs to add to the group */
         fun addMemberUsers(addMemberUsers: Optional<List<String>>) =
-            addMemberUsers(addMemberUsers.orElse(null))
+            addMemberUsers(addMemberUsers.getOrNull())
 
         /** A list of user IDs to add to the group */
         fun addMemberUsers(addMemberUsers: JsonField<List<String>>) = apply {
@@ -447,7 +448,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the group */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the group */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -456,7 +457,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the group */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the group */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -468,7 +469,7 @@ private constructor(
 
         /** A list of group IDs to remove from the group's inheriting-from set */
         fun removeMemberGroups(removeMemberGroups: Optional<List<String>>) =
-            removeMemberGroups(removeMemberGroups.orElse(null))
+            removeMemberGroups(removeMemberGroups.getOrNull())
 
         /** A list of group IDs to remove from the group's inheriting-from set */
         fun removeMemberGroups(removeMemberGroups: JsonField<List<String>>) = apply {
@@ -487,7 +488,7 @@ private constructor(
 
         /** A list of user IDs to remove from the group */
         fun removeMemberUsers(removeMemberUsers: Optional<List<String>>) =
-            removeMemberUsers(removeMemberUsers.orElse(null))
+            removeMemberUsers(removeMemberUsers.getOrNull())
 
         /** A list of user IDs to remove from the group */
         fun removeMemberUsers(removeMemberUsers: JsonField<List<String>>) = apply {

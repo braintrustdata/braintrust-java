@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update an ai_secret object. Specify the fields to update in the payload. Any
@@ -157,7 +158,7 @@ private constructor(
 
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
@@ -165,20 +166,20 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the AI secret */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the AI secret */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun secret(secret: String?) = secret(JsonField.ofNullable(secret))
 
-            fun secret(secret: Optional<String>) = secret(secret.orElse(null))
+            fun secret(secret: Optional<String>) = secret(secret.getOrNull())
 
             fun secret(secret: JsonField<String>) = apply { this.secret = secret }
 
             fun type(type: String?) = type(JsonField.ofNullable(type))
 
-            fun type(type: Optional<String>) = type(type.orElse(null))
+            fun type(type: Optional<String>) = type(type.getOrNull())
 
             fun type(type: JsonField<String>) = apply { this.type = type }
 
@@ -260,7 +261,7 @@ private constructor(
 
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
@@ -268,20 +269,20 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the AI secret */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the AI secret */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         fun secret(secret: String?) = apply { body.secret(secret) }
 
-        fun secret(secret: Optional<String>) = secret(secret.orElse(null))
+        fun secret(secret: Optional<String>) = secret(secret.getOrNull())
 
         fun secret(secret: JsonField<String>) = apply { body.secret(secret) }
 
         fun type(type: String?) = apply { body.type(type) }
 
-        fun type(type: Optional<String>) = type(type.orElse(null))
+        fun type(type: Optional<String>) = type(type.getOrNull())
 
         fun type(type: JsonField<String>) = apply { body.type(type) }
 

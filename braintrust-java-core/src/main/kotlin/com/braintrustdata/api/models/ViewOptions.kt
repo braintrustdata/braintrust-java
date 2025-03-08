@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Options for the view in the app */
 @NoAutoDetect
@@ -98,7 +99,7 @@ private constructor(
 
         fun columnOrder(columnOrder: List<String>?) = columnOrder(JsonField.ofNullable(columnOrder))
 
-        fun columnOrder(columnOrder: Optional<List<String>>) = columnOrder(columnOrder.orElse(null))
+        fun columnOrder(columnOrder: Optional<List<String>>) = columnOrder(columnOrder.getOrNull())
 
         fun columnOrder(columnOrder: JsonField<List<String>>) = apply {
             this.columnOrder = columnOrder.map { it.toMutableList() }
@@ -115,7 +116,7 @@ private constructor(
             columnSizing(JsonField.ofNullable(columnSizing))
 
         fun columnSizing(columnSizing: Optional<ColumnSizing>) =
-            columnSizing(columnSizing.orElse(null))
+            columnSizing(columnSizing.getOrNull())
 
         fun columnSizing(columnSizing: JsonField<ColumnSizing>) = apply {
             this.columnSizing = columnSizing
@@ -125,7 +126,7 @@ private constructor(
             columnVisibility(JsonField.ofNullable(columnVisibility))
 
         fun columnVisibility(columnVisibility: Optional<ColumnVisibility>) =
-            columnVisibility(columnVisibility.orElse(null))
+            columnVisibility(columnVisibility.getOrNull())
 
         fun columnVisibility(columnVisibility: JsonField<ColumnVisibility>) = apply {
             this.columnVisibility = columnVisibility

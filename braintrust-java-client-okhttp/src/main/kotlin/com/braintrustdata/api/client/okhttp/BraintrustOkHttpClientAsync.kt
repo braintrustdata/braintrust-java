@@ -13,6 +13,7 @@ import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class BraintrustOkHttpClientAsync private constructor() {
 
@@ -147,7 +148,7 @@ class BraintrustOkHttpClientAsync private constructor() {
 
         fun apiKey(apiKey: String?) = apply { clientOptions.apiKey(apiKey) }
 
-        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.orElse(null))
+        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.getOrNull())
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 

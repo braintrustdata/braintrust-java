@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a project_tag object. Specify the fields to update in the payload. Any
@@ -156,7 +157,7 @@ private constructor(
             fun color(color: String?) = color(JsonField.ofNullable(color))
 
             /** Color of the tag for the UI */
-            fun color(color: Optional<String>) = color(color.orElse(null))
+            fun color(color: Optional<String>) = color(color.getOrNull())
 
             /** Color of the tag for the UI */
             fun color(color: JsonField<String>) = apply { this.color = color }
@@ -165,7 +166,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the project tag */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the project tag */
             fun description(description: JsonField<String>) = apply {
@@ -176,7 +177,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the project tag */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the project tag */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -260,7 +261,7 @@ private constructor(
         fun color(color: String?) = apply { body.color(color) }
 
         /** Color of the tag for the UI */
-        fun color(color: Optional<String>) = color(color.orElse(null))
+        fun color(color: Optional<String>) = color(color.getOrNull())
 
         /** Color of the tag for the UI */
         fun color(color: JsonField<String>) = apply { body.color(color) }
@@ -269,7 +270,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the project tag */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project tag */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -278,7 +279,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the project tag */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the project tag */
         fun name(name: JsonField<String>) = apply { body.name(name) }

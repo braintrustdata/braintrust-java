@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a role object. Specify the fields to update in the payload. Any object-type
@@ -232,7 +233,7 @@ private constructor(
 
             /** A list of permissions to add to the role */
             fun addMemberPermissions(addMemberPermissions: Optional<List<AddMemberPermission>>) =
-                addMemberPermissions(addMemberPermissions.orElse(null))
+                addMemberPermissions(addMemberPermissions.getOrNull())
 
             /** A list of permissions to add to the role */
             fun addMemberPermissions(addMemberPermissions: JsonField<List<AddMemberPermission>>) =
@@ -254,7 +255,7 @@ private constructor(
 
             /** A list of role IDs to add to the role's inheriting-from set */
             fun addMemberRoles(addMemberRoles: Optional<List<String>>) =
-                addMemberRoles(addMemberRoles.orElse(null))
+                addMemberRoles(addMemberRoles.getOrNull())
 
             /** A list of role IDs to add to the role's inheriting-from set */
             fun addMemberRoles(addMemberRoles: JsonField<List<String>>) = apply {
@@ -273,7 +274,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the role */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the role */
             fun description(description: JsonField<String>) = apply {
@@ -284,7 +285,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the role */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the role */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -296,7 +297,7 @@ private constructor(
             /** A list of permissions to remove from the role */
             fun removeMemberPermissions(
                 removeMemberPermissions: Optional<List<RemoveMemberPermission>>
-            ) = removeMemberPermissions(removeMemberPermissions.orElse(null))
+            ) = removeMemberPermissions(removeMemberPermissions.getOrNull())
 
             /** A list of permissions to remove from the role */
             fun removeMemberPermissions(
@@ -319,7 +320,7 @@ private constructor(
 
             /** A list of role IDs to remove from the role's inheriting-from set */
             fun removeMemberRoles(removeMemberRoles: Optional<List<String>>) =
-                removeMemberRoles(removeMemberRoles.orElse(null))
+                removeMemberRoles(removeMemberRoles.getOrNull())
 
             /** A list of role IDs to remove from the role's inheriting-from set */
             fun removeMemberRoles(removeMemberRoles: JsonField<List<String>>) = apply {
@@ -425,7 +426,7 @@ private constructor(
 
         /** A list of permissions to add to the role */
         fun addMemberPermissions(addMemberPermissions: Optional<List<AddMemberPermission>>) =
-            addMemberPermissions(addMemberPermissions.orElse(null))
+            addMemberPermissions(addMemberPermissions.getOrNull())
 
         /** A list of permissions to add to the role */
         fun addMemberPermissions(addMemberPermissions: JsonField<List<AddMemberPermission>>) =
@@ -445,7 +446,7 @@ private constructor(
 
         /** A list of role IDs to add to the role's inheriting-from set */
         fun addMemberRoles(addMemberRoles: Optional<List<String>>) =
-            addMemberRoles(addMemberRoles.orElse(null))
+            addMemberRoles(addMemberRoles.getOrNull())
 
         /** A list of role IDs to add to the role's inheriting-from set */
         fun addMemberRoles(addMemberRoles: JsonField<List<String>>) = apply {
@@ -459,7 +460,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the role */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the role */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -468,7 +469,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the role */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the role */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -482,7 +483,7 @@ private constructor(
         /** A list of permissions to remove from the role */
         fun removeMemberPermissions(
             removeMemberPermissions: Optional<List<RemoveMemberPermission>>
-        ) = removeMemberPermissions(removeMemberPermissions.orElse(null))
+        ) = removeMemberPermissions(removeMemberPermissions.getOrNull())
 
         /** A list of permissions to remove from the role */
         fun removeMemberPermissions(
@@ -501,7 +502,7 @@ private constructor(
 
         /** A list of role IDs to remove from the role's inheriting-from set */
         fun removeMemberRoles(removeMemberRoles: Optional<List<String>>) =
-            removeMemberRoles(removeMemberRoles.orElse(null))
+            removeMemberRoles(removeMemberRoles.getOrNull())
 
         /** A list of role IDs to remove from the role's inheriting-from set */
         fun removeMemberRoles(removeMemberRoles: JsonField<List<String>>) = apply {
@@ -747,7 +748,7 @@ private constructor(
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: Optional<RestrictObjectType>) =
-                restrictObjectType(restrictObjectType.orElse(null))
+                restrictObjectType(restrictObjectType.getOrNull())
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: JsonField<RestrictObjectType>) = apply {
@@ -1215,7 +1216,7 @@ private constructor(
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: Optional<RestrictObjectType>) =
-                restrictObjectType(restrictObjectType.orElse(null))
+                restrictObjectType(restrictObjectType.getOrNull())
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: JsonField<RestrictObjectType>) = apply {

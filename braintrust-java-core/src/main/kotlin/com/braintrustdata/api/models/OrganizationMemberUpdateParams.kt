@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Modify organization membership */
 class OrganizationMemberUpdateParams
@@ -196,7 +197,7 @@ private constructor(
 
             /** Users to invite to the organization */
             fun inviteUsers(inviteUsers: Optional<InviteUsers>) =
-                inviteUsers(inviteUsers.orElse(null))
+                inviteUsers(inviteUsers.getOrNull())
 
             /** Users to invite to the organization */
             fun inviteUsers(inviteUsers: JsonField<InviteUsers>) = apply {
@@ -217,7 +218,7 @@ private constructor(
              * assert the organization you are modifying, you may specify the id of the
              * organization.
              */
-            fun orgId(orgId: Optional<String>) = orgId(orgId.orElse(null))
+            fun orgId(orgId: Optional<String>) = orgId(orgId.getOrNull())
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -241,7 +242,7 @@ private constructor(
              * assert the organization you are modifying, you may specify the name of the
              * organization.
              */
-            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -257,7 +258,7 @@ private constructor(
 
             /** Users to remove from the organization */
             fun removeUsers(removeUsers: Optional<RemoveUsers>) =
-                removeUsers(removeUsers.orElse(null))
+                removeUsers(removeUsers.getOrNull())
 
             /** Users to remove from the organization */
             fun removeUsers(removeUsers: JsonField<RemoveUsers>) = apply {
@@ -337,7 +338,7 @@ private constructor(
         fun inviteUsers(inviteUsers: InviteUsers?) = apply { body.inviteUsers(inviteUsers) }
 
         /** Users to invite to the organization */
-        fun inviteUsers(inviteUsers: Optional<InviteUsers>) = inviteUsers(inviteUsers.orElse(null))
+        fun inviteUsers(inviteUsers: Optional<InviteUsers>) = inviteUsers(inviteUsers.getOrNull())
 
         /** Users to invite to the organization */
         fun inviteUsers(inviteUsers: JsonField<InviteUsers>) = apply {
@@ -356,7 +357,7 @@ private constructor(
          * your API key belongs to multiple organizations, or in case you want to explicitly assert
          * the organization you are modifying, you may specify the id of the organization.
          */
-        fun orgId(orgId: Optional<String>) = orgId(orgId.orElse(null))
+        fun orgId(orgId: Optional<String>) = orgId(orgId.getOrNull())
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -377,7 +378,7 @@ private constructor(
          * your API key belongs to multiple organizations, or in case you want to explicitly assert
          * the organization you are modifying, you may specify the name of the organization.
          */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -390,7 +391,7 @@ private constructor(
         fun removeUsers(removeUsers: RemoveUsers?) = apply { body.removeUsers(removeUsers) }
 
         /** Users to remove from the organization */
-        fun removeUsers(removeUsers: Optional<RemoveUsers>) = removeUsers(removeUsers.orElse(null))
+        fun removeUsers(removeUsers: Optional<RemoveUsers>) = removeUsers(removeUsers.getOrNull())
 
         /** Users to remove from the organization */
         fun removeUsers(removeUsers: JsonField<RemoveUsers>) = apply {
@@ -660,7 +661,7 @@ private constructor(
             fun emails(emails: List<String>?) = emails(JsonField.ofNullable(emails))
 
             /** Emails of users to invite */
-            fun emails(emails: Optional<List<String>>) = emails(emails.orElse(null))
+            fun emails(emails: Optional<List<String>>) = emails(emails.getOrNull())
 
             /** Emails of users to invite */
             fun emails(emails: JsonField<List<String>>) = apply {
@@ -679,7 +680,7 @@ private constructor(
             fun groupId(groupId: String?) = groupId(JsonField.ofNullable(groupId))
 
             /** Singular form of group_ids */
-            fun groupId(groupId: Optional<String>) = groupId(groupId.orElse(null))
+            fun groupId(groupId: Optional<String>) = groupId(groupId.getOrNull())
 
             /** Singular form of group_ids */
             fun groupId(groupId: JsonField<String>) = apply { this.groupId = groupId }
@@ -688,7 +689,7 @@ private constructor(
             fun groupIds(groupIds: List<String>?) = groupIds(JsonField.ofNullable(groupIds))
 
             /** Optional list of group ids to add newly-invited users to. */
-            fun groupIds(groupIds: Optional<List<String>>) = groupIds(groupIds.orElse(null))
+            fun groupIds(groupIds: Optional<List<String>>) = groupIds(groupIds.getOrNull())
 
             /** Optional list of group ids to add newly-invited users to. */
             fun groupIds(groupIds: JsonField<List<String>>) = apply {
@@ -707,7 +708,7 @@ private constructor(
             fun groupName(groupName: String?) = groupName(JsonField.ofNullable(groupName))
 
             /** Singular form of group_names */
-            fun groupName(groupName: Optional<String>) = groupName(groupName.orElse(null))
+            fun groupName(groupName: Optional<String>) = groupName(groupName.getOrNull())
 
             /** Singular form of group_names */
             fun groupName(groupName: JsonField<String>) = apply { this.groupName = groupName }
@@ -716,7 +717,7 @@ private constructor(
             fun groupNames(groupNames: List<String>?) = groupNames(JsonField.ofNullable(groupNames))
 
             /** Optional list of group names to add newly-invited users to. */
-            fun groupNames(groupNames: Optional<List<String>>) = groupNames(groupNames.orElse(null))
+            fun groupNames(groupNames: Optional<List<String>>) = groupNames(groupNames.getOrNull())
 
             /** Optional list of group names to add newly-invited users to. */
             fun groupNames(groupNames: JsonField<List<String>>) = apply {
@@ -735,7 +736,7 @@ private constructor(
             fun ids(ids: List<String>?) = ids(JsonField.ofNullable(ids))
 
             /** Ids of existing users to invite */
-            fun ids(ids: Optional<List<String>>) = ids(ids.orElse(null))
+            fun ids(ids: Optional<List<String>>) = ids(ids.getOrNull())
 
             /** Ids of existing users to invite */
             fun ids(ids: JsonField<List<String>>) = apply {
@@ -756,9 +757,8 @@ private constructor(
                 sendInviteEmails(sendInviteEmails as Boolean?)
 
             /** If true, send invite emails to the users who wore actually added */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun sendInviteEmails(sendInviteEmails: Optional<Boolean>) =
-                sendInviteEmails(sendInviteEmails.orElse(null) as Boolean?)
+                sendInviteEmails(sendInviteEmails.getOrNull())
 
             /** If true, send invite emails to the users who wore actually added */
             fun sendInviteEmails(sendInviteEmails: JsonField<Boolean>) = apply {
@@ -884,7 +884,7 @@ private constructor(
             fun emails(emails: List<String>?) = emails(JsonField.ofNullable(emails))
 
             /** Emails of users to remove */
-            fun emails(emails: Optional<List<String>>) = emails(emails.orElse(null))
+            fun emails(emails: Optional<List<String>>) = emails(emails.getOrNull())
 
             /** Emails of users to remove */
             fun emails(emails: JsonField<List<String>>) = apply {
@@ -903,7 +903,7 @@ private constructor(
             fun ids(ids: List<String>?) = ids(JsonField.ofNullable(ids))
 
             /** Ids of users to remove */
-            fun ids(ids: Optional<List<String>>) = ids(ids.orElse(null))
+            fun ids(ids: Optional<List<String>>) = ids(ids.getOrNull())
 
             /** Ids of users to remove */
             fun ids(ids: JsonField<List<String>>) = apply {

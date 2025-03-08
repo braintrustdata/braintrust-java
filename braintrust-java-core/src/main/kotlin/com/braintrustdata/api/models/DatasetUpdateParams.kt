@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a dataset object. Specify the fields to update in the payload. Any object-type
@@ -156,7 +157,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the dataset */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the dataset */
             fun description(description: JsonField<String>) = apply {
@@ -167,7 +168,7 @@ private constructor(
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
             /** User-controlled metadata about the dataset */
-            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
             /** User-controlled metadata about the dataset */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
@@ -176,7 +177,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the dataset. Within a project, dataset names are unique */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the dataset. Within a project, dataset names are unique */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -261,7 +262,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the dataset */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the dataset */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -270,7 +271,7 @@ private constructor(
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
         /** User-controlled metadata about the dataset */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /** User-controlled metadata about the dataset */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
@@ -279,7 +280,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the dataset. Within a project, dataset names are unique */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the dataset. Within a project, dataset names are unique */
         fun name(name: JsonField<String>) = apply { body.name(name) }

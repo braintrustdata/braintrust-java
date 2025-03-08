@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Organization
@@ -157,7 +158,7 @@ private constructor(
 
         fun apiUrl(apiUrl: String?) = apiUrl(JsonField.ofNullable(apiUrl))
 
-        fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.orElse(null))
+        fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.getOrNull())
 
         fun apiUrl(apiUrl: JsonField<String>) = apply { this.apiUrl = apiUrl }
 
@@ -165,7 +166,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of organization creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of organization creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -175,9 +176,8 @@ private constructor(
 
         fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(isUniversalApi as Boolean?)
 
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun isUniversalApi(isUniversalApi: Optional<Boolean>) =
-            isUniversalApi(isUniversalApi.orElse(null) as Boolean?)
+            isUniversalApi(isUniversalApi.getOrNull())
 
         fun isUniversalApi(isUniversalApi: JsonField<Boolean>) = apply {
             this.isUniversalApi = isUniversalApi
@@ -185,13 +185,13 @@ private constructor(
 
         fun proxyUrl(proxyUrl: String?) = proxyUrl(JsonField.ofNullable(proxyUrl))
 
-        fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.orElse(null))
+        fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.getOrNull())
 
         fun proxyUrl(proxyUrl: JsonField<String>) = apply { this.proxyUrl = proxyUrl }
 
         fun realtimeUrl(realtimeUrl: String?) = realtimeUrl(JsonField.ofNullable(realtimeUrl))
 
-        fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.orElse(null))
+        fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.getOrNull())
 
         fun realtimeUrl(realtimeUrl: JsonField<String>) = apply { this.realtimeUrl = realtimeUrl }
 

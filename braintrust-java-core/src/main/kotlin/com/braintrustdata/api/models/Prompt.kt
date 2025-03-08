@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Prompt
@@ -286,7 +287,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of prompt creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of prompt creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -295,7 +296,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the prompt */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the prompt */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -304,7 +305,7 @@ private constructor(
             functionType(JsonField.ofNullable(functionType))
 
         fun functionType(functionType: Optional<FunctionType>) =
-            functionType(functionType.orElse(null))
+            functionType(functionType.getOrNull())
 
         fun functionType(functionType: JsonField<FunctionType>) = apply {
             this.functionType = functionType
@@ -314,7 +315,7 @@ private constructor(
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
         /** User-controlled metadata about the prompt */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /** User-controlled metadata about the prompt */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
@@ -323,7 +324,7 @@ private constructor(
         fun promptData(promptData: PromptData?) = promptData(JsonField.ofNullable(promptData))
 
         /** The prompt, model, and its parameters */
-        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: JsonField<PromptData>) = apply { this.promptData = promptData }
@@ -332,7 +333,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags for the prompt */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags for the prompt */
         fun tags(tags: JsonField<List<String>>) = apply {

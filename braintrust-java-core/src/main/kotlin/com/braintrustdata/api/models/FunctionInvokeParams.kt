@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Invoke a function. */
 class FunctionInvokeParams
@@ -259,7 +260,7 @@ private constructor(
             fun mode(mode: Mode?) = mode(JsonField.ofNullable(mode))
 
             /** The mode format of the returned value (defaults to 'auto') */
-            fun mode(mode: Optional<Mode>) = mode(mode.orElse(null))
+            fun mode(mode: Optional<Mode>) = mode(mode.getOrNull())
 
             /** The mode format of the returned value (defaults to 'auto') */
             fun mode(mode: JsonField<Mode>) = apply { this.mode = mode }
@@ -293,8 +294,7 @@ private constructor(
              * Whether to stream the response. If true, results will be returned in the Braintrust
              * SSE format.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun stream(stream: Optional<Boolean>) = stream(stream.orElse(null) as Boolean?)
+            fun stream(stream: Optional<Boolean>) = stream(stream.getOrNull())
 
             /**
              * Whether to stream the response. If true, results will be returned in the Braintrust
@@ -426,7 +426,7 @@ private constructor(
         fun mode(mode: Mode?) = apply { body.mode(mode) }
 
         /** The mode format of the returned value (defaults to 'auto') */
-        fun mode(mode: Optional<Mode>) = mode(mode.orElse(null))
+        fun mode(mode: Optional<Mode>) = mode(mode.getOrNull())
 
         /** The mode format of the returned value (defaults to 'auto') */
         fun mode(mode: JsonField<Mode>) = apply { body.mode(mode) }
@@ -461,8 +461,7 @@ private constructor(
          * Whether to stream the response. If true, results will be returned in the Braintrust SSE
          * format.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun stream(stream: Optional<Boolean>) = stream(stream.orElse(null) as Boolean?)
+        fun stream(stream: Optional<Boolean>) = stream(stream.getOrNull())
 
         /**
          * Whether to stream the response. If true, results will be returned in the Braintrust SSE
@@ -1705,7 +1704,7 @@ private constructor(
 
                 fun content(content: String?) = content(JsonField.ofNullable(content))
 
-                fun content(content: Optional<String>) = content(content.orElse(null))
+                fun content(content: Optional<String>) = content(content.getOrNull())
 
                 fun content(content: JsonField<String>) = apply { this.content = content }
 
@@ -1713,7 +1712,7 @@ private constructor(
                     functionCall(JsonField.ofNullable(functionCall))
 
                 fun functionCall(functionCall: Optional<FunctionCall>) =
-                    functionCall(functionCall.orElse(null))
+                    functionCall(functionCall.getOrNull())
 
                 fun functionCall(functionCall: JsonField<FunctionCall>) = apply {
                     this.functionCall = functionCall
@@ -1721,7 +1720,7 @@ private constructor(
 
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
-                fun name(name: Optional<String>) = name(name.orElse(null))
+                fun name(name: Optional<String>) = name(name.getOrNull())
 
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
@@ -1729,7 +1728,7 @@ private constructor(
                     toolCalls(JsonField.ofNullable(toolCalls))
 
                 fun toolCalls(toolCalls: Optional<List<ChatCompletionMessageToolCall>>) =
-                    toolCalls(toolCalls.orElse(null))
+                    toolCalls(toolCalls.getOrNull())
 
                 fun toolCalls(toolCalls: JsonField<List<ChatCompletionMessageToolCall>>) = apply {
                     this.toolCalls = toolCalls.map { it.toMutableList() }
@@ -2567,7 +2566,7 @@ private constructor(
 
                 fun content(content: String?) = content(JsonField.ofNullable(content))
 
-                fun content(content: Optional<String>) = content(content.orElse(null))
+                fun content(content: Optional<String>) = content(content.getOrNull())
 
                 fun content(content: JsonField<String>) = apply { this.content = content }
 
@@ -3077,7 +3076,7 @@ private constructor(
 
                 /** Include these properties in every span created under this parent */
                 fun propagatedEvent(propagatedEvent: Optional<PropagatedEvent>) =
-                    propagatedEvent(propagatedEvent.orElse(null))
+                    propagatedEvent(propagatedEvent.getOrNull())
 
                 /** Include these properties in every span created under this parent */
                 fun propagatedEvent(propagatedEvent: JsonField<PropagatedEvent>) = apply {
@@ -3088,7 +3087,7 @@ private constructor(
                 fun rowIds(rowIds: RowIds?) = rowIds(JsonField.ofNullable(rowIds))
 
                 /** Identifiers for the row to to log a subspan under */
-                fun rowIds(rowIds: Optional<RowIds>) = rowIds(rowIds.orElse(null))
+                fun rowIds(rowIds: Optional<RowIds>) = rowIds(rowIds.getOrNull())
 
                 /** Identifiers for the row to to log a subspan under */
                 fun rowIds(rowIds: JsonField<RowIds>) = apply { this.rowIds = rowIds }

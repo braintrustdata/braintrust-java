@@ -30,6 +30,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Function
@@ -346,7 +347,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of prompt creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of prompt creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -355,7 +356,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the prompt */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the prompt */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -366,7 +367,7 @@ private constructor(
 
         /** JSON schema for the function's parameters and return type */
         fun functionSchema(functionSchema: Optional<FunctionSchema>) =
-            functionSchema(functionSchema.orElse(null))
+            functionSchema(functionSchema.getOrNull())
 
         /** JSON schema for the function's parameters and return type */
         fun functionSchema(functionSchema: JsonField<FunctionSchema>) = apply {
@@ -377,7 +378,7 @@ private constructor(
             functionType(JsonField.ofNullable(functionType))
 
         fun functionType(functionType: Optional<FunctionType>) =
-            functionType(functionType.orElse(null))
+            functionType(functionType.getOrNull())
 
         fun functionType(functionType: JsonField<FunctionType>) = apply {
             this.functionType = functionType
@@ -387,14 +388,14 @@ private constructor(
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
         /** User-controlled metadata about the prompt */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /** User-controlled metadata about the prompt */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
-        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+        fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
         fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
 
@@ -402,7 +403,7 @@ private constructor(
         fun promptData(promptData: PromptData?) = promptData(JsonField.ofNullable(promptData))
 
         /** The prompt, model, and its parameters */
-        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.orElse(null))
+        fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: JsonField<PromptData>) = apply { this.promptData = promptData }
@@ -411,7 +412,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags for the prompt */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags for the prompt */
         fun tags(tags: JsonField<List<String>>) = apply {
@@ -1223,7 +1224,7 @@ private constructor(
                         fun preview(preview: String?) = preview(JsonField.ofNullable(preview))
 
                         /** A preview of the code */
-                        fun preview(preview: Optional<String>) = preview(preview.orElse(null))
+                        fun preview(preview: Optional<String>) = preview(preview.getOrNull())
 
                         /** A preview of the code */
                         fun preview(preview: JsonField<String>) = apply { this.preview = preview }
@@ -2728,9 +2729,7 @@ private constructor(
              * The function exists for internal purposes and should not be displayed in the list of
              * functions.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun internal_(internal_: Optional<Boolean>) =
-                internal_(internal_.orElse(null) as Boolean?)
+            fun internal_(internal_: Optional<Boolean>) = internal_(internal_.getOrNull())
 
             /**
              * The function exists for internal purposes and should not be displayed in the list of

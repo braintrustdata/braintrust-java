@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Fetch the events in an experiment. Equivalent to the GET form of the same path, but with the
@@ -389,7 +390,7 @@ private constructor(
              * The string can be obtained directly from the `cursor` property of the previous fetch
              * query
              */
-            fun cursor(cursor: Optional<String>) = cursor(cursor.orElse(null))
+            fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
 
             /**
              * An opaque string to be used as a cursor for the next page of results, in order from
@@ -449,8 +450,7 @@ private constructor(
              * with more individual rows than the specified limit if you are fetching events
              * containing traces.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+            fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
             /**
              * limit the number of traces fetched
@@ -497,7 +497,7 @@ private constructor(
              * overview of paginating fetch queries.
              */
             fun maxRootSpanId(maxRootSpanId: Optional<String>) =
-                maxRootSpanId(maxRootSpanId.orElse(null))
+                maxRootSpanId(maxRootSpanId.getOrNull())
 
             /**
              * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor
@@ -541,7 +541,7 @@ private constructor(
              * the tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an
              * overview of paginating fetch queries.
              */
-            fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.orElse(null))
+            fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.getOrNull())
 
             /**
              * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor
@@ -573,7 +573,7 @@ private constructor(
              * use the `max_xact_id` returned by a past fetch as the version to reproduce that exact
              * fetch.
              */
-            fun version(version: Optional<String>) = version(version.orElse(null))
+            fun version(version: Optional<String>) = version(version.getOrNull())
 
             /**
              * Retrieve a snapshot of events from a past time
@@ -683,7 +683,7 @@ private constructor(
          * The string can be obtained directly from the `cursor` property of the previous fetch
          * query
          */
-        fun cursor(cursor: Optional<String>) = cursor(cursor.orElse(null))
+        fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
 
         /**
          * An opaque string to be used as a cursor for the next page of results, in order from
@@ -743,8 +743,7 @@ private constructor(
          * with more individual rows than the specified limit if you are fetching events containing
          * traces.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /**
          * limit the number of traces fetched
@@ -790,7 +789,7 @@ private constructor(
          * paginating fetch queries.
          */
         fun maxRootSpanId(maxRootSpanId: Optional<String>) =
-            maxRootSpanId(maxRootSpanId.orElse(null))
+            maxRootSpanId(maxRootSpanId.getOrNull())
 
         /**
          * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
@@ -834,7 +833,7 @@ private constructor(
          * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
          * paginating fetch queries.
          */
-        fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.orElse(null))
+        fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.getOrNull())
 
         /**
          * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
@@ -864,7 +863,7 @@ private constructor(
          * The version id is essentially a filter on the latest event transaction id. You can use
          * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
          */
-        fun version(version: Optional<String>) = version(version.orElse(null))
+        fun version(version: Optional<String>) = version(version.getOrNull())
 
         /**
          * Retrieve a snapshot of events from a past time

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ProjectScoreConfig
@@ -95,7 +96,7 @@ private constructor(
 
         fun destination(destination: Destination?) = destination(JsonField.ofNullable(destination))
 
-        fun destination(destination: Optional<Destination>) = destination(destination.orElse(null))
+        fun destination(destination: Optional<Destination>) = destination(destination.getOrNull())
 
         fun destination(destination: JsonField<Destination>) = apply {
             this.destination = destination
@@ -105,15 +106,13 @@ private constructor(
 
         fun multiSelect(multiSelect: Boolean) = multiSelect(multiSelect as Boolean?)
 
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun multiSelect(multiSelect: Optional<Boolean>) =
-            multiSelect(multiSelect.orElse(null) as Boolean?)
+        fun multiSelect(multiSelect: Optional<Boolean>) = multiSelect(multiSelect.getOrNull())
 
         fun multiSelect(multiSelect: JsonField<Boolean>) = apply { this.multiSelect = multiSelect }
 
         fun online(online: OnlineScoreConfig?) = online(JsonField.ofNullable(online))
 
-        fun online(online: Optional<OnlineScoreConfig>) = online(online.orElse(null))
+        fun online(online: Optional<OnlineScoreConfig>) = online(online.getOrNull())
 
         fun online(online: JsonField<OnlineScoreConfig>) = apply { this.online = online }
 

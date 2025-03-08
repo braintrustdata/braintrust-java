@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Human-identifying attributes of the span, such as name, type, etc. */
 @NoAutoDetect
@@ -82,7 +83,7 @@ private constructor(
         fun name(name: String?) = name(JsonField.ofNullable(name))
 
         /** Name of the span, for display purposes only */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the span, for display purposes only */
         fun name(name: JsonField<String>) = apply { this.name = name }
@@ -91,7 +92,7 @@ private constructor(
         fun type(type: Type?) = type(JsonField.ofNullable(type))
 
         /** Type of the span, for display purposes only */
-        fun type(type: Optional<Type>) = type(type.orElse(null))
+        fun type(type: Optional<Type>) = type(type.getOrNull())
 
         /** Type of the span, for display purposes only */
         fun type(type: JsonField<Type>) = apply { this.type = type }

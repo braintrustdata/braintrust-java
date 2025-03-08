@@ -29,6 +29,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** A project score is a user-configured score, which can be manually-labeled through the UI */
 @NoAutoDetect
@@ -247,7 +248,7 @@ private constructor(
 
         fun config(config: ProjectScoreConfig?) = config(JsonField.ofNullable(config))
 
-        fun config(config: Optional<ProjectScoreConfig>) = config(config.orElse(null))
+        fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
         fun config(config: JsonField<ProjectScoreConfig>) = apply { this.config = config }
 
@@ -255,7 +256,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of project score creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of project score creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -264,7 +265,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the project score */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project score */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -273,7 +274,7 @@ private constructor(
         fun position(position: String?) = position(JsonField.ofNullable(position))
 
         /** An optional LexoRank-based string that sets the sort position for the score in the UI */
-        fun position(position: Optional<String>) = position(position.orElse(null))
+        fun position(position: Optional<String>) = position(position.getOrNull())
 
         /** An optional LexoRank-based string that sets the sort position for the score in the UI */
         fun position(position: JsonField<String>) = apply { this.position = position }
