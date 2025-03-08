@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create or replace role. If there is an existing role with the same name as the one specified in
@@ -238,7 +239,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the role */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the role */
             fun description(description: JsonField<String>) = apply {
@@ -251,7 +252,7 @@ private constructor(
 
             /** (permission, restrict_object_type) tuples which belong to this role */
             fun memberPermissions(memberPermissions: Optional<List<MemberPermission>>) =
-                memberPermissions(memberPermissions.orElse(null))
+                memberPermissions(memberPermissions.getOrNull())
 
             /** (permission, restrict_object_type) tuples which belong to this role */
             fun memberPermissions(memberPermissions: JsonField<List<MemberPermission>>) = apply {
@@ -282,7 +283,7 @@ private constructor(
              * all of their inherited permissions
              */
             fun memberRoles(memberRoles: Optional<List<String>>) =
-                memberRoles(memberRoles.orElse(null))
+                memberRoles(memberRoles.getOrNull())
 
             /**
              * Ids of the roles this role inherits from
@@ -319,7 +320,7 @@ private constructor(
              * your API key belongs to multiple organizations, you may specify the name of the
              * organization the role belongs in.
              */
-            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -416,7 +417,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the role */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the role */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -428,7 +429,7 @@ private constructor(
 
         /** (permission, restrict_object_type) tuples which belong to this role */
         fun memberPermissions(memberPermissions: Optional<List<MemberPermission>>) =
-            memberPermissions(memberPermissions.orElse(null))
+            memberPermissions(memberPermissions.getOrNull())
 
         /** (permission, restrict_object_type) tuples which belong to this role */
         fun memberPermissions(memberPermissions: JsonField<List<MemberPermission>>) = apply {
@@ -454,7 +455,7 @@ private constructor(
          * An inheriting role has all the permissions contained in its member roles, as well as all
          * of their inherited permissions
          */
-        fun memberRoles(memberRoles: Optional<List<String>>) = memberRoles(memberRoles.orElse(null))
+        fun memberRoles(memberRoles: Optional<List<String>>) = memberRoles(memberRoles.getOrNull())
 
         /**
          * Ids of the roles this role inherits from
@@ -486,7 +487,7 @@ private constructor(
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the role belongs in.
          */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -728,7 +729,7 @@ private constructor(
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: Optional<RestrictObjectType>) =
-                restrictObjectType(restrictObjectType.orElse(null))
+                restrictObjectType(restrictObjectType.getOrNull())
 
             /** The object type that the ACL applies to */
             fun restrictObjectType(restrictObjectType: JsonField<RestrictObjectType>) = apply {

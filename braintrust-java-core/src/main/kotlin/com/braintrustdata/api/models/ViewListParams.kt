@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all views. The views are sorted by creation date, with the most recently-created views
@@ -169,7 +170,7 @@ private constructor(
          * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.orElse(null))
+        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -181,7 +182,7 @@ private constructor(
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
+        fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -202,8 +203,7 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Limit the number of objects to return */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /**
          * Pagination cursor id.
@@ -222,19 +222,19 @@ private constructor(
          * `starting_after` and `ending_before`
          */
         fun startingAfter(startingAfter: Optional<String>) =
-            startingAfter(startingAfter.orElse(null))
+            startingAfter(startingAfter.getOrNull())
 
         /** Name of the view to search for */
         fun viewName(viewName: String?) = apply { this.viewName = viewName }
 
         /** Name of the view to search for */
-        fun viewName(viewName: Optional<String>) = viewName(viewName.orElse(null))
+        fun viewName(viewName: Optional<String>) = viewName(viewName.getOrNull())
 
         /** Type of table that the view corresponds to. */
         fun viewType(viewType: ViewType?) = apply { this.viewType = viewType }
 
         /** Type of table that the view corresponds to. */
-        fun viewType(viewType: Optional<ViewType>) = viewType(viewType.orElse(null))
+        fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

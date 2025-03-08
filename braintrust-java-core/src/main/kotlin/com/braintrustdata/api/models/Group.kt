@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * A group is a collection of users which can be assigned an ACL
@@ -232,7 +233,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of group creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of group creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -241,7 +242,7 @@ private constructor(
         fun deletedAt(deletedAt: OffsetDateTime?) = deletedAt(JsonField.ofNullable(deletedAt))
 
         /** Date of group deletion, or null if the group is still active */
-        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.orElse(null))
+        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.getOrNull())
 
         /** Date of group deletion, or null if the group is still active */
         fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
@@ -250,7 +251,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** Textual description of the group */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the group */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -271,7 +272,7 @@ private constructor(
          * their inherited users
          */
         fun memberGroups(memberGroups: Optional<List<String>>) =
-            memberGroups(memberGroups.orElse(null))
+            memberGroups(memberGroups.getOrNull())
 
         /**
          * Ids of the groups this group inherits from
@@ -300,7 +301,7 @@ private constructor(
         fun memberUsers(memberUsers: List<String>?) = memberUsers(JsonField.ofNullable(memberUsers))
 
         /** Ids of users which belong to this group */
-        fun memberUsers(memberUsers: Optional<List<String>>) = memberUsers(memberUsers.orElse(null))
+        fun memberUsers(memberUsers: Optional<List<String>>) = memberUsers(memberUsers.getOrNull())
 
         /** Ids of users which belong to this group */
         fun memberUsers(memberUsers: JsonField<List<String>>) = apply {
@@ -319,7 +320,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Identifies the user who created the group */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the group */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }

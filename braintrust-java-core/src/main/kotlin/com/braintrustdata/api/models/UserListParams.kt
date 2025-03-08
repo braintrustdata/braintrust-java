@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all users. The users are sorted by creation date, with the most recently-created users
@@ -156,7 +157,7 @@ private constructor(
          * Email of the user to search for. You may pass the param multiple times to filter for more
          * than one email
          */
-        fun email(email: Optional<Email>) = email(email.orElse(null))
+        fun email(email: Optional<Email>) = email(email.getOrNull())
 
         /**
          * Email of the user to search for. You may pass the param multiple times to filter for more
@@ -186,7 +187,7 @@ private constructor(
          * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
          * `starting_after` and `ending_before`
          */
-        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.orElse(null))
+        fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.getOrNull())
 
         /**
          * Family name of the user to search for. You may pass the param multiple times to filter
@@ -198,7 +199,7 @@ private constructor(
          * Family name of the user to search for. You may pass the param multiple times to filter
          * for more than one family name
          */
-        fun familyName(familyName: Optional<FamilyName>) = familyName(familyName.orElse(null))
+        fun familyName(familyName: Optional<FamilyName>) = familyName(familyName.getOrNull())
 
         /**
          * Family name of the user to search for. You may pass the param multiple times to filter
@@ -222,7 +223,7 @@ private constructor(
          * Given name of the user to search for. You may pass the param multiple times to filter for
          * more than one given name
          */
-        fun givenName(givenName: Optional<GivenName>) = givenName(givenName.orElse(null))
+        fun givenName(givenName: Optional<GivenName>) = givenName(givenName.getOrNull())
 
         /**
          * Given name of the user to search for. You may pass the param multiple times to filter for
@@ -246,7 +247,7 @@ private constructor(
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
          * include the query param multiple times
          */
-        fun ids(ids: Optional<Ids>) = ids(ids.orElse(null))
+        fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
         /**
          * Filter search results to a particular set of object IDs. To specify a list of IDs,
@@ -267,14 +268,13 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Limit the number of objects to return */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Filter search results to within a particular organization */
         fun orgName(orgName: String?) = apply { this.orgName = orgName }
 
         /** Filter search results to within a particular organization */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
          * Pagination cursor id.
@@ -293,7 +293,7 @@ private constructor(
          * `starting_after` and `ending_before`
          */
         fun startingAfter(startingAfter: Optional<String>) =
-            startingAfter(startingAfter.orElse(null))
+            startingAfter(startingAfter.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

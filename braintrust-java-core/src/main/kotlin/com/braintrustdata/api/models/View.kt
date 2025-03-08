@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class View
@@ -219,7 +220,7 @@ private constructor(
         fun viewType(viewType: ViewType?) = viewType(JsonField.ofNullable(viewType))
 
         /** Type of table that the view corresponds to. */
-        fun viewType(viewType: Optional<ViewType>) = viewType(viewType.orElse(null))
+        fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
         /** Type of table that the view corresponds to. */
         fun viewType(viewType: JsonField<ViewType>) = apply { this.viewType = viewType }
@@ -228,7 +229,7 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of view creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of view creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
@@ -237,7 +238,7 @@ private constructor(
         fun deletedAt(deletedAt: OffsetDateTime?) = deletedAt(JsonField.ofNullable(deletedAt))
 
         /** Date of role deletion, or null if the role is still active */
-        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.orElse(null))
+        fun deletedAt(deletedAt: Optional<OffsetDateTime>) = deletedAt(deletedAt.getOrNull())
 
         /** Date of role deletion, or null if the role is still active */
         fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
@@ -246,7 +247,7 @@ private constructor(
         fun options(options: ViewOptions?) = options(JsonField.ofNullable(options))
 
         /** Options for the view in the app */
-        fun options(options: Optional<ViewOptions>) = options(options.orElse(null))
+        fun options(options: Optional<ViewOptions>) = options(options.getOrNull())
 
         /** Options for the view in the app */
         fun options(options: JsonField<ViewOptions>) = apply { this.options = options }
@@ -255,7 +256,7 @@ private constructor(
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
         /** Identifies the user who created the view */
-        fun userId(userId: Optional<String>) = userId(userId.orElse(null))
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the view */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }
@@ -264,7 +265,7 @@ private constructor(
         fun viewData(viewData: ViewData?) = viewData(JsonField.ofNullable(viewData))
 
         /** The view definition */
-        fun viewData(viewData: Optional<ViewData>) = viewData(viewData.orElse(null))
+        fun viewData(viewData: Optional<ViewData>) = viewData(viewData.getOrNull())
 
         /** The view definition */
         fun viewData(viewData: JsonField<ViewData>) = apply { this.viewData = viewData }

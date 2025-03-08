@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class PromptOptions
@@ -1647,11 +1648,7 @@ private constructor(
 
                             fun strict(strict: Boolean) = strict(strict as Boolean?)
 
-                            @Suppress(
-                                "USELESS_CAST"
-                            ) // See https://youtrack.jetbrains.com/issue/KT-74228
-                            fun strict(strict: Optional<Boolean>) =
-                                strict(strict.orElse(null) as Boolean?)
+                            fun strict(strict: Optional<Boolean>) = strict(strict.getOrNull())
 
                             fun strict(strict: JsonField<Boolean>) = apply { this.strict = strict }
 

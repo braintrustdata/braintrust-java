@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update a project_score object. Specify the fields to update in the payload. Any
@@ -232,7 +233,7 @@ private constructor(
 
             fun config(config: ProjectScoreConfig?) = config(JsonField.ofNullable(config))
 
-            fun config(config: Optional<ProjectScoreConfig>) = config(config.orElse(null))
+            fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
             fun config(config: JsonField<ProjectScoreConfig>) = apply { this.config = config }
 
@@ -240,7 +241,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the project score */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the project score */
             fun description(description: JsonField<String>) = apply {
@@ -251,7 +252,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** Name of the project score */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the project score */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -260,7 +261,7 @@ private constructor(
             fun scoreType(scoreType: ScoreType?) = scoreType(JsonField.ofNullable(scoreType))
 
             /** The type of the configured score */
-            fun scoreType(scoreType: Optional<ScoreType>) = scoreType(scoreType.orElse(null))
+            fun scoreType(scoreType: Optional<ScoreType>) = scoreType(scoreType.getOrNull())
 
             /** The type of the configured score */
             fun scoreType(scoreType: JsonField<ScoreType>) = apply { this.scoreType = scoreType }
@@ -372,7 +373,7 @@ private constructor(
 
         fun config(config: ProjectScoreConfig?) = apply { body.config(config) }
 
-        fun config(config: Optional<ProjectScoreConfig>) = config(config.orElse(null))
+        fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
         fun config(config: JsonField<ProjectScoreConfig>) = apply { body.config(config) }
 
@@ -380,7 +381,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the project score */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project score */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -389,7 +390,7 @@ private constructor(
         fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the project score */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the project score */
         fun name(name: JsonField<String>) = apply { body.name(name) }
@@ -398,7 +399,7 @@ private constructor(
         fun scoreType(scoreType: ScoreType?) = apply { body.scoreType(scoreType) }
 
         /** The type of the configured score */
-        fun scoreType(scoreType: Optional<ScoreType>) = scoreType(scoreType.orElse(null))
+        fun scoreType(scoreType: Optional<ScoreType>) = scoreType(scoreType.getOrNull())
 
         /** The type of the configured score */
         fun scoreType(scoreType: JsonField<ScoreType>) = apply { body.scoreType(scoreType) }

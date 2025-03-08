@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create or replace group. If there is an existing group with the same name as the one specified in
@@ -236,7 +237,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** Textual description of the group */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the group */
             fun description(description: JsonField<String>) = apply {
@@ -259,7 +260,7 @@ private constructor(
              * of their inherited users
              */
             fun memberGroups(memberGroups: Optional<List<String>>) =
-                memberGroups(memberGroups.orElse(null))
+                memberGroups(memberGroups.getOrNull())
 
             /**
              * Ids of the groups this group inherits from
@@ -290,7 +291,7 @@ private constructor(
 
             /** Ids of users which belong to this group */
             fun memberUsers(memberUsers: Optional<List<String>>) =
-                memberUsers(memberUsers.orElse(null))
+                memberUsers(memberUsers.getOrNull())
 
             /** Ids of users which belong to this group */
             fun memberUsers(memberUsers: JsonField<List<String>>) = apply {
@@ -317,7 +318,7 @@ private constructor(
              * your API key belongs to multiple organizations, you may specify the name of the
              * organization the group belongs in.
              */
-            fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
              * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -414,7 +415,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** Textual description of the group */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the group */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -434,7 +435,7 @@ private constructor(
          * their inherited users
          */
         fun memberGroups(memberGroups: Optional<List<String>>) =
-            memberGroups(memberGroups.orElse(null))
+            memberGroups(memberGroups.getOrNull())
 
         /**
          * Ids of the groups this group inherits from
@@ -458,7 +459,7 @@ private constructor(
         fun memberUsers(memberUsers: List<String>?) = apply { body.memberUsers(memberUsers) }
 
         /** Ids of users which belong to this group */
-        fun memberUsers(memberUsers: Optional<List<String>>) = memberUsers(memberUsers.orElse(null))
+        fun memberUsers(memberUsers: Optional<List<String>>) = memberUsers(memberUsers.getOrNull())
 
         /** Ids of users which belong to this group */
         fun memberUsers(memberUsers: JsonField<List<String>>) = apply {
@@ -480,7 +481,7 @@ private constructor(
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the group belongs in.
          */
-        fun orgName(orgName: Optional<String>) = orgName(orgName.orElse(null))
+        fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that

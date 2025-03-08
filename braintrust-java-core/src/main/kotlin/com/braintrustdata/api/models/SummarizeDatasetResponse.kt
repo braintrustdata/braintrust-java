@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Summary of a dataset */
 @NoAutoDetect
@@ -162,7 +163,7 @@ private constructor(
         fun dataSummary(dataSummary: DataSummary?) = dataSummary(JsonField.ofNullable(dataSummary))
 
         /** Summary of a dataset's data */
-        fun dataSummary(dataSummary: Optional<DataSummary>) = dataSummary(dataSummary.orElse(null))
+        fun dataSummary(dataSummary: Optional<DataSummary>) = dataSummary(dataSummary.getOrNull())
 
         /** Summary of a dataset's data */
         fun dataSummary(dataSummary: JsonField<DataSummary>) = apply {

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CrossObjectInsertResponse
@@ -103,7 +104,7 @@ private constructor(
         fun dataset(dataset: Dataset?) = dataset(JsonField.ofNullable(dataset))
 
         /** A mapping from dataset id to row ids for inserted `events` */
-        fun dataset(dataset: Optional<Dataset>) = dataset(dataset.orElse(null))
+        fun dataset(dataset: Optional<Dataset>) = dataset(dataset.getOrNull())
 
         /** A mapping from dataset id to row ids for inserted `events` */
         fun dataset(dataset: JsonField<Dataset>) = apply { this.dataset = dataset }
@@ -112,7 +113,7 @@ private constructor(
         fun experiment(experiment: Experiment?) = experiment(JsonField.ofNullable(experiment))
 
         /** A mapping from experiment id to row ids for inserted `events` */
-        fun experiment(experiment: Optional<Experiment>) = experiment(experiment.orElse(null))
+        fun experiment(experiment: Optional<Experiment>) = experiment(experiment.getOrNull())
 
         /** A mapping from experiment id to row ids for inserted `events` */
         fun experiment(experiment: JsonField<Experiment>) = apply { this.experiment = experiment }
@@ -121,7 +122,7 @@ private constructor(
         fun projectLogs(projectLogs: ProjectLogs?) = projectLogs(JsonField.ofNullable(projectLogs))
 
         /** A mapping from project id to row ids for inserted `events` */
-        fun projectLogs(projectLogs: Optional<ProjectLogs>) = projectLogs(projectLogs.orElse(null))
+        fun projectLogs(projectLogs: Optional<ProjectLogs>) = projectLogs(projectLogs.getOrNull())
 
         /** A mapping from project id to row ids for inserted `events` */
         fun projectLogs(projectLogs: JsonField<ProjectLogs>) = apply {

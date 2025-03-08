@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Launch an evaluation. This is the API-equivalent of the `Eval` function that is built into the
@@ -604,7 +605,7 @@ private constructor(
              * summarized and compared to this experiment.
              */
             fun baseExperimentId(baseExperimentId: Optional<String>) =
-                baseExperimentId(baseExperimentId.orElse(null))
+                baseExperimentId(baseExperimentId.getOrNull())
 
             /**
              * An optional experiment id to use as a base. If specified, the new experiment will be
@@ -626,7 +627,7 @@ private constructor(
              * be summarized and compared to this experiment.
              */
             fun baseExperimentName(baseExperimentName: Optional<String>) =
-                baseExperimentName(baseExperimentName.orElse(null))
+                baseExperimentName(baseExperimentName.getOrNull())
 
             /**
              * An optional experiment name to use as a base. If specified, the new experiment will
@@ -663,7 +664,7 @@ private constructor(
              * metadata fields allowed in org-level settings.
              */
             fun gitMetadataSettings(gitMetadataSettings: Optional<GitMetadataSettings>) =
-                gitMetadataSettings(gitMetadataSettings.orElse(null))
+                gitMetadataSettings(gitMetadataSettings.getOrNull())
 
             /**
              * Optional settings for collecting git metadata. By default, will collect all git
@@ -680,8 +681,7 @@ private constructor(
             fun isPublic(isPublic: Boolean) = isPublic(isPublic as Boolean?)
 
             /** Whether the experiment should be public. Defaults to false. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun isPublic(isPublic: Optional<Boolean>) = isPublic(isPublic.orElse(null) as Boolean?)
+            fun isPublic(isPublic: Optional<Boolean>) = isPublic(isPublic.getOrNull())
 
             /** Whether the experiment should be public. Defaults to false. */
             fun isPublic(isPublic: JsonField<Boolean>) = apply { this.isPublic = isPublic }
@@ -703,9 +703,8 @@ private constructor(
              * The maximum number of tasks/scorers that will be run concurrently. Defaults to
              * undefined, in which case there is no max concurrency.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun maxConcurrency(maxConcurrency: Optional<Double>) =
-                maxConcurrency(maxConcurrency.orElse(null) as Double?)
+                maxConcurrency(maxConcurrency.getOrNull())
 
             /**
              * The maximum number of tasks/scorers that will be run concurrently. Defaults to
@@ -731,7 +730,7 @@ private constructor(
             fun repoInfo(repoInfo: RepoInfo?) = repoInfo(JsonField.ofNullable(repoInfo))
 
             /** Metadata about the state of the repo when the experiment was created */
-            fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+            fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.getOrNull())
 
             /** Metadata about the state of the repo when the experiment was created */
             fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { this.repoInfo = repoInfo }
@@ -766,8 +765,7 @@ private constructor(
              * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
              * in which case there is no timeout.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun timeout(timeout: Optional<Double>) = timeout(timeout.orElse(null) as Double?)
+            fun timeout(timeout: Optional<Double>) = timeout(timeout.getOrNull())
 
             /**
              * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined,
@@ -794,9 +792,7 @@ private constructor(
              * applications that have non-deterministic behavior and gives you both a stronger
              * aggregate measure and a sense of the variance in the results.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun trialCount(trialCount: Optional<Double>) =
-                trialCount(trialCount.orElse(null) as Double?)
+            fun trialCount(trialCount: Optional<Double>) = trialCount(trialCount.getOrNull())
 
             /**
              * The number of times to run the evaluator per input. This is useful for evaluating
@@ -982,7 +978,7 @@ private constructor(
          * summarized and compared to this experiment.
          */
         fun baseExperimentId(baseExperimentId: Optional<String>) =
-            baseExperimentId(baseExperimentId.orElse(null))
+            baseExperimentId(baseExperimentId.getOrNull())
 
         /**
          * An optional experiment id to use as a base. If specified, the new experiment will be
@@ -1005,7 +1001,7 @@ private constructor(
          * summarized and compared to this experiment.
          */
         fun baseExperimentName(baseExperimentName: Optional<String>) =
-            baseExperimentName(baseExperimentName.orElse(null))
+            baseExperimentName(baseExperimentName.getOrNull())
 
         /**
          * An optional experiment name to use as a base. If specified, the new experiment will be
@@ -1042,7 +1038,7 @@ private constructor(
          * fields allowed in org-level settings.
          */
         fun gitMetadataSettings(gitMetadataSettings: Optional<GitMetadataSettings>) =
-            gitMetadataSettings(gitMetadataSettings.orElse(null))
+            gitMetadataSettings(gitMetadataSettings.getOrNull())
 
         /**
          * Optional settings for collecting git metadata. By default, will collect all git metadata
@@ -1059,8 +1055,7 @@ private constructor(
         fun isPublic(isPublic: Boolean) = isPublic(isPublic as Boolean?)
 
         /** Whether the experiment should be public. Defaults to false. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun isPublic(isPublic: Optional<Boolean>) = isPublic(isPublic.orElse(null) as Boolean?)
+        fun isPublic(isPublic: Optional<Boolean>) = isPublic(isPublic.getOrNull())
 
         /** Whether the experiment should be public. Defaults to false. */
         fun isPublic(isPublic: JsonField<Boolean>) = apply { body.isPublic(isPublic) }
@@ -1081,9 +1076,8 @@ private constructor(
          * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
          * in which case there is no max concurrency.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun maxConcurrency(maxConcurrency: Optional<Double>) =
-            maxConcurrency(maxConcurrency.orElse(null) as Double?)
+            maxConcurrency(maxConcurrency.getOrNull())
 
         /**
          * The maximum number of tasks/scorers that will be run concurrently. Defaults to undefined,
@@ -1109,7 +1103,7 @@ private constructor(
         fun repoInfo(repoInfo: RepoInfo?) = apply { body.repoInfo(repoInfo) }
 
         /** Metadata about the state of the repo when the experiment was created */
-        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.orElse(null))
+        fun repoInfo(repoInfo: Optional<RepoInfo>) = repoInfo(repoInfo.getOrNull())
 
         /** Metadata about the state of the repo when the experiment was created */
         fun repoInfo(repoInfo: JsonField<RepoInfo>) = apply { body.repoInfo(repoInfo) }
@@ -1144,8 +1138,7 @@ private constructor(
          * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
          * which case there is no timeout.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun timeout(timeout: Optional<Double>) = timeout(timeout.orElse(null) as Double?)
+        fun timeout(timeout: Optional<Double>) = timeout(timeout.getOrNull())
 
         /**
          * The maximum duration, in milliseconds, to run the evaluation. Defaults to undefined, in
@@ -1172,9 +1165,7 @@ private constructor(
          * applications that have non-deterministic behavior and gives you both a stronger aggregate
          * measure and a sense of the variance in the results.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun trialCount(trialCount: Optional<Double>) =
-            trialCount(trialCount.orElse(null) as Double?)
+        fun trialCount(trialCount: Optional<Double>) = trialCount(trialCount.getOrNull())
 
         /**
          * The number of times to run the evaluator per input. This is useful for evaluating
@@ -2634,7 +2625,7 @@ private constructor(
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The name of the inline code function */
-                fun name(name: Optional<String>) = name(name.orElse(null))
+                fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The name of the inline code function */
                 fun name(name: JsonField<String>) = apply { this.name = name }
@@ -3001,7 +2992,7 @@ private constructor(
 
                 /** The prompt, model, and its parameters */
                 fun inlinePrompt(inlinePrompt: Optional<PromptData>) =
-                    inlinePrompt(inlinePrompt.orElse(null))
+                    inlinePrompt(inlinePrompt.getOrNull())
 
                 /** The prompt, model, and its parameters */
                 fun inlinePrompt(inlinePrompt: JsonField<PromptData>) = apply {
@@ -3012,7 +3003,7 @@ private constructor(
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The name of the inline prompt */
-                fun name(name: Optional<String>) = name(name.orElse(null))
+                fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The name of the inline prompt */
                 fun name(name: JsonField<String>) = apply { this.name = name }
@@ -4003,7 +3994,7 @@ private constructor(
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The name of the inline code function */
-                fun name(name: Optional<String>) = name(name.orElse(null))
+                fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The name of the inline code function */
                 fun name(name: JsonField<String>) = apply { this.name = name }
@@ -4370,7 +4361,7 @@ private constructor(
 
                 /** The prompt, model, and its parameters */
                 fun inlinePrompt(inlinePrompt: Optional<PromptData>) =
-                    inlinePrompt(inlinePrompt.orElse(null))
+                    inlinePrompt(inlinePrompt.getOrNull())
 
                 /** The prompt, model, and its parameters */
                 fun inlinePrompt(inlinePrompt: JsonField<PromptData>) = apply {
@@ -4381,7 +4372,7 @@ private constructor(
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The name of the inline prompt */
-                fun name(name: Optional<String>) = name(name.orElse(null))
+                fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The name of the inline prompt */
                 fun name(name: JsonField<String>) = apply { this.name = name }

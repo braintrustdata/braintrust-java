@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ExperimentEvent
@@ -484,7 +485,7 @@ private constructor(
          * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
          * track the location in code which produced the experiment event
          */
-        fun context(context: Optional<Context>) = context(context.orElse(null))
+        fun context(context: Optional<Context>) = context(context.getOrNull())
 
         /**
          * Context is additional information about the code that produced the experiment event. It
@@ -505,7 +506,7 @@ private constructor(
          * experiment event is tied to
          */
         fun datasetRecordId(datasetRecordId: Optional<String>) =
-            datasetRecordId(datasetRecordId.orElse(null))
+            datasetRecordId(datasetRecordId.getOrNull())
 
         /**
          * If the experiment is associated to a dataset, this is the event-level dataset id this
@@ -543,8 +544,7 @@ private constructor(
         fun isRoot(isRoot: Boolean) = isRoot(isRoot as Boolean?)
 
         /** Whether this span is a root span */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.orElse(null) as Boolean?)
+        fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.getOrNull())
 
         /** Whether this span is a root span */
         fun isRoot(isRoot: JsonField<Boolean>) = apply { this.isRoot = isRoot }
@@ -565,7 +565,7 @@ private constructor(
          * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
          * but its keys must be strings
          */
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
          * A dictionary with additional data about the test example, model outputs, or just about
@@ -588,7 +588,7 @@ private constructor(
          * experiment event. Use "start" and "end" to track the time span over which the experiment
          * event was produced
          */
-        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.orElse(null))
+        fun metrics(metrics: Optional<Metrics>) = metrics(metrics.getOrNull())
 
         /**
          * Metrics are numerical measurements tracking the execution of the code that produced the
@@ -601,7 +601,7 @@ private constructor(
         fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
         /** Indicates the event was copied from another object. */
-        fun origin(origin: Optional<Origin>) = origin(origin.orElse(null))
+        fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
         /** Indicates the event was copied from another object. */
         fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
@@ -635,7 +635,7 @@ private constructor(
          * determine whether the summarization was covering similar concepts or not. You can use
          * these scores to help you sort, filter, and compare experiments
          */
-        fun scores(scores: Optional<Scores>) = scores(scores.orElse(null))
+        fun scores(scores: Optional<Scores>) = scores(scores.getOrNull())
 
         /**
          * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
@@ -654,7 +654,7 @@ private constructor(
 
         /** Human-identifying attributes of the span, such as name, type, etc. */
         fun spanAttributes(spanAttributes: Optional<SpanAttributes>) =
-            spanAttributes(spanAttributes.orElse(null))
+            spanAttributes(spanAttributes.getOrNull())
 
         /** Human-identifying attributes of the span, such as name, type, etc. */
         fun spanAttributes(spanAttributes: JsonField<SpanAttributes>) = apply {
@@ -671,7 +671,7 @@ private constructor(
          * An array of the parent `span_ids` of this experiment event. This should be empty for the
          * root span of a trace, and should most often contain just one parent element for subspans
          */
-        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.orElse(null))
+        fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.getOrNull())
 
         /**
          * An array of the parent `span_ids` of this experiment event. This should be empty for the
@@ -696,7 +696,7 @@ private constructor(
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
         /** A list of tags to log */
-        fun tags(tags: Optional<List<String>>) = tags(tags.orElse(null))
+        fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
         /** A list of tags to log */
         fun tags(tags: JsonField<List<String>>) = apply {
@@ -850,7 +850,7 @@ private constructor(
 
             /** Name of the file in code where the experiment event was created */
             fun callerFilename(callerFilename: Optional<String>) =
-                callerFilename(callerFilename.orElse(null))
+                callerFilename(callerFilename.getOrNull())
 
             /** Name of the file in code where the experiment event was created */
             fun callerFilename(callerFilename: JsonField<String>) = apply {
@@ -863,7 +863,7 @@ private constructor(
 
             /** The function in code which created the experiment event */
             fun callerFunctionname(callerFunctionname: Optional<String>) =
-                callerFunctionname(callerFunctionname.orElse(null))
+                callerFunctionname(callerFunctionname.getOrNull())
 
             /** The function in code which created the experiment event */
             fun callerFunctionname(callerFunctionname: JsonField<String>) = apply {
@@ -877,9 +877,7 @@ private constructor(
             fun callerLineno(callerLineno: Long) = callerLineno(callerLineno as Long?)
 
             /** Line of code where the experiment event was created */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun callerLineno(callerLineno: Optional<Long>) =
-                callerLineno(callerLineno.orElse(null) as Long?)
+            fun callerLineno(callerLineno: Optional<Long>) = callerLineno(callerLineno.getOrNull())
 
             /** Line of code where the experiment event was created */
             fun callerLineno(callerLineno: JsonField<Long>) = apply {
@@ -1210,9 +1208,8 @@ private constructor(
              * The number of tokens in the completion generated by the model (only set if this is an
              * LLM span)
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun completionTokens(completionTokens: Optional<Long>) =
-                completionTokens(completionTokens.orElse(null) as Long?)
+                completionTokens(completionTokens.getOrNull())
 
             /**
              * The number of tokens in the completion generated by the model (only set if this is an
@@ -1238,8 +1235,7 @@ private constructor(
              * A unix timestamp recording when the section of code which produced the experiment
              * event finished
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun end(end: Optional<Double>) = end(end.orElse(null) as Double?)
+            fun end(end: Optional<Double>) = end(end.getOrNull())
 
             /**
              * A unix timestamp recording when the section of code which produced the experiment
@@ -1263,9 +1259,7 @@ private constructor(
              * The number of tokens in the prompt used to generate the experiment event (only set if
              * this is an LLM span)
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun promptTokens(promptTokens: Optional<Long>) =
-                promptTokens(promptTokens.orElse(null) as Long?)
+            fun promptTokens(promptTokens: Optional<Long>) = promptTokens(promptTokens.getOrNull())
 
             /**
              * The number of tokens in the prompt used to generate the experiment event (only set if
@@ -1291,8 +1285,7 @@ private constructor(
              * A unix timestamp recording when the section of code which produced the experiment
              * event started
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun start(start: Optional<Double>) = start(start.orElse(null) as Double?)
+            fun start(start: Optional<Double>) = start(start.getOrNull())
 
             /**
              * A unix timestamp recording when the section of code which produced the experiment
@@ -1307,8 +1300,7 @@ private constructor(
             fun tokens(tokens: Long) = tokens(tokens as Long?)
 
             /** The total number of tokens in the input and output of the experiment event. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun tokens(tokens: Optional<Long>) = tokens(tokens.orElse(null) as Long?)
+            fun tokens(tokens: Optional<Long>) = tokens(tokens.getOrNull())
 
             /** The total number of tokens in the input and output of the experiment event. */
             fun tokens(tokens: JsonField<Long>) = apply { this.tokens = tokens }

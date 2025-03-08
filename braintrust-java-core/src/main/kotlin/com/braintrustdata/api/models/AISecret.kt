@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class AISecret
@@ -161,14 +162,14 @@ private constructor(
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
         /** Date of AI secret creation */
-        fun created(created: Optional<OffsetDateTime>) = created(created.orElse(null))
+        fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of AI secret creation */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
@@ -176,7 +177,7 @@ private constructor(
             previewSecret(JsonField.ofNullable(previewSecret))
 
         fun previewSecret(previewSecret: Optional<String>) =
-            previewSecret(previewSecret.orElse(null))
+            previewSecret(previewSecret.getOrNull())
 
         fun previewSecret(previewSecret: JsonField<String>) = apply {
             this.previewSecret = previewSecret
@@ -184,7 +185,7 @@ private constructor(
 
         fun type(type: String?) = type(JsonField.ofNullable(type))
 
-        fun type(type: Optional<String>) = type(type.orElse(null))
+        fun type(type: Optional<String>) = type(type.getOrNull())
 
         fun type(type: JsonField<String>) = apply { this.type = type }
 

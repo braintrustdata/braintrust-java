@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Partially update an env_var object. Specify the fields to update in the payload. Any object-type
@@ -148,7 +149,7 @@ private constructor(
             fun value(value: String?) = value(JsonField.ofNullable(value))
 
             /** The value of the environment variable. Will be encrypted at rest. */
-            fun value(value: Optional<String>) = value(value.orElse(null))
+            fun value(value: Optional<String>) = value(value.getOrNull())
 
             /** The value of the environment variable. Will be encrypted at rest. */
             fun value(value: JsonField<String>) = apply { this.value = value }
@@ -240,7 +241,7 @@ private constructor(
         fun value(value: String?) = apply { body.value(value) }
 
         /** The value of the environment variable. Will be encrypted at rest. */
-        fun value(value: Optional<String>) = value(value.orElse(null))
+        fun value(value: Optional<String>) = value(value.getOrNull())
 
         /** The value of the environment variable. Will be encrypted at rest. */
         fun value(value: JsonField<String>) = apply { body.value(value) }

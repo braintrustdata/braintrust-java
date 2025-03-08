@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ViewDataSearch
@@ -98,7 +99,7 @@ private constructor(
 
         fun filter(filter: List<JsonValue?>?) = filter(JsonField.ofNullable(filter))
 
-        fun filter(filter: Optional<List<JsonValue?>>) = filter(filter.orElse(null))
+        fun filter(filter: Optional<List<JsonValue?>>) = filter(filter.getOrNull())
 
         fun filter(filter: JsonField<List<JsonValue?>>) = apply {
             this.filter = filter.map { it.toMutableList() }
@@ -113,7 +114,7 @@ private constructor(
 
         fun match(match: List<JsonValue?>?) = match(JsonField.ofNullable(match))
 
-        fun match(match: Optional<List<JsonValue?>>) = match(match.orElse(null))
+        fun match(match: Optional<List<JsonValue?>>) = match(match.getOrNull())
 
         fun match(match: JsonField<List<JsonValue?>>) = apply {
             this.match = match.map { it.toMutableList() }
@@ -128,7 +129,7 @@ private constructor(
 
         fun sort(sort: List<JsonValue?>?) = sort(JsonField.ofNullable(sort))
 
-        fun sort(sort: Optional<List<JsonValue?>>) = sort(sort.orElse(null))
+        fun sort(sort: Optional<List<JsonValue?>>) = sort(sort.getOrNull())
 
         fun sort(sort: JsonField<List<JsonValue?>>) = apply {
             this.sort = sort.map { it.toMutableList() }
@@ -143,7 +144,7 @@ private constructor(
 
         fun tag(tag: List<JsonValue?>?) = tag(JsonField.ofNullable(tag))
 
-        fun tag(tag: Optional<List<JsonValue?>>) = tag(tag.orElse(null))
+        fun tag(tag: Optional<List<JsonValue?>>) = tag(tag.getOrNull())
 
         fun tag(tag: JsonField<List<JsonValue?>>) = apply {
             this.tag = tag.map { it.toMutableList() }

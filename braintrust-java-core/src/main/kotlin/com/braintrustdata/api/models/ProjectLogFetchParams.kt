@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Fetch the events in a project logs. Equivalent to the POST form of the same path, but with the
@@ -194,8 +195,7 @@ private constructor(
          * with more individual rows than the specified limit if you are fetching events containing
          * traces.
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /**
          * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
@@ -224,7 +224,7 @@ private constructor(
          * paginating fetch queries.
          */
         fun maxRootSpanId(maxRootSpanId: Optional<String>) =
-            maxRootSpanId(maxRootSpanId.orElse(null))
+            maxRootSpanId(maxRootSpanId.getOrNull())
 
         /**
          * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
@@ -252,7 +252,7 @@ private constructor(
          * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
          * paginating fetch queries.
          */
-        fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.orElse(null))
+        fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.getOrNull())
 
         /**
          * Retrieve a snapshot of events from a past time
@@ -268,7 +268,7 @@ private constructor(
          * The version id is essentially a filter on the latest event transaction id. You can use
          * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
          */
-        fun version(version: Optional<String>) = version(version.orElse(null))
+        fun version(version: Optional<String>) = version(version.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

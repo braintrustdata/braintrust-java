@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** The view definition */
 @NoAutoDetect
@@ -68,7 +69,7 @@ private constructor(
 
         fun search(search: ViewDataSearch?) = search(JsonField.ofNullable(search))
 
-        fun search(search: Optional<ViewDataSearch>) = search(search.orElse(null))
+        fun search(search: Optional<ViewDataSearch>) = search(search.getOrNull())
 
         fun search(search: JsonField<ViewDataSearch>) = apply { this.search = search }
 
