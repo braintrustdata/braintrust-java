@@ -8,6 +8,6 @@ class TopLevelHelloWorldParamsTest {
 
     @Test
     fun create() {
-      TopLevelHelloWorldParams.builder().build()
+        TopLevelHelloWorldParams.builder().build()
     }
 }

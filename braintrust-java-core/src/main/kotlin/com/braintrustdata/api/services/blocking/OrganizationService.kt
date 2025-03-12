@@ -16,8 +16,7 @@ import com.google.errorprone.annotations.MustBeClosed
 interface OrganizationService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -25,56 +24,60 @@ interface OrganizationService {
 
     /** Get an organization object by its id */
     fun retrieve(params: OrganizationRetrieveParams): Organization =
-        retrieve(
-          params, RequestOptions.none()
-        )
+        retrieve(params, RequestOptions.none())
 
     /** @see [retrieve] */
-    fun retrieve(params: OrganizationRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): Organization
+    fun retrieve(
+        params: OrganizationRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Organization
 
     /**
-     * Partially update an organization object. Specify the fields to update in the
-     * payload. Any object-type fields will be deep-merged with existing content.
-     * Currently we do not support removing fields or setting them to null.
+     * Partially update an organization object. Specify the fields to update in the payload. Any
+     * object-type fields will be deep-merged with existing content. Currently we do not support
+     * removing fields or setting them to null.
      */
     fun update(params: OrganizationUpdateParams): Organization =
-        update(
-          params, RequestOptions.none()
-        )
+        update(params, RequestOptions.none())
 
     /** @see [update] */
-    fun update(params: OrganizationUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): Organization
+    fun update(
+        params: OrganizationUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Organization
 
     /**
-     * List out all organizations. The organizations are sorted by creation date, with
-     * the most recently-created organizations coming first
+     * List out all organizations. The organizations are sorted by creation date, with the most
+     * recently-created organizations coming first
      */
     fun list(): OrganizationListPage = list(OrganizationListParams.none())
 
     /** @see [list] */
-    fun list(params: OrganizationListParams = OrganizationListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): OrganizationListPage
+    fun list(
+        params: OrganizationListParams = OrganizationListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): OrganizationListPage
 
     /** @see [list] */
     fun list(params: OrganizationListParams = OrganizationListParams.none()): OrganizationListPage =
-        list(
-          params, RequestOptions.none()
-        )
+        list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): OrganizationListPage = list(OrganizationListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): OrganizationListPage =
+        list(OrganizationListParams.none(), requestOptions)
 
     /** Delete an organization object by its id */
     fun delete(params: OrganizationDeleteParams): Organization =
-        delete(
-          params, RequestOptions.none()
-        )
+        delete(params, RequestOptions.none())
 
     /** @see [delete] */
-    fun delete(params: OrganizationDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): Organization
+    fun delete(
+        params: OrganizationDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Organization
 
     /**
-     * A view of [OrganizationService] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [OrganizationService] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
@@ -86,62 +89,68 @@ interface OrganizationService {
          */
         @MustBeClosed
         fun retrieve(params: OrganizationRetrieveParams): HttpResponseFor<Organization> =
-            retrieve(
-              params, RequestOptions.none()
-            )
+            retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
-        fun retrieve(params: OrganizationRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<Organization>
+        fun retrieve(
+            params: OrganizationRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Organization>
 
         /**
-         * Returns a raw HTTP response for `patch /v1/organization/{organization_id}`, but
-         * is otherwise the same as [OrganizationService.update].
+         * Returns a raw HTTP response for `patch /v1/organization/{organization_id}`, but is
+         * otherwise the same as [OrganizationService.update].
          */
         @MustBeClosed
         fun update(params: OrganizationUpdateParams): HttpResponseFor<Organization> =
-            update(
-              params, RequestOptions.none()
-            )
+            update(params, RequestOptions.none())
 
         /** @see [update] */
         @MustBeClosed
-        fun update(params: OrganizationUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<Organization>
+        fun update(
+            params: OrganizationUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Organization>
 
         /**
-         * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the
-         * same as [OrganizationService.list].
+         * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
+         * [OrganizationService.list].
          */
         @MustBeClosed
         fun list(): HttpResponseFor<OrganizationListPage> = list(OrganizationListParams.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: OrganizationListParams = OrganizationListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<OrganizationListPage>
+        fun list(
+            params: OrganizationListParams = OrganizationListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<OrganizationListPage>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: OrganizationListParams = OrganizationListParams.none()): HttpResponseFor<OrganizationListPage> =
-            list(
-              params, RequestOptions.none()
-            )
+        fun list(
+            params: OrganizationListParams = OrganizationListParams.none()
+        ): HttpResponseFor<OrganizationListPage> = list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<OrganizationListPage> = list(OrganizationListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<OrganizationListPage> =
+            list(OrganizationListParams.none(), requestOptions)
 
         /**
-         * Returns a raw HTTP response for `delete /v1/organization/{organization_id}`, but
-         * is otherwise the same as [OrganizationService.delete].
+         * Returns a raw HTTP response for `delete /v1/organization/{organization_id}`, but is
+         * otherwise the same as [OrganizationService.delete].
          */
         @MustBeClosed
         fun delete(params: OrganizationDeleteParams): HttpResponseFor<Organization> =
-            delete(
-              params, RequestOptions.none()
-            )
+            delete(params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
-        fun delete(params: OrganizationDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<Organization>
+        fun delete(
+            params: OrganizationDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Organization>
     }
 }

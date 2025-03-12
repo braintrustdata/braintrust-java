@@ -26,30 +26,33 @@ internal class ServiceParamsTest {
 
     @BeforeEach
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
-      client = BraintrustOkHttpClient.builder()
-          .baseUrl(wmRuntimeInfo.httpBaseUrl)
-          .apiKey("My API Key")
-          .build()
+        client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(wmRuntimeInfo.httpBaseUrl)
+                .apiKey("My API Key")
+                .build()
     }
 
     @Test
     fun create() {
-      val projectService = client.projects()
-      stubFor(post(anyUrl()).willReturn(ok("{}")))
+        val projectService = client.projects()
+        stubFor(post(anyUrl()).willReturn(ok("{}")))
 
-      projectService.create(ProjectCreateParams.builder()
-          .name("x")
-          .orgName("org_name")
-          .putAdditionalHeader("Secret-Header", "42")
-          .putAdditionalQueryParam("secret_query_param", "42")
-          .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
-          .build())
+        projectService.create(
+            ProjectCreateParams.builder()
+                .name("x")
+                .orgName("org_name")
+                .putAdditionalHeader("Secret-Header", "42")
+                .putAdditionalQueryParam("secret_query_param", "42")
+                .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
+                .build()
+        )
 
-      verify(
-          postRequestedFor(anyUrl())
-              .withHeader("Secret-Header", equalTo("42"))
-              .withQueryParam("secret_query_param", equalTo("42"))
-              .withRequestBody(matchingJsonPath("$.secretProperty", equalTo("42")))
-      )
+        verify(
+            postRequestedFor(anyUrl())
+                .withHeader("Secret-Header", equalTo("42"))
+                .withQueryParam("secret_query_param", equalTo("42"))
+                .withRequestBody(matchingJsonPath("$.secretProperty", equalTo("42")))
+        )
     }
 }

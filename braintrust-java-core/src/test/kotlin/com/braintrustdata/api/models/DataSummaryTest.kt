@@ -9,10 +9,8 @@ class DataSummaryTest {
 
     @Test
     fun createDataSummary() {
-      val dataSummary = DataSummary.builder()
-          .totalRecords(0L)
-          .build()
-      assertThat(dataSummary).isNotNull
-      assertThat(dataSummary.totalRecords()).isEqualTo(0L)
+        val dataSummary = DataSummary.builder().totalRecords(0L).build()
+        assertThat(dataSummary).isNotNull
+        assertThat(dataSummary.totalRecords()).isEqualTo(0L)
     }
 }

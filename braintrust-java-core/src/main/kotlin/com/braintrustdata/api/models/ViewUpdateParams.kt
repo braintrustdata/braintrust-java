@@ -24,16 +24,16 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Partially update a view object. Specify the fields to update in the payload. Any
- * object-type fields will be deep-merged with existing content. Currently we do
- * not support removing fields or setting them to null.
+ * Partially update a view object. Specify the fields to update in the payload. Any object-type
+ * fields will be deep-merged with existing content. Currently we do not support removing fields or
+ * setting them to null.
  */
-class ViewUpdateParams private constructor(
+class ViewUpdateParams
+private constructor(
     private val viewId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-
 ) : Params {
 
     /** View id */
@@ -87,31 +87,46 @@ class ViewUpdateParams private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun _body(): Body = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
-      return when (index) {
-          0 -> viewId
-          else -> ""
-      }
+        return when (index) {
+            0 -> viewId
+            else -> ""
+        }
     }
 
     @NoAutoDetect
-    class Body @JsonCreator private constructor(
-        @JsonProperty("object_id") @ExcludeMissing private val objectId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("object_type") @ExcludeMissing private val objectType: JsonField<ObjectType> = JsonMissing.of(),
-        @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("options") @ExcludeMissing private val options: JsonField<ViewOptions> = JsonMissing.of(),
-        @JsonProperty("user_id") @ExcludeMissing private val userId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("view_data") @ExcludeMissing private val viewData: JsonField<ViewData> = JsonMissing.of(),
-        @JsonProperty("view_type") @ExcludeMissing private val viewType: JsonField<ViewType> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Body
+    @JsonCreator
+    private constructor(
+        @JsonProperty("object_id")
+        @ExcludeMissing
+        private val objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        private val objectType: JsonField<ObjectType> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("options")
+        @ExcludeMissing
+        private val options: JsonField<ViewOptions> = JsonMissing.of(),
+        @JsonProperty("user_id")
+        @ExcludeMissing
+        private val userId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("view_data")
+        @ExcludeMissing
+        private val viewData: JsonField<ViewData> = JsonMissing.of(),
+        @JsonProperty("view_type")
+        @ExcludeMissing
+        private val viewType: JsonField<ViewType> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The id of the object the view applies to */
@@ -136,9 +151,7 @@ class ViewUpdateParams private constructor(
         fun viewType(): Optional<ViewType> = Optional.ofNullable(viewType.getNullable("view_type"))
 
         /** The id of the object the view applies to */
-        @JsonProperty("object_id")
-        @ExcludeMissing
-        fun _objectId(): JsonField<String> = objectId
+        @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
 
         /** The object type that the ACL applies to */
         @JsonProperty("object_type")
@@ -146,29 +159,19 @@ class ViewUpdateParams private constructor(
         fun _objectType(): JsonField<ObjectType> = objectType
 
         /** Name of the view */
-        @JsonProperty("name")
-        @ExcludeMissing
-        fun _name(): JsonField<String> = name
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /** Options for the view in the app */
-        @JsonProperty("options")
-        @ExcludeMissing
-        fun _options(): JsonField<ViewOptions> = options
+        @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<ViewOptions> = options
 
         /** Identifies the user who created the view */
-        @JsonProperty("user_id")
-        @ExcludeMissing
-        fun _userId(): JsonField<String> = userId
+        @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
         /** The view definition */
-        @JsonProperty("view_data")
-        @ExcludeMissing
-        fun _viewData(): JsonField<ViewData> = viewData
+        @JsonProperty("view_data") @ExcludeMissing fun _viewData(): JsonField<ViewData> = viewData
 
         /** Type of table that the view corresponds to. */
-        @JsonProperty("view_type")
-        @ExcludeMissing
-        fun _viewType(): JsonField<ViewType> = viewType
+        @JsonProperty("view_type") @ExcludeMissing fun _viewType(): JsonField<ViewType> = viewType
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -176,21 +179,20 @@ class ViewUpdateParams private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                objectId()
-                objectType()
-                name()
-                options().ifPresent { it.validate() }
-                userId()
-                viewData().ifPresent { it.validate() }
-                viewType()
-                validated = true
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
             }
+
+            objectId()
+            objectType()
+            name()
+            options().ifPresent { it.validate() }
+            userId()
+            viewData().ifPresent { it.validate() }
+            viewType()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -200,14 +202,12 @@ class ViewUpdateParams private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             *
              * ```java
              * .objectId()
              * .objectType()
              * ```
              */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
@@ -223,35 +223,30 @@ class ViewUpdateParams private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) =
-                apply {
-                    objectId = body.objectId
-                    objectType = body.objectType
-                    name = body.name
-                    options = body.options
-                    userId = body.userId
-                    viewData = body.viewData
-                    viewType = body.viewType
-                    additionalProperties = body.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                objectId = body.objectId
+                objectType = body.objectType
+                name = body.name
+                options = body.options
+                userId = body.userId
+                viewData = body.viewData
+                viewType = body.viewType
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             /** The id of the object the view applies to */
             fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
             /** The id of the object the view applies to */
-            fun objectId(objectId: JsonField<String>) =
-                apply {
-                    this.objectId = objectId
-                }
+            fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
             /** The object type that the ACL applies to */
             fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
 
             /** The object type that the ACL applies to */
-            fun objectType(objectType: JsonField<ObjectType>) =
-                apply {
-                    this.objectType = objectType
-                }
+            fun objectType(objectType: JsonField<ObjectType>) = apply {
+                this.objectType = objectType
+            }
 
             /** Name of the view */
             fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -260,10 +255,7 @@ class ViewUpdateParams private constructor(
             fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the view */
-            fun name(name: JsonField<String>) =
-                apply {
-                    this.name = name
-                }
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** Options for the view in the app */
             fun options(options: ViewOptions?) = options(JsonField.ofNullable(options))
@@ -272,10 +264,7 @@ class ViewUpdateParams private constructor(
             fun options(options: Optional<ViewOptions>) = options(options.getOrNull())
 
             /** Options for the view in the app */
-            fun options(options: JsonField<ViewOptions>) =
-                apply {
-                    this.options = options
-                }
+            fun options(options: JsonField<ViewOptions>) = apply { this.options = options }
 
             /** Identifies the user who created the view */
             fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
@@ -284,10 +273,7 @@ class ViewUpdateParams private constructor(
             fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
             /** Identifies the user who created the view */
-            fun userId(userId: JsonField<String>) =
-                apply {
-                    this.userId = userId
-                }
+            fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
             /** The view definition */
             fun viewData(viewData: ViewData?) = viewData(JsonField.ofNullable(viewData))
@@ -296,10 +282,7 @@ class ViewUpdateParams private constructor(
             fun viewData(viewData: Optional<ViewData>) = viewData(viewData.getOrNull())
 
             /** The view definition */
-            fun viewData(viewData: JsonField<ViewData>) =
-                apply {
-                    this.viewData = viewData
-                }
+            fun viewData(viewData: JsonField<ViewData>) = apply { this.viewData = viewData }
 
             /** Type of table that the view corresponds to. */
             fun viewType(viewType: ViewType?) = viewType(JsonField.ofNullable(viewType))
@@ -308,60 +291,46 @@ class ViewUpdateParams private constructor(
             fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
             /** Type of table that the view corresponds to. */
-            fun viewType(viewType: JsonField<ViewType>) =
-                apply {
-                    this.viewType = viewType
-                }
+            fun viewType(viewType: JsonField<ViewType>) = apply { this.viewType = viewType }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): Body =
                 Body(
-                  checkRequired(
-                    "objectId", objectId
-                  ),
-                  checkRequired(
-                    "objectType", objectType
-                  ),
-                  name,
-                  options,
-                  userId,
-                  viewData,
-                  viewType,
-                  additionalProperties.toImmutable(),
+                    checkRequired("objectId", objectId),
+                    checkRequired("objectType", objectType),
+                    name,
+                    options,
+                    userId,
+                    viewData,
+                    viewType,
+                    additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Body && objectId == other.objectId && objectType == other.objectType && name == other.name && options == other.options && userId == other.userId && viewData == other.viewData && viewType == other.viewType && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && objectId == other.objectId && objectType == other.objectType && name == other.name && options == other.options && userId == other.userId && viewData == other.viewData && viewType == other.viewType && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -370,7 +339,8 @@ class ViewUpdateParams private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Body{objectId=$objectId, objectType=$objectType, name=$name, options=$options, userId=$userId, viewData=$viewData, viewType=$viewType, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Body{objectId=$objectId, objectType=$objectType, name=$name, options=$options, userId=$userId, viewData=$viewData, viewType=$viewType, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -381,15 +351,13 @@ class ViewUpdateParams private constructor(
          * Returns a mutable builder for constructing an instance of [ViewUpdateParams].
          *
          * The following fields are required:
-         *
          * ```java
          * .viewId()
          * .objectId()
          * .objectType()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [ViewUpdateParams]. */
@@ -402,297 +370,211 @@ class ViewUpdateParams private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(viewUpdateParams: ViewUpdateParams) =
-            apply {
-                viewId = viewUpdateParams.viewId
-                body = viewUpdateParams.body.toBuilder()
-                additionalHeaders = viewUpdateParams.additionalHeaders.toBuilder()
-                additionalQueryParams = viewUpdateParams.additionalQueryParams.toBuilder()
-            }
+        internal fun from(viewUpdateParams: ViewUpdateParams) = apply {
+            viewId = viewUpdateParams.viewId
+            body = viewUpdateParams.body.toBuilder()
+            additionalHeaders = viewUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = viewUpdateParams.additionalQueryParams.toBuilder()
+        }
 
         /** View id */
-        fun viewId(viewId: String) =
-            apply {
-                this.viewId = viewId
-            }
+        fun viewId(viewId: String) = apply { this.viewId = viewId }
 
         /** The id of the object the view applies to */
-        fun objectId(objectId: String) =
-            apply {
-                body.objectId(objectId)
-            }
+        fun objectId(objectId: String) = apply { body.objectId(objectId) }
 
         /** The id of the object the view applies to */
-        fun objectId(objectId: JsonField<String>) =
-            apply {
-                body.objectId(objectId)
-            }
+        fun objectId(objectId: JsonField<String>) = apply { body.objectId(objectId) }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: ObjectType) =
-            apply {
-                body.objectType(objectType)
-            }
+        fun objectType(objectType: ObjectType) = apply { body.objectType(objectType) }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: JsonField<ObjectType>) =
-            apply {
-                body.objectType(objectType)
-            }
+        fun objectType(objectType: JsonField<ObjectType>) = apply { body.objectType(objectType) }
 
         /** Name of the view */
-        fun name(name: String?) =
-            apply {
-                body.name(name)
-            }
+        fun name(name: String?) = apply { body.name(name) }
 
         /** Name of the view */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the view */
-        fun name(name: JsonField<String>) =
-            apply {
-                body.name(name)
-            }
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** Options for the view in the app */
-        fun options(options: ViewOptions?) =
-            apply {
-                body.options(options)
-            }
+        fun options(options: ViewOptions?) = apply { body.options(options) }
 
         /** Options for the view in the app */
         fun options(options: Optional<ViewOptions>) = options(options.getOrNull())
 
         /** Options for the view in the app */
-        fun options(options: JsonField<ViewOptions>) =
-            apply {
-                body.options(options)
-            }
+        fun options(options: JsonField<ViewOptions>) = apply { body.options(options) }
 
         /** Identifies the user who created the view */
-        fun userId(userId: String?) =
-            apply {
-                body.userId(userId)
-            }
+        fun userId(userId: String?) = apply { body.userId(userId) }
 
         /** Identifies the user who created the view */
         fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Identifies the user who created the view */
-        fun userId(userId: JsonField<String>) =
-            apply {
-                body.userId(userId)
-            }
+        fun userId(userId: JsonField<String>) = apply { body.userId(userId) }
 
         /** The view definition */
-        fun viewData(viewData: ViewData?) =
-            apply {
-                body.viewData(viewData)
-            }
+        fun viewData(viewData: ViewData?) = apply { body.viewData(viewData) }
 
         /** The view definition */
         fun viewData(viewData: Optional<ViewData>) = viewData(viewData.getOrNull())
 
         /** The view definition */
-        fun viewData(viewData: JsonField<ViewData>) =
-            apply {
-                body.viewData(viewData)
-            }
+        fun viewData(viewData: JsonField<ViewData>) = apply { body.viewData(viewData) }
 
         /** Type of table that the view corresponds to. */
-        fun viewType(viewType: ViewType?) =
-            apply {
-                body.viewType(viewType)
-            }
+        fun viewType(viewType: ViewType?) = apply { body.viewType(viewType) }
 
         /** Type of table that the view corresponds to. */
         fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
         /** Type of table that the view corresponds to. */
-        fun viewType(viewType: JsonField<ViewType>) =
-            apply {
-                body.viewType(viewType)
-            }
+        fun viewType(viewType: JsonField<ViewType>) = apply { body.viewType(viewType) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.additionalProperties(additionalBodyProperties)
-            }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
-            apply {
-                body.putAdditionalProperty(
-                  key, value
-                )
-            }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) =
-            apply {
-                body.removeAdditionalProperty(key)
-            }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
-            apply {
-                body.removeAllAdditionalProperties(keys)
-            }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
-        fun additionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun putAdditionalHeader(name: String, value: String) =
-            apply {
-                additionalHeaders.put(name, value)
-            }
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.put(name, values)
-            }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun replaceAdditionalHeaders(name: String, value: String) =
-            apply {
-                additionalHeaders.replace(name, value)
-            }
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.replace(name, values)
-            }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun removeAdditionalHeaders(name: String) =
-            apply {
-                additionalHeaders.remove(name)
-            }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) =
-            apply {
-                additionalHeaders.removeAll(names)
-            }
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun putAdditionalQueryParam(key: String, value: String) =
-            apply {
-                additionalQueryParams.put(key, value)
-            }
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.put(key, values)
-            }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) =
-            apply {
-                additionalQueryParams.replace(key, value)
-            }
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.replace(key, values)
-            }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) =
-            apply {
-                additionalQueryParams.remove(key)
-            }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) =
-            apply {
-                additionalQueryParams.removeAll(keys)
-            }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
 
         fun build(): ViewUpdateParams =
             ViewUpdateParams(
-              checkRequired(
-                "viewId", viewId
-              ),
-              body.build(),
-              additionalHeaders.build(),
-              additionalQueryParams.build(),
+                checkRequired("viewId", viewId),
+                body.build(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
             )
     }
 
     /** The object type that the ACL applies to */
-    class ObjectType @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -740,11 +622,9 @@ class ViewUpdateParams private constructor(
          * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ObjectType] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -760,18 +640,17 @@ class ViewUpdateParams private constructor(
             PROJECT_LOG,
             ORG_PROJECT,
             /**
-             * An enum member indicating that [ObjectType] was instantiated with an unknown
-             * value.
+             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
              */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -792,11 +671,11 @@ class ViewUpdateParams private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
          */
         fun known(): Known =
             when (this) {
@@ -817,20 +696,23 @@ class ViewUpdateParams private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value does not
-         * have the expected primitive type.
+         * @throws BraintrustInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { BraintrustInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                BraintrustInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -839,21 +721,17 @@ class ViewUpdateParams private constructor(
     }
 
     /** Type of table that the view corresponds to. */
-    class ViewType @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class ViewType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -892,11 +770,9 @@ class ViewUpdateParams private constructor(
          * An enum containing [ViewType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ViewType] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -908,19 +784,16 @@ class ViewUpdateParams private constructor(
             PLAYGROUNDS,
             EXPERIMENT,
             DATASET,
-            /**
-             * An enum member indicating that [ViewType] was instantiated with an unknown
-             * value.
-             */
+            /** An enum member indicating that [ViewType] was instantiated with an unknown value. */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -938,11 +811,11 @@ class ViewUpdateParams private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
          */
         fun known(): Known =
             when (this) {
@@ -960,20 +833,23 @@ class ViewUpdateParams private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value does not
-         * have the expected primitive type.
+         * @throws BraintrustInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { BraintrustInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                BraintrustInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
+            return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -982,14 +858,15 @@ class ViewUpdateParams private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is ViewUpdateParams && viewId == other.viewId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ViewUpdateParams && viewId == other.viewId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() = "ViewUpdateParams{viewId=$viewId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() =
+        "ViewUpdateParams{viewId=$viewId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -20,16 +20,23 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
-class CreateApiKeyOutput @JsonCreator private constructor(
+class CreateApiKeyOutput
+@JsonCreator
+private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
     @JsonProperty("key") @ExcludeMissing private val key: JsonField<String> = JsonMissing.of(),
     @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("preview_name") @ExcludeMissing private val previewName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created") @ExcludeMissing private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("preview_name")
+    @ExcludeMissing
+    private val previewName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("created")
+    @ExcludeMissing
+    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
     @JsonProperty("org_id") @ExcludeMissing private val orgId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("user_id") @ExcludeMissing private val userId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("user_id")
+    @ExcludeMissing
+    private val userId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** Unique identifier for the api key */
@@ -53,38 +60,26 @@ class CreateApiKeyOutput @JsonCreator private constructor(
     fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
 
     /** Unique identifier for the api key */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id(): JsonField<String> = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** The raw API key. It will only be exposed this one time */
-    @JsonProperty("key")
-    @ExcludeMissing
-    fun _key(): JsonField<String> = key
+    @JsonProperty("key") @ExcludeMissing fun _key(): JsonField<String> = key
 
     /** Name of the api key */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name(): JsonField<String> = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     @JsonProperty("preview_name")
     @ExcludeMissing
     fun _previewName(): JsonField<String> = previewName
 
     /** Date of api key creation */
-    @JsonProperty("created")
-    @ExcludeMissing
-    fun _created(): JsonField<OffsetDateTime> = created
+    @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
     /** Unique identifier for the organization */
-    @JsonProperty("org_id")
-    @ExcludeMissing
-    fun _orgId(): JsonField<String> = orgId
+    @JsonProperty("org_id") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
 
     /** Unique identifier for the user */
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    fun _userId(): JsonField<String> = userId
+    @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -92,21 +87,20 @@ class CreateApiKeyOutput @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): CreateApiKeyOutput =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            id()
-            key()
-            name()
-            previewName()
-            created()
-            orgId()
-            userId()
-            validated = true
+    fun validate(): CreateApiKeyOutput = apply {
+        if (validated) {
+            return@apply
         }
+
+        id()
+        key()
+        name()
+        previewName()
+        created()
+        orgId()
+        userId()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
@@ -116,7 +110,6 @@ class CreateApiKeyOutput @JsonCreator private constructor(
          * Returns a mutable builder for constructing an instance of [CreateApiKeyOutput].
          *
          * The following fields are required:
-         *
          * ```java
          * .id()
          * .key()
@@ -124,8 +117,7 @@ class CreateApiKeyOutput @JsonCreator private constructor(
          * .previewName()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [CreateApiKeyOutput]. */
@@ -141,51 +133,38 @@ class CreateApiKeyOutput @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(createApiKeyOutput: CreateApiKeyOutput) =
-            apply {
-                id = createApiKeyOutput.id
-                key = createApiKeyOutput.key
-                name = createApiKeyOutput.name
-                previewName = createApiKeyOutput.previewName
-                created = createApiKeyOutput.created
-                orgId = createApiKeyOutput.orgId
-                userId = createApiKeyOutput.userId
-                additionalProperties = createApiKeyOutput.additionalProperties.toMutableMap()
-            }
+        internal fun from(createApiKeyOutput: CreateApiKeyOutput) = apply {
+            id = createApiKeyOutput.id
+            key = createApiKeyOutput.key
+            name = createApiKeyOutput.name
+            previewName = createApiKeyOutput.previewName
+            created = createApiKeyOutput.created
+            orgId = createApiKeyOutput.orgId
+            userId = createApiKeyOutput.userId
+            additionalProperties = createApiKeyOutput.additionalProperties.toMutableMap()
+        }
 
         /** Unique identifier for the api key */
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the api key */
-        fun id(id: JsonField<String>) =
-            apply {
-                this.id = id
-            }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The raw API key. It will only be exposed this one time */
         fun key(key: String) = key(JsonField.of(key))
 
         /** The raw API key. It will only be exposed this one time */
-        fun key(key: JsonField<String>) =
-            apply {
-                this.key = key
-            }
+        fun key(key: JsonField<String>) = apply { this.key = key }
 
         /** Name of the api key */
         fun name(name: String) = name(JsonField.of(name))
 
         /** Name of the api key */
-        fun name(name: JsonField<String>) =
-            apply {
-                this.name = name
-            }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         fun previewName(previewName: String) = previewName(JsonField.of(previewName))
 
-        fun previewName(previewName: JsonField<String>) =
-            apply {
-                this.previewName = previewName
-            }
+        fun previewName(previewName: JsonField<String>) = apply { this.previewName = previewName }
 
         /** Date of api key creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
@@ -194,10 +173,7 @@ class CreateApiKeyOutput @JsonCreator private constructor(
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of api key creation */
-        fun created(created: JsonField<OffsetDateTime>) =
-            apply {
-                this.created = created
-            }
+        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Unique identifier for the organization */
         fun orgId(orgId: String?) = orgId(JsonField.ofNullable(orgId))
@@ -206,10 +182,7 @@ class CreateApiKeyOutput @JsonCreator private constructor(
         fun orgId(orgId: Optional<String>) = orgId(orgId.getOrNull())
 
         /** Unique identifier for the organization */
-        fun orgId(orgId: JsonField<String>) =
-            apply {
-                this.orgId = orgId
-            }
+        fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         /** Unique identifier for the user */
         fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
@@ -218,64 +191,46 @@ class CreateApiKeyOutput @JsonCreator private constructor(
         fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         /** Unique identifier for the user */
-        fun userId(userId: JsonField<String>) =
-            apply {
-                this.userId = userId
-            }
+        fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): CreateApiKeyOutput =
             CreateApiKeyOutput(
-              checkRequired(
-                "id", id
-              ),
-              checkRequired(
-                "key", key
-              ),
-              checkRequired(
-                "name", name
-              ),
-              checkRequired(
-                "previewName", previewName
-              ),
-              created,
-              orgId,
-              userId,
-              additionalProperties.toImmutable(),
+                checkRequired("id", id),
+                checkRequired("key", key),
+                checkRequired("name", name),
+                checkRequired("previewName", previewName),
+                created,
+                orgId,
+                userId,
+                additionalProperties.toImmutable(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is CreateApiKeyOutput && id == other.id && key == other.key && name == other.name && previewName == other.previewName && created == other.created && orgId == other.orgId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CreateApiKeyOutput && id == other.id && key == other.key && name == other.name && previewName == other.previewName && created == other.created && orgId == other.orgId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -284,5 +239,6 @@ class CreateApiKeyOutput @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "CreateApiKeyOutput{id=$id, key=$key, name=$name, previewName=$previewName, created=$created, orgId=$orgId, userId=$userId, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "CreateApiKeyOutput{id=$id, key=$key, name=$name, previewName=$previewName, created=$created, orgId=$orgId, userId=$userId, additionalProperties=$additionalProperties}"
 }

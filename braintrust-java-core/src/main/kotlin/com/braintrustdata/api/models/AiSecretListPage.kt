@@ -9,7 +9,6 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.models
 import com.braintrustdata.api.services.blocking.AiSecretService
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -22,14 +21,14 @@ import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * List out all ai_secrets. The ai_secrets are sorted by creation date, with the
- * most recently-created ai_secrets coming first
+ * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
+ * recently-created ai_secrets coming first
  */
-class AiSecretListPage private constructor(
+class AiSecretListPage
+private constructor(
     private val aiSecretsService: AiSecretService,
     private val params: AiSecretListParams,
     private val response: Response,
-
 ) {
 
     fun response(): Response = response
@@ -37,35 +36,46 @@ class AiSecretListPage private constructor(
     fun objects(): List<AISecret> = response().objects()
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is AiSecretListPage && aiSecretsService == other.aiSecretsService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is AiSecretListPage && aiSecretsService == other.aiSecretsService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretsService, params, response) /* spotless:on */
 
-    override fun toString() = "AiSecretListPage{aiSecretsService=$aiSecretsService, params=$params, response=$response}"
+    override fun toString() =
+        "AiSecretListPage{aiSecretsService=$aiSecretsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-      return !objects().isEmpty()
+        return !objects().isEmpty()
     }
 
     fun getNextPageParams(): Optional<AiSecretListParams> {
-      if (!hasNextPage()) {
-        return Optional.empty()
-      }
+        if (!hasNextPage()) {
+            return Optional.empty()
+        }
 
-      return if (params.endingBefore().isPresent) {
-        Optional.of(AiSecretListParams.builder().from(params).endingBefore(objects().first().id()).build());
-      } else {
-        Optional.of(AiSecretListParams.builder().from(params).startingAfter(objects().last().id()).build());
-      }
+        return if (params.endingBefore().isPresent) {
+            Optional.of(
+                AiSecretListParams.builder()
+                    .from(params)
+                    .endingBefore(objects().first().id())
+                    .build()
+            )
+        } else {
+            Optional.of(
+                AiSecretListParams.builder()
+                    .from(params)
+                    .startingAfter(objects().last().id())
+                    .build()
+            )
+        }
     }
 
     fun getNextPage(): Optional<AiSecretListPage> {
-      return getNextPageParams().map { aiSecretsService.list(it) }
+        return getNextPageParams().map { aiSecretsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -74,18 +84,16 @@ class AiSecretListPage private constructor(
 
         @JvmStatic
         fun of(aiSecretsService: AiSecretService, params: AiSecretListParams, response: Response) =
-            AiSecretListPage(
-              aiSecretsService,
-              params,
-              response,
-            )
+            AiSecretListPage(aiSecretsService, params, response)
     }
 
     @NoAutoDetect
-    class Response @JsonCreator constructor(
+    class Response
+    @JsonCreator
+    constructor(
         @JsonProperty("objects") private val objects: JsonField<List<AISecret>> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun objects(): List<AISecret> = objects.getNullable("objects") ?: listOf()
@@ -99,35 +107,34 @@ class AiSecretListPage private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                objects().map { it.validate() }
-                validated = true
+        fun validate(): Response = apply {
+            if (validated) {
+                return@apply
             }
+
+            objects().map { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
 
-        override fun toString() = "Response{objects=$objects, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [AiSecretListPage]. */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -136,48 +143,39 @@ class AiSecretListPage private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(page: Response) =
-                apply {
-                    this.objects = page.objects
-                    this.additionalProperties.putAll(page.additionalProperties)
-                }
+            internal fun from(page: Response) = apply {
+                this.objects = page.objects
+                this.additionalProperties.putAll(page.additionalProperties)
+            }
 
             fun objects(objects: List<AISecret>) = objects(JsonField.of(objects))
 
             fun objects(objects: JsonField<List<AISecret>>) = apply { this.objects = objects }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    this.additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
 
-            fun build() =
-                Response(
-                  objects, additionalProperties.toImmutable()
-                )
+            fun build() = Response(objects, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: AiSecretListPage,
+    class AutoPager(private val firstPage: AiSecretListPage) : Iterable<AISecret> {
 
-    ) : Iterable<AISecret> {
-
-        override fun iterator(): Iterator<AISecret> =
-            iterator {
-                var page = firstPage
-                var index = 0
-                while (true) {
-                  while (index < page.objects().size) {
+        override fun iterator(): Iterator<AISecret> = iterator {
+            var page = firstPage
+            var index = 0
+            while (true) {
+                while (index < page.objects().size) {
                     yield(page.objects()[index++])
-                  }
-                  page = page.getNextPage().getOrNull() ?: break
-                  index = 0
                 }
+                page = page.getNextPage().getOrNull() ?: break
+                index = 0
             }
+        }
 
         fun stream(): Stream<AISecret> {
-          return StreamSupport.stream(spliterator(), false)
+            return StreamSupport.stream(spliterator(), false)
         }
     }
 }

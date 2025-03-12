@@ -18,103 +18,127 @@ class EnvVarServiceTest {
 
     @Test
     fun create() {
-      val client = BraintrustOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val envVarService = client.envVars()
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val envVarService = client.envVars()
 
-      val envVar = envVarService.create(EnvVarCreateParams.builder()
-          .name("name")
-          .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .objectType(EnvVarCreateParams.ObjectType.ORGANIZATION)
-          .value("value")
-          .build())
+        val envVar =
+            envVarService.create(
+                EnvVarCreateParams.builder()
+                    .name("name")
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(EnvVarCreateParams.ObjectType.ORGANIZATION)
+                    .value("value")
+                    .build()
+            )
 
-      envVar.validate()
+        envVar.validate()
     }
 
     @Test
     fun retrieve() {
-      val client = BraintrustOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val envVarService = client.envVars()
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val envVarService = client.envVars()
 
-      val envVar = envVarService.retrieve(EnvVarRetrieveParams.builder()
-          .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build())
+        val envVar =
+            envVarService.retrieve(
+                EnvVarRetrieveParams.builder()
+                    .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
 
-      envVar.validate()
+        envVar.validate()
     }
 
     @Test
     fun update() {
-      val client = BraintrustOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val envVarService = client.envVars()
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val envVarService = client.envVars()
 
-      val envVar = envVarService.update(EnvVarUpdateParams.builder()
-          .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .name("name")
-          .value("value")
-          .build())
+        val envVar =
+            envVarService.update(
+                EnvVarUpdateParams.builder()
+                    .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .name("name")
+                    .value("value")
+                    .build()
+            )
 
-      envVar.validate()
+        envVar.validate()
     }
 
     @Test
     fun list() {
-      val client = BraintrustOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val envVarService = client.envVars()
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val envVarService = client.envVars()
 
-      val envVar = envVarService.list(EnvVarListParams.builder()
-          .envVarName("env_var_name")
-          .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .limit(0L)
-          .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .objectType(EnvVarListParams.ObjectType.ORGANIZATION)
-          .build())
+        val envVar =
+            envVarService.list(
+                EnvVarListParams.builder()
+                    .envVarName("env_var_name")
+                    .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .limit(0L)
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(EnvVarListParams.ObjectType.ORGANIZATION)
+                    .build()
+            )
 
-      envVar.validate()
+        envVar.validate()
     }
 
     @Test
     fun delete() {
-      val client = BraintrustOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val envVarService = client.envVars()
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val envVarService = client.envVars()
 
-      val envVar = envVarService.delete(EnvVarDeleteParams.builder()
-          .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build())
+        val envVar =
+            envVarService.delete(
+                EnvVarDeleteParams.builder()
+                    .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
 
-      envVar.validate()
+        envVar.validate()
     }
 
     @Test
     fun replace() {
-      val client = BraintrustOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val envVarService = client.envVars()
+        val client =
+            BraintrustOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val envVarService = client.envVars()
 
-      val envVar = envVarService.replace(EnvVarReplaceParams.builder()
-          .name("name")
-          .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .objectType(EnvVarReplaceParams.ObjectType.ORGANIZATION)
-          .value("value")
-          .build())
+        val envVar =
+            envVarService.replace(
+                EnvVarReplaceParams.builder()
+                    .name("name")
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(EnvVarReplaceParams.ObjectType.ORGANIZATION)
+                    .value("value")
+                    .build()
+            )
 
-      envVar.validate()
+        envVar.validate()
     }
 }

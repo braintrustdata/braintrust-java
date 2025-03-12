@@ -12,31 +12,27 @@ import java.util.concurrent.CompletableFuture
 interface EvalServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /**
-     * Launch an evaluation. This is the API-equivalent of the `Eval` function that is
-     * built into the Braintrust SDK. In the Eval API, you provide pointers to a
-     * dataset, task function, and scoring functions. The API will then run the
-     * evaluation, create an experiment, and return the results along with a link to
-     * the experiment. To learn more about evals, see the
+     * Launch an evaluation. This is the API-equivalent of the `Eval` function that is built into
+     * the Braintrust SDK. In the Eval API, you provide pointers to a dataset, task function, and
+     * scoring functions. The API will then run the evaluation, create an experiment, and return the
+     * results along with a link to the experiment. To learn more about evals, see the
      * [Evals guide](https://www.braintrust.dev/docs/guides/evals).
      */
     fun create(params: EvalCreateParams): CompletableFuture<SummarizeExperimentResponse> =
-        create(
-          params, RequestOptions.none()
-        )
+        create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(params: EvalCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<SummarizeExperimentResponse>
+    fun create(
+        params: EvalCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<SummarizeExperimentResponse>
 
-    /**
-     * A view of [EvalServiceAsync] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [EvalServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
@@ -44,13 +40,16 @@ interface EvalServiceAsync {
          * [EvalServiceAsync.create].
          */
         @MustBeClosed
-        fun create(params: EvalCreateParams): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
-            create(
-              params, RequestOptions.none()
-            )
+        fun create(
+            params: EvalCreateParams
+        ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
+            create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: EvalCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>>
+        fun create(
+            params: EvalCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>>
     }
 }
