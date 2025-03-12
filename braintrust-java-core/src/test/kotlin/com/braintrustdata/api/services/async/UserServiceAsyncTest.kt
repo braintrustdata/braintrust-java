@@ -4,7 +4,6 @@ package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
-import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,31 +13,34 @@ class UserServiceAsyncTest {
 
     @Test
     fun retrieve() {
-      val client = BraintrustOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val userServiceAsync = client.users()
+        val client =
+            BraintrustOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val userServiceAsync = client.users()
 
-      val userFuture = userServiceAsync.retrieve(UserRetrieveParams.builder()
-          .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build())
+        val userFuture =
+            userServiceAsync.retrieve(
+                UserRetrieveParams.builder().userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+            )
 
-      val user = userFuture.get()
-      user.validate()
+        val user = userFuture.get()
+        user.validate()
     }
 
     @Test
     fun list() {
-      val client = BraintrustOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val userServiceAsync = client.users()
+        val client =
+            BraintrustOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val userServiceAsync = client.users()
 
-      val pageFuture = userServiceAsync.list()
+        val pageFuture = userServiceAsync.list()
 
-      val page = pageFuture.get()
-      page.response().validate()
+        val page = pageFuture.get()
+        page.response().validate()
     }
 }

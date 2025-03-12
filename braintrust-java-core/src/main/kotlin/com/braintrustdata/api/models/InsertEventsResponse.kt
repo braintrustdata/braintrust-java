@@ -18,25 +18,24 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 
 @NoAutoDetect
-class InsertEventsResponse @JsonCreator private constructor(
-    @JsonProperty("row_ids") @ExcludeMissing private val rowIds: JsonField<List<String>> = JsonMissing.of(),
+class InsertEventsResponse
+@JsonCreator
+private constructor(
+    @JsonProperty("row_ids")
+    @ExcludeMissing
+    private val rowIds: JsonField<List<String>> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /**
-     * The ids of all rows that were inserted, aligning one-to-one with the rows
-     * provided as input
+     * The ids of all rows that were inserted, aligning one-to-one with the rows provided as input
      */
     fun rowIds(): List<String> = rowIds.getRequired("row_ids")
 
     /**
-     * The ids of all rows that were inserted, aligning one-to-one with the rows
-     * provided as input
+     * The ids of all rows that were inserted, aligning one-to-one with the rows provided as input
      */
-    @JsonProperty("row_ids")
-    @ExcludeMissing
-    fun _rowIds(): JsonField<List<String>> = rowIds
+    @JsonProperty("row_ids") @ExcludeMissing fun _rowIds(): JsonField<List<String>> = rowIds
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -44,32 +43,28 @@ class InsertEventsResponse @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): InsertEventsResponse =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            rowIds()
-            validated = true
+    fun validate(): InsertEventsResponse = apply {
+        if (validated) {
+            return@apply
         }
+
+        rowIds()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of
-         * [InsertEventsResponse].
+         * Returns a mutable builder for constructing an instance of [InsertEventsResponse].
          *
          * The following fields are required:
-         *
          * ```java
          * .rowIds()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [InsertEventsResponse]. */
@@ -79,78 +74,68 @@ class InsertEventsResponse @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(insertEventsResponse: InsertEventsResponse) =
-            apply {
-                rowIds = insertEventsResponse.rowIds.map { it.toMutableList() }
-                additionalProperties = insertEventsResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(insertEventsResponse: InsertEventsResponse) = apply {
+            rowIds = insertEventsResponse.rowIds.map { it.toMutableList() }
+            additionalProperties = insertEventsResponse.additionalProperties.toMutableMap()
+        }
 
         /**
-         * The ids of all rows that were inserted, aligning one-to-one with the rows
-         * provided as input
+         * The ids of all rows that were inserted, aligning one-to-one with the rows provided as
+         * input
          */
         fun rowIds(rowIds: List<String>) = rowIds(JsonField.of(rowIds))
 
         /**
-         * The ids of all rows that were inserted, aligning one-to-one with the rows
-         * provided as input
+         * The ids of all rows that were inserted, aligning one-to-one with the rows provided as
+         * input
          */
-        fun rowIds(rowIds: JsonField<List<String>>) =
-            apply {
-                this.rowIds = rowIds.map { it.toMutableList() }
-            }
+        fun rowIds(rowIds: JsonField<List<String>>) = apply {
+            this.rowIds = rowIds.map { it.toMutableList() }
+        }
 
         /**
-         * The ids of all rows that were inserted, aligning one-to-one with the rows
-         * provided as input
+         * The ids of all rows that were inserted, aligning one-to-one with the rows provided as
+         * input
          */
-        fun addRowId(rowId: String) =
-            apply {
-                rowIds = (rowIds ?: JsonField.of(mutableListOf())).also {
+        fun addRowId(rowId: String) = apply {
+            rowIds =
+                (rowIds ?: JsonField.of(mutableListOf())).also {
                     checkKnown("rowIds", it).add(rowId)
                 }
-            }
+        }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): InsertEventsResponse =
             InsertEventsResponse(
-              checkRequired(
-                "rowIds", rowIds
-              ).map { it.toImmutable() }, additionalProperties.toImmutable()
+                checkRequired("rowIds", rowIds).map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is InsertEventsResponse && rowIds == other.rowIds && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is InsertEventsResponse && rowIds == other.rowIds && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -159,5 +144,6 @@ class InsertEventsResponse @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "InsertEventsResponse{rowIds=$rowIds, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "InsertEventsResponse{rowIds=$rowIds, additionalProperties=$additionalProperties}"
 }

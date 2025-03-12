@@ -10,16 +10,20 @@ class ViewDataSearchTest {
 
     @Test
     fun createViewDataSearch() {
-      val viewDataSearch = ViewDataSearch.builder()
-          .addFilter(JsonValue.from(mapOf<String, Any>()))
-          .addMatch(JsonValue.from(mapOf<String, Any>()))
-          .addSort(JsonValue.from(mapOf<String, Any>()))
-          .addTag(JsonValue.from(mapOf<String, Any>()))
-          .build()
-      assertThat(viewDataSearch).isNotNull
-      assertThat(viewDataSearch.filter().get()).containsExactly(JsonValue.from(mapOf<String, Any>()))
-      assertThat(viewDataSearch.match().get()).containsExactly(JsonValue.from(mapOf<String, Any>()))
-      assertThat(viewDataSearch.sort().get()).containsExactly(JsonValue.from(mapOf<String, Any>()))
-      assertThat(viewDataSearch.tag().get()).containsExactly(JsonValue.from(mapOf<String, Any>()))
+        val viewDataSearch =
+            ViewDataSearch.builder()
+                .addFilter(JsonValue.from(mapOf<String, Any>()))
+                .addMatch(JsonValue.from(mapOf<String, Any>()))
+                .addSort(JsonValue.from(mapOf<String, Any>()))
+                .addTag(JsonValue.from(mapOf<String, Any>()))
+                .build()
+        assertThat(viewDataSearch).isNotNull
+        assertThat(viewDataSearch.filter().get())
+            .containsExactly(JsonValue.from(mapOf<String, Any>()))
+        assertThat(viewDataSearch.match().get())
+            .containsExactly(JsonValue.from(mapOf<String, Any>()))
+        assertThat(viewDataSearch.sort().get())
+            .containsExactly(JsonValue.from(mapOf<String, Any>()))
+        assertThat(viewDataSearch.tag().get()).containsExactly(JsonValue.from(mapOf<String, Any>()))
     }
 }
