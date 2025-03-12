@@ -9,10 +9,9 @@ class FeedbackResponseSchemaTest {
 
     @Test
     fun createFeedbackResponseSchema() {
-      val feedbackResponseSchema = FeedbackResponseSchema.builder()
-          .status(FeedbackResponseSchema.Status.SUCCESS)
-          .build()
-      assertThat(feedbackResponseSchema).isNotNull
-      assertThat(feedbackResponseSchema.status()).isEqualTo(FeedbackResponseSchema.Status.SUCCESS)
+        val feedbackResponseSchema =
+            FeedbackResponseSchema.builder().status(FeedbackResponseSchema.Status.SUCCESS).build()
+        assertThat(feedbackResponseSchema).isNotNull
+        assertThat(feedbackResponseSchema.status()).isEqualTo(FeedbackResponseSchema.Status.SUCCESS)
     }
 }

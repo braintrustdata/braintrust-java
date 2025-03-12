@@ -13,78 +13,78 @@ import com.google.errorprone.annotations.MustBeClosed
 interface UserService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Get a user object by its id */
-    fun retrieve(params: UserRetrieveParams): User =
-        retrieve(
-          params, RequestOptions.none()
-        )
+    fun retrieve(params: UserRetrieveParams): User = retrieve(params, RequestOptions.none())
 
     /** @see [retrieve] */
-    fun retrieve(params: UserRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): User
+    fun retrieve(
+        params: UserRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): User
 
     /**
-     * List out all users. The users are sorted by creation date, with the most
-     * recently-created users coming first
+     * List out all users. The users are sorted by creation date, with the most recently-created
+     * users coming first
      */
     fun list(): UserListPage = list(UserListParams.none())
 
     /** @see [list] */
-    fun list(params: UserListParams = UserListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): UserListPage
+    fun list(
+        params: UserListParams = UserListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): UserListPage
 
     /** @see [list] */
     fun list(params: UserListParams = UserListParams.none()): UserListPage =
-        list(
-          params, RequestOptions.none()
-        )
+        list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): UserListPage = list(UserListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): UserListPage =
+        list(UserListParams.none(), requestOptions)
 
-    /**
-     * A view of [UserService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [UserService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the
-         * same as [UserService.retrieve].
+         * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the same as
+         * [UserService.retrieve].
          */
         @MustBeClosed
         fun retrieve(params: UserRetrieveParams): HttpResponseFor<User> =
-            retrieve(
-              params, RequestOptions.none()
-            )
+            retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
-        fun retrieve(params: UserRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<User>
+        fun retrieve(
+            params: UserRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<User>
 
         /**
          * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
          * [UserService.list].
          */
-        @MustBeClosed
-        fun list(): HttpResponseFor<UserListPage> = list(UserListParams.none())
+        @MustBeClosed fun list(): HttpResponseFor<UserListPage> = list(UserListParams.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: UserListParams = UserListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<UserListPage>
+        fun list(
+            params: UserListParams = UserListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<UserListPage>
 
         /** @see [list] */
         @MustBeClosed
         fun list(params: UserListParams = UserListParams.none()): HttpResponseFor<UserListPage> =
-            list(
-              params, RequestOptions.none()
-            )
+            list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<UserListPage> = list(UserListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<UserListPage> =
+            list(UserListParams.none(), requestOptions)
     }
 }

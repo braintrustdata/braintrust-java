@@ -9,20 +9,17 @@ class GroupDeleteParamsTest {
 
     @Test
     fun create() {
-      GroupDeleteParams.builder()
-          .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build()
+        GroupDeleteParams.builder().groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
     }
 
     @Test
     fun getPathParam() {
-      val params = GroupDeleteParams.builder()
-          .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build()
-      assertThat(params).isNotNull
-      // path param "groupId"
-      assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-      // out-of-bound path param
-      assertThat(params.getPathParam(1)).isEqualTo("")
+        val params =
+            GroupDeleteParams.builder().groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+        assertThat(params).isNotNull
+        // path param "groupId"
+        assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

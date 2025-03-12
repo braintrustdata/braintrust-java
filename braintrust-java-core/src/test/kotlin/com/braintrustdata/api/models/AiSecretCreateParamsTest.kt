@@ -11,50 +11,56 @@ class AiSecretCreateParamsTest {
 
     @Test
     fun create() {
-      AiSecretCreateParams.builder()
-          .name("name")
-          .metadata(AiSecretCreateParams.Metadata.builder()
-              .putAdditionalProperty("foo", JsonValue.from("bar"))
-              .build())
-          .orgName("org_name")
-          .secret("secret")
-          .type("type")
-          .build()
+        AiSecretCreateParams.builder()
+            .name("name")
+            .metadata(
+                AiSecretCreateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+            .orgName("org_name")
+            .secret("secret")
+            .type("type")
+            .build()
     }
 
     @Test
     fun body() {
-      val params = AiSecretCreateParams.builder()
-          .name("name")
-          .metadata(AiSecretCreateParams.Metadata.builder()
-              .putAdditionalProperty("foo", JsonValue.from("bar"))
-              .build())
-          .orgName("org_name")
-          .secret("secret")
-          .type("type")
-          .build()
+        val params =
+            AiSecretCreateParams.builder()
+                .name("name")
+                .metadata(
+                    AiSecretCreateParams.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
+                .orgName("org_name")
+                .secret("secret")
+                .type("type")
+                .build()
 
-      val body = params._body()
+        val body = params._body()
 
-      assertNotNull(body)
-      assertThat(body.name()).isEqualTo("name")
-      assertThat(body.metadata()).contains(AiSecretCreateParams.Metadata.builder()
-          .putAdditionalProperty("foo", JsonValue.from("bar"))
-          .build())
-      assertThat(body.orgName()).contains("org_name")
-      assertThat(body.secret()).contains("secret")
-      assertThat(body.type()).contains("type")
+        assertNotNull(body)
+        assertThat(body.name()).isEqualTo("name")
+        assertThat(body.metadata())
+            .contains(
+                AiSecretCreateParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+        assertThat(body.orgName()).contains("org_name")
+        assertThat(body.secret()).contains("secret")
+        assertThat(body.type()).contains("type")
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-      val params = AiSecretCreateParams.builder()
-          .name("name")
-          .build()
+        val params = AiSecretCreateParams.builder().name("name").build()
 
-      val body = params._body()
+        val body = params._body()
 
-      assertNotNull(body)
-      assertThat(body.name()).isEqualTo("name")
+        assertNotNull(body)
+        assertThat(body.name()).isEqualTo("name")
     }
 }

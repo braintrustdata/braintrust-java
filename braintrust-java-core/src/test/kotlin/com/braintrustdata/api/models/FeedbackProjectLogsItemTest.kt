@@ -10,30 +10,42 @@ class FeedbackProjectLogsItemTest {
 
     @Test
     fun createFeedbackProjectLogsItem() {
-      val feedbackProjectLogsItem = FeedbackProjectLogsItem.builder()
-          .id("id")
-          .comment("comment")
-          .expected(JsonValue.from(mapOf<String, Any>()))
-          .metadata(FeedbackProjectLogsItem.Metadata.builder()
-              .putAdditionalProperty("foo", JsonValue.from("bar"))
-              .build())
-          .scores(FeedbackProjectLogsItem.Scores.builder()
-              .putAdditionalProperty("foo", JsonValue.from(0))
-              .build())
-          .source(FeedbackProjectLogsItem.Source.APP)
-          .addTag("string")
-          .build()
-      assertThat(feedbackProjectLogsItem).isNotNull
-      assertThat(feedbackProjectLogsItem.id()).isEqualTo("id")
-      assertThat(feedbackProjectLogsItem.comment()).contains("comment")
-      assertThat(feedbackProjectLogsItem._expected()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-      assertThat(feedbackProjectLogsItem.metadata()).contains(FeedbackProjectLogsItem.Metadata.builder()
-          .putAdditionalProperty("foo", JsonValue.from("bar"))
-          .build())
-      assertThat(feedbackProjectLogsItem.scores()).contains(FeedbackProjectLogsItem.Scores.builder()
-          .putAdditionalProperty("foo", JsonValue.from(0))
-          .build())
-      assertThat(feedbackProjectLogsItem.source()).contains(FeedbackProjectLogsItem.Source.APP)
-      assertThat(feedbackProjectLogsItem.tags().get()).containsExactly("string")
+        val feedbackProjectLogsItem =
+            FeedbackProjectLogsItem.builder()
+                .id("id")
+                .comment("comment")
+                .expected(JsonValue.from(mapOf<String, Any>()))
+                .metadata(
+                    FeedbackProjectLogsItem.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
+                .scores(
+                    FeedbackProjectLogsItem.Scores.builder()
+                        .putAdditionalProperty("foo", JsonValue.from(0))
+                        .build()
+                )
+                .source(FeedbackProjectLogsItem.Source.APP)
+                .addTag("string")
+                .build()
+        assertThat(feedbackProjectLogsItem).isNotNull
+        assertThat(feedbackProjectLogsItem.id()).isEqualTo("id")
+        assertThat(feedbackProjectLogsItem.comment()).contains("comment")
+        assertThat(feedbackProjectLogsItem._expected())
+            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(feedbackProjectLogsItem.metadata())
+            .contains(
+                FeedbackProjectLogsItem.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+        assertThat(feedbackProjectLogsItem.scores())
+            .contains(
+                FeedbackProjectLogsItem.Scores.builder()
+                    .putAdditionalProperty("foo", JsonValue.from(0))
+                    .build()
+            )
+        assertThat(feedbackProjectLogsItem.source()).contains(FeedbackProjectLogsItem.Source.APP)
+        assertThat(feedbackProjectLogsItem.tags().get()).containsExactly("string")
     }
 }

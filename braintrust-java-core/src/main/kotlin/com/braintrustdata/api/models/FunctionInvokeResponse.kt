@@ -13,9 +13,10 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import java.util.Objects
 
 @NoAutoDetect
-class FunctionInvokeResponse @JsonCreator private constructor(
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+class FunctionInvokeResponse
+@JsonCreator
+private constructor(
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
 ) {
 
     @JsonAnyGetter
@@ -24,25 +25,20 @@ class FunctionInvokeResponse @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): FunctionInvokeResponse =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            validated = true
+    fun validate(): FunctionInvokeResponse = apply {
+        if (validated) {
+            return@apply
         }
+
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of
-         * [FunctionInvokeResponse].
-         */
-        @JvmStatic
-        fun builder() = Builder()
+        /** Returns a mutable builder for constructing an instance of [FunctionInvokeResponse]. */
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [FunctionInvokeResponse]. */
@@ -51,46 +47,39 @@ class FunctionInvokeResponse @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(functionInvokeResponse: FunctionInvokeResponse) =
-            apply {
-                additionalProperties = functionInvokeResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(functionInvokeResponse: FunctionInvokeResponse) = apply {
+            additionalProperties = functionInvokeResponse.additionalProperties.toMutableMap()
+        }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
-        fun build(): FunctionInvokeResponse = FunctionInvokeResponse(additionalProperties.toImmutable())
+        fun build(): FunctionInvokeResponse =
+            FunctionInvokeResponse(additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is FunctionInvokeResponse && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is FunctionInvokeResponse && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
