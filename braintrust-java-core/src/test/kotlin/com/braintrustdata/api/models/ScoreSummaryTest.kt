@@ -9,19 +9,18 @@ class ScoreSummaryTest {
 
     @Test
     fun createScoreSummary() {
-        val scoreSummary =
-            ScoreSummary.builder()
-                .improvements(0L)
-                .name("name")
-                .regressions(0L)
-                .score(0.0)
-                .diff(-1.0)
-                .build()
-        assertThat(scoreSummary).isNotNull
-        assertThat(scoreSummary.improvements()).isEqualTo(0L)
-        assertThat(scoreSummary.name()).isEqualTo("name")
-        assertThat(scoreSummary.regressions()).isEqualTo(0L)
-        assertThat(scoreSummary.score()).isEqualTo(0.0)
-        assertThat(scoreSummary.diff()).contains(-1.0)
+      val scoreSummary = ScoreSummary.builder()
+          .improvements(0L)
+          .name("name")
+          .regressions(0L)
+          .score(0.0)
+          .diff(-1.0)
+          .build()
+      assertThat(scoreSummary).isNotNull
+      assertThat(scoreSummary.improvements()).isEqualTo(0L)
+      assertThat(scoreSummary.name()).isEqualTo("name")
+      assertThat(scoreSummary.regressions()).isEqualTo(0L)
+      assertThat(scoreSummary.score()).isEqualTo(0.0)
+      assertThat(scoreSummary.diff()).contains(-1.0)
     }
 }

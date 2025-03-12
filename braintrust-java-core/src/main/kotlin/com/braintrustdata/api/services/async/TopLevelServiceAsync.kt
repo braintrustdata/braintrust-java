@@ -11,30 +11,32 @@ import java.util.concurrent.CompletableFuture
 interface TopLevelServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
-    /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
+    /**
+     * Default endpoint. Simply replies with 'Hello, World!'. Authorization is not
+     * required
+     */
     fun helloWorld(): CompletableFuture<String> = helloWorld(TopLevelHelloWorldParams.none())
 
     /** @see [helloWorld] */
-    fun helloWorld(
-        params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<String>
+    fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<String>
 
     /** @see [helloWorld] */
-    fun helloWorld(
-        params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
-    ): CompletableFuture<String> = helloWorld(params, RequestOptions.none())
+    fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()): CompletableFuture<String> =
+        helloWorld(
+          params, RequestOptions.none()
+        )
 
     /** @see [helloWorld] */
-    fun helloWorld(requestOptions: RequestOptions): CompletableFuture<String> =
-        helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
+    fun helloWorld(requestOptions: RequestOptions): CompletableFuture<String> = helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 
     /**
-     * A view of [TopLevelServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [TopLevelServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
@@ -43,25 +45,21 @@ interface TopLevelServiceAsync {
          * [TopLevelServiceAsync.helloWorld].
          */
         @MustBeClosed
-        fun helloWorld(): CompletableFuture<HttpResponseFor<String>> =
-            helloWorld(TopLevelHelloWorldParams.none())
+        fun helloWorld(): CompletableFuture<HttpResponseFor<String>> = helloWorld(TopLevelHelloWorldParams.none())
 
         /** @see [helloWorld] */
         @MustBeClosed
-        fun helloWorld(
-            params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<String>>
+        fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<String>>
 
         /** @see [helloWorld] */
         @MustBeClosed
-        fun helloWorld(
-            params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
-        ): CompletableFuture<HttpResponseFor<String>> = helloWorld(params, RequestOptions.none())
+        fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()): CompletableFuture<HttpResponseFor<String>> =
+            helloWorld(
+              params, RequestOptions.none()
+            )
 
         /** @see [helloWorld] */
         @MustBeClosed
-        fun helloWorld(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<String>> =
-            helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
+        fun helloWorld(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<String>> = helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
     }
 }

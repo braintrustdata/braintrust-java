@@ -10,50 +10,46 @@ class ExperimentListParamsTest {
 
     @Test
     fun create() {
-        ExperimentListParams.builder()
-            .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .experimentName("experiment_name")
-            .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .limit(0L)
-            .orgName("org_name")
-            .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .projectName("project_name")
-            .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .build()
+      ExperimentListParams.builder()
+          .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .experimentName("experiment_name")
+          .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .limit(0L)
+          .orgName("org_name")
+          .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .projectName("project_name")
+          .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .build()
     }
 
     @Test
     fun queryParams() {
-        val params =
-            ExperimentListParams.builder()
-                .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .experimentName("experiment_name")
-                .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .limit(0L)
-                .orgName("org_name")
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .projectName("project_name")
-                .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .build()
-        val expected = QueryParams.builder()
-        expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("experiment_name", "experiment_name")
-        expected.put(
-            "ids",
-            ExperimentListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
-        )
-        expected.put("limit", "0")
-        expected.put("org_name", "org_name")
-        expected.put("project_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("project_name", "project_name")
-        expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+      val params = ExperimentListParams.builder()
+          .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .experimentName("experiment_name")
+          .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .limit(0L)
+          .orgName("org_name")
+          .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .projectName("project_name")
+          .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+          .build()
+      val expected = QueryParams.builder()
+      expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+      expected.put("experiment_name", "experiment_name")
+      expected.put("ids", ExperimentListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString())
+      expected.put("limit", "0")
+      expected.put("org_name", "org_name")
+      expected.put("project_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+      expected.put("project_name", "project_name")
+      expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+      assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
-        val params = ExperimentListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+      val params = ExperimentListParams.builder().build()
+      val expected = QueryParams.builder()
+      assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }

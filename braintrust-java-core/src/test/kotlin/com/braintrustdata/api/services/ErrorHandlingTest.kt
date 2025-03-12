@@ -35,10 +35,9 @@ class ErrorHandlingTest {
 
     companion object {
 
-        private val ERROR: BraintrustError =
-            BraintrustError.builder()
-                .putAdditionalProperty("errorProperty", JsonValue.from("42"))
-                .build()
+        private val ERROR: BraintrustError = BraintrustError.builder()
+            .putAdditionalProperty("errorProperty", JsonValue.from("42"))
+            .build()
 
         private val ERROR_JSON: ByteArray = jsonMapper().writeValueAsBytes(ERROR)
 
@@ -53,189 +52,231 @@ class ErrorHandlingTest {
 
     @BeforeEach
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
-        client =
-            BraintrustOkHttpClient.builder()
-                .baseUrl(wmRuntimeInfo.httpBaseUrl)
-                .apiKey("My API Key")
-                .build()
+      client = BraintrustOkHttpClient.builder()
+          .baseUrl(wmRuntimeInfo.httpBaseUrl)
+          .apiKey("My API Key")
+          .build()
     }
 
     @Test
     fun projectsCreate400() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(400)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<BadRequestException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<BadRequestException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(400)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(400)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate401() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(401)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<UnauthorizedException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<UnauthorizedException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(401)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(401)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate403() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(403)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<PermissionDeniedException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<PermissionDeniedException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(403)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(403)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate404() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(404)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<NotFoundException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<NotFoundException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(404)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(404)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate422() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(422)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<UnprocessableEntityException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<UnprocessableEntityException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(422)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(422)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate429() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(429)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<RateLimitException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<RateLimitException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(429)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(429)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate500() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(500)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<InternalServerException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<InternalServerException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(500)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(500)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreate999() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(999)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<UnexpectedStatusCodeException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<UnexpectedStatusCodeException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e.statusCode()).isEqualTo(999)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(999)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun projectsCreateInvalidJsonBody() {
-        val projectService = client.projects()
-        stubFor(
-            post(anyUrl())
-                .willReturn(status(200).withHeader(HEADER_NAME, HEADER_VALUE).withBody(NOT_JSON))
-        )
+      val projectService = client.projects()
+      stubFor(
+          post(anyUrl()).willReturn(
+              status(200)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(NOT_JSON)
+          )
+      )
 
-        val e =
-            assertThrows<BraintrustException> {
-                projectService.create(
-                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
-                )
-            }
+      val e = assertThrows<BraintrustException> {
+          projectService.create(ProjectCreateParams.builder()
+              .name("x")
+              .orgName("org_name")
+              .build())
+      }
 
-        assertThat(e).hasMessage("Error reading response")
+      assertThat(e).hasMessage("Error reading response")
     }
 
     private fun Headers.toMap(): Map<String, List<String>> =

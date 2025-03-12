@@ -16,43 +16,44 @@ import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.TopLevelHelloWorldParams
 
-class TopLevelServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    TopLevelService {
+class TopLevelServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: TopLevelService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : TopLevelService {
+
+    private val withRawResponse: TopLevelService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): TopLevelService.WithRawResponse = withRawResponse
 
-    override fun helloWorld(
-        params: TopLevelHelloWorldParams,
-        requestOptions: RequestOptions,
-    ): String =
+    override fun helloWorld(params: TopLevelHelloWorldParams, requestOptions: RequestOptions): String =
         // get /v1
         withRawResponse().helloWorld(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        TopLevelService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : TopLevelService.WithRawResponse {
 
         private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-        private val helloWorldHandler: Handler<String> =
-            stringHandler().withErrorHandler(errorHandler)
+        private val helloWorldHandler: Handler<String> = stringHandler().withErrorHandler(errorHandler)
 
-        override fun helloWorld(
-            params: TopLevelHelloWorldParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<String> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable { response.use { helloWorldHandler.handle(it) } }
+        override fun helloWorld(params: TopLevelHelloWorldParams, requestOptions: RequestOptions): HttpResponseFor<String> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  helloWorldHandler.handle(it)
+              }
+          }
         }
     }
 }

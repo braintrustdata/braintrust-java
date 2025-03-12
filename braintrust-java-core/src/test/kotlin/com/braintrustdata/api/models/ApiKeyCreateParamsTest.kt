@@ -10,27 +10,35 @@ class ApiKeyCreateParamsTest {
 
     @Test
     fun create() {
-        ApiKeyCreateParams.builder().name("name").orgName("org_name").build()
+      ApiKeyCreateParams.builder()
+          .name("name")
+          .orgName("org_name")
+          .build()
     }
 
     @Test
     fun body() {
-        val params = ApiKeyCreateParams.builder().name("name").orgName("org_name").build()
+      val params = ApiKeyCreateParams.builder()
+          .name("name")
+          .orgName("org_name")
+          .build()
 
-        val body = params._body()
+      val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.name()).isEqualTo("name")
-        assertThat(body.orgName()).contains("org_name")
+      assertNotNull(body)
+      assertThat(body.name()).isEqualTo("name")
+      assertThat(body.orgName()).contains("org_name")
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params = ApiKeyCreateParams.builder().name("name").build()
+      val params = ApiKeyCreateParams.builder()
+          .name("name")
+          .build()
 
-        val body = params._body()
+      val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.name()).isEqualTo("name")
+      assertNotNull(body)
+      assertThat(body.name()).isEqualTo("name")
     }
 }

@@ -10,28 +10,22 @@ class FeedbackDatasetItemTest {
 
     @Test
     fun createFeedbackDatasetItem() {
-        val feedbackDatasetItem =
-            FeedbackDatasetItem.builder()
-                .id("id")
-                .comment("comment")
-                .metadata(
-                    FeedbackDatasetItem.Metadata.builder()
-                        .putAdditionalProperty("foo", JsonValue.from("bar"))
-                        .build()
-                )
-                .source(FeedbackDatasetItem.Source.APP)
-                .addTag("string")
-                .build()
-        assertThat(feedbackDatasetItem).isNotNull
-        assertThat(feedbackDatasetItem.id()).isEqualTo("id")
-        assertThat(feedbackDatasetItem.comment()).contains("comment")
-        assertThat(feedbackDatasetItem.metadata())
-            .contains(
-                FeedbackDatasetItem.Metadata.builder()
-                    .putAdditionalProperty("foo", JsonValue.from("bar"))
-                    .build()
-            )
-        assertThat(feedbackDatasetItem.source()).contains(FeedbackDatasetItem.Source.APP)
-        assertThat(feedbackDatasetItem.tags().get()).containsExactly("string")
+      val feedbackDatasetItem = FeedbackDatasetItem.builder()
+          .id("id")
+          .comment("comment")
+          .metadata(FeedbackDatasetItem.Metadata.builder()
+              .putAdditionalProperty("foo", JsonValue.from("bar"))
+              .build())
+          .source(FeedbackDatasetItem.Source.APP)
+          .addTag("string")
+          .build()
+      assertThat(feedbackDatasetItem).isNotNull
+      assertThat(feedbackDatasetItem.id()).isEqualTo("id")
+      assertThat(feedbackDatasetItem.comment()).contains("comment")
+      assertThat(feedbackDatasetItem.metadata()).contains(FeedbackDatasetItem.Metadata.builder()
+          .putAdditionalProperty("foo", JsonValue.from("bar"))
+          .build())
+      assertThat(feedbackDatasetItem.source()).contains(FeedbackDatasetItem.Source.APP)
+      assertThat(feedbackDatasetItem.tags().get()).containsExactly("string")
     }
 }

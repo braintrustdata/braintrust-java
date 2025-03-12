@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.models
 import com.braintrustdata.api.services.blocking.OrganizationService
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -21,14 +22,14 @@ import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * List out all organizations. The organizations are sorted by creation date, with the most
- * recently-created organizations coming first
+ * List out all organizations. The organizations are sorted by creation date, with
+ * the most recently-created organizations coming first
  */
-class OrganizationListPage
-private constructor(
+class OrganizationListPage private constructor(
     private val organizationsService: OrganizationService,
     private val params: OrganizationListParams,
     private val response: Response,
+
 ) {
 
     fun response(): Response = response
@@ -36,46 +37,35 @@ private constructor(
     fun objects(): List<Organization> = response().objects()
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is OrganizationListPage && organizationsService == other.organizationsService && params == other.params && response == other.response /* spotless:on */
+      return /* spotless:off */ other is OrganizationListPage && organizationsService == other.organizationsService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationsService, params, response) /* spotless:on */
 
-    override fun toString() =
-        "OrganizationListPage{organizationsService=$organizationsService, params=$params, response=$response}"
+    override fun toString() = "OrganizationListPage{organizationsService=$organizationsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !objects().isEmpty()
+      return !objects().isEmpty()
     }
 
     fun getNextPageParams(): Optional<OrganizationListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
-        }
+      if (!hasNextPage()) {
+        return Optional.empty()
+      }
 
-        return if (params.endingBefore().isPresent) {
-            Optional.of(
-                OrganizationListParams.builder()
-                    .from(params)
-                    .endingBefore(objects().first().id())
-                    .build()
-            )
-        } else {
-            Optional.of(
-                OrganizationListParams.builder()
-                    .from(params)
-                    .startingAfter(objects().last().id())
-                    .build()
-            )
-        }
+      return if (params.endingBefore().isPresent) {
+        Optional.of(OrganizationListParams.builder().from(params).endingBefore(objects().first().id()).build());
+      } else {
+        Optional.of(OrganizationListParams.builder().from(params).startingAfter(objects().last().id()).build());
+      }
     }
 
     fun getNextPage(): Optional<OrganizationListPage> {
-        return getNextPageParams().map { organizationsService.list(it) }
+      return getNextPageParams().map { organizationsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -83,21 +73,19 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(
-            organizationsService: OrganizationService,
-            params: OrganizationListParams,
-            response: Response,
-        ) = OrganizationListPage(organizationsService, params, response)
+        fun of(organizationsService: OrganizationService, params: OrganizationListParams, response: Response) =
+            OrganizationListPage(
+              organizationsService,
+              params,
+              response,
+            )
     }
 
     @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("objects")
-        private val objects: JsonField<List<Organization>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response @JsonCreator constructor(
+        @JsonProperty("objects") private val objects: JsonField<List<Organization>> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         fun objects(): List<Organization> = objects.getNullable("objects") ?: listOf()
@@ -111,34 +99,38 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Response =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            objects().map { it.validate() }
-            validated = true
-        }
+                objects().map { it.validate() }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
 
-        override fun toString() =
-            "Response{objects=$objects, additionalProperties=$additionalProperties}"
+        override fun toString() = "Response{objects=$objects, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [OrganizationListPage]. */
-            @JvmStatic fun builder() = Builder()
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [OrganizationListPage].
+             */
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         class Builder {
@@ -147,39 +139,48 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.objects = page.objects
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
+            internal fun from(page: Response) =
+                apply {
+                    this.objects = page.objects
+                    this.additionalProperties.putAll(page.additionalProperties)
+                }
 
             fun objects(objects: List<Organization>) = objects(JsonField.of(objects))
 
             fun objects(objects: JsonField<List<Organization>>) = apply { this.objects = objects }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    this.additionalProperties.put(key, value)
+                }
 
-            fun build() = Response(objects, additionalProperties.toImmutable())
+            fun build() =
+                Response(
+                  objects, additionalProperties.toImmutable()
+                )
         }
     }
 
-    class AutoPager(private val firstPage: OrganizationListPage) : Iterable<Organization> {
+    class AutoPager(
+        private val firstPage: OrganizationListPage,
 
-        override fun iterator(): Iterator<Organization> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.objects().size) {
+    ) : Iterable<Organization> {
+
+        override fun iterator(): Iterator<Organization> =
+            iterator {
+                var page = firstPage
+                var index = 0
+                while (true) {
+                  while (index < page.objects().size) {
                     yield(page.objects()[index++])
+                  }
+                  page = page.getNextPage().getOrNull() ?: break
+                  index = 0
                 }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
             }
-        }
 
         fun stream(): Stream<Organization> {
-            return StreamSupport.stream(spliterator(), false)
+          return StreamSupport.stream(spliterator(), false)
         }
     }
 }
