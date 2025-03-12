@@ -32,361 +32,319 @@ import com.braintrustdata.api.models.FetchExperimentEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 
-class ExperimentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    ExperimentService {
+class ExperimentServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: ExperimentService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : ExperimentService {
+
+    private val withRawResponse: ExperimentService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): ExperimentService.WithRawResponse = withRawResponse
 
-    override fun create(
-        params: ExperimentCreateParams,
-        requestOptions: RequestOptions,
-    ): Experiment =
+    override fun create(params: ExperimentCreateParams, requestOptions: RequestOptions): Experiment =
         // post /v1/experiment
         withRawResponse().create(params, requestOptions).parse()
 
-    override fun retrieve(
-        params: ExperimentRetrieveParams,
-        requestOptions: RequestOptions,
-    ): Experiment =
+    override fun retrieve(params: ExperimentRetrieveParams, requestOptions: RequestOptions): Experiment =
         // get /v1/experiment/{experiment_id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    override fun update(
-        params: ExperimentUpdateParams,
-        requestOptions: RequestOptions,
-    ): Experiment =
+    override fun update(params: ExperimentUpdateParams, requestOptions: RequestOptions): Experiment =
         // patch /v1/experiment/{experiment_id}
         withRawResponse().update(params, requestOptions).parse()
 
-    override fun list(
-        params: ExperimentListParams,
-        requestOptions: RequestOptions,
-    ): ExperimentListPage =
+    override fun list(params: ExperimentListParams, requestOptions: RequestOptions): ExperimentListPage =
         // get /v1/experiment
         withRawResponse().list(params, requestOptions).parse()
 
-    override fun delete(
-        params: ExperimentDeleteParams,
-        requestOptions: RequestOptions,
-    ): Experiment =
+    override fun delete(params: ExperimentDeleteParams, requestOptions: RequestOptions): Experiment =
         // delete /v1/experiment/{experiment_id}
         withRawResponse().delete(params, requestOptions).parse()
 
-    override fun feedback(
-        params: ExperimentFeedbackParams,
-        requestOptions: RequestOptions,
-    ): FeedbackResponseSchema =
+    override fun feedback(params: ExperimentFeedbackParams, requestOptions: RequestOptions): FeedbackResponseSchema =
         // post /v1/experiment/{experiment_id}/feedback
         withRawResponse().feedback(params, requestOptions).parse()
 
-    override fun fetch(
-        params: ExperimentFetchParams,
-        requestOptions: RequestOptions,
-    ): FetchExperimentEventsResponse =
+    override fun fetch(params: ExperimentFetchParams, requestOptions: RequestOptions): FetchExperimentEventsResponse =
         // get /v1/experiment/{experiment_id}/fetch
         withRawResponse().fetch(params, requestOptions).parse()
 
-    override fun fetchPost(
-        params: ExperimentFetchPostParams,
-        requestOptions: RequestOptions,
-    ): FetchExperimentEventsResponse =
+    override fun fetchPost(params: ExperimentFetchPostParams, requestOptions: RequestOptions): FetchExperimentEventsResponse =
         // post /v1/experiment/{experiment_id}/fetch
         withRawResponse().fetchPost(params, requestOptions).parse()
 
-    override fun insert(
-        params: ExperimentInsertParams,
-        requestOptions: RequestOptions,
-    ): InsertEventsResponse =
+    override fun insert(params: ExperimentInsertParams, requestOptions: RequestOptions): InsertEventsResponse =
         // post /v1/experiment/{experiment_id}/insert
         withRawResponse().insert(params, requestOptions).parse()
 
-    override fun summarize(
-        params: ExperimentSummarizeParams,
-        requestOptions: RequestOptions,
-    ): SummarizeExperimentResponse =
+    override fun summarize(params: ExperimentSummarizeParams, requestOptions: RequestOptions): SummarizeExperimentResponse =
         // get /v1/experiment/{experiment_id}/summarize
         withRawResponse().summarize(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        ExperimentService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : ExperimentService.WithRawResponse {
 
         private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<Experiment> = jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun create(
-            params: ExperimentCreateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Experiment> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v1", "experiment")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { createHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun create(params: ExperimentCreateParams, requestOptions: RequestOptions): HttpResponseFor<Experiment> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v1", "experiment")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  createHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val retrieveHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Experiment> = jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieve(
-            params: ExperimentRetrieveParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Experiment> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun retrieve(params: ExperimentRetrieveParams, requestOptions: RequestOptions): HttpResponseFor<Experiment> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "experiment", params.getPathParam(0))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  retrieveHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val updateHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<Experiment> = jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun update(
-            params: ExperimentUpdateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Experiment> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PATCH)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0))
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { updateHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun update(params: ExperimentUpdateParams, requestOptions: RequestOptions): HttpResponseFor<Experiment> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.PATCH)
+            .addPathSegments("v1", "experiment", params.getPathParam(0))
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  updateHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val listHandler: Handler<ExperimentListPage.Response> =
-            jsonHandler<ExperimentListPage.Response>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<ExperimentListPage.Response> = jsonHandler<ExperimentListPage.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(
-            params: ExperimentListParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<ExperimentListPage> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "experiment")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-                    .let { ExperimentListPage.of(ExperimentServiceImpl(clientOptions), params, it) }
-            }
+        override fun list(params: ExperimentListParams, requestOptions: RequestOptions): HttpResponseFor<ExperimentListPage> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "experiment")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+              .let {
+                  ExperimentListPage.of(ExperimentServiceImpl(clientOptions), params, it)
+              }
+          }
         }
 
-        private val deleteHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Experiment> = jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun delete(
-            params: ExperimentDeleteParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Experiment> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.DELETE)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0))
-                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { deleteHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun delete(params: ExperimentDeleteParams, requestOptions: RequestOptions): HttpResponseFor<Experiment> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.DELETE)
+            .addPathSegments("v1", "experiment", params.getPathParam(0))
+            .apply { params._body().ifPresent{ body(json(clientOptions.jsonMapper, it)) } }
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  deleteHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val feedbackHandler: Handler<FeedbackResponseSchema> =
-            jsonHandler<FeedbackResponseSchema>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val feedbackHandler: Handler<FeedbackResponseSchema> = jsonHandler<FeedbackResponseSchema>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun feedback(
-            params: ExperimentFeedbackParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<FeedbackResponseSchema> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0), "feedback")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { feedbackHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun feedback(params: ExperimentFeedbackParams, requestOptions: RequestOptions): HttpResponseFor<FeedbackResponseSchema> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v1", "experiment", params.getPathParam(0), "feedback")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  feedbackHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val fetchHandler: Handler<FetchExperimentEventsResponse> =
-            jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val fetchHandler: Handler<FetchExperimentEventsResponse> = jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun fetch(
-            params: ExperimentFetchParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<FetchExperimentEventsResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0), "fetch")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { fetchHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun fetch(params: ExperimentFetchParams, requestOptions: RequestOptions): HttpResponseFor<FetchExperimentEventsResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "experiment", params.getPathParam(0), "fetch")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  fetchHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val fetchPostHandler: Handler<FetchExperimentEventsResponse> =
-            jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val fetchPostHandler: Handler<FetchExperimentEventsResponse> = jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun fetchPost(
-            params: ExperimentFetchPostParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<FetchExperimentEventsResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0), "fetch")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { fetchPostHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun fetchPost(params: ExperimentFetchPostParams, requestOptions: RequestOptions): HttpResponseFor<FetchExperimentEventsResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v1", "experiment", params.getPathParam(0), "fetch")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  fetchPostHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val insertHandler: Handler<InsertEventsResponse> =
-            jsonHandler<InsertEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val insertHandler: Handler<InsertEventsResponse> = jsonHandler<InsertEventsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun insert(
-            params: ExperimentInsertParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<InsertEventsResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0), "insert")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { insertHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun insert(params: ExperimentInsertParams, requestOptions: RequestOptions): HttpResponseFor<InsertEventsResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v1", "experiment", params.getPathParam(0), "insert")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  insertHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val summarizeHandler: Handler<SummarizeExperimentResponse> =
-            jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val summarizeHandler: Handler<SummarizeExperimentResponse> = jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun summarize(
-            params: ExperimentSummarizeParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<SummarizeExperimentResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "experiment", params.getPathParam(0), "summarize")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { summarizeHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun summarize(params: ExperimentSummarizeParams, requestOptions: RequestOptions): HttpResponseFor<SummarizeExperimentResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "experiment", params.getPathParam(0), "summarize")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  summarizeHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

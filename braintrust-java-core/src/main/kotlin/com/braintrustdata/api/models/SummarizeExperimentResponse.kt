@@ -20,31 +20,16 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Summary of an experiment */
 @NoAutoDetect
-class SummarizeExperimentResponse
-@JsonCreator
-private constructor(
-    @JsonProperty("experiment_name")
-    @ExcludeMissing
-    private val experimentName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("experiment_url")
-    @ExcludeMissing
-    private val experimentUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_name")
-    @ExcludeMissing
-    private val projectName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_url")
-    @ExcludeMissing
-    private val projectUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("comparison_experiment_name")
-    @ExcludeMissing
-    private val comparisonExperimentName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("metrics")
-    @ExcludeMissing
-    private val metrics: JsonField<Metrics> = JsonMissing.of(),
-    @JsonProperty("scores")
-    @ExcludeMissing
-    private val scores: JsonField<Scores> = JsonMissing.of(),
+class SummarizeExperimentResponse @JsonCreator private constructor(
+    @JsonProperty("experiment_name") @ExcludeMissing private val experimentName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("experiment_url") @ExcludeMissing private val experimentUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("project_name") @ExcludeMissing private val projectName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("project_url") @ExcludeMissing private val projectUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("comparison_experiment_name") @ExcludeMissing private val comparisonExperimentName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("metrics") @ExcludeMissing private val metrics: JsonField<Metrics> = JsonMissing.of(),
+    @JsonProperty("scores") @ExcludeMissing private val scores: JsonField<Scores> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** Name of the experiment */
@@ -60,8 +45,7 @@ private constructor(
     fun projectUrl(): String = projectUrl.getRequired("project_url")
 
     /** The experiment which scores are baselined against */
-    fun comparisonExperimentName(): Optional<String> =
-        Optional.ofNullable(comparisonExperimentName.getNullable("comparison_experiment_name"))
+    fun comparisonExperimentName(): Optional<String> = Optional.ofNullable(comparisonExperimentName.getNullable("comparison_experiment_name"))
 
     /** Summary of the experiment's metrics */
     fun metrics(): Optional<Metrics> = Optional.ofNullable(metrics.getNullable("metrics"))
@@ -85,7 +69,9 @@ private constructor(
     fun _projectName(): JsonField<String> = projectName
 
     /** URL to the project's page in the Braintrust app */
-    @JsonProperty("project_url") @ExcludeMissing fun _projectUrl(): JsonField<String> = projectUrl
+    @JsonProperty("project_url")
+    @ExcludeMissing
+    fun _projectUrl(): JsonField<String> = projectUrl
 
     /** The experiment which scores are baselined against */
     @JsonProperty("comparison_experiment_name")
@@ -93,10 +79,14 @@ private constructor(
     fun _comparisonExperimentName(): JsonField<String> = comparisonExperimentName
 
     /** Summary of the experiment's metrics */
-    @JsonProperty("metrics") @ExcludeMissing fun _metrics(): JsonField<Metrics> = metrics
+    @JsonProperty("metrics")
+    @ExcludeMissing
+    fun _metrics(): JsonField<Metrics> = metrics
 
     /** Summary of the experiment's scores */
-    @JsonProperty("scores") @ExcludeMissing fun _scores(): JsonField<Scores> = scores
+    @JsonProperty("scores")
+    @ExcludeMissing
+    fun _scores(): JsonField<Scores> = scores
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -104,29 +94,32 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): SummarizeExperimentResponse = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): SummarizeExperimentResponse =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        experimentName()
-        experimentUrl()
-        projectName()
-        projectUrl()
-        comparisonExperimentName()
-        metrics().ifPresent { it.validate() }
-        scores().ifPresent { it.validate() }
-        validated = true
-    }
+            experimentName()
+            experimentUrl()
+            projectName()
+            projectUrl()
+            comparisonExperimentName()
+            metrics().ifPresent { it.validate() }
+            scores().ifPresent { it.validate() }
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [SummarizeExperimentResponse].
+         * Returns a mutable builder for constructing an instance of
+         * [SummarizeExperimentResponse].
          *
          * The following fields are required:
+         *
          * ```java
          * .experimentName()
          * .experimentUrl()
@@ -134,7 +127,8 @@ private constructor(
          * .projectUrl()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [SummarizeExperimentResponse]. */
@@ -150,57 +144,65 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(summarizeExperimentResponse: SummarizeExperimentResponse) = apply {
-            experimentName = summarizeExperimentResponse.experimentName
-            experimentUrl = summarizeExperimentResponse.experimentUrl
-            projectName = summarizeExperimentResponse.projectName
-            projectUrl = summarizeExperimentResponse.projectUrl
-            comparisonExperimentName = summarizeExperimentResponse.comparisonExperimentName
-            metrics = summarizeExperimentResponse.metrics
-            scores = summarizeExperimentResponse.scores
-            additionalProperties = summarizeExperimentResponse.additionalProperties.toMutableMap()
-        }
+        internal fun from(summarizeExperimentResponse: SummarizeExperimentResponse) =
+            apply {
+                experimentName = summarizeExperimentResponse.experimentName
+                experimentUrl = summarizeExperimentResponse.experimentUrl
+                projectName = summarizeExperimentResponse.projectName
+                projectUrl = summarizeExperimentResponse.projectUrl
+                comparisonExperimentName = summarizeExperimentResponse.comparisonExperimentName
+                metrics = summarizeExperimentResponse.metrics
+                scores = summarizeExperimentResponse.scores
+                additionalProperties = summarizeExperimentResponse.additionalProperties.toMutableMap()
+            }
 
         /** Name of the experiment */
         fun experimentName(experimentName: String) = experimentName(JsonField.of(experimentName))
 
         /** Name of the experiment */
-        fun experimentName(experimentName: JsonField<String>) = apply {
-            this.experimentName = experimentName
-        }
+        fun experimentName(experimentName: JsonField<String>) =
+            apply {
+                this.experimentName = experimentName
+            }
 
         /** URL to the experiment's page in the Braintrust app */
         fun experimentUrl(experimentUrl: String) = experimentUrl(JsonField.of(experimentUrl))
 
         /** URL to the experiment's page in the Braintrust app */
-        fun experimentUrl(experimentUrl: JsonField<String>) = apply {
-            this.experimentUrl = experimentUrl
-        }
+        fun experimentUrl(experimentUrl: JsonField<String>) =
+            apply {
+                this.experimentUrl = experimentUrl
+            }
 
         /** Name of the project that the experiment belongs to */
         fun projectName(projectName: String) = projectName(JsonField.of(projectName))
 
         /** Name of the project that the experiment belongs to */
-        fun projectName(projectName: JsonField<String>) = apply { this.projectName = projectName }
+        fun projectName(projectName: JsonField<String>) =
+            apply {
+                this.projectName = projectName
+            }
 
         /** URL to the project's page in the Braintrust app */
         fun projectUrl(projectUrl: String) = projectUrl(JsonField.of(projectUrl))
 
         /** URL to the project's page in the Braintrust app */
-        fun projectUrl(projectUrl: JsonField<String>) = apply { this.projectUrl = projectUrl }
+        fun projectUrl(projectUrl: JsonField<String>) =
+            apply {
+                this.projectUrl = projectUrl
+            }
 
         /** The experiment which scores are baselined against */
-        fun comparisonExperimentName(comparisonExperimentName: String?) =
-            comparisonExperimentName(JsonField.ofNullable(comparisonExperimentName))
+        fun comparisonExperimentName(comparisonExperimentName: String?) = comparisonExperimentName(JsonField.ofNullable(comparisonExperimentName))
 
         /** The experiment which scores are baselined against */
-        fun comparisonExperimentName(comparisonExperimentName: Optional<String>) =
-            comparisonExperimentName(comparisonExperimentName.getOrNull())
+        fun comparisonExperimentName(comparisonExperimentName: Optional<String>) = comparisonExperimentName(comparisonExperimentName.getOrNull())
 
         /** The experiment which scores are baselined against */
-        fun comparisonExperimentName(comparisonExperimentName: JsonField<String>) = apply {
-            this.comparisonExperimentName = comparisonExperimentName
-        }
+        fun comparisonExperimentName(comparisonExperimentName: JsonField<String>) =
+            apply {
+                this.comparisonExperimentName = comparisonExperimentName
+            }
 
         /** Summary of the experiment's metrics */
         fun metrics(metrics: Metrics?) = metrics(JsonField.ofNullable(metrics))
@@ -209,7 +211,10 @@ private constructor(
         fun metrics(metrics: Optional<Metrics>) = metrics(metrics.getOrNull())
 
         /** Summary of the experiment's metrics */
-        fun metrics(metrics: JsonField<Metrics>) = apply { this.metrics = metrics }
+        fun metrics(metrics: JsonField<Metrics>) =
+            apply {
+                this.metrics = metrics
+            }
 
         /** Summary of the experiment's scores */
         fun scores(scores: Scores?) = scores(JsonField.ofNullable(scores))
@@ -218,47 +223,63 @@ private constructor(
         fun scores(scores: Optional<Scores>) = scores(scores.getOrNull())
 
         /** Summary of the experiment's scores */
-        fun scores(scores: JsonField<Scores>) = apply { this.scores = scores }
+        fun scores(scores: JsonField<Scores>) =
+            apply {
+                this.scores = scores
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): SummarizeExperimentResponse =
             SummarizeExperimentResponse(
-                checkRequired("experimentName", experimentName),
-                checkRequired("experimentUrl", experimentUrl),
-                checkRequired("projectName", projectName),
-                checkRequired("projectUrl", projectUrl),
-                comparisonExperimentName,
-                metrics,
-                scores,
-                additionalProperties.toImmutable(),
+              checkRequired(
+                "experimentName", experimentName
+              ),
+              checkRequired(
+                "experimentUrl", experimentUrl
+              ),
+              checkRequired(
+                "projectName", projectName
+              ),
+              checkRequired(
+                "projectUrl", projectUrl
+              ),
+              comparisonExperimentName,
+              metrics,
+              scores,
+              additionalProperties.toImmutable(),
             )
     }
 
     /** Summary of the experiment's metrics */
     @NoAutoDetect
-    class Metrics
-    @JsonCreator
-    private constructor(
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+    class Metrics @JsonCreator private constructor(
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         @JsonAnyGetter
@@ -267,20 +288,22 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Metrics = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Metrics =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            validated = true
-        }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Metrics]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Metrics]. */
@@ -289,38 +312,46 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(metrics: Metrics) = apply {
-                additionalProperties = metrics.additionalProperties.toMutableMap()
-            }
+            internal fun from(metrics: Metrics) =
+                apply {
+                    additionalProperties = metrics.additionalProperties.toMutableMap()
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Metrics = Metrics(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Metrics && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Metrics && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -334,11 +365,9 @@ private constructor(
 
     /** Summary of the experiment's scores */
     @NoAutoDetect
-    class Scores
-    @JsonCreator
-    private constructor(
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+    class Scores @JsonCreator private constructor(
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         @JsonAnyGetter
@@ -347,20 +376,22 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Scores = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Scores =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            validated = true
-        }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Scores]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Scores]. */
@@ -369,38 +400,46 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(scores: Scores) = apply {
-                additionalProperties = scores.additionalProperties.toMutableMap()
-            }
+            internal fun from(scores: Scores) =
+                apply {
+                    additionalProperties = scores.additionalProperties.toMutableMap()
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Scores = Scores(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Scores && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Scores && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -413,11 +452,11 @@ private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is SummarizeExperimentResponse && experimentName == other.experimentName && experimentUrl == other.experimentUrl && projectName == other.projectName && projectUrl == other.projectUrl && comparisonExperimentName == other.comparisonExperimentName && metrics == other.metrics && scores == other.scores && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is SummarizeExperimentResponse && experimentName == other.experimentName && experimentUrl == other.experimentUrl && projectName == other.projectName && projectUrl == other.projectUrl && comparisonExperimentName == other.comparisonExperimentName && metrics == other.metrics && scores == other.scores && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -426,6 +465,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "SummarizeExperimentResponse{experimentName=$experimentName, experimentUrl=$experimentUrl, projectName=$projectName, projectUrl=$projectUrl, comparisonExperimentName=$comparisonExperimentName, metrics=$metrics, scores=$scores, additionalProperties=$additionalProperties}"
+    override fun toString() = "SummarizeExperimentResponse{experimentName=$experimentName, experimentUrl=$experimentUrl, projectName=$projectName, projectUrl=$projectUrl, comparisonExperimentName=$comparisonExperimentName, metrics=$metrics, scores=$scores, additionalProperties=$additionalProperties}"
 }

@@ -2,8 +2,6 @@
 
 package com.braintrustdata.api.core
 
-import com.braintrustdata.api.errors.BraintrustException
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -18,6 +16,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonMapperBuilder
+import com.braintrustdata.api.errors.BraintrustException
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import java.io.InputStream
 
 fun jsonMapper(): JsonMapper =

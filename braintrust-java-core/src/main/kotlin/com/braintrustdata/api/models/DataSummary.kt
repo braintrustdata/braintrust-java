@@ -18,13 +18,10 @@ import java.util.Objects
 
 /** Summary of a dataset's data */
 @NoAutoDetect
-class DataSummary
-@JsonCreator
-private constructor(
-    @JsonProperty("total_records")
-    @ExcludeMissing
-    private val totalRecords: JsonField<Long> = JsonMissing.of(),
+class DataSummary @JsonCreator private constructor(
+    @JsonProperty("total_records") @ExcludeMissing private val totalRecords: JsonField<Long> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** Total number of records in the dataset */
@@ -41,14 +38,15 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): DataSummary = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): DataSummary =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        totalRecords()
-        validated = true
-    }
+            totalRecords()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
@@ -58,11 +56,13 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [DataSummary].
          *
          * The following fields are required:
+         *
          * ```java
          * .totalRecords()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [DataSummary]. */
@@ -72,49 +72,61 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(dataSummary: DataSummary) = apply {
-            totalRecords = dataSummary.totalRecords
-            additionalProperties = dataSummary.additionalProperties.toMutableMap()
-        }
+        internal fun from(dataSummary: DataSummary) =
+            apply {
+                totalRecords = dataSummary.totalRecords
+                additionalProperties = dataSummary.additionalProperties.toMutableMap()
+            }
 
         /** Total number of records in the dataset */
         fun totalRecords(totalRecords: Long) = totalRecords(JsonField.of(totalRecords))
 
         /** Total number of records in the dataset */
-        fun totalRecords(totalRecords: JsonField<Long>) = apply { this.totalRecords = totalRecords }
+        fun totalRecords(totalRecords: JsonField<Long>) =
+            apply {
+                this.totalRecords = totalRecords
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): DataSummary =
             DataSummary(
-                checkRequired("totalRecords", totalRecords),
-                additionalProperties.toImmutable(),
+              checkRequired(
+                "totalRecords", totalRecords
+              ), additionalProperties.toImmutable()
             )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is DataSummary && totalRecords == other.totalRecords && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is DataSummary && totalRecords == other.totalRecords && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -123,6 +135,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "DataSummary{totalRecords=$totalRecords, additionalProperties=$additionalProperties}"
+    override fun toString() = "DataSummary{totalRecords=$totalRecords, additionalProperties=$additionalProperties}"
 }
