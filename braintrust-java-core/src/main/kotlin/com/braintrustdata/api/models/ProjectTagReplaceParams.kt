@@ -22,15 +22,15 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Create or replace project_tag. If there is an existing project_tag in the project with the same
- * name as the one specified in the request, will replace the existing project_tag with the provided
- * fields
+ * Create or replace project_tag. If there is an existing project_tag in the
+ * project with the same name as the one specified in the request, will replace the
+ * existing project_tag with the provided fields
  */
-class ProjectTagReplaceParams
-private constructor(
+class ProjectTagReplaceParams private constructor(
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
+
 ) : Params {
 
     /** Name of the project tag */
@@ -63,30 +63,21 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
+    @JvmSynthetic
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("project_id")
-        @ExcludeMissing
-        private val projectId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("color")
-        @ExcludeMissing
-        private val color: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Body @JsonCreator private constructor(
+        @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_id") @ExcludeMissing private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("color") @ExcludeMissing private val color: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("description") @ExcludeMissing private val description: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** Name of the project tag */
@@ -99,17 +90,22 @@ private constructor(
         fun color(): Optional<String> = Optional.ofNullable(color.getNullable("color"))
 
         /** Textual description of the project tag */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = Optional.ofNullable(description.getNullable("description"))
 
         /** Name of the project tag */
-        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+        @JsonProperty("name")
+        @ExcludeMissing
+        fun _name(): JsonField<String> = name
 
         /** Unique identifier for the project that the project tag belongs under */
-        @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+        @JsonProperty("project_id")
+        @ExcludeMissing
+        fun _projectId(): JsonField<String> = projectId
 
         /** Color of the tag for the UI */
-        @JsonProperty("color") @ExcludeMissing fun _color(): JsonField<String> = color
+        @JsonProperty("color")
+        @ExcludeMissing
+        fun _color(): JsonField<String> = color
 
         /** Textual description of the project tag */
         @JsonProperty("description")
@@ -122,17 +118,18 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Body =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            name()
-            projectId()
-            color()
-            description()
-            validated = true
-        }
+                name()
+                projectId()
+                color()
+                description()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -142,12 +139,14 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
+             *
              * ```java
              * .name()
              * .projectId()
              * ```
              */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
@@ -160,25 +159,32 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                name = body.name
-                projectId = body.projectId
-                color = body.color
-                description = body.description
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
+            internal fun from(body: Body) =
+                apply {
+                    name = body.name
+                    projectId = body.projectId
+                    color = body.color
+                    description = body.description
+                    additionalProperties = body.additionalProperties.toMutableMap()
+                }
 
             /** Name of the project tag */
             fun name(name: String) = name(JsonField.of(name))
 
             /** Name of the project tag */
-            fun name(name: JsonField<String>) = apply { this.name = name }
+            fun name(name: JsonField<String>) =
+                apply {
+                    this.name = name
+                }
 
             /** Unique identifier for the project that the project tag belongs under */
             fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
             /** Unique identifier for the project that the project tag belongs under */
-            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+            fun projectId(projectId: JsonField<String>) =
+                apply {
+                    this.projectId = projectId
+                }
 
             /** Color of the tag for the UI */
             fun color(color: String?) = color(JsonField.ofNullable(color))
@@ -187,7 +193,10 @@ private constructor(
             fun color(color: Optional<String>) = color(color.getOrNull())
 
             /** Color of the tag for the UI */
-            fun color(color: JsonField<String>) = apply { this.color = color }
+            fun color(color: JsonField<String>) =
+                apply {
+                    this.color = color
+                }
 
             /** Textual description of the project tag */
             fun description(description: String?) = description(JsonField.ofNullable(description))
@@ -196,45 +205,57 @@ private constructor(
             fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** Textual description of the project tag */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
+            fun description(description: JsonField<String>) =
+                apply {
+                    this.description = description
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Body =
                 Body(
-                    checkRequired("name", name),
-                    checkRequired("projectId", projectId),
-                    color,
-                    description,
-                    additionalProperties.toImmutable(),
+                  checkRequired(
+                    "name", name
+                  ),
+                  checkRequired(
+                    "projectId", projectId
+                  ),
+                  color,
+                  description,
+                  additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && color == other.color && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -243,8 +264,7 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Body{name=$name, projectId=$projectId, color=$color, description=$description, additionalProperties=$additionalProperties}"
+        override fun toString() = "Body{name=$name, projectId=$projectId, color=$color, description=$description, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -252,15 +272,18 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [ProjectTagReplaceParams].
+         * Returns a mutable builder for constructing an instance of
+         * [ProjectTagReplaceParams].
          *
          * The following fields are required:
+         *
          * ```java
          * .name()
          * .projectId()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [ProjectTagReplaceParams]. */
@@ -272,177 +295,235 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(projectTagReplaceParams: ProjectTagReplaceParams) = apply {
-            body = projectTagReplaceParams.body.toBuilder()
-            additionalHeaders = projectTagReplaceParams.additionalHeaders.toBuilder()
-            additionalQueryParams = projectTagReplaceParams.additionalQueryParams.toBuilder()
-        }
+        internal fun from(projectTagReplaceParams: ProjectTagReplaceParams) =
+            apply {
+                body = projectTagReplaceParams.body.toBuilder()
+                additionalHeaders = projectTagReplaceParams.additionalHeaders.toBuilder()
+                additionalQueryParams = projectTagReplaceParams.additionalQueryParams.toBuilder()
+            }
 
         /** Name of the project tag */
-        fun name(name: String) = apply { body.name(name) }
+        fun name(name: String) =
+            apply {
+                body.name(name)
+            }
 
         /** Name of the project tag */
-        fun name(name: JsonField<String>) = apply { body.name(name) }
+        fun name(name: JsonField<String>) =
+            apply {
+                body.name(name)
+            }
 
         /** Unique identifier for the project that the project tag belongs under */
-        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+        fun projectId(projectId: String) =
+            apply {
+                body.projectId(projectId)
+            }
 
         /** Unique identifier for the project that the project tag belongs under */
-        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
+        fun projectId(projectId: JsonField<String>) =
+            apply {
+                body.projectId(projectId)
+            }
 
         /** Color of the tag for the UI */
-        fun color(color: String?) = apply { body.color(color) }
+        fun color(color: String?) =
+            apply {
+                body.color(color)
+            }
 
         /** Color of the tag for the UI */
         fun color(color: Optional<String>) = color(color.getOrNull())
 
         /** Color of the tag for the UI */
-        fun color(color: JsonField<String>) = apply { body.color(color) }
+        fun color(color: JsonField<String>) =
+            apply {
+                body.color(color)
+            }
 
         /** Textual description of the project tag */
-        fun description(description: String?) = apply { body.description(description) }
+        fun description(description: String?) =
+            apply {
+                body.description(description)
+            }
 
         /** Textual description of the project tag */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** Textual description of the project tag */
-        fun description(description: JsonField<String>) = apply { body.description(description) }
+        fun description(description: JsonField<String>) =
+            apply {
+                body.description(description)
+            }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.additionalProperties(additionalBodyProperties)
+            }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
+            apply {
+                body.putAdditionalProperty(
+                  key, value
+                )
+            }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) =
+            apply {
+                body.removeAdditionalProperty(key)
+            }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
+            apply {
+                body.removeAllAdditionalProperties(keys)
+            }
 
-        fun additionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
+        fun additionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.clear()
+                putAllAdditionalHeaders(additionalHeaders)
+            }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.clear()
+                putAllAdditionalHeaders(additionalHeaders)
+            }
 
-        fun putAdditionalHeader(name: String, value: String) = apply {
-            additionalHeaders.put(name, value)
-        }
+        fun putAdditionalHeader(name: String, value: String) =
+            apply {
+                additionalHeaders.put(name, value)
+            }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.put(name, values)
-        }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
+            apply {
+                additionalHeaders.put(name, values)
+            }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.putAll(additionalHeaders)
+            }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.putAll(additionalHeaders)
+            }
 
-        fun replaceAdditionalHeaders(name: String, value: String) = apply {
-            additionalHeaders.replace(name, value)
-        }
+        fun replaceAdditionalHeaders(name: String, value: String) =
+            apply {
+                additionalHeaders.replace(name, value)
+            }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.replace(name, values)
-        }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
+            apply {
+                additionalHeaders.replace(name, values)
+            }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.replaceAll(additionalHeaders)
+            }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.replaceAll(additionalHeaders)
+            }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) =
+            apply {
+                additionalHeaders.remove(name)
+            }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
-            additionalHeaders.removeAll(names)
-        }
+        fun removeAllAdditionalHeaders(names: Set<String>) =
+            apply {
+                additionalHeaders.removeAll(names)
+            }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.clear()
+                putAllAdditionalQueryParams(additionalQueryParams)
+            }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.clear()
+                putAllAdditionalQueryParams(additionalQueryParams)
+            }
 
-        fun putAdditionalQueryParam(key: String, value: String) = apply {
-            additionalQueryParams.put(key, value)
-        }
+        fun putAdditionalQueryParam(key: String, value: String) =
+            apply {
+                additionalQueryParams.put(key, value)
+            }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.put(key, values)
-        }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
+            apply {
+                additionalQueryParams.put(key, values)
+            }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.putAll(additionalQueryParams)
-        }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
-            additionalQueryParams.replace(key, value)
-        }
+        fun replaceAdditionalQueryParams(key: String, value: String) =
+            apply {
+                additionalQueryParams.replace(key, value)
+            }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.replace(key, values)
-        }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
+            apply {
+                additionalQueryParams.replace(key, values)
+            }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.replaceAll(additionalQueryParams)
-        }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) =
+            apply {
+                additionalQueryParams.remove(key)
+            }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
-            additionalQueryParams.removeAll(keys)
-        }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) =
+            apply {
+                additionalQueryParams.removeAll(keys)
+            }
 
         fun build(): ProjectTagReplaceParams =
             ProjectTagReplaceParams(
-                body.build(),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
+              body.build(),
+              additionalHeaders.build(),
+              additionalQueryParams.build(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is ProjectTagReplaceParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+      return /* spotless:off */ other is ProjectTagReplaceParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() =
-        "ProjectTagReplaceParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() = "ProjectTagReplaceParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

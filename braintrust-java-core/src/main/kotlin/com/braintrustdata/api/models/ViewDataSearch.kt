@@ -19,22 +19,13 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
-class ViewDataSearch
-@JsonCreator
-private constructor(
-    @JsonProperty("filter")
-    @ExcludeMissing
-    private val filter: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonProperty("match")
-    @ExcludeMissing
-    private val match: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonProperty("sort")
-    @ExcludeMissing
-    private val sort: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonProperty("tag")
-    @ExcludeMissing
-    private val tag: JsonField<List<JsonValue?>> = JsonMissing.of(),
+class ViewDataSearch @JsonCreator private constructor(
+    @JsonProperty("filter") @ExcludeMissing private val filter: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonProperty("match") @ExcludeMissing private val match: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonProperty("sort") @ExcludeMissing private val sort: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    @JsonProperty("tag") @ExcludeMissing private val tag: JsonField<List<JsonValue?>> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     fun filter(): Optional<List<JsonValue?>> = Optional.ofNullable(filter.getNullable("filter"))
@@ -45,13 +36,21 @@ private constructor(
 
     fun tag(): Optional<List<JsonValue?>> = Optional.ofNullable(tag.getNullable("tag"))
 
-    @JsonProperty("filter") @ExcludeMissing fun _filter(): JsonField<List<JsonValue?>> = filter
+    @JsonProperty("filter")
+    @ExcludeMissing
+    fun _filter(): JsonField<List<JsonValue?>> = filter
 
-    @JsonProperty("match") @ExcludeMissing fun _match(): JsonField<List<JsonValue?>> = match
+    @JsonProperty("match")
+    @ExcludeMissing
+    fun _match(): JsonField<List<JsonValue?>> = match
 
-    @JsonProperty("sort") @ExcludeMissing fun _sort(): JsonField<List<JsonValue?>> = sort
+    @JsonProperty("sort")
+    @ExcludeMissing
+    fun _sort(): JsonField<List<JsonValue?>> = sort
 
-    @JsonProperty("tag") @ExcludeMissing fun _tag(): JsonField<List<JsonValue?>> = tag
+    @JsonProperty("tag")
+    @ExcludeMissing
+    fun _tag(): JsonField<List<JsonValue?>> = tag
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -59,24 +58,26 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): ViewDataSearch = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): ViewDataSearch =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        filter()
-        match()
-        sort()
-        tag()
-        validated = true
-    }
+            filter()
+            match()
+            sort()
+            tag()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /** Returns a mutable builder for constructing an instance of [ViewDataSearch]. */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [ViewDataSearch]. */
@@ -89,107 +90,121 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(viewDataSearch: ViewDataSearch) = apply {
-            filter = viewDataSearch.filter.map { it.toMutableList() }
-            match = viewDataSearch.match.map { it.toMutableList() }
-            sort = viewDataSearch.sort.map { it.toMutableList() }
-            tag = viewDataSearch.tag.map { it.toMutableList() }
-            additionalProperties = viewDataSearch.additionalProperties.toMutableMap()
-        }
+        internal fun from(viewDataSearch: ViewDataSearch) =
+            apply {
+                filter = viewDataSearch.filter.map { it.toMutableList() }
+                match = viewDataSearch.match.map { it.toMutableList() }
+                sort = viewDataSearch.sort.map { it.toMutableList() }
+                tag = viewDataSearch.tag.map { it.toMutableList() }
+                additionalProperties = viewDataSearch.additionalProperties.toMutableMap()
+            }
 
         fun filter(filter: List<JsonValue?>?) = filter(JsonField.ofNullable(filter))
 
         fun filter(filter: Optional<List<JsonValue?>>) = filter(filter.getOrNull())
 
-        fun filter(filter: JsonField<List<JsonValue?>>) = apply {
-            this.filter = filter.map { it.toMutableList() }
-        }
+        fun filter(filter: JsonField<List<JsonValue?>>) =
+            apply {
+                this.filter = filter.map { it.toMutableList() }
+            }
 
-        fun addFilter(filter: JsonValue) = apply {
-            this.filter =
-                (this.filter ?: JsonField.of(mutableListOf())).also {
+        fun addFilter(filter: JsonValue) =
+            apply {
+                this.filter = (this.filter ?: JsonField.of(mutableListOf())).also {
                     checkKnown("filter", it).add(filter)
                 }
-        }
+            }
 
         fun match(match: List<JsonValue?>?) = match(JsonField.ofNullable(match))
 
         fun match(match: Optional<List<JsonValue?>>) = match(match.getOrNull())
 
-        fun match(match: JsonField<List<JsonValue?>>) = apply {
-            this.match = match.map { it.toMutableList() }
-        }
+        fun match(match: JsonField<List<JsonValue?>>) =
+            apply {
+                this.match = match.map { it.toMutableList() }
+            }
 
-        fun addMatch(match: JsonValue) = apply {
-            this.match =
-                (this.match ?: JsonField.of(mutableListOf())).also {
+        fun addMatch(match: JsonValue) =
+            apply {
+                this.match = (this.match ?: JsonField.of(mutableListOf())).also {
                     checkKnown("match", it).add(match)
                 }
-        }
+            }
 
         fun sort(sort: List<JsonValue?>?) = sort(JsonField.ofNullable(sort))
 
         fun sort(sort: Optional<List<JsonValue?>>) = sort(sort.getOrNull())
 
-        fun sort(sort: JsonField<List<JsonValue?>>) = apply {
-            this.sort = sort.map { it.toMutableList() }
-        }
+        fun sort(sort: JsonField<List<JsonValue?>>) =
+            apply {
+                this.sort = sort.map { it.toMutableList() }
+            }
 
-        fun addSort(sort: JsonValue) = apply {
-            this.sort =
-                (this.sort ?: JsonField.of(mutableListOf())).also {
+        fun addSort(sort: JsonValue) =
+            apply {
+                this.sort = (this.sort ?: JsonField.of(mutableListOf())).also {
                     checkKnown("sort", it).add(sort)
                 }
-        }
+            }
 
         fun tag(tag: List<JsonValue?>?) = tag(JsonField.ofNullable(tag))
 
         fun tag(tag: Optional<List<JsonValue?>>) = tag(tag.getOrNull())
 
-        fun tag(tag: JsonField<List<JsonValue?>>) = apply {
-            this.tag = tag.map { it.toMutableList() }
-        }
+        fun tag(tag: JsonField<List<JsonValue?>>) =
+            apply {
+                this.tag = tag.map { it.toMutableList() }
+            }
 
-        fun addTag(tag: JsonValue) = apply {
-            this.tag =
-                (this.tag ?: JsonField.of(mutableListOf())).also { checkKnown("tag", it).add(tag) }
-        }
+        fun addTag(tag: JsonValue) =
+            apply {
+                this.tag = (this.tag ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("tag", it).add(tag)
+                }
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): ViewDataSearch =
             ViewDataSearch(
-                (filter ?: JsonMissing.of()).map { it.toImmutable() },
-                (match ?: JsonMissing.of()).map { it.toImmutable() },
-                (sort ?: JsonMissing.of()).map { it.toImmutable() },
-                (tag ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+              (filter ?: JsonMissing.of()).map { it.toImmutable() },
+              (match ?: JsonMissing.of()).map { it.toImmutable() },
+              (sort ?: JsonMissing.of()).map { it.toImmutable() },
+              (tag ?: JsonMissing.of()).map { it.toImmutable() },
+              additionalProperties.toImmutable(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is ViewDataSearch && filter == other.filter && match == other.match && sort == other.sort && tag == other.tag && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is ViewDataSearch && filter == other.filter && match == other.match && sort == other.sort && tag == other.tag && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -198,6 +213,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "ViewDataSearch{filter=$filter, match=$match, sort=$sort, tag=$tag, additionalProperties=$additionalProperties}"
+    override fun toString() = "ViewDataSearch{filter=$filter, match=$match, sort=$sort, tag=$tag, additionalProperties=$additionalProperties}"
 }

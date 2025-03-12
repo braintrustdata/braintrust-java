@@ -22,16 +22,16 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Partially update an organization object. Specify the fields to update in the payload. Any
- * object-type fields will be deep-merged with existing content. Currently we do not support
- * removing fields or setting them to null.
+ * Partially update an organization object. Specify the fields to update in the
+ * payload. Any object-type fields will be deep-merged with existing content.
+ * Currently we do not support removing fields or setting them to null.
  */
-class OrganizationUpdateParams
-private constructor(
+class OrganizationUpdateParams private constructor(
     private val organizationId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
+
 ) : Params {
 
     /** Organization id */
@@ -65,65 +65,58 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
+    @JvmSynthetic
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> organizationId
-            else -> ""
-        }
+      return when (index) {
+          0 -> organizationId
+          else -> ""
+      }
     }
 
     @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("api_url")
-        @ExcludeMissing
-        private val apiUrl: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("is_universal_api")
-        @ExcludeMissing
-        private val isUniversalApi: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("proxy_url")
-        @ExcludeMissing
-        private val proxyUrl: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("realtime_url")
-        @ExcludeMissing
-        private val realtimeUrl: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Body @JsonCreator private constructor(
+        @JsonProperty("api_url") @ExcludeMissing private val apiUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("is_universal_api") @ExcludeMissing private val isUniversalApi: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("proxy_url") @ExcludeMissing private val proxyUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("realtime_url") @ExcludeMissing private val realtimeUrl: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         fun apiUrl(): Optional<String> = Optional.ofNullable(apiUrl.getNullable("api_url"))
 
-        fun isUniversalApi(): Optional<Boolean> =
-            Optional.ofNullable(isUniversalApi.getNullable("is_universal_api"))
+        fun isUniversalApi(): Optional<Boolean> = Optional.ofNullable(isUniversalApi.getNullable("is_universal_api"))
 
         /** Name of the organization */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         fun proxyUrl(): Optional<String> = Optional.ofNullable(proxyUrl.getNullable("proxy_url"))
 
-        fun realtimeUrl(): Optional<String> =
-            Optional.ofNullable(realtimeUrl.getNullable("realtime_url"))
+        fun realtimeUrl(): Optional<String> = Optional.ofNullable(realtimeUrl.getNullable("realtime_url"))
 
-        @JsonProperty("api_url") @ExcludeMissing fun _apiUrl(): JsonField<String> = apiUrl
+        @JsonProperty("api_url")
+        @ExcludeMissing
+        fun _apiUrl(): JsonField<String> = apiUrl
 
         @JsonProperty("is_universal_api")
         @ExcludeMissing
         fun _isUniversalApi(): JsonField<Boolean> = isUniversalApi
 
         /** Name of the organization */
-        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+        @JsonProperty("name")
+        @ExcludeMissing
+        fun _name(): JsonField<String> = name
 
-        @JsonProperty("proxy_url") @ExcludeMissing fun _proxyUrl(): JsonField<String> = proxyUrl
+        @JsonProperty("proxy_url")
+        @ExcludeMissing
+        fun _proxyUrl(): JsonField<String> = proxyUrl
 
         @JsonProperty("realtime_url")
         @ExcludeMissing
@@ -135,25 +128,27 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Body =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            apiUrl()
-            isUniversalApi()
-            name()
-            proxyUrl()
-            realtimeUrl()
-            validated = true
-        }
+                apiUrl()
+                isUniversalApi()
+                name()
+                proxyUrl()
+                realtimeUrl()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Body]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
@@ -167,32 +162,35 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                apiUrl = body.apiUrl
-                isUniversalApi = body.isUniversalApi
-                name = body.name
-                proxyUrl = body.proxyUrl
-                realtimeUrl = body.realtimeUrl
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
+            internal fun from(body: Body) =
+                apply {
+                    apiUrl = body.apiUrl
+                    isUniversalApi = body.isUniversalApi
+                    name = body.name
+                    proxyUrl = body.proxyUrl
+                    realtimeUrl = body.realtimeUrl
+                    additionalProperties = body.additionalProperties.toMutableMap()
+                }
 
             fun apiUrl(apiUrl: String?) = apiUrl(JsonField.ofNullable(apiUrl))
 
             fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.getOrNull())
 
-            fun apiUrl(apiUrl: JsonField<String>) = apply { this.apiUrl = apiUrl }
+            fun apiUrl(apiUrl: JsonField<String>) =
+                apply {
+                    this.apiUrl = apiUrl
+                }
 
-            fun isUniversalApi(isUniversalApi: Boolean?) =
-                isUniversalApi(JsonField.ofNullable(isUniversalApi))
+            fun isUniversalApi(isUniversalApi: Boolean?) = isUniversalApi(JsonField.ofNullable(isUniversalApi))
 
             fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(isUniversalApi as Boolean?)
 
-            fun isUniversalApi(isUniversalApi: Optional<Boolean>) =
-                isUniversalApi(isUniversalApi.getOrNull())
+            fun isUniversalApi(isUniversalApi: Optional<Boolean>) = isUniversalApi(isUniversalApi.getOrNull())
 
-            fun isUniversalApi(isUniversalApi: JsonField<Boolean>) = apply {
-                this.isUniversalApi = isUniversalApi
-            }
+            fun isUniversalApi(isUniversalApi: JsonField<Boolean>) =
+                apply {
+                    this.isUniversalApi = isUniversalApi
+                }
 
             /** Name of the organization */
             fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -201,58 +199,72 @@ private constructor(
             fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** Name of the organization */
-            fun name(name: JsonField<String>) = apply { this.name = name }
+            fun name(name: JsonField<String>) =
+                apply {
+                    this.name = name
+                }
 
             fun proxyUrl(proxyUrl: String?) = proxyUrl(JsonField.ofNullable(proxyUrl))
 
             fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.getOrNull())
 
-            fun proxyUrl(proxyUrl: JsonField<String>) = apply { this.proxyUrl = proxyUrl }
+            fun proxyUrl(proxyUrl: JsonField<String>) =
+                apply {
+                    this.proxyUrl = proxyUrl
+                }
 
             fun realtimeUrl(realtimeUrl: String?) = realtimeUrl(JsonField.ofNullable(realtimeUrl))
 
             fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.getOrNull())
 
-            fun realtimeUrl(realtimeUrl: JsonField<String>) = apply {
-                this.realtimeUrl = realtimeUrl
-            }
+            fun realtimeUrl(realtimeUrl: JsonField<String>) =
+                apply {
+                    this.realtimeUrl = realtimeUrl
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Body =
                 Body(
-                    apiUrl,
-                    isUniversalApi,
-                    name,
-                    proxyUrl,
-                    realtimeUrl,
-                    additionalProperties.toImmutable(),
+                  apiUrl,
+                  isUniversalApi,
+                  name,
+                  proxyUrl,
+                  realtimeUrl,
+                  additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Body && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Body && apiUrl == other.apiUrl && isUniversalApi == other.isUniversalApi && name == other.name && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -261,8 +273,7 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Body{apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalProperties=$additionalProperties}"
+        override fun toString() = "Body{apiUrl=$apiUrl, isUniversalApi=$isUniversalApi, name=$name, proxyUrl=$proxyUrl, realtimeUrl=$realtimeUrl, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -270,14 +281,17 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [OrganizationUpdateParams].
+         * Returns a mutable builder for constructing an instance of
+         * [OrganizationUpdateParams].
          *
          * The following fields are required:
+         *
          * ```java
          * .organizationId()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [OrganizationUpdateParams]. */
@@ -290,190 +304,256 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(organizationUpdateParams: OrganizationUpdateParams) = apply {
-            organizationId = organizationUpdateParams.organizationId
-            body = organizationUpdateParams.body.toBuilder()
-            additionalHeaders = organizationUpdateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = organizationUpdateParams.additionalQueryParams.toBuilder()
-        }
+        internal fun from(organizationUpdateParams: OrganizationUpdateParams) =
+            apply {
+                organizationId = organizationUpdateParams.organizationId
+                body = organizationUpdateParams.body.toBuilder()
+                additionalHeaders = organizationUpdateParams.additionalHeaders.toBuilder()
+                additionalQueryParams = organizationUpdateParams.additionalQueryParams.toBuilder()
+            }
 
         /** Organization id */
-        fun organizationId(organizationId: String) = apply { this.organizationId = organizationId }
+        fun organizationId(organizationId: String) =
+            apply {
+                this.organizationId = organizationId
+            }
 
-        fun apiUrl(apiUrl: String?) = apply { body.apiUrl(apiUrl) }
+        fun apiUrl(apiUrl: String?) =
+            apply {
+                body.apiUrl(apiUrl)
+            }
 
         fun apiUrl(apiUrl: Optional<String>) = apiUrl(apiUrl.getOrNull())
 
-        fun apiUrl(apiUrl: JsonField<String>) = apply { body.apiUrl(apiUrl) }
+        fun apiUrl(apiUrl: JsonField<String>) =
+            apply {
+                body.apiUrl(apiUrl)
+            }
 
-        fun isUniversalApi(isUniversalApi: Boolean?) = apply { body.isUniversalApi(isUniversalApi) }
+        fun isUniversalApi(isUniversalApi: Boolean?) =
+            apply {
+                body.isUniversalApi(isUniversalApi)
+            }
 
         fun isUniversalApi(isUniversalApi: Boolean) = isUniversalApi(isUniversalApi as Boolean?)
 
-        fun isUniversalApi(isUniversalApi: Optional<Boolean>) =
-            isUniversalApi(isUniversalApi.getOrNull())
+        fun isUniversalApi(isUniversalApi: Optional<Boolean>) = isUniversalApi(isUniversalApi.getOrNull())
 
-        fun isUniversalApi(isUniversalApi: JsonField<Boolean>) = apply {
-            body.isUniversalApi(isUniversalApi)
-        }
+        fun isUniversalApi(isUniversalApi: JsonField<Boolean>) =
+            apply {
+                body.isUniversalApi(isUniversalApi)
+            }
 
         /** Name of the organization */
-        fun name(name: String?) = apply { body.name(name) }
+        fun name(name: String?) =
+            apply {
+                body.name(name)
+            }
 
         /** Name of the organization */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** Name of the organization */
-        fun name(name: JsonField<String>) = apply { body.name(name) }
+        fun name(name: JsonField<String>) =
+            apply {
+                body.name(name)
+            }
 
-        fun proxyUrl(proxyUrl: String?) = apply { body.proxyUrl(proxyUrl) }
+        fun proxyUrl(proxyUrl: String?) =
+            apply {
+                body.proxyUrl(proxyUrl)
+            }
 
         fun proxyUrl(proxyUrl: Optional<String>) = proxyUrl(proxyUrl.getOrNull())
 
-        fun proxyUrl(proxyUrl: JsonField<String>) = apply { body.proxyUrl(proxyUrl) }
+        fun proxyUrl(proxyUrl: JsonField<String>) =
+            apply {
+                body.proxyUrl(proxyUrl)
+            }
 
-        fun realtimeUrl(realtimeUrl: String?) = apply { body.realtimeUrl(realtimeUrl) }
+        fun realtimeUrl(realtimeUrl: String?) =
+            apply {
+                body.realtimeUrl(realtimeUrl)
+            }
 
         fun realtimeUrl(realtimeUrl: Optional<String>) = realtimeUrl(realtimeUrl.getOrNull())
 
-        fun realtimeUrl(realtimeUrl: JsonField<String>) = apply { body.realtimeUrl(realtimeUrl) }
+        fun realtimeUrl(realtimeUrl: JsonField<String>) =
+            apply {
+                body.realtimeUrl(realtimeUrl)
+            }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.additionalProperties(additionalBodyProperties)
+            }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
+            apply {
+                body.putAdditionalProperty(
+                  key, value
+                )
+            }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) =
+            apply {
+                body.removeAdditionalProperty(key)
+            }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
+            apply {
+                body.removeAllAdditionalProperties(keys)
+            }
 
-        fun additionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
+        fun additionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.clear()
+                putAllAdditionalHeaders(additionalHeaders)
+            }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.clear()
+                putAllAdditionalHeaders(additionalHeaders)
+            }
 
-        fun putAdditionalHeader(name: String, value: String) = apply {
-            additionalHeaders.put(name, value)
-        }
+        fun putAdditionalHeader(name: String, value: String) =
+            apply {
+                additionalHeaders.put(name, value)
+            }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.put(name, values)
-        }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
+            apply {
+                additionalHeaders.put(name, values)
+            }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.putAll(additionalHeaders)
+            }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.putAll(additionalHeaders)
+            }
 
-        fun replaceAdditionalHeaders(name: String, value: String) = apply {
-            additionalHeaders.replace(name, value)
-        }
+        fun replaceAdditionalHeaders(name: String, value: String) =
+            apply {
+                additionalHeaders.replace(name, value)
+            }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.replace(name, values)
-        }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
+            apply {
+                additionalHeaders.replace(name, values)
+            }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.replaceAll(additionalHeaders)
+            }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.replaceAll(additionalHeaders)
+            }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) =
+            apply {
+                additionalHeaders.remove(name)
+            }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
-            additionalHeaders.removeAll(names)
-        }
+        fun removeAllAdditionalHeaders(names: Set<String>) =
+            apply {
+                additionalHeaders.removeAll(names)
+            }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.clear()
+                putAllAdditionalQueryParams(additionalQueryParams)
+            }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.clear()
+                putAllAdditionalQueryParams(additionalQueryParams)
+            }
 
-        fun putAdditionalQueryParam(key: String, value: String) = apply {
-            additionalQueryParams.put(key, value)
-        }
+        fun putAdditionalQueryParam(key: String, value: String) =
+            apply {
+                additionalQueryParams.put(key, value)
+            }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.put(key, values)
-        }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
+            apply {
+                additionalQueryParams.put(key, values)
+            }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.putAll(additionalQueryParams)
-        }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
-            additionalQueryParams.replace(key, value)
-        }
+        fun replaceAdditionalQueryParams(key: String, value: String) =
+            apply {
+                additionalQueryParams.replace(key, value)
+            }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.replace(key, values)
-        }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
+            apply {
+                additionalQueryParams.replace(key, values)
+            }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.replaceAll(additionalQueryParams)
-        }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) =
+            apply {
+                additionalQueryParams.remove(key)
+            }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
-            additionalQueryParams.removeAll(keys)
-        }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) =
+            apply {
+                additionalQueryParams.removeAll(keys)
+            }
 
         fun build(): OrganizationUpdateParams =
             OrganizationUpdateParams(
-                checkRequired("organizationId", organizationId),
-                body.build(),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
+              checkRequired(
+                "organizationId", organizationId
+              ),
+              body.build(),
+              additionalHeaders.build(),
+              additionalQueryParams.build(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+      return /* spotless:off */ other is OrganizationUpdateParams && organizationId == other.organizationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(organizationId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() =
-        "OrganizationUpdateParams{organizationId=$organizationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() = "OrganizationUpdateParams{organizationId=$organizationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

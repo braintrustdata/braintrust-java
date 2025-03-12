@@ -24,12 +24,12 @@ import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 
-class GroupServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    GroupService {
+class GroupServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: GroupService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : GroupService {
+
+    private val withRawResponse: GroupService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): GroupService.WithRawResponse = withRawResponse
 
@@ -57,171 +57,168 @@ class GroupServiceImpl internal constructor(private val clientOptions: ClientOpt
         // put /v1/group
         withRawResponse().replace(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        GroupService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : GroupService.WithRawResponse {
 
         private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun create(
-            params: GroupCreateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Group> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v1", "group")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { createHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun create(params: GroupCreateParams, requestOptions: RequestOptions): HttpResponseFor<Group> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v1", "group")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  createHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val retrieveHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieve(
-            params: GroupRetrieveParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Group> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "group", params.getPathParam(0))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun retrieve(params: GroupRetrieveParams, requestOptions: RequestOptions): HttpResponseFor<Group> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "group", params.getPathParam(0))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  retrieveHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val updateHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun update(
-            params: GroupUpdateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Group> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PATCH)
-                    .addPathSegments("v1", "group", params.getPathParam(0))
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { updateHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun update(params: GroupUpdateParams, requestOptions: RequestOptions): HttpResponseFor<Group> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.PATCH)
+            .addPathSegments("v1", "group", params.getPathParam(0))
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  updateHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val listHandler: Handler<GroupListPage.Response> =
-            jsonHandler<GroupListPage.Response>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<GroupListPage.Response> = jsonHandler<GroupListPage.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(
-            params: GroupListParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<GroupListPage> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "group")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-                    .let { GroupListPage.of(GroupServiceImpl(clientOptions), params, it) }
-            }
+        override fun list(params: GroupListParams, requestOptions: RequestOptions): HttpResponseFor<GroupListPage> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "group")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+              .let {
+                  GroupListPage.of(GroupServiceImpl(clientOptions), params, it)
+              }
+          }
         }
 
-        private val deleteHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun delete(
-            params: GroupDeleteParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Group> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.DELETE)
-                    .addPathSegments("v1", "group", params.getPathParam(0))
-                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { deleteHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun delete(params: GroupDeleteParams, requestOptions: RequestOptions): HttpResponseFor<Group> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.DELETE)
+            .addPathSegments("v1", "group", params.getPathParam(0))
+            .apply { params._body().ifPresent{ body(json(clientOptions.jsonMapper, it)) } }
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  deleteHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val replaceHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val replaceHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun replace(
-            params: GroupReplaceParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Group> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PUT)
-                    .addPathSegments("v1", "group")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { replaceHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun replace(params: GroupReplaceParams, requestOptions: RequestOptions): HttpResponseFor<Group> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.PUT)
+            .addPathSegments("v1", "group")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  replaceHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

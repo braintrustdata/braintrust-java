@@ -22,24 +22,15 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
-class EnvVar
-@JsonCreator
-private constructor(
+class EnvVar @JsonCreator private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
     @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_id")
-    @ExcludeMissing
-    private val objectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_type")
-    @ExcludeMissing
-    private val objectType: JsonField<ObjectType> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("used")
-    @ExcludeMissing
-    private val used: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("object_id") @ExcludeMissing private val objectId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("object_type") @ExcludeMissing private val objectType: JsonField<ObjectType> = JsonMissing.of(),
+    @JsonProperty("created") @ExcludeMissing private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("used") @ExcludeMissing private val used: JsonField<OffsetDateTime> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** Unique identifier for the environment variable */
@@ -61,13 +52,19 @@ private constructor(
     fun used(): Optional<OffsetDateTime> = Optional.ofNullable(used.getNullable("used"))
 
     /** Unique identifier for the environment variable */
-    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+    @JsonProperty("id")
+    @ExcludeMissing
+    fun _id(): JsonField<String> = id
 
     /** The name of the environment variable */
-    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+    @JsonProperty("name")
+    @ExcludeMissing
+    fun _name(): JsonField<String> = name
 
     /** The id of the object the environment variable is scoped for */
-    @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
+    @JsonProperty("object_id")
+    @ExcludeMissing
+    fun _objectId(): JsonField<String> = objectId
 
     /** The type of the object the environment variable is scoped for */
     @JsonProperty("object_type")
@@ -75,10 +72,14 @@ private constructor(
     fun _objectType(): JsonField<ObjectType> = objectType
 
     /** Date of environment variable creation */
-    @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
+    @JsonProperty("created")
+    @ExcludeMissing
+    fun _created(): JsonField<OffsetDateTime> = created
 
     /** Date the environment variable was last used */
-    @JsonProperty("used") @ExcludeMissing fun _used(): JsonField<OffsetDateTime> = used
+    @JsonProperty("used")
+    @ExcludeMissing
+    fun _used(): JsonField<OffsetDateTime> = used
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -86,19 +87,20 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): EnvVar = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): EnvVar =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        id()
-        name()
-        objectId()
-        objectType()
-        created()
-        used()
-        validated = true
-    }
+            id()
+            name()
+            objectId()
+            objectType()
+            created()
+            used()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
@@ -108,6 +110,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [EnvVar].
          *
          * The following fields are required:
+         *
          * ```java
          * .id()
          * .name()
@@ -115,7 +118,8 @@ private constructor(
          * .objectType()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [EnvVar]. */
@@ -130,39 +134,52 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(envVar: EnvVar) = apply {
-            id = envVar.id
-            name = envVar.name
-            objectId = envVar.objectId
-            objectType = envVar.objectType
-            created = envVar.created
-            used = envVar.used
-            additionalProperties = envVar.additionalProperties.toMutableMap()
-        }
+        internal fun from(envVar: EnvVar) =
+            apply {
+                id = envVar.id
+                name = envVar.name
+                objectId = envVar.objectId
+                objectType = envVar.objectType
+                created = envVar.created
+                used = envVar.used
+                additionalProperties = envVar.additionalProperties.toMutableMap()
+            }
 
         /** Unique identifier for the environment variable */
         fun id(id: String) = id(JsonField.of(id))
 
         /** Unique identifier for the environment variable */
-        fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) =
+            apply {
+                this.id = id
+            }
 
         /** The name of the environment variable */
         fun name(name: String) = name(JsonField.of(name))
 
         /** The name of the environment variable */
-        fun name(name: JsonField<String>) = apply { this.name = name }
+        fun name(name: JsonField<String>) =
+            apply {
+                this.name = name
+            }
 
         /** The id of the object the environment variable is scoped for */
         fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
         /** The id of the object the environment variable is scoped for */
-        fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
+        fun objectId(objectId: JsonField<String>) =
+            apply {
+                this.objectId = objectId
+            }
 
         /** The type of the object the environment variable is scoped for */
         fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
 
         /** The type of the object the environment variable is scoped for */
-        fun objectType(objectType: JsonField<ObjectType>) = apply { this.objectType = objectType }
+        fun objectType(objectType: JsonField<ObjectType>) =
+            apply {
+                this.objectType = objectType
+            }
 
         /** Date of environment variable creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
@@ -171,7 +188,10 @@ private constructor(
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
         /** Date of environment variable creation */
-        fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
+        fun created(created: JsonField<OffsetDateTime>) =
+            apply {
+                this.created = created
+            }
 
         /** Date the environment variable was last used */
         fun used(used: OffsetDateTime?) = used(JsonField.ofNullable(used))
@@ -180,51 +200,73 @@ private constructor(
         fun used(used: Optional<OffsetDateTime>) = used(used.getOrNull())
 
         /** Date the environment variable was last used */
-        fun used(used: JsonField<OffsetDateTime>) = apply { this.used = used }
+        fun used(used: JsonField<OffsetDateTime>) =
+            apply {
+                this.used = used
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): EnvVar =
             EnvVar(
-                checkRequired("id", id),
-                checkRequired("name", name),
-                checkRequired("objectId", objectId),
-                checkRequired("objectType", objectType),
-                created,
-                used,
-                additionalProperties.toImmutable(),
+              checkRequired(
+                "id", id
+              ),
+              checkRequired(
+                "name", name
+              ),
+              checkRequired(
+                "objectId", objectId
+              ),
+              checkRequired(
+                "objectType", objectType
+              ),
+              created,
+              used,
+              additionalProperties.toImmutable(),
             )
     }
 
     /** The type of the object the environment variable is scoped for */
-    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+    class ObjectType @JsonCreator private constructor(
+        private val value: JsonField<String>,
+
+    ) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
+         * This is usually only useful if this instance was deserialized from data that
+         * doesn't match any known member, and you want to know that value. For example, if
+         * the SDK is on an older version than the API, then the API may respond with new
+         * members that the SDK is unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue
+        fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -248,9 +290,11 @@ private constructor(
          * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ObjectType] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
+         *
+         * - It was deserialized from data that doesn't match any known member. For
+         *   example, if the SDK is on an older version than the API, then the API may
+         *   respond with new members that the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -258,17 +302,18 @@ private constructor(
             PROJECT,
             FUNCTION,
             /**
-             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
+             * An enum member indicating that [ObjectType] was instantiated with an unknown
+             * value.
              */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or
+         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if
+         * you want to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -281,11 +326,11 @@ private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and
+         * don't want to throw for the unknown case.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
-         *   member.
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a
+         * known member.
          */
         fun known(): Known =
             when (this) {
@@ -298,23 +343,20 @@ private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for
+         * debugging and generally doesn't throw.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
+         * @throws BraintrustInvalidDataException if this class instance's value does not
+         * have the expected primitive type.
          */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                BraintrustInvalidDataException("Value is not a String")
-            }
+        fun asString(): String = _value().asString().orElseThrow { BraintrustInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+          return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -323,11 +365,11 @@ private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is EnvVar && id == other.id && name == other.name && objectId == other.objectId && objectType == other.objectType && created == other.created && used == other.used && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is EnvVar && id == other.id && name == other.name && objectId == other.objectId && objectType == other.objectType && created == other.created && used == other.used && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -336,6 +378,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "EnvVar{id=$id, name=$name, objectId=$objectId, objectType=$objectType, created=$created, used=$used, additionalProperties=$additionalProperties}"
+    override fun toString() = "EnvVar{id=$id, name=$name, objectId=$objectId, objectType=$objectType, created=$created, used=$used, additionalProperties=$additionalProperties}"
 }

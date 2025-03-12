@@ -13,38 +13,30 @@ class MemberServiceTest {
 
     @Test
     fun update() {
-        val client =
-            BraintrustOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
-        val memberService = client.organizations().members()
+      val client = BraintrustOkHttpClient.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .apiKey("My API Key")
+          .build()
+      val memberService = client.organizations().members()
 
-        val patchOrganizationMembersOutput =
-            memberService.update(
-                OrganizationMemberUpdateParams.builder()
-                    .inviteUsers(
-                        OrganizationMemberUpdateParams.InviteUsers.builder()
-                            .addEmail("string")
-                            .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .addGroupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .groupName("group_name")
-                            .addGroupName("string")
-                            .addId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .sendInviteEmails(true)
-                            .build()
-                    )
-                    .orgId("org_id")
-                    .orgName("org_name")
-                    .removeUsers(
-                        OrganizationMemberUpdateParams.RemoveUsers.builder()
-                            .addEmail("string")
-                            .addId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .build()
-                    )
-                    .build()
-            )
+      val patchOrganizationMembersOutput = memberService.update(OrganizationMemberUpdateParams.builder()
+          .inviteUsers(OrganizationMemberUpdateParams.InviteUsers.builder()
+              .addEmail("string")
+              .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+              .addGroupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+              .groupName("group_name")
+              .addGroupName("string")
+              .addId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+              .sendInviteEmails(true)
+              .build())
+          .orgId("org_id")
+          .orgName("org_name")
+          .removeUsers(OrganizationMemberUpdateParams.RemoveUsers.builder()
+              .addEmail("string")
+              .addId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+              .build())
+          .build())
 
-        patchOrganizationMembersOutput.validate()
+      patchOrganizationMembersOutput.validate()
     }
 }
