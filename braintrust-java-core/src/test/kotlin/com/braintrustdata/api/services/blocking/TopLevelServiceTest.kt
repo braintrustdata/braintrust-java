@@ -4,6 +4,7 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
+import com.braintrustdata.api.models.TopLevelHelloWorldParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -12,13 +13,12 @@ class TopLevelServiceTest {
 
     @Test
     fun helloWorld() {
-        val client =
-            BraintrustOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
-        val topLevelService = client.topLevel()
+      val client = BraintrustOkHttpClient.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .apiKey("My API Key")
+          .build()
+      val topLevelService = client.topLevel()
 
-        topLevelService.helloWorld()
+      topLevelService.helloWorld()
     }
 }

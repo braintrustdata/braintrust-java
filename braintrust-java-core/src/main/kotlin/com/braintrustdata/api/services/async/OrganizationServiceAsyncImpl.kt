@@ -17,6 +17,7 @@ import com.braintrustdata.api.core.prepareAsync
 import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.Organization
 import com.braintrustdata.api.models.OrganizationDeleteParams
+import com.braintrustdata.api.models.OrganizationListPage
 import com.braintrustdata.api.models.OrganizationListPageAsync
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
@@ -25,12 +26,12 @@ import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class OrganizationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    OrganizationServiceAsync {
+class OrganizationServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: OrganizationServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : OrganizationServiceAsync {
+
+    private val withRawResponse: OrganizationServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     private val members: MemberServiceAsync by lazy { MemberServiceAsyncImpl(clientOptions) }
 
@@ -38,169 +39,132 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
 
     override fun members(): MemberServiceAsync = members
 
-    override fun retrieve(
-        params: OrganizationRetrieveParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<Organization> =
+    override fun retrieve(params: OrganizationRetrieveParams, requestOptions: RequestOptions): CompletableFuture<Organization> =
         // get /v1/organization/{organization_id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun update(
-        params: OrganizationUpdateParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<Organization> =
+    override fun update(params: OrganizationUpdateParams, requestOptions: RequestOptions): CompletableFuture<Organization> =
         // patch /v1/organization/{organization_id}
         withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: OrganizationListParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<OrganizationListPageAsync> =
+    override fun list(params: OrganizationListParams, requestOptions: RequestOptions): CompletableFuture<OrganizationListPageAsync> =
         // get /v1/organization
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
-    override fun delete(
-        params: OrganizationDeleteParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<Organization> =
+    override fun delete(params: OrganizationDeleteParams, requestOptions: RequestOptions): CompletableFuture<Organization> =
         // delete /v1/organization/{organization_id}
         withRawResponse().delete(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        OrganizationServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : OrganizationServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-        private val members: MemberServiceAsync.WithRawResponse by lazy {
-            MemberServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
+        private val members: MemberServiceAsync.WithRawResponse by lazy { MemberServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
 
         override fun members(): MemberServiceAsync.WithRawResponse = members
 
-        private val retrieveHandler: Handler<Organization> =
-            jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Organization> = jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieve(
-            params: OrganizationRetrieveParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Organization>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "organization", params.getPathParam(0))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { retrieveHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun retrieve(params: OrganizationRetrieveParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<Organization>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "organization", params.getPathParam(0))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  retrieveHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
 
-        private val updateHandler: Handler<Organization> =
-            jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<Organization> = jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun update(
-            params: OrganizationUpdateParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Organization>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PATCH)
-                    .addPathSegments("v1", "organization", params.getPathParam(0))
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { updateHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun update(params: OrganizationUpdateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<Organization>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.PATCH)
+            .addPathSegments("v1", "organization", params.getPathParam(0))
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  updateHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
 
-        private val listHandler: Handler<OrganizationListPageAsync.Response> =
-            jsonHandler<OrganizationListPageAsync.Response>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<OrganizationListPageAsync.Response> = jsonHandler<OrganizationListPageAsync.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(
-            params: OrganizationListParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("v1", "organization")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { listHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                            .let {
-                                OrganizationListPageAsync.of(
-                                    OrganizationServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
-                            }
-                    }
-                }
+        override fun list(params: OrganizationListParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("v1", "organization")
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+              .let {
+                  OrganizationListPageAsync.of(OrganizationServiceAsyncImpl(clientOptions), params, it)
+              }
+          } }
         }
 
-        private val deleteHandler: Handler<Organization> =
-            jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Organization> = jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun delete(
-            params: OrganizationDeleteParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Organization>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.DELETE)
-                    .addPathSegments("v1", "organization", params.getPathParam(0))
-                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { deleteHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun delete(params: OrganizationDeleteParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<Organization>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.DELETE)
+            .addPathSegments("v1", "organization", params.getPathParam(0))
+            .apply { params._body().ifPresent{ body(json(clientOptions.jsonMapper, it)) } }
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  deleteHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
     }
 }

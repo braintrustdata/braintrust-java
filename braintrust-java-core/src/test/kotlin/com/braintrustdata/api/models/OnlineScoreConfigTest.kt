@@ -9,30 +9,22 @@ class OnlineScoreConfigTest {
 
     @Test
     fun createOnlineScoreConfig() {
-        val onlineScoreConfig =
-            OnlineScoreConfig.builder()
-                .samplingRate(0.0)
-                .addScorer(
-                    OnlineScoreConfig.Scorer.Function.builder()
-                        .id("id")
-                        .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
-                        .build()
-                )
-                .applyToRootSpan(true)
-                .addApplyToSpanName("string")
-                .build()
-        assertThat(onlineScoreConfig).isNotNull
-        assertThat(onlineScoreConfig.samplingRate()).isEqualTo(0.0)
-        assertThat(onlineScoreConfig.scorers())
-            .containsExactly(
-                OnlineScoreConfig.Scorer.ofFunction(
-                    OnlineScoreConfig.Scorer.Function.builder()
-                        .id("id")
-                        .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
-                        .build()
-                )
-            )
-        assertThat(onlineScoreConfig.applyToRootSpan()).contains(true)
-        assertThat(onlineScoreConfig.applyToSpanNames().get()).containsExactly("string")
+      val onlineScoreConfig = OnlineScoreConfig.builder()
+          .samplingRate(0.0)
+          .addScorer(OnlineScoreConfig.Scorer.Function.builder()
+              .id("id")
+              .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
+              .build())
+          .applyToRootSpan(true)
+          .addApplyToSpanName("string")
+          .build()
+      assertThat(onlineScoreConfig).isNotNull
+      assertThat(onlineScoreConfig.samplingRate()).isEqualTo(0.0)
+      assertThat(onlineScoreConfig.scorers()).containsExactly(OnlineScoreConfig.Scorer.ofFunction(OnlineScoreConfig.Scorer.Function.builder()
+          .id("id")
+          .type(OnlineScoreConfig.Scorer.Function.Type.FUNCTION)
+          .build()))
+      assertThat(onlineScoreConfig.applyToRootSpan()).contains(true)
+      assertThat(onlineScoreConfig.applyToSpanNames().get()).containsExactly("string")
     }
 }
