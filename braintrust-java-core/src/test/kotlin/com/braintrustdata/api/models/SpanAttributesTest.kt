@@ -9,12 +9,10 @@ class SpanAttributesTest {
 
     @Test
     fun createSpanAttributes() {
-      val spanAttributes = SpanAttributes.builder()
-          .name("name")
-          .type(SpanAttributes.Type.LLM)
-          .build()
-      assertThat(spanAttributes).isNotNull
-      assertThat(spanAttributes.name()).contains("name")
-      assertThat(spanAttributes.type()).contains(SpanAttributes.Type.LLM)
+        val spanAttributes =
+            SpanAttributes.builder().name("name").type(SpanAttributes.Type.LLM).build()
+        assertThat(spanAttributes).isNotNull
+        assertThat(spanAttributes.name()).contains("name")
+        assertThat(spanAttributes.type()).contains(SpanAttributes.Type.LLM)
     }
 }

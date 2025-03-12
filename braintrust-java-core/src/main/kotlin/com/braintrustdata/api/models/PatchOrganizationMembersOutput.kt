@@ -21,12 +21,17 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
-class PatchOrganizationMembersOutput @JsonCreator private constructor(
+class PatchOrganizationMembersOutput
+@JsonCreator
+private constructor(
     @JsonProperty("org_id") @ExcludeMissing private val orgId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status") @ExcludeMissing private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("send_email_error") @ExcludeMissing private val sendEmailError: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<Status> = JsonMissing.of(),
+    @JsonProperty("send_email_error")
+    @ExcludeMissing
+    private val sendEmailError: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** The id of the org that was modified. */
@@ -35,23 +40,20 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
     fun status(): Status = status.getRequired("status")
 
     /**
-     * If invite emails failed to send for some reason, the patch operation will still
-     * complete, but we will return an error message here
+     * If invite emails failed to send for some reason, the patch operation will still complete, but
+     * we will return an error message here
      */
-    fun sendEmailError(): Optional<String> = Optional.ofNullable(sendEmailError.getNullable("send_email_error"))
+    fun sendEmailError(): Optional<String> =
+        Optional.ofNullable(sendEmailError.getNullable("send_email_error"))
 
     /** The id of the org that was modified. */
-    @JsonProperty("org_id")
-    @ExcludeMissing
-    fun _orgId(): JsonField<String> = orgId
+    @JsonProperty("org_id") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
 
-    @JsonProperty("status")
-    @ExcludeMissing
-    fun _status(): JsonField<Status> = status
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     /**
-     * If invite emails failed to send for some reason, the patch operation will still
-     * complete, but we will return an error message here
+     * If invite emails failed to send for some reason, the patch operation will still complete, but
+     * we will return an error message here
      */
     @JsonProperty("send_email_error")
     @ExcludeMissing
@@ -63,17 +65,16 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): PatchOrganizationMembersOutput =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            orgId()
-            status()
-            sendEmailError()
-            validated = true
+    fun validate(): PatchOrganizationMembersOutput = apply {
+        if (validated) {
+            return@apply
         }
+
+        orgId()
+        status()
+        sendEmailError()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
@@ -84,14 +85,12 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
          * [PatchOrganizationMembersOutput].
          *
          * The following fields are required:
-         *
          * ```java
          * .orgId()
          * .status()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [PatchOrganizationMembersOutput]. */
@@ -103,105 +102,85 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(patchOrganizationMembersOutput: PatchOrganizationMembersOutput) =
-            apply {
-                orgId = patchOrganizationMembersOutput.orgId
-                status = patchOrganizationMembersOutput.status
-                sendEmailError = patchOrganizationMembersOutput.sendEmailError
-                additionalProperties = patchOrganizationMembersOutput.additionalProperties.toMutableMap()
-            }
+        internal fun from(patchOrganizationMembersOutput: PatchOrganizationMembersOutput) = apply {
+            orgId = patchOrganizationMembersOutput.orgId
+            status = patchOrganizationMembersOutput.status
+            sendEmailError = patchOrganizationMembersOutput.sendEmailError
+            additionalProperties =
+                patchOrganizationMembersOutput.additionalProperties.toMutableMap()
+        }
 
         /** The id of the org that was modified. */
         fun orgId(orgId: String) = orgId(JsonField.of(orgId))
 
         /** The id of the org that was modified. */
-        fun orgId(orgId: JsonField<String>) =
-            apply {
-                this.orgId = orgId
-            }
+        fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         fun status(status: Status) = status(JsonField.of(status))
 
-        fun status(status: JsonField<Status>) =
-            apply {
-                this.status = status
-            }
+        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /**
-         * If invite emails failed to send for some reason, the patch operation will still
-         * complete, but we will return an error message here
+         * If invite emails failed to send for some reason, the patch operation will still complete,
+         * but we will return an error message here
          */
-        fun sendEmailError(sendEmailError: String?) = sendEmailError(JsonField.ofNullable(sendEmailError))
+        fun sendEmailError(sendEmailError: String?) =
+            sendEmailError(JsonField.ofNullable(sendEmailError))
 
         /**
-         * If invite emails failed to send for some reason, the patch operation will still
-         * complete, but we will return an error message here
+         * If invite emails failed to send for some reason, the patch operation will still complete,
+         * but we will return an error message here
          */
-        fun sendEmailError(sendEmailError: Optional<String>) = sendEmailError(sendEmailError.getOrNull())
+        fun sendEmailError(sendEmailError: Optional<String>) =
+            sendEmailError(sendEmailError.getOrNull())
 
         /**
-         * If invite emails failed to send for some reason, the patch operation will still
-         * complete, but we will return an error message here
+         * If invite emails failed to send for some reason, the patch operation will still complete,
+         * but we will return an error message here
          */
-        fun sendEmailError(sendEmailError: JsonField<String>) =
-            apply {
-                this.sendEmailError = sendEmailError
-            }
+        fun sendEmailError(sendEmailError: JsonField<String>) = apply {
+            this.sendEmailError = sendEmailError
+        }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): PatchOrganizationMembersOutput =
             PatchOrganizationMembersOutput(
-              checkRequired(
-                "orgId", orgId
-              ),
-              checkRequired(
-                "status", status
-              ),
-              sendEmailError,
-              additionalProperties.toImmutable(),
+                checkRequired("orgId", orgId),
+                checkRequired("status", status),
+                sendEmailError,
+                additionalProperties.toImmutable(),
             )
     }
 
-    class Status @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -212,18 +191,16 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
 
         /** An enum containing [Status]'s known values. */
         enum class Known {
-            SUCCESS,
+            SUCCESS
         }
 
         /**
          * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Status] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -233,11 +210,11 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -248,11 +225,11 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
+         *   member.
          */
         fun known(): Known =
             when (this) {
@@ -263,20 +240,23 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws BraintrustInvalidDataException if this class instance's value does not
-         * have the expected primitive type.
+         * @throws BraintrustInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { BraintrustInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                BraintrustInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -285,11 +265,11 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is PatchOrganizationMembersOutput && orgId == other.orgId && status == other.status && sendEmailError == other.sendEmailError && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PatchOrganizationMembersOutput && orgId == other.orgId && status == other.status && sendEmailError == other.sendEmailError && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -298,5 +278,6 @@ class PatchOrganizationMembersOutput @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "PatchOrganizationMembersOutput{orgId=$orgId, status=$status, sendEmailError=$sendEmailError, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "PatchOrganizationMembersOutput{orgId=$orgId, status=$status, sendEmailError=$sendEmailError, additionalProperties=$additionalProperties}"
 }

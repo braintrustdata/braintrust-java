@@ -12,52 +12,61 @@ import java.util.concurrent.CompletableFuture
 interface MemberServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Modify organization membership */
-    fun update(): CompletableFuture<PatchOrganizationMembersOutput> = update(OrganizationMemberUpdateParams.none())
+    fun update(): CompletableFuture<PatchOrganizationMembersOutput> =
+        update(OrganizationMemberUpdateParams.none())
 
     /** @see [update] */
-    fun update(params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<PatchOrganizationMembersOutput>
+    fun update(
+        params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<PatchOrganizationMembersOutput>
 
     /** @see [update] */
-    fun update(params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()): CompletableFuture<PatchOrganizationMembersOutput> =
-        update(
-          params, RequestOptions.none()
-        )
+    fun update(
+        params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
+    ): CompletableFuture<PatchOrganizationMembersOutput> = update(params, RequestOptions.none())
 
     /** @see [update] */
-    fun update(requestOptions: RequestOptions): CompletableFuture<PatchOrganizationMembersOutput> = update(OrganizationMemberUpdateParams.none(), requestOptions)
+    fun update(requestOptions: RequestOptions): CompletableFuture<PatchOrganizationMembersOutput> =
+        update(OrganizationMemberUpdateParams.none(), requestOptions)
 
     /**
-     * A view of [MemberServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [MemberServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `patch /v1/organization/members`, but is
-         * otherwise the same as [MemberServiceAsync.update].
+         * Returns a raw HTTP response for `patch /v1/organization/members`, but is otherwise the
+         * same as [MemberServiceAsync.update].
          */
         @MustBeClosed
-        fun update(): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> = update(OrganizationMemberUpdateParams.none())
+        fun update(): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
+            update(OrganizationMemberUpdateParams.none())
 
         /** @see [update] */
         @MustBeClosed
-        fun update(params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>>
+        fun update(
+            params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>>
 
         /** @see [update] */
         @MustBeClosed
-        fun update(params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
-            update(
-              params, RequestOptions.none()
-            )
+        fun update(
+            params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
+        ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
+            update(params, RequestOptions.none())
 
         /** @see [update] */
         @MustBeClosed
-        fun update(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> = update(OrganizationMemberUpdateParams.none(), requestOptions)
+        fun update(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
+            update(OrganizationMemberUpdateParams.none(), requestOptions)
     }
 }

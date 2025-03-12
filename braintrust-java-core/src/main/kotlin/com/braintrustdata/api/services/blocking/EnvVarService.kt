@@ -17,44 +17,43 @@ import com.google.errorprone.annotations.MustBeClosed
 interface EnvVarService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /**
-     * Create a new env_var. If there is an existing env_var with the same name as the
-     * one specified in the request, will return the existing env_var unmodified
+     * Create a new env_var. If there is an existing env_var with the same name as the one specified
+     * in the request, will return the existing env_var unmodified
      */
-    fun create(params: EnvVarCreateParams): EnvVar =
-        create(
-          params, RequestOptions.none()
-        )
+    fun create(params: EnvVarCreateParams): EnvVar = create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(params: EnvVarCreateParams, requestOptions: RequestOptions = RequestOptions.none()): EnvVar
+    fun create(
+        params: EnvVarCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnvVar
 
     /** Get an env_var object by its id */
-    fun retrieve(params: EnvVarRetrieveParams): EnvVar =
-        retrieve(
-          params, RequestOptions.none()
-        )
+    fun retrieve(params: EnvVarRetrieveParams): EnvVar = retrieve(params, RequestOptions.none())
 
     /** @see [retrieve] */
-    fun retrieve(params: EnvVarRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): EnvVar
+    fun retrieve(
+        params: EnvVarRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnvVar
 
     /**
-     * Partially update an env_var object. Specify the fields to update in the payload.
-     * Any object-type fields will be deep-merged with existing content. Currently we
-     * do not support removing fields or setting them to null.
+     * Partially update an env_var object. Specify the fields to update in the payload. Any
+     * object-type fields will be deep-merged with existing content. Currently we do not support
+     * removing fields or setting them to null.
      */
-    fun update(params: EnvVarUpdateParams): EnvVar =
-        update(
-          params, RequestOptions.none()
-        )
+    fun update(params: EnvVarUpdateParams): EnvVar = update(params, RequestOptions.none())
 
     /** @see [update] */
-    fun update(params: EnvVarUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): EnvVar
+    fun update(
+        params: EnvVarUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnvVar
 
     /**
      * List out all env_vars. The env_vars are sorted by creation date, with the most
@@ -63,43 +62,41 @@ interface EnvVarService {
     fun list(): EnvVarListResponse = list(EnvVarListParams.none())
 
     /** @see [list] */
-    fun list(params: EnvVarListParams = EnvVarListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): EnvVarListResponse
+    fun list(
+        params: EnvVarListParams = EnvVarListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnvVarListResponse
 
     /** @see [list] */
     fun list(params: EnvVarListParams = EnvVarListParams.none()): EnvVarListResponse =
-        list(
-          params, RequestOptions.none()
-        )
+        list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): EnvVarListResponse = list(EnvVarListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): EnvVarListResponse =
+        list(EnvVarListParams.none(), requestOptions)
 
     /** Delete an env_var object by its id */
-    fun delete(params: EnvVarDeleteParams): EnvVar =
-        delete(
-          params, RequestOptions.none()
-        )
+    fun delete(params: EnvVarDeleteParams): EnvVar = delete(params, RequestOptions.none())
 
     /** @see [delete] */
-    fun delete(params: EnvVarDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): EnvVar
+    fun delete(
+        params: EnvVarDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnvVar
 
     /**
-     * Create or replace env_var. If there is an existing env_var with the same name as
-     * the one specified in the request, will replace the existing env_var with the
-     * provided fields
+     * Create or replace env_var. If there is an existing env_var with the same name as the one
+     * specified in the request, will replace the existing env_var with the provided fields
      */
-    fun replace(params: EnvVarReplaceParams): EnvVar =
-        replace(
-          params, RequestOptions.none()
-        )
+    fun replace(params: EnvVarReplaceParams): EnvVar = replace(params, RequestOptions.none())
 
     /** @see [replace] */
-    fun replace(params: EnvVarReplaceParams, requestOptions: RequestOptions = RequestOptions.none()): EnvVar
+    fun replace(
+        params: EnvVarReplaceParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnvVar
 
-    /**
-     * A view of [EnvVarService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [EnvVarService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
@@ -108,41 +105,44 @@ interface EnvVarService {
          */
         @MustBeClosed
         fun create(params: EnvVarCreateParams): HttpResponseFor<EnvVar> =
-            create(
-              params, RequestOptions.none()
-            )
+            create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: EnvVarCreateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<EnvVar>
+        fun create(
+            params: EnvVarCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnvVar>
 
         /**
-         * Returns a raw HTTP response for `get /v1/env_var/{env_var_id}`, but is otherwise
-         * the same as [EnvVarService.retrieve].
+         * Returns a raw HTTP response for `get /v1/env_var/{env_var_id}`, but is otherwise the same
+         * as [EnvVarService.retrieve].
          */
         @MustBeClosed
         fun retrieve(params: EnvVarRetrieveParams): HttpResponseFor<EnvVar> =
-            retrieve(
-              params, RequestOptions.none()
-            )
+            retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
-        fun retrieve(params: EnvVarRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<EnvVar>
+        fun retrieve(
+            params: EnvVarRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnvVar>
 
         /**
-         * Returns a raw HTTP response for `patch /v1/env_var/{env_var_id}`, but is
-         * otherwise the same as [EnvVarService.update].
+         * Returns a raw HTTP response for `patch /v1/env_var/{env_var_id}`, but is otherwise the
+         * same as [EnvVarService.update].
          */
         @MustBeClosed
         fun update(params: EnvVarUpdateParams): HttpResponseFor<EnvVar> =
-            update(
-              params, RequestOptions.none()
-            )
+            update(params, RequestOptions.none())
 
         /** @see [update] */
         @MustBeClosed
-        fun update(params: EnvVarUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<EnvVar>
+        fun update(
+            params: EnvVarUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnvVar>
 
         /**
          * Returns a raw HTTP response for `get /v1/env_var`, but is otherwise the same as
@@ -153,32 +153,36 @@ interface EnvVarService {
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: EnvVarListParams = EnvVarListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<EnvVarListResponse>
+        fun list(
+            params: EnvVarListParams = EnvVarListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnvVarListResponse>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: EnvVarListParams = EnvVarListParams.none()): HttpResponseFor<EnvVarListResponse> =
-            list(
-              params, RequestOptions.none()
-            )
+        fun list(
+            params: EnvVarListParams = EnvVarListParams.none()
+        ): HttpResponseFor<EnvVarListResponse> = list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<EnvVarListResponse> = list(EnvVarListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<EnvVarListResponse> =
+            list(EnvVarListParams.none(), requestOptions)
 
         /**
-         * Returns a raw HTTP response for `delete /v1/env_var/{env_var_id}`, but is
-         * otherwise the same as [EnvVarService.delete].
+         * Returns a raw HTTP response for `delete /v1/env_var/{env_var_id}`, but is otherwise the
+         * same as [EnvVarService.delete].
          */
         @MustBeClosed
         fun delete(params: EnvVarDeleteParams): HttpResponseFor<EnvVar> =
-            delete(
-              params, RequestOptions.none()
-            )
+            delete(params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
-        fun delete(params: EnvVarDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<EnvVar>
+        fun delete(
+            params: EnvVarDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnvVar>
 
         /**
          * Returns a raw HTTP response for `put /v1/env_var`, but is otherwise the same as
@@ -186,12 +190,13 @@ interface EnvVarService {
          */
         @MustBeClosed
         fun replace(params: EnvVarReplaceParams): HttpResponseFor<EnvVar> =
-            replace(
-              params, RequestOptions.none()
-            )
+            replace(params, RequestOptions.none())
 
         /** @see [replace] */
         @MustBeClosed
-        fun replace(params: EnvVarReplaceParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<EnvVar>
+        fun replace(
+            params: EnvVarReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnvVar>
     }
 }

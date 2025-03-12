@@ -21,45 +21,46 @@ import java.util.concurrent.CompletableFuture
 interface FunctionServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /**
-     * Create a new function. If there is an existing function in the project with the
-     * same slug as the one specified in the request, will return the existing function
-     * unmodified
+     * Create a new function. If there is an existing function in the project with the same slug as
+     * the one specified in the request, will return the existing function unmodified
      */
     fun create(params: FunctionCreateParams): CompletableFuture<Function> =
-        create(
-          params, RequestOptions.none()
-        )
+        create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(params: FunctionCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Function>
+    fun create(
+        params: FunctionCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Function>
 
     /** Get a function object by its id */
     fun retrieve(params: FunctionRetrieveParams): CompletableFuture<Function> =
-        retrieve(
-          params, RequestOptions.none()
-        )
+        retrieve(params, RequestOptions.none())
 
     /** @see [retrieve] */
-    fun retrieve(params: FunctionRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Function>
+    fun retrieve(
+        params: FunctionRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Function>
 
     /**
-     * Partially update a function object. Specify the fields to update in the payload.
-     * Any object-type fields will be deep-merged with existing content. Currently we
-     * do not support removing fields or setting them to null.
+     * Partially update a function object. Specify the fields to update in the payload. Any
+     * object-type fields will be deep-merged with existing content. Currently we do not support
+     * removing fields or setting them to null.
      */
     fun update(params: FunctionUpdateParams): CompletableFuture<Function> =
-        update(
-          params, RequestOptions.none()
-        )
+        update(params, RequestOptions.none())
 
     /** @see [update] */
-    fun update(params: FunctionUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Function>
+    fun update(
+        params: FunctionUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Function>
 
     /**
      * List out all functions. The functions are sorted by creation date, with the most
@@ -68,145 +69,164 @@ interface FunctionServiceAsync {
     fun list(): CompletableFuture<FunctionListPageAsync> = list(FunctionListParams.none())
 
     /** @see [list] */
-    fun list(params: FunctionListParams = FunctionListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<FunctionListPageAsync>
+    fun list(
+        params: FunctionListParams = FunctionListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<FunctionListPageAsync>
 
     /** @see [list] */
-    fun list(params: FunctionListParams = FunctionListParams.none()): CompletableFuture<FunctionListPageAsync> =
-        list(
-          params, RequestOptions.none()
-        )
+    fun list(
+        params: FunctionListParams = FunctionListParams.none()
+    ): CompletableFuture<FunctionListPageAsync> = list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): CompletableFuture<FunctionListPageAsync> = list(FunctionListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): CompletableFuture<FunctionListPageAsync> =
+        list(FunctionListParams.none(), requestOptions)
 
     /** Delete a function object by its id */
     fun delete(params: FunctionDeleteParams): CompletableFuture<Function> =
-        delete(
-          params, RequestOptions.none()
-        )
+        delete(params, RequestOptions.none())
 
     /** @see [delete] */
-    fun delete(params: FunctionDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Function>
+    fun delete(
+        params: FunctionDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Function>
 
     /** Invoke a function. */
     fun invoke(params: FunctionInvokeParams): CompletableFuture<Optional<FunctionInvokeResponse>> =
-        invoke(
-          params, RequestOptions.none()
-        )
+        invoke(params, RequestOptions.none())
 
     /** @see [invoke] */
-    fun invoke(params: FunctionInvokeParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Optional<FunctionInvokeResponse>>
+    fun invoke(
+        params: FunctionInvokeParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Optional<FunctionInvokeResponse>>
 
     /**
-     * Create or replace function. If there is an existing function in the project with
-     * the same slug as the one specified in the request, will replace the existing
-     * function with the provided fields
+     * Create or replace function. If there is an existing function in the project with the same
+     * slug as the one specified in the request, will replace the existing function with the
+     * provided fields
      */
     fun replace(params: FunctionReplaceParams): CompletableFuture<Function> =
-        replace(
-          params, RequestOptions.none()
-        )
+        replace(params, RequestOptions.none())
 
     /** @see [replace] */
-    fun replace(params: FunctionReplaceParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<Function>
+    fun replace(
+        params: FunctionReplaceParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Function>
 
     /**
-     * A view of [FunctionServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [FunctionServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /v1/function`, but is otherwise the same
-         * as [FunctionServiceAsync.create].
+         * Returns a raw HTTP response for `post /v1/function`, but is otherwise the same as
+         * [FunctionServiceAsync.create].
          */
         @MustBeClosed
         fun create(params: FunctionCreateParams): CompletableFuture<HttpResponseFor<Function>> =
-            create(
-              params, RequestOptions.none()
-            )
+            create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: FunctionCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<Function>>
+        fun create(
+            params: FunctionCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
 
         /**
-         * Returns a raw HTTP response for `get /v1/function/{function_id}`, but is
-         * otherwise the same as [FunctionServiceAsync.retrieve].
+         * Returns a raw HTTP response for `get /v1/function/{function_id}`, but is otherwise the
+         * same as [FunctionServiceAsync.retrieve].
          */
         @MustBeClosed
         fun retrieve(params: FunctionRetrieveParams): CompletableFuture<HttpResponseFor<Function>> =
-            retrieve(
-              params, RequestOptions.none()
-            )
+            retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
-        fun retrieve(params: FunctionRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<Function>>
+        fun retrieve(
+            params: FunctionRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
 
         /**
-         * Returns a raw HTTP response for `patch /v1/function/{function_id}`, but is
-         * otherwise the same as [FunctionServiceAsync.update].
+         * Returns a raw HTTP response for `patch /v1/function/{function_id}`, but is otherwise the
+         * same as [FunctionServiceAsync.update].
          */
         @MustBeClosed
         fun update(params: FunctionUpdateParams): CompletableFuture<HttpResponseFor<Function>> =
-            update(
-              params, RequestOptions.none()
-            )
+            update(params, RequestOptions.none())
 
         /** @see [update] */
         @MustBeClosed
-        fun update(params: FunctionUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<Function>>
+        fun update(
+            params: FunctionUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
 
         /**
          * Returns a raw HTTP response for `get /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.list].
          */
         @MustBeClosed
-        fun list(): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> = list(FunctionListParams.none())
+        fun list(): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
+            list(FunctionListParams.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: FunctionListParams = FunctionListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<FunctionListPageAsync>>
+        fun list(
+            params: FunctionListParams = FunctionListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: FunctionListParams = FunctionListParams.none()): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
-            list(
-              params, RequestOptions.none()
-            )
+        fun list(
+            params: FunctionListParams = FunctionListParams.none()
+        ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
+            list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> = list(FunctionListParams.none(), requestOptions)
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
+            list(FunctionListParams.none(), requestOptions)
 
         /**
-         * Returns a raw HTTP response for `delete /v1/function/{function_id}`, but is
-         * otherwise the same as [FunctionServiceAsync.delete].
+         * Returns a raw HTTP response for `delete /v1/function/{function_id}`, but is otherwise the
+         * same as [FunctionServiceAsync.delete].
          */
         @MustBeClosed
         fun delete(params: FunctionDeleteParams): CompletableFuture<HttpResponseFor<Function>> =
-            delete(
-              params, RequestOptions.none()
-            )
+            delete(params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
-        fun delete(params: FunctionDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<Function>>
+        fun delete(
+            params: FunctionDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
 
         /**
          * Returns a raw HTTP response for `post /v1/function/{function_id}/invoke`, but is
          * otherwise the same as [FunctionServiceAsync.invoke].
          */
         @MustBeClosed
-        fun invoke(params: FunctionInvokeParams): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
-            invoke(
-              params, RequestOptions.none()
-            )
+        fun invoke(
+            params: FunctionInvokeParams
+        ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
+            invoke(params, RequestOptions.none())
 
         /** @see [invoke] */
         @MustBeClosed
-        fun invoke(params: FunctionInvokeParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>>
+        fun invoke(
+            params: FunctionInvokeParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>>
 
         /**
          * Returns a raw HTTP response for `put /v1/function`, but is otherwise the same as
@@ -214,12 +234,13 @@ interface FunctionServiceAsync {
          */
         @MustBeClosed
         fun replace(params: FunctionReplaceParams): CompletableFuture<HttpResponseFor<Function>> =
-            replace(
-              params, RequestOptions.none()
-            )
+            replace(params, RequestOptions.none())
 
         /** @see [replace] */
         @MustBeClosed
-        fun replace(params: FunctionReplaceParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<Function>>
+        fun replace(
+            params: FunctionReplaceParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Function>>
     }
 }

@@ -10,33 +10,28 @@ import com.google.errorprone.annotations.MustBeClosed
 interface TopLevelService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
-    /**
-     * Default endpoint. Simply replies with 'Hello, World!'. Authorization is not
-     * required
-     */
+    /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
     fun helloWorld(): String = helloWorld(TopLevelHelloWorldParams.none())
 
     /** @see [helloWorld] */
-    fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(), requestOptions: RequestOptions = RequestOptions.none()): String
+    fun helloWorld(
+        params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): String
 
     /** @see [helloWorld] */
     fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()): String =
-        helloWorld(
-          params, RequestOptions.none()
-        )
+        helloWorld(params, RequestOptions.none())
 
     /** @see [helloWorld] */
-    fun helloWorld(requestOptions: RequestOptions): String = helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
+    fun helloWorld(requestOptions: RequestOptions): String =
+        helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 
-    /**
-     * A view of [TopLevelService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [TopLevelService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
@@ -48,17 +43,20 @@ interface TopLevelService {
 
         /** @see [helloWorld] */
         @MustBeClosed
-        fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<String>
+        fun helloWorld(
+            params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<String>
 
         /** @see [helloWorld] */
         @MustBeClosed
-        fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()): HttpResponseFor<String> =
-            helloWorld(
-              params, RequestOptions.none()
-            )
+        fun helloWorld(
+            params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
+        ): HttpResponseFor<String> = helloWorld(params, RequestOptions.none())
 
         /** @see [helloWorld] */
         @MustBeClosed
-        fun helloWorld(requestOptions: RequestOptions): HttpResponseFor<String> = helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
+        fun helloWorld(requestOptions: RequestOptions): HttpResponseFor<String> =
+            helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
     }
 }

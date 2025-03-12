@@ -18,50 +18,52 @@ import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 
-class EvalServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class EvalServiceImpl internal constructor(private val clientOptions: ClientOptions) : EvalService {
 
-) : EvalService {
-
-    private val withRawResponse: EvalService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: EvalService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): EvalService.WithRawResponse = withRawResponse
 
-    override fun create(params: EvalCreateParams, requestOptions: RequestOptions): SummarizeExperimentResponse =
+    override fun create(
+        params: EvalCreateParams,
+        requestOptions: RequestOptions,
+    ): SummarizeExperimentResponse =
         // post /v1/eval
         withRawResponse().create(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : EvalService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        EvalService.WithRawResponse {
 
         private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<SummarizeExperimentResponse> = jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<SummarizeExperimentResponse> =
+            jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun create(params: EvalCreateParams, requestOptions: RequestOptions): HttpResponseFor<SummarizeExperimentResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("v1", "eval")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  createHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun create(
+            params: EvalCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SummarizeExperimentResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v1", "eval")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.ApiKeyCreateParams
 import com.braintrustdata.api.models.ApiKeyDeleteParams
-import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -16,64 +15,74 @@ class ApiKeyServiceAsyncTest {
 
     @Test
     fun create() {
-      val client = BraintrustOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val apiKeyServiceAsync = client.apiKeys()
+        val client =
+            BraintrustOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val apiKeyServiceAsync = client.apiKeys()
 
-      val createApiKeyOutputFuture = apiKeyServiceAsync.create(ApiKeyCreateParams.builder()
-          .name("name")
-          .orgName("org_name")
-          .build())
+        val createApiKeyOutputFuture =
+            apiKeyServiceAsync.create(
+                ApiKeyCreateParams.builder().name("name").orgName("org_name").build()
+            )
 
-      val createApiKeyOutput = createApiKeyOutputFuture.get()
-      createApiKeyOutput.validate()
+        val createApiKeyOutput = createApiKeyOutputFuture.get()
+        createApiKeyOutput.validate()
     }
 
     @Test
     fun retrieve() {
-      val client = BraintrustOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val apiKeyServiceAsync = client.apiKeys()
+        val client =
+            BraintrustOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val apiKeyServiceAsync = client.apiKeys()
 
-      val apiKeyFuture = apiKeyServiceAsync.retrieve(ApiKeyRetrieveParams.builder()
-          .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build())
+        val apiKeyFuture =
+            apiKeyServiceAsync.retrieve(
+                ApiKeyRetrieveParams.builder()
+                    .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
 
-      val apiKey = apiKeyFuture.get()
-      apiKey.validate()
+        val apiKey = apiKeyFuture.get()
+        apiKey.validate()
     }
 
     @Test
     fun list() {
-      val client = BraintrustOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val apiKeyServiceAsync = client.apiKeys()
+        val client =
+            BraintrustOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val apiKeyServiceAsync = client.apiKeys()
 
-      val pageFuture = apiKeyServiceAsync.list()
+        val pageFuture = apiKeyServiceAsync.list()
 
-      val page = pageFuture.get()
-      page.response().validate()
+        val page = pageFuture.get()
+        page.response().validate()
     }
 
     @Test
     fun delete() {
-      val client = BraintrustOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .apiKey("My API Key")
-          .build()
-      val apiKeyServiceAsync = client.apiKeys()
+        val client =
+            BraintrustOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val apiKeyServiceAsync = client.apiKeys()
 
-      val apiKeyFuture = apiKeyServiceAsync.delete(ApiKeyDeleteParams.builder()
-          .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .build())
+        val apiKeyFuture =
+            apiKeyServiceAsync.delete(
+                ApiKeyDeleteParams.builder()
+                    .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
 
-      val apiKey = apiKeyFuture.get()
-      apiKey.validate()
+        val apiKey = apiKeyFuture.get()
+        apiKey.validate()
     }
 }
