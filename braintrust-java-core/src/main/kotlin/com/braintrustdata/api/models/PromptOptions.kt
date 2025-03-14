@@ -1776,8 +1776,7 @@ private constructor(
 
                             fun schema(schema: JsonField<Schema>) = apply { this.schema = schema }
 
-                            fun schema(unionMember0: Schema.UnionMember0) =
-                                schema(Schema.ofUnionMember0(unionMember0))
+                            fun schema(object_: Schema.Object) = schema(Schema.ofObject(object_))
 
                             fun schema(string: String) = schema(Schema.ofString(string))
 
@@ -1825,22 +1824,20 @@ private constructor(
                         @JsonSerialize(using = Schema.Serializer::class)
                         class Schema
                         private constructor(
-                            private val unionMember0: UnionMember0? = null,
+                            private val object_: Object? = null,
                             private val string: String? = null,
                             private val _json: JsonValue? = null,
                         ) {
 
-                            fun unionMember0(): Optional<UnionMember0> =
-                                Optional.ofNullable(unionMember0)
+                            fun object_(): Optional<Object> = Optional.ofNullable(object_)
 
                             fun string(): Optional<String> = Optional.ofNullable(string)
 
-                            fun isUnionMember0(): Boolean = unionMember0 != null
+                            fun isObject(): Boolean = object_ != null
 
                             fun isString(): Boolean = string != null
 
-                            fun asUnionMember0(): UnionMember0 =
-                                unionMember0.getOrThrow("unionMember0")
+                            fun asObject(): Object = object_.getOrThrow("object_")
 
                             fun asString(): String = string.getOrThrow("string")
 
@@ -1848,7 +1845,7 @@ private constructor(
 
                             fun <T> accept(visitor: Visitor<T>): T {
                                 return when {
-                                    unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                                    object_ != null -> visitor.visitObject(object_)
                                     string != null -> visitor.visitString(string)
                                     else -> visitor.unknown(_json)
                                 }
@@ -1863,8 +1860,8 @@ private constructor(
 
                                 accept(
                                     object : Visitor<Unit> {
-                                        override fun visitUnionMember0(unionMember0: UnionMember0) {
-                                            unionMember0.validate()
+                                        override fun visitObject(object_: Object) {
+                                            object_.validate()
                                         }
 
                                         override fun visitString(string: String) {}
@@ -1878,14 +1875,14 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is Schema && unionMember0 == other.unionMember0 && string == other.string /* spotless:on */
+                                return /* spotless:off */ other is Schema && object_ == other.object_ && string == other.string /* spotless:on */
                             }
 
-                            override fun hashCode(): Int = /* spotless:off */ Objects.hash(unionMember0, string) /* spotless:on */
+                            override fun hashCode(): Int = /* spotless:off */ Objects.hash(object_, string) /* spotless:on */
 
                             override fun toString(): String =
                                 when {
-                                    unionMember0 != null -> "Schema{unionMember0=$unionMember0}"
+                                    object_ != null -> "Schema{object_=$object_}"
                                     string != null -> "Schema{string=$string}"
                                     _json != null -> "Schema{_unknown=$_json}"
                                     else -> throw IllegalStateException("Invalid Schema")
@@ -1893,9 +1890,7 @@ private constructor(
 
                             companion object {
 
-                                @JvmStatic
-                                fun ofUnionMember0(unionMember0: UnionMember0) =
-                                    Schema(unionMember0 = unionMember0)
+                                @JvmStatic fun ofObject(object_: Object) = Schema(object_ = object_)
 
                                 @JvmStatic fun ofString(string: String) = Schema(string = string)
                             }
@@ -1906,7 +1901,7 @@ private constructor(
                              */
                             interface Visitor<out T> {
 
-                                fun visitUnionMember0(unionMember0: UnionMember0): T
+                                fun visitObject(object_: Object): T
 
                                 fun visitString(string: String): T
 
@@ -1931,11 +1926,9 @@ private constructor(
                                 override fun ObjectCodec.deserialize(node: JsonNode): Schema {
                                     val json = JsonValue.fromJsonNode(node)
 
-                                    tryDeserialize(node, jacksonTypeRef<UnionMember0>()) {
-                                            it.validate()
-                                        }
+                                    tryDeserialize(node, jacksonTypeRef<Object>()) { it.validate() }
                                         ?.let {
-                                            return Schema(unionMember0 = it, _json = json)
+                                            return Schema(object_ = it, _json = json)
                                         }
                                     tryDeserialize(node, jacksonTypeRef<String>())?.let {
                                         return Schema(string = it, _json = json)
@@ -1953,8 +1946,8 @@ private constructor(
                                     provider: SerializerProvider,
                                 ) {
                                     when {
-                                        value.unionMember0 != null ->
-                                            generator.writeObject(value.unionMember0)
+                                        value.object_ != null ->
+                                            generator.writeObject(value.object_)
                                         value.string != null -> generator.writeObject(value.string)
                                         value._json != null -> generator.writeObject(value._json)
                                         else -> throw IllegalStateException("Invalid Schema")
@@ -1963,7 +1956,7 @@ private constructor(
                             }
 
                             @NoAutoDetect
-                            class UnionMember0
+                            class Object
                             @JsonCreator
                             private constructor(
                                 @JsonAnySetter
@@ -1978,7 +1971,7 @@ private constructor(
 
                                 private var validated: Boolean = false
 
-                                fun validate(): UnionMember0 = apply {
+                                fun validate(): Object = apply {
                                     if (validated) {
                                         return@apply
                                     }
@@ -1992,12 +1985,12 @@ private constructor(
 
                                     /**
                                      * Returns a mutable builder for constructing an instance of
-                                     * [UnionMember0].
+                                     * [Object].
                                      */
                                     @JvmStatic fun builder() = Builder()
                                 }
 
-                                /** A builder for [UnionMember0]. */
+                                /** A builder for [Object]. */
                                 class Builder internal constructor() {
 
                                     private var additionalProperties:
@@ -2005,9 +1998,9 @@ private constructor(
                                         mutableMapOf()
 
                                     @JvmSynthetic
-                                    internal fun from(unionMember0: UnionMember0) = apply {
+                                    internal fun from(object_: Object) = apply {
                                         additionalProperties =
-                                            unionMember0.additionalProperties.toMutableMap()
+                                            object_.additionalProperties.toMutableMap()
                                     }
 
                                     fun additionalProperties(
@@ -2036,8 +2029,7 @@ private constructor(
                                         keys.forEach(::removeAdditionalProperty)
                                     }
 
-                                    fun build(): UnionMember0 =
-                                        UnionMember0(additionalProperties.toImmutable())
+                                    fun build(): Object = Object(additionalProperties.toImmutable())
                                 }
 
                                 override fun equals(other: Any?): Boolean {
@@ -2045,7 +2037,7 @@ private constructor(
                                         return true
                                     }
 
-                                    return /* spotless:off */ other is UnionMember0 && additionalProperties == other.additionalProperties /* spotless:on */
+                                    return /* spotless:off */ other is Object && additionalProperties == other.additionalProperties /* spotless:on */
                                 }
 
                                 /* spotless:off */
@@ -2055,7 +2047,7 @@ private constructor(
                                 override fun hashCode(): Int = hashCode
 
                                 override fun toString() =
-                                    "UnionMember0{additionalProperties=$additionalProperties}"
+                                    "Object{additionalProperties=$additionalProperties}"
                             }
                         }
 
