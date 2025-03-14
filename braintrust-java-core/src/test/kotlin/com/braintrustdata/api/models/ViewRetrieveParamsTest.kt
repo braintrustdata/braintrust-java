@@ -13,7 +13,7 @@ class ViewRetrieveParamsTest {
         ViewRetrieveParams.builder()
             .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .objectType(ViewRetrieveParams.ObjectType.ORGANIZATION)
+            .objectType(AclObjectType.ORGANIZATION)
             .build()
     }
 
@@ -23,11 +23,11 @@ class ViewRetrieveParamsTest {
             ViewRetrieveParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(ViewRetrieveParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
         val expected = QueryParams.builder()
         expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", ViewRetrieveParams.ObjectType.ORGANIZATION.toString())
+        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
         assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
@@ -37,11 +37,11 @@ class ViewRetrieveParamsTest {
             ViewRetrieveParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(ViewRetrieveParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
         val expected = QueryParams.builder()
         expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", ViewRetrieveParams.ObjectType.ORGANIZATION.toString())
+        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
         assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
@@ -51,7 +51,7 @@ class ViewRetrieveParamsTest {
             ViewRetrieveParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(ViewRetrieveParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
         assertThat(params).isNotNull
         // path param "viewId"

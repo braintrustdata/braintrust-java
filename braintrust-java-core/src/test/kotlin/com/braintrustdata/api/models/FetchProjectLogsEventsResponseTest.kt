@@ -63,10 +63,7 @@ class FetchProjectLogsEventsResponseTest {
                                 .build()
                         )
                         .spanAttributes(
-                            SpanAttributes.builder()
-                                .name("name")
-                                .type(SpanAttributes.Type.LLM)
-                                .build()
+                            SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                         )
                         .addSpanParent("string")
                         .addTag("string")
@@ -126,7 +123,7 @@ class FetchProjectLogsEventsResponseTest {
                             .build()
                     )
                     .spanAttributes(
-                        SpanAttributes.builder().name("name").type(SpanAttributes.Type.LLM).build()
+                        SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                     )
                     .addSpanParent("string")
                     .addTag("string")

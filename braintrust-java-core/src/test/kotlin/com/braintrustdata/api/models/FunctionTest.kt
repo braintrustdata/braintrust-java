@@ -42,7 +42,7 @@ class FunctionTest {
                 .origin(
                     Function.Origin.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(Function.Origin.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .internal_(true)
                         .build()
                 )
@@ -164,7 +164,7 @@ class FunctionTest {
             .contains(
                 Function.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(Function.Origin.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .internal_(true)
                     .build()
             )
