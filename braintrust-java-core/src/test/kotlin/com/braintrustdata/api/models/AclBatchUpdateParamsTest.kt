@@ -14,10 +14,10 @@ class AclBatchUpdateParamsTest {
             .addAddAcl(
                 AclBatchUpdateParams.AddAcl.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(AclBatchUpdateParams.AddAcl.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .permission(AclBatchUpdateParams.AddAcl.Permission.CREATE)
-                    .restrictObjectType(AclBatchUpdateParams.AddAcl.RestrictObjectType.ORGANIZATION)
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
@@ -25,12 +25,10 @@ class AclBatchUpdateParamsTest {
             .addRemoveAcl(
                 AclBatchUpdateParams.RemoveAcl.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(AclBatchUpdateParams.RemoveAcl.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .permission(AclBatchUpdateParams.RemoveAcl.Permission.CREATE)
-                    .restrictObjectType(
-                        AclBatchUpdateParams.RemoveAcl.RestrictObjectType.ORGANIZATION
-                    )
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
@@ -45,12 +43,10 @@ class AclBatchUpdateParamsTest {
                 .addAddAcl(
                     AclBatchUpdateParams.AddAcl.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(AclBatchUpdateParams.AddAcl.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .permission(AclBatchUpdateParams.AddAcl.Permission.CREATE)
-                        .restrictObjectType(
-                            AclBatchUpdateParams.AddAcl.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .build()
@@ -58,12 +54,10 @@ class AclBatchUpdateParamsTest {
                 .addRemoveAcl(
                     AclBatchUpdateParams.RemoveAcl.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(AclBatchUpdateParams.RemoveAcl.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .permission(AclBatchUpdateParams.RemoveAcl.Permission.CREATE)
-                        .restrictObjectType(
-                            AclBatchUpdateParams.RemoveAcl.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .build()
@@ -78,12 +72,10 @@ class AclBatchUpdateParamsTest {
                 listOf(
                     AclBatchUpdateParams.AddAcl.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(AclBatchUpdateParams.AddAcl.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .permission(AclBatchUpdateParams.AddAcl.Permission.CREATE)
-                        .restrictObjectType(
-                            AclBatchUpdateParams.AddAcl.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .build()
@@ -94,12 +86,10 @@ class AclBatchUpdateParamsTest {
                 listOf(
                     AclBatchUpdateParams.RemoveAcl.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(AclBatchUpdateParams.RemoveAcl.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .permission(AclBatchUpdateParams.RemoveAcl.Permission.CREATE)
-                        .restrictObjectType(
-                            AclBatchUpdateParams.RemoveAcl.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .build()

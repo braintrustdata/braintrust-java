@@ -36,7 +36,7 @@ class ProjectScoreUpdateParamsTest {
             )
             .description("description")
             .name("name")
-            .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
+            .scoreType(ProjectScoreType.SLIDER)
             .build()
     }
 
@@ -69,7 +69,7 @@ class ProjectScoreUpdateParamsTest {
                 )
                 .description("description")
                 .name("name")
-                .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
+                .scoreType(ProjectScoreType.SLIDER)
                 .build()
 
         val body = params._body()
@@ -103,7 +103,7 @@ class ProjectScoreUpdateParamsTest {
             )
         assertThat(body.description()).contains("description")
         assertThat(body.name()).contains("name")
-        assertThat(body.scoreType()).contains(ProjectScoreUpdateParams.ScoreType.SLIDER)
+        assertThat(body.scoreType()).contains(ProjectScoreType.SLIDER)
     }
 
     @Test

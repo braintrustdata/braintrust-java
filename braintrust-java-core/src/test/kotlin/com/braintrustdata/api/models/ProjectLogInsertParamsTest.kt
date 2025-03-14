@@ -62,7 +62,7 @@ class ProjectLogInsertParamsTest {
                             .build()
                     )
                     .spanAttributes(
-                        SpanAttributes.builder().name("name").type(SpanAttributes.Type.LLM).build()
+                        SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                     )
                     .spanId("span_id")
                     .addSpanParent("string")
@@ -125,10 +125,7 @@ class ProjectLogInsertParamsTest {
                                 .build()
                         )
                         .spanAttributes(
-                            SpanAttributes.builder()
-                                .name("name")
-                                .type(SpanAttributes.Type.LLM)
-                                .build()
+                            SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                         )
                         .spanId("span_id")
                         .addSpanParent("string")
@@ -190,10 +187,7 @@ class ProjectLogInsertParamsTest {
                                 .build()
                         )
                         .spanAttributes(
-                            SpanAttributes.builder()
-                                .name("name")
-                                .type(SpanAttributes.Type.LLM)
-                                .build()
+                            SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                         )
                         .spanId("span_id")
                         .addSpanParent("string")

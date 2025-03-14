@@ -14,10 +14,8 @@ class RoleUpdateParamsTest {
             .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .addAddMemberPermission(
                 RoleUpdateParams.AddMemberPermission.builder()
-                    .permission(RoleUpdateParams.AddMemberPermission.Permission.CREATE)
-                    .restrictObjectType(
-                        RoleUpdateParams.AddMemberPermission.RestrictObjectType.ORGANIZATION
-                    )
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .build()
             )
             .addAddMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -25,10 +23,8 @@ class RoleUpdateParamsTest {
             .name("x")
             .addRemoveMemberPermission(
                 RoleUpdateParams.RemoveMemberPermission.builder()
-                    .permission(RoleUpdateParams.RemoveMemberPermission.Permission.CREATE)
-                    .restrictObjectType(
-                        RoleUpdateParams.RemoveMemberPermission.RestrictObjectType.ORGANIZATION
-                    )
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .build()
             )
             .addRemoveMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -42,10 +38,8 @@ class RoleUpdateParamsTest {
                 .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addAddMemberPermission(
                     RoleUpdateParams.AddMemberPermission.builder()
-                        .permission(RoleUpdateParams.AddMemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleUpdateParams.AddMemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
                 .addAddMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -53,10 +47,8 @@ class RoleUpdateParamsTest {
                 .name("x")
                 .addRemoveMemberPermission(
                     RoleUpdateParams.RemoveMemberPermission.builder()
-                        .permission(RoleUpdateParams.RemoveMemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleUpdateParams.RemoveMemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
                 .addRemoveMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -69,10 +61,8 @@ class RoleUpdateParamsTest {
             .contains(
                 listOf(
                     RoleUpdateParams.AddMemberPermission.builder()
-                        .permission(RoleUpdateParams.AddMemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleUpdateParams.AddMemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
             )
@@ -83,10 +73,8 @@ class RoleUpdateParamsTest {
             .contains(
                 listOf(
                     RoleUpdateParams.RemoveMemberPermission.builder()
-                        .permission(RoleUpdateParams.RemoveMemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleUpdateParams.RemoveMemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
             )

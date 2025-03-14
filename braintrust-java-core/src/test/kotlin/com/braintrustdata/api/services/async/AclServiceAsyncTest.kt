@@ -9,7 +9,9 @@ import com.braintrustdata.api.models.AclCreateParams
 import com.braintrustdata.api.models.AclDeleteParams
 import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListParams
+import com.braintrustdata.api.models.AclObjectType
 import com.braintrustdata.api.models.AclRetrieveParams
+import com.braintrustdata.api.models.Permission
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -29,10 +31,10 @@ class AclServiceAsyncTest {
             aclServiceAsync.create(
                 AclCreateParams.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(AclCreateParams.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .permission(AclCreateParams.Permission.CREATE)
-                    .restrictObjectType(AclCreateParams.RestrictObjectType.ORGANIZATION)
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()
@@ -73,7 +75,7 @@ class AclServiceAsyncTest {
             aclServiceAsync.list(
                 AclListParams.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(AclListParams.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .build()
             )
 
@@ -114,12 +116,10 @@ class AclServiceAsyncTest {
                     .addAddAcl(
                         AclBatchUpdateParams.AddAcl.builder()
                             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(AclBatchUpdateParams.AddAcl.ObjectType.ORGANIZATION)
+                            .objectType(AclObjectType.ORGANIZATION)
                             .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .permission(AclBatchUpdateParams.AddAcl.Permission.CREATE)
-                            .restrictObjectType(
-                                AclBatchUpdateParams.AddAcl.RestrictObjectType.ORGANIZATION
-                            )
+                            .permission(Permission.CREATE)
+                            .restrictObjectType(AclObjectType.ORGANIZATION)
                             .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
@@ -127,12 +127,10 @@ class AclServiceAsyncTest {
                     .addRemoveAcl(
                         AclBatchUpdateParams.RemoveAcl.builder()
                             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(AclBatchUpdateParams.RemoveAcl.ObjectType.ORGANIZATION)
+                            .objectType(AclObjectType.ORGANIZATION)
                             .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .permission(AclBatchUpdateParams.RemoveAcl.Permission.CREATE)
-                            .restrictObjectType(
-                                AclBatchUpdateParams.RemoveAcl.RestrictObjectType.ORGANIZATION
-                            )
+                            .permission(Permission.CREATE)
+                            .restrictObjectType(AclObjectType.ORGANIZATION)
                             .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
@@ -157,10 +155,10 @@ class AclServiceAsyncTest {
             aclServiceAsync.findAndDelete(
                 AclFindAndDeleteParams.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(AclFindAndDeleteParams.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .permission(AclFindAndDeleteParams.Permission.CREATE)
-                    .restrictObjectType(AclFindAndDeleteParams.RestrictObjectType.ORGANIZATION)
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .build()

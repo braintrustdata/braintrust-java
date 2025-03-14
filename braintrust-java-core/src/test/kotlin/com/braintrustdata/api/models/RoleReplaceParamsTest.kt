@@ -15,10 +15,8 @@ class RoleReplaceParamsTest {
             .description("description")
             .addMemberPermission(
                 RoleReplaceParams.MemberPermission.builder()
-                    .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
-                    .restrictObjectType(
-                        RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                    )
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .build()
             )
             .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -34,10 +32,8 @@ class RoleReplaceParamsTest {
                 .description("description")
                 .addMemberPermission(
                     RoleReplaceParams.MemberPermission.builder()
-                        .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
                 .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -53,10 +49,8 @@ class RoleReplaceParamsTest {
             .contains(
                 listOf(
                     RoleReplaceParams.MemberPermission.builder()
-                        .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
             )

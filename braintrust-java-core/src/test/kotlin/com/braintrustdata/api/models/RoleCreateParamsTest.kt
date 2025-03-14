@@ -15,10 +15,8 @@ class RoleCreateParamsTest {
             .description("description")
             .addMemberPermission(
                 RoleCreateParams.MemberPermission.builder()
-                    .permission(RoleCreateParams.MemberPermission.Permission.CREATE)
-                    .restrictObjectType(
-                        RoleCreateParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                    )
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .build()
             )
             .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -34,10 +32,8 @@ class RoleCreateParamsTest {
                 .description("description")
                 .addMemberPermission(
                     RoleCreateParams.MemberPermission.builder()
-                        .permission(RoleCreateParams.MemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleCreateParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
                 .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -53,10 +49,8 @@ class RoleCreateParamsTest {
             .contains(
                 listOf(
                     RoleCreateParams.MemberPermission.builder()
-                        .permission(RoleCreateParams.MemberPermission.Permission.CREATE)
-                        .restrictObjectType(
-                            RoleCreateParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                        )
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
             )
