@@ -15,7 +15,7 @@ class EnvVarListParamsTest {
             .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .limit(0L)
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .objectType(EnvVarListParams.ObjectType.ORGANIZATION)
+            .objectType(EnvVarObjectType.ORGANIZATION)
             .build()
     }
 
@@ -27,7 +27,7 @@ class EnvVarListParamsTest {
                 .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .limit(0L)
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(EnvVarListParams.ObjectType.ORGANIZATION)
+                .objectType(EnvVarObjectType.ORGANIZATION)
                 .build()
         val expected = QueryParams.builder()
         expected.put("env_var_name", "env_var_name")
@@ -37,7 +37,7 @@ class EnvVarListParamsTest {
         )
         expected.put("limit", "0")
         expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", EnvVarListParams.ObjectType.ORGANIZATION.toString())
+        expected.put("object_type", EnvVarObjectType.ORGANIZATION.toString())
         assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 

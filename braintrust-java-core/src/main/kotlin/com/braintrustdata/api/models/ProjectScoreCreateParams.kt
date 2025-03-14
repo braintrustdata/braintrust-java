@@ -4,7 +4,6 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
@@ -51,7 +50,7 @@ private constructor(
     fun projectId(): String = body.projectId()
 
     /** The type of the configured score */
-    fun scoreType(): ScoreType = body.scoreType()
+    fun scoreType(): ProjectScoreType = body.scoreType()
 
     /** For categorical-type project scores, the list of all categories */
     fun categories(): Optional<Categories> = body.categories()
@@ -68,7 +67,7 @@ private constructor(
     fun _projectId(): JsonField<String> = body._projectId()
 
     /** The type of the configured score */
-    fun _scoreType(): JsonField<ScoreType> = body._scoreType()
+    fun _scoreType(): JsonField<ProjectScoreType> = body._scoreType()
 
     /** For categorical-type project scores, the list of all categories */
     fun _categories(): JsonField<Categories> = body._categories()
@@ -103,7 +102,7 @@ private constructor(
         private val projectId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("score_type")
         @ExcludeMissing
-        private val scoreType: JsonField<ScoreType> = JsonMissing.of(),
+        private val scoreType: JsonField<ProjectScoreType> = JsonMissing.of(),
         @JsonProperty("categories")
         @ExcludeMissing
         private val categories: JsonField<Categories> = JsonMissing.of(),
@@ -124,7 +123,7 @@ private constructor(
         fun projectId(): String = projectId.getRequired("project_id")
 
         /** The type of the configured score */
-        fun scoreType(): ScoreType = scoreType.getRequired("score_type")
+        fun scoreType(): ProjectScoreType = scoreType.getRequired("score_type")
 
         /** For categorical-type project scores, the list of all categories */
         fun categories(): Optional<Categories> =
@@ -146,7 +145,7 @@ private constructor(
         /** The type of the configured score */
         @JsonProperty("score_type")
         @ExcludeMissing
-        fun _scoreType(): JsonField<ScoreType> = scoreType
+        fun _scoreType(): JsonField<ProjectScoreType> = scoreType
 
         /** For categorical-type project scores, the list of all categories */
         @JsonProperty("categories")
@@ -204,7 +203,7 @@ private constructor(
 
             private var name: JsonField<String>? = null
             private var projectId: JsonField<String>? = null
-            private var scoreType: JsonField<ScoreType>? = null
+            private var scoreType: JsonField<ProjectScoreType>? = null
             private var categories: JsonField<Categories> = JsonMissing.of()
             private var config: JsonField<ProjectScoreConfig> = JsonMissing.of()
             private var description: JsonField<String> = JsonMissing.of()
@@ -234,10 +233,12 @@ private constructor(
             fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
             /** The type of the configured score */
-            fun scoreType(scoreType: ScoreType) = scoreType(JsonField.of(scoreType))
+            fun scoreType(scoreType: ProjectScoreType) = scoreType(JsonField.of(scoreType))
 
             /** The type of the configured score */
-            fun scoreType(scoreType: JsonField<ScoreType>) = apply { this.scoreType = scoreType }
+            fun scoreType(scoreType: JsonField<ProjectScoreType>) = apply {
+                this.scoreType = scoreType
+            }
 
             /** For categorical-type project scores, the list of all categories */
             fun categories(categories: Categories?) = categories(JsonField.ofNullable(categories))
@@ -373,10 +374,10 @@ private constructor(
         fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
 
         /** The type of the configured score */
-        fun scoreType(scoreType: ScoreType) = apply { body.scoreType(scoreType) }
+        fun scoreType(scoreType: ProjectScoreType) = apply { body.scoreType(scoreType) }
 
         /** The type of the configured score */
-        fun scoreType(scoreType: JsonField<ScoreType>) = apply { body.scoreType(scoreType) }
+        fun scoreType(scoreType: JsonField<ProjectScoreType>) = apply { body.scoreType(scoreType) }
 
         /** For categorical-type project scores, the list of all categories */
         fun categories(categories: Categories?) = apply { body.categories(categories) }
@@ -536,139 +537,6 @@ private constructor(
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
-    }
-
-    /** The type of the configured score */
-    class ScoreType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val SLIDER = of("slider")
-
-            @JvmField val CATEGORICAL = of("categorical")
-
-            @JvmField val WEIGHTED = of("weighted")
-
-            @JvmField val MINIMUM = of("minimum")
-
-            @JvmField val MAXIMUM = of("maximum")
-
-            @JvmField val ONLINE = of("online")
-
-            @JvmField val FREE_FORM = of("free-form")
-
-            @JvmStatic fun of(value: String) = ScoreType(JsonField.of(value))
-        }
-
-        /** An enum containing [ScoreType]'s known values. */
-        enum class Known {
-            SLIDER,
-            CATEGORICAL,
-            WEIGHTED,
-            MINIMUM,
-            MAXIMUM,
-            ONLINE,
-            FREE_FORM,
-        }
-
-        /**
-         * An enum containing [ScoreType]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [ScoreType] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            SLIDER,
-            CATEGORICAL,
-            WEIGHTED,
-            MINIMUM,
-            MAXIMUM,
-            ONLINE,
-            FREE_FORM,
-            /**
-             * An enum member indicating that [ScoreType] was instantiated with an unknown value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                SLIDER -> Value.SLIDER
-                CATEGORICAL -> Value.CATEGORICAL
-                WEIGHTED -> Value.WEIGHTED
-                MINIMUM -> Value.MINIMUM
-                MAXIMUM -> Value.MAXIMUM
-                ONLINE -> Value.ONLINE
-                FREE_FORM -> Value.FREE_FORM
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                SLIDER -> Known.SLIDER
-                CATEGORICAL -> Known.CATEGORICAL
-                WEIGHTED -> Known.WEIGHTED
-                MINIMUM -> Known.MINIMUM
-                MAXIMUM -> Known.MAXIMUM
-                ONLINE -> Known.ONLINE
-                FREE_FORM -> Known.FREE_FORM
-                else -> throw BraintrustInvalidDataException("Unknown ScoreType: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                BraintrustInvalidDataException("Value is not a String")
-            }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ScoreType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
     }
 
     /** For categorical-type project scores, the list of all categories */

@@ -14,7 +14,7 @@ class ViewUpdateParamsTest {
         ViewUpdateParams.builder()
             .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .objectType(ViewUpdateParams.ObjectType.ORGANIZATION)
+            .objectType(AclObjectType.ORGANIZATION)
             .name("name")
             .options(
                 ViewOptions.builder()
@@ -57,7 +57,7 @@ class ViewUpdateParamsTest {
             ViewUpdateParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(ViewUpdateParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .name("name")
                 .options(
                     ViewOptions.builder()
@@ -97,7 +97,7 @@ class ViewUpdateParamsTest {
 
         assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.objectType()).isEqualTo(ViewUpdateParams.ObjectType.ORGANIZATION)
+        assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
         assertThat(body.name()).contains("name")
         assertThat(body.options())
             .contains(
@@ -141,14 +141,14 @@ class ViewUpdateParamsTest {
             ViewUpdateParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(ViewUpdateParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
 
         val body = params._body()
 
         assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.objectType()).isEqualTo(ViewUpdateParams.ObjectType.ORGANIZATION)
+        assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
     }
 
     @Test
@@ -157,7 +157,7 @@ class ViewUpdateParamsTest {
             ViewUpdateParams.builder()
                 .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(ViewUpdateParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
         assertThat(params).isNotNull
         // path param "viewId"

@@ -13,6 +13,7 @@ import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
 import com.braintrustdata.api.models.SpanAttributes
+import com.braintrustdata.api.models.SpanType
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -168,10 +169,7 @@ class LogServiceTest {
                                     .build()
                             )
                             .spanAttributes(
-                                SpanAttributes.builder()
-                                    .name("name")
-                                    .type(SpanAttributes.Type.LLM)
-                                    .build()
+                                SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                             )
                             .spanId("span_id")
                             .addSpanParent("string")

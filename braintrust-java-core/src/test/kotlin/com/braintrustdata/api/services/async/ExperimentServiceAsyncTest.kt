@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.InsertExperimentEvent
 import com.braintrustdata.api.models.ObjectReference
 import com.braintrustdata.api.models.RepoInfo
 import com.braintrustdata.api.models.SpanAttributes
+import com.braintrustdata.api.models.SpanType
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -321,10 +322,7 @@ class ExperimentServiceAsyncTest {
                                     .build()
                             )
                             .spanAttributes(
-                                SpanAttributes.builder()
-                                    .name("name")
-                                    .type(SpanAttributes.Type.LLM)
-                                    .build()
+                                SpanAttributes.builder().name("name").type(SpanType.LLM).build()
                             )
                             .spanId("span_id")
                             .addSpanParent("string")

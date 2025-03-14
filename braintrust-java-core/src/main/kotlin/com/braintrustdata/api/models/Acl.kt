@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.Enum
 import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
@@ -11,7 +10,6 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -44,7 +42,7 @@ private constructor(
     private val objectId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("object_type")
     @ExcludeMissing
-    private val objectType: JsonField<ObjectType> = JsonMissing.of(),
+    private val objectType: JsonField<AclObjectType> = JsonMissing.of(),
     @JsonProperty("created")
     @ExcludeMissing
     private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
@@ -56,7 +54,7 @@ private constructor(
     private val permission: JsonField<Permission> = JsonMissing.of(),
     @JsonProperty("restrict_object_type")
     @ExcludeMissing
-    private val restrictObjectType: JsonField<RestrictObjectType> = JsonMissing.of(),
+    private val restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
     @JsonProperty("role_id")
     @ExcludeMissing
     private val roleId: JsonField<String> = JsonMissing.of(),
@@ -76,7 +74,7 @@ private constructor(
     fun objectId(): String = objectId.getRequired("object_id")
 
     /** The object type that the ACL applies to */
-    fun objectType(): ObjectType = objectType.getRequired("object_type")
+    fun objectType(): AclObjectType = objectType.getRequired("object_type")
 
     /** Date of acl creation */
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
@@ -94,7 +92,7 @@ private constructor(
      * When setting a permission directly, optionally restricts the permission grant to just the
      * specified object type. Cannot be set alongside a `role_id`.
      */
-    fun restrictObjectType(): Optional<RestrictObjectType> =
+    fun restrictObjectType(): Optional<AclObjectType> =
         Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
 
     /** Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided */
@@ -119,7 +117,7 @@ private constructor(
     /** The object type that the ACL applies to */
     @JsonProperty("object_type")
     @ExcludeMissing
-    fun _objectType(): JsonField<ObjectType> = objectType
+    fun _objectType(): JsonField<AclObjectType> = objectType
 
     /** Date of acl creation */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
@@ -140,7 +138,7 @@ private constructor(
      */
     @JsonProperty("restrict_object_type")
     @ExcludeMissing
-    fun _restrictObjectType(): JsonField<RestrictObjectType> = restrictObjectType
+    fun _restrictObjectType(): JsonField<AclObjectType> = restrictObjectType
 
     /** Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided */
     @JsonProperty("role_id") @ExcludeMissing fun _roleId(): JsonField<String> = roleId
@@ -198,11 +196,11 @@ private constructor(
         private var id: JsonField<String>? = null
         private var _objectOrgId: JsonField<String>? = null
         private var objectId: JsonField<String>? = null
-        private var objectType: JsonField<ObjectType>? = null
+        private var objectType: JsonField<AclObjectType>? = null
         private var created: JsonField<OffsetDateTime> = JsonMissing.of()
         private var groupId: JsonField<String> = JsonMissing.of()
         private var permission: JsonField<Permission> = JsonMissing.of()
-        private var restrictObjectType: JsonField<RestrictObjectType> = JsonMissing.of()
+        private var restrictObjectType: JsonField<AclObjectType> = JsonMissing.of()
         private var roleId: JsonField<String> = JsonMissing.of()
         private var userId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -243,10 +241,12 @@ private constructor(
         fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
+        fun objectType(objectType: AclObjectType) = objectType(JsonField.of(objectType))
 
         /** The object type that the ACL applies to */
-        fun objectType(objectType: JsonField<ObjectType>) = apply { this.objectType = objectType }
+        fun objectType(objectType: JsonField<AclObjectType>) = apply {
+            this.objectType = objectType
+        }
 
         /** Date of acl creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
@@ -288,21 +288,21 @@ private constructor(
          * When setting a permission directly, optionally restricts the permission grant to just the
          * specified object type. Cannot be set alongside a `role_id`.
          */
-        fun restrictObjectType(restrictObjectType: RestrictObjectType?) =
+        fun restrictObjectType(restrictObjectType: AclObjectType?) =
             restrictObjectType(JsonField.ofNullable(restrictObjectType))
 
         /**
          * When setting a permission directly, optionally restricts the permission grant to just the
          * specified object type. Cannot be set alongside a `role_id`.
          */
-        fun restrictObjectType(restrictObjectType: Optional<RestrictObjectType>) =
+        fun restrictObjectType(restrictObjectType: Optional<AclObjectType>) =
             restrictObjectType(restrictObjectType.getOrNull())
 
         /**
          * When setting a permission directly, optionally restricts the permission grant to just the
          * specified object type. Cannot be set alongside a `role_id`.
          */
-        fun restrictObjectType(restrictObjectType: JsonField<RestrictObjectType>) = apply {
+        fun restrictObjectType(restrictObjectType: JsonField<AclObjectType>) = apply {
             this.restrictObjectType = restrictObjectType
         }
 
@@ -372,465 +372,6 @@ private constructor(
                 userId,
                 additionalProperties.toImmutable(),
             )
-    }
-
-    /** The object type that the ACL applies to */
-    class ObjectType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val ORGANIZATION = of("organization")
-
-            @JvmField val PROJECT = of("project")
-
-            @JvmField val EXPERIMENT = of("experiment")
-
-            @JvmField val DATASET = of("dataset")
-
-            @JvmField val PROMPT = of("prompt")
-
-            @JvmField val PROMPT_SESSION = of("prompt_session")
-
-            @JvmField val GROUP = of("group")
-
-            @JvmField val ROLE = of("role")
-
-            @JvmField val ORG_MEMBER = of("org_member")
-
-            @JvmField val PROJECT_LOG = of("project_log")
-
-            @JvmField val ORG_PROJECT = of("org_project")
-
-            @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
-        }
-
-        /** An enum containing [ObjectType]'s known values. */
-        enum class Known {
-            ORGANIZATION,
-            PROJECT,
-            EXPERIMENT,
-            DATASET,
-            PROMPT,
-            PROMPT_SESSION,
-            GROUP,
-            ROLE,
-            ORG_MEMBER,
-            PROJECT_LOG,
-            ORG_PROJECT,
-        }
-
-        /**
-         * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [ObjectType] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            ORGANIZATION,
-            PROJECT,
-            EXPERIMENT,
-            DATASET,
-            PROMPT,
-            PROMPT_SESSION,
-            GROUP,
-            ROLE,
-            ORG_MEMBER,
-            PROJECT_LOG,
-            ORG_PROJECT,
-            /**
-             * An enum member indicating that [ObjectType] was instantiated with an unknown value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                ORGANIZATION -> Value.ORGANIZATION
-                PROJECT -> Value.PROJECT
-                EXPERIMENT -> Value.EXPERIMENT
-                DATASET -> Value.DATASET
-                PROMPT -> Value.PROMPT
-                PROMPT_SESSION -> Value.PROMPT_SESSION
-                GROUP -> Value.GROUP
-                ROLE -> Value.ROLE
-                ORG_MEMBER -> Value.ORG_MEMBER
-                PROJECT_LOG -> Value.PROJECT_LOG
-                ORG_PROJECT -> Value.ORG_PROJECT
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                ORGANIZATION -> Known.ORGANIZATION
-                PROJECT -> Known.PROJECT
-                EXPERIMENT -> Known.EXPERIMENT
-                DATASET -> Known.DATASET
-                PROMPT -> Known.PROMPT
-                PROMPT_SESSION -> Known.PROMPT_SESSION
-                GROUP -> Known.GROUP
-                ROLE -> Known.ROLE
-                ORG_MEMBER -> Known.ORG_MEMBER
-                PROJECT_LOG -> Known.PROJECT_LOG
-                ORG_PROJECT -> Known.ORG_PROJECT
-                else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                BraintrustInvalidDataException("Value is not a String")
-            }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
-    /** Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided */
-    class Permission @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val CREATE = of("create")
-
-            @JvmField val READ = of("read")
-
-            @JvmField val UPDATE = of("update")
-
-            @JvmField val DELETE = of("delete")
-
-            @JvmField val CREATE_ACLS = of("create_acls")
-
-            @JvmField val READ_ACLS = of("read_acls")
-
-            @JvmField val UPDATE_ACLS = of("update_acls")
-
-            @JvmField val DELETE_ACLS = of("delete_acls")
-
-            @JvmStatic fun of(value: String) = Permission(JsonField.of(value))
-        }
-
-        /** An enum containing [Permission]'s known values. */
-        enum class Known {
-            CREATE,
-            READ,
-            UPDATE,
-            DELETE,
-            CREATE_ACLS,
-            READ_ACLS,
-            UPDATE_ACLS,
-            DELETE_ACLS,
-        }
-
-        /**
-         * An enum containing [Permission]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [Permission] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            CREATE,
-            READ,
-            UPDATE,
-            DELETE,
-            CREATE_ACLS,
-            READ_ACLS,
-            UPDATE_ACLS,
-            DELETE_ACLS,
-            /**
-             * An enum member indicating that [Permission] was instantiated with an unknown value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                CREATE -> Value.CREATE
-                READ -> Value.READ
-                UPDATE -> Value.UPDATE
-                DELETE -> Value.DELETE
-                CREATE_ACLS -> Value.CREATE_ACLS
-                READ_ACLS -> Value.READ_ACLS
-                UPDATE_ACLS -> Value.UPDATE_ACLS
-                DELETE_ACLS -> Value.DELETE_ACLS
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                CREATE -> Known.CREATE
-                READ -> Known.READ
-                UPDATE -> Known.UPDATE
-                DELETE -> Known.DELETE
-                CREATE_ACLS -> Known.CREATE_ACLS
-                READ_ACLS -> Known.READ_ACLS
-                UPDATE_ACLS -> Known.UPDATE_ACLS
-                DELETE_ACLS -> Known.DELETE_ACLS
-                else -> throw BraintrustInvalidDataException("Unknown Permission: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                BraintrustInvalidDataException("Value is not a String")
-            }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
-    /**
-     * When setting a permission directly, optionally restricts the permission grant to just the
-     * specified object type. Cannot be set alongside a `role_id`.
-     */
-    class RestrictObjectType
-    @JsonCreator
-    private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val ORGANIZATION = of("organization")
-
-            @JvmField val PROJECT = of("project")
-
-            @JvmField val EXPERIMENT = of("experiment")
-
-            @JvmField val DATASET = of("dataset")
-
-            @JvmField val PROMPT = of("prompt")
-
-            @JvmField val PROMPT_SESSION = of("prompt_session")
-
-            @JvmField val GROUP = of("group")
-
-            @JvmField val ROLE = of("role")
-
-            @JvmField val ORG_MEMBER = of("org_member")
-
-            @JvmField val PROJECT_LOG = of("project_log")
-
-            @JvmField val ORG_PROJECT = of("org_project")
-
-            @JvmStatic fun of(value: String) = RestrictObjectType(JsonField.of(value))
-        }
-
-        /** An enum containing [RestrictObjectType]'s known values. */
-        enum class Known {
-            ORGANIZATION,
-            PROJECT,
-            EXPERIMENT,
-            DATASET,
-            PROMPT,
-            PROMPT_SESSION,
-            GROUP,
-            ROLE,
-            ORG_MEMBER,
-            PROJECT_LOG,
-            ORG_PROJECT,
-        }
-
-        /**
-         * An enum containing [RestrictObjectType]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [RestrictObjectType] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            ORGANIZATION,
-            PROJECT,
-            EXPERIMENT,
-            DATASET,
-            PROMPT,
-            PROMPT_SESSION,
-            GROUP,
-            ROLE,
-            ORG_MEMBER,
-            PROJECT_LOG,
-            ORG_PROJECT,
-            /**
-             * An enum member indicating that [RestrictObjectType] was instantiated with an unknown
-             * value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                ORGANIZATION -> Value.ORGANIZATION
-                PROJECT -> Value.PROJECT
-                EXPERIMENT -> Value.EXPERIMENT
-                DATASET -> Value.DATASET
-                PROMPT -> Value.PROMPT
-                PROMPT_SESSION -> Value.PROMPT_SESSION
-                GROUP -> Value.GROUP
-                ROLE -> Value.ROLE
-                ORG_MEMBER -> Value.ORG_MEMBER
-                PROJECT_LOG -> Value.PROJECT_LOG
-                ORG_PROJECT -> Value.ORG_PROJECT
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                ORGANIZATION -> Known.ORGANIZATION
-                PROJECT -> Known.PROJECT
-                EXPERIMENT -> Known.EXPERIMENT
-                DATASET -> Known.DATASET
-                PROMPT -> Known.PROMPT
-                PROMPT_SESSION -> Known.PROMPT_SESSION
-                GROUP -> Known.GROUP
-                ROLE -> Known.ROLE
-                ORG_MEMBER -> Known.ORG_MEMBER
-                PROJECT_LOG -> Known.PROJECT_LOG
-                ORG_PROJECT -> Known.ORG_PROJECT
-                else -> throw BraintrustInvalidDataException("Unknown RestrictObjectType: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws BraintrustInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                BraintrustInvalidDataException("Value is not a String")
-            }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is RestrictObjectType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {
