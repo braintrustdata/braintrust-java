@@ -4,6 +4,8 @@ package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
+import com.braintrustdata.api.models.AclObjectType
+import com.braintrustdata.api.models.Permission
 import com.braintrustdata.api.models.RoleCreateParams
 import com.braintrustdata.api.models.RoleDeleteParams
 import com.braintrustdata.api.models.RoleReplaceParams
@@ -31,10 +33,8 @@ class RoleServiceAsyncTest {
                     .description("description")
                     .addMemberPermission(
                         RoleCreateParams.MemberPermission.builder()
-                            .permission(RoleCreateParams.MemberPermission.Permission.CREATE)
-                            .restrictObjectType(
-                                RoleCreateParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                            )
+                            .permission(Permission.CREATE)
+                            .restrictObjectType(AclObjectType.ORGANIZATION)
                             .build()
                     )
                     .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -79,10 +79,8 @@ class RoleServiceAsyncTest {
                     .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addAddMemberPermission(
                         RoleUpdateParams.AddMemberPermission.builder()
-                            .permission(RoleUpdateParams.AddMemberPermission.Permission.CREATE)
-                            .restrictObjectType(
-                                RoleUpdateParams.AddMemberPermission.RestrictObjectType.ORGANIZATION
-                            )
+                            .permission(Permission.CREATE)
+                            .restrictObjectType(AclObjectType.ORGANIZATION)
                             .build()
                     )
                     .addAddMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -90,11 +88,8 @@ class RoleServiceAsyncTest {
                     .name("x")
                     .addRemoveMemberPermission(
                         RoleUpdateParams.RemoveMemberPermission.builder()
-                            .permission(RoleUpdateParams.RemoveMemberPermission.Permission.CREATE)
-                            .restrictObjectType(
-                                RoleUpdateParams.RemoveMemberPermission.RestrictObjectType
-                                    .ORGANIZATION
-                            )
+                            .permission(Permission.CREATE)
+                            .restrictObjectType(AclObjectType.ORGANIZATION)
                             .build()
                     )
                     .addRemoveMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -154,10 +149,8 @@ class RoleServiceAsyncTest {
                     .description("description")
                     .addMemberPermission(
                         RoleReplaceParams.MemberPermission.builder()
-                            .permission(RoleReplaceParams.MemberPermission.Permission.CREATE)
-                            .restrictObjectType(
-                                RoleReplaceParams.MemberPermission.RestrictObjectType.ORGANIZATION
-                            )
+                            .permission(Permission.CREATE)
+                            .restrictObjectType(AclObjectType.ORGANIZATION)
                             .build()
                     )
                     .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

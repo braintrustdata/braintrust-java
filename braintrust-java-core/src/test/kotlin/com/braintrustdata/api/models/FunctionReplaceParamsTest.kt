@@ -31,7 +31,7 @@ class FunctionReplaceParamsTest {
             .origin(
                 FunctionReplaceParams.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .internal_(true)
                     .build()
             )
@@ -141,7 +141,7 @@ class FunctionReplaceParamsTest {
                 .origin(
                     FunctionReplaceParams.Origin.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .internal_(true)
                         .build()
                 )
@@ -255,7 +255,7 @@ class FunctionReplaceParamsTest {
             .contains(
                 FunctionReplaceParams.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .internal_(true)
                     .build()
             )

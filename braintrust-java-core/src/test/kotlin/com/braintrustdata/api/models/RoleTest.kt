@@ -19,8 +19,8 @@ class RoleTest {
                 .description("description")
                 .addMemberPermission(
                     Role.MemberPermission.builder()
-                        .permission(Role.MemberPermission.Permission.CREATE)
-                        .restrictObjectType(Role.MemberPermission.RestrictObjectType.ORGANIZATION)
+                        .permission(Permission.CREATE)
+                        .restrictObjectType(AclObjectType.ORGANIZATION)
                         .build()
                 )
                 .addMemberRole("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -36,8 +36,8 @@ class RoleTest {
         assertThat(role.memberPermissions().get())
             .containsExactly(
                 Role.MemberPermission.builder()
-                    .permission(Role.MemberPermission.Permission.CREATE)
-                    .restrictObjectType(Role.MemberPermission.RestrictObjectType.ORGANIZATION)
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
                     .build()
             )
         assertThat(role.memberRoles().get()).containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

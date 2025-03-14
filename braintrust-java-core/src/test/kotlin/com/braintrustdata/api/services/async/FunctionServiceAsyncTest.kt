@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.models.AclObjectType
 import com.braintrustdata.api.models.FunctionCreateParams
 import com.braintrustdata.api.models.FunctionDeleteParams
 import com.braintrustdata.api.models.FunctionInvokeParams
@@ -52,7 +53,7 @@ class FunctionServiceAsyncTest {
                     .origin(
                         FunctionCreateParams.Origin.builder()
                             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(FunctionCreateParams.Origin.ObjectType.ORGANIZATION)
+                            .objectType(AclObjectType.ORGANIZATION)
                             .internal_(true)
                             .build()
                     )
@@ -402,7 +403,7 @@ class FunctionServiceAsyncTest {
                     .origin(
                         FunctionReplaceParams.Origin.builder()
                             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .objectType(FunctionReplaceParams.Origin.ObjectType.ORGANIZATION)
+                            .objectType(AclObjectType.ORGANIZATION)
                             .internal_(true)
                             .build()
                     )

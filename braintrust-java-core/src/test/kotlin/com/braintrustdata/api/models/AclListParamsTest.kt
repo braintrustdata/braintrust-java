@@ -12,7 +12,7 @@ class AclListParamsTest {
     fun create() {
         AclListParams.builder()
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .objectType(AclListParams.ObjectType.ORGANIZATION)
+            .objectType(AclObjectType.ORGANIZATION)
             .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .limit(0L)
@@ -25,7 +25,7 @@ class AclListParamsTest {
         val params =
             AclListParams.builder()
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclListParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .endingBefore("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .limit(0L)
@@ -33,7 +33,7 @@ class AclListParamsTest {
                 .build()
         val expected = QueryParams.builder()
         expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", AclListParams.ObjectType.ORGANIZATION.toString())
+        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
         expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put(
             "ids",
@@ -49,11 +49,11 @@ class AclListParamsTest {
         val params =
             AclListParams.builder()
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclListParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
         val expected = QueryParams.builder()
         expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", AclListParams.ObjectType.ORGANIZATION.toString())
+        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
         assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }

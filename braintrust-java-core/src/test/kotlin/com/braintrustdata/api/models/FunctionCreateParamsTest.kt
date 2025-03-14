@@ -31,7 +31,7 @@ class FunctionCreateParamsTest {
             .origin(
                 FunctionCreateParams.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(FunctionCreateParams.Origin.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .internal_(true)
                     .build()
             )
@@ -141,7 +141,7 @@ class FunctionCreateParamsTest {
                 .origin(
                     FunctionCreateParams.Origin.builder()
                         .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(FunctionCreateParams.Origin.ObjectType.ORGANIZATION)
+                        .objectType(AclObjectType.ORGANIZATION)
                         .internal_(true)
                         .build()
                 )
@@ -255,7 +255,7 @@ class FunctionCreateParamsTest {
             .contains(
                 FunctionCreateParams.Origin.builder()
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(FunctionCreateParams.Origin.ObjectType.ORGANIZATION)
+                    .objectType(AclObjectType.ORGANIZATION)
                     .internal_(true)
                     .build()
             )

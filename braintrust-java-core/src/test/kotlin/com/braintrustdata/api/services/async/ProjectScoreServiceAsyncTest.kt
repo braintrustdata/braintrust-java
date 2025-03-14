@@ -11,6 +11,7 @@ import com.braintrustdata.api.models.ProjectScoreCreateParams
 import com.braintrustdata.api.models.ProjectScoreDeleteParams
 import com.braintrustdata.api.models.ProjectScoreReplaceParams
 import com.braintrustdata.api.models.ProjectScoreRetrieveParams
+import com.braintrustdata.api.models.ProjectScoreType
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -32,7 +33,7 @@ class ProjectScoreServiceAsyncTest {
                 ProjectScoreCreateParams.builder()
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .scoreType(ProjectScoreCreateParams.ScoreType.SLIDER)
+                    .scoreType(ProjectScoreType.SLIDER)
                     .categoriesOfCategorical(
                         listOf(ProjectScoreCategory.builder().name("name").value(0.0).build())
                     )
@@ -120,7 +121,7 @@ class ProjectScoreServiceAsyncTest {
                     )
                     .description("description")
                     .name("name")
-                    .scoreType(ProjectScoreUpdateParams.ScoreType.SLIDER)
+                    .scoreType(ProjectScoreType.SLIDER)
                     .build()
             )
 
@@ -177,7 +178,7 @@ class ProjectScoreServiceAsyncTest {
                 ProjectScoreReplaceParams.builder()
                     .name("name")
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .scoreType(ProjectScoreReplaceParams.ScoreType.SLIDER)
+                    .scoreType(ProjectScoreType.SLIDER)
                     .categoriesOfCategorical(
                         listOf(ProjectScoreCategory.builder().name("name").value(0.0).build())
                     )

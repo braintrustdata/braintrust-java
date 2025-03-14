@@ -12,10 +12,10 @@ class AclFindAndDeleteParamsTest {
     fun create() {
         AclFindAndDeleteParams.builder()
             .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .objectType(AclFindAndDeleteParams.ObjectType.ORGANIZATION)
+            .objectType(AclObjectType.ORGANIZATION)
             .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .permission(AclFindAndDeleteParams.Permission.CREATE)
-            .restrictObjectType(AclFindAndDeleteParams.RestrictObjectType.ORGANIZATION)
+            .permission(Permission.CREATE)
+            .restrictObjectType(AclObjectType.ORGANIZATION)
             .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
@@ -26,10 +26,10 @@ class AclFindAndDeleteParamsTest {
         val params =
             AclFindAndDeleteParams.builder()
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclFindAndDeleteParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .permission(AclFindAndDeleteParams.Permission.CREATE)
-                .restrictObjectType(AclFindAndDeleteParams.RestrictObjectType.ORGANIZATION)
+                .permission(Permission.CREATE)
+                .restrictObjectType(AclObjectType.ORGANIZATION)
                 .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
@@ -38,11 +38,10 @@ class AclFindAndDeleteParamsTest {
 
         assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.objectType()).isEqualTo(AclFindAndDeleteParams.ObjectType.ORGANIZATION)
+        assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
         assertThat(body.groupId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.permission()).contains(AclFindAndDeleteParams.Permission.CREATE)
-        assertThat(body.restrictObjectType())
-            .contains(AclFindAndDeleteParams.RestrictObjectType.ORGANIZATION)
+        assertThat(body.permission()).contains(Permission.CREATE)
+        assertThat(body.restrictObjectType()).contains(AclObjectType.ORGANIZATION)
         assertThat(body.roleId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.userId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
@@ -52,13 +51,13 @@ class AclFindAndDeleteParamsTest {
         val params =
             AclFindAndDeleteParams.builder()
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclFindAndDeleteParams.ObjectType.ORGANIZATION)
+                .objectType(AclObjectType.ORGANIZATION)
                 .build()
 
         val body = params._body()
 
         assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.objectType()).isEqualTo(AclFindAndDeleteParams.ObjectType.ORGANIZATION)
+        assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
     }
 }

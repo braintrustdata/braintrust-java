@@ -7,6 +7,7 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.EnvVarCreateParams
 import com.braintrustdata.api.models.EnvVarDeleteParams
 import com.braintrustdata.api.models.EnvVarListParams
+import com.braintrustdata.api.models.EnvVarObjectType
 import com.braintrustdata.api.models.EnvVarReplaceParams
 import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
@@ -97,7 +98,7 @@ class EnvVarServiceAsyncTest {
                     .ids("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(0L)
                     .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .objectType(EnvVarListParams.ObjectType.ORGANIZATION)
+                    .objectType(EnvVarObjectType.ORGANIZATION)
                     .build()
             )
 

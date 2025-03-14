@@ -18,7 +18,7 @@ class ProjectScoreListParamsTest {
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .projectName("project_name")
             .projectScoreName("project_score_name")
-            .scoreType(ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER)
+            .scoreType(ProjectScoreType.SLIDER)
             .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
     }
@@ -34,7 +34,7 @@ class ProjectScoreListParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .projectName("project_name")
                 .projectScoreName("project_score_name")
-                .scoreType(ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER)
+                .scoreType(ProjectScoreType.SLIDER)
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
@@ -50,9 +50,7 @@ class ProjectScoreListParamsTest {
         expected.put("project_score_name", "project_score_name")
         expected.put(
             "score_type",
-            ProjectScoreListParams.ScoreType.ofProject(
-                    ProjectScoreListParams.ScoreType.ProjectScoreType.SLIDER.toString()
-                )
+            ProjectScoreListParams.ScoreType.ofProject(ProjectScoreType.SLIDER.toString())
                 .toString(),
         )
         expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
