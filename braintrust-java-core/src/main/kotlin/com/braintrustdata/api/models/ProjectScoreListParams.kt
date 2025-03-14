@@ -641,6 +641,8 @@ private constructor(
 
                 @JvmField val ONLINE = of("online")
 
+                @JvmField val FREE_FORM = of("free-form")
+
                 @JvmStatic fun of(value: String) = ProjectScoreType(JsonField.of(value))
             }
 
@@ -652,6 +654,7 @@ private constructor(
                 MINIMUM,
                 MAXIMUM,
                 ONLINE,
+                FREE_FORM,
             }
 
             /**
@@ -671,6 +674,7 @@ private constructor(
                 MINIMUM,
                 MAXIMUM,
                 ONLINE,
+                FREE_FORM,
                 /**
                  * An enum member indicating that [ProjectScoreType] was instantiated with an
                  * unknown value.
@@ -693,6 +697,7 @@ private constructor(
                     MINIMUM -> Value.MINIMUM
                     MAXIMUM -> Value.MAXIMUM
                     ONLINE -> Value.ONLINE
+                    FREE_FORM -> Value.FREE_FORM
                     else -> Value._UNKNOWN
                 }
 
@@ -713,6 +718,7 @@ private constructor(
                     MINIMUM -> Known.MINIMUM
                     MAXIMUM -> Known.MAXIMUM
                     ONLINE -> Known.ONLINE
+                    FREE_FORM -> Known.FREE_FORM
                     else -> throw BraintrustInvalidDataException("Unknown ProjectScoreType: $value")
                 }
 
@@ -772,6 +778,8 @@ private constructor(
 
                 @JvmField val ONLINE = of("online")
 
+                @JvmField val FREE_FORM = of("free-form")
+
                 @JvmStatic fun of(value: String) = ProjectScoreType(JsonField.of(value))
             }
 
@@ -783,6 +791,7 @@ private constructor(
                 MINIMUM,
                 MAXIMUM,
                 ONLINE,
+                FREE_FORM,
             }
 
             /**
@@ -802,6 +811,7 @@ private constructor(
                 MINIMUM,
                 MAXIMUM,
                 ONLINE,
+                FREE_FORM,
                 /**
                  * An enum member indicating that [ProjectScoreType] was instantiated with an
                  * unknown value.
@@ -824,6 +834,7 @@ private constructor(
                     MINIMUM -> Value.MINIMUM
                     MAXIMUM -> Value.MAXIMUM
                     ONLINE -> Value.ONLINE
+                    FREE_FORM -> Value.FREE_FORM
                     else -> Value._UNKNOWN
                 }
 
@@ -844,6 +855,7 @@ private constructor(
                     MINIMUM -> Known.MINIMUM
                     MAXIMUM -> Known.MAXIMUM
                     ONLINE -> Known.ONLINE
+                    FREE_FORM -> Known.FREE_FORM
                     else -> throw BraintrustInvalidDataException("Unknown ProjectScoreType: $value")
                 }
 

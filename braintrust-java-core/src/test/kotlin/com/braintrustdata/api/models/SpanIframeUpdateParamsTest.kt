@@ -12,6 +12,7 @@ class SpanIframeUpdateParamsTest {
     fun create() {
         SpanIframeUpdateParams.builder()
             .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .description("description")
             .name("name")
             .postMessage(true)
             .url("url")
@@ -23,6 +24,7 @@ class SpanIframeUpdateParamsTest {
         val params =
             SpanIframeUpdateParams.builder()
                 .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .description("description")
                 .name("name")
                 .postMessage(true)
                 .url("url")
@@ -31,6 +33,7 @@ class SpanIframeUpdateParamsTest {
         val body = params._body()
 
         assertNotNull(body)
+        assertThat(body.description()).contains("description")
         assertThat(body.name()).contains("name")
         assertThat(body.postMessage()).contains(true)
         assertThat(body.url()).contains("url")

@@ -18,9 +18,11 @@ class PromptOptionsTest {
                         .functionCall(
                             PromptOptions.Params.OpenAIModelParams.FunctionCall.UnionMember0.AUTO
                         )
+                        .maxCompletionTokens(0.0)
                         .maxTokens(0.0)
                         .n(0.0)
                         .presencePenalty(0.0)
+                        .reasoningEffort(PromptOptions.Params.OpenAIModelParams.ReasoningEffort.LOW)
                         .responseFormat(
                             PromptOptions.Params.OpenAIModelParams.ResponseFormat.JsonObject
                                 .builder()
@@ -52,9 +54,11 @@ class PromptOptionsTest {
                         .functionCall(
                             PromptOptions.Params.OpenAIModelParams.FunctionCall.UnionMember0.AUTO
                         )
+                        .maxCompletionTokens(0.0)
                         .maxTokens(0.0)
                         .n(0.0)
                         .presencePenalty(0.0)
+                        .reasoningEffort(PromptOptions.Params.OpenAIModelParams.ReasoningEffort.LOW)
                         .responseFormat(
                             PromptOptions.Params.OpenAIModelParams.ResponseFormat.JsonObject
                                 .builder()

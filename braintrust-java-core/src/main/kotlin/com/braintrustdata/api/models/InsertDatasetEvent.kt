@@ -45,6 +45,9 @@ private constructor(
     @JsonProperty("metadata")
     @ExcludeMissing
     private val metadata: JsonField<Metadata> = JsonMissing.of(),
+    @JsonProperty("origin")
+    @ExcludeMissing
+    private val origin: JsonField<ObjectReference> = JsonMissing.of(),
     @JsonProperty("root_span_id")
     @ExcludeMissing
     private val rootSpanId: JsonField<String> = JsonMissing.of(),
@@ -104,6 +107,10 @@ private constructor(
         Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
 
     /**
+     * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
+     * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
+     * `root_span_id`, and `span_parents` explicitly instead.
+     *
      * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
      * hierarchical relationships are important for tracing (see the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
@@ -140,10 +147,13 @@ private constructor(
      */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
+    /** Indicates the event was copied from another object. */
+    fun origin(): Optional<ObjectReference> = Optional.ofNullable(origin.getNullable("origin"))
+
     /**
-     * Use span_id, root_span_id, and span_parents as a more explicit alternative to \_parent_id.
-     * The span_id is a unique identifier describing the row's place in the a trace, and the
-     * root_span_id is a unique identifier for the whole trace. See the
+     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
+     * the root_span_id is a unique identifier for the whole trace. See the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
      *
      * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -159,9 +169,9 @@ private constructor(
     fun rootSpanId(): Optional<String> = Optional.ofNullable(rootSpanId.getNullable("root_span_id"))
 
     /**
-     * Use span_id, root_span_id, and span_parents as a more explicit alternative to \_parent_id.
-     * The span_id is a unique identifier describing the row's place in the a trace, and the
-     * root_span_id is a unique identifier for the whole trace. See the
+     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
+     * the root_span_id is a unique identifier for the whole trace. See the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
      *
      * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -177,9 +187,9 @@ private constructor(
     fun spanId(): Optional<String> = Optional.ofNullable(spanId.getNullable("span_id"))
 
     /**
-     * Use span_id, root_span_id, and span_parents as a more explicit alternative to \_parent_id.
-     * The span_id is a unique identifier describing the row's place in the a trace, and the
-     * root_span_id is a unique identifier for the whole trace. See the
+     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
+     * the root_span_id is a unique identifier for the whole trace. See the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
      *
      * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -244,6 +254,10 @@ private constructor(
     fun __objectDelete(): JsonField<Boolean> = _objectDelete
 
     /**
+     * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
+     * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
+     * `root_span_id`, and `span_parents` explicitly instead.
+     *
      * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
      * hierarchical relationships are important for tracing (see the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
@@ -271,10 +285,13 @@ private constructor(
      */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
+    /** Indicates the event was copied from another object. */
+    @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<ObjectReference> = origin
+
     /**
-     * Use span_id, root_span_id, and span_parents as a more explicit alternative to \_parent_id.
-     * The span_id is a unique identifier describing the row's place in the a trace, and the
-     * root_span_id is a unique identifier for the whole trace. See the
+     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
+     * the root_span_id is a unique identifier for the whole trace. See the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
      *
      * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -290,9 +307,9 @@ private constructor(
     @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId(): JsonField<String> = rootSpanId
 
     /**
-     * Use span_id, root_span_id, and span_parents as a more explicit alternative to \_parent_id.
-     * The span_id is a unique identifier describing the row's place in the a trace, and the
-     * root_span_id is a unique identifier for the whole trace. See the
+     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
+     * the root_span_id is a unique identifier for the whole trace. See the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
      *
      * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -308,9 +325,9 @@ private constructor(
     @JsonProperty("span_id") @ExcludeMissing fun _spanId(): JsonField<String> = spanId
 
     /**
-     * Use span_id, root_span_id, and span_parents as a more explicit alternative to \_parent_id.
-     * The span_id is a unique identifier describing the row's place in the a trace, and the
-     * root_span_id is a unique identifier for the whole trace. See the
+     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
+     * the root_span_id is a unique identifier for the whole trace. See the
      * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
      *
      * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -348,6 +365,7 @@ private constructor(
         _parentId()
         created()
         metadata().ifPresent { it.validate() }
+        origin().ifPresent { it.validate() }
         rootSpanId()
         spanId()
         spanParents()
@@ -375,6 +393,7 @@ private constructor(
         private var expected: JsonValue = JsonMissing.of()
         private var input: JsonValue = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
+        private var origin: JsonField<ObjectReference> = JsonMissing.of()
         private var rootSpanId: JsonField<String> = JsonMissing.of()
         private var spanId: JsonField<String> = JsonMissing.of()
         private var spanParents: JsonField<MutableList<String>>? = null
@@ -392,6 +411,7 @@ private constructor(
             expected = insertDatasetEvent.expected
             input = insertDatasetEvent.input
             metadata = insertDatasetEvent.metadata
+            origin = insertDatasetEvent.origin
             rootSpanId = insertDatasetEvent.rootSpanId
             spanId = insertDatasetEvent.spanId
             spanParents = insertDatasetEvent.spanParents.map { it.toMutableList() }
@@ -571,6 +591,10 @@ private constructor(
         }
 
         /**
+         * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
+         * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
+         * `root_span_id`, and `span_parents` explicitly instead.
+         *
          * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
          * hierarchical relationships are important for tracing (see the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
@@ -587,6 +611,10 @@ private constructor(
         fun _parentId(_parentId: String?) = _parentId(JsonField.ofNullable(_parentId))
 
         /**
+         * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
+         * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
+         * `root_span_id`, and `span_parents` explicitly instead.
+         *
          * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
          * hierarchical relationships are important for tracing (see the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
@@ -603,6 +631,10 @@ private constructor(
         fun _parentId(_parentId: Optional<String>) = _parentId(_parentId.getOrNull())
 
         /**
+         * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
+         * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
+         * `root_span_id`, and `span_parents` explicitly instead.
+         *
          * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
          * hierarchical relationships are important for tracing (see the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
@@ -665,10 +697,19 @@ private constructor(
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: ObjectReference?) = origin(JsonField.ofNullable(origin))
+
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: Optional<ObjectReference>) = origin(origin.getOrNull())
+
+        /** Indicates the event was copied from another object. */
+        fun origin(origin: JsonField<ObjectReference>) = apply { this.origin = origin }
+
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -685,9 +726,9 @@ private constructor(
         fun rootSpanId(rootSpanId: String?) = rootSpanId(JsonField.ofNullable(rootSpanId))
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -704,9 +745,9 @@ private constructor(
         fun rootSpanId(rootSpanId: Optional<String>) = rootSpanId(rootSpanId.getOrNull())
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -723,9 +764,9 @@ private constructor(
         fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -742,9 +783,9 @@ private constructor(
         fun spanId(spanId: String?) = spanId(JsonField.ofNullable(spanId))
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -761,9 +802,9 @@ private constructor(
         fun spanId(spanId: Optional<String>) = spanId(spanId.getOrNull())
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -780,9 +821,9 @@ private constructor(
         fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -799,9 +840,9 @@ private constructor(
         fun spanParents(spanParents: List<String>?) = spanParents(JsonField.ofNullable(spanParents))
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -818,9 +859,9 @@ private constructor(
         fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.getOrNull())
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -839,9 +880,9 @@ private constructor(
         }
 
         /**
-         * Use span_id, root_span_id, and span_parents as a more explicit alternative to
-         * \_parent_id. The span_id is a unique identifier describing the row's place in the a
-         * trace, and the root_span_id is a unique identifier for the whole trace. See the
+         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
+         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
+         * and the root_span_id is a unique identifier for the whole trace. See the
          * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
          *
          * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
@@ -908,6 +949,7 @@ private constructor(
                 expected,
                 input,
                 metadata,
+                origin,
                 rootSpanId,
                 spanId,
                 (spanParents ?: JsonMissing.of()).map { it.toImmutable() },
@@ -927,9 +969,18 @@ private constructor(
     class Metadata
     @JsonCreator
     private constructor(
+        @JsonProperty("model")
+        @ExcludeMissing
+        private val model: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
+
+        /** The model used for this example */
+        fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
+
+        /** The model used for this example */
+        @JsonProperty("model") @ExcludeMissing fun _model(): JsonField<String> = model
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -942,6 +993,7 @@ private constructor(
                 return@apply
             }
 
+            model()
             validated = true
         }
 
@@ -956,12 +1008,23 @@ private constructor(
         /** A builder for [Metadata]. */
         class Builder internal constructor() {
 
+            private var model: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
+                model = metadata.model
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
+
+            /** The model used for this example */
+            fun model(model: String?) = model(JsonField.ofNullable(model))
+
+            /** The model used for this example */
+            fun model(model: Optional<String>) = model(model.getOrNull())
+
+            /** The model used for this example */
+            fun model(model: JsonField<String>) = apply { this.model = model }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -982,7 +1045,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Metadata = Metadata(additionalProperties.toImmutable())
+            fun build(): Metadata = Metadata(model, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -990,16 +1053,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && model == other.model && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(model, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Metadata{model=$model, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -1007,15 +1071,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InsertDatasetEvent && id == other.id && _isMerge == other._isMerge && _mergePaths == other._mergePaths && _objectDelete == other._objectDelete && _parentId == other._parentId && created == other.created && expected == other.expected && input == other.input && metadata == other.metadata && rootSpanId == other.rootSpanId && spanId == other.spanId && spanParents == other.spanParents && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is InsertDatasetEvent && id == other.id && _isMerge == other._isMerge && _mergePaths == other._mergePaths && _objectDelete == other._objectDelete && _parentId == other._parentId && created == other.created && expected == other.expected && input == other.input && metadata == other.metadata && origin == other.origin && rootSpanId == other.rootSpanId && spanId == other.spanId && spanParents == other.spanParents && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _isMerge, _mergePaths, _objectDelete, _parentId, created, expected, input, metadata, rootSpanId, spanId, spanParents, tags, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, _isMerge, _mergePaths, _objectDelete, _parentId, created, expected, input, metadata, origin, rootSpanId, spanId, spanParents, tags, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "InsertDatasetEvent{id=$id, _isMerge=$_isMerge, _mergePaths=$_mergePaths, _objectDelete=$_objectDelete, _parentId=$_parentId, created=$created, expected=$expected, input=$input, metadata=$metadata, rootSpanId=$rootSpanId, spanId=$spanId, spanParents=$spanParents, tags=$tags, additionalProperties=$additionalProperties}"
+        "InsertDatasetEvent{id=$id, _isMerge=$_isMerge, _mergePaths=$_mergePaths, _objectDelete=$_objectDelete, _parentId=$_parentId, created=$created, expected=$expected, input=$input, metadata=$metadata, origin=$origin, rootSpanId=$rootSpanId, spanId=$spanId, spanParents=$spanParents, tags=$tags, additionalProperties=$additionalProperties}"
 }

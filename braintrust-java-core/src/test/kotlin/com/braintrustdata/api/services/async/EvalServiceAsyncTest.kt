@@ -25,7 +25,17 @@ class EvalServiceAsyncTest {
         val summarizeExperimentResponseFuture =
             evalServiceAsync.create(
                 EvalCreateParams.builder()
-                    .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
+                    .data(
+                        EvalCreateParams.Data.DatasetId.builder()
+                            .datasetId("dataset_id")
+                            ._internalBtql(
+                                EvalCreateParams.Data.DatasetId._InternalBtql
+                                    .builder()
+                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                    .build()
+                            )
+                            .build()
+                    )
                     .projectId("project_id")
                     .addScore(
                         EvalCreateParams.Score.FunctionId.builder()
@@ -53,6 +63,26 @@ class EvalServiceAsyncTest {
                     .metadata(
                         EvalCreateParams.Metadata.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .parent(
+                        EvalCreateParams.Parent.SpanParentStruct.builder()
+                            .objectId("object_id")
+                            .objectType(
+                                EvalCreateParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
+                            )
+                            .propagatedEvent(
+                                EvalCreateParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                    .build()
+                            )
+                            .rowIds(
+                                EvalCreateParams.Parent.SpanParentStruct.RowIds.builder()
+                                    .id("id")
+                                    .rootSpanId("root_span_id")
+                                    .spanId("span_id")
+                                    .build()
+                            )
                             .build()
                     )
                     .repoInfo(

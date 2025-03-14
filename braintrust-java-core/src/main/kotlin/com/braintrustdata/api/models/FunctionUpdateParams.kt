@@ -216,7 +216,11 @@ private constructor(
                 this.description = description
             }
 
-            fun functionData(functionData: FunctionData) = functionData(JsonField.of(functionData))
+            fun functionData(functionData: FunctionData?) =
+                functionData(JsonField.ofNullable(functionData))
+
+            fun functionData(functionData: Optional<FunctionData>) =
+                functionData(functionData.getOrNull())
 
             fun functionData(functionData: JsonField<FunctionData>) = apply {
                 this.functionData = functionData
@@ -229,9 +233,6 @@ private constructor(
 
             fun functionData(global: FunctionData.Global) =
                 functionData(FunctionData.ofGlobal(global))
-
-            fun functionData(nullableVariant: FunctionData.NullableVariant) =
-                functionData(FunctionData.ofNullableVariant(nullableVariant))
 
             /** Name of the prompt */
             fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -362,7 +363,10 @@ private constructor(
         /** Textual description of the prompt */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
-        fun functionData(functionData: FunctionData) = apply { body.functionData(functionData) }
+        fun functionData(functionData: FunctionData?) = apply { body.functionData(functionData) }
+
+        fun functionData(functionData: Optional<FunctionData>) =
+            functionData(functionData.getOrNull())
 
         fun functionData(functionData: JsonField<FunctionData>) = apply {
             body.functionData(functionData)
@@ -373,10 +377,6 @@ private constructor(
         fun functionData(code: FunctionData.Code) = apply { body.functionData(code) }
 
         fun functionData(global: FunctionData.Global) = apply { body.functionData(global) }
-
-        fun functionData(nullableVariant: FunctionData.NullableVariant) = apply {
-            body.functionData(nullableVariant)
-        }
 
         /** Name of the prompt */
         fun name(name: String?) = apply { body.name(name) }
@@ -541,7 +541,6 @@ private constructor(
         private val prompt: Prompt? = null,
         private val code: Code? = null,
         private val global: Global? = null,
-        private val nullableVariant: NullableVariant? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -551,23 +550,17 @@ private constructor(
 
         fun global(): Optional<Global> = Optional.ofNullable(global)
 
-        fun nullableVariant(): Optional<NullableVariant> = Optional.ofNullable(nullableVariant)
-
         fun isPrompt(): Boolean = prompt != null
 
         fun isCode(): Boolean = code != null
 
         fun isGlobal(): Boolean = global != null
 
-        fun isNullableVariant(): Boolean = nullableVariant != null
-
         fun asPrompt(): Prompt = prompt.getOrThrow("prompt")
 
         fun asCode(): Code = code.getOrThrow("code")
 
         fun asGlobal(): Global = global.getOrThrow("global")
-
-        fun asNullableVariant(): NullableVariant = nullableVariant.getOrThrow("nullableVariant")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -576,7 +569,6 @@ private constructor(
                 prompt != null -> visitor.visitPrompt(prompt)
                 code != null -> visitor.visitCode(code)
                 global != null -> visitor.visitGlobal(global)
-                nullableVariant != null -> visitor.visitNullableVariant(nullableVariant)
                 else -> visitor.unknown(_json)
             }
         }
@@ -601,10 +593,6 @@ private constructor(
                     override fun visitGlobal(global: Global) {
                         global.validate()
                     }
-
-                    override fun visitNullableVariant(nullableVariant: NullableVariant) {
-                        nullableVariant.validate()
-                    }
                 }
             )
             validated = true
@@ -615,17 +603,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is FunctionData && prompt == other.prompt && code == other.code && global == other.global && nullableVariant == other.nullableVariant /* spotless:on */
+            return /* spotless:off */ other is FunctionData && prompt == other.prompt && code == other.code && global == other.global /* spotless:on */
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(prompt, code, global, nullableVariant) /* spotless:on */
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(prompt, code, global) /* spotless:on */
 
         override fun toString(): String =
             when {
                 prompt != null -> "FunctionData{prompt=$prompt}"
                 code != null -> "FunctionData{code=$code}"
                 global != null -> "FunctionData{global=$global}"
-                nullableVariant != null -> "FunctionData{nullableVariant=$nullableVariant}"
                 _json != null -> "FunctionData{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid FunctionData")
             }
@@ -637,10 +624,6 @@ private constructor(
             @JvmStatic fun ofCode(code: Code) = FunctionData(code = code)
 
             @JvmStatic fun ofGlobal(global: Global) = FunctionData(global = global)
-
-            @JvmStatic
-            fun ofNullableVariant(nullableVariant: NullableVariant) =
-                FunctionData(nullableVariant = nullableVariant)
         }
 
         /**
@@ -654,8 +637,6 @@ private constructor(
             fun visitCode(code: Code): T
 
             fun visitGlobal(global: Global): T
-
-            fun visitNullableVariant(nullableVariant: NullableVariant): T
 
             /**
              * Maps an unknown variant of [FunctionData] to a value of type [T].
@@ -689,10 +670,6 @@ private constructor(
                     ?.let {
                         return FunctionData(global = it, _json = json)
                     }
-                tryDeserialize(node, jacksonTypeRef<NullableVariant>()) { it.validate() }
-                    ?.let {
-                        return FunctionData(nullableVariant = it, _json = json)
-                    }
 
                 return FunctionData(_json = json)
             }
@@ -709,7 +686,6 @@ private constructor(
                     value.prompt != null -> generator.writeObject(value.prompt)
                     value.code != null -> generator.writeObject(value.code)
                     value.global != null -> generator.writeObject(value.global)
-                    value.nullableVariant != null -> generator.writeObject(value.nullableVariant)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid FunctionData")
                 }
@@ -2309,88 +2285,6 @@ private constructor(
 
             override fun toString() =
                 "Global{name=$name, type=$type, additionalProperties=$additionalProperties}"
-        }
-
-        @NoAutoDetect
-        class NullableVariant
-        @JsonCreator
-        private constructor(
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-        ) {
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): NullableVariant = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                validated = true
-            }
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /** Returns a mutable builder for constructing an instance of [NullableVariant]. */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [NullableVariant]. */
-            class Builder internal constructor() {
-
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(nullableVariant: NullableVariant) = apply {
-                    additionalProperties = nullableVariant.additionalProperties.toMutableMap()
-                }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                fun build(): NullableVariant = NullableVariant(additionalProperties.toImmutable())
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is NullableVariant && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() = "NullableVariant{additionalProperties=$additionalProperties}"
         }
     }
 
