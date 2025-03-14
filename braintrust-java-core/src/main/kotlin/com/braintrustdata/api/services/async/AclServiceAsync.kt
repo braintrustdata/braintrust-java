@@ -5,8 +5,6 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Acl
-import com.braintrustdata.api.models.AclBatchUpdateParams
-import com.braintrustdata.api.models.AclBatchUpdateResponse
 import com.braintrustdata.api.models.AclCreateParams
 import com.braintrustdata.api.models.AclDeleteParams
 import com.braintrustdata.api.models.AclFindAndDeleteParams
@@ -68,28 +66,6 @@ interface AclServiceAsync {
         params: AclDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
-
-    /**
-     * Batch update acls. This operation is idempotent, so adding acls which already exist will have
-     * no effect, and removing acls which do not exist will have no effect.
-     */
-    fun batchUpdate(): CompletableFuture<AclBatchUpdateResponse> =
-        batchUpdate(AclBatchUpdateParams.none())
-
-    /** @see [batchUpdate] */
-    fun batchUpdate(
-        params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<AclBatchUpdateResponse>
-
-    /** @see [batchUpdate] */
-    fun batchUpdate(
-        params: AclBatchUpdateParams = AclBatchUpdateParams.none()
-    ): CompletableFuture<AclBatchUpdateResponse> = batchUpdate(params, RequestOptions.none())
-
-    /** @see [batchUpdate] */
-    fun batchUpdate(requestOptions: RequestOptions): CompletableFuture<AclBatchUpdateResponse> =
-        batchUpdate(AclBatchUpdateParams.none(), requestOptions)
 
     /** Delete a single acl */
     fun findAndDelete(params: AclFindAndDeleteParams): CompletableFuture<Acl> =
@@ -163,35 +139,6 @@ interface AclServiceAsync {
             params: AclDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
-
-        /**
-         * Returns a raw HTTP response for `post /v1/acl/batch-update`, but is otherwise the same as
-         * [AclServiceAsync.batchUpdate].
-         */
-        @MustBeClosed
-        fun batchUpdate(): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
-            batchUpdate(AclBatchUpdateParams.none())
-
-        /** @see [batchUpdate] */
-        @MustBeClosed
-        fun batchUpdate(
-            params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>>
-
-        /** @see [batchUpdate] */
-        @MustBeClosed
-        fun batchUpdate(
-            params: AclBatchUpdateParams = AclBatchUpdateParams.none()
-        ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
-            batchUpdate(params, RequestOptions.none())
-
-        /** @see [batchUpdate] */
-        @MustBeClosed
-        fun batchUpdate(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
-            batchUpdate(AclBatchUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `delete /v1/acl`, but is otherwise the same as

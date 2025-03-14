@@ -46,11 +46,17 @@ private constructor(
     /** Function id */
     fun functionId(): String = functionId
 
+    /** The expected output of the function */
+    fun _expected(): JsonValue = body._expected()
+
     /** Argument to the function, which can be any JSON serializable value */
     fun _input(): JsonValue = body._input()
 
     /** If the function is an LLM, additional messages to pass along to it */
     fun messages(): Optional<List<Message>> = body.messages()
+
+    /** Any relevant metadata */
+    fun metadata(): Optional<Metadata> = body.metadata()
 
     /** The mode format of the returned value (defaults to 'auto') */
     fun mode(): Optional<Mode> = body.mode()
@@ -69,6 +75,9 @@ private constructor(
 
     /** If the function is an LLM, additional messages to pass along to it */
     fun _messages(): JsonField<List<Message>> = body._messages()
+
+    /** Any relevant metadata */
+    fun _metadata(): JsonField<Metadata> = body._metadata()
 
     /** The mode format of the returned value (defaults to 'auto') */
     fun _mode(): JsonField<Mode> = body._mode()
@@ -109,10 +118,16 @@ private constructor(
     class Body
     @JsonCreator
     private constructor(
+        @JsonProperty("expected")
+        @ExcludeMissing
+        private val expected: JsonValue = JsonMissing.of(),
         @JsonProperty("input") @ExcludeMissing private val input: JsonValue = JsonMissing.of(),
         @JsonProperty("messages")
         @ExcludeMissing
         private val messages: JsonField<List<Message>> = JsonMissing.of(),
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        private val metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("mode") @ExcludeMissing private val mode: JsonField<Mode> = JsonMissing.of(),
         @JsonProperty("parent")
         @ExcludeMissing
@@ -127,12 +142,18 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /** The expected output of the function */
+        @JsonProperty("expected") @ExcludeMissing fun _expected(): JsonValue = expected
+
         /** Argument to the function, which can be any JSON serializable value */
         @JsonProperty("input") @ExcludeMissing fun _input(): JsonValue = input
 
         /** If the function is an LLM, additional messages to pass along to it */
         fun messages(): Optional<List<Message>> =
             Optional.ofNullable(messages.getNullable("messages"))
+
+        /** Any relevant metadata */
+        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
         /** The mode format of the returned value (defaults to 'auto') */
         fun mode(): Optional<Mode> = Optional.ofNullable(mode.getNullable("mode"))
@@ -153,6 +174,9 @@ private constructor(
         @JsonProperty("messages")
         @ExcludeMissing
         fun _messages(): JsonField<List<Message>> = messages
+
+        /** Any relevant metadata */
+        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
         /** The mode format of the returned value (defaults to 'auto') */
         @JsonProperty("mode") @ExcludeMissing fun _mode(): JsonField<Mode> = mode
@@ -181,6 +205,7 @@ private constructor(
             }
 
             messages().ifPresent { it.forEach { it.validate() } }
+            metadata().ifPresent { it.validate() }
             mode()
             parent().ifPresent { it.validate() }
             stream()
@@ -199,8 +224,10 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var expected: JsonValue = JsonMissing.of()
             private var input: JsonValue = JsonMissing.of()
             private var messages: JsonField<MutableList<Message>>? = null
+            private var metadata: JsonField<Metadata> = JsonMissing.of()
             private var mode: JsonField<Mode> = JsonMissing.of()
             private var parent: JsonField<Parent> = JsonMissing.of()
             private var stream: JsonField<Boolean> = JsonMissing.of()
@@ -209,14 +236,19 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
+                expected = body.expected
                 input = body.input
                 messages = body.messages.map { it.toMutableList() }
+                metadata = body.metadata
                 mode = body.mode
                 parent = body.parent
                 stream = body.stream
                 version = body.version
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            /** The expected output of the function */
+            fun expected(expected: JsonValue) = apply { this.expected = expected }
 
             /** Argument to the function, which can be any JSON serializable value */
             fun input(input: JsonValue) = apply { this.input = input }
@@ -255,6 +287,15 @@ private constructor(
 
             /** If the function is an LLM, additional messages to pass along to it */
             fun addMessage(fallback: Message.Fallback) = addMessage(Message.ofFallback(fallback))
+
+            /** Any relevant metadata */
+            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+            /** Any relevant metadata */
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
+
+            /** Any relevant metadata */
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /** The mode format of the returned value (defaults to 'auto') */
             fun mode(mode: Mode?) = mode(JsonField.ofNullable(mode))
@@ -329,8 +370,10 @@ private constructor(
 
             fun build(): Body =
                 Body(
+                    expected,
                     input,
                     (messages ?: JsonMissing.of()).map { it.toImmutable() },
+                    metadata,
                     mode,
                     parent,
                     stream,
@@ -344,17 +387,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && input == other.input && messages == other.messages && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && expected == other.expected && input == other.input && messages == other.messages && metadata == other.metadata && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(input, messages, mode, parent, stream, version, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(expected, input, messages, metadata, mode, parent, stream, version, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{input=$input, messages=$messages, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
+            "Body{expected=$expected, input=$input, messages=$messages, metadata=$metadata, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -392,6 +435,9 @@ private constructor(
         /** Function id */
         fun functionId(functionId: String) = apply { this.functionId = functionId }
 
+        /** The expected output of the function */
+        fun expected(expected: JsonValue) = apply { body.expected(expected) }
+
         /** Argument to the function, which can be any JSON serializable value */
         fun input(input: JsonValue) = apply { body.input(input) }
 
@@ -421,6 +467,15 @@ private constructor(
 
         /** If the function is an LLM, additional messages to pass along to it */
         fun addMessage(fallback: Message.Fallback) = apply { body.addMessage(fallback) }
+
+        /** Any relevant metadata */
+        fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
+
+        /** Any relevant metadata */
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
+
+        /** Any relevant metadata */
+        fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
         /** The mode format of the returned value (defaults to 'auto') */
         fun mode(mode: Mode?) = apply { body.mode(mode) }
@@ -2716,6 +2771,86 @@ private constructor(
         }
     }
 
+    /** Any relevant metadata */
+    @NoAutoDetect
+    class Metadata
+    @JsonCreator
+    private constructor(
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+    ) {
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Metadata]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Metadata]. */
+        class Builder internal constructor() {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(metadata: Metadata) = apply {
+                additionalProperties = metadata.additionalProperties.toMutableMap()
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            fun build(): Metadata = Metadata(additionalProperties.toImmutable())
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
+    }
+
     /** The mode format of the returned value (defaults to 'auto') */
     class Mode @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -3144,6 +3279,8 @@ private constructor(
 
                     @JvmField val EXPERIMENT = of("experiment")
 
+                    @JvmField val PLAYGROUND_LOGS = of("playground_logs")
+
                     @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
                 }
 
@@ -3151,6 +3288,7 @@ private constructor(
                 enum class Known {
                     PROJECT_LOGS,
                     EXPERIMENT,
+                    PLAYGROUND_LOGS,
                 }
 
                 /**
@@ -3165,6 +3303,7 @@ private constructor(
                 enum class Value {
                     PROJECT_LOGS,
                     EXPERIMENT,
+                    PLAYGROUND_LOGS,
                     /**
                      * An enum member indicating that [ObjectType] was instantiated with an unknown
                      * value.
@@ -3183,6 +3322,7 @@ private constructor(
                     when (this) {
                         PROJECT_LOGS -> Value.PROJECT_LOGS
                         EXPERIMENT -> Value.EXPERIMENT
+                        PLAYGROUND_LOGS -> Value.PLAYGROUND_LOGS
                         else -> Value._UNKNOWN
                     }
 
@@ -3199,6 +3339,7 @@ private constructor(
                     when (this) {
                         PROJECT_LOGS -> Known.PROJECT_LOGS
                         EXPERIMENT -> Known.EXPERIMENT
+                        PLAYGROUND_LOGS -> Known.PLAYGROUND_LOGS
                         else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
                     }
 

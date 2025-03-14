@@ -142,16 +142,15 @@ private constructor(
 
         fun parser(parser: JsonField<Parser>) = apply { this.parser = parser }
 
-        fun prompt(prompt: Prompt) = prompt(JsonField.of(prompt))
+        fun prompt(prompt: Prompt?) = prompt(JsonField.ofNullable(prompt))
+
+        fun prompt(prompt: Optional<Prompt>) = prompt(prompt.getOrNull())
 
         fun prompt(prompt: JsonField<Prompt>) = apply { this.prompt = prompt }
 
         fun prompt(completion: Prompt.Completion) = prompt(Prompt.ofCompletion(completion))
 
         fun prompt(chat: Prompt.Chat) = prompt(Prompt.ofChat(chat))
-
-        fun prompt(nullableVariant: Prompt.NullableVariant) =
-            prompt(Prompt.ofNullableVariant(nullableVariant))
 
         fun toolFunctions(toolFunctions: List<ToolFunction>?) =
             toolFunctions(JsonField.ofNullable(toolFunctions))
@@ -655,7 +654,6 @@ private constructor(
     private constructor(
         private val completion: Completion? = null,
         private val chat: Chat? = null,
-        private val nullableVariant: NullableVariant? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -663,19 +661,13 @@ private constructor(
 
         fun chat(): Optional<Chat> = Optional.ofNullable(chat)
 
-        fun nullableVariant(): Optional<NullableVariant> = Optional.ofNullable(nullableVariant)
-
         fun isCompletion(): Boolean = completion != null
 
         fun isChat(): Boolean = chat != null
 
-        fun isNullableVariant(): Boolean = nullableVariant != null
-
         fun asCompletion(): Completion = completion.getOrThrow("completion")
 
         fun asChat(): Chat = chat.getOrThrow("chat")
-
-        fun asNullableVariant(): NullableVariant = nullableVariant.getOrThrow("nullableVariant")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -683,7 +675,6 @@ private constructor(
             return when {
                 completion != null -> visitor.visitCompletion(completion)
                 chat != null -> visitor.visitChat(chat)
-                nullableVariant != null -> visitor.visitNullableVariant(nullableVariant)
                 else -> visitor.unknown(_json)
             }
         }
@@ -704,10 +695,6 @@ private constructor(
                     override fun visitChat(chat: Chat) {
                         chat.validate()
                     }
-
-                    override fun visitNullableVariant(nullableVariant: NullableVariant) {
-                        nullableVariant.validate()
-                    }
                 }
             )
             validated = true
@@ -718,16 +705,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Prompt && completion == other.completion && chat == other.chat && nullableVariant == other.nullableVariant /* spotless:on */
+            return /* spotless:off */ other is Prompt && completion == other.completion && chat == other.chat /* spotless:on */
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(completion, chat, nullableVariant) /* spotless:on */
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(completion, chat) /* spotless:on */
 
         override fun toString(): String =
             when {
                 completion != null -> "Prompt{completion=$completion}"
                 chat != null -> "Prompt{chat=$chat}"
-                nullableVariant != null -> "Prompt{nullableVariant=$nullableVariant}"
                 _json != null -> "Prompt{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Prompt")
             }
@@ -737,10 +723,6 @@ private constructor(
             @JvmStatic fun ofCompletion(completion: Completion) = Prompt(completion = completion)
 
             @JvmStatic fun ofChat(chat: Chat) = Prompt(chat = chat)
-
-            @JvmStatic
-            fun ofNullableVariant(nullableVariant: NullableVariant) =
-                Prompt(nullableVariant = nullableVariant)
         }
 
         /** An interface that defines how to map each variant of [Prompt] to a value of type [T]. */
@@ -749,8 +731,6 @@ private constructor(
             fun visitCompletion(completion: Completion): T
 
             fun visitChat(chat: Chat): T
-
-            fun visitNullableVariant(nullableVariant: NullableVariant): T
 
             /**
              * Maps an unknown variant of [Prompt] to a value of type [T].
@@ -780,10 +760,6 @@ private constructor(
                     ?.let {
                         return Prompt(chat = it, _json = json)
                     }
-                tryDeserialize(node, jacksonTypeRef<NullableVariant>()) { it.validate() }
-                    ?.let {
-                        return Prompt(nullableVariant = it, _json = json)
-                    }
 
                 return Prompt(_json = json)
             }
@@ -799,7 +775,6 @@ private constructor(
                 when {
                     value.completion != null -> generator.writeObject(value.completion)
                     value.chat != null -> generator.writeObject(value.chat)
-                    value.nullableVariant != null -> generator.writeObject(value.nullableVariant)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Prompt")
                 }
@@ -3491,88 +3466,6 @@ private constructor(
 
             override fun toString() =
                 "Chat{messages=$messages, type=$type, tools=$tools, additionalProperties=$additionalProperties}"
-        }
-
-        @NoAutoDetect
-        class NullableVariant
-        @JsonCreator
-        private constructor(
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-        ) {
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): NullableVariant = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                validated = true
-            }
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /** Returns a mutable builder for constructing an instance of [NullableVariant]. */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [NullableVariant]. */
-            class Builder internal constructor() {
-
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(nullableVariant: NullableVariant) = apply {
-                    additionalProperties = nullableVariant.additionalProperties.toMutableMap()
-                }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                fun build(): NullableVariant = NullableVariant(additionalProperties.toImmutable())
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is NullableVariant && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() = "NullableVariant{additionalProperties=$additionalProperties}"
         }
     }
 

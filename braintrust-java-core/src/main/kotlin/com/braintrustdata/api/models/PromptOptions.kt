@@ -365,6 +365,9 @@ private constructor(
             @JsonProperty("function_call")
             @ExcludeMissing
             private val functionCall: JsonField<FunctionCall> = JsonMissing.of(),
+            @JsonProperty("max_completion_tokens")
+            @ExcludeMissing
+            private val maxCompletionTokens: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("max_tokens")
             @ExcludeMissing
             private val maxTokens: JsonField<Double> = JsonMissing.of(),
@@ -372,6 +375,9 @@ private constructor(
             @JsonProperty("presence_penalty")
             @ExcludeMissing
             private val presencePenalty: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("reasoning_effort")
+            @ExcludeMissing
+            private val reasoningEffort: JsonField<ReasoningEffort> = JsonMissing.of(),
             @JsonProperty("response_format")
             @ExcludeMissing
             private val responseFormat: JsonField<ResponseFormat> = JsonMissing.of(),
@@ -400,6 +406,10 @@ private constructor(
             fun functionCall(): Optional<FunctionCall> =
                 Optional.ofNullable(functionCall.getNullable("function_call"))
 
+            /** The successor to max_tokens */
+            fun maxCompletionTokens(): Optional<Double> =
+                Optional.ofNullable(maxCompletionTokens.getNullable("max_completion_tokens"))
+
             fun maxTokens(): Optional<Double> =
                 Optional.ofNullable(maxTokens.getNullable("max_tokens"))
 
@@ -407,6 +417,9 @@ private constructor(
 
             fun presencePenalty(): Optional<Double> =
                 Optional.ofNullable(presencePenalty.getNullable("presence_penalty"))
+
+            fun reasoningEffort(): Optional<ReasoningEffort> =
+                Optional.ofNullable(reasoningEffort.getNullable("reasoning_effort"))
 
             fun responseFormat(): Optional<ResponseFormat> =
                 Optional.ofNullable(responseFormat.getNullable("response_format"))
@@ -432,6 +445,11 @@ private constructor(
             @ExcludeMissing
             fun _functionCall(): JsonField<FunctionCall> = functionCall
 
+            /** The successor to max_tokens */
+            @JsonProperty("max_completion_tokens")
+            @ExcludeMissing
+            fun _maxCompletionTokens(): JsonField<Double> = maxCompletionTokens
+
             @JsonProperty("max_tokens")
             @ExcludeMissing
             fun _maxTokens(): JsonField<Double> = maxTokens
@@ -441,6 +459,10 @@ private constructor(
             @JsonProperty("presence_penalty")
             @ExcludeMissing
             fun _presencePenalty(): JsonField<Double> = presencePenalty
+
+            @JsonProperty("reasoning_effort")
+            @ExcludeMissing
+            fun _reasoningEffort(): JsonField<ReasoningEffort> = reasoningEffort
 
             @JsonProperty("response_format")
             @ExcludeMissing
@@ -475,9 +497,11 @@ private constructor(
 
                 frequencyPenalty()
                 functionCall().ifPresent { it.validate() }
+                maxCompletionTokens()
                 maxTokens()
                 n()
                 presencePenalty()
+                reasoningEffort()
                 responseFormat().ifPresent { it.validate() }
                 stop()
                 temperature()
@@ -502,9 +526,11 @@ private constructor(
 
                 private var frequencyPenalty: JsonField<Double> = JsonMissing.of()
                 private var functionCall: JsonField<FunctionCall> = JsonMissing.of()
+                private var maxCompletionTokens: JsonField<Double> = JsonMissing.of()
                 private var maxTokens: JsonField<Double> = JsonMissing.of()
                 private var n: JsonField<Double> = JsonMissing.of()
                 private var presencePenalty: JsonField<Double> = JsonMissing.of()
+                private var reasoningEffort: JsonField<ReasoningEffort> = JsonMissing.of()
                 private var responseFormat: JsonField<ResponseFormat> = JsonMissing.of()
                 private var stop: JsonField<MutableList<String>>? = null
                 private var temperature: JsonField<Double> = JsonMissing.of()
@@ -517,9 +543,11 @@ private constructor(
                 internal fun from(openaiModelParams: OpenAIModelParams) = apply {
                     frequencyPenalty = openaiModelParams.frequencyPenalty
                     functionCall = openaiModelParams.functionCall
+                    maxCompletionTokens = openaiModelParams.maxCompletionTokens
                     maxTokens = openaiModelParams.maxTokens
                     n = openaiModelParams.n
                     presencePenalty = openaiModelParams.presencePenalty
+                    reasoningEffort = openaiModelParams.reasoningEffort
                     responseFormat = openaiModelParams.responseFormat
                     stop = openaiModelParams.stop.map { it.toMutableList() }
                     temperature = openaiModelParams.temperature
@@ -549,6 +577,15 @@ private constructor(
                 fun functionCall(function: FunctionCall.Function) =
                     functionCall(FunctionCall.ofFunction(function))
 
+                /** The successor to max_tokens */
+                fun maxCompletionTokens(maxCompletionTokens: Double) =
+                    maxCompletionTokens(JsonField.of(maxCompletionTokens))
+
+                /** The successor to max_tokens */
+                fun maxCompletionTokens(maxCompletionTokens: JsonField<Double>) = apply {
+                    this.maxCompletionTokens = maxCompletionTokens
+                }
+
                 fun maxTokens(maxTokens: Double) = maxTokens(JsonField.of(maxTokens))
 
                 fun maxTokens(maxTokens: JsonField<Double>) = apply { this.maxTokens = maxTokens }
@@ -564,8 +601,18 @@ private constructor(
                     this.presencePenalty = presencePenalty
                 }
 
-                fun responseFormat(responseFormat: ResponseFormat) =
-                    responseFormat(JsonField.of(responseFormat))
+                fun reasoningEffort(reasoningEffort: ReasoningEffort) =
+                    reasoningEffort(JsonField.of(reasoningEffort))
+
+                fun reasoningEffort(reasoningEffort: JsonField<ReasoningEffort>) = apply {
+                    this.reasoningEffort = reasoningEffort
+                }
+
+                fun responseFormat(responseFormat: ResponseFormat?) =
+                    responseFormat(JsonField.ofNullable(responseFormat))
+
+                fun responseFormat(responseFormat: Optional<ResponseFormat>) =
+                    responseFormat(responseFormat.getOrNull())
 
                 fun responseFormat(responseFormat: JsonField<ResponseFormat>) = apply {
                     this.responseFormat = responseFormat
@@ -579,9 +626,6 @@ private constructor(
 
                 fun responseFormat(text: ResponseFormat.Text) =
                     responseFormat(ResponseFormat.ofText(text))
-
-                fun responseFormat(nullableVariant: ResponseFormat.NullableVariant) =
-                    responseFormat(ResponseFormat.ofNullableVariant(nullableVariant))
 
                 fun stop(stop: List<String>) = stop(JsonField.of(stop))
 
@@ -648,9 +692,11 @@ private constructor(
                     OpenAIModelParams(
                         frequencyPenalty,
                         functionCall,
+                        maxCompletionTokens,
                         maxTokens,
                         n,
                         presencePenalty,
+                        reasoningEffort,
                         responseFormat,
                         (stop ?: JsonMissing.of()).map { it.toImmutable() },
                         temperature,
@@ -1016,6 +1062,120 @@ private constructor(
                 }
             }
 
+            class ReasoningEffort
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val LOW = of("low")
+
+                    @JvmField val MEDIUM = of("medium")
+
+                    @JvmField val HIGH = of("high")
+
+                    @JvmStatic fun of(value: String) = ReasoningEffort(JsonField.of(value))
+                }
+
+                /** An enum containing [ReasoningEffort]'s known values. */
+                enum class Known {
+                    LOW,
+                    MEDIUM,
+                    HIGH,
+                }
+
+                /**
+                 * An enum containing [ReasoningEffort]'s known values, as well as an [_UNKNOWN]
+                 * member.
+                 *
+                 * An instance of [ReasoningEffort] can contain an unknown value in a couple of
+                 * cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    LOW,
+                    MEDIUM,
+                    HIGH,
+                    /**
+                     * An enum member indicating that [ReasoningEffort] was instantiated with an
+                     * unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        LOW -> Value.LOW
+                        MEDIUM -> Value.MEDIUM
+                        HIGH -> Value.HIGH
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws BraintrustInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        LOW -> Known.LOW
+                        MEDIUM -> Known.MEDIUM
+                        HIGH -> Known.HIGH
+                        else ->
+                            throw BraintrustInvalidDataException("Unknown ReasoningEffort: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws BraintrustInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        BraintrustInvalidDataException("Value is not a String")
+                    }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is ReasoningEffort && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
             @JsonDeserialize(using = ResponseFormat.Deserializer::class)
             @JsonSerialize(using = ResponseFormat.Serializer::class)
             class ResponseFormat
@@ -1023,7 +1183,6 @@ private constructor(
                 private val jsonObject: JsonObject? = null,
                 private val jsonSchema: JsonSchema? = null,
                 private val text: Text? = null,
-                private val nullableVariant: NullableVariant? = null,
                 private val _json: JsonValue? = null,
             ) {
 
@@ -1033,25 +1192,17 @@ private constructor(
 
                 fun text(): Optional<Text> = Optional.ofNullable(text)
 
-                fun nullableVariant(): Optional<NullableVariant> =
-                    Optional.ofNullable(nullableVariant)
-
                 fun isJsonObject(): Boolean = jsonObject != null
 
                 fun isJsonSchema(): Boolean = jsonSchema != null
 
                 fun isText(): Boolean = text != null
 
-                fun isNullableVariant(): Boolean = nullableVariant != null
-
                 fun asJsonObject(): JsonObject = jsonObject.getOrThrow("jsonObject")
 
                 fun asJsonSchema(): JsonSchema = jsonSchema.getOrThrow("jsonSchema")
 
                 fun asText(): Text = text.getOrThrow("text")
-
-                fun asNullableVariant(): NullableVariant =
-                    nullableVariant.getOrThrow("nullableVariant")
 
                 fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -1060,7 +1211,6 @@ private constructor(
                         jsonObject != null -> visitor.visitJsonObject(jsonObject)
                         jsonSchema != null -> visitor.visitJsonSchema(jsonSchema)
                         text != null -> visitor.visitText(text)
-                        nullableVariant != null -> visitor.visitNullableVariant(nullableVariant)
                         else -> visitor.unknown(_json)
                     }
                 }
@@ -1085,10 +1235,6 @@ private constructor(
                             override fun visitText(text: Text) {
                                 text.validate()
                             }
-
-                            override fun visitNullableVariant(nullableVariant: NullableVariant) {
-                                nullableVariant.validate()
-                            }
                         }
                     )
                     validated = true
@@ -1099,18 +1245,16 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is ResponseFormat && jsonObject == other.jsonObject && jsonSchema == other.jsonSchema && text == other.text && nullableVariant == other.nullableVariant /* spotless:on */
+                    return /* spotless:off */ other is ResponseFormat && jsonObject == other.jsonObject && jsonSchema == other.jsonSchema && text == other.text /* spotless:on */
                 }
 
-                override fun hashCode(): Int = /* spotless:off */ Objects.hash(jsonObject, jsonSchema, text, nullableVariant) /* spotless:on */
+                override fun hashCode(): Int = /* spotless:off */ Objects.hash(jsonObject, jsonSchema, text) /* spotless:on */
 
                 override fun toString(): String =
                     when {
                         jsonObject != null -> "ResponseFormat{jsonObject=$jsonObject}"
                         jsonSchema != null -> "ResponseFormat{jsonSchema=$jsonSchema}"
                         text != null -> "ResponseFormat{text=$text}"
-                        nullableVariant != null ->
-                            "ResponseFormat{nullableVariant=$nullableVariant}"
                         _json != null -> "ResponseFormat{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid ResponseFormat")
                     }
@@ -1126,10 +1270,6 @@ private constructor(
                         ResponseFormat(jsonSchema = jsonSchema)
 
                     @JvmStatic fun ofText(text: Text) = ResponseFormat(text = text)
-
-                    @JvmStatic
-                    fun ofNullableVariant(nullableVariant: NullableVariant) =
-                        ResponseFormat(nullableVariant = nullableVariant)
                 }
 
                 /**
@@ -1143,8 +1283,6 @@ private constructor(
                     fun visitJsonSchema(jsonSchema: JsonSchema): T
 
                     fun visitText(text: Text): T
-
-                    fun visitNullableVariant(nullableVariant: NullableVariant): T
 
                     /**
                      * Maps an unknown variant of [ResponseFormat] to a value of type [T].
@@ -1179,10 +1317,6 @@ private constructor(
                             ?.let {
                                 return ResponseFormat(text = it, _json = json)
                             }
-                        tryDeserialize(node, jacksonTypeRef<NullableVariant>()) { it.validate() }
-                            ?.let {
-                                return ResponseFormat(nullableVariant = it, _json = json)
-                            }
 
                         return ResponseFormat(_json = json)
                     }
@@ -1199,8 +1333,6 @@ private constructor(
                             value.jsonObject != null -> generator.writeObject(value.jsonObject)
                             value.jsonSchema != null -> generator.writeObject(value.jsonSchema)
                             value.text != null -> generator.writeObject(value.text)
-                            value.nullableVariant != null ->
-                                generator.writeObject(value.nullableVariant)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid ResponseFormat")
                         }
@@ -1644,6 +1776,11 @@ private constructor(
 
                             fun schema(schema: JsonField<Schema>) = apply { this.schema = schema }
 
+                            fun schema(unionMember0: Schema.UnionMember0) =
+                                schema(Schema.ofUnionMember0(unionMember0))
+
+                            fun schema(string: String) = schema(Schema.ofString(string))
+
                             fun strict(strict: Boolean?) = strict(JsonField.ofNullable(strict))
 
                             fun strict(strict: Boolean) = strict(strict as Boolean?)
@@ -1684,19 +1821,38 @@ private constructor(
                                 )
                         }
 
-                        @NoAutoDetect
+                        @JsonDeserialize(using = Schema.Deserializer::class)
+                        @JsonSerialize(using = Schema.Serializer::class)
                         class Schema
-                        @JsonCreator
                         private constructor(
-                            @JsonAnySetter
-                            private val additionalProperties: Map<String, JsonValue> =
-                                immutableEmptyMap()
+                            private val unionMember0: UnionMember0? = null,
+                            private val string: String? = null,
+                            private val _json: JsonValue? = null,
                         ) {
 
-                            @JsonAnyGetter
-                            @ExcludeMissing
-                            fun _additionalProperties(): Map<String, JsonValue> =
-                                additionalProperties
+                            fun unionMember0(): Optional<UnionMember0> =
+                                Optional.ofNullable(unionMember0)
+
+                            fun string(): Optional<String> = Optional.ofNullable(string)
+
+                            fun isUnionMember0(): Boolean = unionMember0 != null
+
+                            fun isString(): Boolean = string != null
+
+                            fun asUnionMember0(): UnionMember0 =
+                                unionMember0.getOrThrow("unionMember0")
+
+                            fun asString(): String = string.getOrThrow("string")
+
+                            fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+                            fun <T> accept(visitor: Visitor<T>): T {
+                                return when {
+                                    unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                                    string != null -> visitor.visitString(string)
+                                    else -> visitor.unknown(_json)
+                                }
+                            }
 
                             private var validated: Boolean = false
 
@@ -1705,56 +1861,16 @@ private constructor(
                                     return@apply
                                 }
 
+                                accept(
+                                    object : Visitor<Unit> {
+                                        override fun visitUnionMember0(unionMember0: UnionMember0) {
+                                            unionMember0.validate()
+                                        }
+
+                                        override fun visitString(string: String) {}
+                                    }
+                                )
                                 validated = true
-                            }
-
-                            fun toBuilder() = Builder().from(this)
-
-                            companion object {
-
-                                /**
-                                 * Returns a mutable builder for constructing an instance of
-                                 * [Schema].
-                                 */
-                                @JvmStatic fun builder() = Builder()
-                            }
-
-                            /** A builder for [Schema]. */
-                            class Builder internal constructor() {
-
-                                private var additionalProperties: MutableMap<String, JsonValue> =
-                                    mutableMapOf()
-
-                                @JvmSynthetic
-                                internal fun from(schema: Schema) = apply {
-                                    additionalProperties =
-                                        schema.additionalProperties.toMutableMap()
-                                }
-
-                                fun additionalProperties(
-                                    additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.clear()
-                                    putAllAdditionalProperties(additionalProperties)
-                                }
-
-                                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                                    additionalProperties.put(key, value)
-                                }
-
-                                fun putAllAdditionalProperties(
-                                    additionalProperties: Map<String, JsonValue>
-                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                                fun removeAdditionalProperty(key: String) = apply {
-                                    additionalProperties.remove(key)
-                                }
-
-                                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                                    keys.forEach(::removeAdditionalProperty)
-                                }
-
-                                fun build(): Schema = Schema(additionalProperties.toImmutable())
                             }
 
                             override fun equals(other: Any?): Boolean {
@@ -1762,17 +1878,185 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is Schema && additionalProperties == other.additionalProperties /* spotless:on */
+                                return /* spotless:off */ other is Schema && unionMember0 == other.unionMember0 && string == other.string /* spotless:on */
                             }
 
-                            /* spotless:off */
-                            private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-                            /* spotless:on */
+                            override fun hashCode(): Int = /* spotless:off */ Objects.hash(unionMember0, string) /* spotless:on */
 
-                            override fun hashCode(): Int = hashCode
+                            override fun toString(): String =
+                                when {
+                                    unionMember0 != null -> "Schema{unionMember0=$unionMember0}"
+                                    string != null -> "Schema{string=$string}"
+                                    _json != null -> "Schema{_unknown=$_json}"
+                                    else -> throw IllegalStateException("Invalid Schema")
+                                }
 
-                            override fun toString() =
-                                "Schema{additionalProperties=$additionalProperties}"
+                            companion object {
+
+                                @JvmStatic
+                                fun ofUnionMember0(unionMember0: UnionMember0) =
+                                    Schema(unionMember0 = unionMember0)
+
+                                @JvmStatic fun ofString(string: String) = Schema(string = string)
+                            }
+
+                            /**
+                             * An interface that defines how to map each variant of [Schema] to a
+                             * value of type [T].
+                             */
+                            interface Visitor<out T> {
+
+                                fun visitUnionMember0(unionMember0: UnionMember0): T
+
+                                fun visitString(string: String): T
+
+                                /**
+                                 * Maps an unknown variant of [Schema] to a value of type [T].
+                                 *
+                                 * An instance of [Schema] can contain an unknown variant if it was
+                                 * deserialized from data that doesn't match any known variant. For
+                                 * example, if the SDK is on an older version than the API, then the
+                                 * API may respond with new variants that the SDK is unaware of.
+                                 *
+                                 * @throws BraintrustInvalidDataException in the default
+                                 *   implementation.
+                                 */
+                                fun unknown(json: JsonValue?): T {
+                                    throw BraintrustInvalidDataException("Unknown Schema: $json")
+                                }
+                            }
+
+                            internal class Deserializer : BaseDeserializer<Schema>(Schema::class) {
+
+                                override fun ObjectCodec.deserialize(node: JsonNode): Schema {
+                                    val json = JsonValue.fromJsonNode(node)
+
+                                    tryDeserialize(node, jacksonTypeRef<UnionMember0>()) {
+                                            it.validate()
+                                        }
+                                        ?.let {
+                                            return Schema(unionMember0 = it, _json = json)
+                                        }
+                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                        return Schema(string = it, _json = json)
+                                    }
+
+                                    return Schema(_json = json)
+                                }
+                            }
+
+                            internal class Serializer : BaseSerializer<Schema>(Schema::class) {
+
+                                override fun serialize(
+                                    value: Schema,
+                                    generator: JsonGenerator,
+                                    provider: SerializerProvider,
+                                ) {
+                                    when {
+                                        value.unionMember0 != null ->
+                                            generator.writeObject(value.unionMember0)
+                                        value.string != null -> generator.writeObject(value.string)
+                                        value._json != null -> generator.writeObject(value._json)
+                                        else -> throw IllegalStateException("Invalid Schema")
+                                    }
+                                }
+                            }
+
+                            @NoAutoDetect
+                            class UnionMember0
+                            @JsonCreator
+                            private constructor(
+                                @JsonAnySetter
+                                private val additionalProperties: Map<String, JsonValue> =
+                                    immutableEmptyMap()
+                            ) {
+
+                                @JsonAnyGetter
+                                @ExcludeMissing
+                                fun _additionalProperties(): Map<String, JsonValue> =
+                                    additionalProperties
+
+                                private var validated: Boolean = false
+
+                                fun validate(): UnionMember0 = apply {
+                                    if (validated) {
+                                        return@apply
+                                    }
+
+                                    validated = true
+                                }
+
+                                fun toBuilder() = Builder().from(this)
+
+                                companion object {
+
+                                    /**
+                                     * Returns a mutable builder for constructing an instance of
+                                     * [UnionMember0].
+                                     */
+                                    @JvmStatic fun builder() = Builder()
+                                }
+
+                                /** A builder for [UnionMember0]. */
+                                class Builder internal constructor() {
+
+                                    private var additionalProperties:
+                                        MutableMap<String, JsonValue> =
+                                        mutableMapOf()
+
+                                    @JvmSynthetic
+                                    internal fun from(unionMember0: UnionMember0) = apply {
+                                        additionalProperties =
+                                            unionMember0.additionalProperties.toMutableMap()
+                                    }
+
+                                    fun additionalProperties(
+                                        additionalProperties: Map<String, JsonValue>
+                                    ) = apply {
+                                        this.additionalProperties.clear()
+                                        putAllAdditionalProperties(additionalProperties)
+                                    }
+
+                                    fun putAdditionalProperty(key: String, value: JsonValue) =
+                                        apply {
+                                            additionalProperties.put(key, value)
+                                        }
+
+                                    fun putAllAdditionalProperties(
+                                        additionalProperties: Map<String, JsonValue>
+                                    ) = apply {
+                                        this.additionalProperties.putAll(additionalProperties)
+                                    }
+
+                                    fun removeAdditionalProperty(key: String) = apply {
+                                        additionalProperties.remove(key)
+                                    }
+
+                                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                        keys.forEach(::removeAdditionalProperty)
+                                    }
+
+                                    fun build(): UnionMember0 =
+                                        UnionMember0(additionalProperties.toImmutable())
+                                }
+
+                                override fun equals(other: Any?): Boolean {
+                                    if (this === other) {
+                                        return true
+                                    }
+
+                                    return /* spotless:off */ other is UnionMember0 && additionalProperties == other.additionalProperties /* spotless:on */
+                                }
+
+                                /* spotless:off */
+                                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                                /* spotless:on */
+
+                                override fun hashCode(): Int = hashCode
+
+                                override fun toString() =
+                                    "UnionMember0{additionalProperties=$additionalProperties}"
+                            }
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -2117,95 +2401,6 @@ private constructor(
 
                     override fun toString() =
                         "Text{type=$type, additionalProperties=$additionalProperties}"
-                }
-
-                @NoAutoDetect
-                class NullableVariant
-                @JsonCreator
-                private constructor(
-                    @JsonAnySetter
-                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-                ) {
-
-                    @JsonAnyGetter
-                    @ExcludeMissing
-                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                    private var validated: Boolean = false
-
-                    fun validate(): NullableVariant = apply {
-                        if (validated) {
-                            return@apply
-                        }
-
-                        validated = true
-                    }
-
-                    fun toBuilder() = Builder().from(this)
-
-                    companion object {
-
-                        /**
-                         * Returns a mutable builder for constructing an instance of
-                         * [NullableVariant].
-                         */
-                        @JvmStatic fun builder() = Builder()
-                    }
-
-                    /** A builder for [NullableVariant]. */
-                    class Builder internal constructor() {
-
-                        private var additionalProperties: MutableMap<String, JsonValue> =
-                            mutableMapOf()
-
-                        @JvmSynthetic
-                        internal fun from(nullableVariant: NullableVariant) = apply {
-                            additionalProperties =
-                                nullableVariant.additionalProperties.toMutableMap()
-                        }
-
-                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.clear()
-                                putAllAdditionalProperties(additionalProperties)
-                            }
-
-                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                            additionalProperties.put(key, value)
-                        }
-
-                        fun putAllAdditionalProperties(
-                            additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                        fun removeAdditionalProperty(key: String) = apply {
-                            additionalProperties.remove(key)
-                        }
-
-                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
-
-                        fun build(): NullableVariant =
-                            NullableVariant(additionalProperties.toImmutable())
-                    }
-
-                    override fun equals(other: Any?): Boolean {
-                        if (this === other) {
-                            return true
-                        }
-
-                        return /* spotless:off */ other is NullableVariant && additionalProperties == other.additionalProperties /* spotless:on */
-                    }
-
-                    /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-                    /* spotless:on */
-
-                    override fun hashCode(): Int = hashCode
-
-                    override fun toString() =
-                        "NullableVariant{additionalProperties=$additionalProperties}"
                 }
             }
 
@@ -2807,17 +3002,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is OpenAIModelParams && frequencyPenalty == other.frequencyPenalty && functionCall == other.functionCall && maxTokens == other.maxTokens && n == other.n && presencePenalty == other.presencePenalty && responseFormat == other.responseFormat && stop == other.stop && temperature == other.temperature && toolChoice == other.toolChoice && topP == other.topP && useCache == other.useCache && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is OpenAIModelParams && frequencyPenalty == other.frequencyPenalty && functionCall == other.functionCall && maxCompletionTokens == other.maxCompletionTokens && maxTokens == other.maxTokens && n == other.n && presencePenalty == other.presencePenalty && reasoningEffort == other.reasoningEffort && responseFormat == other.responseFormat && stop == other.stop && temperature == other.temperature && toolChoice == other.toolChoice && topP == other.topP && useCache == other.useCache && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(frequencyPenalty, functionCall, maxTokens, n, presencePenalty, responseFormat, stop, temperature, toolChoice, topP, useCache, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(frequencyPenalty, functionCall, maxCompletionTokens, maxTokens, n, presencePenalty, reasoningEffort, responseFormat, stop, temperature, toolChoice, topP, useCache, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "OpenAIModelParams{frequencyPenalty=$frequencyPenalty, functionCall=$functionCall, maxTokens=$maxTokens, n=$n, presencePenalty=$presencePenalty, responseFormat=$responseFormat, stop=$stop, temperature=$temperature, toolChoice=$toolChoice, topP=$topP, useCache=$useCache, additionalProperties=$additionalProperties}"
+                "OpenAIModelParams{frequencyPenalty=$frequencyPenalty, functionCall=$functionCall, maxCompletionTokens=$maxCompletionTokens, maxTokens=$maxTokens, n=$n, presencePenalty=$presencePenalty, reasoningEffort=$reasoningEffort, responseFormat=$responseFormat, stop=$stop, temperature=$temperature, toolChoice=$toolChoice, topP=$topP, useCache=$useCache, additionalProperties=$additionalProperties}"
         }
 
         @NoAutoDetect
