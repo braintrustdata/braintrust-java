@@ -13,7 +13,20 @@ class ProjectUpdateParamsTest {
         ProjectUpdateParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .name("name")
-            .settings(ProjectSettings.builder().comparisonKey("comparison_key").build())
+            .settings(
+                ProjectSettings.builder()
+                    .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .comparisonKey("comparison_key")
+                    .addSpanFieldOrder(
+                        ProjectSettings.SpanFieldOrder.builder()
+                            .columnId("column_id")
+                            .objectType("object_type")
+                            .position("position")
+                            .layout(ProjectSettings.SpanFieldOrder.Layout.FULL)
+                            .build()
+                    )
+                    .build()
+            )
             .build()
     }
 
@@ -23,7 +36,20 @@ class ProjectUpdateParamsTest {
             ProjectUpdateParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
-                .settings(ProjectSettings.builder().comparisonKey("comparison_key").build())
+                .settings(
+                    ProjectSettings.builder()
+                        .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .comparisonKey("comparison_key")
+                        .addSpanFieldOrder(
+                            ProjectSettings.SpanFieldOrder.builder()
+                                .columnId("column_id")
+                                .objectType("object_type")
+                                .position("position")
+                                .layout(ProjectSettings.SpanFieldOrder.Layout.FULL)
+                                .build()
+                        )
+                        .build()
+                )
                 .build()
 
         val body = params._body()
@@ -31,7 +57,20 @@ class ProjectUpdateParamsTest {
         assertNotNull(body)
         assertThat(body.name()).contains("name")
         assertThat(body.settings())
-            .contains(ProjectSettings.builder().comparisonKey("comparison_key").build())
+            .contains(
+                ProjectSettings.builder()
+                    .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .comparisonKey("comparison_key")
+                    .addSpanFieldOrder(
+                        ProjectSettings.SpanFieldOrder.builder()
+                            .columnId("column_id")
+                            .objectType("object_type")
+                            .position("position")
+                            .layout(ProjectSettings.SpanFieldOrder.Layout.FULL)
+                            .build()
+                    )
+                    .build()
+            )
     }
 
     @Test

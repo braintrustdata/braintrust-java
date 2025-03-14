@@ -7,6 +7,7 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.FeedbackProjectLogsItem
 import com.braintrustdata.api.models.InsertProjectLogsEvent
+import com.braintrustdata.api.models.ObjectReference
 import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
@@ -139,9 +140,7 @@ class LogServiceAsyncTest {
                             .expected(JsonValue.from(mapOf<String, Any>()))
                             .input(JsonValue.from(mapOf<String, Any>()))
                             .metadata(
-                                InsertProjectLogsEvent.Metadata.builder()
-                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
-                                    .build()
+                                InsertProjectLogsEvent.Metadata.builder().model("model").build()
                             )
                             .metrics(
                                 InsertProjectLogsEvent.Metrics.builder()
@@ -153,6 +152,15 @@ class LogServiceAsyncTest {
                                     .promptTokens(0L)
                                     .start(0.0)
                                     .tokens(0L)
+                                    .build()
+                            )
+                            .origin(
+                                ObjectReference.builder()
+                                    .id("id")
+                                    ._xactId("_xact_id")
+                                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                    .objectType(ObjectReference.ObjectType.EXPERIMENT)
+                                    .created("created")
                                     .build()
                             )
                             .output(JsonValue.from(mapOf<String, Any>()))

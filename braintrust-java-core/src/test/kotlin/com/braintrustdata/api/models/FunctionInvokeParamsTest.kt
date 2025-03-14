@@ -13,12 +13,18 @@ class FunctionInvokeParamsTest {
     fun create() {
         FunctionInvokeParams.builder()
             .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .expected(JsonValue.from(mapOf<String, Any>()))
             .input(JsonValue.from(mapOf<String, Any>()))
             .addMessage(
                 FunctionInvokeParams.Message.System.builder()
                     .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
                     .content("content")
                     .name("name")
+                    .build()
+            )
+            .metadata(
+                FunctionInvokeParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
             )
             .mode(FunctionInvokeParams.Mode.AUTO)
@@ -52,12 +58,18 @@ class FunctionInvokeParamsTest {
         val params =
             FunctionInvokeParams.builder()
                 .functionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .expected(JsonValue.from(mapOf<String, Any>()))
                 .input(JsonValue.from(mapOf<String, Any>()))
                 .addMessage(
                     FunctionInvokeParams.Message.System.builder()
                         .role(FunctionInvokeParams.Message.System.Role.SYSTEM)
                         .content("content")
                         .name("name")
+                        .build()
+                )
+                .metadata(
+                    FunctionInvokeParams.Metadata.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
                 .mode(FunctionInvokeParams.Mode.AUTO)
@@ -88,6 +100,7 @@ class FunctionInvokeParamsTest {
         val body = params._body()
 
         assertNotNull(body)
+        assertThat(body._expected()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.messages())
             .contains(
@@ -100,6 +113,12 @@ class FunctionInvokeParamsTest {
                             .build()
                     )
                 )
+            )
+        assertThat(body.metadata())
+            .contains(
+                FunctionInvokeParams.Metadata.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
             )
         assertThat(body.mode()).contains(FunctionInvokeParams.Mode.AUTO)
         assertThat(body.parent())

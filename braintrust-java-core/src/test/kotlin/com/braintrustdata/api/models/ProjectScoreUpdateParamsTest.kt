@@ -17,7 +17,7 @@ class ProjectScoreUpdateParamsTest {
             )
             .config(
                 ProjectScoreConfig.builder()
-                    .destination(ProjectScoreConfig.Destination.EXPECTED)
+                    .destination("destination")
                     .multiSelect(true)
                     .online(
                         OnlineScoreConfig.builder()
@@ -50,7 +50,7 @@ class ProjectScoreUpdateParamsTest {
                 )
                 .config(
                     ProjectScoreConfig.builder()
-                        .destination(ProjectScoreConfig.Destination.EXPECTED)
+                        .destination("destination")
                         .multiSelect(true)
                         .online(
                             OnlineScoreConfig.builder()
@@ -84,7 +84,7 @@ class ProjectScoreUpdateParamsTest {
         assertThat(body.config())
             .contains(
                 ProjectScoreConfig.builder()
-                    .destination(ProjectScoreConfig.Destination.EXPECTED)
+                    .destination("destination")
                     .multiSelect(true)
                     .online(
                         OnlineScoreConfig.builder()
