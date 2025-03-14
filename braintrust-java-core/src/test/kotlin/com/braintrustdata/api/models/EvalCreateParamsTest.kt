@@ -12,7 +12,17 @@ class EvalCreateParamsTest {
     @Test
     fun create() {
         EvalCreateParams.builder()
-            .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
+            .data(
+                EvalCreateParams.Data.DatasetId.builder()
+                    .datasetId("dataset_id")
+                    ._internalBtql(
+                        EvalCreateParams.Data.DatasetId._InternalBtql
+                            .builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .build()
+            )
             .projectId("project_id")
             .addScore(
                 EvalCreateParams.Score.FunctionId.builder()
@@ -42,6 +52,24 @@ class EvalCreateParamsTest {
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
             )
+            .parent(
+                EvalCreateParams.Parent.SpanParentStruct.builder()
+                    .objectId("object_id")
+                    .objectType(EvalCreateParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS)
+                    .propagatedEvent(
+                        EvalCreateParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .rowIds(
+                        EvalCreateParams.Parent.SpanParentStruct.RowIds.builder()
+                            .id("id")
+                            .rootSpanId("root_span_id")
+                            .spanId("span_id")
+                            .build()
+                    )
+                    .build()
+            )
             .repoInfo(
                 RepoInfo.builder()
                     .authorEmail("author_email")
@@ -65,7 +93,17 @@ class EvalCreateParamsTest {
     fun body() {
         val params =
             EvalCreateParams.builder()
-                .data(EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build())
+                .data(
+                    EvalCreateParams.Data.DatasetId.builder()
+                        .datasetId("dataset_id")
+                        ._internalBtql(
+                            EvalCreateParams.Data.DatasetId._InternalBtql
+                                .builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
                 .projectId("project_id")
                 .addScore(
                     EvalCreateParams.Score.FunctionId.builder()
@@ -95,6 +133,26 @@ class EvalCreateParamsTest {
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
+                .parent(
+                    EvalCreateParams.Parent.SpanParentStruct.builder()
+                        .objectId("object_id")
+                        .objectType(
+                            EvalCreateParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
+                        )
+                        .propagatedEvent(
+                            EvalCreateParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .rowIds(
+                            EvalCreateParams.Parent.SpanParentStruct.RowIds.builder()
+                                .id("id")
+                                .rootSpanId("root_span_id")
+                                .spanId("span_id")
+                                .build()
+                        )
+                        .build()
+                )
                 .repoInfo(
                     RepoInfo.builder()
                         .authorEmail("author_email")
@@ -119,7 +177,15 @@ class EvalCreateParamsTest {
         assertThat(body.data())
             .isEqualTo(
                 EvalCreateParams.Data.ofDatasetId(
-                    EvalCreateParams.Data.DatasetId.builder().datasetId("dataset_id").build()
+                    EvalCreateParams.Data.DatasetId.builder()
+                        .datasetId("dataset_id")
+                        ._internalBtql(
+                            EvalCreateParams.Data.DatasetId._InternalBtql
+                                .builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
                 )
             )
         assertThat(body.projectId()).isEqualTo("project_id")
@@ -160,6 +226,29 @@ class EvalCreateParamsTest {
                 EvalCreateParams.Metadata.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
+            )
+        assertThat(body.parent())
+            .contains(
+                EvalCreateParams.Parent.ofSpanParentStruct(
+                    EvalCreateParams.Parent.SpanParentStruct.builder()
+                        .objectId("object_id")
+                        .objectType(
+                            EvalCreateParams.Parent.SpanParentStruct.ObjectType.PROJECT_LOGS
+                        )
+                        .propagatedEvent(
+                            EvalCreateParams.Parent.SpanParentStruct.PropagatedEvent.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .rowIds(
+                            EvalCreateParams.Parent.SpanParentStruct.RowIds.builder()
+                                .id("id")
+                                .rootSpanId("root_span_id")
+                                .spanId("span_id")
+                                .build()
+                        )
+                        .build()
+                )
             )
         assertThat(body.repoInfo())
             .contains(

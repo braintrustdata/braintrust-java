@@ -16,6 +16,7 @@ import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
 import com.braintrustdata.api.models.FeedbackExperimentItem
 import com.braintrustdata.api.models.InsertExperimentEvent
+import com.braintrustdata.api.models.ObjectReference
 import com.braintrustdata.api.models.RepoInfo
 import com.braintrustdata.api.models.SpanAttributes
 import java.time.OffsetDateTime
@@ -285,14 +286,11 @@ class ExperimentServiceAsyncTest {
                                     .build()
                             )
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .datasetRecordId("dataset_record_id")
                             .error(JsonValue.from(mapOf<String, Any>()))
                             .expected(JsonValue.from(mapOf<String, Any>()))
                             .input(JsonValue.from(mapOf<String, Any>()))
                             .metadata(
-                                InsertExperimentEvent.Metadata.builder()
-                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
-                                    .build()
+                                InsertExperimentEvent.Metadata.builder().model("model").build()
                             )
                             .metrics(
                                 InsertExperimentEvent.Metrics.builder()
@@ -304,6 +302,15 @@ class ExperimentServiceAsyncTest {
                                     .promptTokens(0L)
                                     .start(0.0)
                                     .tokens(0L)
+                                    .build()
+                            )
+                            .origin(
+                                ObjectReference.builder()
+                                    .id("id")
+                                    ._xactId("_xact_id")
+                                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                    .objectType(ObjectReference.ObjectType.EXPERIMENT)
+                                    .created("created")
                                     .build()
                             )
                             .output(JsonValue.from(mapOf<String, Any>()))

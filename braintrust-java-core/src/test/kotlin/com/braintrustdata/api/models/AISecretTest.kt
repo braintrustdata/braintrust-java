@@ -24,6 +24,7 @@ class AISecretTest {
                 )
                 .previewSecret("preview_secret")
                 .type("type")
+                .updatedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .build()
         assertThat(aiSecret).isNotNull
         assertThat(aiSecret.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -38,5 +39,6 @@ class AISecretTest {
             )
         assertThat(aiSecret.previewSecret()).contains("preview_secret")
         assertThat(aiSecret.type()).contains("type")
+        assertThat(aiSecret.updatedAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
     }
 }

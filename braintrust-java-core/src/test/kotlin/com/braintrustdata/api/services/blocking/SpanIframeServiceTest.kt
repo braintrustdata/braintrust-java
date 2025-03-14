@@ -70,6 +70,7 @@ class SpanIframeServiceTest {
             spanIframeService.update(
                 SpanIframeUpdateParams.builder()
                     .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .description("description")
                     .name("name")
                     .postMessage(true)
                     .url("url")

@@ -99,6 +99,9 @@ private constructor(
      */
     fun metadata(): Optional<Metadata> = body.metadata()
 
+    /** Options for tracing the evaluation */
+    fun parent(): Optional<Parent> = body.parent()
+
     /** Metadata about the state of the repo when the experiment was created */
     fun repoInfo(): Optional<RepoInfo> = body.repoInfo()
 
@@ -173,6 +176,9 @@ private constructor(
      */
     fun _metadata(): JsonField<Metadata> = body._metadata()
 
+    /** Options for tracing the evaluation */
+    fun _parent(): JsonField<Parent> = body._parent()
+
     /** Metadata about the state of the repo when the experiment was created */
     fun _repoInfo(): JsonField<RepoInfo> = body._repoInfo()
 
@@ -241,6 +247,9 @@ private constructor(
         @JsonProperty("metadata")
         @ExcludeMissing
         private val metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("parent")
+        @ExcludeMissing
+        private val parent: JsonField<Parent> = JsonMissing.of(),
         @JsonProperty("repo_info")
         @ExcludeMissing
         private val repoInfo: JsonField<RepoInfo> = JsonMissing.of(),
@@ -312,6 +321,9 @@ private constructor(
          * to slice & dice across experiments.
          */
         fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+
+        /** Options for tracing the evaluation */
+        fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
 
         /** Metadata about the state of the repo when the experiment was created */
         fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo.getNullable("repo_info"))
@@ -398,6 +410,9 @@ private constructor(
          */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
+        /** Options for tracing the evaluation */
+        @JsonProperty("parent") @ExcludeMissing fun _parent(): JsonField<Parent> = parent
+
         /** Metadata about the state of the repo when the experiment was created */
         @JsonProperty("repo_info") @ExcludeMissing fun _repoInfo(): JsonField<RepoInfo> = repoInfo
 
@@ -445,6 +460,7 @@ private constructor(
             isPublic()
             maxConcurrency()
             metadata().ifPresent { it.validate() }
+            parent().ifPresent { it.validate() }
             repoInfo().ifPresent { it.validate() }
             stream()
             timeout()
@@ -484,6 +500,7 @@ private constructor(
             private var isPublic: JsonField<Boolean> = JsonMissing.of()
             private var maxConcurrency: JsonField<Double> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
+            private var parent: JsonField<Parent> = JsonMissing.of()
             private var repoInfo: JsonField<RepoInfo> = JsonMissing.of()
             private var stream: JsonField<Boolean> = JsonMissing.of()
             private var timeout: JsonField<Double> = JsonMissing.of()
@@ -503,6 +520,7 @@ private constructor(
                 isPublic = body.isPublic
                 maxConcurrency = body.maxConcurrency
                 metadata = body.metadata
+                parent = body.parent
                 repoInfo = body.repoInfo
                 stream = body.stream
                 timeout = body.timeout
@@ -522,6 +540,9 @@ private constructor(
             /** Project and dataset name */
             fun data(projectDatasetName: Data.ProjectDatasetName) =
                 data(Data.ofProjectDatasetName(projectDatasetName))
+
+            /** Dataset rows */
+            fun data(datasetRows: Data.DatasetRows) = data(Data.ofDatasetRows(datasetRows))
 
             /** Unique identifier for the project to run the eval in */
             fun projectId(projectId: String) = projectId(JsonField.of(projectId))
@@ -726,6 +747,19 @@ private constructor(
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
+            /** Options for tracing the evaluation */
+            fun parent(parent: Parent) = parent(JsonField.of(parent))
+
+            /** Options for tracing the evaluation */
+            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
+
+            /** Span parent properties */
+            fun parent(spanParentStruct: Parent.SpanParentStruct) =
+                parent(Parent.ofSpanParentStruct(spanParentStruct))
+
+            /** The parent's span identifier, created by calling `.export()` on a span */
+            fun parent(string: String) = parent(Parent.ofString(string))
+
             /** Metadata about the state of the repo when the experiment was created */
             fun repoInfo(repoInfo: RepoInfo?) = repoInfo(JsonField.ofNullable(repoInfo))
 
@@ -833,6 +867,7 @@ private constructor(
                     isPublic,
                     maxConcurrency,
                     metadata,
+                    parent,
                     repoInfo,
                     stream,
                     timeout,
@@ -846,17 +881,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && data == other.data && projectId == other.projectId && scores == other.scores && task == other.task && baseExperimentId == other.baseExperimentId && baseExperimentName == other.baseExperimentName && experimentName == other.experimentName && gitMetadataSettings == other.gitMetadataSettings && isPublic == other.isPublic && maxConcurrency == other.maxConcurrency && metadata == other.metadata && parent == other.parent && repoInfo == other.repoInfo && stream == other.stream && timeout == other.timeout && trialCount == other.trialCount && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, repoInfo, stream, timeout, trialCount, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(data, projectId, scores, task, baseExperimentId, baseExperimentName, experimentName, gitMetadataSettings, isPublic, maxConcurrency, metadata, parent, repoInfo, stream, timeout, trialCount, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalProperties=$additionalProperties}"
+            "Body{data=$data, projectId=$projectId, scores=$scores, task=$task, baseExperimentId=$baseExperimentId, baseExperimentName=$baseExperimentName, experimentName=$experimentName, gitMetadataSettings=$gitMetadataSettings, isPublic=$isPublic, maxConcurrency=$maxConcurrency, metadata=$metadata, parent=$parent, repoInfo=$repoInfo, stream=$stream, timeout=$timeout, trialCount=$trialCount, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -905,6 +940,9 @@ private constructor(
         fun data(projectDatasetName: Data.ProjectDatasetName) = apply {
             body.data(projectDatasetName)
         }
+
+        /** Dataset rows */
+        fun data(datasetRows: Data.DatasetRows) = apply { body.data(datasetRows) }
 
         /** Unique identifier for the project to run the eval in */
         fun projectId(projectId: String) = apply { body.projectId(projectId) }
@@ -1098,6 +1136,20 @@ private constructor(
          * to slice & dice across experiments.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
+
+        /** Options for tracing the evaluation */
+        fun parent(parent: Parent) = apply { body.parent(parent) }
+
+        /** Options for tracing the evaluation */
+        fun parent(parent: JsonField<Parent>) = apply { body.parent(parent) }
+
+        /** Span parent properties */
+        fun parent(spanParentStruct: Parent.SpanParentStruct) = apply {
+            body.parent(spanParentStruct)
+        }
+
+        /** The parent's span identifier, created by calling `.export()` on a span */
+        fun parent(string: String) = apply { body.parent(string) }
 
         /** Metadata about the state of the repo when the experiment was created */
         fun repoInfo(repoInfo: RepoInfo?) = apply { body.repoInfo(repoInfo) }
@@ -1302,6 +1354,7 @@ private constructor(
     private constructor(
         private val datasetId: DatasetId? = null,
         private val projectDatasetName: ProjectDatasetName? = null,
+        private val datasetRows: DatasetRows? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -1312,9 +1365,14 @@ private constructor(
         fun projectDatasetName(): Optional<ProjectDatasetName> =
             Optional.ofNullable(projectDatasetName)
 
+        /** Dataset rows */
+        fun datasetRows(): Optional<DatasetRows> = Optional.ofNullable(datasetRows)
+
         fun isDatasetId(): Boolean = datasetId != null
 
         fun isProjectDatasetName(): Boolean = projectDatasetName != null
+
+        fun isDatasetRows(): Boolean = datasetRows != null
 
         /** Dataset id */
         fun asDatasetId(): DatasetId = datasetId.getOrThrow("datasetId")
@@ -1323,12 +1381,16 @@ private constructor(
         fun asProjectDatasetName(): ProjectDatasetName =
             projectDatasetName.getOrThrow("projectDatasetName")
 
+        /** Dataset rows */
+        fun asDatasetRows(): DatasetRows = datasetRows.getOrThrow("datasetRows")
+
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
         fun <T> accept(visitor: Visitor<T>): T {
             return when {
                 datasetId != null -> visitor.visitDatasetId(datasetId)
                 projectDatasetName != null -> visitor.visitProjectDatasetName(projectDatasetName)
+                datasetRows != null -> visitor.visitDatasetRows(datasetRows)
                 else -> visitor.unknown(_json)
             }
         }
@@ -1349,6 +1411,10 @@ private constructor(
                     override fun visitProjectDatasetName(projectDatasetName: ProjectDatasetName) {
                         projectDatasetName.validate()
                     }
+
+                    override fun visitDatasetRows(datasetRows: DatasetRows) {
+                        datasetRows.validate()
+                    }
                 }
             )
             validated = true
@@ -1359,15 +1425,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Data && datasetId == other.datasetId && projectDatasetName == other.projectDatasetName /* spotless:on */
+            return /* spotless:off */ other is Data && datasetId == other.datasetId && projectDatasetName == other.projectDatasetName && datasetRows == other.datasetRows /* spotless:on */
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, projectDatasetName) /* spotless:on */
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, projectDatasetName, datasetRows) /* spotless:on */
 
         override fun toString(): String =
             when {
                 datasetId != null -> "Data{datasetId=$datasetId}"
                 projectDatasetName != null -> "Data{projectDatasetName=$projectDatasetName}"
+                datasetRows != null -> "Data{datasetRows=$datasetRows}"
                 _json != null -> "Data{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Data")
             }
@@ -1381,6 +1448,9 @@ private constructor(
             @JvmStatic
             fun ofProjectDatasetName(projectDatasetName: ProjectDatasetName) =
                 Data(projectDatasetName = projectDatasetName)
+
+            /** Dataset rows */
+            @JvmStatic fun ofDatasetRows(datasetRows: DatasetRows) = Data(datasetRows = datasetRows)
         }
 
         /** An interface that defines how to map each variant of [Data] to a value of type [T]. */
@@ -1391,6 +1461,9 @@ private constructor(
 
             /** Project and dataset name */
             fun visitProjectDatasetName(projectDatasetName: ProjectDatasetName): T
+
+            /** Dataset rows */
+            fun visitDatasetRows(datasetRows: DatasetRows): T
 
             /**
              * Maps an unknown variant of [Data] to a value of type [T].
@@ -1419,6 +1492,10 @@ private constructor(
                     ?.let {
                         return Data(projectDatasetName = it, _json = json)
                     }
+                tryDeserialize(node, jacksonTypeRef<DatasetRows>()) { it.validate() }
+                    ?.let {
+                        return Data(datasetRows = it, _json = json)
+                    }
 
                 return Data(_json = json)
             }
@@ -1435,6 +1512,7 @@ private constructor(
                     value.datasetId != null -> generator.writeObject(value.datasetId)
                     value.projectDatasetName != null ->
                         generator.writeObject(value.projectDatasetName)
+                    value.datasetRows != null -> generator.writeObject(value.datasetRows)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Data")
                 }
@@ -1449,15 +1527,25 @@ private constructor(
             @JsonProperty("dataset_id")
             @ExcludeMissing
             private val datasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("_internal_btql")
+            @ExcludeMissing
+            private val _internalBtql: JsonField<_InternalBtql> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             fun datasetId(): String = datasetId.getRequired("dataset_id")
 
+            fun _internalBtql(): Optional<_InternalBtql> =
+                Optional.ofNullable(_internalBtql.getNullable("_internal_btql"))
+
             @JsonProperty("dataset_id")
             @ExcludeMissing
             fun _datasetId(): JsonField<String> = datasetId
+
+            @JsonProperty("_internal_btql")
+            @ExcludeMissing
+            fun __internalBtql(): JsonField<_InternalBtql> = _internalBtql
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1471,6 +1559,7 @@ private constructor(
                 }
 
                 datasetId()
+                _internalBtql().ifPresent { it.validate() }
                 validated = true
             }
 
@@ -1493,17 +1582,29 @@ private constructor(
             class Builder internal constructor() {
 
                 private var datasetId: JsonField<String>? = null
+                private var _internalBtql: JsonField<_InternalBtql> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(datasetId: DatasetId) = apply {
                     this.datasetId = datasetId.datasetId
+                    _internalBtql = datasetId._internalBtql
                     additionalProperties = datasetId.additionalProperties.toMutableMap()
                 }
 
                 fun datasetId(datasetId: String) = datasetId(JsonField.of(datasetId))
 
                 fun datasetId(datasetId: JsonField<String>) = apply { this.datasetId = datasetId }
+
+                fun _internalBtql(_internalBtql: _InternalBtql?) =
+                    _internalBtql(JsonField.ofNullable(_internalBtql))
+
+                fun _internalBtql(_internalBtql: Optional<_InternalBtql>) =
+                    _internalBtql(_internalBtql.getOrNull())
+
+                fun _internalBtql(_internalBtql: JsonField<_InternalBtql>) = apply {
+                    this._internalBtql = _internalBtql
+                }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1530,8 +1631,94 @@ private constructor(
                 fun build(): DatasetId =
                     DatasetId(
                         checkRequired("datasetId", datasetId),
+                        _internalBtql,
                         additionalProperties.toImmutable(),
                     )
+            }
+
+            @NoAutoDetect
+            class _InternalBtql
+            @JsonCreator
+            private constructor(
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+            ) {
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                private var validated: Boolean = false
+
+                fun validate(): _InternalBtql = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    validated = true
+                }
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of [_InternalBtql].
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [_InternalBtql]. */
+                class Builder internal constructor() {
+
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(_internalBtql: _InternalBtql) = apply {
+                        additionalProperties = _internalBtql.additionalProperties.toMutableMap()
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    fun build(): _InternalBtql = _InternalBtql(additionalProperties.toImmutable())
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is _InternalBtql && additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                /* spotless:off */
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                /* spotless:on */
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "_InternalBtql{additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1539,17 +1726,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is DatasetId && datasetId == other.datasetId && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is DatasetId && datasetId == other.datasetId && _internalBtql == other._internalBtql && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(datasetId, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(datasetId, _internalBtql, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "DatasetId{datasetId=$datasetId, additionalProperties=$additionalProperties}"
+                "DatasetId{datasetId=$datasetId, _internalBtql=$_internalBtql, additionalProperties=$additionalProperties}"
         }
 
         /** Project and dataset name */
@@ -1563,6 +1750,9 @@ private constructor(
             @JsonProperty("project_name")
             @ExcludeMissing
             private val projectName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("_internal_btql")
+            @ExcludeMissing
+            private val _internalBtql: JsonField<_InternalBtql> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
@@ -1571,6 +1761,9 @@ private constructor(
 
             fun projectName(): String = projectName.getRequired("project_name")
 
+            fun _internalBtql(): Optional<_InternalBtql> =
+                Optional.ofNullable(_internalBtql.getNullable("_internal_btql"))
+
             @JsonProperty("dataset_name")
             @ExcludeMissing
             fun _datasetName(): JsonField<String> = datasetName
@@ -1578,6 +1771,10 @@ private constructor(
             @JsonProperty("project_name")
             @ExcludeMissing
             fun _projectName(): JsonField<String> = projectName
+
+            @JsonProperty("_internal_btql")
+            @ExcludeMissing
+            fun __internalBtql(): JsonField<_InternalBtql> = _internalBtql
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1592,6 +1789,7 @@ private constructor(
 
                 datasetName()
                 projectName()
+                _internalBtql().ifPresent { it.validate() }
                 validated = true
             }
 
@@ -1616,12 +1814,14 @@ private constructor(
 
                 private var datasetName: JsonField<String>? = null
                 private var projectName: JsonField<String>? = null
+                private var _internalBtql: JsonField<_InternalBtql> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(projectDatasetName: ProjectDatasetName) = apply {
                     datasetName = projectDatasetName.datasetName
                     projectName = projectDatasetName.projectName
+                    _internalBtql = projectDatasetName._internalBtql
                     additionalProperties = projectDatasetName.additionalProperties.toMutableMap()
                 }
 
@@ -1635,6 +1835,16 @@ private constructor(
 
                 fun projectName(projectName: JsonField<String>) = apply {
                     this.projectName = projectName
+                }
+
+                fun _internalBtql(_internalBtql: _InternalBtql?) =
+                    _internalBtql(JsonField.ofNullable(_internalBtql))
+
+                fun _internalBtql(_internalBtql: Optional<_InternalBtql>) =
+                    _internalBtql(_internalBtql.getOrNull())
+
+                fun _internalBtql(_internalBtql: JsonField<_InternalBtql>) = apply {
+                    this._internalBtql = _internalBtql
                 }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1663,6 +1873,210 @@ private constructor(
                     ProjectDatasetName(
                         checkRequired("datasetName", datasetName),
                         checkRequired("projectName", projectName),
+                        _internalBtql,
+                        additionalProperties.toImmutable(),
+                    )
+            }
+
+            @NoAutoDetect
+            class _InternalBtql
+            @JsonCreator
+            private constructor(
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+            ) {
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                private var validated: Boolean = false
+
+                fun validate(): _InternalBtql = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    validated = true
+                }
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of [_InternalBtql].
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [_InternalBtql]. */
+                class Builder internal constructor() {
+
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(_internalBtql: _InternalBtql) = apply {
+                        additionalProperties = _internalBtql.additionalProperties.toMutableMap()
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    fun build(): _InternalBtql = _InternalBtql(additionalProperties.toImmutable())
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is _InternalBtql && additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                /* spotless:off */
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                /* spotless:on */
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "_InternalBtql{additionalProperties=$additionalProperties}"
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ProjectDatasetName && datasetName == other.datasetName && projectName == other.projectName && _internalBtql == other._internalBtql && additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(datasetName, projectName, _internalBtql, additionalProperties) }
+            /* spotless:on */
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "ProjectDatasetName{datasetName=$datasetName, projectName=$projectName, _internalBtql=$_internalBtql, additionalProperties=$additionalProperties}"
+        }
+
+        /** Dataset rows */
+        @NoAutoDetect
+        class DatasetRows
+        @JsonCreator
+        private constructor(
+            @JsonProperty("data")
+            @ExcludeMissing
+            private val data: JsonField<List<JsonValue?>> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        ) {
+
+            fun data(): List<JsonValue?> = data.getRequired("data")
+
+            @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<List<JsonValue?>> = data
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): DatasetRows = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                data()
+                validated = true
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [DatasetRows].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .data()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [DatasetRows]. */
+            class Builder internal constructor() {
+
+                private var data: JsonField<MutableList<JsonValue?>>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(datasetRows: DatasetRows) = apply {
+                    data = datasetRows.data.map { it.toMutableList() }
+                    additionalProperties = datasetRows.additionalProperties.toMutableMap()
+                }
+
+                fun data(data: List<JsonValue?>) = data(JsonField.of(data))
+
+                fun data(data: JsonField<List<JsonValue?>>) = apply {
+                    this.data = data.map { it.toMutableList() }
+                }
+
+                fun addData(data: JsonValue) = apply {
+                    this.data =
+                        (this.data ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("data", it).add(data)
+                        }
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                fun build(): DatasetRows =
+                    DatasetRows(
+                        checkRequired("data", data).map { it.toImmutable() },
                         additionalProperties.toImmutable(),
                     )
             }
@@ -1672,17 +2086,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ProjectDatasetName && datasetName == other.datasetName && projectName == other.projectName && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is DatasetRows && data == other.data && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(datasetName, projectName, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(data, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ProjectDatasetName{datasetName=$datasetName, projectName=$projectName, additionalProperties=$additionalProperties}"
+                "DatasetRows{data=$data, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -4893,6 +5307,687 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
+    }
+
+    /** Options for tracing the evaluation */
+    @JsonDeserialize(using = Parent.Deserializer::class)
+    @JsonSerialize(using = Parent.Serializer::class)
+    class Parent
+    private constructor(
+        private val spanParentStruct: SpanParentStruct? = null,
+        private val string: String? = null,
+        private val _json: JsonValue? = null,
+    ) {
+
+        /** Span parent properties */
+        fun spanParentStruct(): Optional<SpanParentStruct> = Optional.ofNullable(spanParentStruct)
+
+        /** The parent's span identifier, created by calling `.export()` on a span */
+        fun string(): Optional<String> = Optional.ofNullable(string)
+
+        fun isSpanParentStruct(): Boolean = spanParentStruct != null
+
+        fun isString(): Boolean = string != null
+
+        /** Span parent properties */
+        fun asSpanParentStruct(): SpanParentStruct = spanParentStruct.getOrThrow("spanParentStruct")
+
+        /** The parent's span identifier, created by calling `.export()` on a span */
+        fun asString(): String = string.getOrThrow("string")
+
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        fun <T> accept(visitor: Visitor<T>): T {
+            return when {
+                spanParentStruct != null -> visitor.visitSpanParentStruct(spanParentStruct)
+                string != null -> visitor.visitString(string)
+                else -> visitor.unknown(_json)
+            }
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Parent = apply {
+            if (validated) {
+                return@apply
+            }
+
+            accept(
+                object : Visitor<Unit> {
+                    override fun visitSpanParentStruct(spanParentStruct: SpanParentStruct) {
+                        spanParentStruct.validate()
+                    }
+
+                    override fun visitString(string: String) {}
+                }
+            )
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Parent && spanParentStruct == other.spanParentStruct && string == other.string /* spotless:on */
+        }
+
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanParentStruct, string) /* spotless:on */
+
+        override fun toString(): String =
+            when {
+                spanParentStruct != null -> "Parent{spanParentStruct=$spanParentStruct}"
+                string != null -> "Parent{string=$string}"
+                _json != null -> "Parent{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid Parent")
+            }
+
+        companion object {
+
+            /** Span parent properties */
+            @JvmStatic
+            fun ofSpanParentStruct(spanParentStruct: SpanParentStruct) =
+                Parent(spanParentStruct = spanParentStruct)
+
+            /** The parent's span identifier, created by calling `.export()` on a span */
+            @JvmStatic fun ofString(string: String) = Parent(string = string)
+        }
+
+        /** An interface that defines how to map each variant of [Parent] to a value of type [T]. */
+        interface Visitor<out T> {
+
+            /** Span parent properties */
+            fun visitSpanParentStruct(spanParentStruct: SpanParentStruct): T
+
+            /** The parent's span identifier, created by calling `.export()` on a span */
+            fun visitString(string: String): T
+
+            /**
+             * Maps an unknown variant of [Parent] to a value of type [T].
+             *
+             * An instance of [Parent] can contain an unknown variant if it was deserialized from
+             * data that doesn't match any known variant. For example, if the SDK is on an older
+             * version than the API, then the API may respond with new variants that the SDK is
+             * unaware of.
+             *
+             * @throws BraintrustInvalidDataException in the default implementation.
+             */
+            fun unknown(json: JsonValue?): T {
+                throw BraintrustInvalidDataException("Unknown Parent: $json")
+            }
+        }
+
+        internal class Deserializer : BaseDeserializer<Parent>(Parent::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): Parent {
+                val json = JsonValue.fromJsonNode(node)
+
+                tryDeserialize(node, jacksonTypeRef<SpanParentStruct>()) { it.validate() }
+                    ?.let {
+                        return Parent(spanParentStruct = it, _json = json)
+                    }
+                tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                    return Parent(string = it, _json = json)
+                }
+
+                return Parent(_json = json)
+            }
+        }
+
+        internal class Serializer : BaseSerializer<Parent>(Parent::class) {
+
+            override fun serialize(
+                value: Parent,
+                generator: JsonGenerator,
+                provider: SerializerProvider,
+            ) {
+                when {
+                    value.spanParentStruct != null -> generator.writeObject(value.spanParentStruct)
+                    value.string != null -> generator.writeObject(value.string)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid Parent")
+                }
+            }
+        }
+
+        /** Span parent properties */
+        @NoAutoDetect
+        class SpanParentStruct
+        @JsonCreator
+        private constructor(
+            @JsonProperty("object_id")
+            @ExcludeMissing
+            private val objectId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("object_type")
+            @ExcludeMissing
+            private val objectType: JsonField<ObjectType> = JsonMissing.of(),
+            @JsonProperty("propagated_event")
+            @ExcludeMissing
+            private val propagatedEvent: JsonField<PropagatedEvent> = JsonMissing.of(),
+            @JsonProperty("row_ids")
+            @ExcludeMissing
+            private val rowIds: JsonField<RowIds> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        ) {
+
+            /** The id of the container object you are logging to */
+            fun objectId(): String = objectId.getRequired("object_id")
+
+            fun objectType(): ObjectType = objectType.getRequired("object_type")
+
+            /** Include these properties in every span created under this parent */
+            fun propagatedEvent(): Optional<PropagatedEvent> =
+                Optional.ofNullable(propagatedEvent.getNullable("propagated_event"))
+
+            /** Identifiers for the row to to log a subspan under */
+            fun rowIds(): Optional<RowIds> = Optional.ofNullable(rowIds.getNullable("row_ids"))
+
+            /** The id of the container object you are logging to */
+            @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
+
+            @JsonProperty("object_type")
+            @ExcludeMissing
+            fun _objectType(): JsonField<ObjectType> = objectType
+
+            /** Include these properties in every span created under this parent */
+            @JsonProperty("propagated_event")
+            @ExcludeMissing
+            fun _propagatedEvent(): JsonField<PropagatedEvent> = propagatedEvent
+
+            /** Identifiers for the row to to log a subspan under */
+            @JsonProperty("row_ids") @ExcludeMissing fun _rowIds(): JsonField<RowIds> = rowIds
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): SpanParentStruct = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                objectId()
+                objectType()
+                propagatedEvent().ifPresent { it.validate() }
+                rowIds().ifPresent { it.validate() }
+                validated = true
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [SpanParentStruct].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .objectId()
+                 * .objectType()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [SpanParentStruct]. */
+            class Builder internal constructor() {
+
+                private var objectId: JsonField<String>? = null
+                private var objectType: JsonField<ObjectType>? = null
+                private var propagatedEvent: JsonField<PropagatedEvent> = JsonMissing.of()
+                private var rowIds: JsonField<RowIds> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(spanParentStruct: SpanParentStruct) = apply {
+                    objectId = spanParentStruct.objectId
+                    objectType = spanParentStruct.objectType
+                    propagatedEvent = spanParentStruct.propagatedEvent
+                    rowIds = spanParentStruct.rowIds
+                    additionalProperties = spanParentStruct.additionalProperties.toMutableMap()
+                }
+
+                /** The id of the container object you are logging to */
+                fun objectId(objectId: String) = objectId(JsonField.of(objectId))
+
+                /** The id of the container object you are logging to */
+                fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
+
+                fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
+
+                fun objectType(objectType: JsonField<ObjectType>) = apply {
+                    this.objectType = objectType
+                }
+
+                /** Include these properties in every span created under this parent */
+                fun propagatedEvent(propagatedEvent: PropagatedEvent?) =
+                    propagatedEvent(JsonField.ofNullable(propagatedEvent))
+
+                /** Include these properties in every span created under this parent */
+                fun propagatedEvent(propagatedEvent: Optional<PropagatedEvent>) =
+                    propagatedEvent(propagatedEvent.getOrNull())
+
+                /** Include these properties in every span created under this parent */
+                fun propagatedEvent(propagatedEvent: JsonField<PropagatedEvent>) = apply {
+                    this.propagatedEvent = propagatedEvent
+                }
+
+                /** Identifiers for the row to to log a subspan under */
+                fun rowIds(rowIds: RowIds?) = rowIds(JsonField.ofNullable(rowIds))
+
+                /** Identifiers for the row to to log a subspan under */
+                fun rowIds(rowIds: Optional<RowIds>) = rowIds(rowIds.getOrNull())
+
+                /** Identifiers for the row to to log a subspan under */
+                fun rowIds(rowIds: JsonField<RowIds>) = apply { this.rowIds = rowIds }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                fun build(): SpanParentStruct =
+                    SpanParentStruct(
+                        checkRequired("objectId", objectId),
+                        checkRequired("objectType", objectType),
+                        propagatedEvent,
+                        rowIds,
+                        additionalProperties.toImmutable(),
+                    )
+            }
+
+            class ObjectType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val PROJECT_LOGS = of("project_logs")
+
+                    @JvmField val EXPERIMENT = of("experiment")
+
+                    @JvmField val PLAYGROUND_LOGS = of("playground_logs")
+
+                    @JvmStatic fun of(value: String) = ObjectType(JsonField.of(value))
+                }
+
+                /** An enum containing [ObjectType]'s known values. */
+                enum class Known {
+                    PROJECT_LOGS,
+                    EXPERIMENT,
+                    PLAYGROUND_LOGS,
+                }
+
+                /**
+                 * An enum containing [ObjectType]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [ObjectType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    PROJECT_LOGS,
+                    EXPERIMENT,
+                    PLAYGROUND_LOGS,
+                    /**
+                     * An enum member indicating that [ObjectType] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        PROJECT_LOGS -> Value.PROJECT_LOGS
+                        EXPERIMENT -> Value.EXPERIMENT
+                        PLAYGROUND_LOGS -> Value.PLAYGROUND_LOGS
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws BraintrustInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        PROJECT_LOGS -> Known.PROJECT_LOGS
+                        EXPERIMENT -> Known.EXPERIMENT
+                        PLAYGROUND_LOGS -> Known.PLAYGROUND_LOGS
+                        else -> throw BraintrustInvalidDataException("Unknown ObjectType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws BraintrustInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        BraintrustInvalidDataException("Value is not a String")
+                    }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            /** Include these properties in every span created under this parent */
+            @NoAutoDetect
+            class PropagatedEvent
+            @JsonCreator
+            private constructor(
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+            ) {
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                private var validated: Boolean = false
+
+                fun validate(): PropagatedEvent = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    validated = true
+                }
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of [PropagatedEvent].
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [PropagatedEvent]. */
+                class Builder internal constructor() {
+
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(propagatedEvent: PropagatedEvent) = apply {
+                        additionalProperties = propagatedEvent.additionalProperties.toMutableMap()
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    fun build(): PropagatedEvent =
+                        PropagatedEvent(additionalProperties.toImmutable())
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is PropagatedEvent && additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                /* spotless:off */
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                /* spotless:on */
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "PropagatedEvent{additionalProperties=$additionalProperties}"
+            }
+
+            /** Identifiers for the row to to log a subspan under */
+            @NoAutoDetect
+            class RowIds
+            @JsonCreator
+            private constructor(
+                @JsonProperty("id")
+                @ExcludeMissing
+                private val id: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("root_span_id")
+                @ExcludeMissing
+                private val rootSpanId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("span_id")
+                @ExcludeMissing
+                private val spanId: JsonField<String> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            ) {
+
+                /** The id of the row */
+                fun id(): String = id.getRequired("id")
+
+                /** The root_span_id of the row */
+                fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
+
+                /** The span_id of the row */
+                fun spanId(): String = spanId.getRequired("span_id")
+
+                /** The id of the row */
+                @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+                /** The root_span_id of the row */
+                @JsonProperty("root_span_id")
+                @ExcludeMissing
+                fun _rootSpanId(): JsonField<String> = rootSpanId
+
+                /** The span_id of the row */
+                @JsonProperty("span_id") @ExcludeMissing fun _spanId(): JsonField<String> = spanId
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                private var validated: Boolean = false
+
+                fun validate(): RowIds = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    id()
+                    rootSpanId()
+                    spanId()
+                    validated = true
+                }
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of [RowIds].
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .id()
+                     * .rootSpanId()
+                     * .spanId()
+                     * ```
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [RowIds]. */
+                class Builder internal constructor() {
+
+                    private var id: JsonField<String>? = null
+                    private var rootSpanId: JsonField<String>? = null
+                    private var spanId: JsonField<String>? = null
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(rowIds: RowIds) = apply {
+                        id = rowIds.id
+                        rootSpanId = rowIds.rootSpanId
+                        spanId = rowIds.spanId
+                        additionalProperties = rowIds.additionalProperties.toMutableMap()
+                    }
+
+                    /** The id of the row */
+                    fun id(id: String) = id(JsonField.of(id))
+
+                    /** The id of the row */
+                    fun id(id: JsonField<String>) = apply { this.id = id }
+
+                    /** The root_span_id of the row */
+                    fun rootSpanId(rootSpanId: String) = rootSpanId(JsonField.of(rootSpanId))
+
+                    /** The root_span_id of the row */
+                    fun rootSpanId(rootSpanId: JsonField<String>) = apply {
+                        this.rootSpanId = rootSpanId
+                    }
+
+                    /** The span_id of the row */
+                    fun spanId(spanId: String) = spanId(JsonField.of(spanId))
+
+                    /** The span_id of the row */
+                    fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    fun build(): RowIds =
+                        RowIds(
+                            checkRequired("id", id),
+                            checkRequired("rootSpanId", rootSpanId),
+                            checkRequired("spanId", spanId),
+                            additionalProperties.toImmutable(),
+                        )
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is RowIds && id == other.id && rootSpanId == other.rootSpanId && spanId == other.spanId && additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                /* spotless:off */
+                private val hashCode: Int by lazy { Objects.hash(id, rootSpanId, spanId, additionalProperties) }
+                /* spotless:on */
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "RowIds{id=$id, rootSpanId=$rootSpanId, spanId=$spanId, additionalProperties=$additionalProperties}"
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is SpanParentStruct && objectId == other.objectId && objectType == other.objectType && propagatedEvent == other.propagatedEvent && rowIds == other.rowIds && additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(objectId, objectType, propagatedEvent, rowIds, additionalProperties) }
+            /* spotless:on */
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "SpanParentStruct{objectId=$objectId, objectType=$objectType, propagatedEvent=$propagatedEvent, rowIds=$rowIds, additionalProperties=$additionalProperties}"
+        }
     }
 
     override fun equals(other: Any?): Boolean {

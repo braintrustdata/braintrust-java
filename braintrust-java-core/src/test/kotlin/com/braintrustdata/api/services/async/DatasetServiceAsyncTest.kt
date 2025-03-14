@@ -16,6 +16,7 @@ import com.braintrustdata.api.models.DatasetSummarizeParams
 import com.braintrustdata.api.models.DatasetUpdateParams
 import com.braintrustdata.api.models.FeedbackDatasetItem
 import com.braintrustdata.api.models.InsertDatasetEvent
+import com.braintrustdata.api.models.ObjectReference
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -237,9 +238,14 @@ class DatasetServiceAsyncTest {
                             .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .expected(JsonValue.from(mapOf<String, Any>()))
                             .input(JsonValue.from(mapOf<String, Any>()))
-                            .metadata(
-                                InsertDatasetEvent.Metadata.builder()
-                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .metadata(InsertDatasetEvent.Metadata.builder().model("model").build())
+                            .origin(
+                                ObjectReference.builder()
+                                    .id("id")
+                                    ._xactId("_xact_id")
+                                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                    .objectType(ObjectReference.ObjectType.EXPERIMENT)
+                                    .created("created")
                                     .build()
                             )
                             .rootSpanId("root_span_id")
