@@ -48,32 +48,77 @@ private constructor(
     /** ProjectScore id */
     fun projectScoreId(): String = projectScoreId
 
-    /** For categorical-type project scores, the list of all categories */
+    /**
+     * For categorical-type project scores, the list of all categories
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun categories(): Optional<Categories> = body.categories()
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun config(): Optional<ProjectScoreConfig> = body.config()
 
-    /** Textual description of the project score */
+    /**
+     * Textual description of the project score
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> = body.description()
 
-    /** Name of the project score */
+    /**
+     * Name of the project score
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
-    /** The type of the configured score */
+    /**
+     * The type of the configured score
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun scoreType(): Optional<ProjectScoreType> = body.scoreType()
 
-    /** For categorical-type project scores, the list of all categories */
+    /**
+     * Returns the raw JSON value of [categories].
+     *
+     * Unlike [categories], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _categories(): JsonField<Categories> = body._categories()
 
+    /**
+     * Returns the raw JSON value of [config].
+     *
+     * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _config(): JsonField<ProjectScoreConfig> = body._config()
 
-    /** Textual description of the project score */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _description(): JsonField<String> = body._description()
 
-    /** Name of the project score */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
-    /** The type of the configured score */
+    /**
+     * Returns the raw JSON value of [scoreType].
+     *
+     * Unlike [scoreType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _scoreType(): JsonField<ProjectScoreType> = body._scoreType()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -119,42 +164,87 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** For categorical-type project scores, the list of all categories */
+        /**
+         * For categorical-type project scores, the list of all categories
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun categories(): Optional<Categories> =
             Optional.ofNullable(categories.getNullable("categories"))
 
+        /**
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun config(): Optional<ProjectScoreConfig> =
             Optional.ofNullable(config.getNullable("config"))
 
-        /** Textual description of the project score */
+        /**
+         * Textual description of the project score
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** Name of the project score */
+        /**
+         * Name of the project score
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** The type of the configured score */
+        /**
+         * The type of the configured score
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun scoreType(): Optional<ProjectScoreType> =
             Optional.ofNullable(scoreType.getNullable("score_type"))
 
-        /** For categorical-type project scores, the list of all categories */
+        /**
+         * Returns the raw JSON value of [categories].
+         *
+         * Unlike [categories], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("categories")
         @ExcludeMissing
         fun _categories(): JsonField<Categories> = categories
 
+        /**
+         * Returns the raw JSON value of [config].
+         *
+         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("config")
         @ExcludeMissing
         fun _config(): JsonField<ProjectScoreConfig> = config
 
-        /** Textual description of the project score */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** Name of the project score */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The type of the configured score */
+        /**
+         * Returns the raw JSON value of [scoreType].
+         *
+         * Unlike [scoreType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("score_type")
         @ExcludeMissing
         fun _scoreType(): JsonField<ProjectScoreType> = scoreType
@@ -209,39 +299,59 @@ private constructor(
             /** For categorical-type project scores, the list of all categories */
             fun categories(categories: Categories?) = categories(JsonField.ofNullable(categories))
 
-            /** For categorical-type project scores, the list of all categories */
+            /** Alias for calling [Builder.categories] with `categories.orElse(null)`. */
             fun categories(categories: Optional<Categories>) = categories(categories.getOrNull())
 
-            /** For categorical-type project scores, the list of all categories */
+            /**
+             * Sets [Builder.categories] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.categories] with a well-typed [Categories] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun categories(categories: JsonField<Categories>) = apply {
                 this.categories = categories
             }
 
-            /** For categorical-type project scores, the list of all categories */
+            /** Alias for calling [categories] with `Categories.ofCategorical(categorical)`. */
             fun categoriesOfCategorical(categorical: List<ProjectScoreCategory>) =
                 categories(Categories.ofCategorical(categorical))
 
-            /** For weighted-type project scores, the weights of each score */
+            /** Alias for calling [categories] with `Categories.ofWeighted(weighted)`. */
             fun categories(weighted: Categories.Weighted) =
                 categories(Categories.ofWeighted(weighted))
 
-            /** For minimum-type project scores, the list of included scores */
+            /** Alias for calling [categories] with `Categories.ofMinimum(minimum)`. */
             fun categoriesOfMinimum(minimum: List<String>) =
                 categories(Categories.ofMinimum(minimum))
 
             fun config(config: ProjectScoreConfig?) = config(JsonField.ofNullable(config))
 
+            /** Alias for calling [Builder.config] with `config.orElse(null)`. */
             fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
+            /**
+             * Sets [Builder.config] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.config] with a well-typed [ProjectScoreConfig] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun config(config: JsonField<ProjectScoreConfig>) = apply { this.config = config }
 
             /** Textual description of the project score */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** Textual description of the project score */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** Textual description of the project score */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
@@ -249,19 +359,31 @@ private constructor(
             /** Name of the project score */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Name of the project score */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Name of the project score */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The type of the configured score */
             fun scoreType(scoreType: ProjectScoreType?) = scoreType(JsonField.ofNullable(scoreType))
 
-            /** The type of the configured score */
+            /** Alias for calling [Builder.scoreType] with `scoreType.orElse(null)`. */
             fun scoreType(scoreType: Optional<ProjectScoreType>) = scoreType(scoreType.getOrNull())
 
-            /** The type of the configured score */
+            /**
+             * Sets [Builder.scoreType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.scoreType] with a well-typed [ProjectScoreType]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun scoreType(scoreType: JsonField<ProjectScoreType>) = apply {
                 this.scoreType = scoreType
             }
@@ -352,54 +474,85 @@ private constructor(
         /** For categorical-type project scores, the list of all categories */
         fun categories(categories: Categories?) = apply { body.categories(categories) }
 
-        /** For categorical-type project scores, the list of all categories */
+        /** Alias for calling [Builder.categories] with `categories.orElse(null)`. */
         fun categories(categories: Optional<Categories>) = categories(categories.getOrNull())
 
-        /** For categorical-type project scores, the list of all categories */
+        /**
+         * Sets [Builder.categories] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.categories] with a well-typed [Categories] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun categories(categories: JsonField<Categories>) = apply { body.categories(categories) }
 
-        /** For categorical-type project scores, the list of all categories */
+        /** Alias for calling [categories] with `Categories.ofCategorical(categorical)`. */
         fun categoriesOfCategorical(categorical: List<ProjectScoreCategory>) = apply {
             body.categoriesOfCategorical(categorical)
         }
 
-        /** For weighted-type project scores, the weights of each score */
+        /** Alias for calling [categories] with `Categories.ofWeighted(weighted)`. */
         fun categories(weighted: Categories.Weighted) = apply { body.categories(weighted) }
 
-        /** For minimum-type project scores, the list of included scores */
+        /** Alias for calling [categories] with `Categories.ofMinimum(minimum)`. */
         fun categoriesOfMinimum(minimum: List<String>) = apply { body.categoriesOfMinimum(minimum) }
 
         fun config(config: ProjectScoreConfig?) = apply { body.config(config) }
 
+        /** Alias for calling [Builder.config] with `config.orElse(null)`. */
         fun config(config: Optional<ProjectScoreConfig>) = config(config.getOrNull())
 
+        /**
+         * Sets [Builder.config] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.config] with a well-typed [ProjectScoreConfig] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun config(config: JsonField<ProjectScoreConfig>) = apply { body.config(config) }
 
         /** Textual description of the project score */
         fun description(description: String?) = apply { body.description(description) }
 
-        /** Textual description of the project score */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the project score */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** Name of the project score */
         fun name(name: String?) = apply { body.name(name) }
 
-        /** Name of the project score */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
-        /** Name of the project score */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** The type of the configured score */
         fun scoreType(scoreType: ProjectScoreType?) = apply { body.scoreType(scoreType) }
 
-        /** The type of the configured score */
+        /** Alias for calling [Builder.scoreType] with `scoreType.orElse(null)`. */
         fun scoreType(scoreType: Optional<ProjectScoreType>) = scoreType(scoreType.getOrNull())
 
-        /** The type of the configured score */
+        /**
+         * Sets [Builder.scoreType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.scoreType] with a well-typed [ProjectScoreType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun scoreType(scoreType: JsonField<ProjectScoreType>) = apply { body.scoreType(scoreType) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

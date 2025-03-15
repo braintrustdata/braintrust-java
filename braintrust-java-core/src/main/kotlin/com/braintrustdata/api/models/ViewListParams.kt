@@ -160,13 +160,7 @@ private constructor(
          */
         fun endingBefore(endingBefore: String?) = apply { this.endingBefore = endingBefore }
 
-        /**
-         * Pagination cursor id.
-         *
-         * For example, if the initial item in the last page you fetched had an id of `foo`, pass
-         * `ending_before=foo` to fetch the previous page. Note: you may only pass one of
-         * `starting_after` and `ending_before`
-         */
+        /** Alias for calling [Builder.endingBefore] with `endingBefore.orElse(null)`. */
         fun endingBefore(endingBefore: Optional<String>) = endingBefore(endingBefore.getOrNull())
 
         /**
@@ -175,31 +169,26 @@ private constructor(
          */
         fun ids(ids: Ids?) = apply { this.ids = ids }
 
-        /**
-         * Filter search results to a particular set of object IDs. To specify a list of IDs,
-         * include the query param multiple times
-         */
+        /** Alias for calling [Builder.ids] with `ids.orElse(null)`. */
         fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
-        /**
-         * Filter search results to a particular set of object IDs. To specify a list of IDs,
-         * include the query param multiple times
-         */
+        /** Alias for calling [ids] with `Ids.ofString(string)`. */
         fun ids(string: String) = ids(Ids.ofString(string))
 
-        /**
-         * Filter search results to a particular set of object IDs. To specify a list of IDs,
-         * include the query param multiple times
-         */
+        /** Alias for calling [ids] with `Ids.ofStrings(strings)`. */
         fun idsOfStrings(strings: List<String>) = ids(Ids.ofStrings(strings))
 
         /** Limit the number of objects to return */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Limit the number of objects to return */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /** Limit the number of objects to return */
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
         fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /**
@@ -211,26 +200,20 @@ private constructor(
          */
         fun startingAfter(startingAfter: String?) = apply { this.startingAfter = startingAfter }
 
-        /**
-         * Pagination cursor id.
-         *
-         * For example, if the final item in the last page you fetched had an id of `foo`, pass
-         * `starting_after=foo` to fetch the next page. Note: you may only pass one of
-         * `starting_after` and `ending_before`
-         */
+        /** Alias for calling [Builder.startingAfter] with `startingAfter.orElse(null)`. */
         fun startingAfter(startingAfter: Optional<String>) =
             startingAfter(startingAfter.getOrNull())
 
         /** Name of the view to search for */
         fun viewName(viewName: String?) = apply { this.viewName = viewName }
 
-        /** Name of the view to search for */
+        /** Alias for calling [Builder.viewName] with `viewName.orElse(null)`. */
         fun viewName(viewName: Optional<String>) = viewName(viewName.getOrNull())
 
         /** Type of table that the view corresponds to. */
         fun viewType(viewType: ViewType?) = apply { this.viewType = viewType }
 
-        /** Type of table that the view corresponds to. */
+        /** Alias for calling [Builder.viewType] with `viewType.orElse(null)`. */
         fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

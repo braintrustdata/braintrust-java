@@ -14,6 +14,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -38,40 +39,96 @@ private constructor(
     /** Group id */
     fun groupId(): String = groupId
 
-    /** A list of group IDs to add to the group's inheriting-from set */
+    /**
+     * A list of group IDs to add to the group's inheriting-from set
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun addMemberGroups(): Optional<List<String>> = body.addMemberGroups()
 
-    /** A list of user IDs to add to the group */
+    /**
+     * A list of user IDs to add to the group
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun addMemberUsers(): Optional<List<String>> = body.addMemberUsers()
 
-    /** Textual description of the group */
+    /**
+     * Textual description of the group
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> = body.description()
 
-    /** Name of the group */
+    /**
+     * Name of the group
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
-    /** A list of group IDs to remove from the group's inheriting-from set */
+    /**
+     * A list of group IDs to remove from the group's inheriting-from set
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun removeMemberGroups(): Optional<List<String>> = body.removeMemberGroups()
 
-    /** A list of user IDs to remove from the group */
+    /**
+     * A list of user IDs to remove from the group
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun removeMemberUsers(): Optional<List<String>> = body.removeMemberUsers()
 
-    /** A list of group IDs to add to the group's inheriting-from set */
+    /**
+     * Returns the raw JSON value of [addMemberGroups].
+     *
+     * Unlike [addMemberGroups], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _addMemberGroups(): JsonField<List<String>> = body._addMemberGroups()
 
-    /** A list of user IDs to add to the group */
+    /**
+     * Returns the raw JSON value of [addMemberUsers].
+     *
+     * Unlike [addMemberUsers], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _addMemberUsers(): JsonField<List<String>> = body._addMemberUsers()
 
-    /** Textual description of the group */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _description(): JsonField<String> = body._description()
 
-    /** Name of the group */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
-    /** A list of group IDs to remove from the group's inheriting-from set */
+    /**
+     * Returns the raw JSON value of [removeMemberGroups].
+     *
+     * Unlike [removeMemberGroups], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _removeMemberGroups(): JsonField<List<String>> = body._removeMemberGroups()
 
-    /** A list of user IDs to remove from the group */
+    /**
+     * Returns the raw JSON value of [removeMemberUsers].
+     *
+     * Unlike [removeMemberUsers], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _removeMemberUsers(): JsonField<List<String>> = body._removeMemberUsers()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -119,53 +176,111 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A list of group IDs to add to the group's inheriting-from set */
+        /**
+         * A list of group IDs to add to the group's inheriting-from set
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun addMemberGroups(): Optional<List<String>> =
             Optional.ofNullable(addMemberGroups.getNullable("add_member_groups"))
 
-        /** A list of user IDs to add to the group */
+        /**
+         * A list of user IDs to add to the group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun addMemberUsers(): Optional<List<String>> =
             Optional.ofNullable(addMemberUsers.getNullable("add_member_users"))
 
-        /** Textual description of the group */
+        /**
+         * Textual description of the group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** Name of the group */
+        /**
+         * Name of the group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** A list of group IDs to remove from the group's inheriting-from set */
+        /**
+         * A list of group IDs to remove from the group's inheriting-from set
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun removeMemberGroups(): Optional<List<String>> =
             Optional.ofNullable(removeMemberGroups.getNullable("remove_member_groups"))
 
-        /** A list of user IDs to remove from the group */
+        /**
+         * A list of user IDs to remove from the group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun removeMemberUsers(): Optional<List<String>> =
             Optional.ofNullable(removeMemberUsers.getNullable("remove_member_users"))
 
-        /** A list of group IDs to add to the group's inheriting-from set */
+        /**
+         * Returns the raw JSON value of [addMemberGroups].
+         *
+         * Unlike [addMemberGroups], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("add_member_groups")
         @ExcludeMissing
         fun _addMemberGroups(): JsonField<List<String>> = addMemberGroups
 
-        /** A list of user IDs to add to the group */
+        /**
+         * Returns the raw JSON value of [addMemberUsers].
+         *
+         * Unlike [addMemberUsers], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("add_member_users")
         @ExcludeMissing
         fun _addMemberUsers(): JsonField<List<String>> = addMemberUsers
 
-        /** Textual description of the group */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** Name of the group */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** A list of group IDs to remove from the group's inheriting-from set */
+        /**
+         * Returns the raw JSON value of [removeMemberGroups].
+         *
+         * Unlike [removeMemberGroups], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("remove_member_groups")
         @ExcludeMissing
         fun _removeMemberGroups(): JsonField<List<String>> = removeMemberGroups
 
-        /** A list of user IDs to remove from the group */
+        /**
+         * Returns the raw JSON value of [removeMemberUsers].
+         *
+         * Unlike [removeMemberUsers], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("remove_member_users")
         @ExcludeMissing
         fun _removeMemberUsers(): JsonField<List<String>> = removeMemberUsers
@@ -224,16 +339,26 @@ private constructor(
             fun addMemberGroups(addMemberGroups: List<String>?) =
                 addMemberGroups(JsonField.ofNullable(addMemberGroups))
 
-            /** A list of group IDs to add to the group's inheriting-from set */
+            /** Alias for calling [Builder.addMemberGroups] with `addMemberGroups.orElse(null)`. */
             fun addMemberGroups(addMemberGroups: Optional<List<String>>) =
                 addMemberGroups(addMemberGroups.getOrNull())
 
-            /** A list of group IDs to add to the group's inheriting-from set */
+            /**
+             * Sets [Builder.addMemberGroups] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.addMemberGroups] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun addMemberGroups(addMemberGroups: JsonField<List<String>>) = apply {
                 this.addMemberGroups = addMemberGroups.map { it.toMutableList() }
             }
 
-            /** A list of group IDs to add to the group's inheriting-from set */
+            /**
+             * Adds a single [String] to [addMemberGroups].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addAddMemberGroup(addMemberGroup: String) = apply {
                 addMemberGroups =
                     (addMemberGroups ?: JsonField.of(mutableListOf())).also {
@@ -245,16 +370,26 @@ private constructor(
             fun addMemberUsers(addMemberUsers: List<String>?) =
                 addMemberUsers(JsonField.ofNullable(addMemberUsers))
 
-            /** A list of user IDs to add to the group */
+            /** Alias for calling [Builder.addMemberUsers] with `addMemberUsers.orElse(null)`. */
             fun addMemberUsers(addMemberUsers: Optional<List<String>>) =
                 addMemberUsers(addMemberUsers.getOrNull())
 
-            /** A list of user IDs to add to the group */
+            /**
+             * Sets [Builder.addMemberUsers] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.addMemberUsers] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun addMemberUsers(addMemberUsers: JsonField<List<String>>) = apply {
                 this.addMemberUsers = addMemberUsers.map { it.toMutableList() }
             }
 
-            /** A list of user IDs to add to the group */
+            /**
+             * Adds a single [String] to [addMemberUsers].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addAddMemberUser(addMemberUser: String) = apply {
                 addMemberUsers =
                     (addMemberUsers ?: JsonField.of(mutableListOf())).also {
@@ -265,10 +400,16 @@ private constructor(
             /** Textual description of the group */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** Textual description of the group */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** Textual description of the group */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
@@ -276,26 +417,45 @@ private constructor(
             /** Name of the group */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Name of the group */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Name of the group */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** A list of group IDs to remove from the group's inheriting-from set */
             fun removeMemberGroups(removeMemberGroups: List<String>?) =
                 removeMemberGroups(JsonField.ofNullable(removeMemberGroups))
 
-            /** A list of group IDs to remove from the group's inheriting-from set */
+            /**
+             * Alias for calling [Builder.removeMemberGroups] with
+             * `removeMemberGroups.orElse(null)`.
+             */
             fun removeMemberGroups(removeMemberGroups: Optional<List<String>>) =
                 removeMemberGroups(removeMemberGroups.getOrNull())
 
-            /** A list of group IDs to remove from the group's inheriting-from set */
+            /**
+             * Sets [Builder.removeMemberGroups] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.removeMemberGroups] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun removeMemberGroups(removeMemberGroups: JsonField<List<String>>) = apply {
                 this.removeMemberGroups = removeMemberGroups.map { it.toMutableList() }
             }
 
-            /** A list of group IDs to remove from the group's inheriting-from set */
+            /**
+             * Adds a single [String] to [removeMemberGroups].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addRemoveMemberGroup(removeMemberGroup: String) = apply {
                 removeMemberGroups =
                     (removeMemberGroups ?: JsonField.of(mutableListOf())).also {
@@ -307,16 +467,28 @@ private constructor(
             fun removeMemberUsers(removeMemberUsers: List<String>?) =
                 removeMemberUsers(JsonField.ofNullable(removeMemberUsers))
 
-            /** A list of user IDs to remove from the group */
+            /**
+             * Alias for calling [Builder.removeMemberUsers] with `removeMemberUsers.orElse(null)`.
+             */
             fun removeMemberUsers(removeMemberUsers: Optional<List<String>>) =
                 removeMemberUsers(removeMemberUsers.getOrNull())
 
-            /** A list of user IDs to remove from the group */
+            /**
+             * Sets [Builder.removeMemberUsers] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.removeMemberUsers] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun removeMemberUsers(removeMemberUsers: JsonField<List<String>>) = apply {
                 this.removeMemberUsers = removeMemberUsers.map { it.toMutableList() }
             }
 
-            /** A list of user IDs to remove from the group */
+            /**
+             * Adds a single [String] to [removeMemberUsers].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addRemoveMemberUser(removeMemberUser: String) = apply {
                 removeMemberUsers =
                     (removeMemberUsers ?: JsonField.of(mutableListOf())).also {
@@ -413,16 +585,26 @@ private constructor(
             body.addMemberGroups(addMemberGroups)
         }
 
-        /** A list of group IDs to add to the group's inheriting-from set */
+        /** Alias for calling [Builder.addMemberGroups] with `addMemberGroups.orElse(null)`. */
         fun addMemberGroups(addMemberGroups: Optional<List<String>>) =
             addMemberGroups(addMemberGroups.getOrNull())
 
-        /** A list of group IDs to add to the group's inheriting-from set */
+        /**
+         * Sets [Builder.addMemberGroups] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.addMemberGroups] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun addMemberGroups(addMemberGroups: JsonField<List<String>>) = apply {
             body.addMemberGroups(addMemberGroups)
         }
 
-        /** A list of group IDs to add to the group's inheriting-from set */
+        /**
+         * Adds a single [String] to [addMemberGroups].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addAddMemberGroup(addMemberGroup: String) = apply {
             body.addAddMemberGroup(addMemberGroup)
         }
@@ -432,34 +614,55 @@ private constructor(
             body.addMemberUsers(addMemberUsers)
         }
 
-        /** A list of user IDs to add to the group */
+        /** Alias for calling [Builder.addMemberUsers] with `addMemberUsers.orElse(null)`. */
         fun addMemberUsers(addMemberUsers: Optional<List<String>>) =
             addMemberUsers(addMemberUsers.getOrNull())
 
-        /** A list of user IDs to add to the group */
+        /**
+         * Sets [Builder.addMemberUsers] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.addMemberUsers] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun addMemberUsers(addMemberUsers: JsonField<List<String>>) = apply {
             body.addMemberUsers(addMemberUsers)
         }
 
-        /** A list of user IDs to add to the group */
+        /**
+         * Adds a single [String] to [addMemberUsers].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addAddMemberUser(addMemberUser: String) = apply { body.addAddMemberUser(addMemberUser) }
 
         /** Textual description of the group */
         fun description(description: String?) = apply { body.description(description) }
 
-        /** Textual description of the group */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the group */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** Name of the group */
         fun name(name: String?) = apply { body.name(name) }
 
-        /** Name of the group */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
-        /** Name of the group */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** A list of group IDs to remove from the group's inheriting-from set */
@@ -467,16 +670,28 @@ private constructor(
             body.removeMemberGroups(removeMemberGroups)
         }
 
-        /** A list of group IDs to remove from the group's inheriting-from set */
+        /**
+         * Alias for calling [Builder.removeMemberGroups] with `removeMemberGroups.orElse(null)`.
+         */
         fun removeMemberGroups(removeMemberGroups: Optional<List<String>>) =
             removeMemberGroups(removeMemberGroups.getOrNull())
 
-        /** A list of group IDs to remove from the group's inheriting-from set */
+        /**
+         * Sets [Builder.removeMemberGroups] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.removeMemberGroups] with a well-typed `List<String>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun removeMemberGroups(removeMemberGroups: JsonField<List<String>>) = apply {
             body.removeMemberGroups(removeMemberGroups)
         }
 
-        /** A list of group IDs to remove from the group's inheriting-from set */
+        /**
+         * Adds a single [String] to [removeMemberGroups].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addRemoveMemberGroup(removeMemberGroup: String) = apply {
             body.addRemoveMemberGroup(removeMemberGroup)
         }
@@ -486,16 +701,26 @@ private constructor(
             body.removeMemberUsers(removeMemberUsers)
         }
 
-        /** A list of user IDs to remove from the group */
+        /** Alias for calling [Builder.removeMemberUsers] with `removeMemberUsers.orElse(null)`. */
         fun removeMemberUsers(removeMemberUsers: Optional<List<String>>) =
             removeMemberUsers(removeMemberUsers.getOrNull())
 
-        /** A list of user IDs to remove from the group */
+        /**
+         * Sets [Builder.removeMemberUsers] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.removeMemberUsers] with a well-typed `List<String>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun removeMemberUsers(removeMemberUsers: JsonField<List<String>>) = apply {
             body.removeMemberUsers(removeMemberUsers)
         }
 
-        /** A list of user IDs to remove from the group */
+        /**
+         * Adds a single [String] to [removeMemberUsers].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addRemoveMemberUser(removeMemberUser: String) = apply {
             body.addRemoveMemberUser(removeMemberUser)
         }

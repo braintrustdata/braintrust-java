@@ -13,6 +13,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -37,21 +38,34 @@ private constructor(
     /** Project id */
     fun projectId(): String = projectId
 
-    /** Name of the project */
+    /**
+     * Name of the project
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
     /**
      * Project settings. Patch operations replace all settings, so make sure you include all
      * settings you want to keep.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun settings(): Optional<ProjectSettings> = body.settings()
 
-    /** Name of the project */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * Project settings. Patch operations replace all settings, so make sure you include all
-     * settings you want to keep.
+     * Returns the raw JSON value of [settings].
+     *
+     * Unlike [settings], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _settings(): JsonField<ProjectSettings> = body._settings()
 
@@ -88,22 +102,35 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Name of the project */
+        /**
+         * Name of the project
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /**
          * Project settings. Patch operations replace all settings, so make sure you include all
          * settings you want to keep.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun settings(): Optional<ProjectSettings> =
             Optional.ofNullable(settings.getNullable("settings"))
 
-        /** Name of the project */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
-         * Project settings. Patch operations replace all settings, so make sure you include all
-         * settings you want to keep.
+         * Returns the raw JSON value of [settings].
+         *
+         * Unlike [settings], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("settings")
         @ExcludeMissing
@@ -150,10 +177,16 @@ private constructor(
             /** Name of the project */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Name of the project */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Name of the project */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
@@ -162,15 +195,15 @@ private constructor(
              */
             fun settings(settings: ProjectSettings?) = settings(JsonField.ofNullable(settings))
 
-            /**
-             * Project settings. Patch operations replace all settings, so make sure you include all
-             * settings you want to keep.
-             */
+            /** Alias for calling [Builder.settings] with `settings.orElse(null)`. */
             fun settings(settings: Optional<ProjectSettings>) = settings(settings.getOrNull())
 
             /**
-             * Project settings. Patch operations replace all settings, so make sure you include all
-             * settings you want to keep.
+             * Sets [Builder.settings] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.settings] with a well-typed [ProjectSettings] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun settings(settings: JsonField<ProjectSettings>) = apply { this.settings = settings }
 
@@ -252,10 +285,15 @@ private constructor(
         /** Name of the project */
         fun name(name: String?) = apply { body.name(name) }
 
-        /** Name of the project */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
-        /** Name of the project */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
@@ -264,15 +302,15 @@ private constructor(
          */
         fun settings(settings: ProjectSettings?) = apply { body.settings(settings) }
 
-        /**
-         * Project settings. Patch operations replace all settings, so make sure you include all
-         * settings you want to keep.
-         */
+        /** Alias for calling [Builder.settings] with `settings.orElse(null)`. */
         fun settings(settings: Optional<ProjectSettings>) = settings(settings.getOrNull())
 
         /**
-         * Project settings. Patch operations replace all settings, so make sure you include all
-         * settings you want to keep.
+         * Sets [Builder.settings] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.settings] with a well-typed [ProjectSettings] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun settings(settings: JsonField<ProjectSettings>) = apply { body.settings(settings) }
 

@@ -146,6 +146,7 @@ class BraintrustOkHttpClient private constructor() {
 
         fun apiKey(apiKey: String?) = apply { clientOptions.apiKey(apiKey) }
 
+        /** Alias for calling [Builder.apiKey] with `apiKey.orElse(null)`. */
         fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.getOrNull())
 
         fun fromEnv() = apply { clientOptions.fromEnv() }

@@ -13,6 +13,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -37,34 +38,65 @@ private constructor(
     /** SpanIframe id */
     fun spanIframeId(): String = spanIframeId
 
-    /** Textual description of the span iframe */
+    /**
+     * Textual description of the span iframe
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> = body.description()
 
-    /** Name of the span iframe */
+    /**
+     * Name of the span iframe
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
     /**
      * Whether to post messages to the iframe containing the span's data. This is useful when you
      * want to render more data than fits in the URL.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun postMessage(): Optional<Boolean> = body.postMessage()
 
-    /** URL to embed the project viewer in an iframe */
+    /**
+     * URL to embed the project viewer in an iframe
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun url(): Optional<String> = body.url()
 
-    /** Textual description of the span iframe */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _description(): JsonField<String> = body._description()
 
-    /** Name of the span iframe */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * Whether to post messages to the iframe containing the span's data. This is useful when you
-     * want to render more data than fits in the URL.
+     * Returns the raw JSON value of [postMessage].
+     *
+     * Unlike [postMessage], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _postMessage(): JsonField<Boolean> = body._postMessage()
 
-    /** URL to embed the project viewer in an iframe */
+    /**
+     * Returns the raw JSON value of [url].
+     *
+     * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _url(): JsonField<String> = body._url()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -104,40 +136,71 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Textual description of the span iframe */
+        /**
+         * Textual description of the span iframe
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** Name of the span iframe */
+        /**
+         * Name of the span iframe
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
          * you want to render more data than fits in the URL.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun postMessage(): Optional<Boolean> =
             Optional.ofNullable(postMessage.getNullable("post_message"))
 
-        /** URL to embed the project viewer in an iframe */
+        /**
+         * URL to embed the project viewer in an iframe
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun url(): Optional<String> = Optional.ofNullable(url.getNullable("url"))
 
-        /** Textual description of the span iframe */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** Name of the span iframe */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
-         * Whether to post messages to the iframe containing the span's data. This is useful when
-         * you want to render more data than fits in the URL.
+         * Returns the raw JSON value of [postMessage].
+         *
+         * Unlike [postMessage], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("post_message")
         @ExcludeMissing
         fun _postMessage(): JsonField<Boolean> = postMessage
 
-        /** URL to embed the project viewer in an iframe */
+        /**
+         * Returns the raw JSON value of [url].
+         *
+         * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
         @JsonAnyGetter
@@ -187,10 +250,16 @@ private constructor(
             /** Textual description of the span iframe */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** Textual description of the span iframe */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** Textual description of the span iframe */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
@@ -198,10 +267,16 @@ private constructor(
             /** Name of the span iframe */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Name of the span iframe */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Name of the span iframe */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
@@ -211,20 +286,21 @@ private constructor(
             fun postMessage(postMessage: Boolean?) = postMessage(JsonField.ofNullable(postMessage))
 
             /**
-             * Whether to post messages to the iframe containing the span's data. This is useful
-             * when you want to render more data than fits in the URL.
+             * Alias for [Builder.postMessage].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun postMessage(postMessage: Boolean) = postMessage(postMessage as Boolean?)
 
-            /**
-             * Whether to post messages to the iframe containing the span's data. This is useful
-             * when you want to render more data than fits in the URL.
-             */
+            /** Alias for calling [Builder.postMessage] with `postMessage.orElse(null)`. */
             fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
             /**
-             * Whether to post messages to the iframe containing the span's data. This is useful
-             * when you want to render more data than fits in the URL.
+             * Sets [Builder.postMessage] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.postMessage] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun postMessage(postMessage: JsonField<Boolean>) = apply {
                 this.postMessage = postMessage
@@ -233,10 +309,16 @@ private constructor(
             /** URL to embed the project viewer in an iframe */
             fun url(url: String?) = url(JsonField.ofNullable(url))
 
-            /** URL to embed the project viewer in an iframe */
+            /** Alias for calling [Builder.url] with `url.orElse(null)`. */
             fun url(url: Optional<String>) = url(url.getOrNull())
 
-            /** URL to embed the project viewer in an iframe */
+            /**
+             * Sets [Builder.url] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.url] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun url(url: JsonField<String>) = apply { this.url = url }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -318,19 +400,30 @@ private constructor(
         /** Textual description of the span iframe */
         fun description(description: String?) = apply { body.description(description) }
 
-        /** Textual description of the span iframe */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the span iframe */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** Name of the span iframe */
         fun name(name: String?) = apply { body.name(name) }
 
-        /** Name of the span iframe */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
-        /** Name of the span iframe */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
@@ -340,30 +433,36 @@ private constructor(
         fun postMessage(postMessage: Boolean?) = apply { body.postMessage(postMessage) }
 
         /**
-         * Whether to post messages to the iframe containing the span's data. This is useful when
-         * you want to render more data than fits in the URL.
+         * Alias for [Builder.postMessage].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun postMessage(postMessage: Boolean) = postMessage(postMessage as Boolean?)
 
-        /**
-         * Whether to post messages to the iframe containing the span's data. This is useful when
-         * you want to render more data than fits in the URL.
-         */
+        /** Alias for calling [Builder.postMessage] with `postMessage.orElse(null)`. */
         fun postMessage(postMessage: Optional<Boolean>) = postMessage(postMessage.getOrNull())
 
         /**
-         * Whether to post messages to the iframe containing the span's data. This is useful when
-         * you want to render more data than fits in the URL.
+         * Sets [Builder.postMessage] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.postMessage] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun postMessage(postMessage: JsonField<Boolean>) = apply { body.postMessage(postMessage) }
 
         /** URL to embed the project viewer in an iframe */
         fun url(url: String?) = apply { body.url(url) }
 
-        /** URL to embed the project viewer in an iframe */
+        /** Alias for calling [Builder.url] with `url.orElse(null)`. */
         fun url(url: Optional<String>) = url(url.getOrNull())
 
-        /** URL to embed the project viewer in an iframe */
+        /**
+         * Sets [Builder.url] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.url] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun url(url: JsonField<String>) = apply { body.url(url) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

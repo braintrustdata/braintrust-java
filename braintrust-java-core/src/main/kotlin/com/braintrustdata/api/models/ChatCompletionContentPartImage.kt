@@ -30,12 +30,30 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun imageUrl(): ImageUrl = imageUrl.getRequired("image_url")
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun type(): Type = type.getRequired("type")
 
+    /**
+     * Returns the raw JSON value of [imageUrl].
+     *
+     * Unlike [imageUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("image_url") @ExcludeMissing fun _imageUrl(): JsonField<ImageUrl> = imageUrl
 
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
@@ -88,10 +106,23 @@ private constructor(
 
         fun imageUrl(imageUrl: ImageUrl) = imageUrl(JsonField.of(imageUrl))
 
+        /**
+         * Sets [Builder.imageUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.imageUrl] with a well-typed [ImageUrl] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun imageUrl(imageUrl: JsonField<ImageUrl>) = apply { this.imageUrl = imageUrl }
 
         fun type(type: Type) = type(JsonField.of(type))
 
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -133,12 +164,30 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun url(): String = url.getRequired("url")
 
+        /**
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun detail(): Optional<Detail> = Optional.ofNullable(detail.getNullable("detail"))
 
+        /**
+         * Returns the raw JSON value of [url].
+         *
+         * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
+        /**
+         * Returns the raw JSON value of [detail].
+         *
+         * Unlike [detail], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("detail") @ExcludeMissing fun _detail(): JsonField<Detail> = detail
 
         @JsonAnyGetter
@@ -188,10 +237,24 @@ private constructor(
 
             fun url(url: String) = url(JsonField.of(url))
 
+            /**
+             * Sets [Builder.url] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.url] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun url(url: JsonField<String>) = apply { this.url = url }
 
             fun detail(detail: Detail) = detail(JsonField.of(detail))
 
+            /**
+             * Sets [Builder.detail] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.detail] with a well-typed [Detail] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun detail(detail: JsonField<Detail>) = apply { this.detail = detail }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -34,36 +35,81 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Number of improvements in the score */
+    /**
+     * Number of improvements in the score
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun improvements(): Long = improvements.getRequired("improvements")
 
-    /** Name of the score */
+    /**
+     * Name of the score
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = name.getRequired("name")
 
-    /** Number of regressions in the score */
+    /**
+     * Number of regressions in the score
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun regressions(): Long = regressions.getRequired("regressions")
 
-    /** Average score across all examples */
+    /**
+     * Average score across all examples
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun score(): Double = score.getRequired("score")
 
-    /** Difference in score between the current and comparison experiment */
+    /**
+     * Difference in score between the current and comparison experiment
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun diff(): Optional<Double> = Optional.ofNullable(diff.getNullable("diff"))
 
-    /** Number of improvements in the score */
+    /**
+     * Returns the raw JSON value of [improvements].
+     *
+     * Unlike [improvements], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("improvements")
     @ExcludeMissing
     fun _improvements(): JsonField<Long> = improvements
 
-    /** Name of the score */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** Number of regressions in the score */
+    /**
+     * Returns the raw JSON value of [regressions].
+     *
+     * Unlike [regressions], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("regressions") @ExcludeMissing fun _regressions(): JsonField<Long> = regressions
 
-    /** Average score across all examples */
+    /**
+     * Returns the raw JSON value of [score].
+     *
+     * Unlike [score], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("score") @ExcludeMissing fun _score(): JsonField<Double> = score
 
-    /** Difference in score between the current and comparison experiment */
+    /**
+     * Returns the raw JSON value of [diff].
+     *
+     * Unlike [diff], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("diff") @ExcludeMissing fun _diff(): JsonField<Double> = diff
 
     @JsonAnyGetter
@@ -126,31 +172,58 @@ private constructor(
         /** Number of improvements in the score */
         fun improvements(improvements: Long) = improvements(JsonField.of(improvements))
 
-        /** Number of improvements in the score */
+        /**
+         * Sets [Builder.improvements] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.improvements] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun improvements(improvements: JsonField<Long>) = apply { this.improvements = improvements }
 
         /** Name of the score */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** Name of the score */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Number of regressions in the score */
         fun regressions(regressions: Long) = regressions(JsonField.of(regressions))
 
-        /** Number of regressions in the score */
+        /**
+         * Sets [Builder.regressions] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.regressions] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun regressions(regressions: JsonField<Long>) = apply { this.regressions = regressions }
 
         /** Average score across all examples */
         fun score(score: Double) = score(JsonField.of(score))
 
-        /** Average score across all examples */
+        /**
+         * Sets [Builder.score] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.score] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun score(score: JsonField<Double>) = apply { this.score = score }
 
         /** Difference in score between the current and comparison experiment */
         fun diff(diff: Double) = diff(JsonField.of(diff))
 
-        /** Difference in score between the current and comparison experiment */
+        /**
+         * Sets [Builder.diff] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.diff] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun diff(diff: JsonField<Double>) = apply { this.diff = diff }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

@@ -11,6 +11,7 @@ import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -63,6 +64,9 @@ private constructor(
     /**
      * A unique identifier for the dataset event. If you don't provide one, BrainTrust will generate
      * one for you
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun id(): String = id.getRequired("id")
 
@@ -70,25 +74,51 @@ private constructor(
      * The transaction id of an event is unique to the network operation that processed the event
      * insertion. Transaction ids are monotonically increasing over time and can be used to retrieve
      * a versioned snapshot of the dataset (see the `version` parameter)
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun _xactId(): String = _xactId.getRequired("_xact_id")
 
-    /** The timestamp the dataset event was created */
+    /**
+     * The timestamp the dataset event was created
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun created(): OffsetDateTime = created.getRequired("created")
 
-    /** Unique identifier for the dataset */
+    /**
+     * Unique identifier for the dataset
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun datasetId(): String = datasetId.getRequired("dataset_id")
 
-    /** Unique identifier for the project that the dataset belongs under */
+    /**
+     * Unique identifier for the project that the dataset belongs under
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun projectId(): String = projectId.getRequired("project_id")
 
-    /** A unique identifier for the trace this dataset event belongs to */
+    /**
+     * A unique identifier for the trace this dataset event belongs to
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun rootSpanId(): String = rootSpanId.getRequired("root_span_id")
 
     /**
      * A unique identifier used to link different dataset events together as part of a full trace.
      * See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full details on
      * tracing
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun spanId(): String = spanId.getRequired("span_id")
 
@@ -101,7 +131,12 @@ private constructor(
     /** The argument that uniquely define an input case (an arbitrary, JSON serializable object) */
     @JsonProperty("input") @ExcludeMissing fun _input(): JsonValue = input
 
-    /** Whether this span is a root span */
+    /**
+     * Whether this span is a root span
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun isRoot(): Optional<Boolean> = Optional.ofNullable(isRoot.getNullable("is_root"))
 
     /**
@@ -110,63 +145,103 @@ private constructor(
      * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
      * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
      * must be strings
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
-    /** Indicates the event was copied from another object. */
+    /**
+     * Indicates the event was copied from another object.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun origin(): Optional<ObjectReference> = Optional.ofNullable(origin.getNullable("origin"))
 
-    /** A list of tags to log */
+    /**
+     * A list of tags to log
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
     /**
-     * A unique identifier for the dataset event. If you don't provide one, BrainTrust will generate
-     * one for you
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
-     * The transaction id of an event is unique to the network operation that processed the event
-     * insertion. Transaction ids are monotonically increasing over time and can be used to retrieve
-     * a versioned snapshot of the dataset (see the `version` parameter)
+     * Returns the raw JSON value of [_xactId].
+     *
+     * Unlike [_xactId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("_xact_id") @ExcludeMissing fun __xactId(): JsonField<String> = _xactId
 
-    /** The timestamp the dataset event was created */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
-    /** Unique identifier for the dataset */
+    /**
+     * Returns the raw JSON value of [datasetId].
+     *
+     * Unlike [datasetId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("dataset_id") @ExcludeMissing fun _datasetId(): JsonField<String> = datasetId
 
-    /** Unique identifier for the project that the dataset belongs under */
+    /**
+     * Returns the raw JSON value of [projectId].
+     *
+     * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
 
-    /** A unique identifier for the trace this dataset event belongs to */
+    /**
+     * Returns the raw JSON value of [rootSpanId].
+     *
+     * Unlike [rootSpanId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId(): JsonField<String> = rootSpanId
 
     /**
-     * A unique identifier used to link different dataset events together as part of a full trace.
-     * See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full details on
-     * tracing
+     * Returns the raw JSON value of [spanId].
+     *
+     * Unlike [spanId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("span_id") @ExcludeMissing fun _spanId(): JsonField<String> = spanId
 
-    /** Whether this span is a root span */
+    /**
+     * Returns the raw JSON value of [isRoot].
+     *
+     * Unlike [isRoot], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("is_root") @ExcludeMissing fun _isRoot(): JsonField<Boolean> = isRoot
 
     /**
-     * A dictionary with additional data about the test example, model outputs, or just about
-     * anything else that's relevant, that you can use to help find and analyze examples later. For
-     * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
-     * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
-     * must be strings
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
-    /** Indicates the event was copied from another object. */
+    /**
+     * Returns the raw JSON value of [origin].
+     *
+     * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<ObjectReference> = origin
 
-    /** A list of tags to log */
+    /**
+     * Returns the raw JSON value of [tags].
+     *
+     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
     @JsonAnyGetter
@@ -258,8 +333,10 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /**
-         * A unique identifier for the dataset event. If you don't provide one, BrainTrust will
-         * generate one for you
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
@@ -271,34 +348,59 @@ private constructor(
         fun _xactId(_xactId: String) = _xactId(JsonField.of(_xactId))
 
         /**
-         * The transaction id of an event is unique to the network operation that processed the
-         * event insertion. Transaction ids are monotonically increasing over time and can be used
-         * to retrieve a versioned snapshot of the dataset (see the `version` parameter)
+         * Sets [Builder._xactId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder._xactId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
 
         /** The timestamp the dataset event was created */
         fun created(created: OffsetDateTime) = created(JsonField.of(created))
 
-        /** The timestamp the dataset event was created */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Unique identifier for the dataset */
         fun datasetId(datasetId: String) = datasetId(JsonField.of(datasetId))
 
-        /** Unique identifier for the dataset */
+        /**
+         * Sets [Builder.datasetId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.datasetId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun datasetId(datasetId: JsonField<String>) = apply { this.datasetId = datasetId }
 
         /** Unique identifier for the project that the dataset belongs under */
         fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
-        /** Unique identifier for the project that the dataset belongs under */
+        /**
+         * Sets [Builder.projectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
         /** A unique identifier for the trace this dataset event belongs to */
         fun rootSpanId(rootSpanId: String) = rootSpanId(JsonField.of(rootSpanId))
 
-        /** A unique identifier for the trace this dataset event belongs to */
+        /**
+         * Sets [Builder.rootSpanId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.rootSpanId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
 
         /**
@@ -309,9 +411,10 @@ private constructor(
         fun spanId(spanId: String) = spanId(JsonField.of(spanId))
 
         /**
-         * A unique identifier used to link different dataset events together as part of a full
-         * trace. See the [tracing guide](https://www.braintrust.dev/docs/guides/tracing) for full
-         * details on tracing
+         * Sets [Builder.spanId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.spanId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
 
@@ -329,13 +432,22 @@ private constructor(
         /** Whether this span is a root span */
         fun isRoot(isRoot: Boolean?) = isRoot(JsonField.ofNullable(isRoot))
 
-        /** Whether this span is a root span */
+        /**
+         * Alias for [Builder.isRoot].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun isRoot(isRoot: Boolean) = isRoot(isRoot as Boolean?)
 
-        /** Whether this span is a root span */
+        /** Alias for calling [Builder.isRoot] with `isRoot.orElse(null)`. */
         fun isRoot(isRoot: Optional<Boolean>) = isRoot(isRoot.getOrNull())
 
-        /** Whether this span is a root span */
+        /**
+         * Sets [Builder.isRoot] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isRoot] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun isRoot(isRoot: JsonField<Boolean>) = apply { this.isRoot = isRoot }
 
         /**
@@ -347,45 +459,55 @@ private constructor(
          */
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-        /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
-         */
+        /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
         fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         /** Indicates the event was copied from another object. */
         fun origin(origin: ObjectReference?) = origin(JsonField.ofNullable(origin))
 
-        /** Indicates the event was copied from another object. */
+        /** Alias for calling [Builder.origin] with `origin.orElse(null)`. */
         fun origin(origin: Optional<ObjectReference>) = origin(origin.getOrNull())
 
-        /** Indicates the event was copied from another object. */
+        /**
+         * Sets [Builder.origin] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.origin] with a well-typed [ObjectReference] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun origin(origin: JsonField<ObjectReference>) = apply { this.origin = origin }
 
         /** A list of tags to log */
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
-        /** A list of tags to log */
+        /** Alias for calling [Builder.tags] with `tags.orElse(null)`. */
         fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
-        /** A list of tags to log */
+        /**
+         * Sets [Builder.tags] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.tags] with a well-typed `List<String>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun tags(tags: JsonField<List<String>>) = apply {
             this.tags = tags.map { it.toMutableList() }
         }
 
-        /** A list of tags to log */
+        /**
+         * Adds a single [String] to [tags].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addTag(tag: String) = apply {
             tags = (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
         }
@@ -446,10 +568,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The model used for this example */
+        /**
+         * The model used for this example
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
 
-        /** The model used for this example */
+        /**
+         * Returns the raw JSON value of [model].
+         *
+         * Unlike [model], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("model") @ExcludeMissing fun _model(): JsonField<String> = model
 
         @JsonAnyGetter
@@ -490,10 +621,16 @@ private constructor(
             /** The model used for this example */
             fun model(model: String?) = model(JsonField.ofNullable(model))
 
-            /** The model used for this example */
+            /** Alias for calling [Builder.model] with `model.orElse(null)`. */
             fun model(model: Optional<String>) = model(model.getOrNull())
 
-            /** The model used for this example */
+            /**
+             * Sets [Builder.model] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.model] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun model(model: JsonField<String>) = apply { this.model = model }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

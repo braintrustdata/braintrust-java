@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -28,8 +29,17 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun search(): Optional<ViewDataSearch> = Optional.ofNullable(search.getNullable("search"))
 
+    /**
+     * Returns the raw JSON value of [search].
+     *
+     * Unlike [search], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("search") @ExcludeMissing fun _search(): JsonField<ViewDataSearch> = search
 
     @JsonAnyGetter
@@ -69,8 +79,16 @@ private constructor(
 
         fun search(search: ViewDataSearch?) = search(JsonField.ofNullable(search))
 
+        /** Alias for calling [Builder.search] with `search.orElse(null)`. */
         fun search(search: Optional<ViewDataSearch>) = search(search.getOrNull())
 
+        /**
+         * Sets [Builder.search] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.search] with a well-typed [ViewDataSearch] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun search(search: JsonField<ViewDataSearch>) = apply { this.search = search }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

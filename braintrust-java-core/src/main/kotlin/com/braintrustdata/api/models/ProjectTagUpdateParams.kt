@@ -13,6 +13,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -37,22 +38,49 @@ private constructor(
     /** ProjectTag id */
     fun projectTagId(): String = projectTagId
 
-    /** Color of the tag for the UI */
+    /**
+     * Color of the tag for the UI
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun color(): Optional<String> = body.color()
 
-    /** Textual description of the project tag */
+    /**
+     * Textual description of the project tag
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> = body.description()
 
-    /** Name of the project tag */
+    /**
+     * Name of the project tag
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
-    /** Color of the tag for the UI */
+    /**
+     * Returns the raw JSON value of [color].
+     *
+     * Unlike [color], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _color(): JsonField<String> = body._color()
 
-    /** Textual description of the project tag */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _description(): JsonField<String> = body._description()
 
-    /** Name of the project tag */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -91,25 +119,52 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Color of the tag for the UI */
+        /**
+         * Color of the tag for the UI
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun color(): Optional<String> = Optional.ofNullable(color.getNullable("color"))
 
-        /** Textual description of the project tag */
+        /**
+         * Textual description of the project tag
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** Name of the project tag */
+        /**
+         * Name of the project tag
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** Color of the tag for the UI */
+        /**
+         * Returns the raw JSON value of [color].
+         *
+         * Unlike [color], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("color") @ExcludeMissing fun _color(): JsonField<String> = color
 
-        /** Textual description of the project tag */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** Name of the project tag */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         @JsonAnyGetter
@@ -156,19 +211,31 @@ private constructor(
             /** Color of the tag for the UI */
             fun color(color: String?) = color(JsonField.ofNullable(color))
 
-            /** Color of the tag for the UI */
+            /** Alias for calling [Builder.color] with `color.orElse(null)`. */
             fun color(color: Optional<String>) = color(color.getOrNull())
 
-            /** Color of the tag for the UI */
+            /**
+             * Sets [Builder.color] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.color] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun color(color: JsonField<String>) = apply { this.color = color }
 
             /** Textual description of the project tag */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** Textual description of the project tag */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** Textual description of the project tag */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
@@ -176,10 +243,16 @@ private constructor(
             /** Name of the project tag */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Name of the project tag */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Name of the project tag */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -260,28 +333,44 @@ private constructor(
         /** Color of the tag for the UI */
         fun color(color: String?) = apply { body.color(color) }
 
-        /** Color of the tag for the UI */
+        /** Alias for calling [Builder.color] with `color.orElse(null)`. */
         fun color(color: Optional<String>) = color(color.getOrNull())
 
-        /** Color of the tag for the UI */
+        /**
+         * Sets [Builder.color] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.color] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun color(color: JsonField<String>) = apply { body.color(color) }
 
         /** Textual description of the project tag */
         fun description(description: String?) = apply { body.description(description) }
 
-        /** Textual description of the project tag */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the project tag */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** Name of the project tag */
         fun name(name: String?) = apply { body.name(name) }
 
-        /** Name of the project tag */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
-        /** Name of the project tag */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
