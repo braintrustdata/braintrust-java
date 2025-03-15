@@ -14,6 +14,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -32,10 +33,19 @@ private constructor(
     /** Experiment id */
     fun experimentId(): String = experimentId
 
-    /** A list of experiment feedback items */
+    /**
+     * A list of experiment feedback items
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun feedback(): List<FeedbackExperimentItem> = body.feedback()
 
-    /** A list of experiment feedback items */
+    /**
+     * Returns the raw JSON value of [feedback].
+     *
+     * Unlike [feedback], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _feedback(): JsonField<List<FeedbackExperimentItem>> = body._feedback()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -68,10 +78,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A list of experiment feedback items */
+        /**
+         * A list of experiment feedback items
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun feedback(): List<FeedbackExperimentItem> = feedback.getRequired("feedback")
 
-        /** A list of experiment feedback items */
+        /**
+         * Returns the raw JSON value of [feedback].
+         *
+         * Unlike [feedback], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("feedback")
         @ExcludeMissing
         fun _feedback(): JsonField<List<FeedbackExperimentItem>> = feedback
@@ -121,12 +140,22 @@ private constructor(
             /** A list of experiment feedback items */
             fun feedback(feedback: List<FeedbackExperimentItem>) = feedback(JsonField.of(feedback))
 
-            /** A list of experiment feedback items */
+            /**
+             * Sets [Builder.feedback] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.feedback] with a well-typed
+             * `List<FeedbackExperimentItem>` value instead. This method is primarily for setting
+             * the field to an undocumented or not yet supported value.
+             */
             fun feedback(feedback: JsonField<List<FeedbackExperimentItem>>) = apply {
                 this.feedback = feedback.map { it.toMutableList() }
             }
 
-            /** A list of experiment feedback items */
+            /**
+             * Adds a single [FeedbackExperimentItem] to [Builder.feedback].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addFeedback(feedback: FeedbackExperimentItem) = apply {
                 this.feedback =
                     (this.feedback ?: JsonField.of(mutableListOf())).also {
@@ -217,12 +246,22 @@ private constructor(
         /** A list of experiment feedback items */
         fun feedback(feedback: List<FeedbackExperimentItem>) = apply { body.feedback(feedback) }
 
-        /** A list of experiment feedback items */
+        /**
+         * Sets [Builder.feedback] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.feedback] with a well-typed
+         * `List<FeedbackExperimentItem>` value instead. This method is primarily for setting the
+         * field to an undocumented or not yet supported value.
+         */
         fun feedback(feedback: JsonField<List<FeedbackExperimentItem>>) = apply {
             body.feedback(feedback)
         }
 
-        /** A list of experiment feedback items */
+        /**
+         * Adds a single [FeedbackExperimentItem] to [Builder.feedback].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addFeedback(feedback: FeedbackExperimentItem) = apply { body.addFeedback(feedback) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

@@ -164,37 +164,13 @@ private constructor(
         fun limit(limit: Long?) = apply { this.limit = limit }
 
         /**
-         * limit the number of traces fetched
+         * Alias for [Builder.limit].
          *
-         * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-         * project_logs which accumulate over a long time). Note that fetch queries only support
-         * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-         * later pages may return rows which showed up in earlier pages, except with an earlier
-         * `_xact_id`. This happens because pagination occurs over the whole version history of the
-         * event log. You will most likely want to exclude any such duplicate, outdated rows (by
-         * `id`) from your combined result set.
-         *
-         * The `limit` parameter controls the number of full traces to return. So you may end up
-         * with more individual rows than the specified limit if you are fetching events containing
-         * traces.
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /**
-         * limit the number of traces fetched
-         *
-         * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-         * project_logs which accumulate over a long time). Note that fetch queries only support
-         * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-         * later pages may return rows which showed up in earlier pages, except with an earlier
-         * `_xact_id`. This happens because pagination occurs over the whole version history of the
-         * event log. You will most likely want to exclude any such duplicate, outdated rows (by
-         * `id`) from your combined result set.
-         *
-         * The `limit` parameter controls the number of full traces to return. So you may end up
-         * with more individual rows than the specified limit if you are fetching events containing
-         * traces.
-         */
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
         fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /**
@@ -211,18 +187,7 @@ private constructor(
          */
         fun maxRootSpanId(maxRootSpanId: String?) = apply { this.maxRootSpanId = maxRootSpanId }
 
-        /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
-         *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
-         */
+        /** Alias for calling [Builder.maxRootSpanId] with `maxRootSpanId.orElse(null)`. */
         fun maxRootSpanId(maxRootSpanId: Optional<String>) =
             maxRootSpanId(maxRootSpanId.getOrNull())
 
@@ -240,18 +205,7 @@ private constructor(
          */
         fun maxXactId(maxXactId: String?) = apply { this.maxXactId = maxXactId }
 
-        /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
-         *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
-         */
+        /** Alias for calling [Builder.maxXactId] with `maxXactId.orElse(null)`. */
         fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.getOrNull())
 
         /**
@@ -262,12 +216,7 @@ private constructor(
          */
         fun version(version: String?) = apply { this.version = version }
 
-        /**
-         * Retrieve a snapshot of events from a past time
-         *
-         * The version id is essentially a filter on the latest event transaction id. You can use
-         * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
-         */
+        /** Alias for calling [Builder.version] with `version.orElse(null)`. */
         fun version(version: Optional<String>) = version(version.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

@@ -34,28 +34,64 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The name of the environment variable */
+    /**
+     * The name of the environment variable
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = body.name()
 
-    /** The id of the object the environment variable is scoped for */
+    /**
+     * The id of the object the environment variable is scoped for
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectId(): String = body.objectId()
 
-    /** The type of the object the environment variable is scoped for */
+    /**
+     * The type of the object the environment variable is scoped for
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectType(): ObjectType = body.objectType()
 
-    /** The value of the environment variable. Will be encrypted at rest. */
+    /**
+     * The value of the environment variable. Will be encrypted at rest.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun value(): Optional<String> = body.value()
 
-    /** The name of the environment variable */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
-    /** The id of the object the environment variable is scoped for */
+    /**
+     * Returns the raw JSON value of [objectId].
+     *
+     * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _objectId(): JsonField<String> = body._objectId()
 
-    /** The type of the object the environment variable is scoped for */
+    /**
+     * Returns the raw JSON value of [objectType].
+     *
+     * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _objectType(): JsonField<ObjectType> = body._objectType()
 
-    /** The value of the environment variable. Will be encrypted at rest. */
+    /**
+     * Returns the raw JSON value of [value].
+     *
+     * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _value(): JsonField<String> = body._value()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -90,30 +126,66 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The name of the environment variable */
+        /**
+         * The name of the environment variable
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun name(): String = name.getRequired("name")
 
-        /** The id of the object the environment variable is scoped for */
+        /**
+         * The id of the object the environment variable is scoped for
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun objectId(): String = objectId.getRequired("object_id")
 
-        /** The type of the object the environment variable is scoped for */
+        /**
+         * The type of the object the environment variable is scoped for
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun objectType(): ObjectType = objectType.getRequired("object_type")
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /**
+         * The value of the environment variable. Will be encrypted at rest.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun value(): Optional<String> = Optional.ofNullable(value.getNullable("value"))
 
-        /** The name of the environment variable */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The id of the object the environment variable is scoped for */
+        /**
+         * Returns the raw JSON value of [objectId].
+         *
+         * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
 
-        /** The type of the object the environment variable is scoped for */
+        /**
+         * Returns the raw JSON value of [objectType].
+         *
+         * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("object_type")
         @ExcludeMissing
         fun _objectType(): JsonField<ObjectType> = objectType
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -172,19 +244,37 @@ private constructor(
             /** The name of the environment variable */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** The name of the environment variable */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The id of the object the environment variable is scoped for */
             fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
-            /** The id of the object the environment variable is scoped for */
+            /**
+             * Sets [Builder.objectId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.objectId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
             /** The type of the object the environment variable is scoped for */
             fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
 
-            /** The type of the object the environment variable is scoped for */
+            /**
+             * Sets [Builder.objectType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.objectType] with a well-typed [ObjectType] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun objectType(objectType: JsonField<ObjectType>) = apply {
                 this.objectType = objectType
             }
@@ -192,10 +282,16 @@ private constructor(
             /** The value of the environment variable. Will be encrypted at rest. */
             fun value(value: String?) = value(JsonField.ofNullable(value))
 
-            /** The value of the environment variable. Will be encrypted at rest. */
+            /** Alias for calling [Builder.value] with `value.orElse(null)`. */
             fun value(value: Optional<String>) = value(value.getOrNull())
 
-            /** The value of the environment variable. Will be encrypted at rest. */
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -280,28 +376,49 @@ private constructor(
         /** The name of the environment variable */
         fun name(name: String) = apply { body.name(name) }
 
-        /** The name of the environment variable */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** The id of the object the environment variable is scoped for */
         fun objectId(objectId: String) = apply { body.objectId(objectId) }
 
-        /** The id of the object the environment variable is scoped for */
+        /**
+         * Sets [Builder.objectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun objectId(objectId: JsonField<String>) = apply { body.objectId(objectId) }
 
         /** The type of the object the environment variable is scoped for */
         fun objectType(objectType: ObjectType) = apply { body.objectType(objectType) }
 
-        /** The type of the object the environment variable is scoped for */
+        /**
+         * Sets [Builder.objectType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectType] with a well-typed [ObjectType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun objectType(objectType: JsonField<ObjectType>) = apply { body.objectType(objectType) }
 
         /** The value of the environment variable. Will be encrypted at rest. */
         fun value(value: String?) = apply { body.value(value) }
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /** Alias for calling [Builder.value] with `value.orElse(null)`. */
         fun value(value: Optional<String>) = value(value.getOrNull())
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /**
+         * Sets [Builder.value] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.value] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun value(value: JsonField<String>) = apply { body.value(value) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

@@ -108,10 +108,8 @@ private constructor(
         }
 
         /**
-         * The experiment to compare against, if summarizing scores and metrics. If omitted, will
-         * fall back to the `base_exp_id` stored in the experiment metadata, and then to the most
-         * recent experiment run in the same project. Must pass `summarize_scores=true` for this id
-         * to be used
+         * Alias for calling [Builder.comparisonExperimentId] with
+         * `comparisonExperimentId.orElse(null)`.
          */
         fun comparisonExperimentId(comparisonExperimentId: Optional<String>) =
             comparisonExperimentId(comparisonExperimentId.getOrNull())
@@ -125,15 +123,13 @@ private constructor(
         }
 
         /**
-         * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
-         * will be returned.
+         * Alias for [Builder.summarizeScores].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun summarizeScores(summarizeScores: Boolean) = summarizeScores(summarizeScores as Boolean?)
 
-        /**
-         * Whether to summarize the scores and metrics. If false (or omitted), only the metadata
-         * will be returned.
-         */
+        /** Alias for calling [Builder.summarizeScores] with `summarizeScores.orElse(null)`. */
         fun summarizeScores(summarizeScores: Optional<Boolean>) =
             summarizeScores(summarizeScores.getOrNull())
 

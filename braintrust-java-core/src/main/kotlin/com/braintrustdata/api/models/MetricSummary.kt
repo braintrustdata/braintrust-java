@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -37,42 +38,96 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Number of improvements in the metric */
+    /**
+     * Number of improvements in the metric
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun improvements(): Long = improvements.getRequired("improvements")
 
-    /** Average metric across all examples */
+    /**
+     * Average metric across all examples
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun metric(): Double = metric.getRequired("metric")
 
-    /** Name of the metric */
+    /**
+     * Name of the metric
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = name.getRequired("name")
 
-    /** Number of regressions in the metric */
+    /**
+     * Number of regressions in the metric
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun regressions(): Long = regressions.getRequired("regressions")
 
-    /** Unit label for the metric */
+    /**
+     * Unit label for the metric
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun unit(): String = unit.getRequired("unit")
 
-    /** Difference in metric between the current and comparison experiment */
+    /**
+     * Difference in metric between the current and comparison experiment
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun diff(): Optional<Double> = Optional.ofNullable(diff.getNullable("diff"))
 
-    /** Number of improvements in the metric */
+    /**
+     * Returns the raw JSON value of [improvements].
+     *
+     * Unlike [improvements], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("improvements")
     @ExcludeMissing
     fun _improvements(): JsonField<Long> = improvements
 
-    /** Average metric across all examples */
+    /**
+     * Returns the raw JSON value of [metric].
+     *
+     * Unlike [metric], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("metric") @ExcludeMissing fun _metric(): JsonField<Double> = metric
 
-    /** Name of the metric */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** Number of regressions in the metric */
+    /**
+     * Returns the raw JSON value of [regressions].
+     *
+     * Unlike [regressions], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("regressions") @ExcludeMissing fun _regressions(): JsonField<Long> = regressions
 
-    /** Unit label for the metric */
+    /**
+     * Returns the raw JSON value of [unit].
+     *
+     * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<String> = unit
 
-    /** Difference in metric between the current and comparison experiment */
+    /**
+     * Returns the raw JSON value of [diff].
+     *
+     * Unlike [diff], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("diff") @ExcludeMissing fun _diff(): JsonField<Double> = diff
 
     @JsonAnyGetter
@@ -139,37 +194,69 @@ private constructor(
         /** Number of improvements in the metric */
         fun improvements(improvements: Long) = improvements(JsonField.of(improvements))
 
-        /** Number of improvements in the metric */
+        /**
+         * Sets [Builder.improvements] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.improvements] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun improvements(improvements: JsonField<Long>) = apply { this.improvements = improvements }
 
         /** Average metric across all examples */
         fun metric(metric: Double) = metric(JsonField.of(metric))
 
-        /** Average metric across all examples */
+        /**
+         * Sets [Builder.metric] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metric] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun metric(metric: JsonField<Double>) = apply { this.metric = metric }
 
         /** Name of the metric */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** Name of the metric */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Number of regressions in the metric */
         fun regressions(regressions: Long) = regressions(JsonField.of(regressions))
 
-        /** Number of regressions in the metric */
+        /**
+         * Sets [Builder.regressions] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.regressions] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun regressions(regressions: JsonField<Long>) = apply { this.regressions = regressions }
 
         /** Unit label for the metric */
         fun unit(unit: String) = unit(JsonField.of(unit))
 
-        /** Unit label for the metric */
+        /**
+         * Sets [Builder.unit] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.unit] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun unit(unit: JsonField<String>) = apply { this.unit = unit }
 
         /** Difference in metric between the current and comparison experiment */
         fun diff(diff: Double) = diff(JsonField.of(diff))
 
-        /** Difference in metric between the current and comparison experiment */
+        /**
+         * Sets [Builder.diff] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.diff] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun diff(diff: JsonField<Double>) = apply { this.diff = diff }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

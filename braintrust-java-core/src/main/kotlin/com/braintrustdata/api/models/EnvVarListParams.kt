@@ -108,7 +108,7 @@ private constructor(
         /** Name of the env_var to search for */
         fun envVarName(envVarName: String?) = apply { this.envVarName = envVarName }
 
-        /** Name of the env_var to search for */
+        /** Alias for calling [Builder.envVarName] with `envVarName.orElse(null)`. */
         fun envVarName(envVarName: Optional<String>) = envVarName(envVarName.getOrNull())
 
         /**
@@ -117,43 +117,38 @@ private constructor(
          */
         fun ids(ids: Ids?) = apply { this.ids = ids }
 
-        /**
-         * Filter search results to a particular set of object IDs. To specify a list of IDs,
-         * include the query param multiple times
-         */
+        /** Alias for calling [Builder.ids] with `ids.orElse(null)`. */
         fun ids(ids: Optional<Ids>) = ids(ids.getOrNull())
 
-        /**
-         * Filter search results to a particular set of object IDs. To specify a list of IDs,
-         * include the query param multiple times
-         */
+        /** Alias for calling [ids] with `Ids.ofString(string)`. */
         fun ids(string: String) = ids(Ids.ofString(string))
 
-        /**
-         * Filter search results to a particular set of object IDs. To specify a list of IDs,
-         * include the query param multiple times
-         */
+        /** Alias for calling [ids] with `Ids.ofStrings(strings)`. */
         fun idsOfStrings(strings: List<String>) = ids(Ids.ofStrings(strings))
 
         /** Limit the number of objects to return */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Limit the number of objects to return */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /** Limit the number of objects to return */
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
         fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** The id of the object the environment variable is scoped for */
         fun objectId(objectId: String?) = apply { this.objectId = objectId }
 
-        /** The id of the object the environment variable is scoped for */
+        /** Alias for calling [Builder.objectId] with `objectId.orElse(null)`. */
         fun objectId(objectId: Optional<String>) = objectId(objectId.getOrNull())
 
         /** The type of the object the environment variable is scoped for */
         fun objectType(objectType: EnvVarObjectType?) = apply { this.objectType = objectType }
 
-        /** The type of the object the environment variable is scoped for */
+        /** Alias for calling [Builder.objectType] with `objectType.orElse(null)`. */
         fun objectType(objectType: Optional<EnvVarObjectType>) = objectType(objectType.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

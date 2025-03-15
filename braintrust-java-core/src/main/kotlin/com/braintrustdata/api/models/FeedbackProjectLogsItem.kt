@@ -48,10 +48,18 @@ private constructor(
     /**
      * The id of the project logs event to log feedback for. This is the row `id` returned by `POST
      * /v1/project_logs/{project_id}/insert`
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun id(): String = id.getRequired("id")
 
-    /** An optional comment string to log about the project logs event */
+    /**
+     * An optional comment string to log about the project logs event
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun comment(): Optional<String> = Optional.ofNullable(comment.getNullable("comment"))
 
     /**
@@ -64,47 +72,77 @@ private constructor(
      * A dictionary with additional data about the feedback. If you have a `user_id`, you can log it
      * here and access it in the Braintrust UI. Note, this metadata does not correspond to the main
      * event itself, but rather the audit log attached to the event.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
     /**
      * A dictionary of numeric values (between 0 and 1) to log. These scores will be merged into the
      * existing scores for the project logs event
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun scores(): Optional<Scores> = Optional.ofNullable(scores.getNullable("scores"))
 
-    /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
+    /**
+     * The source of the feedback. Must be one of "external" (default), "app", or "api"
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
 
-    /** A list of tags to log */
+    /**
+     * A list of tags to log
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
     /**
-     * The id of the project logs event to log feedback for. This is the row `id` returned by `POST
-     * /v1/project_logs/{project_id}/insert`
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** An optional comment string to log about the project logs event */
+    /**
+     * Returns the raw JSON value of [comment].
+     *
+     * Unlike [comment], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("comment") @ExcludeMissing fun _comment(): JsonField<String> = comment
 
     /**
-     * A dictionary with additional data about the feedback. If you have a `user_id`, you can log it
-     * here and access it in the Braintrust UI. Note, this metadata does not correspond to the main
-     * event itself, but rather the audit log attached to the event.
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
     /**
-     * A dictionary of numeric values (between 0 and 1) to log. These scores will be merged into the
-     * existing scores for the project logs event
+     * Returns the raw JSON value of [scores].
+     *
+     * Unlike [scores], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("scores") @ExcludeMissing fun _scores(): JsonField<Scores> = scores
 
-    /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
+    /**
+     * Returns the raw JSON value of [source].
+     *
+     * Unlike [source], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<Source> = source
 
-    /** A list of tags to log */
+    /**
+     * Returns the raw JSON value of [tags].
+     *
+     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
     @JsonAnyGetter
@@ -173,18 +211,25 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /**
-         * The id of the project logs event to log feedback for. This is the row `id` returned by
-         * `POST /v1/project_logs/{project_id}/insert`
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** An optional comment string to log about the project logs event */
         fun comment(comment: String?) = comment(JsonField.ofNullable(comment))
 
-        /** An optional comment string to log about the project logs event */
+        /** Alias for calling [Builder.comment] with `comment.orElse(null)`. */
         fun comment(comment: Optional<String>) = comment(comment.getOrNull())
 
-        /** An optional comment string to log about the project logs event */
+        /**
+         * Sets [Builder.comment] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.comment] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun comment(comment: JsonField<String>) = apply { this.comment = comment }
 
         /**
@@ -200,17 +245,15 @@ private constructor(
          */
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-        /**
-         * A dictionary with additional data about the feedback. If you have a `user_id`, you can
-         * log it here and access it in the Braintrust UI. Note, this metadata does not correspond
-         * to the main event itself, but rather the audit log attached to the event.
-         */
+        /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
         fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
-         * A dictionary with additional data about the feedback. If you have a `user_id`, you can
-         * log it here and access it in the Braintrust UI. Note, this metadata does not correspond
-         * to the main event itself, but rather the audit log attached to the event.
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
@@ -220,39 +263,53 @@ private constructor(
          */
         fun scores(scores: Scores?) = scores(JsonField.ofNullable(scores))
 
-        /**
-         * A dictionary of numeric values (between 0 and 1) to log. These scores will be merged into
-         * the existing scores for the project logs event
-         */
+        /** Alias for calling [Builder.scores] with `scores.orElse(null)`. */
         fun scores(scores: Optional<Scores>) = scores(scores.getOrNull())
 
         /**
-         * A dictionary of numeric values (between 0 and 1) to log. These scores will be merged into
-         * the existing scores for the project logs event
+         * Sets [Builder.scores] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.scores] with a well-typed [Scores] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun scores(scores: JsonField<Scores>) = apply { this.scores = scores }
 
         /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
         fun source(source: Source?) = source(JsonField.ofNullable(source))
 
-        /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
+        /** Alias for calling [Builder.source] with `source.orElse(null)`. */
         fun source(source: Optional<Source>) = source(source.getOrNull())
 
-        /** The source of the feedback. Must be one of "external" (default), "app", or "api" */
+        /**
+         * Sets [Builder.source] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.source] with a well-typed [Source] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun source(source: JsonField<Source>) = apply { this.source = source }
 
         /** A list of tags to log */
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
-        /** A list of tags to log */
+        /** Alias for calling [Builder.tags] with `tags.orElse(null)`. */
         fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
-        /** A list of tags to log */
+        /**
+         * Sets [Builder.tags] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.tags] with a well-typed `List<String>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun tags(tags: JsonField<List<String>>) = apply {
             this.tags = tags.map { it.toMutableList() }
         }
 
-        /** A list of tags to log */
+        /**
+         * Adds a single [String] to [tags].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addTag(tag: String) = apply {
             tags = (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
         }

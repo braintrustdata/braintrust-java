@@ -13,6 +13,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -42,6 +43,9 @@ private constructor(
      * earliest.
      *
      * The string can be obtained directly from the `cursor` property of the previous fetch query
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun cursor(): Optional<String> = body.cursor()
 
@@ -58,6 +62,9 @@ private constructor(
      *
      * The `limit` parameter controls the number of full traces to return. So you may end up with
      * more individual rows than the specified limit if you are fetching events containing traces.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun limit(): Optional<Long> = body.limit()
 
@@ -72,6 +79,9 @@ private constructor(
      * for the next page can be found as the row with the minimum (earliest) value of the tuple
      * `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of paginating
      * fetch queries.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun maxRootSpanId(): Optional<String> = body.maxRootSpanId()
 
@@ -86,6 +96,9 @@ private constructor(
      * for the next page can be found as the row with the minimum (earliest) value of the tuple
      * `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of paginating
      * fetch queries.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun maxXactId(): Optional<String> = body.maxXactId()
 
@@ -94,66 +107,44 @@ private constructor(
      *
      * The version id is essentially a filter on the latest event transaction id. You can use the
      * `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun version(): Optional<String> = body.version()
 
     /**
-     * An opaque string to be used as a cursor for the next page of results, in order from latest to
-     * earliest.
+     * Returns the raw JSON value of [cursor].
      *
-     * The string can be obtained directly from the `cursor` property of the previous fetch query
+     * Unlike [cursor], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _cursor(): JsonField<String> = body._cursor()
 
     /**
-     * limit the number of traces fetched
+     * Returns the raw JSON value of [limit].
      *
-     * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-     * project_logs which accumulate over a long time). Note that fetch queries only support
-     * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore, later
-     * pages may return rows which showed up in earlier pages, except with an earlier `_xact_id`.
-     * This happens because pagination occurs over the whole version history of the event log. You
-     * will most likely want to exclude any such duplicate, outdated rows (by `id`) from your
-     * combined result set.
-     *
-     * The `limit` parameter controls the number of full traces to return. So you may end up with
-     * more individual rows than the specified limit if you are fetching events containing traces.
+     * Unlike [limit], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _limit(): JsonField<Long> = body._limit()
 
     /**
-     * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of the
-     * explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor' argument
-     * going forwards.
+     * Returns the raw JSON value of [maxRootSpanId].
      *
-     * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-     *
-     * Since a paginated fetch query returns results in order from latest to earliest, the cursor
-     * for the next page can be found as the row with the minimum (earliest) value of the tuple
-     * `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of paginating
-     * fetch queries.
+     * Unlike [maxRootSpanId], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _maxRootSpanId(): JsonField<String> = body._maxRootSpanId()
 
     /**
-     * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of the
-     * explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor' argument
-     * going forwards.
+     * Returns the raw JSON value of [maxXactId].
      *
-     * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-     *
-     * Since a paginated fetch query returns results in order from latest to earliest, the cursor
-     * for the next page can be found as the row with the minimum (earliest) value of the tuple
-     * `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of paginating
-     * fetch queries.
+     * Unlike [maxXactId], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _maxXactId(): JsonField<String> = body._maxXactId()
 
     /**
-     * Retrieve a snapshot of events from a past time
+     * Returns the raw JSON value of [version].
      *
-     * The version id is essentially a filter on the latest event transaction id. You can use the
-     * `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _version(): JsonField<String> = body._version()
 
@@ -205,6 +196,9 @@ private constructor(
          *
          * The string can be obtained directly from the `cursor` property of the previous fetch
          * query
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun cursor(): Optional<String> = Optional.ofNullable(cursor.getNullable("cursor"))
 
@@ -222,6 +216,9 @@ private constructor(
          * The `limit` parameter controls the number of full traces to return. So you may end up
          * with more individual rows than the specified limit if you are fetching events containing
          * traces.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun limit(): Optional<Long> = Optional.ofNullable(limit.getNullable("limit"))
 
@@ -236,6 +233,9 @@ private constructor(
          * cursor for the next page can be found as the row with the minimum (earliest) value of the
          * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
          * paginating fetch queries.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun maxRootSpanId(): Optional<String> =
             Optional.ofNullable(maxRootSpanId.getNullable("max_root_span_id"))
@@ -251,6 +251,9 @@ private constructor(
          * cursor for the next page can be found as the row with the minimum (earliest) value of the
          * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
          * paginating fetch queries.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun maxXactId(): Optional<String> =
             Optional.ofNullable(maxXactId.getNullable("max_xact_id"))
@@ -260,70 +263,47 @@ private constructor(
          *
          * The version id is essentially a filter on the latest event transaction id. You can use
          * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
 
         /**
-         * An opaque string to be used as a cursor for the next page of results, in order from
-         * latest to earliest.
+         * Returns the raw JSON value of [cursor].
          *
-         * The string can be obtained directly from the `cursor` property of the previous fetch
-         * query
+         * Unlike [cursor], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("cursor") @ExcludeMissing fun _cursor(): JsonField<String> = cursor
 
         /**
-         * limit the number of traces fetched
+         * Returns the raw JSON value of [limit].
          *
-         * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-         * project_logs which accumulate over a long time). Note that fetch queries only support
-         * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-         * later pages may return rows which showed up in earlier pages, except with an earlier
-         * `_xact_id`. This happens because pagination occurs over the whole version history of the
-         * event log. You will most likely want to exclude any such duplicate, outdated rows (by
-         * `id`) from your combined result set.
-         *
-         * The `limit` parameter controls the number of full traces to return. So you may end up
-         * with more individual rows than the specified limit if you are fetching events containing
-         * traces.
+         * Unlike [limit], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("limit") @ExcludeMissing fun _limit(): JsonField<Long> = limit
 
         /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
+         * Returns the raw JSON value of [maxRootSpanId].
          *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
+         * Unlike [maxRootSpanId], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("max_root_span_id")
         @ExcludeMissing
         fun _maxRootSpanId(): JsonField<String> = maxRootSpanId
 
         /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
+         * Returns the raw JSON value of [maxXactId].
          *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
+         * Unlike [maxXactId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("max_xact_id") @ExcludeMissing fun _maxXactId(): JsonField<String> = maxXactId
 
         /**
-         * Retrieve a snapshot of events from a past time
+         * Returns the raw JSON value of [version].
          *
-         * The version id is essentially a filter on the latest event transaction id. You can use
-         * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
@@ -383,21 +363,15 @@ private constructor(
              */
             fun cursor(cursor: String?) = cursor(JsonField.ofNullable(cursor))
 
-            /**
-             * An opaque string to be used as a cursor for the next page of results, in order from
-             * latest to earliest.
-             *
-             * The string can be obtained directly from the `cursor` property of the previous fetch
-             * query
-             */
+            /** Alias for calling [Builder.cursor] with `cursor.orElse(null)`. */
             fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
 
             /**
-             * An opaque string to be used as a cursor for the next page of results, in order from
-             * latest to earliest.
+             * Sets [Builder.cursor] to an arbitrary JSON value.
              *
-             * The string can be obtained directly from the `cursor` property of the previous fetch
-             * query
+             * You should usually call [Builder.cursor] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun cursor(cursor: JsonField<String>) = apply { this.cursor = cursor }
 
@@ -419,53 +393,21 @@ private constructor(
             fun limit(limit: Long?) = limit(JsonField.ofNullable(limit))
 
             /**
-             * limit the number of traces fetched
+             * Alias for [Builder.limit].
              *
-             * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-             * project_logs which accumulate over a long time). Note that fetch queries only support
-             * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-             * later pages may return rows which showed up in earlier pages, except with an earlier
-             * `_xact_id`. This happens because pagination occurs over the whole version history of
-             * the event log. You will most likely want to exclude any such duplicate, outdated rows
-             * (by `id`) from your combined result set.
-             *
-             * The `limit` parameter controls the number of full traces to return. So you may end up
-             * with more individual rows than the specified limit if you are fetching events
-             * containing traces.
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun limit(limit: Long) = limit(limit as Long?)
 
-            /**
-             * limit the number of traces fetched
-             *
-             * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-             * project_logs which accumulate over a long time). Note that fetch queries only support
-             * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-             * later pages may return rows which showed up in earlier pages, except with an earlier
-             * `_xact_id`. This happens because pagination occurs over the whole version history of
-             * the event log. You will most likely want to exclude any such duplicate, outdated rows
-             * (by `id`) from your combined result set.
-             *
-             * The `limit` parameter controls the number of full traces to return. So you may end up
-             * with more individual rows than the specified limit if you are fetching events
-             * containing traces.
-             */
+            /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
             fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
             /**
-             * limit the number of traces fetched
+             * Sets [Builder.limit] to an arbitrary JSON value.
              *
-             * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-             * project_logs which accumulate over a long time). Note that fetch queries only support
-             * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-             * later pages may return rows which showed up in earlier pages, except with an earlier
-             * `_xact_id`. This happens because pagination occurs over the whole version history of
-             * the event log. You will most likely want to exclude any such duplicate, outdated rows
-             * (by `id`) from your combined result set.
-             *
-             * The `limit` parameter controls the number of full traces to return. So you may end up
-             * with more individual rows than the specified limit if you are fetching events
-             * containing traces.
+             * You should usually call [Builder.limit] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
              */
             fun limit(limit: JsonField<Long>) = apply { this.limit = limit }
 
@@ -484,32 +426,16 @@ private constructor(
             fun maxRootSpanId(maxRootSpanId: String?) =
                 maxRootSpanId(JsonField.ofNullable(maxRootSpanId))
 
-            /**
-             * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor
-             * of the explicit 'cursor' returned by object fetch requests. Please prefer the
-             * 'cursor' argument going forwards.
-             *
-             * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-             *
-             * Since a paginated fetch query returns results in order from latest to earliest, the
-             * cursor for the next page can be found as the row with the minimum (earliest) value of
-             * the tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an
-             * overview of paginating fetch queries.
-             */
+            /** Alias for calling [Builder.maxRootSpanId] with `maxRootSpanId.orElse(null)`. */
             fun maxRootSpanId(maxRootSpanId: Optional<String>) =
                 maxRootSpanId(maxRootSpanId.getOrNull())
 
             /**
-             * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor
-             * of the explicit 'cursor' returned by object fetch requests. Please prefer the
-             * 'cursor' argument going forwards.
+             * Sets [Builder.maxRootSpanId] to an arbitrary JSON value.
              *
-             * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-             *
-             * Since a paginated fetch query returns results in order from latest to earliest, the
-             * cursor for the next page can be found as the row with the minimum (earliest) value of
-             * the tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an
-             * overview of paginating fetch queries.
+             * You should usually call [Builder.maxRootSpanId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun maxRootSpanId(maxRootSpanId: JsonField<String>) = apply {
                 this.maxRootSpanId = maxRootSpanId
@@ -529,31 +455,15 @@ private constructor(
              */
             fun maxXactId(maxXactId: String?) = maxXactId(JsonField.ofNullable(maxXactId))
 
-            /**
-             * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor
-             * of the explicit 'cursor' returned by object fetch requests. Please prefer the
-             * 'cursor' argument going forwards.
-             *
-             * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-             *
-             * Since a paginated fetch query returns results in order from latest to earliest, the
-             * cursor for the next page can be found as the row with the minimum (earliest) value of
-             * the tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an
-             * overview of paginating fetch queries.
-             */
+            /** Alias for calling [Builder.maxXactId] with `maxXactId.orElse(null)`. */
             fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.getOrNull())
 
             /**
-             * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor
-             * of the explicit 'cursor' returned by object fetch requests. Please prefer the
-             * 'cursor' argument going forwards.
+             * Sets [Builder.maxXactId] to an arbitrary JSON value.
              *
-             * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-             *
-             * Since a paginated fetch query returns results in order from latest to earliest, the
-             * cursor for the next page can be found as the row with the minimum (earliest) value of
-             * the tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an
-             * overview of paginating fetch queries.
+             * You should usually call [Builder.maxXactId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun maxXactId(maxXactId: JsonField<String>) = apply { this.maxXactId = maxXactId }
 
@@ -566,21 +476,15 @@ private constructor(
              */
             fun version(version: String?) = version(JsonField.ofNullable(version))
 
-            /**
-             * Retrieve a snapshot of events from a past time
-             *
-             * The version id is essentially a filter on the latest event transaction id. You can
-             * use the `max_xact_id` returned by a past fetch as the version to reproduce that exact
-             * fetch.
-             */
+            /** Alias for calling [Builder.version] with `version.orElse(null)`. */
             fun version(version: Optional<String>) = version(version.getOrNull())
 
             /**
-             * Retrieve a snapshot of events from a past time
+             * Sets [Builder.version] to an arbitrary JSON value.
              *
-             * The version id is essentially a filter on the latest event transaction id. You can
-             * use the `max_xact_id` returned by a past fetch as the version to reproduce that exact
-             * fetch.
+             * You should usually call [Builder.version] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun version(version: JsonField<String>) = apply { this.version = version }
 
@@ -676,21 +580,14 @@ private constructor(
          */
         fun cursor(cursor: String?) = apply { body.cursor(cursor) }
 
-        /**
-         * An opaque string to be used as a cursor for the next page of results, in order from
-         * latest to earliest.
-         *
-         * The string can be obtained directly from the `cursor` property of the previous fetch
-         * query
-         */
+        /** Alias for calling [Builder.cursor] with `cursor.orElse(null)`. */
         fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
 
         /**
-         * An opaque string to be used as a cursor for the next page of results, in order from
-         * latest to earliest.
+         * Sets [Builder.cursor] to an arbitrary JSON value.
          *
-         * The string can be obtained directly from the `cursor` property of the previous fetch
-         * query
+         * You should usually call [Builder.cursor] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun cursor(cursor: JsonField<String>) = apply { body.cursor(cursor) }
 
@@ -712,53 +609,20 @@ private constructor(
         fun limit(limit: Long?) = apply { body.limit(limit) }
 
         /**
-         * limit the number of traces fetched
+         * Alias for [Builder.limit].
          *
-         * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-         * project_logs which accumulate over a long time). Note that fetch queries only support
-         * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-         * later pages may return rows which showed up in earlier pages, except with an earlier
-         * `_xact_id`. This happens because pagination occurs over the whole version history of the
-         * event log. You will most likely want to exclude any such duplicate, outdated rows (by
-         * `id`) from your combined result set.
-         *
-         * The `limit` parameter controls the number of full traces to return. So you may end up
-         * with more individual rows than the specified limit if you are fetching events containing
-         * traces.
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /**
-         * limit the number of traces fetched
-         *
-         * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-         * project_logs which accumulate over a long time). Note that fetch queries only support
-         * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-         * later pages may return rows which showed up in earlier pages, except with an earlier
-         * `_xact_id`. This happens because pagination occurs over the whole version history of the
-         * event log. You will most likely want to exclude any such duplicate, outdated rows (by
-         * `id`) from your combined result set.
-         *
-         * The `limit` parameter controls the number of full traces to return. So you may end up
-         * with more individual rows than the specified limit if you are fetching events containing
-         * traces.
-         */
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
         fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /**
-         * limit the number of traces fetched
+         * Sets [Builder.limit] to an arbitrary JSON value.
          *
-         * Fetch queries may be paginated if the total result size is expected to be large (e.g.
-         * project_logs which accumulate over a long time). Note that fetch queries only support
-         * pagination in descending time order (from latest to earliest `_xact_id`. Furthermore,
-         * later pages may return rows which showed up in earlier pages, except with an earlier
-         * `_xact_id`. This happens because pagination occurs over the whole version history of the
-         * event log. You will most likely want to exclude any such duplicate, outdated rows (by
-         * `id`) from your combined result set.
-         *
-         * The `limit` parameter controls the number of full traces to return. So you may end up
-         * with more individual rows than the specified limit if you are fetching events containing
-         * traces.
+         * You should usually call [Builder.limit] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun limit(limit: JsonField<Long>) = apply { body.limit(limit) }
 
@@ -776,32 +640,16 @@ private constructor(
          */
         fun maxRootSpanId(maxRootSpanId: String?) = apply { body.maxRootSpanId(maxRootSpanId) }
 
-        /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
-         *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
-         */
+        /** Alias for calling [Builder.maxRootSpanId] with `maxRootSpanId.orElse(null)`. */
         fun maxRootSpanId(maxRootSpanId: Optional<String>) =
             maxRootSpanId(maxRootSpanId.getOrNull())
 
         /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
+         * Sets [Builder.maxRootSpanId] to an arbitrary JSON value.
          *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
+         * You should usually call [Builder.maxRootSpanId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun maxRootSpanId(maxRootSpanId: JsonField<String>) = apply {
             body.maxRootSpanId(maxRootSpanId)
@@ -821,31 +669,15 @@ private constructor(
          */
         fun maxXactId(maxXactId: String?) = apply { body.maxXactId(maxXactId) }
 
-        /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
-         *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
-         */
+        /** Alias for calling [Builder.maxXactId] with `maxXactId.orElse(null)`. */
         fun maxXactId(maxXactId: Optional<String>) = maxXactId(maxXactId.getOrNull())
 
         /**
-         * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
-         * the explicit 'cursor' returned by object fetch requests. Please prefer the 'cursor'
-         * argument going forwards.
+         * Sets [Builder.maxXactId] to an arbitrary JSON value.
          *
-         * Together, `max_xact_id` and `max_root_span_id` form a pagination cursor
-         *
-         * Since a paginated fetch query returns results in order from latest to earliest, the
-         * cursor for the next page can be found as the row with the minimum (earliest) value of the
-         * tuple `(_xact_id, root_span_id)`. See the documentation of `limit` for an overview of
-         * paginating fetch queries.
+         * You should usually call [Builder.maxXactId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun maxXactId(maxXactId: JsonField<String>) = apply { body.maxXactId(maxXactId) }
 
@@ -857,19 +689,14 @@ private constructor(
          */
         fun version(version: String?) = apply { body.version(version) }
 
-        /**
-         * Retrieve a snapshot of events from a past time
-         *
-         * The version id is essentially a filter on the latest event transaction id. You can use
-         * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
-         */
+        /** Alias for calling [Builder.version] with `version.orElse(null)`. */
         fun version(version: Optional<String>) = version(version.getOrNull())
 
         /**
-         * Retrieve a snapshot of events from a past time
+         * Sets [Builder.version] to an arbitrary JSON value.
          *
-         * The version id is essentially a filter on the latest event transaction id. You can use
-         * the `max_xact_id` returned by a past fetch as the version to reproduce that exact fetch.
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun version(version: JsonField<String>) = apply { body.version(version) }
 

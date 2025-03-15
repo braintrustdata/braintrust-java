@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -45,45 +46,108 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Unique identifier for the project tag */
+    /**
+     * Unique identifier for the project tag
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** Name of the project tag */
+    /**
+     * Name of the project tag
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = name.getRequired("name")
 
-    /** Unique identifier for the project that the project tag belongs under */
+    /**
+     * Unique identifier for the project that the project tag belongs under
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun projectId(): String = projectId.getRequired("project_id")
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun userId(): String = userId.getRequired("user_id")
 
-    /** Color of the tag for the UI */
+    /**
+     * Color of the tag for the UI
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun color(): Optional<String> = Optional.ofNullable(color.getNullable("color"))
 
-    /** Date of project tag creation */
+    /**
+     * Date of project tag creation
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
-    /** Textual description of the project tag */
+    /**
+     * Textual description of the project tag
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> =
         Optional.ofNullable(description.getNullable("description"))
 
-    /** Unique identifier for the project tag */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** Name of the project tag */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** Unique identifier for the project that the project tag belongs under */
+    /**
+     * Returns the raw JSON value of [projectId].
+     *
+     * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
 
+    /**
+     * Returns the raw JSON value of [userId].
+     *
+     * Unlike [userId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
-    /** Color of the tag for the UI */
+    /**
+     * Returns the raw JSON value of [color].
+     *
+     * Unlike [color], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("color") @ExcludeMissing fun _color(): JsonField<String> = color
 
-    /** Date of project tag creation */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
-    /** Textual description of the project tag */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
     @JsonAnyGetter
@@ -152,50 +216,89 @@ private constructor(
         /** Unique identifier for the project tag */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** Unique identifier for the project tag */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Name of the project tag */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** Name of the project tag */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Unique identifier for the project that the project tag belongs under */
         fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
-        /** Unique identifier for the project that the project tag belongs under */
+        /**
+         * Sets [Builder.projectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
         fun userId(userId: String) = userId(JsonField.of(userId))
 
+        /**
+         * Sets [Builder.userId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.userId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
         /** Color of the tag for the UI */
         fun color(color: String?) = color(JsonField.ofNullable(color))
 
-        /** Color of the tag for the UI */
+        /** Alias for calling [Builder.color] with `color.orElse(null)`. */
         fun color(color: Optional<String>) = color(color.getOrNull())
 
-        /** Color of the tag for the UI */
+        /**
+         * Sets [Builder.color] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.color] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun color(color: JsonField<String>) = apply { this.color = color }
 
         /** Date of project tag creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
-        /** Date of project tag creation */
+        /** Alias for calling [Builder.created] with `created.orElse(null)`. */
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
-        /** Date of project tag creation */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Textual description of the project tag */
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
-        /** Textual description of the project tag */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the project tag */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

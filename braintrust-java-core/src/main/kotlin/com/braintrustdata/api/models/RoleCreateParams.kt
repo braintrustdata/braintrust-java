@@ -14,6 +14,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -33,13 +34,28 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** Name of the role */
+    /**
+     * Name of the role
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = body.name()
 
-    /** Textual description of the role */
+    /**
+     * Textual description of the role
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> = body.description()
 
-    /** (permission, restrict_object_type) tuples which belong to this role */
+    /**
+     * (permission, restrict_object_type) tuples which belong to this role
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun memberPermissions(): Optional<List<MemberPermission>> = body.memberPermissions()
 
     /**
@@ -47,6 +63,9 @@ private constructor(
      *
      * An inheriting role has all the permissions contained in its member roles, as well as all of
      * their inherited permissions
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun memberRoles(): Optional<List<String>> = body.memberRoles()
 
@@ -54,30 +73,45 @@ private constructor(
      * For nearly all users, this parameter should be unnecessary. But in the rare case that your
      * API key belongs to multiple organizations, you may specify the name of the organization the
      * role belongs in.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun orgName(): Optional<String> = body.orgName()
 
-    /** Name of the role */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
-    /** Textual description of the role */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _description(): JsonField<String> = body._description()
 
-    /** (permission, restrict_object_type) tuples which belong to this role */
+    /**
+     * Returns the raw JSON value of [memberPermissions].
+     *
+     * Unlike [memberPermissions], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _memberPermissions(): JsonField<List<MemberPermission>> = body._memberPermissions()
 
     /**
-     * Ids of the roles this role inherits from
+     * Returns the raw JSON value of [memberRoles].
      *
-     * An inheriting role has all the permissions contained in its member roles, as well as all of
-     * their inherited permissions
+     * Unlike [memberRoles], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _memberRoles(): JsonField<List<String>> = body._memberRoles()
 
     /**
-     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
-     * API key belongs to multiple organizations, you may specify the name of the organization the
-     * role belongs in.
+     * Returns the raw JSON value of [orgName].
+     *
+     * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _orgName(): JsonField<String> = body._orgName()
 
@@ -116,14 +150,29 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Name of the role */
+        /**
+         * Name of the role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun name(): String = name.getRequired("name")
 
-        /** Textual description of the role */
+        /**
+         * Textual description of the role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** (permission, restrict_object_type) tuples which belong to this role */
+        /**
+         * (permission, restrict_object_type) tuples which belong to this role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun memberPermissions(): Optional<List<MemberPermission>> =
             Optional.ofNullable(memberPermissions.getNullable("member_permissions"))
 
@@ -132,6 +181,9 @@ private constructor(
          *
          * An inheriting role has all the permissions contained in its member roles, as well as all
          * of their inherited permissions
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun memberRoles(): Optional<List<String>> =
             Optional.ofNullable(memberRoles.getNullable("member_roles"))
@@ -140,36 +192,51 @@ private constructor(
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the role belongs in.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
 
-        /** Name of the role */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** Textual description of the role */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** (permission, restrict_object_type) tuples which belong to this role */
+        /**
+         * Returns the raw JSON value of [memberPermissions].
+         *
+         * Unlike [memberPermissions], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("member_permissions")
         @ExcludeMissing
         fun _memberPermissions(): JsonField<List<MemberPermission>> = memberPermissions
 
         /**
-         * Ids of the roles this role inherits from
+         * Returns the raw JSON value of [memberRoles].
          *
-         * An inheriting role has all the permissions contained in its member roles, as well as all
-         * of their inherited permissions
+         * Unlike [memberRoles], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("member_roles")
         @ExcludeMissing
         fun _memberRoles(): JsonField<List<String>> = memberRoles
 
         /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the role belongs in.
+         * Returns the raw JSON value of [orgName].
+         *
+         * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
 
@@ -230,16 +297,28 @@ private constructor(
             /** Name of the role */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** Name of the role */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** Textual description of the role */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** Textual description of the role */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** Textual description of the role */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
@@ -248,16 +327,28 @@ private constructor(
             fun memberPermissions(memberPermissions: List<MemberPermission>?) =
                 memberPermissions(JsonField.ofNullable(memberPermissions))
 
-            /** (permission, restrict_object_type) tuples which belong to this role */
+            /**
+             * Alias for calling [Builder.memberPermissions] with `memberPermissions.orElse(null)`.
+             */
             fun memberPermissions(memberPermissions: Optional<List<MemberPermission>>) =
                 memberPermissions(memberPermissions.getOrNull())
 
-            /** (permission, restrict_object_type) tuples which belong to this role */
+            /**
+             * Sets [Builder.memberPermissions] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.memberPermissions] with a well-typed
+             * `List<MemberPermission>` value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
             fun memberPermissions(memberPermissions: JsonField<List<MemberPermission>>) = apply {
                 this.memberPermissions = memberPermissions.map { it.toMutableList() }
             }
 
-            /** (permission, restrict_object_type) tuples which belong to this role */
+            /**
+             * Adds a single [MemberPermission] to [memberPermissions].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addMemberPermission(memberPermission: MemberPermission) = apply {
                 memberPermissions =
                     (memberPermissions ?: JsonField.of(mutableListOf())).also {
@@ -274,30 +365,25 @@ private constructor(
             fun memberRoles(memberRoles: List<String>?) =
                 memberRoles(JsonField.ofNullable(memberRoles))
 
-            /**
-             * Ids of the roles this role inherits from
-             *
-             * An inheriting role has all the permissions contained in its member roles, as well as
-             * all of their inherited permissions
-             */
+            /** Alias for calling [Builder.memberRoles] with `memberRoles.orElse(null)`. */
             fun memberRoles(memberRoles: Optional<List<String>>) =
                 memberRoles(memberRoles.getOrNull())
 
             /**
-             * Ids of the roles this role inherits from
+             * Sets [Builder.memberRoles] to an arbitrary JSON value.
              *
-             * An inheriting role has all the permissions contained in its member roles, as well as
-             * all of their inherited permissions
+             * You should usually call [Builder.memberRoles] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun memberRoles(memberRoles: JsonField<List<String>>) = apply {
                 this.memberRoles = memberRoles.map { it.toMutableList() }
             }
 
             /**
-             * Ids of the roles this role inherits from
+             * Adds a single [String] to [memberRoles].
              *
-             * An inheriting role has all the permissions contained in its member roles, as well as
-             * all of their inherited permissions
+             * @throws IllegalStateException if the field was previously set to a non-list.
              */
             fun addMemberRole(memberRole: String) = apply {
                 memberRoles =
@@ -313,17 +399,15 @@ private constructor(
              */
             fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
 
-            /**
-             * For nearly all users, this parameter should be unnecessary. But in the rare case that
-             * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the role belongs in.
-             */
+            /** Alias for calling [Builder.orgName] with `orgName.orElse(null)`. */
             fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
-             * For nearly all users, this parameter should be unnecessary. But in the rare case that
-             * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the role belongs in.
+             * Sets [Builder.orgName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.orgName] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
 
@@ -408,16 +492,27 @@ private constructor(
         /** Name of the role */
         fun name(name: String) = apply { body.name(name) }
 
-        /** Name of the role */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** Textual description of the role */
         fun description(description: String?) = apply { body.description(description) }
 
-        /** Textual description of the role */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the role */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** (permission, restrict_object_type) tuples which belong to this role */
@@ -425,16 +520,26 @@ private constructor(
             body.memberPermissions(memberPermissions)
         }
 
-        /** (permission, restrict_object_type) tuples which belong to this role */
+        /** Alias for calling [Builder.memberPermissions] with `memberPermissions.orElse(null)`. */
         fun memberPermissions(memberPermissions: Optional<List<MemberPermission>>) =
             memberPermissions(memberPermissions.getOrNull())
 
-        /** (permission, restrict_object_type) tuples which belong to this role */
+        /**
+         * Sets [Builder.memberPermissions] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.memberPermissions] with a well-typed
+         * `List<MemberPermission>` value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun memberPermissions(memberPermissions: JsonField<List<MemberPermission>>) = apply {
             body.memberPermissions(memberPermissions)
         }
 
-        /** (permission, restrict_object_type) tuples which belong to this role */
+        /**
+         * Adds a single [MemberPermission] to [memberPermissions].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addMemberPermission(memberPermission: MemberPermission) = apply {
             body.addMemberPermission(memberPermission)
         }
@@ -447,29 +552,24 @@ private constructor(
          */
         fun memberRoles(memberRoles: List<String>?) = apply { body.memberRoles(memberRoles) }
 
-        /**
-         * Ids of the roles this role inherits from
-         *
-         * An inheriting role has all the permissions contained in its member roles, as well as all
-         * of their inherited permissions
-         */
+        /** Alias for calling [Builder.memberRoles] with `memberRoles.orElse(null)`. */
         fun memberRoles(memberRoles: Optional<List<String>>) = memberRoles(memberRoles.getOrNull())
 
         /**
-         * Ids of the roles this role inherits from
+         * Sets [Builder.memberRoles] to an arbitrary JSON value.
          *
-         * An inheriting role has all the permissions contained in its member roles, as well as all
-         * of their inherited permissions
+         * You should usually call [Builder.memberRoles] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun memberRoles(memberRoles: JsonField<List<String>>) = apply {
             body.memberRoles(memberRoles)
         }
 
         /**
-         * Ids of the roles this role inherits from
+         * Adds a single [String] to [memberRoles].
          *
-         * An inheriting role has all the permissions contained in its member roles, as well as all
-         * of their inherited permissions
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addMemberRole(memberRole: String) = apply { body.addMemberRole(memberRole) }
 
@@ -480,17 +580,14 @@ private constructor(
          */
         fun orgName(orgName: String?) = apply { body.orgName(orgName) }
 
-        /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the role belongs in.
-         */
+        /** Alias for calling [Builder.orgName] with `orgName.orElse(null)`. */
         fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the role belongs in.
+         * Sets [Builder.orgName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.orgName] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun orgName(orgName: JsonField<String>) = apply { body.orgName(orgName) }
 
@@ -633,23 +730,36 @@ private constructor(
          * Each permission permits a certain type of operation on an object in the system
          *
          * Permissions can be assigned to to objects on an individual basis, or grouped into roles
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun permission(): Permission = permission.getRequired("permission")
 
-        /** The object type that the ACL applies to */
+        /**
+         * The object type that the ACL applies to
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun restrictObjectType(): Optional<AclObjectType> =
             Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
 
         /**
-         * Each permission permits a certain type of operation on an object in the system
+         * Returns the raw JSON value of [permission].
          *
-         * Permissions can be assigned to to objects on an individual basis, or grouped into roles
+         * Unlike [permission], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("permission")
         @ExcludeMissing
         fun _permission(): JsonField<Permission> = permission
 
-        /** The object type that the ACL applies to */
+        /**
+         * Returns the raw JSON value of [restrictObjectType].
+         *
+         * Unlike [restrictObjectType], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("restrict_object_type")
         @ExcludeMissing
         fun _restrictObjectType(): JsonField<AclObjectType> = restrictObjectType
@@ -708,10 +818,11 @@ private constructor(
             fun permission(permission: Permission) = permission(JsonField.of(permission))
 
             /**
-             * Each permission permits a certain type of operation on an object in the system
+             * Sets [Builder.permission] to an arbitrary JSON value.
              *
-             * Permissions can be assigned to to objects on an individual basis, or grouped into
-             * roles
+             * You should usually call [Builder.permission] with a well-typed [Permission] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun permission(permission: JsonField<Permission>) = apply {
                 this.permission = permission
@@ -721,11 +832,20 @@ private constructor(
             fun restrictObjectType(restrictObjectType: AclObjectType?) =
                 restrictObjectType(JsonField.ofNullable(restrictObjectType))
 
-            /** The object type that the ACL applies to */
+            /**
+             * Alias for calling [Builder.restrictObjectType] with
+             * `restrictObjectType.orElse(null)`.
+             */
             fun restrictObjectType(restrictObjectType: Optional<AclObjectType>) =
                 restrictObjectType(restrictObjectType.getOrNull())
 
-            /** The object type that the ACL applies to */
+            /**
+             * Sets [Builder.restrictObjectType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.restrictObjectType] with a well-typed
+             * [AclObjectType] value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
+             */
             fun restrictObjectType(restrictObjectType: JsonField<AclObjectType>) = apply {
                 this.restrictObjectType = restrictObjectType
             }

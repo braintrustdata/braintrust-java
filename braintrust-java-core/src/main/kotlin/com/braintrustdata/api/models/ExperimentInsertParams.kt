@@ -14,6 +14,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -32,10 +33,19 @@ private constructor(
     /** Experiment id */
     fun experimentId(): String = experimentId
 
-    /** A list of experiment events to insert */
+    /**
+     * A list of experiment events to insert
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun events(): List<InsertExperimentEvent> = body.events()
 
-    /** A list of experiment events to insert */
+    /**
+     * Returns the raw JSON value of [events].
+     *
+     * Unlike [events], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _events(): JsonField<List<InsertExperimentEvent>> = body._events()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -68,10 +78,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A list of experiment events to insert */
+        /**
+         * A list of experiment events to insert
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun events(): List<InsertExperimentEvent> = events.getRequired("events")
 
-        /** A list of experiment events to insert */
+        /**
+         * Returns the raw JSON value of [events].
+         *
+         * Unlike [events], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("events")
         @ExcludeMissing
         fun _events(): JsonField<List<InsertExperimentEvent>> = events
@@ -121,12 +140,22 @@ private constructor(
             /** A list of experiment events to insert */
             fun events(events: List<InsertExperimentEvent>) = events(JsonField.of(events))
 
-            /** A list of experiment events to insert */
+            /**
+             * Sets [Builder.events] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.events] with a well-typed
+             * `List<InsertExperimentEvent>` value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
             fun events(events: JsonField<List<InsertExperimentEvent>>) = apply {
                 this.events = events.map { it.toMutableList() }
             }
 
-            /** A list of experiment events to insert */
+            /**
+             * Adds a single [InsertExperimentEvent] to [events].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addEvent(event: InsertExperimentEvent) = apply {
                 events =
                     (events ?: JsonField.of(mutableListOf())).also {
@@ -216,10 +245,20 @@ private constructor(
         /** A list of experiment events to insert */
         fun events(events: List<InsertExperimentEvent>) = apply { body.events(events) }
 
-        /** A list of experiment events to insert */
+        /**
+         * Sets [Builder.events] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.events] with a well-typed `List<InsertExperimentEvent>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun events(events: JsonField<List<InsertExperimentEvent>>) = apply { body.events(events) }
 
-        /** A list of experiment events to insert */
+        /**
+         * Adds a single [InsertExperimentEvent] to [events].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addEvent(event: InsertExperimentEvent) = apply { body.addEvent(event) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
