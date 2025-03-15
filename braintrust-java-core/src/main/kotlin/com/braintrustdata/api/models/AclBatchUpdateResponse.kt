@@ -11,6 +11,7 @@ import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -39,6 +40,9 @@ private constructor(
      *
      * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
      * ACL, as part of a direct permission grant or as part of a role.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun addedAcls(): List<Acl> = addedAcls.getRequired("added_acls")
 
@@ -51,30 +55,23 @@ private constructor(
      *
      * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
      * ACL, as part of a direct permission grant or as part of a role.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun removedAcls(): List<Acl> = removedAcls.getRequired("removed_acls")
 
     /**
-     * An ACL grants a certain permission or role to a certain user or group on an object.
+     * Returns the raw JSON value of [addedAcls].
      *
-     * ACLs are inherited across the object hierarchy. So for example, if a user has read
-     * permissions on a project, they will also have read permissions on any experiment, dataset,
-     * etc. created within that project.
-     *
-     * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
-     * ACL, as part of a direct permission grant or as part of a role.
+     * Unlike [addedAcls], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("added_acls") @ExcludeMissing fun _addedAcls(): JsonField<List<Acl>> = addedAcls
 
     /**
-     * An ACL grants a certain permission or role to a certain user or group on an object.
+     * Returns the raw JSON value of [removedAcls].
      *
-     * ACLs are inherited across the object hierarchy. So for example, if a user has read
-     * permissions on a project, they will also have read permissions on any experiment, dataset,
-     * etc. created within that project.
-     *
-     * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
-     * ACL, as part of a direct permission grant or as part of a role.
+     * Unlike [removedAcls], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("removed_acls")
     @ExcludeMissing
@@ -139,28 +136,20 @@ private constructor(
         fun addedAcls(addedAcls: List<Acl>) = addedAcls(JsonField.of(addedAcls))
 
         /**
-         * An ACL grants a certain permission or role to a certain user or group on an object.
+         * Sets [Builder.addedAcls] to an arbitrary JSON value.
          *
-         * ACLs are inherited across the object hierarchy. So for example, if a user has read
-         * permissions on a project, they will also have read permissions on any experiment,
-         * dataset, etc. created within that project.
-         *
-         * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
-         * the ACL, as part of a direct permission grant or as part of a role.
+         * You should usually call [Builder.addedAcls] with a well-typed `List<Acl>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun addedAcls(addedAcls: JsonField<List<Acl>>) = apply {
             this.addedAcls = addedAcls.map { it.toMutableList() }
         }
 
         /**
-         * An ACL grants a certain permission or role to a certain user or group on an object.
+         * Adds a single [Acl] to [addedAcls].
          *
-         * ACLs are inherited across the object hierarchy. So for example, if a user has read
-         * permissions on a project, they will also have read permissions on any experiment,
-         * dataset, etc. created within that project.
-         *
-         * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
-         * the ACL, as part of a direct permission grant or as part of a role.
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addAddedAcl(addedAcl: Acl) = apply {
             addedAcls =
@@ -182,28 +171,20 @@ private constructor(
         fun removedAcls(removedAcls: List<Acl>) = removedAcls(JsonField.of(removedAcls))
 
         /**
-         * An ACL grants a certain permission or role to a certain user or group on an object.
+         * Sets [Builder.removedAcls] to an arbitrary JSON value.
          *
-         * ACLs are inherited across the object hierarchy. So for example, if a user has read
-         * permissions on a project, they will also have read permissions on any experiment,
-         * dataset, etc. created within that project.
-         *
-         * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
-         * the ACL, as part of a direct permission grant or as part of a role.
+         * You should usually call [Builder.removedAcls] with a well-typed `List<Acl>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun removedAcls(removedAcls: JsonField<List<Acl>>) = apply {
             this.removedAcls = removedAcls.map { it.toMutableList() }
         }
 
         /**
-         * An ACL grants a certain permission or role to a certain user or group on an object.
+         * Adds a single [Acl] to [removedAcls].
          *
-         * ACLs are inherited across the object hierarchy. So for example, if a user has read
-         * permissions on a project, they will also have read permissions on any experiment,
-         * dataset, etc. created within that project.
-         *
-         * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in
-         * the ACL, as part of a direct permission grant or as part of a role.
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addRemovedAcl(removedAcl: Acl) = apply {
             removedAcls =

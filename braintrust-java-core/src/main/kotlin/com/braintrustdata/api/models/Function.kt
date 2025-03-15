@@ -77,114 +77,252 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Unique identifier for the prompt */
+    /**
+     * Unique identifier for the prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
     /**
      * The transaction id of an event is unique to the network operation that processed the event
      * insertion. Transaction ids are monotonically increasing over time and can be used to retrieve
      * a versioned snapshot of the prompt (see the `version` parameter)
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun _xactId(): String = _xactId.getRequired("_xact_id")
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun functionData(): FunctionData = functionData.getRequired("function_data")
 
-    /** A literal 'p' which identifies the object as a project prompt */
+    /**
+     * A literal 'p' which identifies the object as a project prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun logId(): LogId = logId.getRequired("log_id")
 
-    /** Name of the prompt */
+    /**
+     * Name of the prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = name.getRequired("name")
 
-    /** Unique identifier for the organization */
+    /**
+     * Unique identifier for the organization
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun orgId(): String = orgId.getRequired("org_id")
 
-    /** Unique identifier for the project that the prompt belongs under */
+    /**
+     * Unique identifier for the project that the prompt belongs under
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun projectId(): String = projectId.getRequired("project_id")
 
-    /** Unique identifier for the prompt */
+    /**
+     * Unique identifier for the prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun slug(): String = slug.getRequired("slug")
 
-    /** Date of prompt creation */
+    /**
+     * Date of prompt creation
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
-    /** Textual description of the prompt */
+    /**
+     * Textual description of the prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> =
         Optional.ofNullable(description.getNullable("description"))
 
-    /** JSON schema for the function's parameters and return type */
+    /**
+     * JSON schema for the function's parameters and return type
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun functionSchema(): Optional<FunctionSchema> =
         Optional.ofNullable(functionSchema.getNullable("function_schema"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun functionType(): Optional<FunctionType> =
         Optional.ofNullable(functionType.getNullable("function_type"))
 
-    /** User-controlled metadata about the prompt */
+    /**
+     * User-controlled metadata about the prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun origin(): Optional<Origin> = Optional.ofNullable(origin.getNullable("origin"))
 
-    /** The prompt, model, and its parameters */
+    /**
+     * The prompt, model, and its parameters
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun promptData(): Optional<PromptData> =
         Optional.ofNullable(promptData.getNullable("prompt_data"))
 
-    /** A list of tags for the prompt */
+    /**
+     * A list of tags for the prompt
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
-    /** Unique identifier for the prompt */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
-     * The transaction id of an event is unique to the network operation that processed the event
-     * insertion. Transaction ids are monotonically increasing over time and can be used to retrieve
-     * a versioned snapshot of the prompt (see the `version` parameter)
+     * Returns the raw JSON value of [_xactId].
+     *
+     * Unlike [_xactId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("_xact_id") @ExcludeMissing fun __xactId(): JsonField<String> = _xactId
 
+    /**
+     * Returns the raw JSON value of [functionData].
+     *
+     * Unlike [functionData], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("function_data")
     @ExcludeMissing
     fun _functionData(): JsonField<FunctionData> = functionData
 
-    /** A literal 'p' which identifies the object as a project prompt */
+    /**
+     * Returns the raw JSON value of [logId].
+     *
+     * Unlike [logId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("log_id") @ExcludeMissing fun _logId(): JsonField<LogId> = logId
 
-    /** Name of the prompt */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** Unique identifier for the organization */
+    /**
+     * Returns the raw JSON value of [orgId].
+     *
+     * Unlike [orgId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("org_id") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
 
-    /** Unique identifier for the project that the prompt belongs under */
+    /**
+     * Returns the raw JSON value of [projectId].
+     *
+     * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project_id") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
 
-    /** Unique identifier for the prompt */
+    /**
+     * Returns the raw JSON value of [slug].
+     *
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
-    /** Date of prompt creation */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
-    /** Textual description of the prompt */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
-    /** JSON schema for the function's parameters and return type */
+    /**
+     * Returns the raw JSON value of [functionSchema].
+     *
+     * Unlike [functionSchema], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("function_schema")
     @ExcludeMissing
     fun _functionSchema(): JsonField<FunctionSchema> = functionSchema
 
+    /**
+     * Returns the raw JSON value of [functionType].
+     *
+     * Unlike [functionType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("function_type")
     @ExcludeMissing
     fun _functionType(): JsonField<FunctionType> = functionType
 
-    /** User-controlled metadata about the prompt */
+    /**
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
+    /**
+     * Returns the raw JSON value of [origin].
+     *
+     * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<Origin> = origin
 
-    /** The prompt, model, and its parameters */
+    /**
+     * Returns the raw JSON value of [promptData].
+     *
+     * Unlike [promptData], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("prompt_data")
     @ExcludeMissing
     fun _promptData(): JsonField<PromptData> = promptData
 
-    /** A list of tags for the prompt */
+    /**
+     * Returns the raw JSON value of [tags].
+     *
+     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
     @JsonAnyGetter
@@ -284,7 +422,12 @@ private constructor(
         /** Unique identifier for the prompt */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** Unique identifier for the prompt */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
@@ -295,81 +438,136 @@ private constructor(
         fun _xactId(_xactId: String) = _xactId(JsonField.of(_xactId))
 
         /**
-         * The transaction id of an event is unique to the network operation that processed the
-         * event insertion. Transaction ids are monotonically increasing over time and can be used
-         * to retrieve a versioned snapshot of the prompt (see the `version` parameter)
+         * Sets [Builder._xactId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder._xactId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
 
         fun functionData(functionData: FunctionData) = functionData(JsonField.of(functionData))
 
+        /**
+         * Sets [Builder.functionData] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.functionData] with a well-typed [FunctionData] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun functionData(functionData: JsonField<FunctionData>) = apply {
             this.functionData = functionData
         }
 
+        /** Alias for calling [functionData] with `FunctionData.ofPrompt(prompt)`. */
         fun functionData(prompt: FunctionData.Prompt) = functionData(FunctionData.ofPrompt(prompt))
 
+        /** Alias for calling [functionData] with `FunctionData.ofCode(code)`. */
         fun functionData(code: FunctionData.Code) = functionData(FunctionData.ofCode(code))
 
+        /** Alias for calling [functionData] with `FunctionData.ofGlobal(global)`. */
         fun functionData(global: FunctionData.Global) = functionData(FunctionData.ofGlobal(global))
 
         /** A literal 'p' which identifies the object as a project prompt */
         fun logId(logId: LogId) = logId(JsonField.of(logId))
 
-        /** A literal 'p' which identifies the object as a project prompt */
+        /**
+         * Sets [Builder.logId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.logId] with a well-typed [LogId] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun logId(logId: JsonField<LogId>) = apply { this.logId = logId }
 
         /** Name of the prompt */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** Name of the prompt */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** Unique identifier for the organization */
         fun orgId(orgId: String) = orgId(JsonField.of(orgId))
 
-        /** Unique identifier for the organization */
+        /**
+         * Sets [Builder.orgId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.orgId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         /** Unique identifier for the project that the prompt belongs under */
         fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
-        /** Unique identifier for the project that the prompt belongs under */
+        /**
+         * Sets [Builder.projectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
         /** Unique identifier for the prompt */
         fun slug(slug: String) = slug(JsonField.of(slug))
 
-        /** Unique identifier for the prompt */
+        /**
+         * Sets [Builder.slug] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
         /** Date of prompt creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
-        /** Date of prompt creation */
+        /** Alias for calling [Builder.created] with `created.orElse(null)`. */
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
-        /** Date of prompt creation */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Textual description of the prompt */
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
-        /** Textual description of the prompt */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** Textual description of the prompt */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** JSON schema for the function's parameters and return type */
         fun functionSchema(functionSchema: FunctionSchema?) =
             functionSchema(JsonField.ofNullable(functionSchema))
 
-        /** JSON schema for the function's parameters and return type */
+        /** Alias for calling [Builder.functionSchema] with `functionSchema.orElse(null)`. */
         fun functionSchema(functionSchema: Optional<FunctionSchema>) =
             functionSchema(functionSchema.getOrNull())
 
-        /** JSON schema for the function's parameters and return type */
+        /**
+         * Sets [Builder.functionSchema] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.functionSchema] with a well-typed [FunctionSchema] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun functionSchema(functionSchema: JsonField<FunctionSchema>) = apply {
             this.functionSchema = functionSchema
         }
@@ -377,9 +575,17 @@ private constructor(
         fun functionType(functionType: FunctionType?) =
             functionType(JsonField.ofNullable(functionType))
 
+        /** Alias for calling [Builder.functionType] with `functionType.orElse(null)`. */
         fun functionType(functionType: Optional<FunctionType>) =
             functionType(functionType.getOrNull())
 
+        /**
+         * Sets [Builder.functionType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.functionType] with a well-typed [FunctionType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun functionType(functionType: JsonField<FunctionType>) = apply {
             this.functionType = functionType
         }
@@ -387,39 +593,68 @@ private constructor(
         /** User-controlled metadata about the prompt */
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-        /** User-controlled metadata about the prompt */
+        /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
         fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
-        /** User-controlled metadata about the prompt */
+        /**
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         fun origin(origin: Origin?) = origin(JsonField.ofNullable(origin))
 
+        /** Alias for calling [Builder.origin] with `origin.orElse(null)`. */
         fun origin(origin: Optional<Origin>) = origin(origin.getOrNull())
 
+        /**
+         * Sets [Builder.origin] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.origin] with a well-typed [Origin] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun origin(origin: JsonField<Origin>) = apply { this.origin = origin }
 
         /** The prompt, model, and its parameters */
         fun promptData(promptData: PromptData?) = promptData(JsonField.ofNullable(promptData))
 
-        /** The prompt, model, and its parameters */
+        /** Alias for calling [Builder.promptData] with `promptData.orElse(null)`. */
         fun promptData(promptData: Optional<PromptData>) = promptData(promptData.getOrNull())
 
-        /** The prompt, model, and its parameters */
+        /**
+         * Sets [Builder.promptData] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.promptData] with a well-typed [PromptData] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun promptData(promptData: JsonField<PromptData>) = apply { this.promptData = promptData }
 
         /** A list of tags for the prompt */
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
-        /** A list of tags for the prompt */
+        /** Alias for calling [Builder.tags] with `tags.orElse(null)`. */
         fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
-        /** A list of tags for the prompt */
+        /**
+         * Sets [Builder.tags] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.tags] with a well-typed `List<String>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun tags(tags: JsonField<List<String>>) = apply {
             this.tags = tags.map { it.toMutableList() }
         }
 
-        /** A list of tags for the prompt */
+        /**
+         * Adds a single [String] to [tags].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addTag(tag: String) = apply {
             tags = (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
         }
@@ -634,8 +869,18 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -682,6 +927,13 @@ private constructor(
 
                 fun type(type: Type) = type(JsonField.of(type))
 
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -839,12 +1091,32 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun data(): Data = data.getRequired("data")
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
+            /**
+             * Returns the raw JSON value of [data].
+             *
+             * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -895,14 +1167,30 @@ private constructor(
 
                 fun data(data: Data) = data(JsonField.of(data))
 
+                /**
+                 * Sets [Builder.data] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.data] with a well-typed [Data] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun data(data: JsonField<Data>) = apply { this.data = data }
 
+                /** Alias for calling [data] with `Data.ofBundle(bundle)`. */
                 fun data(bundle: Data.Bundle) = data(Data.ofBundle(bundle))
 
+                /** Alias for calling [data] with `Data.ofInline(inline)`. */
                 fun data(inline: Data.Inline) = data(Data.ofInline(inline))
 
                 fun type(type: Type) = type(JsonField.of(type))
 
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1095,36 +1383,90 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun bundleId(): String = bundleId.getRequired("bundle_id")
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun location(): CodeBundle.Location = location.getRequired("location")
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun runtimeContext(): CodeBundle.RuntimeContext =
                         runtimeContext.getRequired("runtime_context")
 
-                    /** A preview of the code */
+                    /**
+                     * A preview of the code
+                     *
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type (e.g. if the server responded with an unexpected value).
+                     */
                     fun preview(): Optional<String> =
                         Optional.ofNullable(preview.getNullable("preview"))
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun type(): Type = type.getRequired("type")
 
+                    /**
+                     * Returns the raw JSON value of [bundleId].
+                     *
+                     * Unlike [bundleId], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("bundle_id")
                     @ExcludeMissing
                     fun _bundleId(): JsonField<String> = bundleId
 
+                    /**
+                     * Returns the raw JSON value of [location].
+                     *
+                     * Unlike [location], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("location")
                     @ExcludeMissing
                     fun _location(): JsonField<CodeBundle.Location> = location
 
+                    /**
+                     * Returns the raw JSON value of [runtimeContext].
+                     *
+                     * Unlike [runtimeContext], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("runtime_context")
                     @ExcludeMissing
                     fun _runtimeContext(): JsonField<CodeBundle.RuntimeContext> = runtimeContext
 
-                    /** A preview of the code */
+                    /**
+                     * Returns the raw JSON value of [preview].
+                     *
+                     * Unlike [preview], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("preview")
                     @ExcludeMissing
                     fun _preview(): JsonField<String> = preview
 
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
                     @JsonAnyGetter
@@ -1195,6 +1537,13 @@ private constructor(
 
                         fun bundleId(bundleId: String) = bundleId(JsonField.of(bundleId))
 
+                        /**
+                         * Sets [Builder.bundleId] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.bundleId] with a well-typed [String]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun bundleId(bundleId: JsonField<String>) = apply {
                             this.bundleId = bundleId
                         }
@@ -1202,19 +1551,41 @@ private constructor(
                         fun location(location: CodeBundle.Location) =
                             location(JsonField.of(location))
 
+                        /**
+                         * Sets [Builder.location] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.location] with a well-typed
+                         * [CodeBundle.Location] value instead. This method is primarily for setting
+                         * the field to an undocumented or not yet supported value.
+                         */
                         fun location(location: JsonField<CodeBundle.Location>) = apply {
                             this.location = location
                         }
 
+                        /**
+                         * Alias for calling [location] with
+                         * `CodeBundle.Location.ofExperiment(experiment)`.
+                         */
                         fun location(experiment: CodeBundle.Location.Experiment) =
                             location(CodeBundle.Location.ofExperiment(experiment))
 
+                        /**
+                         * Alias for calling [location] with
+                         * `CodeBundle.Location.ofFunction(function)`.
+                         */
                         fun location(function: CodeBundle.Location.Function) =
                             location(CodeBundle.Location.ofFunction(function))
 
                         fun runtimeContext(runtimeContext: CodeBundle.RuntimeContext) =
                             runtimeContext(JsonField.of(runtimeContext))
 
+                        /**
+                         * Sets [Builder.runtimeContext] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.runtimeContext] with a well-typed
+                         * [CodeBundle.RuntimeContext] value instead. This method is primarily for
+                         * setting the field to an undocumented or not yet supported value.
+                         */
                         fun runtimeContext(runtimeContext: JsonField<CodeBundle.RuntimeContext>) =
                             apply {
                                 this.runtimeContext = runtimeContext
@@ -1223,14 +1594,27 @@ private constructor(
                         /** A preview of the code */
                         fun preview(preview: String?) = preview(JsonField.ofNullable(preview))
 
-                        /** A preview of the code */
+                        /** Alias for calling [Builder.preview] with `preview.orElse(null)`. */
                         fun preview(preview: Optional<String>) = preview(preview.getOrNull())
 
-                        /** A preview of the code */
+                        /**
+                         * Sets [Builder.preview] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.preview] with a well-typed [String]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun preview(preview: JsonField<String>) = apply { this.preview = preview }
 
                         fun type(type: Type) = type(JsonField.of(type))
 
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1402,19 +1786,52 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun code(): String = code.getRequired("code")
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun runtimeContext(): RuntimeContext =
                         runtimeContext.getRequired("runtime_context")
 
+                    /**
+                     * @throws BraintrustInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
                     fun type(): Type = type.getRequired("type")
 
+                    /**
+                     * Returns the raw JSON value of [code].
+                     *
+                     * Unlike [code], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
 
+                    /**
+                     * Returns the raw JSON value of [runtimeContext].
+                     *
+                     * Unlike [runtimeContext], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("runtime_context")
                     @ExcludeMissing
                     fun _runtimeContext(): JsonField<RuntimeContext> = runtimeContext
 
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
                     @JsonAnyGetter
@@ -1470,17 +1887,38 @@ private constructor(
 
                         fun code(code: String) = code(JsonField.of(code))
 
+                        /**
+                         * Sets [Builder.code] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.code] with a well-typed [String] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun code(code: JsonField<String>) = apply { this.code = code }
 
                         fun runtimeContext(runtimeContext: RuntimeContext) =
                             runtimeContext(JsonField.of(runtimeContext))
 
+                        /**
+                         * Sets [Builder.runtimeContext] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.runtimeContext] with a well-typed
+                         * [RuntimeContext] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun runtimeContext(runtimeContext: JsonField<RuntimeContext>) = apply {
                             this.runtimeContext = runtimeContext
                         }
 
                         fun type(type: Type) = type(JsonField.of(type))
 
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1529,14 +1967,36 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws BraintrustInvalidDataException if the JSON field has an
+                         *   unexpected type or is unexpectedly missing or null (e.g. if the server
+                         *   responded with an unexpected value).
+                         */
                         fun runtime(): Runtime = runtime.getRequired("runtime")
 
+                        /**
+                         * @throws BraintrustInvalidDataException if the JSON field has an
+                         *   unexpected type or is unexpectedly missing or null (e.g. if the server
+                         *   responded with an unexpected value).
+                         */
                         fun version(): String = version.getRequired("version")
 
+                        /**
+                         * Returns the raw JSON value of [runtime].
+                         *
+                         * Unlike [runtime], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("runtime")
                         @ExcludeMissing
                         fun _runtime(): JsonField<Runtime> = runtime
 
+                        /**
+                         * Returns the raw JSON value of [version].
+                         *
+                         * Unlike [version], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("version")
                         @ExcludeMissing
                         fun _version(): JsonField<String> = version
@@ -1592,12 +2052,26 @@ private constructor(
 
                             fun runtime(runtime: Runtime) = runtime(JsonField.of(runtime))
 
+                            /**
+                             * Sets [Builder.runtime] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.runtime] with a well-typed [Runtime]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun runtime(runtime: JsonField<Runtime>) = apply {
                                 this.runtime = runtime
                             }
 
                             fun version(version: String) = version(JsonField.of(version))
 
+                            /**
+                             * Sets [Builder.version] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.version] with a well-typed [String]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun version(version: JsonField<String>) = apply {
                                 this.version = version
                             }
@@ -2011,12 +2485,32 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun name(): String = name.getRequired("name")
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -2067,10 +2561,24 @@ private constructor(
 
                 fun name(name: String) = name(JsonField.of(name))
 
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun type(type: Type) = type(JsonField.of(type))
 
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -2624,29 +3132,51 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Id of the object the function is originating from */
+        /**
+         * Id of the object the function is originating from
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun objectId(): String = objectId.getRequired("object_id")
 
-        /** The object type that the ACL applies to */
+        /**
+         * The object type that the ACL applies to
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun objectType(): AclObjectType = objectType.getRequired("object_type")
 
         /**
          * The function exists for internal purposes and should not be displayed in the list of
          * functions.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun internal_(): Optional<Boolean> = Optional.ofNullable(internal_.getNullable("internal"))
 
-        /** Id of the object the function is originating from */
+        /**
+         * Returns the raw JSON value of [objectId].
+         *
+         * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
 
-        /** The object type that the ACL applies to */
+        /**
+         * Returns the raw JSON value of [objectType].
+         *
+         * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("object_type")
         @ExcludeMissing
         fun _objectType(): JsonField<AclObjectType> = objectType
 
         /**
-         * The function exists for internal purposes and should not be displayed in the list of
-         * functions.
+         * Returns the raw JSON value of [internal_].
+         *
+         * Unlike [internal_], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("internal") @ExcludeMissing fun _internal_(): JsonField<Boolean> = internal_
 
@@ -2702,13 +3232,25 @@ private constructor(
             /** Id of the object the function is originating from */
             fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
-            /** Id of the object the function is originating from */
+            /**
+             * Sets [Builder.objectId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.objectId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
             /** The object type that the ACL applies to */
             fun objectType(objectType: AclObjectType) = objectType(JsonField.of(objectType))
 
-            /** The object type that the ACL applies to */
+            /**
+             * Sets [Builder.objectType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.objectType] with a well-typed [AclObjectType] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun objectType(objectType: JsonField<AclObjectType>) = apply {
                 this.objectType = objectType
             }
@@ -2720,20 +3262,21 @@ private constructor(
             fun internal_(internal_: Boolean?) = internal_(JsonField.ofNullable(internal_))
 
             /**
-             * The function exists for internal purposes and should not be displayed in the list of
-             * functions.
+             * Alias for [Builder.internal_].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun internal_(internal_: Boolean) = internal_(internal_ as Boolean?)
 
-            /**
-             * The function exists for internal purposes and should not be displayed in the list of
-             * functions.
-             */
+            /** Alias for calling [Builder.internal_] with `internal_.orElse(null)`. */
             fun internal_(internal_: Optional<Boolean>) = internal_(internal_.getOrNull())
 
             /**
-             * The function exists for internal purposes and should not be displayed in the list of
-             * functions.
+             * Sets [Builder.internal_] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.internal_] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun internal_(internal_: JsonField<Boolean>) = apply { this.internal_ = internal_ }
 

@@ -14,6 +14,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -32,10 +33,19 @@ private constructor(
     /** Dataset id */
     fun datasetId(): String = datasetId
 
-    /** A list of dataset events to insert */
+    /**
+     * A list of dataset events to insert
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun events(): List<InsertDatasetEvent> = body.events()
 
-    /** A list of dataset events to insert */
+    /**
+     * Returns the raw JSON value of [events].
+     *
+     * Unlike [events], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _events(): JsonField<List<InsertDatasetEvent>> = body._events()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -68,10 +78,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A list of dataset events to insert */
+        /**
+         * A list of dataset events to insert
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun events(): List<InsertDatasetEvent> = events.getRequired("events")
 
-        /** A list of dataset events to insert */
+        /**
+         * Returns the raw JSON value of [events].
+         *
+         * Unlike [events], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("events")
         @ExcludeMissing
         fun _events(): JsonField<List<InsertDatasetEvent>> = events
@@ -121,12 +140,22 @@ private constructor(
             /** A list of dataset events to insert */
             fun events(events: List<InsertDatasetEvent>) = events(JsonField.of(events))
 
-            /** A list of dataset events to insert */
+            /**
+             * Sets [Builder.events] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.events] with a well-typed `List<InsertDatasetEvent>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun events(events: JsonField<List<InsertDatasetEvent>>) = apply {
                 this.events = events.map { it.toMutableList() }
             }
 
-            /** A list of dataset events to insert */
+            /**
+             * Adds a single [InsertDatasetEvent] to [events].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addEvent(event: InsertDatasetEvent) = apply {
                 events =
                     (events ?: JsonField.of(mutableListOf())).also {
@@ -216,10 +245,20 @@ private constructor(
         /** A list of dataset events to insert */
         fun events(events: List<InsertDatasetEvent>) = apply { body.events(events) }
 
-        /** A list of dataset events to insert */
+        /**
+         * Sets [Builder.events] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.events] with a well-typed `List<InsertDatasetEvent>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun events(events: JsonField<List<InsertDatasetEvent>>) = apply { body.events(events) }
 
-        /** A list of dataset events to insert */
+        /**
+         * Adds a single [InsertDatasetEvent] to [events].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addEvent(event: InsertDatasetEvent) = apply { body.addEvent(event) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

@@ -87,13 +87,13 @@ private constructor(
         fun summarizeData(summarizeData: Boolean?) = apply { this.summarizeData = summarizeData }
 
         /**
-         * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
+         * Alias for [Builder.summarizeData].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun summarizeData(summarizeData: Boolean) = summarizeData(summarizeData as Boolean?)
 
-        /**
-         * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
-         */
+        /** Alias for calling [Builder.summarizeData] with `summarizeData.orElse(null)`. */
         fun summarizeData(summarizeData: Optional<Boolean>) =
             summarizeData(summarizeData.getOrNull())
 

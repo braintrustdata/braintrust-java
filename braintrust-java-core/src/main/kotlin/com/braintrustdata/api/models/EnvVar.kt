@@ -42,42 +42,96 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Unique identifier for the environment variable */
+    /**
+     * Unique identifier for the environment variable
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** The name of the environment variable */
+    /**
+     * The name of the environment variable
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = name.getRequired("name")
 
-    /** The id of the object the environment variable is scoped for */
+    /**
+     * The id of the object the environment variable is scoped for
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectId(): String = objectId.getRequired("object_id")
 
-    /** The type of the object the environment variable is scoped for */
+    /**
+     * The type of the object the environment variable is scoped for
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectType(): ObjectType = objectType.getRequired("object_type")
 
-    /** Date of environment variable creation */
+    /**
+     * Date of environment variable creation
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
-    /** Date the environment variable was last used */
+    /**
+     * Date the environment variable was last used
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun used(): Optional<OffsetDateTime> = Optional.ofNullable(used.getNullable("used"))
 
-    /** Unique identifier for the environment variable */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** The name of the environment variable */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** The id of the object the environment variable is scoped for */
+    /**
+     * Returns the raw JSON value of [objectId].
+     *
+     * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
 
-    /** The type of the object the environment variable is scoped for */
+    /**
+     * Returns the raw JSON value of [objectType].
+     *
+     * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("object_type")
     @ExcludeMissing
     fun _objectType(): JsonField<ObjectType> = objectType
 
-    /** Date of environment variable creation */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
-    /** Date the environment variable was last used */
+    /**
+     * Returns the raw JSON value of [used].
+     *
+     * Unlike [used], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("used") @ExcludeMissing fun _used(): JsonField<OffsetDateTime> = used
 
     @JsonAnyGetter
@@ -143,43 +197,76 @@ private constructor(
         /** Unique identifier for the environment variable */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** Unique identifier for the environment variable */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The name of the environment variable */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** The name of the environment variable */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** The id of the object the environment variable is scoped for */
         fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
-        /** The id of the object the environment variable is scoped for */
+        /**
+         * Sets [Builder.objectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
         /** The type of the object the environment variable is scoped for */
         fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
 
-        /** The type of the object the environment variable is scoped for */
+        /**
+         * Sets [Builder.objectType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectType] with a well-typed [ObjectType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun objectType(objectType: JsonField<ObjectType>) = apply { this.objectType = objectType }
 
         /** Date of environment variable creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
-        /** Date of environment variable creation */
+        /** Alias for calling [Builder.created] with `created.orElse(null)`. */
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
-        /** Date of environment variable creation */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** Date the environment variable was last used */
         fun used(used: OffsetDateTime?) = used(JsonField.ofNullable(used))
 
-        /** Date the environment variable was last used */
+        /** Alias for calling [Builder.used] with `used.orElse(null)`. */
         fun used(used: Optional<OffsetDateTime>) = used(used.getOrNull())
 
-        /** Date the environment variable was last used */
+        /**
+         * Sets [Builder.used] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.used] with a well-typed [OffsetDateTime] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun used(used: JsonField<OffsetDateTime>) = apply { this.used = used }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

@@ -11,6 +11,7 @@ import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -27,10 +28,19 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** A list of env_var objects */
+    /**
+     * A list of env_var objects
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objects(): List<EnvVar> = objects.getRequired("objects")
 
-    /** A list of env_var objects */
+    /**
+     * Returns the raw JSON value of [objects].
+     *
+     * Unlike [objects], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("objects") @ExcludeMissing fun _objects(): JsonField<List<EnvVar>> = objects
 
     @JsonAnyGetter
@@ -78,12 +88,22 @@ private constructor(
         /** A list of env_var objects */
         fun objects(objects: List<EnvVar>) = objects(JsonField.of(objects))
 
-        /** A list of env_var objects */
+        /**
+         * Sets [Builder.objects] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objects] with a well-typed `List<EnvVar>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun objects(objects: JsonField<List<EnvVar>>) = apply {
             this.objects = objects.map { it.toMutableList() }
         }
 
-        /** A list of env_var objects */
+        /**
+         * Adds a single [EnvVar] to [objects].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addObject(object_: EnvVar) = apply {
             objects =
                 (objects ?: JsonField.of(mutableListOf())).also {

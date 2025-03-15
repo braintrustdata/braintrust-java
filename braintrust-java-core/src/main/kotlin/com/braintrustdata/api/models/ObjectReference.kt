@@ -41,36 +41,81 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** ID of the original event. */
+    /**
+     * ID of the original event.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** Transaction ID of the original event. */
+    /**
+     * Transaction ID of the original event.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun _xactId(): String = _xactId.getRequired("_xact_id")
 
-    /** ID of the object the event is originating from. */
+    /**
+     * ID of the object the event is originating from.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectId(): String = objectId.getRequired("object_id")
 
-    /** Type of the object the event is originating from. */
+    /**
+     * Type of the object the event is originating from.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectType(): ObjectType = objectType.getRequired("object_type")
 
-    /** Created timestamp of the original event. Used to help sort in the UI */
+    /**
+     * Created timestamp of the original event. Used to help sort in the UI
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun created(): Optional<String> = Optional.ofNullable(created.getNullable("created"))
 
-    /** ID of the original event. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** Transaction ID of the original event. */
+    /**
+     * Returns the raw JSON value of [_xactId].
+     *
+     * Unlike [_xactId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("_xact_id") @ExcludeMissing fun __xactId(): JsonField<String> = _xactId
 
-    /** ID of the object the event is originating from. */
+    /**
+     * Returns the raw JSON value of [objectId].
+     *
+     * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
 
-    /** Type of the object the event is originating from. */
+    /**
+     * Returns the raw JSON value of [objectType].
+     *
+     * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("object_type")
     @ExcludeMissing
     fun _objectType(): JsonField<ObjectType> = objectType
 
-    /** Created timestamp of the original event. Used to help sort in the UI */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<String> = created
 
     @JsonAnyGetter
@@ -133,34 +178,60 @@ private constructor(
         /** ID of the original event. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** ID of the original event. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Transaction ID of the original event. */
         fun _xactId(_xactId: String) = _xactId(JsonField.of(_xactId))
 
-        /** Transaction ID of the original event. */
+        /**
+         * Sets [Builder._xactId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder._xactId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun _xactId(_xactId: JsonField<String>) = apply { this._xactId = _xactId }
 
         /** ID of the object the event is originating from. */
         fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
-        /** ID of the object the event is originating from. */
+        /**
+         * Sets [Builder.objectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
         /** Type of the object the event is originating from. */
         fun objectType(objectType: ObjectType) = objectType(JsonField.of(objectType))
 
-        /** Type of the object the event is originating from. */
+        /**
+         * Sets [Builder.objectType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectType] with a well-typed [ObjectType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun objectType(objectType: JsonField<ObjectType>) = apply { this.objectType = objectType }
 
         /** Created timestamp of the original event. Used to help sort in the UI */
         fun created(created: String?) = created(JsonField.ofNullable(created))
 
-        /** Created timestamp of the original event. Used to help sort in the UI */
+        /** Alias for calling [Builder.created] with `created.orElse(null)`. */
         fun created(created: Optional<String>) = created(created.getOrNull())
 
-        /** Created timestamp of the original event. Used to help sort in the UI */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun created(created: JsonField<String>) = apply { this.created = created }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

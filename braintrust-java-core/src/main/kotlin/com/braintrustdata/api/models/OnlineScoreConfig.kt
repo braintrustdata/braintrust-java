@@ -50,34 +50,71 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The sampling rate for online scoring */
+    /**
+     * The sampling rate for online scoring
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun samplingRate(): Double = samplingRate.getRequired("sampling_rate")
 
-    /** The list of scorers to use for online scoring */
+    /**
+     * The list of scorers to use for online scoring
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun scorers(): List<Scorer> = scorers.getRequired("scorers")
 
-    /** Whether to trigger online scoring on the root span of each trace */
+    /**
+     * Whether to trigger online scoring on the root span of each trace
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun applyToRootSpan(): Optional<Boolean> =
         Optional.ofNullable(applyToRootSpan.getNullable("apply_to_root_span"))
 
-    /** Trigger online scoring on any spans with a name in this list */
+    /**
+     * Trigger online scoring on any spans with a name in this list
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun applyToSpanNames(): Optional<List<String>> =
         Optional.ofNullable(applyToSpanNames.getNullable("apply_to_span_names"))
 
-    /** The sampling rate for online scoring */
+    /**
+     * Returns the raw JSON value of [samplingRate].
+     *
+     * Unlike [samplingRate], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("sampling_rate")
     @ExcludeMissing
     fun _samplingRate(): JsonField<Double> = samplingRate
 
-    /** The list of scorers to use for online scoring */
+    /**
+     * Returns the raw JSON value of [scorers].
+     *
+     * Unlike [scorers], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("scorers") @ExcludeMissing fun _scorers(): JsonField<List<Scorer>> = scorers
 
-    /** Whether to trigger online scoring on the root span of each trace */
+    /**
+     * Returns the raw JSON value of [applyToRootSpan].
+     *
+     * Unlike [applyToRootSpan], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("apply_to_root_span")
     @ExcludeMissing
     fun _applyToRootSpan(): JsonField<Boolean> = applyToRootSpan
 
-    /** Trigger online scoring on any spans with a name in this list */
+    /**
+     * Returns the raw JSON value of [applyToSpanNames].
+     *
+     * Unlike [applyToSpanNames], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("apply_to_span_names")
     @ExcludeMissing
     fun _applyToSpanNames(): JsonField<List<String>> = applyToSpanNames
@@ -137,7 +174,13 @@ private constructor(
         /** The sampling rate for online scoring */
         fun samplingRate(samplingRate: Double) = samplingRate(JsonField.of(samplingRate))
 
-        /** The sampling rate for online scoring */
+        /**
+         * Sets [Builder.samplingRate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.samplingRate] with a well-typed [Double] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun samplingRate(samplingRate: JsonField<Double>) = apply {
             this.samplingRate = samplingRate
         }
@@ -145,12 +188,22 @@ private constructor(
         /** The list of scorers to use for online scoring */
         fun scorers(scorers: List<Scorer>) = scorers(JsonField.of(scorers))
 
-        /** The list of scorers to use for online scoring */
+        /**
+         * Sets [Builder.scorers] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.scorers] with a well-typed `List<Scorer>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun scorers(scorers: JsonField<List<Scorer>>) = apply {
             this.scorers = scorers.map { it.toMutableList() }
         }
 
-        /** The list of scorers to use for online scoring */
+        /**
+         * Adds a single [Scorer] to [scorers].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addScorer(scorer: Scorer) = apply {
             scorers =
                 (scorers ?: JsonField.of(mutableListOf())).also {
@@ -158,24 +211,34 @@ private constructor(
                 }
         }
 
-        /** The list of scorers to use for online scoring */
+        /** Alias for calling [addScorer] with `Scorer.ofFunction(function)`. */
         fun addScorer(function: Scorer.Function) = addScorer(Scorer.ofFunction(function))
 
-        /** The list of scorers to use for online scoring */
+        /** Alias for calling [addScorer] with `Scorer.ofGlobal(global)`. */
         fun addScorer(global: Scorer.Global) = addScorer(Scorer.ofGlobal(global))
 
         /** Whether to trigger online scoring on the root span of each trace */
         fun applyToRootSpan(applyToRootSpan: Boolean?) =
             applyToRootSpan(JsonField.ofNullable(applyToRootSpan))
 
-        /** Whether to trigger online scoring on the root span of each trace */
+        /**
+         * Alias for [Builder.applyToRootSpan].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun applyToRootSpan(applyToRootSpan: Boolean) = applyToRootSpan(applyToRootSpan as Boolean?)
 
-        /** Whether to trigger online scoring on the root span of each trace */
+        /** Alias for calling [Builder.applyToRootSpan] with `applyToRootSpan.orElse(null)`. */
         fun applyToRootSpan(applyToRootSpan: Optional<Boolean>) =
             applyToRootSpan(applyToRootSpan.getOrNull())
 
-        /** Whether to trigger online scoring on the root span of each trace */
+        /**
+         * Sets [Builder.applyToRootSpan] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.applyToRootSpan] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun applyToRootSpan(applyToRootSpan: JsonField<Boolean>) = apply {
             this.applyToRootSpan = applyToRootSpan
         }
@@ -184,16 +247,26 @@ private constructor(
         fun applyToSpanNames(applyToSpanNames: List<String>?) =
             applyToSpanNames(JsonField.ofNullable(applyToSpanNames))
 
-        /** Trigger online scoring on any spans with a name in this list */
+        /** Alias for calling [Builder.applyToSpanNames] with `applyToSpanNames.orElse(null)`. */
         fun applyToSpanNames(applyToSpanNames: Optional<List<String>>) =
             applyToSpanNames(applyToSpanNames.getOrNull())
 
-        /** Trigger online scoring on any spans with a name in this list */
+        /**
+         * Sets [Builder.applyToSpanNames] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.applyToSpanNames] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun applyToSpanNames(applyToSpanNames: JsonField<List<String>>) = apply {
             this.applyToSpanNames = applyToSpanNames.map { it.toMutableList() }
         }
 
-        /** Trigger online scoring on any spans with a name in this list */
+        /**
+         * Adds a single [String] to [applyToSpanNames].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addApplyToSpanName(applyToSpanName: String) = apply {
             applyToSpanNames =
                 (applyToSpanNames ?: JsonField.of(mutableListOf())).also {
@@ -377,12 +450,32 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun id(): String = id.getRequired("id")
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
+            /**
+             * Returns the raw JSON value of [id].
+             *
+             * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -433,10 +526,24 @@ private constructor(
 
                 fun id(id: String) = id(JsonField.of(id))
 
+                /**
+                 * Sets [Builder.id] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.id] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
                 fun type(type: Type) = type(JsonField.of(type))
 
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -598,12 +705,32 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun name(): String = name.getRequired("name")
 
+            /**
+             * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -654,10 +781,24 @@ private constructor(
 
                 fun name(name: String) = name(JsonField.of(name))
 
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun type(type: Type) = type(JsonField.of(type))
 
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -27,10 +28,19 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Total number of records in the dataset */
+    /**
+     * Total number of records in the dataset
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun totalRecords(): Long = totalRecords.getRequired("total_records")
 
-    /** Total number of records in the dataset */
+    /**
+     * Returns the raw JSON value of [totalRecords].
+     *
+     * Unlike [totalRecords], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("total_records")
     @ExcludeMissing
     fun _totalRecords(): JsonField<Long> = totalRecords
@@ -80,7 +90,13 @@ private constructor(
         /** Total number of records in the dataset */
         fun totalRecords(totalRecords: Long) = totalRecords(JsonField.of(totalRecords))
 
-        /** Total number of records in the dataset */
+        /**
+         * Sets [Builder.totalRecords] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.totalRecords] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun totalRecords(totalRecords: JsonField<Long>) = apply { this.totalRecords = totalRecords }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

@@ -11,6 +11,7 @@ import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -29,11 +30,16 @@ private constructor(
 
     /**
      * The ids of all rows that were inserted, aligning one-to-one with the rows provided as input
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun rowIds(): List<String> = rowIds.getRequired("row_ids")
 
     /**
-     * The ids of all rows that were inserted, aligning one-to-one with the rows provided as input
+     * Returns the raw JSON value of [rowIds].
+     *
+     * Unlike [rowIds], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("row_ids") @ExcludeMissing fun _rowIds(): JsonField<List<String>> = rowIds
 
@@ -86,16 +92,20 @@ private constructor(
         fun rowIds(rowIds: List<String>) = rowIds(JsonField.of(rowIds))
 
         /**
-         * The ids of all rows that were inserted, aligning one-to-one with the rows provided as
-         * input
+         * Sets [Builder.rowIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.rowIds] with a well-typed `List<String>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun rowIds(rowIds: JsonField<List<String>>) = apply {
             this.rowIds = rowIds.map { it.toMutableList() }
         }
 
         /**
-         * The ids of all rows that were inserted, aligning one-to-one with the rows provided as
-         * input
+         * Adds a single [String] to [rowIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addRowId(rowId: String) = apply {
             rowIds =

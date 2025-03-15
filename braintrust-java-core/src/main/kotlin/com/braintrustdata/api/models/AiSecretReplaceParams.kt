@@ -13,6 +13,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -32,44 +33,78 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** Name of the AI secret */
+    /**
+     * Name of the AI secret
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = body.name()
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun metadata(): Optional<Metadata> = body.metadata()
 
     /**
      * For nearly all users, this parameter should be unnecessary. But in the rare case that your
      * API key belongs to multiple organizations, you may specify the name of the organization the
      * AI Secret belongs in.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun orgName(): Optional<String> = body.orgName()
 
     /**
      * Secret value. If omitted in a PUT request, the existing secret value will be left intact, not
      * replaced with null.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun secret(): Optional<String> = body.secret()
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): Optional<String> = body.type()
 
-    /** Name of the AI secret */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
+    /**
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _metadata(): JsonField<Metadata> = body._metadata()
 
     /**
-     * For nearly all users, this parameter should be unnecessary. But in the rare case that your
-     * API key belongs to multiple organizations, you may specify the name of the organization the
-     * AI Secret belongs in.
+     * Returns the raw JSON value of [orgName].
+     *
+     * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _orgName(): JsonField<String> = body._orgName()
 
     /**
-     * Secret value. If omitted in a PUT request, the existing secret value will be left intact, not
-     * replaced with null.
+     * Returns the raw JSON value of [secret].
+     *
+     * Unlike [secret], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _secret(): JsonField<String> = body._secret()
 
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _type(): JsonField<String> = body._type()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -107,44 +142,78 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Name of the AI secret */
+        /**
+         * Name of the AI secret
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun name(): String = name.getRequired("name")
 
+        /**
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
          * your API key belongs to multiple organizations, you may specify the name of the
          * organization the AI Secret belongs in.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
 
         /**
          * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
          * not replaced with null.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun secret(): Optional<String> = Optional.ofNullable(secret.getNullable("secret"))
 
+        /**
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
 
-        /** Name of the AI secret */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+        /**
+         * Returns the raw JSON value of [metadata].
+         *
+         * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
         /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the AI Secret belongs in.
+         * Returns the raw JSON value of [orgName].
+         *
+         * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
 
         /**
-         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
-         * not replaced with null.
+         * Returns the raw JSON value of [secret].
+         *
+         * Unlike [secret], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("secret") @ExcludeMissing fun _secret(): JsonField<String> = secret
 
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
 
         @JsonAnyGetter
@@ -204,13 +273,27 @@ private constructor(
             /** Name of the AI secret */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** Name of the AI secret */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
+            /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
             fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
+            /**
+             * Sets [Builder.metadata] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /**
@@ -220,17 +303,15 @@ private constructor(
              */
             fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
 
-            /**
-             * For nearly all users, this parameter should be unnecessary. But in the rare case that
-             * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the AI Secret belongs in.
-             */
+            /** Alias for calling [Builder.orgName] with `orgName.orElse(null)`. */
             fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
             /**
-             * For nearly all users, this parameter should be unnecessary. But in the rare case that
-             * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the AI Secret belongs in.
+             * Sets [Builder.orgName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.orgName] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
 
@@ -240,22 +321,30 @@ private constructor(
              */
             fun secret(secret: String?) = secret(JsonField.ofNullable(secret))
 
-            /**
-             * Secret value. If omitted in a PUT request, the existing secret value will be left
-             * intact, not replaced with null.
-             */
+            /** Alias for calling [Builder.secret] with `secret.orElse(null)`. */
             fun secret(secret: Optional<String>) = secret(secret.getOrNull())
 
             /**
-             * Secret value. If omitted in a PUT request, the existing secret value will be left
-             * intact, not replaced with null.
+             * Sets [Builder.secret] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.secret] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun secret(secret: JsonField<String>) = apply { this.secret = secret }
 
             fun type(type: String?) = type(JsonField.ofNullable(type))
 
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<String>) = type(type.getOrNull())
 
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<String>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -339,13 +428,26 @@ private constructor(
         /** Name of the AI secret */
         fun name(name: String) = apply { body.name(name) }
 
-        /** Name of the AI secret */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
+        /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
         fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
+        /**
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
         /**
@@ -355,17 +457,14 @@ private constructor(
          */
         fun orgName(orgName: String?) = apply { body.orgName(orgName) }
 
-        /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the AI Secret belongs in.
-         */
+        /** Alias for calling [Builder.orgName] with `orgName.orElse(null)`. */
         fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
 
         /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the AI Secret belongs in.
+         * Sets [Builder.orgName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.orgName] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun orgName(orgName: JsonField<String>) = apply { body.orgName(orgName) }
 
@@ -375,22 +474,28 @@ private constructor(
          */
         fun secret(secret: String?) = apply { body.secret(secret) }
 
-        /**
-         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
-         * not replaced with null.
-         */
+        /** Alias for calling [Builder.secret] with `secret.orElse(null)`. */
         fun secret(secret: Optional<String>) = secret(secret.getOrNull())
 
         /**
-         * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
-         * not replaced with null.
+         * Sets [Builder.secret] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.secret] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun secret(secret: JsonField<String>) = apply { body.secret(secret) }
 
         fun type(type: String?) = apply { body.type(type) }
 
+        /** Alias for calling [Builder.type] with `type.orElse(null)`. */
         fun type(type: Optional<String>) = type(type.getOrNull())
 
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<String>) = apply { body.type(type) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
