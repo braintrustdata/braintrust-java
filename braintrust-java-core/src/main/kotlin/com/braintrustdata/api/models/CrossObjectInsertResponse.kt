@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -33,26 +34,53 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** A mapping from dataset id to row ids for inserted `events` */
+    /**
+     * A mapping from dataset id to row ids for inserted `events`
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dataset(): Optional<Dataset> = Optional.ofNullable(dataset.getNullable("dataset"))
 
-    /** A mapping from experiment id to row ids for inserted `events` */
+    /**
+     * A mapping from experiment id to row ids for inserted `events`
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun experiment(): Optional<Experiment> =
         Optional.ofNullable(experiment.getNullable("experiment"))
 
-    /** A mapping from project id to row ids for inserted `events` */
+    /**
+     * A mapping from project id to row ids for inserted `events`
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun projectLogs(): Optional<ProjectLogs> =
         Optional.ofNullable(projectLogs.getNullable("project_logs"))
 
-    /** A mapping from dataset id to row ids for inserted `events` */
+    /**
+     * Returns the raw JSON value of [dataset].
+     *
+     * Unlike [dataset], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("dataset") @ExcludeMissing fun _dataset(): JsonField<Dataset> = dataset
 
-    /** A mapping from experiment id to row ids for inserted `events` */
+    /**
+     * Returns the raw JSON value of [experiment].
+     *
+     * Unlike [experiment], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("experiment")
     @ExcludeMissing
     fun _experiment(): JsonField<Experiment> = experiment
 
-    /** A mapping from project id to row ids for inserted `events` */
+    /**
+     * Returns the raw JSON value of [projectLogs].
+     *
+     * Unlike [projectLogs], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project_logs")
     @ExcludeMissing
     fun _projectLogs(): JsonField<ProjectLogs> = projectLogs
@@ -103,28 +131,45 @@ private constructor(
         /** A mapping from dataset id to row ids for inserted `events` */
         fun dataset(dataset: Dataset?) = dataset(JsonField.ofNullable(dataset))
 
-        /** A mapping from dataset id to row ids for inserted `events` */
+        /** Alias for calling [Builder.dataset] with `dataset.orElse(null)`. */
         fun dataset(dataset: Optional<Dataset>) = dataset(dataset.getOrNull())
 
-        /** A mapping from dataset id to row ids for inserted `events` */
+        /**
+         * Sets [Builder.dataset] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dataset] with a well-typed [Dataset] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun dataset(dataset: JsonField<Dataset>) = apply { this.dataset = dataset }
 
         /** A mapping from experiment id to row ids for inserted `events` */
         fun experiment(experiment: Experiment?) = experiment(JsonField.ofNullable(experiment))
 
-        /** A mapping from experiment id to row ids for inserted `events` */
+        /** Alias for calling [Builder.experiment] with `experiment.orElse(null)`. */
         fun experiment(experiment: Optional<Experiment>) = experiment(experiment.getOrNull())
 
-        /** A mapping from experiment id to row ids for inserted `events` */
+        /**
+         * Sets [Builder.experiment] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.experiment] with a well-typed [Experiment] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun experiment(experiment: JsonField<Experiment>) = apply { this.experiment = experiment }
 
         /** A mapping from project id to row ids for inserted `events` */
         fun projectLogs(projectLogs: ProjectLogs?) = projectLogs(JsonField.ofNullable(projectLogs))
 
-        /** A mapping from project id to row ids for inserted `events` */
+        /** Alias for calling [Builder.projectLogs] with `projectLogs.orElse(null)`. */
         fun projectLogs(projectLogs: Optional<ProjectLogs>) = projectLogs(projectLogs.getOrNull())
 
-        /** A mapping from project id to row ids for inserted `events` */
+        /**
+         * Sets [Builder.projectLogs] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectLogs] with a well-typed [ProjectLogs] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun projectLogs(projectLogs: JsonField<ProjectLogs>) = apply {
             this.projectLogs = projectLogs
         }

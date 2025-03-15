@@ -39,46 +39,109 @@ private constructor(
     /** View id */
     fun viewId(): String = viewId
 
-    /** The id of the object the view applies to */
+    /**
+     * The id of the object the view applies to
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectId(): String = body.objectId()
 
-    /** The object type that the ACL applies to */
+    /**
+     * The object type that the ACL applies to
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun objectType(): AclObjectType = body.objectType()
 
-    /** Name of the view */
+    /**
+     * Name of the view
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
-    /** Options for the view in the app */
+    /**
+     * Options for the view in the app
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun options(): Optional<ViewOptions> = body.options()
 
-    /** Identifies the user who created the view */
+    /**
+     * Identifies the user who created the view
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun userId(): Optional<String> = body.userId()
 
-    /** The view definition */
+    /**
+     * The view definition
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun viewData(): Optional<ViewData> = body.viewData()
 
-    /** Type of table that the view corresponds to. */
+    /**
+     * Type of table that the view corresponds to.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun viewType(): Optional<ViewType> = body.viewType()
 
-    /** The id of the object the view applies to */
+    /**
+     * Returns the raw JSON value of [objectId].
+     *
+     * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _objectId(): JsonField<String> = body._objectId()
 
-    /** The object type that the ACL applies to */
+    /**
+     * Returns the raw JSON value of [objectType].
+     *
+     * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _objectType(): JsonField<AclObjectType> = body._objectType()
 
-    /** Name of the view */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
-    /** Options for the view in the app */
+    /**
+     * Returns the raw JSON value of [options].
+     *
+     * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _options(): JsonField<ViewOptions> = body._options()
 
-    /** Identifies the user who created the view */
+    /**
+     * Returns the raw JSON value of [userId].
+     *
+     * Unlike [userId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _userId(): JsonField<String> = body._userId()
 
-    /** The view definition */
+    /**
+     * Returns the raw JSON value of [viewData].
+     *
+     * Unlike [viewData], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _viewData(): JsonField<ViewData> = body._viewData()
 
-    /** Type of table that the view corresponds to. */
+    /**
+     * Returns the raw JSON value of [viewType].
+     *
+     * Unlike [viewType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _viewType(): JsonField<ViewType> = body._viewType()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -129,48 +192,111 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The id of the object the view applies to */
+        /**
+         * The id of the object the view applies to
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun objectId(): String = objectId.getRequired("object_id")
 
-        /** The object type that the ACL applies to */
+        /**
+         * The object type that the ACL applies to
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun objectType(): AclObjectType = objectType.getRequired("object_type")
 
-        /** Name of the view */
+        /**
+         * Name of the view
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** Options for the view in the app */
+        /**
+         * Options for the view in the app
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun options(): Optional<ViewOptions> = Optional.ofNullable(options.getNullable("options"))
 
-        /** Identifies the user who created the view */
+        /**
+         * Identifies the user who created the view
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
 
-        /** The view definition */
+        /**
+         * The view definition
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun viewData(): Optional<ViewData> = Optional.ofNullable(viewData.getNullable("view_data"))
 
-        /** Type of table that the view corresponds to. */
+        /**
+         * Type of table that the view corresponds to.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun viewType(): Optional<ViewType> = Optional.ofNullable(viewType.getNullable("view_type"))
 
-        /** The id of the object the view applies to */
+        /**
+         * Returns the raw JSON value of [objectId].
+         *
+         * Unlike [objectId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("object_id") @ExcludeMissing fun _objectId(): JsonField<String> = objectId
 
-        /** The object type that the ACL applies to */
+        /**
+         * Returns the raw JSON value of [objectType].
+         *
+         * Unlike [objectType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("object_type")
         @ExcludeMissing
         fun _objectType(): JsonField<AclObjectType> = objectType
 
-        /** Name of the view */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** Options for the view in the app */
+        /**
+         * Returns the raw JSON value of [options].
+         *
+         * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<ViewOptions> = options
 
-        /** Identifies the user who created the view */
+        /**
+         * Returns the raw JSON value of [userId].
+         *
+         * Unlike [userId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
-        /** The view definition */
+        /**
+         * Returns the raw JSON value of [viewData].
+         *
+         * Unlike [viewData], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("view_data") @ExcludeMissing fun _viewData(): JsonField<ViewData> = viewData
 
-        /** Type of table that the view corresponds to. */
+        /**
+         * Returns the raw JSON value of [viewType].
+         *
+         * Unlike [viewType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("view_type") @ExcludeMissing fun _viewType(): JsonField<ViewType> = viewType
 
         @JsonAnyGetter
@@ -237,13 +363,25 @@ private constructor(
             /** The id of the object the view applies to */
             fun objectId(objectId: String) = objectId(JsonField.of(objectId))
 
-            /** The id of the object the view applies to */
+            /**
+             * Sets [Builder.objectId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.objectId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun objectId(objectId: JsonField<String>) = apply { this.objectId = objectId }
 
             /** The object type that the ACL applies to */
             fun objectType(objectType: AclObjectType) = objectType(JsonField.of(objectType))
 
-            /** The object type that the ACL applies to */
+            /**
+             * Sets [Builder.objectType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.objectType] with a well-typed [AclObjectType] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun objectType(objectType: JsonField<AclObjectType>) = apply {
                 this.objectType = objectType
             }
@@ -251,46 +389,76 @@ private constructor(
             /** Name of the view */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Name of the view */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Name of the view */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** Options for the view in the app */
             fun options(options: ViewOptions?) = options(JsonField.ofNullable(options))
 
-            /** Options for the view in the app */
+            /** Alias for calling [Builder.options] with `options.orElse(null)`. */
             fun options(options: Optional<ViewOptions>) = options(options.getOrNull())
 
-            /** Options for the view in the app */
+            /**
+             * Sets [Builder.options] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.options] with a well-typed [ViewOptions] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun options(options: JsonField<ViewOptions>) = apply { this.options = options }
 
             /** Identifies the user who created the view */
             fun userId(userId: String?) = userId(JsonField.ofNullable(userId))
 
-            /** Identifies the user who created the view */
+            /** Alias for calling [Builder.userId] with `userId.orElse(null)`. */
             fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
-            /** Identifies the user who created the view */
+            /**
+             * Sets [Builder.userId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.userId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun userId(userId: JsonField<String>) = apply { this.userId = userId }
 
             /** The view definition */
             fun viewData(viewData: ViewData?) = viewData(JsonField.ofNullable(viewData))
 
-            /** The view definition */
+            /** Alias for calling [Builder.viewData] with `viewData.orElse(null)`. */
             fun viewData(viewData: Optional<ViewData>) = viewData(viewData.getOrNull())
 
-            /** The view definition */
+            /**
+             * Sets [Builder.viewData] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.viewData] with a well-typed [ViewData] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun viewData(viewData: JsonField<ViewData>) = apply { this.viewData = viewData }
 
             /** Type of table that the view corresponds to. */
             fun viewType(viewType: ViewType?) = viewType(JsonField.ofNullable(viewType))
 
-            /** Type of table that the view corresponds to. */
+            /** Alias for calling [Builder.viewType] with `viewType.orElse(null)`. */
             fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
-            /** Type of table that the view corresponds to. */
+            /**
+             * Sets [Builder.viewType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.viewType] with a well-typed [ViewType] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun viewType(viewType: JsonField<ViewType>) = apply { this.viewType = viewType }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -383,58 +551,97 @@ private constructor(
         /** The id of the object the view applies to */
         fun objectId(objectId: String) = apply { body.objectId(objectId) }
 
-        /** The id of the object the view applies to */
+        /**
+         * Sets [Builder.objectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun objectId(objectId: JsonField<String>) = apply { body.objectId(objectId) }
 
         /** The object type that the ACL applies to */
         fun objectType(objectType: AclObjectType) = apply { body.objectType(objectType) }
 
-        /** The object type that the ACL applies to */
+        /**
+         * Sets [Builder.objectType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.objectType] with a well-typed [AclObjectType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun objectType(objectType: JsonField<AclObjectType>) = apply { body.objectType(objectType) }
 
         /** Name of the view */
         fun name(name: String?) = apply { body.name(name) }
 
-        /** Name of the view */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
-        /** Name of the view */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** Options for the view in the app */
         fun options(options: ViewOptions?) = apply { body.options(options) }
 
-        /** Options for the view in the app */
+        /** Alias for calling [Builder.options] with `options.orElse(null)`. */
         fun options(options: Optional<ViewOptions>) = options(options.getOrNull())
 
-        /** Options for the view in the app */
+        /**
+         * Sets [Builder.options] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.options] with a well-typed [ViewOptions] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun options(options: JsonField<ViewOptions>) = apply { body.options(options) }
 
         /** Identifies the user who created the view */
         fun userId(userId: String?) = apply { body.userId(userId) }
 
-        /** Identifies the user who created the view */
+        /** Alias for calling [Builder.userId] with `userId.orElse(null)`. */
         fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
-        /** Identifies the user who created the view */
+        /**
+         * Sets [Builder.userId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.userId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun userId(userId: JsonField<String>) = apply { body.userId(userId) }
 
         /** The view definition */
         fun viewData(viewData: ViewData?) = apply { body.viewData(viewData) }
 
-        /** The view definition */
+        /** Alias for calling [Builder.viewData] with `viewData.orElse(null)`. */
         fun viewData(viewData: Optional<ViewData>) = viewData(viewData.getOrNull())
 
-        /** The view definition */
+        /**
+         * Sets [Builder.viewData] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.viewData] with a well-typed [ViewData] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun viewData(viewData: JsonField<ViewData>) = apply { body.viewData(viewData) }
 
         /** Type of table that the view corresponds to. */
         fun viewType(viewType: ViewType?) = apply { body.viewType(viewType) }
 
-        /** Type of table that the view corresponds to. */
+        /** Alias for calling [Builder.viewType] with `viewType.orElse(null)`. */
         fun viewType(viewType: Optional<ViewType>) = viewType(viewType.getOrNull())
 
-        /** Type of table that the view corresponds to. */
+        /**
+         * Sets [Builder.viewType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.viewType] with a well-typed [ViewType] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun viewType(viewType: JsonField<ViewType>) = apply { body.viewType(viewType) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

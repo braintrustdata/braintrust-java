@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -80,6 +81,9 @@ private constructor(
     /**
      * A unique identifier for the experiment event. If you don't provide one, BrainTrust will
      * generate one for you
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -94,6 +98,9 @@ private constructor(
      * 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we
      * replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
      * `{"id": "foo", "input": {"b": 11, "c": 20}}`
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun _isMerge(): Optional<Boolean> = Optional.ofNullable(_isMerge.getNullable("_is_merge"))
 
@@ -109,6 +116,9 @@ private constructor(
      * 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`. In this case, due to the
      * merge paths, we have replaced `input.a` and `output`, but have still deep-merged `input` and
      * `input.c`.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun _mergePaths(): Optional<List<List<String>>> =
         Optional.ofNullable(_mergePaths.getNullable("_merge_paths"))
@@ -116,6 +126,9 @@ private constructor(
     /**
      * Pass `_object_delete=true` to mark the experiment event deleted. Deleted events will not show
      * up in subsequent fetches for this experiment
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun _objectDelete(): Optional<Boolean> =
         Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
@@ -137,6 +150,9 @@ private constructor(
      * case, the `"llm_call"` row) by clicking on the "abc" row.
      *
      * If the row is being merged into an existing row, this field will be ignored.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun _parentId(): Optional<String> = Optional.ofNullable(_parentId.getNullable("_parent_id"))
 
@@ -144,10 +160,18 @@ private constructor(
      * Context is additional information about the code that produced the experiment event. It is
      * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
      * location in code which produced the experiment event
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun context(): Optional<Context> = Optional.ofNullable(context.getNullable("context"))
 
-    /** The timestamp the experiment event was created */
+    /**
+     * The timestamp the experiment event was created
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
     /** The error that occurred, if any. */
@@ -177,6 +201,9 @@ private constructor(
      * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
      * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
      * must be strings
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
@@ -184,10 +211,18 @@ private constructor(
      * Metrics are numerical measurements tracking the execution of the code that produced the
      * experiment event. Use "start" and "end" to track the time span over which the experiment
      * event was produced
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun metrics(): Optional<Metrics> = Optional.ofNullable(metrics.getNullable("metrics"))
 
-    /** Indicates the event was copied from another object. */
+    /**
+     * Indicates the event was copied from another object.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun origin(): Optional<ObjectReference> = Optional.ofNullable(origin.getNullable("origin"))
 
     /**
@@ -214,6 +249,9 @@ private constructor(
      * this case, the `"llm_call"` row) by clicking on the "abc" row.
      *
      * If the row is being merged into an existing row, this field will be ignored.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun rootSpanId(): Optional<String> = Optional.ofNullable(rootSpanId.getNullable("root_span_id"))
 
@@ -225,10 +263,18 @@ private constructor(
      * generated and grouth truth summary. The word similarity score could help you determine
      * whether the summarization was covering similar concepts or not. You can use these scores to
      * help you sort, filter, and compare experiments
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun scores(): Optional<Scores> = Optional.ofNullable(scores.getNullable("scores"))
 
-    /** Human-identifying attributes of the span, such as name, type, etc. */
+    /**
+     * Human-identifying attributes of the span, such as name, type, etc.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun spanAttributes(): Optional<SpanAttributes> =
         Optional.ofNullable(spanAttributes.getNullable("span_attributes"))
 
@@ -247,6 +293,9 @@ private constructor(
      * this case, the `"llm_call"` row) by clicking on the "abc" row.
      *
      * If the row is being merged into an existing row, this field will be ignored.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun spanId(): Optional<String> = Optional.ofNullable(spanId.getNullable("span_id"))
 
@@ -265,180 +314,139 @@ private constructor(
      * this case, the `"llm_call"` row) by clicking on the "abc" row.
      *
      * If the row is being merged into an existing row, this field will be ignored.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun spanParents(): Optional<List<String>> =
         Optional.ofNullable(spanParents.getNullable("span_parents"))
 
-    /** A list of tags to log */
+    /**
+     * A list of tags to log
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
 
     /**
-     * A unique identifier for the experiment event. If you don't provide one, BrainTrust will
-     * generate one for you
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
-     * The `_is_merge` field controls how the row is merged with any existing row with the same id
-     * in the DB. By default (or when set to `false`), the existing row is completely replaced by
-     * the new row. When set to `true`, the new row is deep-merged into the existing row, if one is
-     * found. If no existing row is found, the new row is inserted as is.
+     * Returns the raw JSON value of [_isMerge].
      *
-     * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5, "b":
-     * 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c":
-     * 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we
-     * replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
-     * `{"id": "foo", "input": {"b": 11, "c": 20}}`
+     * Unlike [_isMerge], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("_is_merge") @ExcludeMissing fun __isMerge(): JsonField<Boolean> = _isMerge
 
     /**
-     * The `_merge_paths` field allows controlling the depth of the merge, when `_is_merge=true`.
-     * `_merge_paths` is a list of paths, where each path is a list of field names. The deep merge
-     * will not descend below any of the specified merge paths.
+     * Returns the raw JSON value of [_mergePaths].
      *
-     * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": {"b": 10},
-     * "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as `{"_is_merge": true,
-     * "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e": 30},
-     * "bar": "baz"}, "output": {"d": 40}}`, the new row will be `{"id": "foo": "input": {"a": {"q":
-     * 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`. In this case, due to the
-     * merge paths, we have replaced `input.a` and `output`, but have still deep-merged `input` and
-     * `input.c`.
+     * Unlike [_mergePaths], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("_merge_paths")
     @ExcludeMissing
     fun __mergePaths(): JsonField<List<List<String>>> = _mergePaths
 
     /**
-     * Pass `_object_delete=true` to mark the experiment event deleted. Deleted events will not show
-     * up in subsequent fetches for this experiment
+     * Returns the raw JSON value of [_objectDelete].
+     *
+     * Unlike [_objectDelete], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("_object_delete")
     @ExcludeMissing
     fun __objectDelete(): JsonField<Boolean> = _objectDelete
 
     /**
-     * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
-     * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
-     * `root_span_id`, and `span_parents` explicitly instead.
+     * Returns the raw JSON value of [_parentId].
      *
-     * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
-     * hierarchical relationships are important for tracing (see the
-     * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
-     *
-     * For example, say we have logged a row `{"id": "abc", "input": "foo", "output": "bar",
-     * "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a sub-span of the parent
-     * row by logging `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What comes after
-     * foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp, only the root span row
-     * `"abc"` will show up in the summary view. You can view the full trace hierarchy (in this
-     * case, the `"llm_call"` row) by clicking on the "abc" row.
-     *
-     * If the row is being merged into an existing row, this field will be ignored.
+     * Unlike [_parentId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("_parent_id") @ExcludeMissing fun __parentId(): JsonField<String> = _parentId
 
     /**
-     * Context is additional information about the code that produced the experiment event. It is
-     * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
-     * location in code which produced the experiment event
+     * Returns the raw JSON value of [context].
+     *
+     * Unlike [context], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("context") @ExcludeMissing fun _context(): JsonField<Context> = context
 
-    /** The timestamp the experiment event was created */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
     /**
-     * A dictionary with additional data about the test example, model outputs, or just about
-     * anything else that's relevant, that you can use to help find and analyze examples later. For
-     * example, you could log the `prompt`, example's `id`, or anything else that would be useful to
-     * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
-     * must be strings
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
     /**
-     * Metrics are numerical measurements tracking the execution of the code that produced the
-     * experiment event. Use "start" and "end" to track the time span over which the experiment
-     * event was produced
+     * Returns the raw JSON value of [metrics].
+     *
+     * Unlike [metrics], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("metrics") @ExcludeMissing fun _metrics(): JsonField<Metrics> = metrics
 
-    /** Indicates the event was copied from another object. */
+    /**
+     * Returns the raw JSON value of [origin].
+     *
+     * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<ObjectReference> = origin
 
     /**
-     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
-     * the root_span_id is a unique identifier for the whole trace. See the
-     * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+     * Returns the raw JSON value of [rootSpanId].
      *
-     * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-     * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness":
-     * 0.33}}`. We can create a sub-span of the parent row by logging `{"id": "llm_call", "span_id":
-     * "span1", "root_span_id": "root_span0", "span_parents": ["span0"], "input": {"prompt": "What
-     * comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp, only the root
-     * span row `"abc"` will show up in the summary view. You can view the full trace hierarchy (in
-     * this case, the `"llm_call"` row) by clicking on the "abc" row.
-     *
-     * If the row is being merged into an existing row, this field will be ignored.
+     * Unlike [rootSpanId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("root_span_id") @ExcludeMissing fun _rootSpanId(): JsonField<String> = rootSpanId
 
     /**
-     * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a variety
-     * of signals that help you determine how accurate the outputs are compared to what you expect
-     * and diagnose failures. For example, a summarization app might have one score that tells you
-     * how accurate the summary is, and another that measures the word similarity between the
-     * generated and grouth truth summary. The word similarity score could help you determine
-     * whether the summarization was covering similar concepts or not. You can use these scores to
-     * help you sort, filter, and compare experiments
+     * Returns the raw JSON value of [scores].
+     *
+     * Unlike [scores], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("scores") @ExcludeMissing fun _scores(): JsonField<Scores> = scores
 
-    /** Human-identifying attributes of the span, such as name, type, etc. */
+    /**
+     * Returns the raw JSON value of [spanAttributes].
+     *
+     * Unlike [spanAttributes], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("span_attributes")
     @ExcludeMissing
     fun _spanAttributes(): JsonField<SpanAttributes> = spanAttributes
 
     /**
-     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
-     * the root_span_id is a unique identifier for the whole trace. See the
-     * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+     * Returns the raw JSON value of [spanId].
      *
-     * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-     * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness":
-     * 0.33}}`. We can create a sub-span of the parent row by logging `{"id": "llm_call", "span_id":
-     * "span1", "root_span_id": "root_span0", "span_parents": ["span0"], "input": {"prompt": "What
-     * comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp, only the root
-     * span row `"abc"` will show up in the summary view. You can view the full trace hierarchy (in
-     * this case, the `"llm_call"` row) by clicking on the "abc" row.
-     *
-     * If the row is being merged into an existing row, this field will be ignored.
+     * Unlike [spanId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("span_id") @ExcludeMissing fun _spanId(): JsonField<String> = spanId
 
     /**
-     * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-     * deprecated. The span_id is a unique identifier describing the row's place in the a trace, and
-     * the root_span_id is a unique identifier for the whole trace. See the
-     * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+     * Returns the raw JSON value of [spanParents].
      *
-     * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-     * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores": {"correctness":
-     * 0.33}}`. We can create a sub-span of the parent row by logging `{"id": "llm_call", "span_id":
-     * "span1", "root_span_id": "root_span0", "span_parents": ["span0"], "input": {"prompt": "What
-     * comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp, only the root
-     * span row `"abc"` will show up in the summary view. You can view the full trace hierarchy (in
-     * this case, the `"llm_call"` row) by clicking on the "abc" row.
-     *
-     * If the row is being merged into an existing row, this field will be ignored.
+     * Unlike [spanParents], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("span_parents")
     @ExcludeMissing
     fun _spanParents(): JsonField<List<String>> = spanParents
 
-    /** A list of tags to log */
+    /**
+     * Returns the raw JSON value of [tags].
+     *
+     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
     @JsonAnyGetter
@@ -535,15 +543,14 @@ private constructor(
          */
         fun id(id: String?) = id(JsonField.ofNullable(id))
 
-        /**
-         * A unique identifier for the experiment event. If you don't provide one, BrainTrust will
-         * generate one for you
-         */
+        /** Alias for calling [Builder.id] with `id.orElse(null)`. */
         fun id(id: Optional<String>) = id(id.getOrNull())
 
         /**
-         * A unique identifier for the experiment event. If you don't provide one, BrainTrust will
-         * generate one for you
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
@@ -562,44 +569,21 @@ private constructor(
         fun _isMerge(_isMerge: Boolean?) = _isMerge(JsonField.ofNullable(_isMerge))
 
         /**
-         * The `_is_merge` field controls how the row is merged with any existing row with the same
-         * id in the DB. By default (or when set to `false`), the existing row is completely
-         * replaced by the new row. When set to `true`, the new row is deep-merged into the existing
-         * row, if one is found. If no existing row is found, the new row is inserted as is.
+         * Alias for [Builder._isMerge].
          *
-         * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5, "b":
-         * 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c":
-         * 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we
-         * replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
-         * `{"id": "foo", "input": {"b": 11, "c": 20}}`
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun _isMerge(_isMerge: Boolean) = _isMerge(_isMerge as Boolean?)
 
-        /**
-         * The `_is_merge` field controls how the row is merged with any existing row with the same
-         * id in the DB. By default (or when set to `false`), the existing row is completely
-         * replaced by the new row. When set to `true`, the new row is deep-merged into the existing
-         * row, if one is found. If no existing row is found, the new row is inserted as is.
-         *
-         * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5, "b":
-         * 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c":
-         * 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we
-         * replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
-         * `{"id": "foo", "input": {"b": 11, "c": 20}}`
-         */
+        /** Alias for calling [Builder._isMerge] with `_isMerge.orElse(null)`. */
         fun _isMerge(_isMerge: Optional<Boolean>) = _isMerge(_isMerge.getOrNull())
 
         /**
-         * The `_is_merge` field controls how the row is merged with any existing row with the same
-         * id in the DB. By default (or when set to `false`), the existing row is completely
-         * replaced by the new row. When set to `true`, the new row is deep-merged into the existing
-         * row, if one is found. If no existing row is found, the new row is inserted as is.
+         * Sets [Builder._isMerge] to an arbitrary JSON value.
          *
-         * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": 5, "b":
-         * 10}}`. If we merge a new row as `{"_is_merge": true, "id": "foo", "input": {"b": 11, "c":
-         * 20}}`, the new row will be `{"id": "foo", "input": {"a": 5, "b": 11, "c": 20}}`. If we
-         * replace the new row as `{"id": "foo", "input": {"b": 11, "c": 20}}`, the new row will be
-         * `{"id": "foo", "input": {"b": 11, "c": 20}}`
+         * You should usually call [Builder._isMerge] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun _isMerge(_isMerge: JsonField<Boolean>) = apply { this._isMerge = _isMerge }
 
@@ -619,51 +603,25 @@ private constructor(
         fun _mergePaths(_mergePaths: List<List<String>>?) =
             _mergePaths(JsonField.ofNullable(_mergePaths))
 
-        /**
-         * The `_merge_paths` field allows controlling the depth of the merge, when
-         * `_is_merge=true`. `_merge_paths` is a list of paths, where each path is a list of field
-         * names. The deep merge will not descend below any of the specified merge paths.
-         *
-         * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": {"b":
-         * 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as `{"_is_merge":
-         * true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e":
-         * 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will be `{"id": "foo": "input":
-         * {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`. In this
-         * case, due to the merge paths, we have replaced `input.a` and `output`, but have still
-         * deep-merged `input` and `input.c`.
-         */
+        /** Alias for calling [Builder._mergePaths] with `_mergePaths.orElse(null)`. */
         fun _mergePaths(_mergePaths: Optional<List<List<String>>>) =
             _mergePaths(_mergePaths.getOrNull())
 
         /**
-         * The `_merge_paths` field allows controlling the depth of the merge, when
-         * `_is_merge=true`. `_merge_paths` is a list of paths, where each path is a list of field
-         * names. The deep merge will not descend below any of the specified merge paths.
+         * Sets [Builder._mergePaths] to an arbitrary JSON value.
          *
-         * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": {"b":
-         * 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as `{"_is_merge":
-         * true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e":
-         * 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will be `{"id": "foo": "input":
-         * {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`. In this
-         * case, due to the merge paths, we have replaced `input.a` and `output`, but have still
-         * deep-merged `input` and `input.c`.
+         * You should usually call [Builder._mergePaths] with a well-typed `List<List<String>>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
          */
         fun _mergePaths(_mergePaths: JsonField<List<List<String>>>) = apply {
             this._mergePaths = _mergePaths.map { it.toMutableList() }
         }
 
         /**
-         * The `_merge_paths` field allows controlling the depth of the merge, when
-         * `_is_merge=true`. `_merge_paths` is a list of paths, where each path is a list of field
-         * names. The deep merge will not descend below any of the specified merge paths.
+         * Adds a single [List<String>] to [_mergePaths].
          *
-         * For example, say there is an existing row in the DB `{"id": "foo", "input": {"a": {"b":
-         * 10}, "c": {"d": 20}}, "output": {"a": 20}}`. If we merge a new row as `{"_is_merge":
-         * true, "_merge_paths": [["input", "a"], ["output"]], "input": {"a": {"q": 30}, "c": {"e":
-         * 30}, "bar": "baz"}, "output": {"d": 40}}`, the new row will be `{"id": "foo": "input":
-         * {"a": {"q": 30}, "c": {"d": 20, "e": 30}, "bar": "baz"}, "output": {"d": 40}}`. In this
-         * case, due to the merge paths, we have replaced `input.a` and `output`, but have still
-         * deep-merged `input` and `input.c`.
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addMergePath(mergePath: List<String>) = apply {
             _mergePaths =
@@ -680,21 +638,22 @@ private constructor(
             _objectDelete(JsonField.ofNullable(_objectDelete))
 
         /**
-         * Pass `_object_delete=true` to mark the experiment event deleted. Deleted events will not
-         * show up in subsequent fetches for this experiment
+         * Alias for [Builder._objectDelete].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun _objectDelete(_objectDelete: Boolean) = _objectDelete(_objectDelete as Boolean?)
 
-        /**
-         * Pass `_object_delete=true` to mark the experiment event deleted. Deleted events will not
-         * show up in subsequent fetches for this experiment
-         */
+        /** Alias for calling [Builder._objectDelete] with `_objectDelete.orElse(null)`. */
         fun _objectDelete(_objectDelete: Optional<Boolean>) =
             _objectDelete(_objectDelete.getOrNull())
 
         /**
-         * Pass `_object_delete=true` to mark the experiment event deleted. Deleted events will not
-         * show up in subsequent fetches for this experiment
+         * Sets [Builder._objectDelete] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder._objectDelete] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun _objectDelete(_objectDelete: JsonField<Boolean>) = apply {
             this._objectDelete = _objectDelete
@@ -720,43 +679,15 @@ private constructor(
          */
         fun _parentId(_parentId: String?) = _parentId(JsonField.ofNullable(_parentId))
 
-        /**
-         * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
-         * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
-         * `root_span_id`, and `span_parents` explicitly instead.
-         *
-         * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
-         * hierarchical relationships are important for tracing (see the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
-         *
-         * For example, say we have logged a row `{"id": "abc", "input": "foo", "output": "bar",
-         * "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a sub-span of the
-         * parent row by logging `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What
-         * comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp, only the
-         * root span row `"abc"` will show up in the summary view. You can view the full trace
-         * hierarchy (in this case, the `"llm_call"` row) by clicking on the "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
-         */
+        /** Alias for calling [Builder._parentId] with `_parentId.orElse(null)`. */
         fun _parentId(_parentId: Optional<String>) = _parentId(_parentId.getOrNull())
 
         /**
-         * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
-         * `_parent_id` will be dropped in a future version of Braintrust. Log `span_id`,
-         * `root_span_id`, and `span_parents` explicitly instead.
+         * Sets [Builder._parentId] to an arbitrary JSON value.
          *
-         * Use the `_parent_id` field to create this row as a subspan of an existing row. Tracking
-         * hierarchical relationships are important for tracing (see the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details).
-         *
-         * For example, say we have logged a row `{"id": "abc", "input": "foo", "output": "bar",
-         * "expected": "boo", "scores": {"correctness": 0.33}}`. We can create a sub-span of the
-         * parent row by logging `{"_parent_id": "abc", "id": "llm_call", "input": {"prompt": "What
-         * comes after foo?"}, "output": "bar", "metrics": {"tokens": 1}}`. In the webapp, only the
-         * root span row `"abc"` will show up in the summary view. You can view the full trace
-         * hierarchy (in this case, the `"llm_call"` row) by clicking on the "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
+         * You should usually call [Builder._parentId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun _parentId(_parentId: JsonField<String>) = apply { this._parentId = _parentId }
 
@@ -767,27 +698,30 @@ private constructor(
          */
         fun context(context: Context?) = context(JsonField.ofNullable(context))
 
-        /**
-         * Context is additional information about the code that produced the experiment event. It
-         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
-         * track the location in code which produced the experiment event
-         */
+        /** Alias for calling [Builder.context] with `context.orElse(null)`. */
         fun context(context: Optional<Context>) = context(context.getOrNull())
 
         /**
-         * Context is additional information about the code that produced the experiment event. It
-         * is essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to
-         * track the location in code which produced the experiment event
+         * Sets [Builder.context] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.context] with a well-typed [Context] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun context(context: JsonField<Context>) = apply { this.context = context }
 
         /** The timestamp the experiment event was created */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
-        /** The timestamp the experiment event was created */
+        /** Alias for calling [Builder.created] with `created.orElse(null)`. */
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
-        /** The timestamp the experiment event was created */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** The error that occurred, if any. */
@@ -820,21 +754,15 @@ private constructor(
          */
         fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
-        /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
-         */
+        /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
         fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
 
         /**
-         * A dictionary with additional data about the test example, model outputs, or just about
-         * anything else that's relevant, that you can use to help find and analyze examples later.
-         * For example, you could log the `prompt`, example's `id`, or anything else that would be
-         * useful to slice/dice later. The values in `metadata` can be any JSON-serializable type,
-         * but its keys must be strings
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
@@ -845,27 +773,30 @@ private constructor(
          */
         fun metrics(metrics: Metrics?) = metrics(JsonField.ofNullable(metrics))
 
-        /**
-         * Metrics are numerical measurements tracking the execution of the code that produced the
-         * experiment event. Use "start" and "end" to track the time span over which the experiment
-         * event was produced
-         */
+        /** Alias for calling [Builder.metrics] with `metrics.orElse(null)`. */
         fun metrics(metrics: Optional<Metrics>) = metrics(metrics.getOrNull())
 
         /**
-         * Metrics are numerical measurements tracking the execution of the code that produced the
-         * experiment event. Use "start" and "end" to track the time span over which the experiment
-         * event was produced
+         * Sets [Builder.metrics] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metrics] with a well-typed [Metrics] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun metrics(metrics: JsonField<Metrics>) = apply { this.metrics = metrics }
 
         /** Indicates the event was copied from another object. */
         fun origin(origin: ObjectReference?) = origin(JsonField.ofNullable(origin))
 
-        /** Indicates the event was copied from another object. */
+        /** Alias for calling [Builder.origin] with `origin.orElse(null)`. */
         fun origin(origin: Optional<ObjectReference>) = origin(origin.getOrNull())
 
-        /** Indicates the event was copied from another object. */
+        /**
+         * Sets [Builder.origin] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.origin] with a well-typed [ObjectReference] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun origin(origin: JsonField<ObjectReference>) = apply { this.origin = origin }
 
         /**
@@ -896,41 +827,15 @@ private constructor(
          */
         fun rootSpanId(rootSpanId: String?) = rootSpanId(JsonField.ofNullable(rootSpanId))
 
-        /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
-         *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
-         */
+        /** Alias for calling [Builder.rootSpanId] with `rootSpanId.orElse(null)`. */
         fun rootSpanId(rootSpanId: Optional<String>) = rootSpanId(rootSpanId.getOrNull())
 
         /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+         * Sets [Builder.rootSpanId] to an arbitrary JSON value.
          *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
+         * You should usually call [Builder.rootSpanId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun rootSpanId(rootSpanId: JsonField<String>) = apply { this.rootSpanId = rootSpanId }
 
@@ -945,25 +850,14 @@ private constructor(
          */
         fun scores(scores: Scores?) = scores(JsonField.ofNullable(scores))
 
-        /**
-         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
-         * variety of signals that help you determine how accurate the outputs are compared to what
-         * you expect and diagnose failures. For example, a summarization app might have one score
-         * that tells you how accurate the summary is, and another that measures the word similarity
-         * between the generated and grouth truth summary. The word similarity score could help you
-         * determine whether the summarization was covering similar concepts or not. You can use
-         * these scores to help you sort, filter, and compare experiments
-         */
+        /** Alias for calling [Builder.scores] with `scores.orElse(null)`. */
         fun scores(scores: Optional<Scores>) = scores(scores.getOrNull())
 
         /**
-         * A dictionary of numeric values (between 0 and 1) to log. The scores should give you a
-         * variety of signals that help you determine how accurate the outputs are compared to what
-         * you expect and diagnose failures. For example, a summarization app might have one score
-         * that tells you how accurate the summary is, and another that measures the word similarity
-         * between the generated and grouth truth summary. The word similarity score could help you
-         * determine whether the summarization was covering similar concepts or not. You can use
-         * these scores to help you sort, filter, and compare experiments
+         * Sets [Builder.scores] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.scores] with a well-typed [Scores] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun scores(scores: JsonField<Scores>) = apply { this.scores = scores }
 
@@ -971,11 +865,17 @@ private constructor(
         fun spanAttributes(spanAttributes: SpanAttributes?) =
             spanAttributes(JsonField.ofNullable(spanAttributes))
 
-        /** Human-identifying attributes of the span, such as name, type, etc. */
+        /** Alias for calling [Builder.spanAttributes] with `spanAttributes.orElse(null)`. */
         fun spanAttributes(spanAttributes: Optional<SpanAttributes>) =
             spanAttributes(spanAttributes.getOrNull())
 
-        /** Human-identifying attributes of the span, such as name, type, etc. */
+        /**
+         * Sets [Builder.spanAttributes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.spanAttributes] with a well-typed [SpanAttributes] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun spanAttributes(spanAttributes: JsonField<SpanAttributes>) = apply {
             this.spanAttributes = spanAttributes
         }
@@ -999,41 +899,14 @@ private constructor(
          */
         fun spanId(spanId: String?) = spanId(JsonField.ofNullable(spanId))
 
-        /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
-         *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
-         */
+        /** Alias for calling [Builder.spanId] with `spanId.orElse(null)`. */
         fun spanId(spanId: Optional<String>) = spanId(spanId.getOrNull())
 
         /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+         * Sets [Builder.spanId] to an arbitrary JSON value.
          *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
+         * You should usually call [Builder.spanId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun spanId(spanId: JsonField<String>) = apply { this.spanId = spanId }
 
@@ -1056,62 +929,24 @@ private constructor(
          */
         fun spanParents(spanParents: List<String>?) = spanParents(JsonField.ofNullable(spanParents))
 
-        /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
-         *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
-         */
+        /** Alias for calling [Builder.spanParents] with `spanParents.orElse(null)`. */
         fun spanParents(spanParents: Optional<List<String>>) = spanParents(spanParents.getOrNull())
 
         /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+         * Sets [Builder.spanParents] to an arbitrary JSON value.
          *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
+         * You should usually call [Builder.spanParents] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun spanParents(spanParents: JsonField<List<String>>) = apply {
             this.spanParents = spanParents.map { it.toMutableList() }
         }
 
         /**
-         * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
-         * deprecated. The span_id is a unique identifier describing the row's place in the a trace,
-         * and the root_span_id is a unique identifier for the whole trace. See the
-         * [guide](https://www.braintrust.dev/docs/guides/tracing) for full details.
+         * Adds a single [String] to [spanParents].
          *
-         * For example, say we have logged a row `{"id": "abc", "span_id": "span0", "root_span_id":
-         * "root_span0", "input": "foo", "output": "bar", "expected": "boo", "scores":
-         * {"correctness": 0.33}}`. We can create a sub-span of the parent row by logging `{"id":
-         * "llm_call", "span_id": "span1", "root_span_id": "root_span0", "span_parents": ["span0"],
-         * "input": {"prompt": "What comes after foo?"}, "output": "bar", "metrics": {"tokens":
-         * 1}}`. In the webapp, only the root span row `"abc"` will show up in the summary view. You
-         * can view the full trace hierarchy (in this case, the `"llm_call"` row) by clicking on the
-         * "abc" row.
-         *
-         * If the row is being merged into an existing row, this field will be ignored.
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addSpanParent(spanParent: String) = apply {
             spanParents =
@@ -1123,15 +958,25 @@ private constructor(
         /** A list of tags to log */
         fun tags(tags: List<String>?) = tags(JsonField.ofNullable(tags))
 
-        /** A list of tags to log */
+        /** Alias for calling [Builder.tags] with `tags.orElse(null)`. */
         fun tags(tags: Optional<List<String>>) = tags(tags.getOrNull())
 
-        /** A list of tags to log */
+        /**
+         * Sets [Builder.tags] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.tags] with a well-typed `List<String>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun tags(tags: JsonField<List<String>>) = apply {
             this.tags = tags.map { it.toMutableList() }
         }
 
-        /** A list of tags to log */
+        /**
+         * Adds a single [String] to [tags].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addTag(tag: String) = apply {
             tags = (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
         }
@@ -1203,29 +1048,59 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Name of the file in code where the experiment event was created */
+        /**
+         * Name of the file in code where the experiment event was created
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun callerFilename(): Optional<String> =
             Optional.ofNullable(callerFilename.getNullable("caller_filename"))
 
-        /** The function in code which created the experiment event */
+        /**
+         * The function in code which created the experiment event
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun callerFunctionname(): Optional<String> =
             Optional.ofNullable(callerFunctionname.getNullable("caller_functionname"))
 
-        /** Line of code where the experiment event was created */
+        /**
+         * Line of code where the experiment event was created
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun callerLineno(): Optional<Long> =
             Optional.ofNullable(callerLineno.getNullable("caller_lineno"))
 
-        /** Name of the file in code where the experiment event was created */
+        /**
+         * Returns the raw JSON value of [callerFilename].
+         *
+         * Unlike [callerFilename], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("caller_filename")
         @ExcludeMissing
         fun _callerFilename(): JsonField<String> = callerFilename
 
-        /** The function in code which created the experiment event */
+        /**
+         * Returns the raw JSON value of [callerFunctionname].
+         *
+         * Unlike [callerFunctionname], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("caller_functionname")
         @ExcludeMissing
         fun _callerFunctionname(): JsonField<String> = callerFunctionname
 
-        /** Line of code where the experiment event was created */
+        /**
+         * Returns the raw JSON value of [callerLineno].
+         *
+         * Unlike [callerLineno], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("caller_lineno")
         @ExcludeMissing
         fun _callerLineno(): JsonField<Long> = callerLineno
@@ -1275,11 +1150,17 @@ private constructor(
             fun callerFilename(callerFilename: String?) =
                 callerFilename(JsonField.ofNullable(callerFilename))
 
-            /** Name of the file in code where the experiment event was created */
+            /** Alias for calling [Builder.callerFilename] with `callerFilename.orElse(null)`. */
             fun callerFilename(callerFilename: Optional<String>) =
                 callerFilename(callerFilename.getOrNull())
 
-            /** Name of the file in code where the experiment event was created */
+            /**
+             * Sets [Builder.callerFilename] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.callerFilename] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun callerFilename(callerFilename: JsonField<String>) = apply {
                 this.callerFilename = callerFilename
             }
@@ -1288,11 +1169,20 @@ private constructor(
             fun callerFunctionname(callerFunctionname: String?) =
                 callerFunctionname(JsonField.ofNullable(callerFunctionname))
 
-            /** The function in code which created the experiment event */
+            /**
+             * Alias for calling [Builder.callerFunctionname] with
+             * `callerFunctionname.orElse(null)`.
+             */
             fun callerFunctionname(callerFunctionname: Optional<String>) =
                 callerFunctionname(callerFunctionname.getOrNull())
 
-            /** The function in code which created the experiment event */
+            /**
+             * Sets [Builder.callerFunctionname] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.callerFunctionname] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun callerFunctionname(callerFunctionname: JsonField<String>) = apply {
                 this.callerFunctionname = callerFunctionname
             }
@@ -1300,13 +1190,23 @@ private constructor(
             /** Line of code where the experiment event was created */
             fun callerLineno(callerLineno: Long?) = callerLineno(JsonField.ofNullable(callerLineno))
 
-            /** Line of code where the experiment event was created */
+            /**
+             * Alias for [Builder.callerLineno].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun callerLineno(callerLineno: Long) = callerLineno(callerLineno as Long?)
 
-            /** Line of code where the experiment event was created */
+            /** Alias for calling [Builder.callerLineno] with `callerLineno.orElse(null)`. */
             fun callerLineno(callerLineno: Optional<Long>) = callerLineno(callerLineno.getOrNull())
 
-            /** Line of code where the experiment event was created */
+            /**
+             * Sets [Builder.callerLineno] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.callerLineno] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun callerLineno(callerLineno: JsonField<Long>) = apply {
                 this.callerLineno = callerLineno
             }
@@ -1375,10 +1275,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The model used for this example */
+        /**
+         * The model used for this example
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
 
-        /** The model used for this example */
+        /**
+         * Returns the raw JSON value of [model].
+         *
+         * Unlike [model], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("model") @ExcludeMissing fun _model(): JsonField<String> = model
 
         @JsonAnyGetter
@@ -1419,10 +1328,16 @@ private constructor(
             /** The model used for this example */
             fun model(model: String?) = model(JsonField.ofNullable(model))
 
-            /** The model used for this example */
+            /** Alias for calling [Builder.model] with `model.orElse(null)`. */
             fun model(model: Optional<String>) = model(model.getOrNull())
 
-            /** The model used for this example */
+            /**
+             * Sets [Builder.model] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.model] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun model(model: JsonField<String>) = apply { this.model = model }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1516,6 +1431,9 @@ private constructor(
         /**
          * The number of tokens in the completion generated by the model (only set if this is an LLM
          * span)
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun completionTokens(): Optional<Long> =
             Optional.ofNullable(completionTokens.getNullable("completion_tokens"))
@@ -1523,12 +1441,18 @@ private constructor(
         /**
          * A unix timestamp recording when the section of code which produced the experiment event
          * finished
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun end(): Optional<Double> = Optional.ofNullable(end.getNullable("end"))
 
         /**
          * The number of tokens in the prompt used to generate the experiment event (only set if
          * this is an LLM span)
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun promptTokens(): Optional<Long> =
             Optional.ofNullable(promptTokens.getNullable("prompt_tokens"))
@@ -1536,41 +1460,59 @@ private constructor(
         /**
          * A unix timestamp recording when the section of code which produced the experiment event
          * started
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun start(): Optional<Double> = Optional.ofNullable(start.getNullable("start"))
 
-        /** The total number of tokens in the input and output of the experiment event. */
+        /**
+         * The total number of tokens in the input and output of the experiment event.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun tokens(): Optional<Long> = Optional.ofNullable(tokens.getNullable("tokens"))
 
         /**
-         * The number of tokens in the completion generated by the model (only set if this is an LLM
-         * span)
+         * Returns the raw JSON value of [completionTokens].
+         *
+         * Unlike [completionTokens], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("completion_tokens")
         @ExcludeMissing
         fun _completionTokens(): JsonField<Long> = completionTokens
 
         /**
-         * A unix timestamp recording when the section of code which produced the experiment event
-         * finished
+         * Returns the raw JSON value of [end].
+         *
+         * Unlike [end], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("end") @ExcludeMissing fun _end(): JsonField<Double> = end
 
         /**
-         * The number of tokens in the prompt used to generate the experiment event (only set if
-         * this is an LLM span)
+         * Returns the raw JSON value of [promptTokens].
+         *
+         * Unlike [promptTokens], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("prompt_tokens")
         @ExcludeMissing
         fun _promptTokens(): JsonField<Long> = promptTokens
 
         /**
-         * A unix timestamp recording when the section of code which produced the experiment event
-         * started
+         * Returns the raw JSON value of [start].
+         *
+         * Unlike [start], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("start") @ExcludeMissing fun _start(): JsonField<Double> = start
 
-        /** The total number of tokens in the input and output of the experiment event. */
+        /**
+         * Returns the raw JSON value of [tokens].
+         *
+         * Unlike [tokens], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("tokens") @ExcludeMissing fun _tokens(): JsonField<Long> = tokens
 
         @JsonAnyGetter
@@ -1647,22 +1589,25 @@ private constructor(
                 completionTokens(JsonField.ofNullable(completionTokens))
 
             /**
-             * The number of tokens in the completion generated by the model (only set if this is an
-             * LLM span)
+             * Alias for [Builder.completionTokens].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun completionTokens(completionTokens: Long) =
                 completionTokens(completionTokens as Long?)
 
             /**
-             * The number of tokens in the completion generated by the model (only set if this is an
-             * LLM span)
+             * Alias for calling [Builder.completionTokens] with `completionTokens.orElse(null)`.
              */
             fun completionTokens(completionTokens: Optional<Long>) =
                 completionTokens(completionTokens.getOrNull())
 
             /**
-             * The number of tokens in the completion generated by the model (only set if this is an
-             * LLM span)
+             * Sets [Builder.completionTokens] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.completionTokens] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun completionTokens(completionTokens: JsonField<Long>) = apply {
                 this.completionTokens = completionTokens
@@ -1675,20 +1620,21 @@ private constructor(
             fun end(end: Double?) = end(JsonField.ofNullable(end))
 
             /**
-             * A unix timestamp recording when the section of code which produced the experiment
-             * event finished
+             * Alias for [Builder.end].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun end(end: Double) = end(end as Double?)
 
-            /**
-             * A unix timestamp recording when the section of code which produced the experiment
-             * event finished
-             */
+            /** Alias for calling [Builder.end] with `end.orElse(null)`. */
             fun end(end: Optional<Double>) = end(end.getOrNull())
 
             /**
-             * A unix timestamp recording when the section of code which produced the experiment
-             * event finished
+             * Sets [Builder.end] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.end] with a well-typed [Double] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
              */
             fun end(end: JsonField<Double>) = apply { this.end = end }
 
@@ -1699,20 +1645,21 @@ private constructor(
             fun promptTokens(promptTokens: Long?) = promptTokens(JsonField.ofNullable(promptTokens))
 
             /**
-             * The number of tokens in the prompt used to generate the experiment event (only set if
-             * this is an LLM span)
+             * Alias for [Builder.promptTokens].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun promptTokens(promptTokens: Long) = promptTokens(promptTokens as Long?)
 
-            /**
-             * The number of tokens in the prompt used to generate the experiment event (only set if
-             * this is an LLM span)
-             */
+            /** Alias for calling [Builder.promptTokens] with `promptTokens.orElse(null)`. */
             fun promptTokens(promptTokens: Optional<Long>) = promptTokens(promptTokens.getOrNull())
 
             /**
-             * The number of tokens in the prompt used to generate the experiment event (only set if
-             * this is an LLM span)
+             * Sets [Builder.promptTokens] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.promptTokens] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun promptTokens(promptTokens: JsonField<Long>) = apply {
                 this.promptTokens = promptTokens
@@ -1725,33 +1672,44 @@ private constructor(
             fun start(start: Double?) = start(JsonField.ofNullable(start))
 
             /**
-             * A unix timestamp recording when the section of code which produced the experiment
-             * event started
+             * Alias for [Builder.start].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun start(start: Double) = start(start as Double?)
 
-            /**
-             * A unix timestamp recording when the section of code which produced the experiment
-             * event started
-             */
+            /** Alias for calling [Builder.start] with `start.orElse(null)`. */
             fun start(start: Optional<Double>) = start(start.getOrNull())
 
             /**
-             * A unix timestamp recording when the section of code which produced the experiment
-             * event started
+             * Sets [Builder.start] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.start] with a well-typed [Double] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun start(start: JsonField<Double>) = apply { this.start = start }
 
             /** The total number of tokens in the input and output of the experiment event. */
             fun tokens(tokens: Long?) = tokens(JsonField.ofNullable(tokens))
 
-            /** The total number of tokens in the input and output of the experiment event. */
+            /**
+             * Alias for [Builder.tokens].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun tokens(tokens: Long) = tokens(tokens as Long?)
 
-            /** The total number of tokens in the input and output of the experiment event. */
+            /** Alias for calling [Builder.tokens] with `tokens.orElse(null)`. */
             fun tokens(tokens: Optional<Long>) = tokens(tokens.getOrNull())
 
-            /** The total number of tokens in the input and output of the experiment event. */
+            /**
+             * Sets [Builder.tokens] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.tokens] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun tokens(tokens: JsonField<Long>) = apply { this.tokens = tokens }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

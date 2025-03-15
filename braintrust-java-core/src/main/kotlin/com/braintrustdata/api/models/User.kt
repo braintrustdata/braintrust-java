@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -40,40 +41,94 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Unique identifier for the user */
+    /**
+     * Unique identifier for the user
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** URL of the user's Avatar image */
+    /**
+     * URL of the user's Avatar image
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun avatarUrl(): Optional<String> = Optional.ofNullable(avatarUrl.getNullable("avatar_url"))
 
-    /** Date of user creation */
+    /**
+     * Date of user creation
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
 
-    /** The user's email */
+    /**
+     * The user's email
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun email(): Optional<String> = Optional.ofNullable(email.getNullable("email"))
 
-    /** Family name of the user */
+    /**
+     * Family name of the user
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun familyName(): Optional<String> = Optional.ofNullable(familyName.getNullable("family_name"))
 
-    /** Given name of the user */
+    /**
+     * Given name of the user
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun givenName(): Optional<String> = Optional.ofNullable(givenName.getNullable("given_name"))
 
-    /** Unique identifier for the user */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** URL of the user's Avatar image */
+    /**
+     * Returns the raw JSON value of [avatarUrl].
+     *
+     * Unlike [avatarUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("avatar_url") @ExcludeMissing fun _avatarUrl(): JsonField<String> = avatarUrl
 
-    /** Date of user creation */
+    /**
+     * Returns the raw JSON value of [created].
+     *
+     * Unlike [created], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<OffsetDateTime> = created
 
-    /** The user's email */
+    /**
+     * Returns the raw JSON value of [email].
+     *
+     * Unlike [email], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("email") @ExcludeMissing fun _email(): JsonField<String> = email
 
-    /** Family name of the user */
+    /**
+     * Returns the raw JSON value of [familyName].
+     *
+     * Unlike [familyName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("family_name") @ExcludeMissing fun _familyName(): JsonField<String> = familyName
 
-    /** Given name of the user */
+    /**
+     * Returns the raw JSON value of [givenName].
+     *
+     * Unlike [givenName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("given_name") @ExcludeMissing fun _givenName(): JsonField<String> = givenName
 
     @JsonAnyGetter
@@ -136,52 +191,86 @@ private constructor(
         /** Unique identifier for the user */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** Unique identifier for the user */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** URL of the user's Avatar image */
         fun avatarUrl(avatarUrl: String?) = avatarUrl(JsonField.ofNullable(avatarUrl))
 
-        /** URL of the user's Avatar image */
+        /** Alias for calling [Builder.avatarUrl] with `avatarUrl.orElse(null)`. */
         fun avatarUrl(avatarUrl: Optional<String>) = avatarUrl(avatarUrl.getOrNull())
 
-        /** URL of the user's Avatar image */
+        /**
+         * Sets [Builder.avatarUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.avatarUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun avatarUrl(avatarUrl: JsonField<String>) = apply { this.avatarUrl = avatarUrl }
 
         /** Date of user creation */
         fun created(created: OffsetDateTime?) = created(JsonField.ofNullable(created))
 
-        /** Date of user creation */
+        /** Alias for calling [Builder.created] with `created.orElse(null)`. */
         fun created(created: Optional<OffsetDateTime>) = created(created.getOrNull())
 
-        /** Date of user creation */
+        /**
+         * Sets [Builder.created] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.created] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun created(created: JsonField<OffsetDateTime>) = apply { this.created = created }
 
         /** The user's email */
         fun email(email: String?) = email(JsonField.ofNullable(email))
 
-        /** The user's email */
+        /** Alias for calling [Builder.email] with `email.orElse(null)`. */
         fun email(email: Optional<String>) = email(email.getOrNull())
 
-        /** The user's email */
+        /**
+         * Sets [Builder.email] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.email] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun email(email: JsonField<String>) = apply { this.email = email }
 
         /** Family name of the user */
         fun familyName(familyName: String?) = familyName(JsonField.ofNullable(familyName))
 
-        /** Family name of the user */
+        /** Alias for calling [Builder.familyName] with `familyName.orElse(null)`. */
         fun familyName(familyName: Optional<String>) = familyName(familyName.getOrNull())
 
-        /** Family name of the user */
+        /**
+         * Sets [Builder.familyName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.familyName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun familyName(familyName: JsonField<String>) = apply { this.familyName = familyName }
 
         /** Given name of the user */
         fun givenName(givenName: String?) = givenName(JsonField.ofNullable(givenName))
 
-        /** Given name of the user */
+        /** Alias for calling [Builder.givenName] with `givenName.orElse(null)`. */
         fun givenName(givenName: Optional<String>) = givenName(givenName.getOrNull())
 
-        /** Given name of the user */
+        /**
+         * Sets [Builder.givenName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.givenName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun givenName(givenName: JsonField<String>) = apply { this.givenName = givenName }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

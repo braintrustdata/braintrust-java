@@ -13,6 +13,7 @@ import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -37,16 +38,34 @@ private constructor(
     /** EnvVar id */
     fun envVarId(): String = envVarId
 
-    /** The name of the environment variable */
+    /**
+     * The name of the environment variable
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = body.name()
 
-    /** The value of the environment variable. Will be encrypted at rest. */
+    /**
+     * The value of the environment variable. Will be encrypted at rest.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun value(): Optional<String> = body.value()
 
-    /** The name of the environment variable */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
-    /** The value of the environment variable. Will be encrypted at rest. */
+    /**
+     * Returns the raw JSON value of [value].
+     *
+     * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _value(): JsonField<String> = body._value()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -82,16 +101,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The name of the environment variable */
+        /**
+         * The name of the environment variable
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun name(): String = name.getRequired("name")
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /**
+         * The value of the environment variable. Will be encrypted at rest.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun value(): Optional<String> = Optional.ofNullable(value.getNullable("value"))
 
-        /** The name of the environment variable */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -142,16 +179,28 @@ private constructor(
             /** The name of the environment variable */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** The name of the environment variable */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The value of the environment variable. Will be encrypted at rest. */
             fun value(value: String?) = value(JsonField.ofNullable(value))
 
-            /** The value of the environment variable. Will be encrypted at rest. */
+            /** Alias for calling [Builder.value] with `value.orElse(null)`. */
             fun value(value: Optional<String>) = value(value.getOrNull())
 
-            /** The value of the environment variable. Will be encrypted at rest. */
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -234,16 +283,26 @@ private constructor(
         /** The name of the environment variable */
         fun name(name: String) = apply { body.name(name) }
 
-        /** The name of the environment variable */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** The value of the environment variable. Will be encrypted at rest. */
         fun value(value: String?) = apply { body.value(value) }
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /** Alias for calling [Builder.value] with `value.orElse(null)`. */
         fun value(value: Optional<String>) = value(value.getOrNull())
 
-        /** The value of the environment variable. Will be encrypted at rest. */
+        /**
+         * Sets [Builder.value] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.value] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun value(value: JsonField<String>) = apply { body.value(value) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

@@ -34,26 +34,48 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The id of the org that was modified. */
+    /**
+     * The id of the org that was modified.
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun orgId(): String = orgId.getRequired("org_id")
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
     /**
      * If invite emails failed to send for some reason, the patch operation will still complete, but
      * we will return an error message here
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun sendEmailError(): Optional<String> =
         Optional.ofNullable(sendEmailError.getNullable("send_email_error"))
 
-    /** The id of the org that was modified. */
+    /**
+     * Returns the raw JSON value of [orgId].
+     *
+     * Unlike [orgId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("org_id") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
 
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     /**
-     * If invite emails failed to send for some reason, the patch operation will still complete, but
-     * we will return an error message here
+     * Returns the raw JSON value of [sendEmailError].
+     *
+     * Unlike [sendEmailError], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("send_email_error")
     @ExcludeMissing
@@ -113,11 +135,22 @@ private constructor(
         /** The id of the org that was modified. */
         fun orgId(orgId: String) = orgId(JsonField.of(orgId))
 
-        /** The id of the org that was modified. */
+        /**
+         * Sets [Builder.orgId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.orgId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
         fun status(status: Status) = status(JsonField.of(status))
 
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /**
@@ -127,16 +160,16 @@ private constructor(
         fun sendEmailError(sendEmailError: String?) =
             sendEmailError(JsonField.ofNullable(sendEmailError))
 
-        /**
-         * If invite emails failed to send for some reason, the patch operation will still complete,
-         * but we will return an error message here
-         */
+        /** Alias for calling [Builder.sendEmailError] with `sendEmailError.orElse(null)`. */
         fun sendEmailError(sendEmailError: Optional<String>) =
             sendEmailError(sendEmailError.getOrNull())
 
         /**
-         * If invite emails failed to send for some reason, the patch operation will still complete,
-         * but we will return an error message here
+         * Sets [Builder.sendEmailError] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.sendEmailError] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun sendEmailError(sendEmailError: JsonField<String>) = apply {
             this.sendEmailError = sendEmailError

@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -44,37 +45,92 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun columnOrder(): Optional<List<String>> =
         Optional.ofNullable(columnOrder.getNullable("columnOrder"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun columnSizing(): Optional<ColumnSizing> =
         Optional.ofNullable(columnSizing.getNullable("columnSizing"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun columnVisibility(): Optional<ColumnVisibility> =
         Optional.ofNullable(columnVisibility.getNullable("columnVisibility"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun grouping(): Optional<String> = Optional.ofNullable(grouping.getNullable("grouping"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun layout(): Optional<String> = Optional.ofNullable(layout.getNullable("layout"))
 
+    /**
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun rowHeight(): Optional<String> = Optional.ofNullable(rowHeight.getNullable("rowHeight"))
 
+    /**
+     * Returns the raw JSON value of [columnOrder].
+     *
+     * Unlike [columnOrder], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("columnOrder")
     @ExcludeMissing
     fun _columnOrder(): JsonField<List<String>> = columnOrder
 
+    /**
+     * Returns the raw JSON value of [columnSizing].
+     *
+     * Unlike [columnSizing], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("columnSizing")
     @ExcludeMissing
     fun _columnSizing(): JsonField<ColumnSizing> = columnSizing
 
+    /**
+     * Returns the raw JSON value of [columnVisibility].
+     *
+     * Unlike [columnVisibility], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("columnVisibility")
     @ExcludeMissing
     fun _columnVisibility(): JsonField<ColumnVisibility> = columnVisibility
 
+    /**
+     * Returns the raw JSON value of [grouping].
+     *
+     * Unlike [grouping], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("grouping") @ExcludeMissing fun _grouping(): JsonField<String> = grouping
 
+    /**
+     * Returns the raw JSON value of [layout].
+     *
+     * Unlike [layout], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("layout") @ExcludeMissing fun _layout(): JsonField<String> = layout
 
+    /**
+     * Returns the raw JSON value of [rowHeight].
+     *
+     * Unlike [rowHeight], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("rowHeight") @ExcludeMissing fun _rowHeight(): JsonField<String> = rowHeight
 
     @JsonAnyGetter
@@ -129,12 +185,25 @@ private constructor(
 
         fun columnOrder(columnOrder: List<String>?) = columnOrder(JsonField.ofNullable(columnOrder))
 
+        /** Alias for calling [Builder.columnOrder] with `columnOrder.orElse(null)`. */
         fun columnOrder(columnOrder: Optional<List<String>>) = columnOrder(columnOrder.getOrNull())
 
+        /**
+         * Sets [Builder.columnOrder] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.columnOrder] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun columnOrder(columnOrder: JsonField<List<String>>) = apply {
             this.columnOrder = columnOrder.map { it.toMutableList() }
         }
 
+        /**
+         * Adds a single [String] to [Builder.columnOrder].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addColumnOrder(columnOrder: String) = apply {
             this.columnOrder =
                 (this.columnOrder ?: JsonField.of(mutableListOf())).also {
@@ -145,9 +214,17 @@ private constructor(
         fun columnSizing(columnSizing: ColumnSizing?) =
             columnSizing(JsonField.ofNullable(columnSizing))
 
+        /** Alias for calling [Builder.columnSizing] with `columnSizing.orElse(null)`. */
         fun columnSizing(columnSizing: Optional<ColumnSizing>) =
             columnSizing(columnSizing.getOrNull())
 
+        /**
+         * Sets [Builder.columnSizing] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.columnSizing] with a well-typed [ColumnSizing] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun columnSizing(columnSizing: JsonField<ColumnSizing>) = apply {
             this.columnSizing = columnSizing
         }
@@ -155,29 +232,59 @@ private constructor(
         fun columnVisibility(columnVisibility: ColumnVisibility?) =
             columnVisibility(JsonField.ofNullable(columnVisibility))
 
+        /** Alias for calling [Builder.columnVisibility] with `columnVisibility.orElse(null)`. */
         fun columnVisibility(columnVisibility: Optional<ColumnVisibility>) =
             columnVisibility(columnVisibility.getOrNull())
 
+        /**
+         * Sets [Builder.columnVisibility] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.columnVisibility] with a well-typed [ColumnVisibility]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun columnVisibility(columnVisibility: JsonField<ColumnVisibility>) = apply {
             this.columnVisibility = columnVisibility
         }
 
         fun grouping(grouping: String?) = grouping(JsonField.ofNullable(grouping))
 
+        /** Alias for calling [Builder.grouping] with `grouping.orElse(null)`. */
         fun grouping(grouping: Optional<String>) = grouping(grouping.getOrNull())
 
+        /**
+         * Sets [Builder.grouping] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.grouping] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun grouping(grouping: JsonField<String>) = apply { this.grouping = grouping }
 
         fun layout(layout: String?) = layout(JsonField.ofNullable(layout))
 
+        /** Alias for calling [Builder.layout] with `layout.orElse(null)`. */
         fun layout(layout: Optional<String>) = layout(layout.getOrNull())
 
+        /**
+         * Sets [Builder.layout] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.layout] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun layout(layout: JsonField<String>) = apply { this.layout = layout }
 
         fun rowHeight(rowHeight: String?) = rowHeight(JsonField.ofNullable(rowHeight))
 
+        /** Alias for calling [Builder.rowHeight] with `rowHeight.orElse(null)`. */
         fun rowHeight(rowHeight: Optional<String>) = rowHeight(rowHeight.getOrNull())
 
+        /**
+         * Sets [Builder.rowHeight] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.rowHeight] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun rowHeight(rowHeight: JsonField<String>) = apply { this.rowHeight = rowHeight }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

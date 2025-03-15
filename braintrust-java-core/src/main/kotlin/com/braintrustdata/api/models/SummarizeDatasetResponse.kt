@@ -10,6 +10,7 @@ import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -41,39 +42,84 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Name of the dataset */
+    /**
+     * Name of the dataset
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun datasetName(): String = datasetName.getRequired("dataset_name")
 
-    /** URL to the dataset's page in the Braintrust app */
+    /**
+     * URL to the dataset's page in the Braintrust app
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun datasetUrl(): String = datasetUrl.getRequired("dataset_url")
 
-    /** Name of the project that the dataset belongs to */
+    /**
+     * Name of the project that the dataset belongs to
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun projectName(): String = projectName.getRequired("project_name")
 
-    /** URL to the project's page in the Braintrust app */
+    /**
+     * URL to the project's page in the Braintrust app
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun projectUrl(): String = projectUrl.getRequired("project_url")
 
-    /** Summary of a dataset's data */
+    /**
+     * Summary of a dataset's data
+     *
+     * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dataSummary(): Optional<DataSummary> =
         Optional.ofNullable(dataSummary.getNullable("data_summary"))
 
-    /** Name of the dataset */
+    /**
+     * Returns the raw JSON value of [datasetName].
+     *
+     * Unlike [datasetName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("dataset_name")
     @ExcludeMissing
     fun _datasetName(): JsonField<String> = datasetName
 
-    /** URL to the dataset's page in the Braintrust app */
+    /**
+     * Returns the raw JSON value of [datasetUrl].
+     *
+     * Unlike [datasetUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("dataset_url") @ExcludeMissing fun _datasetUrl(): JsonField<String> = datasetUrl
 
-    /** Name of the project that the dataset belongs to */
+    /**
+     * Returns the raw JSON value of [projectName].
+     *
+     * Unlike [projectName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project_name")
     @ExcludeMissing
     fun _projectName(): JsonField<String> = projectName
 
-    /** URL to the project's page in the Braintrust app */
+    /**
+     * Returns the raw JSON value of [projectUrl].
+     *
+     * Unlike [projectUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project_url") @ExcludeMissing fun _projectUrl(): JsonField<String> = projectUrl
 
-    /** Summary of a dataset's data */
+    /**
+     * Returns the raw JSON value of [dataSummary].
+     *
+     * Unlike [dataSummary], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("data_summary")
     @ExcludeMissing
     fun _dataSummary(): JsonField<DataSummary> = dataSummary
@@ -138,34 +184,64 @@ private constructor(
         /** Name of the dataset */
         fun datasetName(datasetName: String) = datasetName(JsonField.of(datasetName))
 
-        /** Name of the dataset */
+        /**
+         * Sets [Builder.datasetName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.datasetName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun datasetName(datasetName: JsonField<String>) = apply { this.datasetName = datasetName }
 
         /** URL to the dataset's page in the Braintrust app */
         fun datasetUrl(datasetUrl: String) = datasetUrl(JsonField.of(datasetUrl))
 
-        /** URL to the dataset's page in the Braintrust app */
+        /**
+         * Sets [Builder.datasetUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.datasetUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun datasetUrl(datasetUrl: JsonField<String>) = apply { this.datasetUrl = datasetUrl }
 
         /** Name of the project that the dataset belongs to */
         fun projectName(projectName: String) = projectName(JsonField.of(projectName))
 
-        /** Name of the project that the dataset belongs to */
+        /**
+         * Sets [Builder.projectName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun projectName(projectName: JsonField<String>) = apply { this.projectName = projectName }
 
         /** URL to the project's page in the Braintrust app */
         fun projectUrl(projectUrl: String) = projectUrl(JsonField.of(projectUrl))
 
-        /** URL to the project's page in the Braintrust app */
+        /**
+         * Sets [Builder.projectUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun projectUrl(projectUrl: JsonField<String>) = apply { this.projectUrl = projectUrl }
 
         /** Summary of a dataset's data */
         fun dataSummary(dataSummary: DataSummary?) = dataSummary(JsonField.ofNullable(dataSummary))
 
-        /** Summary of a dataset's data */
+        /** Alias for calling [Builder.dataSummary] with `dataSummary.orElse(null)`. */
         fun dataSummary(dataSummary: Optional<DataSummary>) = dataSummary(dataSummary.getOrNull())
 
-        /** Summary of a dataset's data */
+        /**
+         * Sets [Builder.dataSummary] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dataSummary] with a well-typed [DataSummary] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun dataSummary(dataSummary: JsonField<DataSummary>) = apply {
             this.dataSummary = dataSummary
         }
