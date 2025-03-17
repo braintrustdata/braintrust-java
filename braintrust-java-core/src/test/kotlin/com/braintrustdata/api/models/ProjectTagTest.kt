@@ -6,7 +6,7 @@ import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ProjectTagTest {
+internal class ProjectTagTest {
 
     @Test
     fun createProjectTag() {

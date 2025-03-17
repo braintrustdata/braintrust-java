@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PromptServiceAsyncTest {
+internal class PromptServiceAsyncTest {
 
     @Test
     fun create() {

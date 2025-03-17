@@ -6,7 +6,7 @@ import com.braintrustdata.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class AclListParamsTest {
+internal class AclListParamsTest {
 
     @Test
     fun create() {

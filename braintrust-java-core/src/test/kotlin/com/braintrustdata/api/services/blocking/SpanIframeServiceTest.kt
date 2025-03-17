@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class SpanIframeServiceTest {
+internal class SpanIframeServiceTest {
 
     @Test
     fun create() {

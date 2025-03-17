@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ObjectReferenceTest {
+internal class ObjectReferenceTest {
 
     @Test
     fun createObjectReference() {
