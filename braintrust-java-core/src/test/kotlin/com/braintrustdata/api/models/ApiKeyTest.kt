@@ -6,7 +6,7 @@ import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ApiKeyTest {
+internal class ApiKeyTest {
 
     @Test
     fun createApiKey() {
