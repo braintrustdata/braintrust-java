@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ProjectScoreDeleteParamsTest {
+internal class ProjectScoreDeleteParamsTest {
 
     @Test
     fun create() {

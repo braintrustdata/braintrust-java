@@ -5,7 +5,7 @@ package com.braintrustdata.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class OrganizationRetrieveParamsTest {
+internal class OrganizationRetrieveParamsTest {
 
     @Test
     fun create() {
