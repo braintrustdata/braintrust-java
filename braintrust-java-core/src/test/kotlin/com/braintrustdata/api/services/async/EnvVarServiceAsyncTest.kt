@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class EnvVarServiceAsyncTest {
+internal class EnvVarServiceAsyncTest {
 
     @Test
     fun create() {

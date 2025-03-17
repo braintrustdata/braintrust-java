@@ -6,7 +6,7 @@ import com.braintrustdata.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class DatasetFetchParamsTest {
+internal class DatasetFetchParamsTest {
 
     @Test
     fun create() {

@@ -6,7 +6,7 @@ import com.braintrustdata.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class PromptDataTest {
+internal class PromptDataTest {
 
     @Test
     fun createPromptData() {

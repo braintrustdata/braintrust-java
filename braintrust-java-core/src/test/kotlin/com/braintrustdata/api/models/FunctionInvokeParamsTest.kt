@@ -7,7 +7,7 @@ import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class FunctionInvokeParamsTest {
+internal class FunctionInvokeParamsTest {
 
     @Test
     fun create() {
