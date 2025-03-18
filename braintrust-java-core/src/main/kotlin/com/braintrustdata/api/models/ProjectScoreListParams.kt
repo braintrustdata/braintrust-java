@@ -89,20 +89,43 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.endingBefore?.let { queryParams.put("ending_before", listOf(it.toString())) }
-        this.ids?.let { queryParams.put("ids", listOf(it.toString())) }
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.orgName?.let { queryParams.put("org_name", listOf(it.toString())) }
-        this.projectId?.let { queryParams.put("project_id", listOf(it.toString())) }
-        this.projectName?.let { queryParams.put("project_name", listOf(it.toString())) }
-        this.projectScoreName?.let { queryParams.put("project_score_name", listOf(it.toString())) }
-        this.scoreType?.let { queryParams.put("score_type", listOf(it.toString())) }
-        this.startingAfter?.let { queryParams.put("starting_after", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                endingBefore?.let { put("ending_before", it) }
+                ids?.accept(
+                    object : Ids.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ids", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ids", strings.joinToString(","))
+                        }
+                    }
+                )
+                limit?.let { put("limit", it.toString()) }
+                orgName?.let { put("org_name", it) }
+                projectId?.let { put("project_id", it) }
+                projectName?.let { put("project_name", it) }
+                projectScoreName?.let { put("project_score_name", it) }
+                scoreType?.accept(
+                    object : ScoreType.Visitor<Unit> {
+                        override fun visitProject(project: ProjectScoreType) {
+                            put("score_type", project.asString())
+                        }
+
+                        override fun visitProjectScoreTypes(
+                            projectScoreTypes: List<ProjectScoreType>
+                        ) {
+                            put("score_type", projectScoreTypes.joinToString(",") { it.asString() })
+                        }
+                    }
+                )
+                startingAfter?.let { put("starting_after", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun toBuilder() = Builder().from(this)
 

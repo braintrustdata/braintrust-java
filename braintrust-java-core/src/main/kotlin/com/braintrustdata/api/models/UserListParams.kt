@@ -94,19 +94,60 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.email?.let { queryParams.put("email", listOf(it.toString())) }
-        this.endingBefore?.let { queryParams.put("ending_before", listOf(it.toString())) }
-        this.familyName?.let { queryParams.put("family_name", listOf(it.toString())) }
-        this.givenName?.let { queryParams.put("given_name", listOf(it.toString())) }
-        this.ids?.let { queryParams.put("ids", listOf(it.toString())) }
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.orgName?.let { queryParams.put("org_name", listOf(it.toString())) }
-        this.startingAfter?.let { queryParams.put("starting_after", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                email?.accept(
+                    object : Email.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("email", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("email", strings.joinToString(","))
+                        }
+                    }
+                )
+                endingBefore?.let { put("ending_before", it) }
+                familyName?.accept(
+                    object : FamilyName.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("family_name", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("family_name", strings.joinToString(","))
+                        }
+                    }
+                )
+                givenName?.accept(
+                    object : GivenName.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("given_name", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("given_name", strings.joinToString(","))
+                        }
+                    }
+                )
+                ids?.accept(
+                    object : Ids.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ids", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ids", strings.joinToString(","))
+                        }
+                    }
+                )
+                limit?.let { put("limit", it.toString()) }
+                orgName?.let { put("org_name", it) }
+                startingAfter?.let { put("starting_after", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun toBuilder() = Builder().from(this)
 

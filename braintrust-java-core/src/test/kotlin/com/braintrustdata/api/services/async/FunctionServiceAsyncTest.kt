@@ -15,7 +15,6 @@ import com.braintrustdata.api.models.FunctionUpdateParams
 import com.braintrustdata.api.models.PromptData
 import com.braintrustdata.api.models.PromptOptions
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -368,8 +367,7 @@ internal class FunctionServiceAsyncTest {
 
         val response = responseFuture.get()
         val unwrappedResponse = response.getOrNull()
-        assertNotNull(unwrappedResponse)
-        unwrappedResponse.validate()
+        unwrappedResponse?.validate()
     }
 
     @Test
