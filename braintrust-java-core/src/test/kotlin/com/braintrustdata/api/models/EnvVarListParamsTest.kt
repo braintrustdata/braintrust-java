@@ -29,22 +29,27 @@ internal class EnvVarListParamsTest {
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectType(EnvVarObjectType.ORGANIZATION)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("env_var_name", "env_var_name")
-        expected.put(
-            "ids",
-            EnvVarListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
-        )
-        expected.put("limit", "0")
-        expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", EnvVarObjectType.ORGANIZATION.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("env_var_name", "env_var_name")
+                    .put("ids", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("limit", "0")
+                    .put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("object_type", "organization")
+                    .build()
+            )
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params = EnvVarListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

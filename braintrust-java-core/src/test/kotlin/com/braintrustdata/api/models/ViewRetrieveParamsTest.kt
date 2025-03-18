@@ -25,10 +25,16 @@ internal class ViewRetrieveParamsTest {
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectType(AclObjectType.ORGANIZATION)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("object_type", "organization")
+                    .build()
+            )
     }
 
     @Test
@@ -39,10 +45,16 @@ internal class ViewRetrieveParamsTest {
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectType(AclObjectType.ORGANIZATION)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("object_type", "organization")
+                    .build()
+            )
     }
 
     @Test

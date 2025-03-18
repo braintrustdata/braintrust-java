@@ -78,17 +78,28 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.objectId.let { queryParams.put("object_id", listOf(it.toString())) }
-        this.objectType.let { queryParams.put("object_type", listOf(it.toString())) }
-        this.endingBefore?.let { queryParams.put("ending_before", listOf(it.toString())) }
-        this.ids?.let { queryParams.put("ids", listOf(it.toString())) }
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.startingAfter?.let { queryParams.put("starting_after", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("object_id", objectId)
+                put("object_type", objectType.asString())
+                endingBefore?.let { put("ending_before", it) }
+                ids?.accept(
+                    object : Ids.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ids", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ids", strings.joinToString(","))
+                        }
+                    }
+                )
+                limit?.let { put("limit", it.toString()) }
+                startingAfter?.let { put("starting_after", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun toBuilder() = Builder().from(this)
 

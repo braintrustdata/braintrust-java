@@ -31,23 +31,28 @@ internal class ProjectListParamsTest {
                 .projectName("project_name")
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put(
-            "ids",
-            ProjectListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
-        )
-        expected.put("limit", "0")
-        expected.put("org_name", "org_name")
-        expected.put("project_name", "project_name")
-        expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("ids", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("limit", "0")
+                    .put("org_name", "org_name")
+                    .put("project_name", "project_name")
+                    .put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params = ProjectListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }
