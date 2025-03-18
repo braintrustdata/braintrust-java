@@ -337,6 +337,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Body =
                 Body(inviteUsers, orgId, orgName, removeUsers, additionalProperties.toImmutable())
         }
@@ -574,6 +579,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [OrganizationMemberUpdateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): OrganizationMemberUpdateParams =
             OrganizationMemberUpdateParams(
                 body.build(),
@@ -971,6 +981,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [InviteUsers].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): InviteUsers =
                 InviteUsers(
                     (emails ?: JsonMissing.of()).map { it.toImmutable() },
@@ -1159,6 +1174,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [RemoveUsers].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): RemoveUsers =
                 RemoveUsers(
                     (emails ?: JsonMissing.of()).map { it.toImmutable() },

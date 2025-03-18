@@ -110,6 +110,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [ViewData].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): ViewData = ViewData(search, additionalProperties.toImmutable())
     }
 
