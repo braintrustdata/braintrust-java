@@ -35,25 +35,30 @@ internal class UserListParamsTest {
                 .orgName("org_name")
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("email", UserListParams.Email.ofString("string").toString())
-        expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("family_name", UserListParams.FamilyName.ofString("string").toString())
-        expected.put("given_name", UserListParams.GivenName.ofString("string").toString())
-        expected.put(
-            "ids",
-            UserListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
-        )
-        expected.put("limit", "0")
-        expected.put("org_name", "org_name")
-        expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("email", "string")
+                    .put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("family_name", "string")
+                    .put("given_name", "string")
+                    .put("ids", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("limit", "0")
+                    .put("org_name", "org_name")
+                    .put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params = UserListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

@@ -25,10 +25,16 @@ internal class ExperimentSummarizeParamsTest {
                 .comparisonExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .summarizeScores(true)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("comparison_experiment_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("summarize_scores", "true")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("comparison_experiment_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("summarize_scores", "true")
+                    .build()
+            )
     }
 
     @Test
@@ -37,8 +43,10 @@ internal class ExperimentSummarizeParamsTest {
             ExperimentSummarizeParams.builder()
                 .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test

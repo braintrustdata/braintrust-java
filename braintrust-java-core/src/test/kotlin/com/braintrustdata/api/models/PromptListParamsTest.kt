@@ -39,27 +39,32 @@ internal class PromptListParamsTest {
                 .startingAfter("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .version("version")
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put(
-            "ids",
-            PromptListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
-        )
-        expected.put("limit", "0")
-        expected.put("org_name", "org_name")
-        expected.put("project_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("project_name", "project_name")
-        expected.put("prompt_name", "prompt_name")
-        expected.put("slug", "slug")
-        expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("version", "version")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("ids", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("limit", "0")
+                    .put("org_name", "org_name")
+                    .put("project_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("project_name", "project_name")
+                    .put("prompt_name", "prompt_name")
+                    .put("slug", "slug")
+                    .put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("version", "version")
+                    .build()
+            )
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params = PromptListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

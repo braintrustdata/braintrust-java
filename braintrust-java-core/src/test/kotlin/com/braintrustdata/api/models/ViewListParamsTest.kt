@@ -35,19 +35,22 @@ internal class ViewListParamsTest {
                 .viewName("view_name")
                 .viewType(ViewType.PROJECTS)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
-        expected.put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put(
-            "ids",
-            ViewListParams.Ids.ofString("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").toString(),
-        )
-        expected.put("limit", "0")
-        expected.put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("view_name", "view_name")
-        expected.put("view_type", ViewType.PROJECTS.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("object_type", "organization")
+                    .put("ending_before", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("ids", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("limit", "0")
+                    .put("starting_after", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("view_name", "view_name")
+                    .put("view_type", "projects")
+                    .build()
+            )
     }
 
     @Test
@@ -57,9 +60,15 @@ internal class ViewListParamsTest {
                 .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .objectType(AclObjectType.ORGANIZATION)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        expected.put("object_type", AclObjectType.ORGANIZATION.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("object_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .put("object_type", "organization")
+                    .build()
+            )
     }
 }

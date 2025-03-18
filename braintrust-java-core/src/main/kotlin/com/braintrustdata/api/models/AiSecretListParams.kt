@@ -80,18 +80,39 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.aiSecretName?.let { queryParams.put("ai_secret_name", listOf(it.toString())) }
-        this.aiSecretType?.let { queryParams.put("ai_secret_type", listOf(it.toString())) }
-        this.endingBefore?.let { queryParams.put("ending_before", listOf(it.toString())) }
-        this.ids?.let { queryParams.put("ids", listOf(it.toString())) }
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.orgName?.let { queryParams.put("org_name", listOf(it.toString())) }
-        this.startingAfter?.let { queryParams.put("starting_after", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                aiSecretName?.let { put("ai_secret_name", it) }
+                aiSecretType?.accept(
+                    object : AiSecretType.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ai_secret_type", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ai_secret_type", strings.joinToString(","))
+                        }
+                    }
+                )
+                endingBefore?.let { put("ending_before", it) }
+                ids?.accept(
+                    object : Ids.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ids", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ids", strings.joinToString(","))
+                        }
+                    }
+                )
+                limit?.let { put("limit", it.toString()) }
+                orgName?.let { put("org_name", it) }
+                startingAfter?.let { put("starting_after", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun toBuilder() = Builder().from(this)
 

@@ -23,9 +23,11 @@ internal class DatasetSummarizeParamsTest {
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .summarizeData(true)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("summarize_data", "true")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(QueryParams.builder().put("summarize_data", "true").build())
     }
 
     @Test
@@ -34,8 +36,10 @@ internal class DatasetSummarizeParamsTest {
             DatasetSummarizeParams.builder()
                 .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test

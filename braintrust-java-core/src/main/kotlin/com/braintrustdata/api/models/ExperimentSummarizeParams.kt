@@ -43,15 +43,14 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.comparisonExperimentId?.let {
-            queryParams.put("comparison_experiment_id", listOf(it.toString()))
-        }
-        this.summarizeScores?.let { queryParams.put("summarize_scores", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                comparisonExperimentId?.let { put("comparison_experiment_id", it) }
+                summarizeScores?.let { put("summarize_scores", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun getPathParam(index: Int): String {
         return when (index) {

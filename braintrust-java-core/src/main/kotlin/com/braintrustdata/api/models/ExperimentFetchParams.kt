@@ -88,15 +88,16 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.maxRootSpanId?.let { queryParams.put("max_root_span_id", listOf(it.toString())) }
-        this.maxXactId?.let { queryParams.put("max_xact_id", listOf(it.toString())) }
-        this.version?.let { queryParams.put("version", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                limit?.let { put("limit", it.toString()) }
+                maxRootSpanId?.let { put("max_root_span_id", it) }
+                maxXactId?.let { put("max_xact_id", it) }
+                version?.let { put("version", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun getPathParam(index: Int): String {
         return when (index) {
