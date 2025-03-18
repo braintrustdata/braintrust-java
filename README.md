@@ -13,7 +13,7 @@ The Braintrust Java SDK is similar to the Braintrust Kotlin SDK but with minor d
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.7.0).
+The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.8.0).
 
 ## Installation
 
