@@ -200,6 +200,18 @@ private constructor(
             keys.forEach(::removeAdditionalBodyProperty)
         }
 
+        /**
+         * Returns an immutable instance of [ApiKeyDeleteParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .apiKeyId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ApiKeyDeleteParams =
             ApiKeyDeleteParams(
                 checkRequired("apiKeyId", apiKeyId),

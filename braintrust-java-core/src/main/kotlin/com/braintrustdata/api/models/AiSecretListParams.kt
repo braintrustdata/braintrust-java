@@ -306,6 +306,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [AiSecretListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): AiSecretListParams =
             AiSecretListParams(
                 aiSecretName,
