@@ -29,12 +29,18 @@ internal class ProjectLogFetchParamsTest {
                 .maxXactId("max_xact_id")
                 .version("version")
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("limit", "0")
-        expected.put("max_root_span_id", "max_root_span_id")
-        expected.put("max_xact_id", "max_xact_id")
-        expected.put("version", "version")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("limit", "0")
+                    .put("max_root_span_id", "max_root_span_id")
+                    .put("max_xact_id", "max_xact_id")
+                    .put("version", "version")
+                    .build()
+            )
     }
 
     @Test
@@ -43,8 +49,10 @@ internal class ProjectLogFetchParamsTest {
             ProjectLogFetchParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test
