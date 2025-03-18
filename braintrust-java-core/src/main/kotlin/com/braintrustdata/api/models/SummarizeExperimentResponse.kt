@@ -347,6 +347,21 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [SummarizeExperimentResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .experimentName()
+         * .experimentUrl()
+         * .projectName()
+         * .projectUrl()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SummarizeExperimentResponse =
             SummarizeExperimentResponse(
                 checkRequired("experimentName", experimentName),
@@ -420,6 +435,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Metrics].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Metrics = Metrics(additionalProperties.toImmutable())
         }
 
@@ -500,6 +520,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Scores].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Scores = Scores(additionalProperties.toImmutable())
         }
 
