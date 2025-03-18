@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.braintrustdata.api.core.http
 
 import com.braintrustdata.api.core.toImmutable
