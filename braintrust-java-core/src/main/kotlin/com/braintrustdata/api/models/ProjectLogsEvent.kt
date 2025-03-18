@@ -830,6 +830,25 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [ProjectLogsEvent].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * ._xactId()
+         * .created()
+         * .logId()
+         * .orgId()
+         * .projectId()
+         * .rootSpanId()
+         * .spanId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ProjectLogsEvent =
             ProjectLogsEvent(
                 checkRequired("id", id),
@@ -1156,6 +1175,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Context].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Context =
                 Context(
                     callerFilename,
@@ -1285,6 +1309,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Metadata].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Metadata = Metadata(model, additionalProperties.toImmutable())
         }
 
@@ -1657,6 +1686,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Metrics].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Metrics =
                 Metrics(
                     callerFilename,
@@ -1757,6 +1791,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Scores].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Scores = Scores(additionalProperties.toImmutable())
         }
 

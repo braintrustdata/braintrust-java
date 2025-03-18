@@ -194,6 +194,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [PromptOptions].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PromptOptions =
             PromptOptions(model, params, position, additionalProperties.toImmutable())
     }
@@ -981,6 +986,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [OpenAIModelParams].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): OpenAIModelParams =
                     OpenAIModelParams(
                         frequencyPenalty,
@@ -1347,6 +1357,18 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Function].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .name()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
                         fun build(): Function =
                             Function(
                                 checkRequired("name", name),
@@ -1752,6 +1774,18 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [JsonObject].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
                         fun build(): JsonObject =
                             JsonObject(
                                 checkRequired("type", type),
@@ -2018,6 +2052,19 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [JsonSchema].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .jsonSchema()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
                         fun build(): JsonSchema =
                             JsonSchema(
                                 checkRequired("jsonSchema", jsonSchema),
@@ -2255,6 +2302,19 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [InnerJsonSchema].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .name()
+                             * ```
+                             *
+                             * @throws IllegalStateException if any required field is unset.
+                             */
                             fun build(): InnerJsonSchema =
                                 InnerJsonSchema(
                                     checkRequired("name", name),
@@ -2474,6 +2534,12 @@ private constructor(
                                         keys.forEach(::removeAdditionalProperty)
                                     }
 
+                                    /**
+                                     * Returns an immutable instance of [Object].
+                                     *
+                                     * Further updates to this [Builder] will not mutate the
+                                     * returned instance.
+                                     */
                                     fun build(): Object = Object(additionalProperties.toImmutable())
                                 }
 
@@ -2735,6 +2801,18 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Text].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
                         fun build(): Text =
                             Text(checkRequired("type", type), additionalProperties.toImmutable())
                     }
@@ -3248,6 +3326,19 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Function].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .function()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
                         fun build(): Function =
                             Function(
                                 checkRequired("function", function),
@@ -3361,6 +3452,19 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [InnerFunction].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .name()
+                             * ```
+                             *
+                             * @throws IllegalStateException if any required field is unset.
+                             */
                             fun build(): InnerFunction =
                                 InnerFunction(
                                     checkRequired("name", name),
@@ -3847,6 +3951,19 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [AnthropicModelParams].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .maxTokens()
+                 * .temperature()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): AnthropicModelParams =
                     AnthropicModelParams(
                         checkRequired("maxTokens", maxTokens),
@@ -4109,6 +4226,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [GoogleModelParams].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): GoogleModelParams =
                     GoogleModelParams(
                         maxOutputTokens,
@@ -4302,6 +4424,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [WindowAiModelParams].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): WindowAiModelParams =
                     WindowAiModelParams(
                         temperature,
@@ -4427,6 +4554,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [JsCompletionParams].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): JsCompletionParams =
                     JsCompletionParams(useCache, additionalProperties.toImmutable())
             }
