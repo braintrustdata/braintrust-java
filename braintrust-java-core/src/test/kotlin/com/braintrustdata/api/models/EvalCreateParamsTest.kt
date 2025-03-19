@@ -190,14 +190,12 @@ internal class EvalCreateParamsTest {
             )
         assertThat(body.projectId()).isEqualTo("project_id")
         assertThat(body.scores())
-            .isEqualTo(
-                listOf(
-                    EvalCreateParams.Score.ofFunctionId(
-                        EvalCreateParams.Score.FunctionId.builder()
-                            .functionId("function_id")
-                            .version("version")
-                            .build()
-                    )
+            .containsExactly(
+                EvalCreateParams.Score.ofFunctionId(
+                    EvalCreateParams.Score.FunctionId.builder()
+                        .functionId("function_id")
+                        .version("version")
+                        .build()
                 )
             )
         assertThat(body.task())
@@ -292,13 +290,9 @@ internal class EvalCreateParamsTest {
             )
         assertThat(body.projectId()).isEqualTo("project_id")
         assertThat(body.scores())
-            .isEqualTo(
-                listOf(
-                    EvalCreateParams.Score.ofFunctionId(
-                        EvalCreateParams.Score.FunctionId.builder()
-                            .functionId("function_id")
-                            .build()
-                    )
+            .containsExactly(
+                EvalCreateParams.Score.ofFunctionId(
+                    EvalCreateParams.Score.FunctionId.builder().functionId("function_id").build()
                 )
             )
         assertThat(body.task())

@@ -52,6 +52,20 @@ internal class ViewUpdateParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params =
+            ViewUpdateParams.builder()
+                .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .objectType(AclObjectType.ORGANIZATION)
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun body() {
         val params =
             ViewUpdateParams.builder()
@@ -149,20 +163,5 @@ internal class ViewUpdateParamsTest {
         assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params =
-            ViewUpdateParams.builder()
-                .viewId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .objectType(AclObjectType.ORGANIZATION)
-                .build()
-        assertThat(params).isNotNull
-        // path param "viewId"
-        assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

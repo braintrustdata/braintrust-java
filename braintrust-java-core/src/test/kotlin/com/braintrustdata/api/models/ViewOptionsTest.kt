@@ -3,6 +3,7 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -28,7 +29,7 @@ internal class ViewOptionsTest {
                 .rowHeight("rowHeight")
                 .build()
         assertThat(viewOptions).isNotNull
-        assertThat(viewOptions.columnOrder().get()).containsExactly("string")
+        assertThat(viewOptions.columnOrder().getOrNull()).containsExactly("string")
         assertThat(viewOptions.columnSizing())
             .contains(
                 ViewOptions.ColumnSizing.builder()
