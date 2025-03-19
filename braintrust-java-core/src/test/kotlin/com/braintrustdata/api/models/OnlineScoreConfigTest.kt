@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -33,6 +34,6 @@ internal class OnlineScoreConfigTest {
                 )
             )
         assertThat(onlineScoreConfig.applyToRootSpan()).contains(true)
-        assertThat(onlineScoreConfig.applyToSpanNames().get()).containsExactly("string")
+        assertThat(onlineScoreConfig.applyToSpanNames().getOrNull()).containsExactly("string")
     }
 }

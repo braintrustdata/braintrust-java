@@ -36,6 +36,19 @@ internal class ProjectLogFeedbackParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params =
+            ProjectLogFeedbackParams.builder()
+                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addFeedback(FeedbackProjectLogsItem.builder().id("id").build())
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun body() {
         val params =
             ProjectLogFeedbackParams.builder()
@@ -65,26 +78,24 @@ internal class ProjectLogFeedbackParamsTest {
 
         assertNotNull(body)
         assertThat(body.feedback())
-            .isEqualTo(
-                listOf(
-                    FeedbackProjectLogsItem.builder()
-                        .id("id")
-                        .comment("comment")
-                        .expected(JsonValue.from(mapOf<String, Any>()))
-                        .metadata(
-                            FeedbackProjectLogsItem.Metadata.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
-                                .build()
-                        )
-                        .scores(
-                            FeedbackProjectLogsItem.Scores.builder()
-                                .putAdditionalProperty("foo", JsonValue.from(0))
-                                .build()
-                        )
-                        .source(FeedbackProjectLogsItem.Source.APP)
-                        .addTag("string")
-                        .build()
-                )
+            .containsExactly(
+                FeedbackProjectLogsItem.builder()
+                    .id("id")
+                    .comment("comment")
+                    .expected(JsonValue.from(mapOf<String, Any>()))
+                    .metadata(
+                        FeedbackProjectLogsItem.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .scores(
+                        FeedbackProjectLogsItem.Scores.builder()
+                            .putAdditionalProperty("foo", JsonValue.from(0))
+                            .build()
+                    )
+                    .source(FeedbackProjectLogsItem.Source.APP)
+                    .addTag("string")
+                    .build()
             )
     }
 
@@ -100,20 +111,6 @@ internal class ProjectLogFeedbackParamsTest {
 
         assertNotNull(body)
         assertThat(body.feedback())
-            .isEqualTo(listOf(FeedbackProjectLogsItem.builder().id("id").build()))
-    }
-
-    @Test
-    fun getPathParam() {
-        val params =
-            ProjectLogFeedbackParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .addFeedback(FeedbackProjectLogsItem.builder().id("id").build())
-                .build()
-        assertThat(params).isNotNull
-        // path param "projectId"
-        assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
+            .containsExactly(FeedbackProjectLogsItem.builder().id("id").build())
     }
 }

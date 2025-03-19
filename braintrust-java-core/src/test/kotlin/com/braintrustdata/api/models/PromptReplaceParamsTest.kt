@@ -3,6 +3,7 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -280,7 +281,7 @@ internal class PromptReplaceParamsTest {
                     )
                     .build()
             )
-        assertThat(body.tags()).contains(listOf("string"))
+        assertThat(body.tags().getOrNull()).containsExactly("string")
     }
 
     @Test

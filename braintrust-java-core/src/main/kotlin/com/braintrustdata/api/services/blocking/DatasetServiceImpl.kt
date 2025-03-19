@@ -138,7 +138,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0))
+                    .addPathSegments("v1", "dataset", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -164,7 +164,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0))
+                    .addPathSegments("v1", "dataset", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
@@ -219,7 +219,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0))
+                    .addPathSegments("v1", "dataset", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
                     .prepare(clientOptions, params)
@@ -247,7 +247,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0), "feedback")
+                    .addPathSegments("v1", "dataset", params._pathParam(0), "feedback")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
@@ -275,7 +275,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0), "fetch")
+                    .addPathSegments("v1", "dataset", params._pathParam(0), "fetch")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -302,7 +302,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0), "fetch")
+                    .addPathSegments("v1", "dataset", params._pathParam(0), "fetch")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
@@ -330,7 +330,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0), "insert")
+                    .addPathSegments("v1", "dataset", params._pathParam(0), "insert")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
@@ -358,7 +358,7 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("v1", "dataset", params.getPathParam(0), "summarize")
+                    .addPathSegments("v1", "dataset", params._pathParam(0), "summarize")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
