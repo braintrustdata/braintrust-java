@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class PromptTest {
 
     @Test
-    fun createPrompt() {
+    fun create() {
         val prompt =
             Prompt.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -111,7 +111,7 @@ internal class PromptTest {
                 )
                 .addTag("string")
                 .build()
-        assertThat(prompt).isNotNull
+
         assertThat(prompt.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(prompt._xactId()).isEqualTo("_xact_id")
         assertThat(prompt.logId()).isEqualTo(Prompt.LogId.P)

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class InsertProjectLogsEventTest {
 
     @Test
-    fun createInsertProjectLogsEvent() {
+    fun create() {
         val insertProjectLogsEvent =
             InsertProjectLogsEvent.builder()
                 .id("id")
@@ -64,7 +64,7 @@ internal class InsertProjectLogsEventTest {
                 .addSpanParent("string")
                 .addTag("string")
                 .build()
-        assertThat(insertProjectLogsEvent).isNotNull
+
         assertThat(insertProjectLogsEvent.id()).contains("id")
         assertThat(insertProjectLogsEvent._isMerge()).contains(true)
         assertThat(insertProjectLogsEvent._mergePaths().getOrNull())

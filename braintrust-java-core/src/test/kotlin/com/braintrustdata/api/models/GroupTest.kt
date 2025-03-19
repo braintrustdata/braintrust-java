@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class GroupTest {
 
     @Test
-    fun createGroup() {
+    fun create() {
         val group =
             Group.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -23,7 +23,7 @@ internal class GroupTest {
                 .addMemberUser("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(group).isNotNull
+
         assertThat(group.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(group.name()).isEqualTo("name")
         assertThat(group.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

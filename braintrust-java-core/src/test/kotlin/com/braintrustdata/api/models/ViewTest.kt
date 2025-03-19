@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class ViewTest {
 
     @Test
-    fun createView() {
+    fun create() {
         val view =
             View.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -52,7 +52,7 @@ internal class ViewTest {
                         .build()
                 )
                 .build()
-        assertThat(view).isNotNull
+
         assertThat(view.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(view.name()).isEqualTo("name")
         assertThat(view.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

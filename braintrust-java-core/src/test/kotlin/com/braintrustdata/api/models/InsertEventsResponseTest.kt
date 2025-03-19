@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test
 internal class InsertEventsResponseTest {
 
     @Test
-    fun createInsertEventsResponse() {
+    fun create() {
         val insertEventsResponse = InsertEventsResponse.builder().addRowId("string").build()
-        assertThat(insertEventsResponse).isNotNull
+
         assertThat(insertEventsResponse.rowIds()).containsExactly("string")
     }
 }

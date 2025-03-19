@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class ProjectLogsEventTest {
 
     @Test
-    fun createProjectLogsEvent() {
+    fun create() {
         val projectLogsEvent =
             ProjectLogsEvent.builder()
                 .id("id")
@@ -65,7 +65,7 @@ internal class ProjectLogsEventTest {
                 .addSpanParent("string")
                 .addTag("string")
                 .build()
-        assertThat(projectLogsEvent).isNotNull
+
         assertThat(projectLogsEvent.id()).isEqualTo("id")
         assertThat(projectLogsEvent._xactId()).isEqualTo("_xact_id")
         assertThat(projectLogsEvent.created())

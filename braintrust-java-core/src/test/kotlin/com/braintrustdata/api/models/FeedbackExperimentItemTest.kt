@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class FeedbackExperimentItemTest {
 
     @Test
-    fun createFeedbackExperimentItem() {
+    fun create() {
         val feedbackExperimentItem =
             FeedbackExperimentItem.builder()
                 .id("id")
@@ -29,7 +29,7 @@ internal class FeedbackExperimentItemTest {
                 .source(FeedbackExperimentItem.Source.APP)
                 .addTag("string")
                 .build()
-        assertThat(feedbackExperimentItem).isNotNull
+
         assertThat(feedbackExperimentItem.id()).isEqualTo("id")
         assertThat(feedbackExperimentItem.comment()).contains("comment")
         assertThat(feedbackExperimentItem._expected())

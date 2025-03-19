@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class ViewDataTest {
 
     @Test
-    fun createViewData() {
+    fun create() {
         val viewData =
             ViewData.builder()
                 .search(
@@ -21,7 +21,7 @@ internal class ViewDataTest {
                         .build()
                 )
                 .build()
-        assertThat(viewData).isNotNull
+
         assertThat(viewData.search())
             .contains(
                 ViewDataSearch.builder()

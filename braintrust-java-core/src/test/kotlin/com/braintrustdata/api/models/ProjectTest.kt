@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class ProjectTest {
 
     @Test
-    fun createProject() {
+    fun create() {
         val project =
             Project.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -33,7 +33,7 @@ internal class ProjectTest {
                 )
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(project).isNotNull
+
         assertThat(project.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(project.name()).isEqualTo("name")
         assertThat(project.orgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

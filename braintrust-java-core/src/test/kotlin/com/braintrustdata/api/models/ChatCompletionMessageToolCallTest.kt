@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class ChatCompletionMessageToolCallTest {
 
     @Test
-    fun createChatCompletionMessageToolCall() {
+    fun create() {
         val chatCompletionMessageToolCall =
             ChatCompletionMessageToolCall.builder()
                 .id("id")
@@ -20,7 +20,7 @@ internal class ChatCompletionMessageToolCallTest {
                 )
                 .type(ChatCompletionMessageToolCall.Type.FUNCTION)
                 .build()
-        assertThat(chatCompletionMessageToolCall).isNotNull
+
         assertThat(chatCompletionMessageToolCall.id()).isEqualTo("id")
         assertThat(chatCompletionMessageToolCall.function())
             .isEqualTo(

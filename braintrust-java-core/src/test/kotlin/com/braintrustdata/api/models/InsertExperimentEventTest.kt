@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class InsertExperimentEventTest {
 
     @Test
-    fun createInsertExperimentEvent() {
+    fun create() {
         val insertExperimentEvent =
             InsertExperimentEvent.builder()
                 .id("id")
@@ -64,7 +64,7 @@ internal class InsertExperimentEventTest {
                 .addSpanParent("string")
                 .addTag("string")
                 .build()
-        assertThat(insertExperimentEvent).isNotNull
+
         assertThat(insertExperimentEvent.id()).contains("id")
         assertThat(insertExperimentEvent._isMerge()).contains(true)
         assertThat(insertExperimentEvent._mergePaths().getOrNull())

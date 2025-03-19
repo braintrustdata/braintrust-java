@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class FetchDatasetEventsResponseTest {
 
     @Test
-    fun createFetchDatasetEventsResponse() {
+    fun create() {
         val fetchDatasetEventsResponse =
             FetchDatasetEventsResponse.builder()
                 .addEvent(
@@ -40,7 +40,7 @@ internal class FetchDatasetEventsResponseTest {
                 )
                 .cursor("cursor")
                 .build()
-        assertThat(fetchDatasetEventsResponse).isNotNull
+
         assertThat(fetchDatasetEventsResponse.events())
             .containsExactly(
                 DatasetEvent.builder()

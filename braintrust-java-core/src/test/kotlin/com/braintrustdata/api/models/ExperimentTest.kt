@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class ExperimentTest {
 
     @Test
-    fun createExperiment() {
+    fun create() {
         val experiment =
             Experiment.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -44,7 +44,7 @@ internal class ExperimentTest {
                 )
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(experiment).isNotNull
+
         assertThat(experiment.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(experiment.name()).isEqualTo("name")
         assertThat(experiment.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
