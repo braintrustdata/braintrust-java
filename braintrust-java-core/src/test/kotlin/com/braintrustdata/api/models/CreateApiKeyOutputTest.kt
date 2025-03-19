@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class CreateApiKeyOutputTest {
 
     @Test
-    fun createCreateApiKeyOutput() {
+    fun create() {
         val createApiKeyOutput =
             CreateApiKeyOutput.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -20,7 +20,7 @@ internal class CreateApiKeyOutputTest {
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(createApiKeyOutput).isNotNull
+
         assertThat(createApiKeyOutput.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(createApiKeyOutput.key()).isEqualTo("key")
         assertThat(createApiKeyOutput.name()).isEqualTo("name")

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class FeedbackProjectLogsItemTest {
 
     @Test
-    fun createFeedbackProjectLogsItem() {
+    fun create() {
         val feedbackProjectLogsItem =
             FeedbackProjectLogsItem.builder()
                 .id("id")
@@ -29,7 +29,7 @@ internal class FeedbackProjectLogsItemTest {
                 .source(FeedbackProjectLogsItem.Source.APP)
                 .addTag("string")
                 .build()
-        assertThat(feedbackProjectLogsItem).isNotNull
+
         assertThat(feedbackProjectLogsItem.id()).isEqualTo("id")
         assertThat(feedbackProjectLogsItem.comment()).contains("comment")
         assertThat(feedbackProjectLogsItem._expected())

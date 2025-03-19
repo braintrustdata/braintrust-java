@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test
 internal class ProjectScoreCategoryTest {
 
     @Test
-    fun createProjectScoreCategory() {
+    fun create() {
         val projectScoreCategory = ProjectScoreCategory.builder().name("name").value(0.0).build()
-        assertThat(projectScoreCategory).isNotNull
+
         assertThat(projectScoreCategory.name()).isEqualTo("name")
         assertThat(projectScoreCategory.value()).isEqualTo(0.0)
     }

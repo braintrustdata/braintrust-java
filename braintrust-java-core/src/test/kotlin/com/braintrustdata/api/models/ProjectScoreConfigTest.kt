@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class ProjectScoreConfigTest {
 
     @Test
-    fun createProjectScoreConfig() {
+    fun create() {
         val projectScoreConfig =
             ProjectScoreConfig.builder()
                 .destination("destination")
@@ -27,7 +27,7 @@ internal class ProjectScoreConfigTest {
                         .build()
                 )
                 .build()
-        assertThat(projectScoreConfig).isNotNull
+
         assertThat(projectScoreConfig.destination()).contains("destination")
         assertThat(projectScoreConfig.multiSelect()).contains(true)
         assertThat(projectScoreConfig.online())

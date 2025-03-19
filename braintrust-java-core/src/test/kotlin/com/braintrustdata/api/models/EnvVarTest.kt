@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class EnvVarTest {
 
     @Test
-    fun createEnvVar() {
+    fun create() {
         val envVar =
             EnvVar.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -19,7 +19,7 @@ internal class EnvVarTest {
                 .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .used(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .build()
-        assertThat(envVar).isNotNull
+
         assertThat(envVar.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(envVar.name()).isEqualTo("name")
         assertThat(envVar.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

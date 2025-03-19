@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class CodeBundleTest {
 
     @Test
-    fun createCodeBundle() {
+    fun create() {
         val codeBundle =
             CodeBundle.builder()
                 .bundleId("bundle_id")
@@ -31,7 +31,7 @@ internal class CodeBundleTest {
                 )
                 .preview("preview")
                 .build()
-        assertThat(codeBundle).isNotNull
+
         assertThat(codeBundle.bundleId()).isEqualTo("bundle_id")
         assertThat(codeBundle.location())
             .isEqualTo(

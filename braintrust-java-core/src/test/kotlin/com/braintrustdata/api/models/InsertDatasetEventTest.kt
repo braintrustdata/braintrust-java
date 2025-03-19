@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class InsertDatasetEventTest {
 
     @Test
-    fun createInsertDatasetEvent() {
+    fun create() {
         val insertDatasetEvent =
             InsertDatasetEvent.builder()
                 .id("id")
@@ -37,7 +37,7 @@ internal class InsertDatasetEventTest {
                 .addSpanParent("string")
                 .addTag("string")
                 .build()
-        assertThat(insertDatasetEvent).isNotNull
+
         assertThat(insertDatasetEvent.id()).contains("id")
         assertThat(insertDatasetEvent._isMerge()).contains(true)
         assertThat(insertDatasetEvent._mergePaths().getOrNull()).containsExactly(listOf("string"))

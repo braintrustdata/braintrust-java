@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class FunctionTest {
 
     @Test
-    fun createFunction() {
+    fun create() {
         val function =
             Function.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -129,7 +129,7 @@ internal class FunctionTest {
                 )
                 .addTag("string")
                 .build()
-        assertThat(function).isNotNull
+
         assertThat(function.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(function._xactId()).isEqualTo("_xact_id")
         assertThat(function.functionData())

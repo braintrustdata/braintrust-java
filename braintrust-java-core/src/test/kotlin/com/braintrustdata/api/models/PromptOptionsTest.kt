@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class PromptOptionsTest {
 
     @Test
-    fun createPromptOptions() {
+    fun create() {
         val promptOptions =
             PromptOptions.builder()
                 .model("model")
@@ -44,7 +44,7 @@ internal class PromptOptionsTest {
                 )
                 .position("position")
                 .build()
-        assertThat(promptOptions).isNotNull
+
         assertThat(promptOptions.model()).contains("model")
         assertThat(promptOptions.params())
             .contains(

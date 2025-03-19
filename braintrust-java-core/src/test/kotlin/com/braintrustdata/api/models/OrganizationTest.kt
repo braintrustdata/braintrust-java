@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class OrganizationTest {
 
     @Test
-    fun createOrganization() {
+    fun create() {
         val organization =
             Organization.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -20,7 +20,7 @@ internal class OrganizationTest {
                 .proxyUrl("proxy_url")
                 .realtimeUrl("realtime_url")
                 .build()
-        assertThat(organization).isNotNull
+
         assertThat(organization.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(organization.name()).isEqualTo("name")
         assertThat(organization.apiUrl()).contains("api_url")
