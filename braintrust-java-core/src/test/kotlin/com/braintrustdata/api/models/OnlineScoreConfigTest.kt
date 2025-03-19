@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class OnlineScoreConfigTest {
 
     @Test
-    fun createOnlineScoreConfig() {
+    fun create() {
         val onlineScoreConfig =
             OnlineScoreConfig.builder()
                 .samplingRate(0.0)
@@ -22,7 +22,7 @@ internal class OnlineScoreConfigTest {
                 .applyToRootSpan(true)
                 .addApplyToSpanName("string")
                 .build()
-        assertThat(onlineScoreConfig).isNotNull
+
         assertThat(onlineScoreConfig.samplingRate()).isEqualTo(0.0)
         assertThat(onlineScoreConfig.scorers())
             .containsExactly(

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class FetchExperimentEventsResponseTest {
 
     @Test
-    fun createFetchExperimentEventsResponse() {
+    fun create() {
         val fetchExperimentEventsResponse =
             FetchExperimentEventsResponse.builder()
                 .addEvent(
@@ -70,7 +70,7 @@ internal class FetchExperimentEventsResponseTest {
                 )
                 .cursor("cursor")
                 .build()
-        assertThat(fetchExperimentEventsResponse).isNotNull
+
         assertThat(fetchExperimentEventsResponse.events())
             .containsExactly(
                 ExperimentEvent.builder()

@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test
 internal class DataSummaryTest {
 
     @Test
-    fun createDataSummary() {
+    fun create() {
         val dataSummary = DataSummary.builder().totalRecords(0L).build()
-        assertThat(dataSummary).isNotNull
+
         assertThat(dataSummary.totalRecords()).isEqualTo(0L)
     }
 }

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class SpanIFrameTest {
 
     @Test
-    fun createSpanIFrame() {
+    fun create() {
         val spanIFrame =
             SpanIFrame.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -22,7 +22,7 @@ internal class SpanIFrameTest {
                 .postMessage(true)
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(spanIFrame).isNotNull
+
         assertThat(spanIFrame.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(spanIFrame.name()).isEqualTo("name")
         assertThat(spanIFrame.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

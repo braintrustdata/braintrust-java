@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class DatasetTest {
 
     @Test
-    fun createDataset() {
+    fun create() {
         val dataset =
             Dataset.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -26,7 +26,7 @@ internal class DatasetTest {
                 )
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(dataset).isNotNull
+
         assertThat(dataset.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(dataset.name()).isEqualTo("name")
         assertThat(dataset.projectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

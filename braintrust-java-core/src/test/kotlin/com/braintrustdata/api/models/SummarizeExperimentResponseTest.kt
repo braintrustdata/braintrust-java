@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class SummarizeExperimentResponseTest {
 
     @Test
-    fun createSummarizeExperimentResponse() {
+    fun create() {
         val summarizeExperimentResponse =
             SummarizeExperimentResponse.builder()
                 .experimentName("experiment_name")
@@ -51,7 +51,7 @@ internal class SummarizeExperimentResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(summarizeExperimentResponse).isNotNull
+
         assertThat(summarizeExperimentResponse.experimentName()).isEqualTo("experiment_name")
         assertThat(summarizeExperimentResponse.experimentUrl()).isEqualTo("https://example.com")
         assertThat(summarizeExperimentResponse.projectName()).isEqualTo("project_name")
