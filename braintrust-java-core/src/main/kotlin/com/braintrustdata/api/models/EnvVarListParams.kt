@@ -78,7 +78,7 @@ private constructor(
                 )
                 limit?.let { put("limit", it.toString()) }
                 objectId?.let { put("object_id", it) }
-                objectType?.let { put("object_type", it.asString()) }
+                objectType?.let { put("object_type", it.toString()) }
                 putAll(additionalQueryParams)
             }
             .build()

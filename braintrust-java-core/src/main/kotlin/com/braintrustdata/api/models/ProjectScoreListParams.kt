@@ -112,13 +112,13 @@ private constructor(
                 scoreType?.accept(
                     object : ScoreType.Visitor<Unit> {
                         override fun visitProject(project: ProjectScoreType) {
-                            put("score_type", project.asString())
+                            put("score_type", project.toString())
                         }
 
                         override fun visitProjectScoreTypes(
                             projectScoreTypes: List<ProjectScoreType>
                         ) {
-                            put("score_type", projectScoreTypes.joinToString(",") { it.asString() })
+                            put("score_type", projectScoreTypes.joinToString(",") { it.toString() })
                         }
                     }
                 )

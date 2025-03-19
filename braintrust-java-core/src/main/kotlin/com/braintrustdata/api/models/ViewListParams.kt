@@ -90,7 +90,7 @@ private constructor(
         QueryParams.builder()
             .apply {
                 put("object_id", objectId)
-                put("object_type", objectType.asString())
+                put("object_type", objectType.toString())
                 endingBefore?.let { put("ending_before", it) }
                 ids?.accept(
                     object : Ids.Visitor<Unit> {
@@ -106,7 +106,7 @@ private constructor(
                 limit?.let { put("limit", it.toString()) }
                 startingAfter?.let { put("starting_after", it) }
                 viewName?.let { put("view_name", it) }
-                viewType?.let { put("view_type", it.asString()) }
+                viewType?.let { put("view_type", it.toString()) }
                 putAll(additionalQueryParams)
             }
             .build()
