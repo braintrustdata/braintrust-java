@@ -3,6 +3,7 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -155,7 +156,7 @@ internal class PromptDataTest {
                         .build()
                 )
             )
-        assertThat(promptData.toolFunctions().get())
+        assertThat(promptData.toolFunctions().getOrNull())
             .containsExactly(
                 PromptData.ToolFunction.ofFunction(
                     PromptData.ToolFunction.Function.builder()

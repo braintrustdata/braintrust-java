@@ -4,6 +4,7 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -66,7 +67,8 @@ internal class InsertExperimentEventTest {
         assertThat(insertExperimentEvent).isNotNull
         assertThat(insertExperimentEvent.id()).contains("id")
         assertThat(insertExperimentEvent._isMerge()).contains(true)
-        assertThat(insertExperimentEvent._mergePaths().get()).containsExactly(listOf("string"))
+        assertThat(insertExperimentEvent._mergePaths().getOrNull())
+            .containsExactly(listOf("string"))
         assertThat(insertExperimentEvent._objectDelete()).contains(true)
         assertThat(insertExperimentEvent._parentId()).contains("_parent_id")
         assertThat(insertExperimentEvent.context())
@@ -119,7 +121,7 @@ internal class InsertExperimentEventTest {
         assertThat(insertExperimentEvent.spanAttributes())
             .contains(SpanAttributes.builder().name("name").type(SpanType.LLM).build())
         assertThat(insertExperimentEvent.spanId()).contains("span_id")
-        assertThat(insertExperimentEvent.spanParents().get()).containsExactly("string")
-        assertThat(insertExperimentEvent.tags().get()).containsExactly("string")
+        assertThat(insertExperimentEvent.spanParents().getOrNull()).containsExactly("string")
+        assertThat(insertExperimentEvent.tags().getOrNull()).containsExactly("string")
     }
 }

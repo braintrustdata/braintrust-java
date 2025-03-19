@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -26,7 +27,7 @@ internal class ProjectSettingsTest {
         assertThat(projectSettings.baselineExperimentId())
             .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectSettings.comparisonKey()).contains("comparison_key")
-        assertThat(projectSettings.spanFieldOrder().get())
+        assertThat(projectSettings.spanFieldOrder().getOrNull())
             .containsExactly(
                 ProjectSettings.SpanFieldOrder.builder()
                     .columnId("column_id")

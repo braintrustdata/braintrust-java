@@ -3,6 +3,7 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -46,6 +47,6 @@ internal class FeedbackProjectLogsItemTest {
                     .build()
             )
         assertThat(feedbackProjectLogsItem.source()).contains(FeedbackProjectLogsItem.Source.APP)
-        assertThat(feedbackProjectLogsItem.tags().get()).containsExactly("string")
+        assertThat(feedbackProjectLogsItem.tags().getOrNull()).containsExactly("string")
     }
 }
