@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class CrossObjectInsertResponseTest {
 
     @Test
-    fun createCrossObjectInsertResponse() {
+    fun create() {
         val crossObjectInsertResponse =
             CrossObjectInsertResponse.builder()
                 .dataset(
@@ -37,7 +37,7 @@ internal class CrossObjectInsertResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(crossObjectInsertResponse).isNotNull
+
         assertThat(crossObjectInsertResponse.dataset())
             .contains(
                 CrossObjectInsertResponse.Dataset.builder()

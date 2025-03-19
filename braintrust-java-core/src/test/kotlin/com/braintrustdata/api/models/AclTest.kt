@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class AclTest {
 
     @Test
-    fun createAcl() {
+    fun create() {
         val acl =
             Acl.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -23,7 +23,7 @@ internal class AclTest {
                 .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(acl).isNotNull
+
         assertThat(acl.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(acl._objectOrgId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(acl.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class MetricSummaryTest {
 
     @Test
-    fun createMetricSummary() {
+    fun create() {
         val metricSummary =
             MetricSummary.builder()
                 .improvements(0L)
@@ -18,7 +18,7 @@ internal class MetricSummaryTest {
                 .unit("unit")
                 .diff(0.0)
                 .build()
-        assertThat(metricSummary).isNotNull
+
         assertThat(metricSummary.improvements()).isEqualTo(0L)
         assertThat(metricSummary.metric()).isEqualTo(0.0)
         assertThat(metricSummary.name()).isEqualTo("name")

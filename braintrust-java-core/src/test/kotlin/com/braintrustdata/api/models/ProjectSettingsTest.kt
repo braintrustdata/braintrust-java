@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class ProjectSettingsTest {
 
     @Test
-    fun createProjectSettings() {
+    fun create() {
         val projectSettings =
             ProjectSettings.builder()
                 .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -23,7 +23,7 @@ internal class ProjectSettingsTest {
                         .build()
                 )
                 .build()
-        assertThat(projectSettings).isNotNull
+
         assertThat(projectSettings.baselineExperimentId())
             .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(projectSettings.comparisonKey()).contains("comparison_key")

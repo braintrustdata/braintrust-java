@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class EnvVarListResponseTest {
 
     @Test
-    fun createEnvVarListResponse() {
+    fun create() {
         val envVarListResponse =
             EnvVarListResponse.builder()
                 .addObject(
@@ -23,7 +23,7 @@ internal class EnvVarListResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(envVarListResponse).isNotNull
+
         assertThat(envVarListResponse.objects())
             .containsExactly(
                 EnvVar.builder()

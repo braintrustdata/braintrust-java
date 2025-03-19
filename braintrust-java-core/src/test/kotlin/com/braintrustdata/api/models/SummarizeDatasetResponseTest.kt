@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class SummarizeDatasetResponseTest {
 
     @Test
-    fun createSummarizeDatasetResponse() {
+    fun create() {
         val summarizeDatasetResponse =
             SummarizeDatasetResponse.builder()
                 .datasetName("dataset_name")
@@ -17,7 +17,7 @@ internal class SummarizeDatasetResponseTest {
                 .projectUrl("https://example.com")
                 .dataSummary(DataSummary.builder().totalRecords(0L).build())
                 .build()
-        assertThat(summarizeDatasetResponse).isNotNull
+
         assertThat(summarizeDatasetResponse.datasetName()).isEqualTo("dataset_name")
         assertThat(summarizeDatasetResponse.datasetUrl()).isEqualTo("https://example.com")
         assertThat(summarizeDatasetResponse.projectName()).isEqualTo("project_name")

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class AclBatchUpdateResponseTest {
 
     @Test
-    fun createAclBatchUpdateResponse() {
+    fun create() {
         val aclBatchUpdateResponse =
             AclBatchUpdateResponse.builder()
                 .addAddedAcl(
@@ -41,7 +41,7 @@ internal class AclBatchUpdateResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(aclBatchUpdateResponse).isNotNull
+
         assertThat(aclBatchUpdateResponse.addedAcls())
             .containsExactly(
                 Acl.builder()

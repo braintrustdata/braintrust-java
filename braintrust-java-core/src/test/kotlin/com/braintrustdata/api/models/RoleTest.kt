@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class RoleTest {
 
     @Test
-    fun createRole() {
+    fun create() {
         val role =
             Role.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -28,7 +28,7 @@ internal class RoleTest {
                 .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(role).isNotNull
+
         assertThat(role.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(role.name()).isEqualTo("name")
         assertThat(role.created()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))

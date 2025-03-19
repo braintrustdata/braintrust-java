@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class DatasetEventTest {
 
     @Test
-    fun createDatasetEvent() {
+    fun create() {
         val datasetEvent =
             DatasetEvent.builder()
                 .id("id")
@@ -36,7 +36,7 @@ internal class DatasetEventTest {
                 )
                 .addTag("string")
                 .build()
-        assertThat(datasetEvent).isNotNull
+
         assertThat(datasetEvent.id()).isEqualTo("id")
         assertThat(datasetEvent._xactId()).isEqualTo("_xact_id")
         assertThat(datasetEvent.created())
