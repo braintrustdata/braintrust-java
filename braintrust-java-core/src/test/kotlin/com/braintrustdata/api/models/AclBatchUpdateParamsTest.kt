@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -67,33 +68,29 @@ internal class AclBatchUpdateParamsTest {
         val body = params._body()
 
         assertNotNull(body)
-        assertThat(body.addAcls())
-            .contains(
-                listOf(
-                    AclBatchUpdateParams.AddAcl.builder()
-                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(AclObjectType.ORGANIZATION)
-                        .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .permission(Permission.CREATE)
-                        .restrictObjectType(AclObjectType.ORGANIZATION)
-                        .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .build()
-                )
+        assertThat(body.addAcls().getOrNull())
+            .containsExactly(
+                AclBatchUpdateParams.AddAcl.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(AclObjectType.ORGANIZATION)
+                    .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
+                    .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
             )
-        assertThat(body.removeAcls())
-            .contains(
-                listOf(
-                    AclBatchUpdateParams.RemoveAcl.builder()
-                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .objectType(AclObjectType.ORGANIZATION)
-                        .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .permission(Permission.CREATE)
-                        .restrictObjectType(AclObjectType.ORGANIZATION)
-                        .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .build()
-                )
+        assertThat(body.removeAcls().getOrNull())
+            .containsExactly(
+                AclBatchUpdateParams.RemoveAcl.builder()
+                    .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .objectType(AclObjectType.ORGANIZATION)
+                    .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .permission(Permission.CREATE)
+                    .restrictObjectType(AclObjectType.ORGANIZATION)
+                    .roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
             )
     }
 

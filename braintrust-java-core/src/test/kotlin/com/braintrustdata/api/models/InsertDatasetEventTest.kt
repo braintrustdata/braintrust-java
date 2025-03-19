@@ -4,6 +4,7 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -39,7 +40,7 @@ internal class InsertDatasetEventTest {
         assertThat(insertDatasetEvent).isNotNull
         assertThat(insertDatasetEvent.id()).contains("id")
         assertThat(insertDatasetEvent._isMerge()).contains(true)
-        assertThat(insertDatasetEvent._mergePaths().get()).containsExactly(listOf("string"))
+        assertThat(insertDatasetEvent._mergePaths().getOrNull()).containsExactly(listOf("string"))
         assertThat(insertDatasetEvent._objectDelete()).contains(true)
         assertThat(insertDatasetEvent._parentId()).contains("_parent_id")
         assertThat(insertDatasetEvent.created())
@@ -60,7 +61,7 @@ internal class InsertDatasetEventTest {
             )
         assertThat(insertDatasetEvent.rootSpanId()).contains("root_span_id")
         assertThat(insertDatasetEvent.spanId()).contains("span_id")
-        assertThat(insertDatasetEvent.spanParents().get()).containsExactly("string")
-        assertThat(insertDatasetEvent.tags().get()).containsExactly("string")
+        assertThat(insertDatasetEvent.spanParents().getOrNull()).containsExactly("string")
+        assertThat(insertDatasetEvent.tags().getOrNull()).containsExactly("string")
     }
 }

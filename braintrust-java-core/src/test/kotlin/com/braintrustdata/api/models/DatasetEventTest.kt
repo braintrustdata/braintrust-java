@@ -4,6 +4,7 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -59,6 +60,6 @@ internal class DatasetEventTest {
                     .created("created")
                     .build()
             )
-        assertThat(datasetEvent.tags().get()).containsExactly("string")
+        assertThat(datasetEvent.tags().getOrNull()).containsExactly("string")
     }
 }

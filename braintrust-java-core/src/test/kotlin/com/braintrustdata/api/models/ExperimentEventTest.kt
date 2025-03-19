@@ -4,6 +4,7 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -118,7 +119,7 @@ internal class ExperimentEventTest {
             )
         assertThat(experimentEvent.spanAttributes())
             .contains(SpanAttributes.builder().name("name").type(SpanType.LLM).build())
-        assertThat(experimentEvent.spanParents().get()).containsExactly("string")
-        assertThat(experimentEvent.tags().get()).containsExactly("string")
+        assertThat(experimentEvent.spanParents().getOrNull()).containsExactly("string")
+        assertThat(experimentEvent.tags().getOrNull()).containsExactly("string")
     }
 }
