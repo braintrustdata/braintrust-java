@@ -3,6 +3,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
@@ -13,7 +14,6 @@ import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepareAsync
-import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.User
 import com.braintrustdata.api.models.UserListPageAsync
 import com.braintrustdata.api.models.UserListParams
@@ -46,7 +46,7 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         UserServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val retrieveHandler: Handler<User> =
             jsonHandler<User>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
