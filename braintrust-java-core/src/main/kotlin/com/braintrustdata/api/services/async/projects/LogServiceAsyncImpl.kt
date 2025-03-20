@@ -3,6 +3,7 @@
 package com.braintrustdata.api.services.async.projects
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
 import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepareAsync
-import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchProjectLogsEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
@@ -64,7 +64,7 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         LogServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val feedbackHandler: Handler<FeedbackResponseSchema> =
             jsonHandler<FeedbackResponseSchema>(clientOptions.jsonMapper)

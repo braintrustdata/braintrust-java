@@ -3,6 +3,7 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
 import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepare
-import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.EnvVar
 import com.braintrustdata.api.models.EnvVarCreateParams
 import com.braintrustdata.api.models.EnvVarDeleteParams
@@ -63,7 +63,7 @@ class EnvVarServiceImpl internal constructor(private val clientOptions: ClientOp
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         EnvVarService.WithRawResponse {
 
-        private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val createHandler: Handler<EnvVar> =
             jsonHandler<EnvVar>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
