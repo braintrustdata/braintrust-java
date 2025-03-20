@@ -3,6 +3,7 @@
 package com.braintrustdata.api.services.async.organizations
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
 import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepareAsync
-import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
 import com.braintrustdata.api.models.PatchOrganizationMembersOutput
 import java.util.concurrent.CompletableFuture
@@ -38,7 +38,7 @@ class MemberServiceAsyncImpl internal constructor(private val clientOptions: Cli
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         MemberServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val updateHandler: Handler<PatchOrganizationMembersOutput> =
             jsonHandler<PatchOrganizationMembersOutput>(clientOptions.jsonMapper)

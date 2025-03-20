@@ -3,6 +3,7 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
 import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepareAsync
-import com.braintrustdata.api.errors.BraintrustError
 import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
@@ -77,7 +77,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProjectServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<BraintrustError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val logs: LogServiceAsync.WithRawResponse by lazy {
             LogServiceAsyncImpl.WithRawResponseImpl(clientOptions)
