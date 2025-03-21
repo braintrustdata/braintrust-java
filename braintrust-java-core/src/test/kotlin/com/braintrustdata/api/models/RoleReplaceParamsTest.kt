@@ -3,7 +3,6 @@
 package com.braintrustdata.api.models
 
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -43,7 +42,6 @@ internal class RoleReplaceParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.name()).isEqualTo("x")
         assertThat(body.description()).contains("description")
         assertThat(body.memberPermissions().getOrNull())
@@ -64,7 +62,6 @@ internal class RoleReplaceParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.name()).isEqualTo("x")
     }
 }

@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -36,7 +35,6 @@ internal class AclCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
         assertThat(body.groupId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -56,7 +54,6 @@ internal class AclCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.objectId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.objectType()).isEqualTo(AclObjectType.ORGANIZATION)
     }

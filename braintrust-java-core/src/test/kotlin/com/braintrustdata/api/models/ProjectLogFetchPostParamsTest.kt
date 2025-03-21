@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -46,7 +45,6 @@ internal class ProjectLogFetchPostParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.cursor()).contains("cursor")
         assertThat(body.limit()).contains(0L)
         assertThat(body.maxRootSpanId()).contains("max_root_span_id")
@@ -62,7 +60,5 @@ internal class ProjectLogFetchPostParamsTest {
                 .build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }
