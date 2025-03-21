@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -86,7 +85,6 @@ internal class ProjectScoreUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.categories())
             .contains(
                 ProjectScoreUpdateParams.Categories.ofCategorical(
@@ -126,7 +124,5 @@ internal class ProjectScoreUpdateParamsTest {
                 .build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

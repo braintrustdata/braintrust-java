@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -42,7 +41,6 @@ internal class ProjectTagUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.color()).contains("color")
         assertThat(body.description()).contains("description")
         assertThat(body.name()).contains("name")
@@ -56,7 +54,5 @@ internal class ProjectTagUpdateParamsTest {
                 .build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }
