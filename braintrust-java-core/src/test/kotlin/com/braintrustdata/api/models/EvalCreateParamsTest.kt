@@ -3,7 +3,6 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -173,7 +172,6 @@ internal class EvalCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.data())
             .isEqualTo(
                 EvalCreateParams.Data.ofDatasetId(
@@ -281,7 +279,6 @@ internal class EvalCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.data())
             .isEqualTo(
                 EvalCreateParams.Data.ofDatasetId(
