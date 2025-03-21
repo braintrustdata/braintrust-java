@@ -4,7 +4,6 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -112,7 +111,6 @@ internal class FunctionInvokeParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body._expected()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body._input()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.messages().getOrNull())
@@ -167,7 +165,5 @@ internal class FunctionInvokeParamsTest {
                 .build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

@@ -4,7 +4,6 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import java.time.OffsetDateTime
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -91,7 +90,6 @@ internal class DatasetInsertParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.events())
             .containsExactly(
                 InsertDatasetEvent.builder()
@@ -131,7 +129,6 @@ internal class DatasetInsertParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.events()).containsExactly(InsertDatasetEvent.builder().build())
     }
 }
