@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Braintrust Java SDK provides convenient access to the Braintrust REST API from applications written in Java.
+The Braintrust Java SDK provides convenient access to the [Braintrust REST API](https://www.braintrustdata.com/docs/api/spec) from applications written in Java.
 
 The Braintrust Java SDK is similar to the Braintrust Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
@@ -33,9 +33,9 @@ implementation("com.braintrustdata.api:braintrust-java:0.8.0")
 
 ```xml
 <dependency>
-    <groupId>com.braintrustdata.api</groupId>
-    <artifactId>braintrust-java</artifactId>
-    <version>0.8.0</version>
+  <groupId>com.braintrustdata.api</groupId>
+  <artifactId>braintrust-java</artifactId>
+  <version>0.8.0</version>
 </dependency>
 ```
 
