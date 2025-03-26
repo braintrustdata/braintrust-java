@@ -6,41 +6,46 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Summary of a dataset */
-@NoAutoDetect
 class SummarizeDatasetResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("dataset_name")
-    @ExcludeMissing
-    private val datasetName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("dataset_url")
-    @ExcludeMissing
-    private val datasetUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_name")
-    @ExcludeMissing
-    private val projectName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_url")
-    @ExcludeMissing
-    private val projectUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("data_summary")
-    @ExcludeMissing
-    private val dataSummary: JsonField<DataSummary> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val datasetName: JsonField<String>,
+    private val datasetUrl: JsonField<String>,
+    private val projectName: JsonField<String>,
+    private val projectUrl: JsonField<String>,
+    private val dataSummary: JsonField<DataSummary>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("dataset_name")
+        @ExcludeMissing
+        datasetName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dataset_url")
+        @ExcludeMissing
+        datasetUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_name")
+        @ExcludeMissing
+        projectName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_url")
+        @ExcludeMissing
+        projectUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("data_summary")
+        @ExcludeMissing
+        dataSummary: JsonField<DataSummary> = JsonMissing.of(),
+    ) : this(datasetName, datasetUrl, projectName, projectUrl, dataSummary, mutableMapOf())
 
     /**
      * Name of the dataset
@@ -124,24 +129,15 @@ private constructor(
     @ExcludeMissing
     fun _dataSummary(): JsonField<DataSummary> = dataSummary
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): SummarizeDatasetResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        datasetName()
-        datasetUrl()
-        projectName()
-        projectUrl()
-        dataSummary().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -287,8 +283,23 @@ private constructor(
                 checkRequired("projectName", projectName),
                 checkRequired("projectUrl", projectUrl),
                 dataSummary,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): SummarizeDatasetResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        datasetName()
+        datasetUrl()
+        projectName()
+        projectUrl()
+        dataSummary().ifPresent { it.validate() }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

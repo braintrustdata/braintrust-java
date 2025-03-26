@@ -6,19 +6,18 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -140,428 +139,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> roleId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("add_member_permissions")
-        @ExcludeMissing
-        private val addMemberPermissions: JsonField<List<AddMemberPermission>> = JsonMissing.of(),
-        @JsonProperty("add_member_roles")
-        @ExcludeMissing
-        private val addMemberRoles: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("remove_member_permissions")
-        @ExcludeMissing
-        private val removeMemberPermissions: JsonField<List<RemoveMemberPermission>> =
-            JsonMissing.of(),
-        @JsonProperty("remove_member_roles")
-        @ExcludeMissing
-        private val removeMemberRoles: JsonField<List<String>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * A list of permissions to add to the role
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun addMemberPermissions(): Optional<List<AddMemberPermission>> =
-            Optional.ofNullable(addMemberPermissions.getNullable("add_member_permissions"))
-
-        /**
-         * A list of role IDs to add to the role's inheriting-from set
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun addMemberRoles(): Optional<List<String>> =
-            Optional.ofNullable(addMemberRoles.getNullable("add_member_roles"))
-
-        /**
-         * Textual description of the role
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
-
-        /**
-         * Name of the role
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
-
-        /**
-         * A list of permissions to remove from the role
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun removeMemberPermissions(): Optional<List<RemoveMemberPermission>> =
-            Optional.ofNullable(removeMemberPermissions.getNullable("remove_member_permissions"))
-
-        /**
-         * A list of role IDs to remove from the role's inheriting-from set
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun removeMemberRoles(): Optional<List<String>> =
-            Optional.ofNullable(removeMemberRoles.getNullable("remove_member_roles"))
-
-        /**
-         * Returns the raw JSON value of [addMemberPermissions].
-         *
-         * Unlike [addMemberPermissions], this method doesn't throw if the JSON field has an
-         * unexpected type.
-         */
-        @JsonProperty("add_member_permissions")
-        @ExcludeMissing
-        fun _addMemberPermissions(): JsonField<List<AddMemberPermission>> = addMemberPermissions
-
-        /**
-         * Returns the raw JSON value of [addMemberRoles].
-         *
-         * Unlike [addMemberRoles], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("add_member_roles")
-        @ExcludeMissing
-        fun _addMemberRoles(): JsonField<List<String>> = addMemberRoles
-
-        /**
-         * Returns the raw JSON value of [description].
-         *
-         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /**
-         * Returns the raw JSON value of [name].
-         *
-         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-        /**
-         * Returns the raw JSON value of [removeMemberPermissions].
-         *
-         * Unlike [removeMemberPermissions], this method doesn't throw if the JSON field has an
-         * unexpected type.
-         */
-        @JsonProperty("remove_member_permissions")
-        @ExcludeMissing
-        fun _removeMemberPermissions(): JsonField<List<RemoveMemberPermission>> =
-            removeMemberPermissions
-
-        /**
-         * Returns the raw JSON value of [removeMemberRoles].
-         *
-         * Unlike [removeMemberRoles], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("remove_member_roles")
-        @ExcludeMissing
-        fun _removeMemberRoles(): JsonField<List<String>> = removeMemberRoles
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            addMemberPermissions().ifPresent { it.forEach { it.validate() } }
-            addMemberRoles()
-            description()
-            name()
-            removeMemberPermissions().ifPresent { it.forEach { it.validate() } }
-            removeMemberRoles()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Body]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var addMemberPermissions: JsonField<MutableList<AddMemberPermission>>? = null
-            private var addMemberRoles: JsonField<MutableList<String>>? = null
-            private var description: JsonField<String> = JsonMissing.of()
-            private var name: JsonField<String> = JsonMissing.of()
-            private var removeMemberPermissions: JsonField<MutableList<RemoveMemberPermission>>? =
-                null
-            private var removeMemberRoles: JsonField<MutableList<String>>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                addMemberPermissions = body.addMemberPermissions.map { it.toMutableList() }
-                addMemberRoles = body.addMemberRoles.map { it.toMutableList() }
-                description = body.description
-                name = body.name
-                removeMemberPermissions = body.removeMemberPermissions.map { it.toMutableList() }
-                removeMemberRoles = body.removeMemberRoles.map { it.toMutableList() }
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /** A list of permissions to add to the role */
-            fun addMemberPermissions(addMemberPermissions: List<AddMemberPermission>?) =
-                addMemberPermissions(JsonField.ofNullable(addMemberPermissions))
-
-            /**
-             * Alias for calling [Builder.addMemberPermissions] with
-             * `addMemberPermissions.orElse(null)`.
-             */
-            fun addMemberPermissions(addMemberPermissions: Optional<List<AddMemberPermission>>) =
-                addMemberPermissions(addMemberPermissions.getOrNull())
-
-            /**
-             * Sets [Builder.addMemberPermissions] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.addMemberPermissions] with a well-typed
-             * `List<AddMemberPermission>` value instead. This method is primarily for setting the
-             * field to an undocumented or not yet supported value.
-             */
-            fun addMemberPermissions(addMemberPermissions: JsonField<List<AddMemberPermission>>) =
-                apply {
-                    this.addMemberPermissions = addMemberPermissions.map { it.toMutableList() }
-                }
-
-            /**
-             * Adds a single [AddMemberPermission] to [addMemberPermissions].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addAddMemberPermission(addMemberPermission: AddMemberPermission) = apply {
-                addMemberPermissions =
-                    (addMemberPermissions ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("addMemberPermissions", it).add(addMemberPermission)
-                    }
-            }
-
-            /** A list of role IDs to add to the role's inheriting-from set */
-            fun addMemberRoles(addMemberRoles: List<String>?) =
-                addMemberRoles(JsonField.ofNullable(addMemberRoles))
-
-            /** Alias for calling [Builder.addMemberRoles] with `addMemberRoles.orElse(null)`. */
-            fun addMemberRoles(addMemberRoles: Optional<List<String>>) =
-                addMemberRoles(addMemberRoles.getOrNull())
-
-            /**
-             * Sets [Builder.addMemberRoles] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.addMemberRoles] with a well-typed `List<String>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun addMemberRoles(addMemberRoles: JsonField<List<String>>) = apply {
-                this.addMemberRoles = addMemberRoles.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [addMemberRoles].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addAddMemberRole(addMemberRole: String) = apply {
-                addMemberRoles =
-                    (addMemberRoles ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("addMemberRoles", it).add(addMemberRole)
-                    }
-            }
-
-            /** Textual description of the role */
-            fun description(description: String?) = description(JsonField.ofNullable(description))
-
-            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
-            fun description(description: Optional<String>) = description(description.getOrNull())
-
-            /**
-             * Sets [Builder.description] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.description] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            /** Name of the role */
-            fun name(name: String?) = name(JsonField.ofNullable(name))
-
-            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
-            fun name(name: Optional<String>) = name(name.getOrNull())
-
-            /**
-             * Sets [Builder.name] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.name] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun name(name: JsonField<String>) = apply { this.name = name }
-
-            /** A list of permissions to remove from the role */
-            fun removeMemberPermissions(removeMemberPermissions: List<RemoveMemberPermission>?) =
-                removeMemberPermissions(JsonField.ofNullable(removeMemberPermissions))
-
-            /**
-             * Alias for calling [Builder.removeMemberPermissions] with
-             * `removeMemberPermissions.orElse(null)`.
-             */
-            fun removeMemberPermissions(
-                removeMemberPermissions: Optional<List<RemoveMemberPermission>>
-            ) = removeMemberPermissions(removeMemberPermissions.getOrNull())
-
-            /**
-             * Sets [Builder.removeMemberPermissions] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.removeMemberPermissions] with a well-typed
-             * `List<RemoveMemberPermission>` value instead. This method is primarily for setting
-             * the field to an undocumented or not yet supported value.
-             */
-            fun removeMemberPermissions(
-                removeMemberPermissions: JsonField<List<RemoveMemberPermission>>
-            ) = apply {
-                this.removeMemberPermissions = removeMemberPermissions.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [RemoveMemberPermission] to [removeMemberPermissions].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addRemoveMemberPermission(removeMemberPermission: RemoveMemberPermission) = apply {
-                removeMemberPermissions =
-                    (removeMemberPermissions ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("removeMemberPermissions", it).add(removeMemberPermission)
-                    }
-            }
-
-            /** A list of role IDs to remove from the role's inheriting-from set */
-            fun removeMemberRoles(removeMemberRoles: List<String>?) =
-                removeMemberRoles(JsonField.ofNullable(removeMemberRoles))
-
-            /**
-             * Alias for calling [Builder.removeMemberRoles] with `removeMemberRoles.orElse(null)`.
-             */
-            fun removeMemberRoles(removeMemberRoles: Optional<List<String>>) =
-                removeMemberRoles(removeMemberRoles.getOrNull())
-
-            /**
-             * Sets [Builder.removeMemberRoles] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.removeMemberRoles] with a well-typed `List<String>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun removeMemberRoles(removeMemberRoles: JsonField<List<String>>) = apply {
-                this.removeMemberRoles = removeMemberRoles.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [removeMemberRoles].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addRemoveMemberRole(removeMemberRole: String) = apply {
-                removeMemberRoles =
-                    (removeMemberRoles ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("removeMemberRoles", it).add(removeMemberRole)
-                    }
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Body =
-                Body(
-                    (addMemberPermissions ?: JsonMissing.of()).map { it.toImmutable() },
-                    (addMemberRoles ?: JsonMissing.of()).map { it.toImmutable() },
-                    description,
-                    name,
-                    (removeMemberPermissions ?: JsonMissing.of()).map { it.toImmutable() },
-                    (removeMemberRoles ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && addMemberPermissions == other.addMemberPermissions && addMemberRoles == other.addMemberRoles && description == other.description && name == other.name && removeMemberPermissions == other.removeMemberPermissions && removeMemberRoles == other.removeMemberRoles && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(addMemberPermissions, addMemberRoles, description, name, removeMemberPermissions, removeMemberRoles, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -578,7 +155,6 @@ private constructor(
     }
 
     /** A builder for [RoleUpdateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var roleId: String? = null
@@ -887,19 +463,462 @@ private constructor(
             )
     }
 
-    @NoAutoDetect
-    class AddMemberPermission
-    @JsonCreator
+    @JvmSynthetic internal fun _body(): Body = body
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> roleId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
     private constructor(
-        @JsonProperty("permission")
-        @ExcludeMissing
-        private val permission: JsonField<Permission> = JsonMissing.of(),
-        @JsonProperty("restrict_object_type")
-        @ExcludeMissing
-        private val restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val addMemberPermissions: JsonField<List<AddMemberPermission>>,
+        private val addMemberRoles: JsonField<List<String>>,
+        private val description: JsonField<String>,
+        private val name: JsonField<String>,
+        private val removeMemberPermissions: JsonField<List<RemoveMemberPermission>>,
+        private val removeMemberRoles: JsonField<List<String>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("add_member_permissions")
+            @ExcludeMissing
+            addMemberPermissions: JsonField<List<AddMemberPermission>> = JsonMissing.of(),
+            @JsonProperty("add_member_roles")
+            @ExcludeMissing
+            addMemberRoles: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("remove_member_permissions")
+            @ExcludeMissing
+            removeMemberPermissions: JsonField<List<RemoveMemberPermission>> = JsonMissing.of(),
+            @JsonProperty("remove_member_roles")
+            @ExcludeMissing
+            removeMemberRoles: JsonField<List<String>> = JsonMissing.of(),
+        ) : this(
+            addMemberPermissions,
+            addMemberRoles,
+            description,
+            name,
+            removeMemberPermissions,
+            removeMemberRoles,
+            mutableMapOf(),
+        )
+
+        /**
+         * A list of permissions to add to the role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun addMemberPermissions(): Optional<List<AddMemberPermission>> =
+            Optional.ofNullable(addMemberPermissions.getNullable("add_member_permissions"))
+
+        /**
+         * A list of role IDs to add to the role's inheriting-from set
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun addMemberRoles(): Optional<List<String>> =
+            Optional.ofNullable(addMemberRoles.getNullable("add_member_roles"))
+
+        /**
+         * Textual description of the role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
+
+        /**
+         * Name of the role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+        /**
+         * A list of permissions to remove from the role
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun removeMemberPermissions(): Optional<List<RemoveMemberPermission>> =
+            Optional.ofNullable(removeMemberPermissions.getNullable("remove_member_permissions"))
+
+        /**
+         * A list of role IDs to remove from the role's inheriting-from set
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun removeMemberRoles(): Optional<List<String>> =
+            Optional.ofNullable(removeMemberRoles.getNullable("remove_member_roles"))
+
+        /**
+         * Returns the raw JSON value of [addMemberPermissions].
+         *
+         * Unlike [addMemberPermissions], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("add_member_permissions")
+        @ExcludeMissing
+        fun _addMemberPermissions(): JsonField<List<AddMemberPermission>> = addMemberPermissions
+
+        /**
+         * Returns the raw JSON value of [addMemberRoles].
+         *
+         * Unlike [addMemberRoles], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("add_member_roles")
+        @ExcludeMissing
+        fun _addMemberRoles(): JsonField<List<String>> = addMemberRoles
+
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Returns the raw JSON value of [removeMemberPermissions].
+         *
+         * Unlike [removeMemberPermissions], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("remove_member_permissions")
+        @ExcludeMissing
+        fun _removeMemberPermissions(): JsonField<List<RemoveMemberPermission>> =
+            removeMemberPermissions
+
+        /**
+         * Returns the raw JSON value of [removeMemberRoles].
+         *
+         * Unlike [removeMemberRoles], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("remove_member_roles")
+        @ExcludeMissing
+        fun _removeMemberRoles(): JsonField<List<String>> = removeMemberRoles
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Body]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var addMemberPermissions: JsonField<MutableList<AddMemberPermission>>? = null
+            private var addMemberRoles: JsonField<MutableList<String>>? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
+            private var removeMemberPermissions: JsonField<MutableList<RemoveMemberPermission>>? =
+                null
+            private var removeMemberRoles: JsonField<MutableList<String>>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                addMemberPermissions = body.addMemberPermissions.map { it.toMutableList() }
+                addMemberRoles = body.addMemberRoles.map { it.toMutableList() }
+                description = body.description
+                name = body.name
+                removeMemberPermissions = body.removeMemberPermissions.map { it.toMutableList() }
+                removeMemberRoles = body.removeMemberRoles.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** A list of permissions to add to the role */
+            fun addMemberPermissions(addMemberPermissions: List<AddMemberPermission>?) =
+                addMemberPermissions(JsonField.ofNullable(addMemberPermissions))
+
+            /**
+             * Alias for calling [Builder.addMemberPermissions] with
+             * `addMemberPermissions.orElse(null)`.
+             */
+            fun addMemberPermissions(addMemberPermissions: Optional<List<AddMemberPermission>>) =
+                addMemberPermissions(addMemberPermissions.getOrNull())
+
+            /**
+             * Sets [Builder.addMemberPermissions] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.addMemberPermissions] with a well-typed
+             * `List<AddMemberPermission>` value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
+            fun addMemberPermissions(addMemberPermissions: JsonField<List<AddMemberPermission>>) =
+                apply {
+                    this.addMemberPermissions = addMemberPermissions.map { it.toMutableList() }
+                }
+
+            /**
+             * Adds a single [AddMemberPermission] to [addMemberPermissions].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addAddMemberPermission(addMemberPermission: AddMemberPermission) = apply {
+                addMemberPermissions =
+                    (addMemberPermissions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("addMemberPermissions", it).add(addMemberPermission)
+                    }
+            }
+
+            /** A list of role IDs to add to the role's inheriting-from set */
+            fun addMemberRoles(addMemberRoles: List<String>?) =
+                addMemberRoles(JsonField.ofNullable(addMemberRoles))
+
+            /** Alias for calling [Builder.addMemberRoles] with `addMemberRoles.orElse(null)`. */
+            fun addMemberRoles(addMemberRoles: Optional<List<String>>) =
+                addMemberRoles(addMemberRoles.getOrNull())
+
+            /**
+             * Sets [Builder.addMemberRoles] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.addMemberRoles] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun addMemberRoles(addMemberRoles: JsonField<List<String>>) = apply {
+                this.addMemberRoles = addMemberRoles.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [addMemberRoles].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addAddMemberRole(addMemberRole: String) = apply {
+                addMemberRoles =
+                    (addMemberRoles ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("addMemberRoles", it).add(addMemberRole)
+                    }
+            }
+
+            /** Textual description of the role */
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
+            fun description(description: Optional<String>) = description(description.getOrNull())
+
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
+
+            /** Name of the role */
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
+            fun name(name: Optional<String>) = name(name.getOrNull())
+
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** A list of permissions to remove from the role */
+            fun removeMemberPermissions(removeMemberPermissions: List<RemoveMemberPermission>?) =
+                removeMemberPermissions(JsonField.ofNullable(removeMemberPermissions))
+
+            /**
+             * Alias for calling [Builder.removeMemberPermissions] with
+             * `removeMemberPermissions.orElse(null)`.
+             */
+            fun removeMemberPermissions(
+                removeMemberPermissions: Optional<List<RemoveMemberPermission>>
+            ) = removeMemberPermissions(removeMemberPermissions.getOrNull())
+
+            /**
+             * Sets [Builder.removeMemberPermissions] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.removeMemberPermissions] with a well-typed
+             * `List<RemoveMemberPermission>` value instead. This method is primarily for setting
+             * the field to an undocumented or not yet supported value.
+             */
+            fun removeMemberPermissions(
+                removeMemberPermissions: JsonField<List<RemoveMemberPermission>>
+            ) = apply {
+                this.removeMemberPermissions = removeMemberPermissions.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [RemoveMemberPermission] to [removeMemberPermissions].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addRemoveMemberPermission(removeMemberPermission: RemoveMemberPermission) = apply {
+                removeMemberPermissions =
+                    (removeMemberPermissions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("removeMemberPermissions", it).add(removeMemberPermission)
+                    }
+            }
+
+            /** A list of role IDs to remove from the role's inheriting-from set */
+            fun removeMemberRoles(removeMemberRoles: List<String>?) =
+                removeMemberRoles(JsonField.ofNullable(removeMemberRoles))
+
+            /**
+             * Alias for calling [Builder.removeMemberRoles] with `removeMemberRoles.orElse(null)`.
+             */
+            fun removeMemberRoles(removeMemberRoles: Optional<List<String>>) =
+                removeMemberRoles(removeMemberRoles.getOrNull())
+
+            /**
+             * Sets [Builder.removeMemberRoles] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.removeMemberRoles] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun removeMemberRoles(removeMemberRoles: JsonField<List<String>>) = apply {
+                this.removeMemberRoles = removeMemberRoles.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [removeMemberRoles].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addRemoveMemberRole(removeMemberRole: String) = apply {
+                removeMemberRoles =
+                    (removeMemberRoles ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("removeMemberRoles", it).add(removeMemberRole)
+                    }
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Body =
+                Body(
+                    (addMemberPermissions ?: JsonMissing.of()).map { it.toImmutable() },
+                    (addMemberRoles ?: JsonMissing.of()).map { it.toImmutable() },
+                    description,
+                    name,
+                    (removeMemberPermissions ?: JsonMissing.of()).map { it.toImmutable() },
+                    (removeMemberRoles ?: JsonMissing.of()).map { it.toImmutable() },
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            addMemberPermissions().ifPresent { it.forEach { it.validate() } }
+            addMemberRoles()
+            description()
+            name()
+            removeMemberPermissions().ifPresent { it.forEach { it.validate() } }
+            removeMemberRoles()
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && addMemberPermissions == other.addMemberPermissions && addMemberRoles == other.addMemberRoles && description == other.description && name == other.name && removeMemberPermissions == other.removeMemberPermissions && removeMemberRoles == other.removeMemberRoles && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(addMemberPermissions, addMemberRoles, description, name, removeMemberPermissions, removeMemberRoles, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{addMemberPermissions=$addMemberPermissions, addMemberRoles=$addMemberRoles, description=$description, name=$name, removeMemberPermissions=$removeMemberPermissions, removeMemberRoles=$removeMemberRoles, additionalProperties=$additionalProperties}"
+    }
+
+    class AddMemberPermission
+    private constructor(
+        private val permission: JsonField<Permission>,
+        private val restrictObjectType: JsonField<AclObjectType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("permission")
+            @ExcludeMissing
+            permission: JsonField<Permission> = JsonMissing.of(),
+            @JsonProperty("restrict_object_type")
+            @ExcludeMissing
+            restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
+        ) : this(permission, restrictObjectType, mutableMapOf())
 
         /**
          * Each permission permits a certain type of operation on an object in the system
@@ -939,21 +958,15 @@ private constructor(
         @ExcludeMissing
         fun _restrictObjectType(): JsonField<AclObjectType> = restrictObjectType
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): AddMemberPermission = apply {
-            if (validated) {
-                return@apply
-            }
-
-            permission()
-            restrictObjectType()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1060,8 +1073,20 @@ private constructor(
                 AddMemberPermission(
                     checkRequired("permission", permission),
                     restrictObjectType,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): AddMemberPermission = apply {
+            if (validated) {
+                return@apply
+            }
+
+            permission()
+            restrictObjectType()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1082,19 +1107,22 @@ private constructor(
             "AddMemberPermission{permission=$permission, restrictObjectType=$restrictObjectType, additionalProperties=$additionalProperties}"
     }
 
-    @NoAutoDetect
     class RemoveMemberPermission
-    @JsonCreator
     private constructor(
-        @JsonProperty("permission")
-        @ExcludeMissing
-        private val permission: JsonField<Permission> = JsonMissing.of(),
-        @JsonProperty("restrict_object_type")
-        @ExcludeMissing
-        private val restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val permission: JsonField<Permission>,
+        private val restrictObjectType: JsonField<AclObjectType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("permission")
+            @ExcludeMissing
+            permission: JsonField<Permission> = JsonMissing.of(),
+            @JsonProperty("restrict_object_type")
+            @ExcludeMissing
+            restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
+        ) : this(permission, restrictObjectType, mutableMapOf())
 
         /**
          * Each permission permits a certain type of operation on an object in the system
@@ -1134,21 +1162,15 @@ private constructor(
         @ExcludeMissing
         fun _restrictObjectType(): JsonField<AclObjectType> = restrictObjectType
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): RemoveMemberPermission = apply {
-            if (validated) {
-                return@apply
-            }
-
-            permission()
-            restrictObjectType()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1255,8 +1277,20 @@ private constructor(
                 RemoveMemberPermission(
                     checkRequired("permission", permission),
                     restrictObjectType,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): RemoveMemberPermission = apply {
+            if (validated) {
+                return@apply
+            }
+
+            permission()
+            restrictObjectType()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

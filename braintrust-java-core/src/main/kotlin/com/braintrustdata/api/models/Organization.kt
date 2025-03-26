@@ -6,43 +6,46 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Organization
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("api_url")
-    @ExcludeMissing
-    private val apiUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("is_universal_api")
-    @ExcludeMissing
-    private val isUniversalApi: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("proxy_url")
-    @ExcludeMissing
-    private val proxyUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("realtime_url")
-    @ExcludeMissing
-    private val realtimeUrl: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val apiUrl: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val isUniversalApi: JsonField<Boolean>,
+    private val proxyUrl: JsonField<String>,
+    private val realtimeUrl: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("api_url") @ExcludeMissing apiUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("is_universal_api")
+        @ExcludeMissing
+        isUniversalApi: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("proxy_url") @ExcludeMissing proxyUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("realtime_url")
+        @ExcludeMissing
+        realtimeUrl: JsonField<String> = JsonMissing.of(),
+    ) : this(id, name, apiUrl, created, isUniversalApi, proxyUrl, realtimeUrl, mutableMapOf())
 
     /**
      * Unique identifier for the organization
@@ -147,26 +150,15 @@ private constructor(
     @ExcludeMissing
     fun _realtimeUrl(): JsonField<String> = realtimeUrl
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Organization = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        apiUrl()
-        created()
-        isUniversalApi()
-        proxyUrl()
-        realtimeUrl()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -351,8 +343,25 @@ private constructor(
                 isUniversalApi,
                 proxyUrl,
                 realtimeUrl,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Organization = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        apiUrl()
+        created()
+        isUniversalApi()
+        proxyUrl()
+        realtimeUrl()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

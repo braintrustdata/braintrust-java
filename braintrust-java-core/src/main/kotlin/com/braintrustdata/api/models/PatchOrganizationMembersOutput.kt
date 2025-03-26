@@ -7,32 +7,33 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class PatchOrganizationMembersOutput
-@JsonCreator
 private constructor(
-    @JsonProperty("org_id") @ExcludeMissing private val orgId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("send_email_error")
-    @ExcludeMissing
-    private val sendEmailError: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val orgId: JsonField<String>,
+    private val status: JsonField<Status>,
+    private val sendEmailError: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("org_id") @ExcludeMissing orgId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("send_email_error")
+        @ExcludeMissing
+        sendEmailError: JsonField<String> = JsonMissing.of(),
+    ) : this(orgId, status, sendEmailError, mutableMapOf())
 
     /**
      * The id of the org that was modified.
@@ -81,22 +82,15 @@ private constructor(
     @ExcludeMissing
     fun _sendEmailError(): JsonField<String> = sendEmailError
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PatchOrganizationMembersOutput = apply {
-        if (validated) {
-            return@apply
-        }
-
-        orgId()
-        status()
-        sendEmailError()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -212,8 +206,21 @@ private constructor(
                 checkRequired("orgId", orgId),
                 checkRequired("status", status),
                 sendEmailError,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): PatchOrganizationMembersOutput = apply {
+        if (validated) {
+            return@apply
+        }
+
+        orgId()
+        status()
+        sendEmailError()
+        validated = true
     }
 
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

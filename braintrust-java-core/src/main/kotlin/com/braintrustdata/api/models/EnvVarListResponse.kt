@@ -6,27 +6,27 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class EnvVarListResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("objects")
-    @ExcludeMissing
-    private val objects: JsonField<List<EnvVar>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val objects: JsonField<List<EnvVar>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("objects") @ExcludeMissing objects: JsonField<List<EnvVar>> = JsonMissing.of()
+    ) : this(objects, mutableMapOf())
 
     /**
      * A list of env_var objects
@@ -43,20 +43,15 @@ private constructor(
      */
     @JsonProperty("objects") @ExcludeMissing fun _objects(): JsonField<List<EnvVar>> = objects
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): EnvVarListResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        objects().forEach { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -145,8 +140,19 @@ private constructor(
         fun build(): EnvVarListResponse =
             EnvVarListResponse(
                 checkRequired("objects", objects).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): EnvVarListResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        objects().forEach { it.validate() }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
