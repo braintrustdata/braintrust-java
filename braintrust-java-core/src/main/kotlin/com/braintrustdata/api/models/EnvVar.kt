@@ -7,40 +7,42 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class EnvVar
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_id")
-    @ExcludeMissing
-    private val objectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_type")
-    @ExcludeMissing
-    private val objectType: JsonField<ObjectType> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("used")
-    @ExcludeMissing
-    private val used: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val objectId: JsonField<String>,
+    private val objectType: JsonField<ObjectType>,
+    private val created: JsonField<OffsetDateTime>,
+    private val used: JsonField<OffsetDateTime>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_id") @ExcludeMissing objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        objectType: JsonField<ObjectType> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("used") @ExcludeMissing used: JsonField<OffsetDateTime> = JsonMissing.of(),
+    ) : this(id, name, objectId, objectType, created, used, mutableMapOf())
 
     /**
      * Unique identifier for the environment variable
@@ -134,25 +136,15 @@ private constructor(
      */
     @JsonProperty("used") @ExcludeMissing fun _used(): JsonField<OffsetDateTime> = used
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): EnvVar = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        objectId()
-        objectType()
-        created()
-        used()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -311,8 +303,24 @@ private constructor(
                 checkRequired("objectType", objectType),
                 created,
                 used,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): EnvVar = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        objectId()
+        objectType()
+        created()
+        used()
+        validated = true
     }
 
     /** The type of the object the environment variable is scoped for */

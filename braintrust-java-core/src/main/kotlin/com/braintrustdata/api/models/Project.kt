@@ -6,41 +6,46 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Project
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("org_id") @ExcludeMissing private val orgId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    private val deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("settings")
-    @ExcludeMissing
-    private val settings: JsonField<ProjectSettings> = JsonMissing.of(),
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    private val userId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val orgId: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val settings: JsonField<ProjectSettings>,
+    private val userId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("org_id") @ExcludeMissing orgId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("deleted_at")
+        @ExcludeMissing
+        deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("settings")
+        @ExcludeMissing
+        settings: JsonField<ProjectSettings> = JsonMissing.of(),
+        @JsonProperty("user_id") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
+    ) : this(id, name, orgId, created, deletedAt, settings, userId, mutableMapOf())
 
     /**
      * Unique identifier for the project
@@ -149,26 +154,15 @@ private constructor(
      */
     @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Project = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        orgId()
-        created()
-        deletedAt()
-        settings().ifPresent { it.validate() }
-        userId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -344,8 +338,25 @@ private constructor(
                 deletedAt,
                 settings,
                 userId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Project = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        orgId()
+        created()
+        deletedAt()
+        settings().ifPresent { it.validate() }
+        userId()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

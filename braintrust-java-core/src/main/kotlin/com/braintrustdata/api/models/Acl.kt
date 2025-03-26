@@ -6,16 +6,14 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -30,40 +28,56 @@ import kotlin.jvm.optionals.getOrNull
  * To restrict a grant to a particular sub-object, you may specify `restrict_object_type` in the
  * ACL, as part of a direct permission grant or as part of a role.
  */
-@NoAutoDetect
 class Acl
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("_object_org_id")
-    @ExcludeMissing
-    private val _objectOrgId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_id")
-    @ExcludeMissing
-    private val objectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_type")
-    @ExcludeMissing
-    private val objectType: JsonField<AclObjectType> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("group_id")
-    @ExcludeMissing
-    private val groupId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("permission")
-    @ExcludeMissing
-    private val permission: JsonField<Permission> = JsonMissing.of(),
-    @JsonProperty("restrict_object_type")
-    @ExcludeMissing
-    private val restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
-    @JsonProperty("role_id")
-    @ExcludeMissing
-    private val roleId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    private val userId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val _objectOrgId: JsonField<String>,
+    private val objectId: JsonField<String>,
+    private val objectType: JsonField<AclObjectType>,
+    private val created: JsonField<OffsetDateTime>,
+    private val groupId: JsonField<String>,
+    private val permission: JsonField<Permission>,
+    private val restrictObjectType: JsonField<AclObjectType>,
+    private val roleId: JsonField<String>,
+    private val userId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("_object_org_id")
+        @ExcludeMissing
+        _objectOrgId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_id") @ExcludeMissing objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        objectType: JsonField<AclObjectType> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("group_id") @ExcludeMissing groupId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("permission")
+        @ExcludeMissing
+        permission: JsonField<Permission> = JsonMissing.of(),
+        @JsonProperty("restrict_object_type")
+        @ExcludeMissing
+        restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
+        @JsonProperty("role_id") @ExcludeMissing roleId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("user_id") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        id,
+        _objectOrgId,
+        objectId,
+        objectType,
+        created,
+        groupId,
+        permission,
+        restrictObjectType,
+        roleId,
+        userId,
+        mutableMapOf(),
+    )
 
     /**
      * Unique identifier for the acl
@@ -227,29 +241,15 @@ private constructor(
      */
     @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Acl = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        _objectOrgId()
-        objectId()
-        objectType()
-        created()
-        groupId()
-        permission()
-        restrictObjectType()
-        roleId()
-        userId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -499,8 +499,28 @@ private constructor(
                 restrictObjectType,
                 roleId,
                 userId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Acl = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        _objectOrgId()
+        objectId()
+        objectType()
+        created()
+        groupId()
+        permission()
+        restrictObjectType()
+        roleId()
+        userId()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

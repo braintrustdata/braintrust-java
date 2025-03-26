@@ -6,30 +6,33 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class AclBatchUpdateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("added_acls")
-    @ExcludeMissing
-    private val addedAcls: JsonField<List<Acl>> = JsonMissing.of(),
-    @JsonProperty("removed_acls")
-    @ExcludeMissing
-    private val removedAcls: JsonField<List<Acl>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val addedAcls: JsonField<List<Acl>>,
+    private val removedAcls: JsonField<List<Acl>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("added_acls")
+        @ExcludeMissing
+        addedAcls: JsonField<List<Acl>> = JsonMissing.of(),
+        @JsonProperty("removed_acls")
+        @ExcludeMissing
+        removedAcls: JsonField<List<Acl>> = JsonMissing.of(),
+    ) : this(addedAcls, removedAcls, mutableMapOf())
 
     /**
      * An ACL grants a certain permission or role to a certain user or group on an object.
@@ -77,21 +80,15 @@ private constructor(
     @ExcludeMissing
     fun _removedAcls(): JsonField<List<Acl>> = removedAcls
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): AclBatchUpdateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        addedAcls().forEach { it.validate() }
-        removedAcls().forEach { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -229,8 +226,20 @@ private constructor(
             AclBatchUpdateResponse(
                 checkRequired("addedAcls", addedAcls).map { it.toImmutable() },
                 checkRequired("removedAcls", removedAcls).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): AclBatchUpdateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        addedAcls().forEach { it.validate() }
+        removedAcls().forEach { it.validate() }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

@@ -6,14 +6,12 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.services.async.ProjectTagServiceAsync
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -92,24 +90,30 @@ private constructor(
         ) = ProjectTagListPageAsync(projectTagsService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("objects")
-        private val objects: JsonField<List<ProjectTag>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val objects: JsonField<List<ProjectTag>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("objects") objects: JsonField<List<ProjectTag>> = JsonMissing.of()
+        ) : this(objects, mutableMapOf())
 
         fun objects(): List<ProjectTag> = objects.getNullable("objects") ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<ProjectTag>>> = Optional.ofNullable(objects)
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -169,7 +173,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Response = Response(objects, additionalProperties.toImmutable())
+            fun build(): Response = Response(objects, additionalProperties.toMutableMap())
         }
     }
 

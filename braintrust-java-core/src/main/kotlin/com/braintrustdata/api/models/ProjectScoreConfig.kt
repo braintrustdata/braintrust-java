@@ -6,33 +6,36 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class ProjectScoreConfig
-@JsonCreator
 private constructor(
-    @JsonProperty("destination")
-    @ExcludeMissing
-    private val destination: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("multi_select")
-    @ExcludeMissing
-    private val multiSelect: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("online")
-    @ExcludeMissing
-    private val online: JsonField<OnlineScoreConfig> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val destination: JsonField<String>,
+    private val multiSelect: JsonField<Boolean>,
+    private val online: JsonField<OnlineScoreConfig>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("destination")
+        @ExcludeMissing
+        destination: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("multi_select")
+        @ExcludeMissing
+        multiSelect: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("online")
+        @ExcludeMissing
+        online: JsonField<OnlineScoreConfig> = JsonMissing.of(),
+    ) : this(destination, multiSelect, online, mutableMapOf())
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -77,22 +80,15 @@ private constructor(
      */
     @JsonProperty("online") @ExcludeMissing fun _online(): JsonField<OnlineScoreConfig> = online
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ProjectScoreConfig = apply {
-        if (validated) {
-            return@apply
-        }
-
-        destination()
-        multiSelect()
-        online().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -192,7 +188,25 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): ProjectScoreConfig =
-            ProjectScoreConfig(destination, multiSelect, online, additionalProperties.toImmutable())
+            ProjectScoreConfig(
+                destination,
+                multiSelect,
+                online,
+                additionalProperties.toMutableMap(),
+            )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): ProjectScoreConfig = apply {
+        if (validated) {
+            return@apply
+        }
+
+        destination()
+        multiSelect()
+        online().ifPresent { it.validate() }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

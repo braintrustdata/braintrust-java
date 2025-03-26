@@ -6,47 +6,59 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Summary of an experiment */
-@NoAutoDetect
 class SummarizeExperimentResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("experiment_name")
-    @ExcludeMissing
-    private val experimentName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("experiment_url")
-    @ExcludeMissing
-    private val experimentUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_name")
-    @ExcludeMissing
-    private val projectName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_url")
-    @ExcludeMissing
-    private val projectUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("comparison_experiment_name")
-    @ExcludeMissing
-    private val comparisonExperimentName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("metrics")
-    @ExcludeMissing
-    private val metrics: JsonField<Metrics> = JsonMissing.of(),
-    @JsonProperty("scores")
-    @ExcludeMissing
-    private val scores: JsonField<Scores> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val experimentName: JsonField<String>,
+    private val experimentUrl: JsonField<String>,
+    private val projectName: JsonField<String>,
+    private val projectUrl: JsonField<String>,
+    private val comparisonExperimentName: JsonField<String>,
+    private val metrics: JsonField<Metrics>,
+    private val scores: JsonField<Scores>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("experiment_name")
+        @ExcludeMissing
+        experimentName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("experiment_url")
+        @ExcludeMissing
+        experimentUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_name")
+        @ExcludeMissing
+        projectName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_url")
+        @ExcludeMissing
+        projectUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("comparison_experiment_name")
+        @ExcludeMissing
+        comparisonExperimentName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metrics") @ExcludeMissing metrics: JsonField<Metrics> = JsonMissing.of(),
+        @JsonProperty("scores") @ExcludeMissing scores: JsonField<Scores> = JsonMissing.of(),
+    ) : this(
+        experimentName,
+        experimentUrl,
+        projectName,
+        projectUrl,
+        comparisonExperimentName,
+        metrics,
+        scores,
+        mutableMapOf(),
+    )
 
     /**
      * Name of the experiment
@@ -163,26 +175,15 @@ private constructor(
      */
     @JsonProperty("scores") @ExcludeMissing fun _scores(): JsonField<Scores> = scores
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): SummarizeExperimentResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        experimentName()
-        experimentUrl()
-        projectName()
-        projectUrl()
-        comparisonExperimentName()
-        metrics().ifPresent { it.validate() }
-        scores().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -371,32 +372,42 @@ private constructor(
                 comparisonExperimentName,
                 metrics,
                 scores,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): SummarizeExperimentResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        experimentName()
+        experimentUrl()
+        projectName()
+        projectUrl()
+        comparisonExperimentName()
+        metrics().ifPresent { it.validate() }
+        scores().ifPresent { it.validate() }
+        validated = true
+    }
+
     /** Summary of the experiment's metrics */
-    @NoAutoDetect
     class Metrics
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metrics = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -440,7 +451,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Metrics = Metrics(additionalProperties.toImmutable())
+            fun build(): Metrics = Metrics(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metrics = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -461,27 +482,20 @@ private constructor(
     }
 
     /** Summary of the experiment's scores */
-    @NoAutoDetect
     class Scores
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Scores = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -525,7 +539,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Scores = Scores(additionalProperties.toImmutable())
+            fun build(): Scores = Scores(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Scores = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

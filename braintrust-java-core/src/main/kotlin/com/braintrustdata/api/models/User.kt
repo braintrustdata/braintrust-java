@@ -6,40 +6,42 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class User
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("avatar_url")
-    @ExcludeMissing
-    private val avatarUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("email") @ExcludeMissing private val email: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("family_name")
-    @ExcludeMissing
-    private val familyName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("given_name")
-    @ExcludeMissing
-    private val givenName: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val avatarUrl: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val email: JsonField<String>,
+    private val familyName: JsonField<String>,
+    private val givenName: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("avatar_url") @ExcludeMissing avatarUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("email") @ExcludeMissing email: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("family_name")
+        @ExcludeMissing
+        familyName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("given_name") @ExcludeMissing givenName: JsonField<String> = JsonMissing.of(),
+    ) : this(id, avatarUrl, created, email, familyName, givenName, mutableMapOf())
 
     /**
      * Unique identifier for the user
@@ -131,25 +133,15 @@ private constructor(
      */
     @JsonProperty("given_name") @ExcludeMissing fun _givenName(): JsonField<String> = givenName
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): User = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        avatarUrl()
-        created()
-        email()
-        familyName()
-        givenName()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -312,8 +304,24 @@ private constructor(
                 email,
                 familyName,
                 givenName,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): User = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        avatarUrl()
+        created()
+        email()
+        familyName()
+        givenName()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
