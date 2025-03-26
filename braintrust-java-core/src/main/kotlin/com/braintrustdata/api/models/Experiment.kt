@@ -6,64 +6,80 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Experiment
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_id")
-    @ExcludeMissing
-    private val projectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("public")
-    @ExcludeMissing
-    private val public_: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("base_exp_id")
-    @ExcludeMissing
-    private val baseExpId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("commit")
-    @ExcludeMissing
-    private val commit: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dataset_id")
-    @ExcludeMissing
-    private val datasetId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("dataset_version")
-    @ExcludeMissing
-    private val datasetVersion: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    private val deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("description")
-    @ExcludeMissing
-    private val description: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("metadata")
-    @ExcludeMissing
-    private val metadata: JsonField<Metadata> = JsonMissing.of(),
-    @JsonProperty("repo_info")
-    @ExcludeMissing
-    private val repoInfo: JsonField<RepoInfo> = JsonMissing.of(),
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    private val userId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val projectId: JsonField<String>,
+    private val public_: JsonField<Boolean>,
+    private val baseExpId: JsonField<String>,
+    private val commit: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val datasetId: JsonField<String>,
+    private val datasetVersion: JsonField<String>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val description: JsonField<String>,
+    private val metadata: JsonField<Metadata>,
+    private val repoInfo: JsonField<RepoInfo>,
+    private val userId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_id") @ExcludeMissing projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("public") @ExcludeMissing public_: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("base_exp_id")
+        @ExcludeMissing
+        baseExpId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("commit") @ExcludeMissing commit: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dataset_id") @ExcludeMissing datasetId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dataset_version")
+        @ExcludeMissing
+        datasetVersion: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("deleted_at")
+        @ExcludeMissing
+        deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("repo_info") @ExcludeMissing repoInfo: JsonField<RepoInfo> = JsonMissing.of(),
+        @JsonProperty("user_id") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        id,
+        name,
+        projectId,
+        public_,
+        baseExpId,
+        commit,
+        created,
+        datasetId,
+        datasetVersion,
+        deletedAt,
+        description,
+        metadata,
+        repoInfo,
+        userId,
+        mutableMapOf(),
+    )
 
     /**
      * Unique identifier for the experiment
@@ -284,33 +300,15 @@ private constructor(
      */
     @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Experiment = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        projectId()
-        public_()
-        baseExpId()
-        commit()
-        created()
-        datasetId()
-        datasetVersion()
-        deletedAt()
-        description()
-        metadata().ifPresent { it.validate() }
-        repoInfo().ifPresent { it.validate() }
-        userId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -623,32 +621,49 @@ private constructor(
                 metadata,
                 repoInfo,
                 userId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): Experiment = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        projectId()
+        public_()
+        baseExpId()
+        commit()
+        created()
+        datasetId()
+        datasetVersion()
+        deletedAt()
+        description()
+        metadata().ifPresent { it.validate() }
+        repoInfo().ifPresent { it.validate() }
+        userId()
+        validated = true
+    }
+
     /** User-controlled metadata about the experiment */
-    @NoAutoDetect
     class Metadata
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -692,7 +707,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Metadata = Metadata(additionalProperties.toImmutable())
+            fun build(): Metadata = Metadata(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

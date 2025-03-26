@@ -5,7 +5,6 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
@@ -92,63 +91,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                email?.accept(
-                    object : Email.Visitor<Unit> {
-                        override fun visitString(string: String) {
-                            put("email", string)
-                        }
-
-                        override fun visitStrings(strings: List<String>) {
-                            put("email", strings.joinToString(","))
-                        }
-                    }
-                )
-                endingBefore?.let { put("ending_before", it) }
-                familyName?.accept(
-                    object : FamilyName.Visitor<Unit> {
-                        override fun visitString(string: String) {
-                            put("family_name", string)
-                        }
-
-                        override fun visitStrings(strings: List<String>) {
-                            put("family_name", strings.joinToString(","))
-                        }
-                    }
-                )
-                givenName?.accept(
-                    object : GivenName.Visitor<Unit> {
-                        override fun visitString(string: String) {
-                            put("given_name", string)
-                        }
-
-                        override fun visitStrings(strings: List<String>) {
-                            put("given_name", strings.joinToString(","))
-                        }
-                    }
-                )
-                ids?.accept(
-                    object : Ids.Visitor<Unit> {
-                        override fun visitString(string: String) {
-                            put("ids", string)
-                        }
-
-                        override fun visitStrings(strings: List<String>) {
-                            put("ids", strings.joinToString(","))
-                        }
-                    }
-                )
-                limit?.let { put("limit", it.toString()) }
-                orgName?.let { put("org_name", it) }
-                startingAfter?.let { put("starting_after", it) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -160,7 +102,6 @@ private constructor(
     }
 
     /** A builder for [UserListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var email: Email? = null
@@ -409,6 +350,63 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                email?.accept(
+                    object : Email.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("email", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("email", strings.joinToString(","))
+                        }
+                    }
+                )
+                endingBefore?.let { put("ending_before", it) }
+                familyName?.accept(
+                    object : FamilyName.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("family_name", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("family_name", strings.joinToString(","))
+                        }
+                    }
+                )
+                givenName?.accept(
+                    object : GivenName.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("given_name", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("given_name", strings.joinToString(","))
+                        }
+                    }
+                )
+                ids?.accept(
+                    object : Ids.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ids", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ids", strings.joinToString(","))
+                        }
+                    }
+                )
+                limit?.let { put("limit", it.toString()) }
+                orgName?.let { put("org_name", it) }
+                startingAfter?.let { put("starting_after", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     /**
      * Email of the user to search for. You may pass the param multiple times to filter for more

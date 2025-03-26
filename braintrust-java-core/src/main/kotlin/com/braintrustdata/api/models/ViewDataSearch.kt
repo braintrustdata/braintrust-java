@@ -6,37 +6,38 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class ViewDataSearch
-@JsonCreator
 private constructor(
-    @JsonProperty("filter")
-    @ExcludeMissing
-    private val filter: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonProperty("match")
-    @ExcludeMissing
-    private val match: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonProperty("sort")
-    @ExcludeMissing
-    private val sort: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonProperty("tag")
-    @ExcludeMissing
-    private val tag: JsonField<List<JsonValue?>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val filter: JsonField<List<JsonValue?>>,
+    private val match: JsonField<List<JsonValue?>>,
+    private val sort: JsonField<List<JsonValue?>>,
+    private val tag: JsonField<List<JsonValue?>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("filter")
+        @ExcludeMissing
+        filter: JsonField<List<JsonValue?>> = JsonMissing.of(),
+        @JsonProperty("match")
+        @ExcludeMissing
+        match: JsonField<List<JsonValue?>> = JsonMissing.of(),
+        @JsonProperty("sort") @ExcludeMissing sort: JsonField<List<JsonValue?>> = JsonMissing.of(),
+        @JsonProperty("tag") @ExcludeMissing tag: JsonField<List<JsonValue?>> = JsonMissing.of(),
+    ) : this(filter, match, sort, tag, mutableMapOf())
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -90,23 +91,15 @@ private constructor(
      */
     @JsonProperty("tag") @ExcludeMissing fun _tag(): JsonField<List<JsonValue?>> = tag
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ViewDataSearch = apply {
-        if (validated) {
-            return@apply
-        }
-
-        filter()
-        match()
-        sort()
-        tag()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -274,8 +267,22 @@ private constructor(
                 (match ?: JsonMissing.of()).map { it.toImmutable() },
                 (sort ?: JsonMissing.of()).map { it.toImmutable() },
                 (tag ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): ViewDataSearch = apply {
+        if (validated) {
+            return@apply
+        }
+
+        filter()
+        match()
+        sort()
+        tag()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

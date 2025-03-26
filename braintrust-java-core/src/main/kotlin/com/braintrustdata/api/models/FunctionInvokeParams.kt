@@ -9,14 +9,12 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -30,6 +28,7 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -149,394 +148,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> functionId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    /** The request to invoke a function */
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("expected")
-        @ExcludeMissing
-        private val expected: JsonValue = JsonMissing.of(),
-        @JsonProperty("input") @ExcludeMissing private val input: JsonValue = JsonMissing.of(),
-        @JsonProperty("messages")
-        @ExcludeMissing
-        private val messages: JsonField<List<Message>> = JsonMissing.of(),
-        @JsonProperty("metadata")
-        @ExcludeMissing
-        private val metadata: JsonField<Metadata> = JsonMissing.of(),
-        @JsonProperty("mode") @ExcludeMissing private val mode: JsonField<Mode> = JsonMissing.of(),
-        @JsonProperty("parent")
-        @ExcludeMissing
-        private val parent: JsonField<Parent> = JsonMissing.of(),
-        @JsonProperty("stream")
-        @ExcludeMissing
-        private val stream: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("version")
-        @ExcludeMissing
-        private val version: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /** The expected output of the function */
-        @JsonProperty("expected") @ExcludeMissing fun _expected(): JsonValue = expected
-
-        /** Argument to the function, which can be any JSON serializable value */
-        @JsonProperty("input") @ExcludeMissing fun _input(): JsonValue = input
-
-        /**
-         * If the function is an LLM, additional messages to pass along to it
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun messages(): Optional<List<Message>> =
-            Optional.ofNullable(messages.getNullable("messages"))
-
-        /**
-         * Any relevant metadata
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
-
-        /**
-         * The mode format of the returned value (defaults to 'auto')
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun mode(): Optional<Mode> = Optional.ofNullable(mode.getNullable("mode"))
-
-        /**
-         * Options for tracing the function call
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
-
-        /**
-         * Whether to stream the response. If true, results will be returned in the Braintrust SSE
-         * format.
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun stream(): Optional<Boolean> = Optional.ofNullable(stream.getNullable("stream"))
-
-        /**
-         * The version of the function
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
-
-        /**
-         * Returns the raw JSON value of [messages].
-         *
-         * Unlike [messages], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("messages")
-        @ExcludeMissing
-        fun _messages(): JsonField<List<Message>> = messages
-
-        /**
-         * Returns the raw JSON value of [metadata].
-         *
-         * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
-
-        /**
-         * Returns the raw JSON value of [mode].
-         *
-         * Unlike [mode], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("mode") @ExcludeMissing fun _mode(): JsonField<Mode> = mode
-
-        /**
-         * Returns the raw JSON value of [parent].
-         *
-         * Unlike [parent], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("parent") @ExcludeMissing fun _parent(): JsonField<Parent> = parent
-
-        /**
-         * Returns the raw JSON value of [stream].
-         *
-         * Unlike [stream], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("stream") @ExcludeMissing fun _stream(): JsonField<Boolean> = stream
-
-        /**
-         * Returns the raw JSON value of [version].
-         *
-         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            messages().ifPresent { it.forEach { it.validate() } }
-            metadata().ifPresent { it.validate() }
-            mode()
-            parent().ifPresent { it.validate() }
-            stream()
-            version()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Body]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var expected: JsonValue = JsonMissing.of()
-            private var input: JsonValue = JsonMissing.of()
-            private var messages: JsonField<MutableList<Message>>? = null
-            private var metadata: JsonField<Metadata> = JsonMissing.of()
-            private var mode: JsonField<Mode> = JsonMissing.of()
-            private var parent: JsonField<Parent> = JsonMissing.of()
-            private var stream: JsonField<Boolean> = JsonMissing.of()
-            private var version: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                expected = body.expected
-                input = body.input
-                messages = body.messages.map { it.toMutableList() }
-                metadata = body.metadata
-                mode = body.mode
-                parent = body.parent
-                stream = body.stream
-                version = body.version
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /** The expected output of the function */
-            fun expected(expected: JsonValue) = apply { this.expected = expected }
-
-            /** Argument to the function, which can be any JSON serializable value */
-            fun input(input: JsonValue) = apply { this.input = input }
-
-            /** If the function is an LLM, additional messages to pass along to it */
-            fun messages(messages: List<Message>) = messages(JsonField.of(messages))
-
-            /**
-             * Sets [Builder.messages] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.messages] with a well-typed `List<Message>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun messages(messages: JsonField<List<Message>>) = apply {
-                this.messages = messages.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [Message] to [messages].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addMessage(message: Message) = apply {
-                messages =
-                    (messages ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("messages", it).add(message)
-                    }
-            }
-
-            /** Alias for calling [addMessage] with `Message.ofSystem(system)`. */
-            fun addMessage(system: Message.System) = addMessage(Message.ofSystem(system))
-
-            /** Alias for calling [addMessage] with `Message.ofUser(user)`. */
-            fun addMessage(user: Message.User) = addMessage(Message.ofUser(user))
-
-            /** Alias for calling [addMessage] with `Message.ofAssistant(assistant)`. */
-            fun addMessage(assistant: Message.Assistant) =
-                addMessage(Message.ofAssistant(assistant))
-
-            /** Alias for calling [addMessage] with `Message.ofTool(tool)`. */
-            fun addMessage(tool: Message.Tool) = addMessage(Message.ofTool(tool))
-
-            /** Alias for calling [addMessage] with `Message.ofFunction(function)`. */
-            fun addMessage(function: Message.Function) = addMessage(Message.ofFunction(function))
-
-            /** Alias for calling [addMessage] with `Message.ofFallback(fallback)`. */
-            fun addMessage(fallback: Message.Fallback) = addMessage(Message.ofFallback(fallback))
-
-            /** Any relevant metadata */
-            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
-
-            /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
-            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
-
-            /**
-             * Sets [Builder.metadata] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.metadata] with a well-typed [Metadata] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
-
-            /** The mode format of the returned value (defaults to 'auto') */
-            fun mode(mode: Mode?) = mode(JsonField.ofNullable(mode))
-
-            /** Alias for calling [Builder.mode] with `mode.orElse(null)`. */
-            fun mode(mode: Optional<Mode>) = mode(mode.getOrNull())
-
-            /**
-             * Sets [Builder.mode] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.mode] with a well-typed [Mode] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun mode(mode: JsonField<Mode>) = apply { this.mode = mode }
-
-            /** Options for tracing the function call */
-            fun parent(parent: Parent) = parent(JsonField.of(parent))
-
-            /**
-             * Sets [Builder.parent] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.parent] with a well-typed [Parent] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
-
-            /** Alias for calling [parent] with `Parent.ofSpanParentStruct(spanParentStruct)`. */
-            fun parent(spanParentStruct: Parent.SpanParentStruct) =
-                parent(Parent.ofSpanParentStruct(spanParentStruct))
-
-            /** Alias for calling [parent] with `Parent.ofString(string)`. */
-            fun parent(string: String) = parent(Parent.ofString(string))
-
-            /**
-             * Whether to stream the response. If true, results will be returned in the Braintrust
-             * SSE format.
-             */
-            fun stream(stream: Boolean?) = stream(JsonField.ofNullable(stream))
-
-            /**
-             * Alias for [Builder.stream].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun stream(stream: Boolean) = stream(stream as Boolean?)
-
-            /** Alias for calling [Builder.stream] with `stream.orElse(null)`. */
-            fun stream(stream: Optional<Boolean>) = stream(stream.getOrNull())
-
-            /**
-             * Sets [Builder.stream] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.stream] with a well-typed [Boolean] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun stream(stream: JsonField<Boolean>) = apply { this.stream = stream }
-
-            /** The version of the function */
-            fun version(version: String) = version(JsonField.of(version))
-
-            /**
-             * Sets [Builder.version] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.version] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun version(version: JsonField<String>) = apply { this.version = version }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Body =
-                Body(
-                    expected,
-                    input,
-                    (messages ?: JsonMissing.of()).map { it.toImmutable() },
-                    metadata,
-                    mode,
-                    parent,
-                    stream,
-                    version,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && expected == other.expected && input == other.input && messages == other.messages && metadata == other.metadata && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(expected, input, messages, metadata, mode, parent, stream, version, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{expected=$expected, input=$input, messages=$messages, metadata=$metadata, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -553,7 +164,6 @@ private constructor(
     }
 
     /** A builder for [FunctionInvokeParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var functionId: String? = null
@@ -836,6 +446,401 @@ private constructor(
             )
     }
 
+    @JvmSynthetic internal fun _body(): Body = body
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> functionId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    /** The request to invoke a function */
+    class Body
+    private constructor(
+        private val expected: JsonValue,
+        private val input: JsonValue,
+        private val messages: JsonField<List<Message>>,
+        private val metadata: JsonField<Metadata>,
+        private val mode: JsonField<Mode>,
+        private val parent: JsonField<Parent>,
+        private val stream: JsonField<Boolean>,
+        private val version: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("expected") @ExcludeMissing expected: JsonValue = JsonMissing.of(),
+            @JsonProperty("input") @ExcludeMissing input: JsonValue = JsonMissing.of(),
+            @JsonProperty("messages")
+            @ExcludeMissing
+            messages: JsonField<List<Message>> = JsonMissing.of(),
+            @JsonProperty("metadata")
+            @ExcludeMissing
+            metadata: JsonField<Metadata> = JsonMissing.of(),
+            @JsonProperty("mode") @ExcludeMissing mode: JsonField<Mode> = JsonMissing.of(),
+            @JsonProperty("parent") @ExcludeMissing parent: JsonField<Parent> = JsonMissing.of(),
+            @JsonProperty("stream") @ExcludeMissing stream: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+        ) : this(expected, input, messages, metadata, mode, parent, stream, version, mutableMapOf())
+
+        /** The expected output of the function */
+        @JsonProperty("expected") @ExcludeMissing fun _expected(): JsonValue = expected
+
+        /** Argument to the function, which can be any JSON serializable value */
+        @JsonProperty("input") @ExcludeMissing fun _input(): JsonValue = input
+
+        /**
+         * If the function is an LLM, additional messages to pass along to it
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun messages(): Optional<List<Message>> =
+            Optional.ofNullable(messages.getNullable("messages"))
+
+        /**
+         * Any relevant metadata
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+
+        /**
+         * The mode format of the returned value (defaults to 'auto')
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun mode(): Optional<Mode> = Optional.ofNullable(mode.getNullable("mode"))
+
+        /**
+         * Options for tracing the function call
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
+
+        /**
+         * Whether to stream the response. If true, results will be returned in the Braintrust SSE
+         * format.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun stream(): Optional<Boolean> = Optional.ofNullable(stream.getNullable("stream"))
+
+        /**
+         * The version of the function
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
+
+        /**
+         * Returns the raw JSON value of [messages].
+         *
+         * Unlike [messages], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("messages")
+        @ExcludeMissing
+        fun _messages(): JsonField<List<Message>> = messages
+
+        /**
+         * Returns the raw JSON value of [metadata].
+         *
+         * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+        /**
+         * Returns the raw JSON value of [mode].
+         *
+         * Unlike [mode], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("mode") @ExcludeMissing fun _mode(): JsonField<Mode> = mode
+
+        /**
+         * Returns the raw JSON value of [parent].
+         *
+         * Unlike [parent], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("parent") @ExcludeMissing fun _parent(): JsonField<Parent> = parent
+
+        /**
+         * Returns the raw JSON value of [stream].
+         *
+         * Unlike [stream], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("stream") @ExcludeMissing fun _stream(): JsonField<Boolean> = stream
+
+        /**
+         * Returns the raw JSON value of [version].
+         *
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Body]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var expected: JsonValue = JsonMissing.of()
+            private var input: JsonValue = JsonMissing.of()
+            private var messages: JsonField<MutableList<Message>>? = null
+            private var metadata: JsonField<Metadata> = JsonMissing.of()
+            private var mode: JsonField<Mode> = JsonMissing.of()
+            private var parent: JsonField<Parent> = JsonMissing.of()
+            private var stream: JsonField<Boolean> = JsonMissing.of()
+            private var version: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                expected = body.expected
+                input = body.input
+                messages = body.messages.map { it.toMutableList() }
+                metadata = body.metadata
+                mode = body.mode
+                parent = body.parent
+                stream = body.stream
+                version = body.version
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The expected output of the function */
+            fun expected(expected: JsonValue) = apply { this.expected = expected }
+
+            /** Argument to the function, which can be any JSON serializable value */
+            fun input(input: JsonValue) = apply { this.input = input }
+
+            /** If the function is an LLM, additional messages to pass along to it */
+            fun messages(messages: List<Message>) = messages(JsonField.of(messages))
+
+            /**
+             * Sets [Builder.messages] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.messages] with a well-typed `List<Message>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun messages(messages: JsonField<List<Message>>) = apply {
+                this.messages = messages.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Message] to [messages].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addMessage(message: Message) = apply {
+                messages =
+                    (messages ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("messages", it).add(message)
+                    }
+            }
+
+            /** Alias for calling [addMessage] with `Message.ofSystem(system)`. */
+            fun addMessage(system: Message.System) = addMessage(Message.ofSystem(system))
+
+            /** Alias for calling [addMessage] with `Message.ofUser(user)`. */
+            fun addMessage(user: Message.User) = addMessage(Message.ofUser(user))
+
+            /** Alias for calling [addMessage] with `Message.ofAssistant(assistant)`. */
+            fun addMessage(assistant: Message.Assistant) =
+                addMessage(Message.ofAssistant(assistant))
+
+            /** Alias for calling [addMessage] with `Message.ofTool(tool)`. */
+            fun addMessage(tool: Message.Tool) = addMessage(Message.ofTool(tool))
+
+            /** Alias for calling [addMessage] with `Message.ofFunction(function)`. */
+            fun addMessage(function: Message.Function) = addMessage(Message.ofFunction(function))
+
+            /** Alias for calling [addMessage] with `Message.ofFallback(fallback)`. */
+            fun addMessage(fallback: Message.Fallback) = addMessage(Message.ofFallback(fallback))
+
+            /** Any relevant metadata */
+            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+            /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.getOrNull())
+
+            /**
+             * Sets [Builder.metadata] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+
+            /** The mode format of the returned value (defaults to 'auto') */
+            fun mode(mode: Mode?) = mode(JsonField.ofNullable(mode))
+
+            /** Alias for calling [Builder.mode] with `mode.orElse(null)`. */
+            fun mode(mode: Optional<Mode>) = mode(mode.getOrNull())
+
+            /**
+             * Sets [Builder.mode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.mode] with a well-typed [Mode] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun mode(mode: JsonField<Mode>) = apply { this.mode = mode }
+
+            /** Options for tracing the function call */
+            fun parent(parent: Parent) = parent(JsonField.of(parent))
+
+            /**
+             * Sets [Builder.parent] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.parent] with a well-typed [Parent] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
+
+            /** Alias for calling [parent] with `Parent.ofSpanParentStruct(spanParentStruct)`. */
+            fun parent(spanParentStruct: Parent.SpanParentStruct) =
+                parent(Parent.ofSpanParentStruct(spanParentStruct))
+
+            /** Alias for calling [parent] with `Parent.ofString(string)`. */
+            fun parent(string: String) = parent(Parent.ofString(string))
+
+            /**
+             * Whether to stream the response. If true, results will be returned in the Braintrust
+             * SSE format.
+             */
+            fun stream(stream: Boolean?) = stream(JsonField.ofNullable(stream))
+
+            /**
+             * Alias for [Builder.stream].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun stream(stream: Boolean) = stream(stream as Boolean?)
+
+            /** Alias for calling [Builder.stream] with `stream.orElse(null)`. */
+            fun stream(stream: Optional<Boolean>) = stream(stream.getOrNull())
+
+            /**
+             * Sets [Builder.stream] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.stream] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun stream(stream: JsonField<Boolean>) = apply { this.stream = stream }
+
+            /** The version of the function */
+            fun version(version: String) = version(JsonField.of(version))
+
+            /**
+             * Sets [Builder.version] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.version] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun version(version: JsonField<String>) = apply { this.version = version }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Body =
+                Body(
+                    expected,
+                    input,
+                    (messages ?: JsonMissing.of()).map { it.toImmutable() },
+                    metadata,
+                    mode,
+                    parent,
+                    stream,
+                    version,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            messages().ifPresent { it.forEach { it.validate() } }
+            metadata().ifPresent { it.validate() }
+            mode()
+            parent().ifPresent { it.validate() }
+            stream()
+            version()
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && expected == other.expected && input == other.input && messages == other.messages && metadata == other.metadata && mode == other.mode && parent == other.parent && stream == other.stream && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(expected, input, messages, metadata, mode, parent, stream, version, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{expected=$expected, input=$input, messages=$messages, metadata=$metadata, mode=$mode, parent=$parent, stream=$stream, version=$version, additionalProperties=$additionalProperties}"
+    }
+
     @JsonDeserialize(using = Message.Deserializer::class)
     @JsonSerialize(using = Message.Serializer::class)
     class Message
@@ -1059,22 +1064,22 @@ private constructor(
             }
         }
 
-        @NoAutoDetect
         class System
-        @JsonCreator
         private constructor(
-            @JsonProperty("role")
-            @ExcludeMissing
-            private val role: JsonField<Role> = JsonMissing.of(),
-            @JsonProperty("content")
-            @ExcludeMissing
-            private val content: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val role: JsonField<Role>,
+            private val content: JsonField<String>,
+            private val name: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+                @JsonProperty("content")
+                @ExcludeMissing
+                content: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            ) : this(role, content, name, mutableMapOf())
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -1116,22 +1121,15 @@ private constructor(
              */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): System = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                role()
-                content()
-                name()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1236,8 +1234,21 @@ private constructor(
                         checkRequired("role", role),
                         content,
                         name,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): System = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                role()
+                content()
+                name()
+                validated = true
             }
 
             class Role @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -1355,22 +1366,22 @@ private constructor(
                 "System{role=$role, content=$content, name=$name, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class User
-        @JsonCreator
         private constructor(
-            @JsonProperty("role")
-            @ExcludeMissing
-            private val role: JsonField<Role> = JsonMissing.of(),
-            @JsonProperty("content")
-            @ExcludeMissing
-            private val content: JsonField<Content> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val role: JsonField<Role>,
+            private val content: JsonField<Content>,
+            private val name: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+                @JsonProperty("content")
+                @ExcludeMissing
+                content: JsonField<Content> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            ) : this(role, content, name, mutableMapOf())
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -1412,22 +1423,15 @@ private constructor(
              */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): User = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                role()
-                content().ifPresent { it.validate() }
-                name()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1539,8 +1543,21 @@ private constructor(
                         checkRequired("role", role),
                         content,
                         name,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): User = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                role()
+                content().ifPresent { it.validate() }
+                name()
+                validated = true
             }
 
             class Role @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -1953,29 +1970,30 @@ private constructor(
                 "User{role=$role, content=$content, name=$name, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class Assistant
-        @JsonCreator
         private constructor(
-            @JsonProperty("role")
-            @ExcludeMissing
-            private val role: JsonField<Role> = JsonMissing.of(),
-            @JsonProperty("content")
-            @ExcludeMissing
-            private val content: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("function_call")
-            @ExcludeMissing
-            private val functionCall: JsonField<FunctionCall> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("tool_calls")
-            @ExcludeMissing
-            private val toolCalls: JsonField<List<ChatCompletionMessageToolCall>> =
-                JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val role: JsonField<Role>,
+            private val content: JsonField<String>,
+            private val functionCall: JsonField<FunctionCall>,
+            private val name: JsonField<String>,
+            private val toolCalls: JsonField<List<ChatCompletionMessageToolCall>>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+                @JsonProperty("content")
+                @ExcludeMissing
+                content: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("function_call")
+                @ExcludeMissing
+                functionCall: JsonField<FunctionCall> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("tool_calls")
+                @ExcludeMissing
+                toolCalls: JsonField<List<ChatCompletionMessageToolCall>> = JsonMissing.of(),
+            ) : this(role, content, functionCall, name, toolCalls, mutableMapOf())
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -2051,24 +2069,15 @@ private constructor(
             @ExcludeMissing
             fun _toolCalls(): JsonField<List<ChatCompletionMessageToolCall>> = toolCalls
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Assistant = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                role()
-                content()
-                functionCall().ifPresent { it.validate() }
-                name()
-                toolCalls().ifPresent { it.forEach { it.validate() } }
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2233,8 +2242,23 @@ private constructor(
                         functionCall,
                         name,
                         (toolCalls ?: JsonMissing.of()).map { it.toImmutable() },
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Assistant = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                role()
+                content()
+                functionCall().ifPresent { it.validate() }
+                name()
+                toolCalls().ifPresent { it.forEach { it.validate() } }
+                validated = true
             }
 
             class Role @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -2334,19 +2358,20 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
-            @NoAutoDetect
             class FunctionCall
-            @JsonCreator
             private constructor(
-                @JsonProperty("arguments")
-                @ExcludeMissing
-                private val arguments: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("name")
-                @ExcludeMissing
-                private val name: JsonField<String> = JsonMissing.of(),
-                @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val arguments: JsonField<String>,
+                private val name: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("arguments")
+                    @ExcludeMissing
+                    arguments: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                ) : this(arguments, name, mutableMapOf())
 
                 /**
                  * @throws BraintrustInvalidDataException if the JSON field has an unexpected type
@@ -2380,21 +2405,15 @@ private constructor(
                  */
                 @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): FunctionCall = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    arguments()
-                    name()
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -2489,8 +2508,20 @@ private constructor(
                         FunctionCall(
                             checkRequired("arguments", arguments),
                             checkRequired("name", name),
-                            additionalProperties.toImmutable(),
+                            additionalProperties.toMutableMap(),
                         )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): FunctionCall = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    arguments()
+                    name()
+                    validated = true
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -2529,22 +2560,24 @@ private constructor(
                 "Assistant{role=$role, content=$content, functionCall=$functionCall, name=$name, toolCalls=$toolCalls, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class Tool
-        @JsonCreator
         private constructor(
-            @JsonProperty("role")
-            @ExcludeMissing
-            private val role: JsonField<Role> = JsonMissing.of(),
-            @JsonProperty("content")
-            @ExcludeMissing
-            private val content: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("tool_call_id")
-            @ExcludeMissing
-            private val toolCallId: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val role: JsonField<Role>,
+            private val content: JsonField<String>,
+            private val toolCallId: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+                @JsonProperty("content")
+                @ExcludeMissing
+                content: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("tool_call_id")
+                @ExcludeMissing
+                toolCallId: JsonField<String> = JsonMissing.of(),
+            ) : this(role, content, toolCallId, mutableMapOf())
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -2590,22 +2623,15 @@ private constructor(
             @ExcludeMissing
             fun _toolCallId(): JsonField<String> = toolCallId
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Tool = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                role()
-                content()
-                toolCallId()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2712,8 +2738,21 @@ private constructor(
                         checkRequired("role", role),
                         content,
                         toolCallId,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Tool = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                role()
+                content()
+                toolCallId()
+                validated = true
             }
 
             class Role @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -2831,22 +2870,22 @@ private constructor(
                 "Tool{role=$role, content=$content, toolCallId=$toolCallId, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class Function
-        @JsonCreator
         private constructor(
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("role")
-            @ExcludeMissing
-            private val role: JsonField<Role> = JsonMissing.of(),
-            @JsonProperty("content")
-            @ExcludeMissing
-            private val content: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val name: JsonField<String>,
+            private val role: JsonField<Role>,
+            private val content: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+                @JsonProperty("content")
+                @ExcludeMissing
+                content: JsonField<String> = JsonMissing.of(),
+            ) : this(name, role, content, mutableMapOf())
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -2889,22 +2928,15 @@ private constructor(
              */
             @JsonProperty("content") @ExcludeMissing fun _content(): JsonField<String> = content
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Function = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                name()
-                role()
-                content()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -3011,8 +3043,21 @@ private constructor(
                         checkRequired("name", name),
                         checkRequired("role", role),
                         content,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Function = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                name()
+                role()
+                content()
+                validated = true
             }
 
             class Role @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -3130,19 +3175,20 @@ private constructor(
                 "Function{name=$name, role=$role, content=$content, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class Fallback
-        @JsonCreator
         private constructor(
-            @JsonProperty("role")
-            @ExcludeMissing
-            private val role: JsonField<Role> = JsonMissing.of(),
-            @JsonProperty("content")
-            @ExcludeMissing
-            private val content: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val role: JsonField<Role>,
+            private val content: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+                @JsonProperty("content")
+                @ExcludeMissing
+                content: JsonField<String> = JsonMissing.of(),
+            ) : this(role, content, mutableMapOf())
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -3171,21 +3217,15 @@ private constructor(
              */
             @JsonProperty("content") @ExcludeMissing fun _content(): JsonField<String> = content
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Fallback = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                role()
-                content()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -3279,8 +3319,20 @@ private constructor(
                     Fallback(
                         checkRequired("role", role),
                         content,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Fallback = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                role()
+                content()
+                validated = true
             }
 
             class Role @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -3400,27 +3452,20 @@ private constructor(
     }
 
     /** Any relevant metadata */
-    @NoAutoDetect
     class Metadata
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -3464,7 +3509,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Metadata = Metadata(additionalProperties.toImmutable())
+            fun build(): Metadata = Metadata(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -3727,25 +3782,30 @@ private constructor(
         }
 
         /** Span parent properties */
-        @NoAutoDetect
         class SpanParentStruct
-        @JsonCreator
         private constructor(
-            @JsonProperty("object_id")
-            @ExcludeMissing
-            private val objectId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("object_type")
-            @ExcludeMissing
-            private val objectType: JsonField<ObjectType> = JsonMissing.of(),
-            @JsonProperty("propagated_event")
-            @ExcludeMissing
-            private val propagatedEvent: JsonField<PropagatedEvent> = JsonMissing.of(),
-            @JsonProperty("row_ids")
-            @ExcludeMissing
-            private val rowIds: JsonField<RowIds> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val objectId: JsonField<String>,
+            private val objectType: JsonField<ObjectType>,
+            private val propagatedEvent: JsonField<PropagatedEvent>,
+            private val rowIds: JsonField<RowIds>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("object_id")
+                @ExcludeMissing
+                objectId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("object_type")
+                @ExcludeMissing
+                objectType: JsonField<ObjectType> = JsonMissing.of(),
+                @JsonProperty("propagated_event")
+                @ExcludeMissing
+                propagatedEvent: JsonField<PropagatedEvent> = JsonMissing.of(),
+                @JsonProperty("row_ids")
+                @ExcludeMissing
+                rowIds: JsonField<RowIds> = JsonMissing.of(),
+            ) : this(objectId, objectType, propagatedEvent, rowIds, mutableMapOf())
 
             /**
              * The id of the container object you are logging to
@@ -3815,23 +3875,15 @@ private constructor(
              */
             @JsonProperty("row_ids") @ExcludeMissing fun _rowIds(): JsonField<RowIds> = rowIds
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): SpanParentStruct = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                objectId()
-                objectType()
-                propagatedEvent().ifPresent { it.validate() }
-                rowIds().ifPresent { it.validate() }
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -3969,8 +4021,22 @@ private constructor(
                         checkRequired("objectType", objectType),
                         propagatedEvent,
                         rowIds,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): SpanParentStruct = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                objectId()
+                objectType()
+                propagatedEvent().ifPresent { it.validate() }
+                rowIds().ifPresent { it.validate() }
+                validated = true
             }
 
             class ObjectType
@@ -4085,27 +4151,20 @@ private constructor(
             }
 
             /** Include these properties in every span created under this parent */
-            @NoAutoDetect
             class PropagatedEvent
-            @JsonCreator
-            private constructor(
+            private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+                @JsonCreator private constructor() : this(mutableMapOf())
+
                 @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-            ) {
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
 
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): PropagatedEvent = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -4155,7 +4214,17 @@ private constructor(
                      * Further updates to this [Builder] will not mutate the returned instance.
                      */
                     fun build(): PropagatedEvent =
-                        PropagatedEvent(additionalProperties.toImmutable())
+                        PropagatedEvent(additionalProperties.toMutableMap())
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): PropagatedEvent = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    validated = true
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -4177,22 +4246,24 @@ private constructor(
             }
 
             /** Identifiers for the row to to log a subspan under */
-            @NoAutoDetect
             class RowIds
-            @JsonCreator
             private constructor(
-                @JsonProperty("id")
-                @ExcludeMissing
-                private val id: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("root_span_id")
-                @ExcludeMissing
-                private val rootSpanId: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("span_id")
-                @ExcludeMissing
-                private val spanId: JsonField<String> = JsonMissing.of(),
-                @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val id: JsonField<String>,
+                private val rootSpanId: JsonField<String>,
+                private val spanId: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("root_span_id")
+                    @ExcludeMissing
+                    rootSpanId: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("span_id")
+                    @ExcludeMissing
+                    spanId: JsonField<String> = JsonMissing.of(),
+                ) : this(id, rootSpanId, spanId, mutableMapOf())
 
                 /**
                  * The id of the row
@@ -4246,22 +4317,15 @@ private constructor(
                  */
                 @JsonProperty("span_id") @ExcludeMissing fun _spanId(): JsonField<String> = spanId
 
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): RowIds = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    id()
-                    rootSpanId()
-                    spanId()
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -4375,8 +4439,21 @@ private constructor(
                             checkRequired("id", id),
                             checkRequired("rootSpanId", rootSpanId),
                             checkRequired("spanId", spanId),
-                            additionalProperties.toImmutable(),
+                            additionalProperties.toMutableMap(),
                         )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): RowIds = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    id()
+                    rootSpanId()
+                    spanId()
+                    validated = true
                 }
 
                 override fun equals(other: Any?): Boolean {

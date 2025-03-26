@@ -6,34 +6,39 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
 /** Summary of a score's performance */
-@NoAutoDetect
 class ScoreSummary
-@JsonCreator
 private constructor(
-    @JsonProperty("improvements")
-    @ExcludeMissing
-    private val improvements: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("regressions")
-    @ExcludeMissing
-    private val regressions: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("score") @ExcludeMissing private val score: JsonField<Double> = JsonMissing.of(),
-    @JsonProperty("diff") @ExcludeMissing private val diff: JsonField<Double> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val improvements: JsonField<Long>,
+    private val name: JsonField<String>,
+    private val regressions: JsonField<Long>,
+    private val score: JsonField<Double>,
+    private val diff: JsonField<Double>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("improvements")
+        @ExcludeMissing
+        improvements: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("regressions")
+        @ExcludeMissing
+        regressions: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("score") @ExcludeMissing score: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("diff") @ExcludeMissing diff: JsonField<Double> = JsonMissing.of(),
+    ) : this(improvements, name, regressions, score, diff, mutableMapOf())
 
     /**
      * Number of improvements in the score
@@ -112,24 +117,15 @@ private constructor(
      */
     @JsonProperty("diff") @ExcludeMissing fun _diff(): JsonField<Double> = diff
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ScoreSummary = apply {
-        if (validated) {
-            return@apply
-        }
-
-        improvements()
-        name()
-        regressions()
-        score()
-        diff()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -267,8 +263,23 @@ private constructor(
                 checkRequired("regressions", regressions),
                 checkRequired("score", score),
                 diff,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): ScoreSummary = apply {
+        if (validated) {
+            return@apply
+        }
+
+        improvements()
+        name()
+        regressions()
+        score()
+        diff()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

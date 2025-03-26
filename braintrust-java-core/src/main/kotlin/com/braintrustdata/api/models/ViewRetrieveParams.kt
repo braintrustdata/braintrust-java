@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
@@ -32,23 +31,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> viewId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                put("object_id", objectId)
-                put("object_type", objectType.toString())
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -67,7 +49,6 @@ private constructor(
     }
 
     /** A builder for [ViewRetrieveParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var viewId: String? = null
@@ -215,6 +196,23 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> viewId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("object_id", objectId)
+                put("object_type", objectType.toString())
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

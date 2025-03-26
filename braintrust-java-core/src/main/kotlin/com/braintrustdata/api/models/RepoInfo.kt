@@ -6,48 +6,62 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Metadata about the state of the repo when the experiment was created */
-@NoAutoDetect
 class RepoInfo
-@JsonCreator
 private constructor(
-    @JsonProperty("author_email")
-    @ExcludeMissing
-    private val authorEmail: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("author_name")
-    @ExcludeMissing
-    private val authorName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("branch")
-    @ExcludeMissing
-    private val branch: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("commit")
-    @ExcludeMissing
-    private val commit: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("commit_message")
-    @ExcludeMissing
-    private val commitMessage: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("commit_time")
-    @ExcludeMissing
-    private val commitTime: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("dirty") @ExcludeMissing private val dirty: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("git_diff")
-    @ExcludeMissing
-    private val gitDiff: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("tag") @ExcludeMissing private val tag: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val authorEmail: JsonField<String>,
+    private val authorName: JsonField<String>,
+    private val branch: JsonField<String>,
+    private val commit: JsonField<String>,
+    private val commitMessage: JsonField<String>,
+    private val commitTime: JsonField<String>,
+    private val dirty: JsonField<Boolean>,
+    private val gitDiff: JsonField<String>,
+    private val tag: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("author_email")
+        @ExcludeMissing
+        authorEmail: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("author_name")
+        @ExcludeMissing
+        authorName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("branch") @ExcludeMissing branch: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("commit") @ExcludeMissing commit: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("commit_message")
+        @ExcludeMissing
+        commitMessage: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("commit_time")
+        @ExcludeMissing
+        commitTime: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dirty") @ExcludeMissing dirty: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("git_diff") @ExcludeMissing gitDiff: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("tag") @ExcludeMissing tag: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        authorEmail,
+        authorName,
+        branch,
+        commit,
+        commitMessage,
+        commitTime,
+        dirty,
+        gitDiff,
+        tag,
+        mutableMapOf(),
+    )
 
     /**
      * Email of the author of the most recent commit
@@ -191,28 +205,15 @@ private constructor(
      */
     @JsonProperty("tag") @ExcludeMissing fun _tag(): JsonField<String> = tag
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): RepoInfo = apply {
-        if (validated) {
-            return@apply
-        }
-
-        authorEmail()
-        authorName()
-        branch()
-        commit()
-        commitMessage()
-        commitTime()
-        dirty()
-        gitDiff()
-        tag()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -429,8 +430,27 @@ private constructor(
                 dirty,
                 gitDiff,
                 tag,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): RepoInfo = apply {
+        if (validated) {
+            return@apply
+        }
+
+        authorEmail()
+        authorName()
+        branch()
+        commit()
+        commitMessage()
+        commitTime()
+        dirty()
+        gitDiff()
+        tag()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

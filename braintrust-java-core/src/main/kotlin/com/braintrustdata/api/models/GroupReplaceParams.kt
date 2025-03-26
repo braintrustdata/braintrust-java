@@ -6,19 +6,18 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -120,354 +119,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("member_groups")
-        @ExcludeMissing
-        private val memberGroups: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("member_users")
-        @ExcludeMissing
-        private val memberUsers: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("org_name")
-        @ExcludeMissing
-        private val orgName: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * Name of the group
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun name(): String = name.getRequired("name")
-
-        /**
-         * Textual description of the group
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
-
-        /**
-         * Ids of the groups this group inherits from
-         *
-         * An inheriting group has all the users contained in its member groups, as well as all of
-         * their inherited users
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun memberGroups(): Optional<List<String>> =
-            Optional.ofNullable(memberGroups.getNullable("member_groups"))
-
-        /**
-         * Ids of users which belong to this group
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun memberUsers(): Optional<List<String>> =
-            Optional.ofNullable(memberUsers.getNullable("member_users"))
-
-        /**
-         * For nearly all users, this parameter should be unnecessary. But in the rare case that
-         * your API key belongs to multiple organizations, you may specify the name of the
-         * organization the group belongs in.
-         *
-         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
-
-        /**
-         * Returns the raw JSON value of [name].
-         *
-         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-        /**
-         * Returns the raw JSON value of [description].
-         *
-         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /**
-         * Returns the raw JSON value of [memberGroups].
-         *
-         * Unlike [memberGroups], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("member_groups")
-        @ExcludeMissing
-        fun _memberGroups(): JsonField<List<String>> = memberGroups
-
-        /**
-         * Returns the raw JSON value of [memberUsers].
-         *
-         * Unlike [memberUsers], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("member_users")
-        @ExcludeMissing
-        fun _memberUsers(): JsonField<List<String>> = memberUsers
-
-        /**
-         * Returns the raw JSON value of [orgName].
-         *
-         * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            name()
-            description()
-            memberGroups()
-            memberUsers()
-            orgName()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .name()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var name: JsonField<String>? = null
-            private var description: JsonField<String> = JsonMissing.of()
-            private var memberGroups: JsonField<MutableList<String>>? = null
-            private var memberUsers: JsonField<MutableList<String>>? = null
-            private var orgName: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                name = body.name
-                description = body.description
-                memberGroups = body.memberGroups.map { it.toMutableList() }
-                memberUsers = body.memberUsers.map { it.toMutableList() }
-                orgName = body.orgName
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /** Name of the group */
-            fun name(name: String) = name(JsonField.of(name))
-
-            /**
-             * Sets [Builder.name] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.name] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun name(name: JsonField<String>) = apply { this.name = name }
-
-            /** Textual description of the group */
-            fun description(description: String?) = description(JsonField.ofNullable(description))
-
-            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
-            fun description(description: Optional<String>) = description(description.getOrNull())
-
-            /**
-             * Sets [Builder.description] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.description] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            /**
-             * Ids of the groups this group inherits from
-             *
-             * An inheriting group has all the users contained in its member groups, as well as all
-             * of their inherited users
-             */
-            fun memberGroups(memberGroups: List<String>?) =
-                memberGroups(JsonField.ofNullable(memberGroups))
-
-            /** Alias for calling [Builder.memberGroups] with `memberGroups.orElse(null)`. */
-            fun memberGroups(memberGroups: Optional<List<String>>) =
-                memberGroups(memberGroups.getOrNull())
-
-            /**
-             * Sets [Builder.memberGroups] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.memberGroups] with a well-typed `List<String>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun memberGroups(memberGroups: JsonField<List<String>>) = apply {
-                this.memberGroups = memberGroups.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [memberGroups].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addMemberGroup(memberGroup: String) = apply {
-                memberGroups =
-                    (memberGroups ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("memberGroups", it).add(memberGroup)
-                    }
-            }
-
-            /** Ids of users which belong to this group */
-            fun memberUsers(memberUsers: List<String>?) =
-                memberUsers(JsonField.ofNullable(memberUsers))
-
-            /** Alias for calling [Builder.memberUsers] with `memberUsers.orElse(null)`. */
-            fun memberUsers(memberUsers: Optional<List<String>>) =
-                memberUsers(memberUsers.getOrNull())
-
-            /**
-             * Sets [Builder.memberUsers] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.memberUsers] with a well-typed `List<String>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun memberUsers(memberUsers: JsonField<List<String>>) = apply {
-                this.memberUsers = memberUsers.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [memberUsers].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addMemberUser(memberUser: String) = apply {
-                memberUsers =
-                    (memberUsers ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("memberUsers", it).add(memberUser)
-                    }
-            }
-
-            /**
-             * For nearly all users, this parameter should be unnecessary. But in the rare case that
-             * your API key belongs to multiple organizations, you may specify the name of the
-             * organization the group belongs in.
-             */
-            fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
-
-            /** Alias for calling [Builder.orgName] with `orgName.orElse(null)`. */
-            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
-
-            /**
-             * Sets [Builder.orgName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.orgName] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .name()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(
-                    checkRequired("name", name),
-                    description,
-                    (memberGroups ?: JsonMissing.of()).map { it.toImmutable() },
-                    (memberUsers ?: JsonMissing.of()).map { it.toImmutable() },
-                    orgName,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && name == other.name && description == other.description && memberGroups == other.memberGroups && memberUsers == other.memberUsers && orgName == other.orgName && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -484,7 +135,6 @@ private constructor(
     }
 
     /** A builder for [GroupReplaceParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -731,6 +381,362 @@ private constructor(
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
+    }
+
+    @JvmSynthetic internal fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val name: JsonField<String>,
+        private val description: JsonField<String>,
+        private val memberGroups: JsonField<List<String>>,
+        private val memberUsers: JsonField<List<String>>,
+        private val orgName: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("member_groups")
+            @ExcludeMissing
+            memberGroups: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("member_users")
+            @ExcludeMissing
+            memberUsers: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("org_name") @ExcludeMissing orgName: JsonField<String> = JsonMissing.of(),
+        ) : this(name, description, memberGroups, memberUsers, orgName, mutableMapOf())
+
+        /**
+         * Name of the group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun name(): String = name.getRequired("name")
+
+        /**
+         * Textual description of the group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
+
+        /**
+         * Ids of the groups this group inherits from
+         *
+         * An inheriting group has all the users contained in its member groups, as well as all of
+         * their inherited users
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun memberGroups(): Optional<List<String>> =
+            Optional.ofNullable(memberGroups.getNullable("member_groups"))
+
+        /**
+         * Ids of users which belong to this group
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun memberUsers(): Optional<List<String>> =
+            Optional.ofNullable(memberUsers.getNullable("member_users"))
+
+        /**
+         * For nearly all users, this parameter should be unnecessary. But in the rare case that
+         * your API key belongs to multiple organizations, you may specify the name of the
+         * organization the group belongs in.
+         *
+         * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /**
+         * Returns the raw JSON value of [memberGroups].
+         *
+         * Unlike [memberGroups], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("member_groups")
+        @ExcludeMissing
+        fun _memberGroups(): JsonField<List<String>> = memberGroups
+
+        /**
+         * Returns the raw JSON value of [memberUsers].
+         *
+         * Unlike [memberUsers], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("member_users")
+        @ExcludeMissing
+        fun _memberUsers(): JsonField<List<String>> = memberUsers
+
+        /**
+         * Returns the raw JSON value of [orgName].
+         *
+         * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("org_name") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .name()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var name: JsonField<String>? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var memberGroups: JsonField<MutableList<String>>? = null
+            private var memberUsers: JsonField<MutableList<String>>? = null
+            private var orgName: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                name = body.name
+                description = body.description
+                memberGroups = body.memberGroups.map { it.toMutableList() }
+                memberUsers = body.memberUsers.map { it.toMutableList() }
+                orgName = body.orgName
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** Name of the group */
+            fun name(name: String) = name(JsonField.of(name))
+
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** Textual description of the group */
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
+            fun description(description: Optional<String>) = description(description.getOrNull())
+
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
+
+            /**
+             * Ids of the groups this group inherits from
+             *
+             * An inheriting group has all the users contained in its member groups, as well as all
+             * of their inherited users
+             */
+            fun memberGroups(memberGroups: List<String>?) =
+                memberGroups(JsonField.ofNullable(memberGroups))
+
+            /** Alias for calling [Builder.memberGroups] with `memberGroups.orElse(null)`. */
+            fun memberGroups(memberGroups: Optional<List<String>>) =
+                memberGroups(memberGroups.getOrNull())
+
+            /**
+             * Sets [Builder.memberGroups] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.memberGroups] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun memberGroups(memberGroups: JsonField<List<String>>) = apply {
+                this.memberGroups = memberGroups.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [memberGroups].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addMemberGroup(memberGroup: String) = apply {
+                memberGroups =
+                    (memberGroups ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("memberGroups", it).add(memberGroup)
+                    }
+            }
+
+            /** Ids of users which belong to this group */
+            fun memberUsers(memberUsers: List<String>?) =
+                memberUsers(JsonField.ofNullable(memberUsers))
+
+            /** Alias for calling [Builder.memberUsers] with `memberUsers.orElse(null)`. */
+            fun memberUsers(memberUsers: Optional<List<String>>) =
+                memberUsers(memberUsers.getOrNull())
+
+            /**
+             * Sets [Builder.memberUsers] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.memberUsers] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun memberUsers(memberUsers: JsonField<List<String>>) = apply {
+                this.memberUsers = memberUsers.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [memberUsers].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addMemberUser(memberUser: String) = apply {
+                memberUsers =
+                    (memberUsers ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("memberUsers", it).add(memberUser)
+                    }
+            }
+
+            /**
+             * For nearly all users, this parameter should be unnecessary. But in the rare case that
+             * your API key belongs to multiple organizations, you may specify the name of the
+             * organization the group belongs in.
+             */
+            fun orgName(orgName: String?) = orgName(JsonField.ofNullable(orgName))
+
+            /** Alias for calling [Builder.orgName] with `orgName.orElse(null)`. */
+            fun orgName(orgName: Optional<String>) = orgName(orgName.getOrNull())
+
+            /**
+             * Sets [Builder.orgName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.orgName] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .name()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("name", name),
+                    description,
+                    (memberGroups ?: JsonMissing.of()).map { it.toImmutable() },
+                    (memberUsers ?: JsonMissing.of()).map { it.toImmutable() },
+                    orgName,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            description()
+            memberGroups()
+            memberUsers()
+            orgName()
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && name == other.name && description == other.description && memberGroups == other.memberGroups && memberUsers == other.memberUsers && orgName == other.orgName && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{name=$name, description=$description, memberGroups=$memberGroups, memberUsers=$memberUsers, orgName=$orgName, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

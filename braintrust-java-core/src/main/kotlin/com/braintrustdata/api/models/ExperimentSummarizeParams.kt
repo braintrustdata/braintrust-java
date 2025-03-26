@@ -2,7 +2,6 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
@@ -41,23 +40,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> experimentId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                comparisonExperimentId?.let { put("comparison_experiment_id", it) }
-                summarizeScores?.let { put("summarize_scores", it.toString()) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -74,7 +56,6 @@ private constructor(
     }
 
     /** A builder for [ExperimentSummarizeParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var experimentId: String? = null
@@ -250,6 +231,23 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> experimentId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                comparisonExperimentId?.let { put("comparison_experiment_id", it) }
+                summarizeScores?.let { put("summarize_scores", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

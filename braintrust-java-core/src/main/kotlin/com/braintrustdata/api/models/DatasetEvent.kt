@@ -6,10 +6,8 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -17,49 +15,66 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class DatasetEvent
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("_xact_id")
-    @ExcludeMissing
-    private val _xactId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dataset_id")
-    @ExcludeMissing
-    private val datasetId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("project_id")
-    @ExcludeMissing
-    private val projectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("root_span_id")
-    @ExcludeMissing
-    private val rootSpanId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("span_id")
-    @ExcludeMissing
-    private val spanId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("expected") @ExcludeMissing private val expected: JsonValue = JsonMissing.of(),
-    @JsonProperty("input") @ExcludeMissing private val input: JsonValue = JsonMissing.of(),
-    @JsonProperty("is_root")
-    @ExcludeMissing
-    private val isRoot: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("metadata")
-    @ExcludeMissing
-    private val metadata: JsonField<Metadata> = JsonMissing.of(),
-    @JsonProperty("origin")
-    @ExcludeMissing
-    private val origin: JsonField<ObjectReference> = JsonMissing.of(),
-    @JsonProperty("tags")
-    @ExcludeMissing
-    private val tags: JsonField<List<String>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val _xactId: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val datasetId: JsonField<String>,
+    private val projectId: JsonField<String>,
+    private val rootSpanId: JsonField<String>,
+    private val spanId: JsonField<String>,
+    private val expected: JsonValue,
+    private val input: JsonValue,
+    private val isRoot: JsonField<Boolean>,
+    private val metadata: JsonField<Metadata>,
+    private val origin: JsonField<ObjectReference>,
+    private val tags: JsonField<List<String>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("_xact_id") @ExcludeMissing _xactId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dataset_id") @ExcludeMissing datasetId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("project_id") @ExcludeMissing projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("root_span_id")
+        @ExcludeMissing
+        rootSpanId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("span_id") @ExcludeMissing spanId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("expected") @ExcludeMissing expected: JsonValue = JsonMissing.of(),
+        @JsonProperty("input") @ExcludeMissing input: JsonValue = JsonMissing.of(),
+        @JsonProperty("is_root") @ExcludeMissing isRoot: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("origin")
+        @ExcludeMissing
+        origin: JsonField<ObjectReference> = JsonMissing.of(),
+        @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<String>> = JsonMissing.of(),
+    ) : this(
+        id,
+        _xactId,
+        created,
+        datasetId,
+        projectId,
+        rootSpanId,
+        spanId,
+        expected,
+        input,
+        isRoot,
+        metadata,
+        origin,
+        tags,
+        mutableMapOf(),
+    )
 
     /**
      * A unique identifier for the dataset event. If you don't provide one, BrainTrust will generate
@@ -244,30 +259,15 @@ private constructor(
      */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): DatasetEvent = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        _xactId()
-        created()
-        datasetId()
-        projectId()
-        rootSpanId()
-        spanId()
-        isRoot()
-        metadata().ifPresent { it.validate() }
-        origin().ifPresent { it.validate() }
-        tags()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -564,8 +564,29 @@ private constructor(
                 metadata,
                 origin,
                 (tags ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): DatasetEvent = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        _xactId()
+        created()
+        datasetId()
+        projectId()
+        rootSpanId()
+        spanId()
+        isRoot()
+        metadata().ifPresent { it.validate() }
+        origin().ifPresent { it.validate() }
+        tags()
+        validated = true
     }
 
     /**
@@ -575,16 +596,16 @@ private constructor(
      * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
      * must be strings
      */
-    @NoAutoDetect
     class Metadata
-    @JsonCreator
     private constructor(
-        @JsonProperty("model")
-        @ExcludeMissing
-        private val model: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val model: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("model") @ExcludeMissing model: JsonField<String> = JsonMissing.of()
+        ) : this(model, mutableMapOf())
 
         /**
          * The model used for this example
@@ -601,20 +622,15 @@ private constructor(
          */
         @JsonProperty("model") @ExcludeMissing fun _model(): JsonField<String> = model
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
-
-            model()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -675,7 +691,18 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Metadata = Metadata(model, additionalProperties.toImmutable())
+            fun build(): Metadata = Metadata(model, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            model()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
