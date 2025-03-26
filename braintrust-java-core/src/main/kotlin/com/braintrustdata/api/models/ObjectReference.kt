@@ -7,39 +7,38 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Indicates the event was copied from another object. */
-@NoAutoDetect
 class ObjectReference
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("_xact_id")
-    @ExcludeMissing
-    private val _xactId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_id")
-    @ExcludeMissing
-    private val objectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_type")
-    @ExcludeMissing
-    private val objectType: JsonField<ObjectType> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val _xactId: JsonField<String>,
+    private val objectId: JsonField<String>,
+    private val objectType: JsonField<ObjectType>,
+    private val created: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("_xact_id") @ExcludeMissing _xactId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_id") @ExcludeMissing objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        objectType: JsonField<ObjectType> = JsonMissing.of(),
+        @JsonProperty("created") @ExcludeMissing created: JsonField<String> = JsonMissing.of(),
+    ) : this(id, _xactId, objectId, objectType, created, mutableMapOf())
 
     /**
      * ID of the original event.
@@ -118,24 +117,15 @@ private constructor(
      */
     @JsonProperty("created") @ExcludeMissing fun _created(): JsonField<String> = created
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ObjectReference = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        _xactId()
-        objectId()
-        objectType()
-        created()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -275,8 +265,23 @@ private constructor(
                 checkRequired("objectId", objectId),
                 checkRequired("objectType", objectType),
                 created,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): ObjectReference = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        _xactId()
+        objectId()
+        objectType()
+        created()
+        validated = true
     }
 
     /** Type of the object the event is originating from. */

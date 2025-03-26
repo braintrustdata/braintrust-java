@@ -7,28 +7,28 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class ChatCompletionContentPartImage
-@JsonCreator
 private constructor(
-    @JsonProperty("image_url")
-    @ExcludeMissing
-    private val imageUrl: JsonField<ImageUrl> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val imageUrl: JsonField<ImageUrl>,
+    private val type: JsonField<Type>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("image_url") @ExcludeMissing imageUrl: JsonField<ImageUrl> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+    ) : this(imageUrl, type, mutableMapOf())
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -56,21 +56,15 @@ private constructor(
      */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ChatCompletionContentPartImage = apply {
-        if (validated) {
-            return@apply
-        }
-
-        imageUrl().validate()
-        type()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -161,21 +155,34 @@ private constructor(
             ChatCompletionContentPartImage(
                 checkRequired("imageUrl", imageUrl),
                 checkRequired("type", type),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): ChatCompletionContentPartImage = apply {
+        if (validated) {
+            return@apply
+        }
+
+        imageUrl().validate()
+        type()
+        validated = true
+    }
+
     class ImageUrl
-    @JsonCreator
     private constructor(
-        @JsonProperty("url") @ExcludeMissing private val url: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("detail")
-        @ExcludeMissing
-        private val detail: JsonField<Detail> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val url: JsonField<String>,
+        private val detail: JsonField<Detail>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("detail") @ExcludeMissing detail: JsonField<Detail> = JsonMissing.of(),
+        ) : this(url, detail, mutableMapOf())
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -203,21 +210,15 @@ private constructor(
          */
         @JsonProperty("detail") @ExcludeMissing fun _detail(): JsonField<Detail> = detail
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): ImageUrl = apply {
-            if (validated) {
-                return@apply
-            }
-
-            url()
-            detail()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -302,7 +303,19 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): ImageUrl =
-                ImageUrl(checkRequired("url", url), detail, additionalProperties.toImmutable())
+                ImageUrl(checkRequired("url", url), detail, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): ImageUrl = apply {
+            if (validated) {
+                return@apply
+            }
+
+            url()
+            detail()
+            validated = true
         }
 
         class Detail @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

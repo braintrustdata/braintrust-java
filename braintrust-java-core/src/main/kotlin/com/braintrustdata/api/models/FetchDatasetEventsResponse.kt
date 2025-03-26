@@ -6,32 +6,33 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class FetchDatasetEventsResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("events")
-    @ExcludeMissing
-    private val events: JsonField<List<DatasetEvent>> = JsonMissing.of(),
-    @JsonProperty("cursor")
-    @ExcludeMissing
-    private val cursor: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val events: JsonField<List<DatasetEvent>>,
+    private val cursor: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("events")
+        @ExcludeMissing
+        events: JsonField<List<DatasetEvent>> = JsonMissing.of(),
+        @JsonProperty("cursor") @ExcludeMissing cursor: JsonField<String> = JsonMissing.of(),
+    ) : this(events, cursor, mutableMapOf())
 
     /**
      * A list of fetched events
@@ -66,21 +67,15 @@ private constructor(
      */
     @JsonProperty("cursor") @ExcludeMissing fun _cursor(): JsonField<String> = cursor
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): FetchDatasetEventsResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        events().forEach { it.validate() }
-        cursor()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -191,8 +186,20 @@ private constructor(
             FetchDatasetEventsResponse(
                 checkRequired("events", events).map { it.toImmutable() },
                 cursor,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): FetchDatasetEventsResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        events().forEach { it.validate() }
+        cursor()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

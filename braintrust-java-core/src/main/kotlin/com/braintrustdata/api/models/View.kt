@@ -7,52 +7,64 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class View
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_id")
-    @ExcludeMissing
-    private val objectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("object_type")
-    @ExcludeMissing
-    private val objectType: JsonField<AclObjectType> = JsonMissing.of(),
-    @JsonProperty("view_type")
-    @ExcludeMissing
-    private val viewType: JsonField<ViewType> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    private val deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("options")
-    @ExcludeMissing
-    private val options: JsonField<ViewOptions> = JsonMissing.of(),
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    private val userId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("view_data")
-    @ExcludeMissing
-    private val viewData: JsonField<ViewData> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val objectId: JsonField<String>,
+    private val objectType: JsonField<AclObjectType>,
+    private val viewType: JsonField<ViewType>,
+    private val created: JsonField<OffsetDateTime>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val options: JsonField<ViewOptions>,
+    private val userId: JsonField<String>,
+    private val viewData: JsonField<ViewData>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_id") @ExcludeMissing objectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("object_type")
+        @ExcludeMissing
+        objectType: JsonField<AclObjectType> = JsonMissing.of(),
+        @JsonProperty("view_type") @ExcludeMissing viewType: JsonField<ViewType> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("deleted_at")
+        @ExcludeMissing
+        deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("options") @ExcludeMissing options: JsonField<ViewOptions> = JsonMissing.of(),
+        @JsonProperty("user_id") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("view_data") @ExcludeMissing viewData: JsonField<ViewData> = JsonMissing.of(),
+    ) : this(
+        id,
+        name,
+        objectId,
+        objectType,
+        viewType,
+        created,
+        deletedAt,
+        options,
+        userId,
+        viewData,
+        mutableMapOf(),
+    )
 
     /**
      * Unique identifier for the view
@@ -209,29 +221,15 @@ private constructor(
      */
     @JsonProperty("view_data") @ExcludeMissing fun _viewData(): JsonField<ViewData> = viewData
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): View = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        objectId()
-        objectType()
-        viewType()
-        created()
-        deletedAt()
-        options().ifPresent { it.validate() }
-        userId()
-        viewData().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -465,8 +463,28 @@ private constructor(
                 options,
                 userId,
                 viewData,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): View = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        objectId()
+        objectType()
+        viewType()
+        created()
+        deletedAt()
+        options().ifPresent { it.validate() }
+        userId()
+        viewData().ifPresent { it.validate() }
+        validated = true
     }
 
     /** Type of table that the view corresponds to. */

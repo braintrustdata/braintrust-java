@@ -6,27 +6,28 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 
 /** Summary of a dataset's data */
-@NoAutoDetect
 class DataSummary
-@JsonCreator
 private constructor(
-    @JsonProperty("total_records")
-    @ExcludeMissing
-    private val totalRecords: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val totalRecords: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("total_records")
+        @ExcludeMissing
+        totalRecords: JsonField<Long> = JsonMissing.of()
+    ) : this(totalRecords, mutableMapOf())
 
     /**
      * Total number of records in the dataset
@@ -45,20 +46,15 @@ private constructor(
     @ExcludeMissing
     fun _totalRecords(): JsonField<Long> = totalRecords
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): DataSummary = apply {
-        if (validated) {
-            return@apply
-        }
-
-        totalRecords()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -133,8 +129,19 @@ private constructor(
         fun build(): DataSummary =
             DataSummary(
                 checkRequired("totalRecords", totalRecords),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): DataSummary = apply {
+        if (validated) {
+            return@apply
+        }
+
+        totalRecords()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

@@ -6,26 +6,28 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 
 /** For categorical-type project scores, defines a single category */
-@NoAutoDetect
 class ProjectScoreCategory
-@JsonCreator
 private constructor(
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("value") @ExcludeMissing private val value: JsonField<Double> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val name: JsonField<String>,
+    private val value: JsonField<Double>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("value") @ExcludeMissing value: JsonField<Double> = JsonMissing.of(),
+    ) : this(name, value, mutableMapOf())
 
     /**
      * Name of the category
@@ -57,21 +59,15 @@ private constructor(
      */
     @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Double> = value
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ProjectScoreCategory = apply {
-        if (validated) {
-            return@apply
-        }
-
-        name()
-        value()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -161,8 +157,20 @@ private constructor(
             ProjectScoreCategory(
                 checkRequired("name", name),
                 checkRequired("value", value),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): ProjectScoreCategory = apply {
+        if (validated) {
+            return@apply
+        }
+
+        name()
+        value()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

@@ -6,27 +6,27 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class InsertEventsResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("row_ids")
-    @ExcludeMissing
-    private val rowIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val rowIds: JsonField<List<String>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("row_ids") @ExcludeMissing rowIds: JsonField<List<String>> = JsonMissing.of()
+    ) : this(rowIds, mutableMapOf())
 
     /**
      * The ids of all rows that were inserted, aligning one-to-one with the rows provided as input
@@ -43,20 +43,15 @@ private constructor(
      */
     @JsonProperty("row_ids") @ExcludeMissing fun _rowIds(): JsonField<List<String>> = rowIds
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): InsertEventsResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        rowIds()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -148,8 +143,19 @@ private constructor(
         fun build(): InsertEventsResponse =
             InsertEventsResponse(
                 checkRequired("rowIds", rowIds).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): InsertEventsResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        rowIds()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

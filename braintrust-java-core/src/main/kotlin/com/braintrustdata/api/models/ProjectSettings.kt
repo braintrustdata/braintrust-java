@@ -7,35 +7,39 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class ProjectSettings
-@JsonCreator
 private constructor(
-    @JsonProperty("baseline_experiment_id")
-    @ExcludeMissing
-    private val baselineExperimentId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("comparison_key")
-    @ExcludeMissing
-    private val comparisonKey: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("spanFieldOrder")
-    @ExcludeMissing
-    private val spanFieldOrder: JsonField<List<SpanFieldOrder>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val baselineExperimentId: JsonField<String>,
+    private val comparisonKey: JsonField<String>,
+    private val spanFieldOrder: JsonField<List<SpanFieldOrder>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("baseline_experiment_id")
+        @ExcludeMissing
+        baselineExperimentId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("comparison_key")
+        @ExcludeMissing
+        comparisonKey: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("spanFieldOrder")
+        @ExcludeMissing
+        spanFieldOrder: JsonField<List<SpanFieldOrder>> = JsonMissing.of(),
+    ) : this(baselineExperimentId, comparisonKey, spanFieldOrder, mutableMapOf())
 
     /**
      * The id of the experiment to use as the default baseline for comparisons
@@ -92,22 +96,15 @@ private constructor(
     @ExcludeMissing
     fun _spanFieldOrder(): JsonField<List<SpanFieldOrder>> = spanFieldOrder
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ProjectSettings = apply {
-        if (validated) {
-            return@apply
-        }
-
-        baselineExperimentId()
-        comparisonKey()
-        spanFieldOrder().ifPresent { it.forEach { it.validate() } }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -234,29 +231,45 @@ private constructor(
                 baselineExperimentId,
                 comparisonKey,
                 (spanFieldOrder ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): ProjectSettings = apply {
+        if (validated) {
+            return@apply
+        }
+
+        baselineExperimentId()
+        comparisonKey()
+        spanFieldOrder().ifPresent { it.forEach { it.validate() } }
+        validated = true
+    }
+
     class SpanFieldOrder
-    @JsonCreator
     private constructor(
-        @JsonProperty("column_id")
-        @ExcludeMissing
-        private val columnId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("object_type")
-        @ExcludeMissing
-        private val objectType: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("position")
-        @ExcludeMissing
-        private val position: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("layout")
-        @ExcludeMissing
-        private val layout: JsonField<Layout> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val columnId: JsonField<String>,
+        private val objectType: JsonField<String>,
+        private val position: JsonField<String>,
+        private val layout: JsonField<Layout>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("column_id")
+            @ExcludeMissing
+            columnId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("object_type")
+            @ExcludeMissing
+            objectType: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("position")
+            @ExcludeMissing
+            position: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("layout") @ExcludeMissing layout: JsonField<Layout> = JsonMissing.of(),
+        ) : this(columnId, objectType, position, layout, mutableMapOf())
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type or is
@@ -312,23 +325,15 @@ private constructor(
          */
         @JsonProperty("layout") @ExcludeMissing fun _layout(): JsonField<Layout> = layout
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): SpanFieldOrder = apply {
-            if (validated) {
-                return@apply
-            }
-
-            columnId()
-            objectType()
-            position()
-            layout()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -451,8 +456,22 @@ private constructor(
                     checkRequired("objectType", objectType),
                     checkRequired("position", position),
                     layout,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): SpanFieldOrder = apply {
+            if (validated) {
+                return@apply
+            }
+
+            columnId()
+            objectType()
+            position()
+            layout()
+            validated = true
         }
 
         class Layout @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

@@ -6,33 +6,34 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
-import com.braintrustdata.api.core.immutableEmptyMap
-import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class CrossObjectInsertResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("dataset")
-    @ExcludeMissing
-    private val dataset: JsonField<Dataset> = JsonMissing.of(),
-    @JsonProperty("experiment")
-    @ExcludeMissing
-    private val experiment: JsonField<Experiment> = JsonMissing.of(),
-    @JsonProperty("project_logs")
-    @ExcludeMissing
-    private val projectLogs: JsonField<ProjectLogs> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val dataset: JsonField<Dataset>,
+    private val experiment: JsonField<Experiment>,
+    private val projectLogs: JsonField<ProjectLogs>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("dataset") @ExcludeMissing dataset: JsonField<Dataset> = JsonMissing.of(),
+        @JsonProperty("experiment")
+        @ExcludeMissing
+        experiment: JsonField<Experiment> = JsonMissing.of(),
+        @JsonProperty("project_logs")
+        @ExcludeMissing
+        projectLogs: JsonField<ProjectLogs> = JsonMissing.of(),
+    ) : this(dataset, experiment, projectLogs, mutableMapOf())
 
     /**
      * A mapping from dataset id to row ids for inserted `events`
@@ -85,22 +86,15 @@ private constructor(
     @ExcludeMissing
     fun _projectLogs(): JsonField<ProjectLogs> = projectLogs
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): CrossObjectInsertResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        dataset().ifPresent { it.validate() }
-        experiment().ifPresent { it.validate() }
-        projectLogs().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -203,32 +197,38 @@ private constructor(
                 dataset,
                 experiment,
                 projectLogs,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): CrossObjectInsertResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        dataset().ifPresent { it.validate() }
+        experiment().ifPresent { it.validate() }
+        projectLogs().ifPresent { it.validate() }
+        validated = true
+    }
+
     /** A mapping from dataset id to row ids for inserted `events` */
-    @NoAutoDetect
     class Dataset
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Dataset = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -272,7 +272,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Dataset = Dataset(additionalProperties.toImmutable())
+            fun build(): Dataset = Dataset(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Dataset = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -293,27 +303,20 @@ private constructor(
     }
 
     /** A mapping from experiment id to row ids for inserted `events` */
-    @NoAutoDetect
     class Experiment
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Experiment = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -357,7 +360,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Experiment = Experiment(additionalProperties.toImmutable())
+            fun build(): Experiment = Experiment(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Experiment = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -378,27 +391,20 @@ private constructor(
     }
 
     /** A mapping from project id to row ids for inserted `events` */
-    @NoAutoDetect
     class ProjectLogs
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): ProjectLogs = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -442,7 +448,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): ProjectLogs = ProjectLogs(additionalProperties.toImmutable())
+            fun build(): ProjectLogs = ProjectLogs(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): ProjectLogs = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

@@ -5,7 +5,6 @@ package com.braintrustdata.api.models
 import com.braintrustdata.api.core.BaseDeserializer
 import com.braintrustdata.api.core.BaseSerializer
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
@@ -78,42 +77,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                aiSecretName?.let { put("ai_secret_name", it) }
-                aiSecretType?.accept(
-                    object : AiSecretType.Visitor<Unit> {
-                        override fun visitString(string: String) {
-                            put("ai_secret_type", string)
-                        }
-
-                        override fun visitStrings(strings: List<String>) {
-                            put("ai_secret_type", strings.joinToString(","))
-                        }
-                    }
-                )
-                endingBefore?.let { put("ending_before", it) }
-                ids?.accept(
-                    object : Ids.Visitor<Unit> {
-                        override fun visitString(string: String) {
-                            put("ids", string)
-                        }
-
-                        override fun visitStrings(strings: List<String>) {
-                            put("ids", strings.joinToString(","))
-                        }
-                    }
-                )
-                limit?.let { put("limit", it.toString()) }
-                orgName?.let { put("org_name", it) }
-                startingAfter?.let { put("starting_after", it) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -125,7 +88,6 @@ private constructor(
     }
 
     /** A builder for [AiSecretListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var aiSecretName: String? = null
@@ -345,6 +307,42 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                aiSecretName?.let { put("ai_secret_name", it) }
+                aiSecretType?.accept(
+                    object : AiSecretType.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ai_secret_type", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ai_secret_type", strings.joinToString(","))
+                        }
+                    }
+                )
+                endingBefore?.let { put("ending_before", it) }
+                ids?.accept(
+                    object : Ids.Visitor<Unit> {
+                        override fun visitString(string: String) {
+                            put("ids", string)
+                        }
+
+                        override fun visitStrings(strings: List<String>) {
+                            put("ids", strings.joinToString(","))
+                        }
+                    }
+                )
+                limit?.let { put("limit", it.toString()) }
+                orgName?.let { put("org_name", it) }
+                startingAfter?.let { put("starting_after", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     @JsonDeserialize(using = AiSecretType.Deserializer::class)
     @JsonSerialize(using = AiSecretType.Serializer::class)

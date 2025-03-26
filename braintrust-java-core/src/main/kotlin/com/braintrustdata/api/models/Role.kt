@@ -6,10 +6,8 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
 import com.braintrustdata.api.core.checkRequired
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -17,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -26,33 +25,53 @@ import kotlin.jvm.optionals.getOrNull
  *
  * Roles can consist of individual permissions, as well as a set of roles they inherit from
  */
-@NoAutoDetect
 class Role
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("deleted_at")
-    @ExcludeMissing
-    private val deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("description")
-    @ExcludeMissing
-    private val description: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("member_permissions")
-    @ExcludeMissing
-    private val memberPermissions: JsonField<List<MemberPermission>> = JsonMissing.of(),
-    @JsonProperty("member_roles")
-    @ExcludeMissing
-    private val memberRoles: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("org_id") @ExcludeMissing private val orgId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("user_id")
-    @ExcludeMissing
-    private val userId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val created: JsonField<OffsetDateTime>,
+    private val deletedAt: JsonField<OffsetDateTime>,
+    private val description: JsonField<String>,
+    private val memberPermissions: JsonField<List<MemberPermission>>,
+    private val memberRoles: JsonField<List<String>>,
+    private val orgId: JsonField<String>,
+    private val userId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("deleted_at")
+        @ExcludeMissing
+        deletedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("member_permissions")
+        @ExcludeMissing
+        memberPermissions: JsonField<List<MemberPermission>> = JsonMissing.of(),
+        @JsonProperty("member_roles")
+        @ExcludeMissing
+        memberRoles: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("org_id") @ExcludeMissing orgId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("user_id") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        id,
+        name,
+        created,
+        deletedAt,
+        description,
+        memberPermissions,
+        memberRoles,
+        orgId,
+        userId,
+        mutableMapOf(),
+    )
 
     /**
      * Unique identifier for the role
@@ -208,28 +227,15 @@ private constructor(
      */
     @JsonProperty("user_id") @ExcludeMissing fun _userId(): JsonField<String> = userId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Role = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        created()
-        deletedAt()
-        description()
-        memberPermissions().ifPresent { it.forEach { it.validate() } }
-        memberRoles()
-        orgId()
-        userId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -485,23 +491,45 @@ private constructor(
                 (memberRoles ?: JsonMissing.of()).map { it.toImmutable() },
                 orgId,
                 userId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): Role = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        created()
+        deletedAt()
+        description()
+        memberPermissions().ifPresent { it.forEach { it.validate() } }
+        memberRoles()
+        orgId()
+        userId()
+        validated = true
+    }
+
     class MemberPermission
-    @JsonCreator
     private constructor(
-        @JsonProperty("permission")
-        @ExcludeMissing
-        private val permission: JsonField<Permission> = JsonMissing.of(),
-        @JsonProperty("restrict_object_type")
-        @ExcludeMissing
-        private val restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val permission: JsonField<Permission>,
+        private val restrictObjectType: JsonField<AclObjectType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("permission")
+            @ExcludeMissing
+            permission: JsonField<Permission> = JsonMissing.of(),
+            @JsonProperty("restrict_object_type")
+            @ExcludeMissing
+            restrictObjectType: JsonField<AclObjectType> = JsonMissing.of(),
+        ) : this(permission, restrictObjectType, mutableMapOf())
 
         /**
          * Each permission permits a certain type of operation on an object in the system
@@ -541,21 +569,15 @@ private constructor(
         @ExcludeMissing
         fun _restrictObjectType(): JsonField<AclObjectType> = restrictObjectType
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): MemberPermission = apply {
-            if (validated) {
-                return@apply
-            }
-
-            permission()
-            restrictObjectType()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -662,8 +684,20 @@ private constructor(
                 MemberPermission(
                     checkRequired("permission", permission),
                     restrictObjectType,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): MemberPermission = apply {
+            if (validated) {
+                return@apply
+            }
+
+            permission()
+            restrictObjectType()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

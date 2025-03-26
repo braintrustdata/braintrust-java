@@ -6,44 +6,53 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Options for the view in the app */
-@NoAutoDetect
 class ViewOptions
-@JsonCreator
 private constructor(
-    @JsonProperty("columnOrder")
-    @ExcludeMissing
-    private val columnOrder: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("columnSizing")
-    @ExcludeMissing
-    private val columnSizing: JsonField<ColumnSizing> = JsonMissing.of(),
-    @JsonProperty("columnVisibility")
-    @ExcludeMissing
-    private val columnVisibility: JsonField<ColumnVisibility> = JsonMissing.of(),
-    @JsonProperty("grouping")
-    @ExcludeMissing
-    private val grouping: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("layout")
-    @ExcludeMissing
-    private val layout: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("rowHeight")
-    @ExcludeMissing
-    private val rowHeight: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val columnOrder: JsonField<List<String>>,
+    private val columnSizing: JsonField<ColumnSizing>,
+    private val columnVisibility: JsonField<ColumnVisibility>,
+    private val grouping: JsonField<String>,
+    private val layout: JsonField<String>,
+    private val rowHeight: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("columnOrder")
+        @ExcludeMissing
+        columnOrder: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("columnSizing")
+        @ExcludeMissing
+        columnSizing: JsonField<ColumnSizing> = JsonMissing.of(),
+        @JsonProperty("columnVisibility")
+        @ExcludeMissing
+        columnVisibility: JsonField<ColumnVisibility> = JsonMissing.of(),
+        @JsonProperty("grouping") @ExcludeMissing grouping: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("layout") @ExcludeMissing layout: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("rowHeight") @ExcludeMissing rowHeight: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        columnOrder,
+        columnSizing,
+        columnVisibility,
+        grouping,
+        layout,
+        rowHeight,
+        mutableMapOf(),
+    )
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -133,25 +142,15 @@ private constructor(
      */
     @JsonProperty("rowHeight") @ExcludeMissing fun _rowHeight(): JsonField<String> = rowHeight
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ViewOptions = apply {
-        if (validated) {
-            return@apply
-        }
-
-        columnOrder()
-        columnSizing().ifPresent { it.validate() }
-        columnVisibility().ifPresent { it.validate() }
-        grouping()
-        layout()
-        rowHeight()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -319,31 +318,40 @@ private constructor(
                 grouping,
                 layout,
                 rowHeight,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): ViewOptions = apply {
+        if (validated) {
+            return@apply
+        }
+
+        columnOrder()
+        columnSizing().ifPresent { it.validate() }
+        columnVisibility().ifPresent { it.validate() }
+        grouping()
+        layout()
+        rowHeight()
+        validated = true
+    }
+
     class ColumnSizing
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): ColumnSizing = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -387,7 +395,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): ColumnSizing = ColumnSizing(additionalProperties.toImmutable())
+            fun build(): ColumnSizing = ColumnSizing(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): ColumnSizing = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -407,27 +425,20 @@ private constructor(
         override fun toString() = "ColumnSizing{additionalProperties=$additionalProperties}"
     }
 
-    @NoAutoDetect
     class ColumnVisibility
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): ColumnVisibility = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -471,7 +482,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): ColumnVisibility = ColumnVisibility(additionalProperties.toImmutable())
+            fun build(): ColumnVisibility = ColumnVisibility(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): ColumnVisibility = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

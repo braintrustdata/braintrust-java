@@ -6,9 +6,7 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.core.NoAutoDetect
 import com.braintrustdata.api.core.checkKnown
-import com.braintrustdata.api.core.immutableEmptyMap
 import com.braintrustdata.api.core.toImmutable
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -16,67 +14,96 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** An experiment event */
-@NoAutoDetect
 class InsertExperimentEvent
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("_is_merge")
-    @ExcludeMissing
-    private val _isMerge: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("_merge_paths")
-    @ExcludeMissing
-    private val _mergePaths: JsonField<List<List<String>>> = JsonMissing.of(),
-    @JsonProperty("_object_delete")
-    @ExcludeMissing
-    private val _objectDelete: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("_parent_id")
-    @ExcludeMissing
-    private val _parentId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("context")
-    @ExcludeMissing
-    private val context: JsonField<Context> = JsonMissing.of(),
-    @JsonProperty("created")
-    @ExcludeMissing
-    private val created: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("error") @ExcludeMissing private val error: JsonValue = JsonMissing.of(),
-    @JsonProperty("expected") @ExcludeMissing private val expected: JsonValue = JsonMissing.of(),
-    @JsonProperty("input") @ExcludeMissing private val input: JsonValue = JsonMissing.of(),
-    @JsonProperty("metadata")
-    @ExcludeMissing
-    private val metadata: JsonField<Metadata> = JsonMissing.of(),
-    @JsonProperty("metrics")
-    @ExcludeMissing
-    private val metrics: JsonField<Metrics> = JsonMissing.of(),
-    @JsonProperty("origin")
-    @ExcludeMissing
-    private val origin: JsonField<ObjectReference> = JsonMissing.of(),
-    @JsonProperty("output") @ExcludeMissing private val output: JsonValue = JsonMissing.of(),
-    @JsonProperty("root_span_id")
-    @ExcludeMissing
-    private val rootSpanId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("scores")
-    @ExcludeMissing
-    private val scores: JsonField<Scores> = JsonMissing.of(),
-    @JsonProperty("span_attributes")
-    @ExcludeMissing
-    private val spanAttributes: JsonField<SpanAttributes> = JsonMissing.of(),
-    @JsonProperty("span_id")
-    @ExcludeMissing
-    private val spanId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("span_parents")
-    @ExcludeMissing
-    private val spanParents: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("tags")
-    @ExcludeMissing
-    private val tags: JsonField<List<String>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val _isMerge: JsonField<Boolean>,
+    private val _mergePaths: JsonField<List<List<String>>>,
+    private val _objectDelete: JsonField<Boolean>,
+    private val _parentId: JsonField<String>,
+    private val context: JsonField<Context>,
+    private val created: JsonField<OffsetDateTime>,
+    private val error: JsonValue,
+    private val expected: JsonValue,
+    private val input: JsonValue,
+    private val metadata: JsonField<Metadata>,
+    private val metrics: JsonField<Metrics>,
+    private val origin: JsonField<ObjectReference>,
+    private val output: JsonValue,
+    private val rootSpanId: JsonField<String>,
+    private val scores: JsonField<Scores>,
+    private val spanAttributes: JsonField<SpanAttributes>,
+    private val spanId: JsonField<String>,
+    private val spanParents: JsonField<List<String>>,
+    private val tags: JsonField<List<String>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("_is_merge") @ExcludeMissing _isMerge: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("_merge_paths")
+        @ExcludeMissing
+        _mergePaths: JsonField<List<List<String>>> = JsonMissing.of(),
+        @JsonProperty("_object_delete")
+        @ExcludeMissing
+        _objectDelete: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("_parent_id") @ExcludeMissing _parentId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("context") @ExcludeMissing context: JsonField<Context> = JsonMissing.of(),
+        @JsonProperty("created")
+        @ExcludeMissing
+        created: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("error") @ExcludeMissing error: JsonValue = JsonMissing.of(),
+        @JsonProperty("expected") @ExcludeMissing expected: JsonValue = JsonMissing.of(),
+        @JsonProperty("input") @ExcludeMissing input: JsonValue = JsonMissing.of(),
+        @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("metrics") @ExcludeMissing metrics: JsonField<Metrics> = JsonMissing.of(),
+        @JsonProperty("origin")
+        @ExcludeMissing
+        origin: JsonField<ObjectReference> = JsonMissing.of(),
+        @JsonProperty("output") @ExcludeMissing output: JsonValue = JsonMissing.of(),
+        @JsonProperty("root_span_id")
+        @ExcludeMissing
+        rootSpanId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("scores") @ExcludeMissing scores: JsonField<Scores> = JsonMissing.of(),
+        @JsonProperty("span_attributes")
+        @ExcludeMissing
+        spanAttributes: JsonField<SpanAttributes> = JsonMissing.of(),
+        @JsonProperty("span_id") @ExcludeMissing spanId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("span_parents")
+        @ExcludeMissing
+        spanParents: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<String>> = JsonMissing.of(),
+    ) : this(
+        id,
+        _isMerge,
+        _mergePaths,
+        _objectDelete,
+        _parentId,
+        context,
+        created,
+        error,
+        expected,
+        input,
+        metadata,
+        metrics,
+        origin,
+        output,
+        rootSpanId,
+        scores,
+        spanAttributes,
+        spanId,
+        spanParents,
+        tags,
+        mutableMapOf(),
+    )
 
     /**
      * A unique identifier for the experiment event. If you don't provide one, BrainTrust will
@@ -449,35 +476,15 @@ private constructor(
      */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): InsertExperimentEvent = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        _isMerge()
-        _mergePaths()
-        _objectDelete()
-        _parentId()
-        context().ifPresent { it.validate() }
-        created()
-        metadata().ifPresent { it.validate() }
-        metrics().ifPresent { it.validate() }
-        origin().ifPresent { it.validate() }
-        rootSpanId()
-        scores().ifPresent { it.validate() }
-        spanAttributes().ifPresent { it.validate() }
-        spanId()
-        spanParents()
-        tags()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -1027,8 +1034,34 @@ private constructor(
                 spanId,
                 (spanParents ?: JsonMissing.of()).map { it.toImmutable() },
                 (tags ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): InsertExperimentEvent = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        _isMerge()
+        _mergePaths()
+        _objectDelete()
+        _parentId()
+        context().ifPresent { it.validate() }
+        created()
+        metadata().ifPresent { it.validate() }
+        metrics().ifPresent { it.validate() }
+        origin().ifPresent { it.validate() }
+        rootSpanId()
+        scores().ifPresent { it.validate() }
+        spanAttributes().ifPresent { it.validate() }
+        spanId()
+        spanParents()
+        tags()
+        validated = true
     }
 
     /**
@@ -1036,22 +1069,26 @@ private constructor(
      * essentially the textual counterpart to `metrics`. Use the `caller_*` attributes to track the
      * location in code which produced the experiment event
      */
-    @NoAutoDetect
     class Context
-    @JsonCreator
     private constructor(
-        @JsonProperty("caller_filename")
-        @ExcludeMissing
-        private val callerFilename: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("caller_functionname")
-        @ExcludeMissing
-        private val callerFunctionname: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("caller_lineno")
-        @ExcludeMissing
-        private val callerLineno: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val callerFilename: JsonField<String>,
+        private val callerFunctionname: JsonField<String>,
+        private val callerLineno: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("caller_filename")
+            @ExcludeMissing
+            callerFilename: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("caller_functionname")
+            @ExcludeMissing
+            callerFunctionname: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("caller_lineno")
+            @ExcludeMissing
+            callerLineno: JsonField<Long> = JsonMissing.of(),
+        ) : this(callerFilename, callerFunctionname, callerLineno, mutableMapOf())
 
         /**
          * Name of the file in code where the experiment event was created
@@ -1110,22 +1147,15 @@ private constructor(
         @ExcludeMissing
         fun _callerLineno(): JsonField<Long> = callerLineno
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Context = apply {
-            if (validated) {
-                return@apply
-            }
-
-            callerFilename()
-            callerFunctionname()
-            callerLineno()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1245,8 +1275,21 @@ private constructor(
                     callerFilename,
                     callerFunctionname,
                     callerLineno,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Context = apply {
+            if (validated) {
+                return@apply
+            }
+
+            callerFilename()
+            callerFunctionname()
+            callerLineno()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1274,16 +1317,16 @@ private constructor(
      * slice/dice later. The values in `metadata` can be any JSON-serializable type, but its keys
      * must be strings
      */
-    @NoAutoDetect
     class Metadata
-    @JsonCreator
     private constructor(
-        @JsonProperty("model")
-        @ExcludeMissing
-        private val model: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val model: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("model") @ExcludeMissing model: JsonField<String> = JsonMissing.of()
+        ) : this(model, mutableMapOf())
 
         /**
          * The model used for this example
@@ -1300,20 +1343,15 @@ private constructor(
          */
         @JsonProperty("model") @ExcludeMissing fun _model(): JsonField<String> = model
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
-
-            model()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1374,7 +1412,18 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Metadata = Metadata(model, additionalProperties.toImmutable())
+            fun build(): Metadata = Metadata(model, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            model()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1400,35 +1449,50 @@ private constructor(
      * experiment event. Use "start" and "end" to track the time span over which the experiment
      * event was produced
      */
-    @NoAutoDetect
     class Metrics
-    @JsonCreator
     private constructor(
-        @JsonProperty("caller_filename")
-        @ExcludeMissing
-        private val callerFilename: JsonValue = JsonMissing.of(),
-        @JsonProperty("caller_functionname")
-        @ExcludeMissing
-        private val callerFunctionname: JsonValue = JsonMissing.of(),
-        @JsonProperty("caller_lineno")
-        @ExcludeMissing
-        private val callerLineno: JsonValue = JsonMissing.of(),
-        @JsonProperty("completion_tokens")
-        @ExcludeMissing
-        private val completionTokens: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("end") @ExcludeMissing private val end: JsonField<Double> = JsonMissing.of(),
-        @JsonProperty("prompt_tokens")
-        @ExcludeMissing
-        private val promptTokens: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("start")
-        @ExcludeMissing
-        private val start: JsonField<Double> = JsonMissing.of(),
-        @JsonProperty("tokens")
-        @ExcludeMissing
-        private val tokens: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val callerFilename: JsonValue,
+        private val callerFunctionname: JsonValue,
+        private val callerLineno: JsonValue,
+        private val completionTokens: JsonField<Long>,
+        private val end: JsonField<Double>,
+        private val promptTokens: JsonField<Long>,
+        private val start: JsonField<Double>,
+        private val tokens: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("caller_filename")
+            @ExcludeMissing
+            callerFilename: JsonValue = JsonMissing.of(),
+            @JsonProperty("caller_functionname")
+            @ExcludeMissing
+            callerFunctionname: JsonValue = JsonMissing.of(),
+            @JsonProperty("caller_lineno")
+            @ExcludeMissing
+            callerLineno: JsonValue = JsonMissing.of(),
+            @JsonProperty("completion_tokens")
+            @ExcludeMissing
+            completionTokens: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("end") @ExcludeMissing end: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("prompt_tokens")
+            @ExcludeMissing
+            promptTokens: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("start") @ExcludeMissing start: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("tokens") @ExcludeMissing tokens: JsonField<Long> = JsonMissing.of(),
+        ) : this(
+            callerFilename,
+            callerFunctionname,
+            callerLineno,
+            completionTokens,
+            end,
+            promptTokens,
+            start,
+            tokens,
+            mutableMapOf(),
+        )
 
         /** This metric is deprecated */
         @JsonProperty("caller_filename")
@@ -1530,24 +1594,15 @@ private constructor(
          */
         @JsonProperty("tokens") @ExcludeMissing fun _tokens(): JsonField<Long> = tokens
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metrics = apply {
-            if (validated) {
-                return@apply
-            }
-
-            completionTokens()
-            end()
-            promptTokens()
-            start()
-            tokens()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1761,8 +1816,23 @@ private constructor(
                     promptTokens,
                     start,
                     tokens,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metrics = apply {
+            if (validated) {
+                return@apply
+            }
+
+            completionTokens()
+            end()
+            promptTokens()
+            start()
+            tokens()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1792,27 +1862,20 @@ private constructor(
      * whether the summarization was covering similar concepts or not. You can use these scores to
      * help you sort, filter, and compare experiments
      */
-    @NoAutoDetect
     class Scores
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Scores = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1856,7 +1919,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Scores = Scores(additionalProperties.toImmutable())
+            fun build(): Scores = Scores(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Scores = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
