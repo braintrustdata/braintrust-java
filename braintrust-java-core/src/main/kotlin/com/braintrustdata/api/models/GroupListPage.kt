@@ -56,13 +56,9 @@ private constructor(
         }
 
         return if (params.endingBefore().isPresent) {
-            Optional.of(
-                GroupListParams.builder().from(params).endingBefore(objects().first().id()).build()
-            )
+            Optional.of(params.toBuilder().endingBefore(objects().first().id()).build())
         } else {
-            Optional.of(
-                GroupListParams.builder().from(params).startingAfter(objects().last().id()).build()
-            )
+            Optional.of(params.toBuilder().startingAfter(objects().last().id()).build())
         }
     }
 
