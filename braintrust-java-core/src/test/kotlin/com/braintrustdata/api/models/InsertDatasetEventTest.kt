@@ -3,6 +3,8 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.jsonMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
@@ -63,5 +65,43 @@ internal class InsertDatasetEventTest {
         assertThat(insertDatasetEvent.spanId()).contains("span_id")
         assertThat(insertDatasetEvent.spanParents().getOrNull()).containsExactly("string")
         assertThat(insertDatasetEvent.tags().getOrNull()).containsExactly("string")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val insertDatasetEvent =
+            InsertDatasetEvent.builder()
+                .id("id")
+                ._isMerge(true)
+                .addMergePath(listOf("string"))
+                ._objectDelete(true)
+                ._parentId("_parent_id")
+                .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .expected(JsonValue.from(mapOf<String, Any>()))
+                .input(JsonValue.from(mapOf<String, Any>()))
+                .metadata(InsertDatasetEvent.Metadata.builder().model("model").build())
+                .origin(
+                    ObjectReference.builder()
+                        .id("id")
+                        ._xactId("_xact_id")
+                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .objectType(ObjectReference.ObjectType.EXPERIMENT)
+                        .created("created")
+                        .build()
+                )
+                .rootSpanId("root_span_id")
+                .spanId("span_id")
+                .addSpanParent("string")
+                .addTag("string")
+                .build()
+
+        val roundtrippedInsertDatasetEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(insertDatasetEvent),
+                jacksonTypeRef<InsertDatasetEvent>(),
+            )
+
+        assertThat(roundtrippedInsertDatasetEvent).isEqualTo(insertDatasetEvent)
     }
 }

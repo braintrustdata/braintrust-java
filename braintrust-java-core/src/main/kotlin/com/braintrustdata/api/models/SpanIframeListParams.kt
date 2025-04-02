@@ -2,21 +2,10 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.BaseDeserializer
-import com.braintrustdata.api.core.BaseSerializer
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -319,13 +308,10 @@ private constructor(
      * Filter search results to a particular set of object IDs. To specify a list of IDs, include
      * the query param multiple times
      */
-    @JsonDeserialize(using = Ids.Deserializer::class)
-    @JsonSerialize(using = Ids.Serializer::class)
     class Ids
     private constructor(
         private val string: String? = null,
         private val strings: List<String>? = null,
-        private val _json: JsonValue? = null,
     ) {
 
         fun string(): Optional<String> = Optional.ofNullable(string)
@@ -340,15 +326,12 @@ private constructor(
 
         fun asStrings(): List<String> = strings.getOrThrow("strings")
 
-        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
+        fun <T> accept(visitor: Visitor<T>): T =
+            when {
                 string != null -> visitor.visitString(string)
                 strings != null -> visitor.visitStrings(strings)
-                else -> visitor.unknown(_json)
+                else -> throw IllegalStateException("Invalid Ids")
             }
-        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -364,7 +347,6 @@ private constructor(
             when {
                 string != null -> "Ids{string=$string}"
                 strings != null -> "Ids{strings=$strings}"
-                _json != null -> "Ids{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Ids")
             }
 
@@ -381,51 +363,6 @@ private constructor(
             fun visitString(string: String): T
 
             fun visitStrings(strings: List<String>): T
-
-            /**
-             * Maps an unknown variant of [Ids] to a value of type [T].
-             *
-             * An instance of [Ids] can contain an unknown variant if it was deserialized from data
-             * that doesn't match any known variant. For example, if the SDK is on an older version
-             * than the API, then the API may respond with new variants that the SDK is unaware of.
-             *
-             * @throws BraintrustInvalidDataException in the default implementation.
-             */
-            fun unknown(json: JsonValue?): T {
-                throw BraintrustInvalidDataException("Unknown Ids: $json")
-            }
-        }
-
-        internal class Deserializer : BaseDeserializer<Ids>(Ids::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Ids {
-                val json = JsonValue.fromJsonNode(node)
-
-                tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                    return Ids(string = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
-                    return Ids(strings = it, _json = json)
-                }
-
-                return Ids(_json = json)
-            }
-        }
-
-        internal class Serializer : BaseSerializer<Ids>(Ids::class) {
-
-            override fun serialize(
-                value: Ids,
-                generator: JsonGenerator,
-                provider: SerializerProvider,
-            ) {
-                when {
-                    value.string != null -> generator.writeObject(value.string)
-                    value.strings != null -> generator.writeObject(value.strings)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Ids")
-                }
-            }
         }
     }
 

@@ -317,11 +317,33 @@ private constructor(
         id()
         name()
         objectId()
-        objectType()
+        objectType().validate()
         created()
         used()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: BraintrustInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (name.asKnown().isPresent) 1 else 0) +
+            (if (objectId.asKnown().isPresent) 1 else 0) +
+            (objectType.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (created.asKnown().isPresent) 1 else 0) +
+            (if (used.asKnown().isPresent) 1 else 0)
 
     /** The type of the object the environment variable is scoped for */
     class ObjectType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -418,6 +440,33 @@ private constructor(
             _value().asString().orElseThrow {
                 BraintrustInvalidDataException("Value is not a String")
             }
+
+        private var validated: Boolean = false
+
+        fun validate(): ObjectType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
