@@ -91,7 +91,7 @@ internal class EnvVarServiceAsyncTest {
                 .build()
         val envVarServiceAsync = client.envVars()
 
-        val envVarFuture =
+        val envVarsFuture =
             envVarServiceAsync.list(
                 EnvVarListParams.builder()
                     .envVarName("env_var_name")
@@ -102,8 +102,8 @@ internal class EnvVarServiceAsyncTest {
                     .build()
             )
 
-        val envVar = envVarFuture.get()
-        envVar.validate()
+        val envVars = envVarsFuture.get()
+        envVars.validate()
     }
 
     @Test
