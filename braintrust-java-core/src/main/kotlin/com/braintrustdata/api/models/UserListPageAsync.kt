@@ -6,6 +6,7 @@ import com.braintrustdata.api.core.ExcludeMissing
 import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.services.async.UserServiceAsync
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -112,6 +113,14 @@ private constructor(
             objects().map { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
 
         fun toBuilder() = Builder().from(this)
 

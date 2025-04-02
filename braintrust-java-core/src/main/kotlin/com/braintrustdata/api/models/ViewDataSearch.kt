@@ -285,6 +285,26 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: BraintrustInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (filter.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0) +
+            (match.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0) +
+            (sort.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0) +
+            (tag.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true

@@ -821,14 +821,38 @@ private constructor(
             }
 
             objectId()
-            objectType()
+            objectType().validate()
             groupId()
-            permission()
-            restrictObjectType()
+            permission().ifPresent { it.validate() }
+            restrictObjectType().ifPresent { it.validate() }
             roleId()
             userId()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (objectId.asKnown().isPresent) 1 else 0) +
+                (objectType.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (groupId.asKnown().isPresent) 1 else 0) +
+                (permission.asKnown().getOrNull()?.validity() ?: 0) +
+                (restrictObjectType.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (roleId.asKnown().isPresent) 1 else 0) +
+                (if (userId.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

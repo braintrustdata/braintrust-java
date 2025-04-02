@@ -579,6 +579,27 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (inviteUsers.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (orgId.asKnown().isPresent) 1 else 0) +
+                (if (orgName.asKnown().isPresent) 1 else 0) +
+                (removeUsers.asKnown().getOrNull()?.validity() ?: 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1023,6 +1044,30 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (emails.asKnown().getOrNull()?.size ?: 0) +
+                (if (groupId.asKnown().isPresent) 1 else 0) +
+                (groupIds.asKnown().getOrNull()?.size ?: 0) +
+                (if (groupName.asKnown().isPresent) 1 else 0) +
+                (groupNames.asKnown().getOrNull()?.size ?: 0) +
+                (ids.asKnown().getOrNull()?.size ?: 0) +
+                (if (sendInviteEmails.asKnown().isPresent) 1 else 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1217,6 +1262,24 @@ private constructor(
             ids()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (emails.asKnown().getOrNull()?.size ?: 0) + (ids.asKnown().getOrNull()?.size ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

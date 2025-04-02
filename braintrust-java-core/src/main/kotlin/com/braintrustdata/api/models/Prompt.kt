@@ -599,19 +599,48 @@ private constructor(
 
         id()
         _xactId()
-        logId()
+        logId().validate()
         name()
         orgId()
         projectId()
         slug()
         created()
         description()
-        functionType()
+        functionType().ifPresent { it.validate() }
         metadata().ifPresent { it.validate() }
         promptData().ifPresent { it.validate() }
         tags()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: BraintrustInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (_xactId.asKnown().isPresent) 1 else 0) +
+            (logId.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (name.asKnown().isPresent) 1 else 0) +
+            (if (orgId.asKnown().isPresent) 1 else 0) +
+            (if (projectId.asKnown().isPresent) 1 else 0) +
+            (if (slug.asKnown().isPresent) 1 else 0) +
+            (if (created.asKnown().isPresent) 1 else 0) +
+            (if (description.asKnown().isPresent) 1 else 0) +
+            (functionType.asKnown().getOrNull()?.validity() ?: 0) +
+            (metadata.asKnown().getOrNull()?.validity() ?: 0) +
+            (promptData.asKnown().getOrNull()?.validity() ?: 0) +
+            (tags.asKnown().getOrNull()?.size ?: 0)
 
     /** A literal 'p' which identifies the object as a project prompt */
     class LogId @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -694,6 +723,33 @@ private constructor(
             _value().asString().orElseThrow {
                 BraintrustInvalidDataException("Value is not a String")
             }
+
+        private var validated: Boolean = false
+
+        fun validate(): LogId = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -810,6 +866,33 @@ private constructor(
                 BraintrustInvalidDataException("Value is not a String")
             }
 
+        private var validated: Boolean = false
+
+        fun validate(): FunctionType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -889,6 +972,24 @@ private constructor(
 
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
