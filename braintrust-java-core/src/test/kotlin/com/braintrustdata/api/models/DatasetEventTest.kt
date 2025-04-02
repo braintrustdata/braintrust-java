@@ -3,6 +3,8 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
+import com.braintrustdata.api.core.jsonMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
@@ -61,5 +63,42 @@ internal class DatasetEventTest {
                     .build()
             )
         assertThat(datasetEvent.tags().getOrNull()).containsExactly("string")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val datasetEvent =
+            DatasetEvent.builder()
+                .id("id")
+                ._xactId("_xact_id")
+                .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .rootSpanId("root_span_id")
+                .spanId("span_id")
+                .expected(JsonValue.from(mapOf<String, Any>()))
+                .input(JsonValue.from(mapOf<String, Any>()))
+                .isRoot(true)
+                .metadata(DatasetEvent.Metadata.builder().model("model").build())
+                .origin(
+                    ObjectReference.builder()
+                        .id("id")
+                        ._xactId("_xact_id")
+                        .objectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .objectType(ObjectReference.ObjectType.EXPERIMENT)
+                        .created("created")
+                        .build()
+                )
+                .addTag("string")
+                .build()
+
+        val roundtrippedDatasetEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(datasetEvent),
+                jacksonTypeRef<DatasetEvent>(),
+            )
+
+        assertThat(roundtrippedDatasetEvent).isEqualTo(datasetEvent)
     }
 }

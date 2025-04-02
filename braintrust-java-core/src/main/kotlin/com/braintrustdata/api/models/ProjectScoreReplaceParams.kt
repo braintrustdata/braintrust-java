@@ -9,6 +9,7 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
+import com.braintrustdata.api.core.allMaxBy
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
@@ -735,12 +736,35 @@ private constructor(
 
             name()
             projectId()
-            scoreType()
+            scoreType().validate()
             categories().ifPresent { it.validate() }
             config().ifPresent { it.validate() }
             description()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (name.asKnown().isPresent) 1 else 0) +
+                (if (projectId.asKnown().isPresent) 1 else 0) +
+                (scoreType.asKnown().getOrNull()?.validity() ?: 0) +
+                (categories.asKnown().getOrNull()?.validity() ?: 0) +
+                (config.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (description.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -797,14 +821,13 @@ private constructor(
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
+        fun <T> accept(visitor: Visitor<T>): T =
+            when {
                 categorical != null -> visitor.visitCategorical(categorical)
                 weighted != null -> visitor.visitWeighted(weighted)
                 minimum != null -> visitor.visitMinimum(minimum)
                 else -> visitor.unknown(_json)
             }
-        }
 
         private var validated: Boolean = false
 
@@ -828,6 +851,35 @@ private constructor(
             )
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: BraintrustInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            accept(
+                object : Visitor<Int> {
+                    override fun visitCategorical(categorical: List<ProjectScoreCategory>) =
+                        categorical.sumOf { it.validity().toInt() }
+
+                    override fun visitWeighted(weighted: Weighted) = weighted.validity()
+
+                    override fun visitMinimum(minimum: List<String>) = minimum.size
+
+                    override fun unknown(json: JsonValue?) = 0
+                }
+            )
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -896,21 +948,30 @@ private constructor(
             override fun ObjectCodec.deserialize(node: JsonNode): Categories {
                 val json = JsonValue.fromJsonNode(node)
 
-                tryDeserialize(node, jacksonTypeRef<List<ProjectScoreCategory>>()) {
-                        it.forEach { it.validate() }
-                    }
-                    ?.let {
-                        return Categories(categorical = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<Weighted>()) { it.validate() }
-                    ?.let {
-                        return Categories(weighted = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
-                    return Categories(minimum = it, _json = json)
+                val bestMatches =
+                    sequenceOf(
+                            tryDeserialize(node, jacksonTypeRef<Weighted>())?.let {
+                                Categories(weighted = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<List<ProjectScoreCategory>>())
+                                ?.let { Categories(categorical = it, _json = json) },
+                            tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
+                                Categories(minimum = it, _json = json)
+                            },
+                        )
+                        .filterNotNull()
+                        .allMaxBy { it.validity() }
+                        .toList()
+                return when (bestMatches.size) {
+                    // This can happen if what we're deserializing is completely incompatible with
+                    // all the possible variants (e.g. deserializing from boolean).
+                    0 -> Categories(_json = json)
+                    1 -> bestMatches.single()
+                    // If there's more than one match with the highest validity, then use the first
+                    // completely valid match, or simply the first match if none are completely
+                    // valid.
+                    else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
                 }
-
-                return Categories(_json = json)
             }
         }
 
@@ -1000,6 +1061,24 @@ private constructor(
 
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: BraintrustInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
