@@ -88,7 +88,7 @@ internal class EnvVarServiceTest {
                 .build()
         val envVarService = client.envVars()
 
-        val envVar =
+        val envVars =
             envVarService.list(
                 EnvVarListParams.builder()
                     .envVarName("env_var_name")
@@ -99,7 +99,7 @@ internal class EnvVarServiceTest {
                     .build()
             )
 
-        envVar.validate()
+        envVars.validate()
     }
 
     @Test
