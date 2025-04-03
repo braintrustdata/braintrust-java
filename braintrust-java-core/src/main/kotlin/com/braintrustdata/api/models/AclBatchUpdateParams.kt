@@ -108,6 +108,16 @@ private constructor(
         }
 
         /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [addAcls]
+         * - [removeAcls]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        /**
          * An ACL grants a certain permission or role to a certain user or group on an object.
          *
          * ACLs are inherited across the object hierarchy. So for example, if a user has read
@@ -301,7 +311,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 

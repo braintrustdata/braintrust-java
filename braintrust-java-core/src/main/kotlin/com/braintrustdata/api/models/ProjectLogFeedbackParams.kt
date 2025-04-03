@@ -89,6 +89,15 @@ private constructor(
         /** Project id */
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [feedback]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** A list of project logs feedback items */
         fun feedback(feedback: List<FeedbackProjectLogsItem>) = apply { body.feedback(feedback) }
 
@@ -249,7 +258,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {

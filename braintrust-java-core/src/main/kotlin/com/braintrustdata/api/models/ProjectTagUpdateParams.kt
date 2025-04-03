@@ -121,6 +121,17 @@ private constructor(
         /** ProjectTag id */
         fun projectTagId(projectTagId: String) = apply { this.projectTagId = projectTagId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [color]
+         * - [description]
+         * - [name]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** Color of the tag for the UI */
         fun color(color: String?) = apply { body.color(color) }
 
@@ -302,7 +313,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
