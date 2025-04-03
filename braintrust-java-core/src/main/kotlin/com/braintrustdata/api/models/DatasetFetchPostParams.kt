@@ -187,6 +187,20 @@ private constructor(
         fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
 
         /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [cursor]
+         * - [limit]
+         * - [maxRootSpanId]
+         * - [maxXactId]
+         * - [version]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        /**
          * An opaque string to be used as a cursor for the next page of results, in order from
          * latest to earliest.
          *
@@ -453,7 +467,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {

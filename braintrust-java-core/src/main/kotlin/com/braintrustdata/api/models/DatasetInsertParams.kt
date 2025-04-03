@@ -89,6 +89,15 @@ private constructor(
         /** Dataset id */
         fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [events]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** A list of dataset events to insert */
         fun events(events: List<InsertDatasetEvent>) = apply { body.events(events) }
 
@@ -247,7 +256,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
