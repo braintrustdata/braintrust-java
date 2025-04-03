@@ -161,6 +161,20 @@ private constructor(
         /** ProjectScore id */
         fun projectScoreId(projectScoreId: String) = apply { this.projectScoreId = projectScoreId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [categories]
+         * - [config]
+         * - [description]
+         * - [name]
+         * - [scoreType]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** For categorical-type project scores, the list of all categories */
         fun categories(categories: Categories?) = apply { body.categories(categories) }
 
@@ -383,7 +397,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {

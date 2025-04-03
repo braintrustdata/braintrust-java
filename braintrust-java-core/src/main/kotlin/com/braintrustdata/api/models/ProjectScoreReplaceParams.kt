@@ -169,6 +169,20 @@ private constructor(
             additionalQueryParams = projectScoreReplaceParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [name]
+         * - [projectId]
+         * - [scoreType]
+         * - [categories]
+         * - [config]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** Name of the project score */
         fun name(name: String) = apply { body.name(name) }
 
@@ -398,7 +412,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 

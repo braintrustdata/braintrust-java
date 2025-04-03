@@ -199,6 +199,20 @@ private constructor(
         /** Experiment id */
         fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [baseExpId]
+         * - [datasetId]
+         * - [datasetVersion]
+         * - [description]
+         * - [metadata]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** Id of default base experiment to compare against when viewing this experiment */
         fun baseExpId(baseExpId: String?) = apply { body.baseExpId(baseExpId) }
 
@@ -473,7 +487,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {

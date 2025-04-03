@@ -184,6 +184,20 @@ private constructor(
         /** View id */
         fun viewId(viewId: String) = apply { this.viewId = viewId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [objectId]
+         * - [objectType]
+         * - [name]
+         * - [options]
+         * - [userId]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The id of the object the view applies to */
         fun objectId(objectId: String) = apply { body.objectId(objectId) }
 
@@ -420,7 +434,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
