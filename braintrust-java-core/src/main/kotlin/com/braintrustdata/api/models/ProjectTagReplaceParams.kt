@@ -128,6 +128,18 @@ private constructor(
             additionalQueryParams = projectTagReplaceParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [name]
+         * - [projectId]
+         * - [color]
+         * - [description]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** Name of the project tag */
         fun name(name: String) = apply { body.name(name) }
 
@@ -318,7 +330,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 

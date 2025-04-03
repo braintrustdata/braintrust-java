@@ -170,6 +170,20 @@ private constructor(
         /** Group id */
         fun groupId(groupId: String) = apply { this.groupId = groupId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [addMemberGroups]
+         * - [addMemberUsers]
+         * - [description]
+         * - [name]
+         * - [removeMemberGroups]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** A list of group IDs to add to the group's inheriting-from set */
         fun addMemberGroups(addMemberGroups: List<String>?) = apply {
             body.addMemberGroups(addMemberGroups)
@@ -453,7 +467,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {

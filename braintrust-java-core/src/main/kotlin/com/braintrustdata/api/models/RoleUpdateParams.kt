@@ -173,6 +173,20 @@ private constructor(
         /** Role id */
         fun roleId(roleId: String) = apply { this.roleId = roleId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [addMemberPermissions]
+         * - [addMemberRoles]
+         * - [description]
+         * - [name]
+         * - [removeMemberPermissions]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** A list of permissions to add to the role */
         fun addMemberPermissions(addMemberPermissions: List<AddMemberPermission>?) = apply {
             body.addMemberPermissions(addMemberPermissions)
@@ -463,7 +477,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
