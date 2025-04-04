@@ -525,7 +525,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun addMemberGroups(): Optional<List<String>> =
-            Optional.ofNullable(addMemberGroups.getNullable("add_member_groups"))
+            addMemberGroups.getOptional("add_member_groups")
 
         /**
          * A list of user IDs to add to the group
@@ -534,7 +534,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun addMemberUsers(): Optional<List<String>> =
-            Optional.ofNullable(addMemberUsers.getNullable("add_member_users"))
+            addMemberUsers.getOptional("add_member_users")
 
         /**
          * Textual description of the group
@@ -542,8 +542,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Name of the group
@@ -551,7 +550,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * A list of group IDs to remove from the group's inheriting-from set
@@ -560,7 +559,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun removeMemberGroups(): Optional<List<String>> =
-            Optional.ofNullable(removeMemberGroups.getNullable("remove_member_groups"))
+            removeMemberGroups.getOptional("remove_member_groups")
 
         /**
          * A list of user IDs to remove from the group
@@ -569,7 +568,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun removeMemberUsers(): Optional<List<String>> =
-            Optional.ofNullable(removeMemberUsers.getNullable("remove_member_users"))
+            removeMemberUsers.getOptional("remove_member_users")
 
         /**
          * Returns the raw JSON value of [addMemberGroups].

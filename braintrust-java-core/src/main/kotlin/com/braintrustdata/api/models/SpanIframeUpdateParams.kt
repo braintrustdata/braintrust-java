@@ -394,8 +394,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Name of the span iframe
@@ -403,7 +402,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
@@ -412,8 +411,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun postMessage(): Optional<Boolean> =
-            Optional.ofNullable(postMessage.getNullable("post_message"))
+        fun postMessage(): Optional<Boolean> = postMessage.getOptional("post_message")
 
         /**
          * URL to embed the project viewer in an iframe
@@ -421,7 +419,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun url(): Optional<String> = Optional.ofNullable(url.getNullable("url"))
+        fun url(): Optional<String> = url.getOptional("url")
 
         /**
          * Returns the raw JSON value of [description].

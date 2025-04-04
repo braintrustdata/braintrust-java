@@ -447,8 +447,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * (permission, restrict_object_type) tuples which belong to this role
@@ -457,7 +456,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun memberPermissions(): Optional<List<MemberPermission>> =
-            Optional.ofNullable(memberPermissions.getNullable("member_permissions"))
+            memberPermissions.getOptional("member_permissions")
 
         /**
          * Ids of the roles this role inherits from
@@ -468,8 +467,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun memberRoles(): Optional<List<String>> =
-            Optional.ofNullable(memberRoles.getNullable("member_roles"))
+        fun memberRoles(): Optional<List<String>> = memberRoles.getOptional("member_roles")
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -479,7 +477,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+        fun orgName(): Optional<String> = orgName.getOptional("org_name")
 
         /**
          * Returns the raw JSON value of [name].
@@ -816,7 +814,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun restrictObjectType(): Optional<AclObjectType> =
-            Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
+            restrictObjectType.getOptional("restrict_object_type")
 
         /**
          * Returns the raw JSON value of [permission].

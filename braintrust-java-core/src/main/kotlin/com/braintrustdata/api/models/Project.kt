@@ -77,7 +77,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * Date of project deletion, or null if the project is still active
@@ -85,15 +85,13 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun deletedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+    fun deletedAt(): Optional<OffsetDateTime> = deletedAt.getOptional("deleted_at")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun settings(): Optional<ProjectSettings> =
-        Optional.ofNullable(settings.getNullable("settings"))
+    fun settings(): Optional<ProjectSettings> = settings.getOptional("settings")
 
     /**
      * Identifies the user who created the project
@@ -101,7 +99,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
+    fun userId(): Optional<String> = userId.getOptional("user_id")
 
     /**
      * Returns the raw JSON value of [id].

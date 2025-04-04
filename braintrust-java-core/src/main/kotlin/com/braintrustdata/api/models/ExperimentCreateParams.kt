@@ -623,8 +623,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun baseExpId(): Optional<String> =
-            Optional.ofNullable(baseExpId.getNullable("base_exp_id"))
+        fun baseExpId(): Optional<String> = baseExpId.getOptional("base_exp_id")
 
         /**
          * Identifier of the linked dataset, or null if the experiment is not linked to a dataset
@@ -632,7 +631,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun datasetId(): Optional<String> = Optional.ofNullable(datasetId.getNullable("dataset_id"))
+        fun datasetId(): Optional<String> = datasetId.getOptional("dataset_id")
 
         /**
          * Version number of the linked dataset the experiment was run against. This can be used to
@@ -641,8 +640,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun datasetVersion(): Optional<String> =
-            Optional.ofNullable(datasetVersion.getNullable("dataset_version"))
+        fun datasetVersion(): Optional<String> = datasetVersion.getOptional("dataset_version")
 
         /**
          * Textual description of the experiment
@@ -650,8 +648,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Normally, creating an experiment with the same name as an existing experiment will return
@@ -661,8 +658,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun ensureNew(): Optional<Boolean> =
-            Optional.ofNullable(ensureNew.getNullable("ensure_new"))
+        fun ensureNew(): Optional<Boolean> = ensureNew.getOptional("ensure_new")
 
         /**
          * User-controlled metadata about the experiment
@@ -670,7 +666,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+        fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
          * Name of the experiment. Within a project, experiment names are unique
@@ -678,7 +674,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Whether or not the experiment is public. Public experiments can be viewed by anybody
@@ -687,7 +683,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun public_(): Optional<Boolean> = Optional.ofNullable(public_.getNullable("public"))
+        fun public_(): Optional<Boolean> = public_.getOptional("public")
 
         /**
          * Metadata about the state of the repo when the experiment was created
@@ -695,7 +691,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun repoInfo(): Optional<RepoInfo> = Optional.ofNullable(repoInfo.getNullable("repo_info"))
+        fun repoInfo(): Optional<RepoInfo> = repoInfo.getOptional("repo_info")
 
         /**
          * Returns the raw JSON value of [projectId].

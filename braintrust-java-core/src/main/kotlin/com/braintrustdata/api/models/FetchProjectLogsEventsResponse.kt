@@ -51,7 +51,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun cursor(): Optional<String> = Optional.ofNullable(cursor.getNullable("cursor"))
+    fun cursor(): Optional<String> = cursor.getOptional("cursor")
 
     /**
      * Returns the raw JSON value of [events].

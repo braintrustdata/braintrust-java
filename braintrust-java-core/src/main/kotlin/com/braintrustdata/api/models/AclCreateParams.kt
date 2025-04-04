@@ -514,7 +514,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun groupId(): Optional<String> = Optional.ofNullable(groupId.getNullable("group_id"))
+        fun groupId(): Optional<String> = groupId.getOptional("group_id")
 
         /**
          * Permission the ACL grants. Exactly one of `permission` and `role_id` will be provided
@@ -522,8 +522,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun permission(): Optional<Permission> =
-            Optional.ofNullable(permission.getNullable("permission"))
+        fun permission(): Optional<Permission> = permission.getOptional("permission")
 
         /**
          * When setting a permission directly, optionally restricts the permission grant to just the
@@ -533,7 +532,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun restrictObjectType(): Optional<AclObjectType> =
-            Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
+            restrictObjectType.getOptional("restrict_object_type")
 
         /**
          * Id of the role the ACL grants. Exactly one of `permission` and `role_id` will be provided
@@ -541,7 +540,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun roleId(): Optional<String> = Optional.ofNullable(roleId.getNullable("role_id"))
+        fun roleId(): Optional<String> = roleId.getOptional("role_id")
 
         /**
          * Id of the user the ACL applies to. Exactly one of `user_id` and `group_id` will be
@@ -550,7 +549,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
+        fun userId(): Optional<String> = userId.getOptional("user_id")
 
         /**
          * Returns the raw JSON value of [objectId].

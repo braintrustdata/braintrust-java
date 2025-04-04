@@ -152,7 +152,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun isRoot(): Optional<Boolean> = Optional.ofNullable(isRoot.getNullable("is_root"))
+    fun isRoot(): Optional<Boolean> = isRoot.getOptional("is_root")
 
     /**
      * A dictionary with additional data about the test example, model outputs, or just about
@@ -164,7 +164,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * Indicates the event was copied from another object.
@@ -172,7 +172,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun origin(): Optional<ObjectReference> = Optional.ofNullable(origin.getNullable("origin"))
+    fun origin(): Optional<ObjectReference> = origin.getOptional("origin")
 
     /**
      * A list of tags to log
@@ -180,7 +180,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+    fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
     /**
      * Returns the raw JSON value of [id].
@@ -640,7 +640,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
+        fun model(): Optional<String> = model.getOptional("model")
 
         /**
          * Returns the raw JSON value of [model].

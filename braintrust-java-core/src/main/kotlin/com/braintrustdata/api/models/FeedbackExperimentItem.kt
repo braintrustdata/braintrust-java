@@ -58,7 +58,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun comment(): Optional<String> = Optional.ofNullable(comment.getNullable("comment"))
+    fun comment(): Optional<String> = comment.getOptional("comment")
 
     /**
      * The ground truth value (an arbitrary, JSON serializable object) that you'd compare to
@@ -74,7 +74,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * A dictionary of numeric values (between 0 and 1) to log. These scores will be merged into the
@@ -83,7 +83,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun scores(): Optional<Scores> = Optional.ofNullable(scores.getNullable("scores"))
+    fun scores(): Optional<Scores> = scores.getOptional("scores")
 
     /**
      * The source of the feedback. Must be one of "external" (default), "app", or "api"
@@ -91,7 +91,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
+    fun source(): Optional<Source> = source.getOptional("source")
 
     /**
      * A list of tags to log
@@ -99,7 +99,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+    fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
     /**
      * Returns the raw JSON value of [id].

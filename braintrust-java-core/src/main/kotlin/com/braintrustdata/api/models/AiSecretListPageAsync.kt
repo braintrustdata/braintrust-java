@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
@@ -91,7 +92,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<AISecret>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<AISecret> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<AISecret> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<AISecret>>> = Optional.ofNullable(objects)

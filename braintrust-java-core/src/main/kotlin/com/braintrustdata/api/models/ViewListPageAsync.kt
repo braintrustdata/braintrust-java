@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all views. The views are sorted by creation date, with the most recently-created views
@@ -88,7 +89,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<View>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<View> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<View> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<View>>> = Optional.ofNullable(objects)

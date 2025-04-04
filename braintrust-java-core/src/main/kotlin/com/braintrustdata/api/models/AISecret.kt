@@ -80,26 +80,25 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun previewSecret(): Optional<String> =
-        Optional.ofNullable(previewSecret.getNullable("preview_secret"))
+    fun previewSecret(): Optional<String> = previewSecret.getOptional("preview_secret")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
+    fun type(): Optional<String> = type.getOptional("type")
 
     /**
      * Date of last AI secret update
@@ -107,8 +106,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun updatedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(updatedAt.getNullable("updated_at"))
+    fun updatedAt(): Optional<OffsetDateTime> = updatedAt.getOptional("updated_at")
 
     /**
      * Returns the raw JSON value of [id].

@@ -414,14 +414,13 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun apiUrl(): Optional<String> = Optional.ofNullable(apiUrl.getNullable("api_url"))
+        fun apiUrl(): Optional<String> = apiUrl.getOptional("api_url")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun isUniversalApi(): Optional<Boolean> =
-            Optional.ofNullable(isUniversalApi.getNullable("is_universal_api"))
+        fun isUniversalApi(): Optional<Boolean> = isUniversalApi.getOptional("is_universal_api")
 
         /**
          * Name of the organization
@@ -429,20 +428,19 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun proxyUrl(): Optional<String> = Optional.ofNullable(proxyUrl.getNullable("proxy_url"))
+        fun proxyUrl(): Optional<String> = proxyUrl.getOptional("proxy_url")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun realtimeUrl(): Optional<String> =
-            Optional.ofNullable(realtimeUrl.getNullable("realtime_url"))
+        fun realtimeUrl(): Optional<String> = realtimeUrl.getOptional("realtime_url")
 
         /**
          * Returns the raw JSON value of [apiUrl].

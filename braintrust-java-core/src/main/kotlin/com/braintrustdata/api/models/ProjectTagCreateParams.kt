@@ -378,7 +378,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun color(): Optional<String> = Optional.ofNullable(color.getNullable("color"))
+        fun color(): Optional<String> = color.getOptional("color")
 
         /**
          * Textual description of the project tag
@@ -386,8 +386,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Returns the raw JSON value of [name].

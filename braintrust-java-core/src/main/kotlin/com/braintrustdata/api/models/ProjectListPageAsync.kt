@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all projects. The projects are sorted by creation date, with the most recently-created
@@ -91,7 +92,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<Project>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<Project> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Project> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<Project>>> = Optional.ofNullable(objects)

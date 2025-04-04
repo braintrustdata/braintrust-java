@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all acls. The acls are sorted by creation date, with the most recently-created acls
@@ -88,7 +89,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<Acl>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<Acl> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Acl> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<Acl>>> = Optional.ofNullable(objects)
