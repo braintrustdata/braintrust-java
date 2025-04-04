@@ -58,40 +58,38 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun columnOrder(): Optional<List<String>> =
-        Optional.ofNullable(columnOrder.getNullable("columnOrder"))
+    fun columnOrder(): Optional<List<String>> = columnOrder.getOptional("columnOrder")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun columnSizing(): Optional<ColumnSizing> =
-        Optional.ofNullable(columnSizing.getNullable("columnSizing"))
+    fun columnSizing(): Optional<ColumnSizing> = columnSizing.getOptional("columnSizing")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun columnVisibility(): Optional<ColumnVisibility> =
-        Optional.ofNullable(columnVisibility.getNullable("columnVisibility"))
+        columnVisibility.getOptional("columnVisibility")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun grouping(): Optional<String> = Optional.ofNullable(grouping.getNullable("grouping"))
+    fun grouping(): Optional<String> = grouping.getOptional("grouping")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun layout(): Optional<String> = Optional.ofNullable(layout.getNullable("layout"))
+    fun layout(): Optional<String> = layout.getOptional("layout")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun rowHeight(): Optional<String> = Optional.ofNullable(rowHeight.getNullable("rowHeight"))
+    fun rowHeight(): Optional<String> = rowHeight.getOptional("rowHeight")
 
     /**
      * Returns the raw JSON value of [columnOrder].

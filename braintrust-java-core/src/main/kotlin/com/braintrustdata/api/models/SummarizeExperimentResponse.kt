@@ -100,7 +100,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun comparisonExperimentName(): Optional<String> =
-        Optional.ofNullable(comparisonExperimentName.getNullable("comparison_experiment_name"))
+        comparisonExperimentName.getOptional("comparison_experiment_name")
 
     /**
      * Summary of the experiment's metrics
@@ -108,7 +108,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metrics(): Optional<Metrics> = Optional.ofNullable(metrics.getNullable("metrics"))
+    fun metrics(): Optional<Metrics> = metrics.getOptional("metrics")
 
     /**
      * Summary of the experiment's scores
@@ -116,7 +116,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun scores(): Optional<Scores> = Optional.ofNullable(scores.getNullable("scores"))
+    fun scores(): Optional<Scores> = scores.getOptional("scores")
 
     /**
      * Returns the raw JSON value of [experimentName].

@@ -41,7 +41,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun text(): Optional<String> = Optional.ofNullable(text.getNullable("text"))
+    fun text(): Optional<String> = text.getOptional("text")
 
     /**
      * Returns the raw JSON value of [type].

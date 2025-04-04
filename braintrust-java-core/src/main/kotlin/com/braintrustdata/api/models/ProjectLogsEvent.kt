@@ -182,7 +182,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun context(): Optional<Context> = Optional.ofNullable(context.getNullable("context"))
+    fun context(): Optional<Context> = context.getOptional("context")
 
     /** The error that occurred, if any. */
     @JsonProperty("error") @ExcludeMissing fun _error(): JsonValue = error
@@ -206,7 +206,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun isRoot(): Optional<Boolean> = Optional.ofNullable(isRoot.getNullable("is_root"))
+    fun isRoot(): Optional<Boolean> = isRoot.getOptional("is_root")
 
     /**
      * A dictionary with additional data about the test example, model outputs, or just about
@@ -218,7 +218,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * Metrics are numerical measurements tracking the execution of the code that produced the
@@ -228,7 +228,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metrics(): Optional<Metrics> = Optional.ofNullable(metrics.getNullable("metrics"))
+    fun metrics(): Optional<Metrics> = metrics.getOptional("metrics")
 
     /**
      * Indicates the event was copied from another object.
@@ -236,7 +236,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun origin(): Optional<ObjectReference> = Optional.ofNullable(origin.getNullable("origin"))
+    fun origin(): Optional<ObjectReference> = origin.getOptional("origin")
 
     /**
      * The output of your application, including post-processing (an arbitrary, JSON serializable
@@ -259,7 +259,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun scores(): Optional<Scores> = Optional.ofNullable(scores.getNullable("scores"))
+    fun scores(): Optional<Scores> = scores.getOptional("scores")
 
     /**
      * Human-identifying attributes of the span, such as name, type, etc.
@@ -267,8 +267,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun spanAttributes(): Optional<SpanAttributes> =
-        Optional.ofNullable(spanAttributes.getNullable("span_attributes"))
+    fun spanAttributes(): Optional<SpanAttributes> = spanAttributes.getOptional("span_attributes")
 
     /**
      * An array of the parent `span_ids` of this project logs event. This should be empty for the
@@ -277,8 +276,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun spanParents(): Optional<List<String>> =
-        Optional.ofNullable(spanParents.getNullable("span_parents"))
+    fun spanParents(): Optional<List<String>> = spanParents.getOptional("span_parents")
 
     /**
      * A list of tags to log
@@ -286,7 +284,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+    fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
     /**
      * Returns the raw JSON value of [id].
@@ -1096,8 +1094,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun callerFilename(): Optional<String> =
-            Optional.ofNullable(callerFilename.getNullable("caller_filename"))
+        fun callerFilename(): Optional<String> = callerFilename.getOptional("caller_filename")
 
         /**
          * The function in code which created the project logs event
@@ -1106,7 +1103,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun callerFunctionname(): Optional<String> =
-            Optional.ofNullable(callerFunctionname.getNullable("caller_functionname"))
+            callerFunctionname.getOptional("caller_functionname")
 
         /**
          * Line of code where the project logs event was created
@@ -1114,8 +1111,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun callerLineno(): Optional<Long> =
-            Optional.ofNullable(callerLineno.getNullable("caller_lineno"))
+        fun callerLineno(): Optional<Long> = callerLineno.getOptional("caller_lineno")
 
         /**
          * Returns the raw JSON value of [callerFilename].
@@ -1354,7 +1350,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
+        fun model(): Optional<String> = model.getOptional("model")
 
         /**
          * Returns the raw JSON value of [model].
@@ -1550,8 +1546,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun completionTokens(): Optional<Long> =
-            Optional.ofNullable(completionTokens.getNullable("completion_tokens"))
+        fun completionTokens(): Optional<Long> = completionTokens.getOptional("completion_tokens")
 
         /**
          * A unix timestamp recording when the section of code which produced the project logs event
@@ -1560,7 +1555,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun end(): Optional<Double> = Optional.ofNullable(end.getNullable("end"))
+        fun end(): Optional<Double> = end.getOptional("end")
 
         /**
          * The number of tokens in the prompt used to generate the project logs event (only set if
@@ -1569,8 +1564,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun promptTokens(): Optional<Long> =
-            Optional.ofNullable(promptTokens.getNullable("prompt_tokens"))
+        fun promptTokens(): Optional<Long> = promptTokens.getOptional("prompt_tokens")
 
         /**
          * A unix timestamp recording when the section of code which produced the project logs event
@@ -1579,7 +1573,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun start(): Optional<Double> = Optional.ofNullable(start.getNullable("start"))
+        fun start(): Optional<Double> = start.getOptional("start")
 
         /**
          * The total number of tokens in the input and output of the project logs event.
@@ -1587,7 +1581,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun tokens(): Optional<Long> = Optional.ofNullable(tokens.getNullable("tokens"))
+        fun tokens(): Optional<Long> = tokens.getOptional("tokens")
 
         /**
          * Returns the raw JSON value of [completionTokens].

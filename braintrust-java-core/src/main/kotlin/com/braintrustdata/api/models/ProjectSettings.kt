@@ -48,7 +48,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun baselineExperimentId(): Optional<String> =
-        Optional.ofNullable(baselineExperimentId.getNullable("baseline_experiment_id"))
+        baselineExperimentId.getOptional("baseline_experiment_id")
 
     /**
      * The key used to join two experiments (defaults to `input`)
@@ -56,8 +56,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun comparisonKey(): Optional<String> =
-        Optional.ofNullable(comparisonKey.getNullable("comparison_key"))
+    fun comparisonKey(): Optional<String> = comparisonKey.getOptional("comparison_key")
 
     /**
      * The order of the fields to display in the trace view
@@ -66,7 +65,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun spanFieldOrder(): Optional<List<SpanFieldOrder>> =
-        Optional.ofNullable(spanFieldOrder.getNullable("spanFieldOrder"))
+        spanFieldOrder.getOptional("spanFieldOrder")
 
     /**
      * Returns the raw JSON value of [baselineExperimentId].
@@ -312,7 +311,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun layout(): Optional<Layout> = Optional.ofNullable(layout.getNullable("layout"))
+        fun layout(): Optional<Layout> = layout.getOptional("layout")
 
         /**
          * Returns the raw JSON value of [columnId].

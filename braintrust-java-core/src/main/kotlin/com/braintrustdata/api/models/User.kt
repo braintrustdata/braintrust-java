@@ -57,7 +57,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun avatarUrl(): Optional<String> = Optional.ofNullable(avatarUrl.getNullable("avatar_url"))
+    fun avatarUrl(): Optional<String> = avatarUrl.getOptional("avatar_url")
 
     /**
      * Date of user creation
@@ -65,7 +65,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * The user's email
@@ -73,7 +73,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun email(): Optional<String> = Optional.ofNullable(email.getNullable("email"))
+    fun email(): Optional<String> = email.getOptional("email")
 
     /**
      * Family name of the user
@@ -81,7 +81,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun familyName(): Optional<String> = Optional.ofNullable(familyName.getNullable("family_name"))
+    fun familyName(): Optional<String> = familyName.getOptional("family_name")
 
     /**
      * Given name of the user
@@ -89,7 +89,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun givenName(): Optional<String> = Optional.ofNullable(givenName.getNullable("given_name"))
+    fun givenName(): Optional<String> = givenName.getOptional("given_name")
 
     /**
      * Returns the raw JSON value of [id].

@@ -442,8 +442,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Ids of the groups this group inherits from
@@ -454,8 +453,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun memberGroups(): Optional<List<String>> =
-            Optional.ofNullable(memberGroups.getNullable("member_groups"))
+        fun memberGroups(): Optional<List<String>> = memberGroups.getOptional("member_groups")
 
         /**
          * Ids of users which belong to this group
@@ -463,8 +461,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun memberUsers(): Optional<List<String>> =
-            Optional.ofNullable(memberUsers.getNullable("member_users"))
+        fun memberUsers(): Optional<List<String>> = memberUsers.getOptional("member_users")
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -474,7 +471,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+        fun orgName(): Optional<String> = orgName.getOptional("org_name")
 
         /**
          * Returns the raw JSON value of [name].

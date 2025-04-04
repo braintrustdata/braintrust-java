@@ -432,8 +432,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Whether to post messages to the iframe containing the span's data. This is useful when
@@ -442,8 +441,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun postMessage(): Optional<Boolean> =
-            Optional.ofNullable(postMessage.getNullable("post_message"))
+        fun postMessage(): Optional<Boolean> = postMessage.getOptional("post_message")
 
         /**
          * Returns the raw JSON value of [name].

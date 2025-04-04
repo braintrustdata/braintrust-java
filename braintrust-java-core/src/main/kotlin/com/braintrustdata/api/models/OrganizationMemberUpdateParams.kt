@@ -371,8 +371,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun inviteUsers(): Optional<InviteUsers> =
-            Optional.ofNullable(inviteUsers.getNullable("invite_users"))
+        fun inviteUsers(): Optional<InviteUsers> = inviteUsers.getOptional("invite_users")
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -382,7 +381,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun orgId(): Optional<String> = Optional.ofNullable(orgId.getNullable("org_id"))
+        fun orgId(): Optional<String> = orgId.getOptional("org_id")
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -392,7 +391,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+        fun orgName(): Optional<String> = orgName.getOptional("org_name")
 
         /**
          * Users to remove from the organization
@@ -400,8 +399,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun removeUsers(): Optional<RemoveUsers> =
-            Optional.ofNullable(removeUsers.getNullable("remove_users"))
+        fun removeUsers(): Optional<RemoveUsers> = removeUsers.getOptional("remove_users")
 
         /**
          * Returns the raw JSON value of [inviteUsers].
@@ -679,7 +677,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun emails(): Optional<List<String>> = Optional.ofNullable(emails.getNullable("emails"))
+        fun emails(): Optional<List<String>> = emails.getOptional("emails")
 
         /**
          * Singular form of group_ids
@@ -687,7 +685,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun groupId(): Optional<String> = Optional.ofNullable(groupId.getNullable("group_id"))
+        fun groupId(): Optional<String> = groupId.getOptional("group_id")
 
         /**
          * Optional list of group ids to add newly-invited users to.
@@ -695,8 +693,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun groupIds(): Optional<List<String>> =
-            Optional.ofNullable(groupIds.getNullable("group_ids"))
+        fun groupIds(): Optional<List<String>> = groupIds.getOptional("group_ids")
 
         /**
          * Singular form of group_names
@@ -704,7 +701,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun groupName(): Optional<String> = Optional.ofNullable(groupName.getNullable("group_name"))
+        fun groupName(): Optional<String> = groupName.getOptional("group_name")
 
         /**
          * Optional list of group names to add newly-invited users to.
@@ -712,8 +709,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun groupNames(): Optional<List<String>> =
-            Optional.ofNullable(groupNames.getNullable("group_names"))
+        fun groupNames(): Optional<List<String>> = groupNames.getOptional("group_names")
 
         /**
          * Ids of existing users to invite
@@ -721,7 +717,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun ids(): Optional<List<String>> = Optional.ofNullable(ids.getNullable("ids"))
+        fun ids(): Optional<List<String>> = ids.getOptional("ids")
 
         /**
          * If true, send invite emails to the users who wore actually added
@@ -730,7 +726,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun sendInviteEmails(): Optional<Boolean> =
-            Optional.ofNullable(sendInviteEmails.getNullable("send_invite_emails"))
+            sendInviteEmails.getOptional("send_invite_emails")
 
         /**
          * Returns the raw JSON value of [emails].
@@ -1120,7 +1116,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun emails(): Optional<List<String>> = Optional.ofNullable(emails.getNullable("emails"))
+        fun emails(): Optional<List<String>> = emails.getOptional("emails")
 
         /**
          * Ids of users to remove
@@ -1128,7 +1124,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun ids(): Optional<List<String>> = Optional.ofNullable(ids.getNullable("ids"))
+        fun ids(): Optional<List<String>> = ids.getOptional("ids")
 
         /**
          * Returns the raw JSON value of [emails].

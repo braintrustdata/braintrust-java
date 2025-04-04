@@ -634,8 +634,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * JSON schema for the function's parameters and return type
@@ -644,20 +643,19 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun functionSchema(): Optional<FunctionSchema> =
-            Optional.ofNullable(functionSchema.getNullable("function_schema"))
+            functionSchema.getOptional("function_schema")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun functionType(): Optional<FunctionType> =
-            Optional.ofNullable(functionType.getNullable("function_type"))
+        fun functionType(): Optional<FunctionType> = functionType.getOptional("function_type")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun origin(): Optional<Origin> = Optional.ofNullable(origin.getNullable("origin"))
+        fun origin(): Optional<Origin> = origin.getOptional("origin")
 
         /**
          * The prompt, model, and its parameters
@@ -665,8 +663,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun promptData(): Optional<PromptData> =
-            Optional.ofNullable(promptData.getNullable("prompt_data"))
+        fun promptData(): Optional<PromptData> = promptData.getOptional("prompt_data")
 
         /**
          * A list of tags for the prompt
@@ -674,7 +671,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+        fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
         /**
          * Returns the raw JSON value of [functionData].
@@ -2003,8 +2000,7 @@ private constructor(
                      * @throws BraintrustInvalidDataException if the JSON field has an unexpected
                      *   type (e.g. if the server responded with an unexpected value).
                      */
-                    fun preview(): Optional<String> =
-                        Optional.ofNullable(preview.getNullable("preview"))
+                    fun preview(): Optional<String> = preview.getOptional("preview")
 
                     /**
                      * @throws BraintrustInvalidDataException if the JSON field has an unexpected
@@ -3926,7 +3922,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun internal_(): Optional<Boolean> = Optional.ofNullable(internal_.getNullable("internal"))
+        fun internal_(): Optional<Boolean> = internal_.getOptional("internal")
 
         /**
          * Returns the raw JSON value of [objectId].
