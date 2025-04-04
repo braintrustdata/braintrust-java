@@ -82,7 +82,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * Date the environment variable was last used
@@ -90,7 +90,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun used(): Optional<OffsetDateTime> = Optional.ofNullable(used.getNullable("used"))
+    fun used(): Optional<OffsetDateTime> = used.getOptional("used")
 
     /**
      * Returns the raw JSON value of [id].

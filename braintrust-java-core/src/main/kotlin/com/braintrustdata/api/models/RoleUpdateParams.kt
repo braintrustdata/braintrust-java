@@ -535,7 +535,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun addMemberPermissions(): Optional<List<AddMemberPermission>> =
-            Optional.ofNullable(addMemberPermissions.getNullable("add_member_permissions"))
+            addMemberPermissions.getOptional("add_member_permissions")
 
         /**
          * A list of role IDs to add to the role's inheriting-from set
@@ -544,7 +544,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun addMemberRoles(): Optional<List<String>> =
-            Optional.ofNullable(addMemberRoles.getNullable("add_member_roles"))
+            addMemberRoles.getOptional("add_member_roles")
 
         /**
          * Textual description of the role
@@ -552,8 +552,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Name of the role
@@ -561,7 +560,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * A list of permissions to remove from the role
@@ -570,7 +569,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun removeMemberPermissions(): Optional<List<RemoveMemberPermission>> =
-            Optional.ofNullable(removeMemberPermissions.getNullable("remove_member_permissions"))
+            removeMemberPermissions.getOptional("remove_member_permissions")
 
         /**
          * A list of role IDs to remove from the role's inheriting-from set
@@ -579,7 +578,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun removeMemberRoles(): Optional<List<String>> =
-            Optional.ofNullable(removeMemberRoles.getNullable("remove_member_roles"))
+            removeMemberRoles.getOptional("remove_member_roles")
 
         /**
          * Returns the raw JSON value of [addMemberPermissions].
@@ -975,7 +974,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun restrictObjectType(): Optional<AclObjectType> =
-            Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
+            restrictObjectType.getOptional("restrict_object_type")
 
         /**
          * Returns the raw JSON value of [permission].
@@ -1198,7 +1197,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun restrictObjectType(): Optional<AclObjectType> =
-            Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
+            restrictObjectType.getOptional("restrict_object_type")
 
         /**
          * Returns the raw JSON value of [permission].

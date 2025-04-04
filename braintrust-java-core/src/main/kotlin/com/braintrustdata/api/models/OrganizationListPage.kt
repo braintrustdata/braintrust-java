@@ -89,7 +89,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<Organization>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<Organization> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Organization> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<Organization>>> = Optional.ofNullable(objects)

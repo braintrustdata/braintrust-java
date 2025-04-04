@@ -41,21 +41,19 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun destination(): Optional<String> =
-        Optional.ofNullable(destination.getNullable("destination"))
+    fun destination(): Optional<String> = destination.getOptional("destination")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun multiSelect(): Optional<Boolean> =
-        Optional.ofNullable(multiSelect.getNullable("multi_select"))
+    fun multiSelect(): Optional<Boolean> = multiSelect.getOptional("multi_select")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun online(): Optional<OnlineScoreConfig> = Optional.ofNullable(online.getNullable("online"))
+    fun online(): Optional<OnlineScoreConfig> = online.getOptional("online")
 
     /**
      * Returns the raw JSON value of [destination].

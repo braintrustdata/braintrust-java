@@ -512,7 +512,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun cursor(): Optional<String> = Optional.ofNullable(cursor.getNullable("cursor"))
+        fun cursor(): Optional<String> = cursor.getOptional("cursor")
 
         /**
          * limit the number of traces fetched
@@ -532,7 +532,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun limit(): Optional<Long> = Optional.ofNullable(limit.getNullable("limit"))
+        fun limit(): Optional<Long> = limit.getOptional("limit")
 
         /**
          * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
@@ -549,8 +549,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun maxRootSpanId(): Optional<String> =
-            Optional.ofNullable(maxRootSpanId.getNullable("max_root_span_id"))
+        fun maxRootSpanId(): Optional<String> = maxRootSpanId.getOptional("max_root_span_id")
 
         /**
          * DEPRECATION NOTICE: The manually-constructed pagination cursor is deprecated in favor of
@@ -567,8 +566,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun maxXactId(): Optional<String> =
-            Optional.ofNullable(maxXactId.getNullable("max_xact_id"))
+        fun maxXactId(): Optional<String> = maxXactId.getOptional("max_xact_id")
 
         /**
          * Retrieve a snapshot of events from a past time
@@ -579,7 +577,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun version(): Optional<String> = Optional.ofNullable(version.getNullable("version"))
+        fun version(): Optional<String> = version.getOptional("version")
 
         /**
          * Returns the raw JSON value of [cursor].

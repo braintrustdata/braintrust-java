@@ -85,8 +85,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun dataSummary(): Optional<DataSummary> =
-        Optional.ofNullable(dataSummary.getNullable("data_summary"))
+    fun dataSummary(): Optional<DataSummary> = dataSummary.getOptional("data_summary")
 
     /**
      * Returns the raw JSON value of [datasetName].

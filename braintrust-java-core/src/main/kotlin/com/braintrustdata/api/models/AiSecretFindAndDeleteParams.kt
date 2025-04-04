@@ -306,7 +306,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+        fun orgName(): Optional<String> = orgName.getOptional("org_name")
 
         /**
          * Returns the raw JSON value of [name].

@@ -532,7 +532,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun viewType(): Optional<ViewType> = Optional.ofNullable(viewType.getNullable("view_type"))
+        fun viewType(): Optional<ViewType> = viewType.getOptional("view_type")
 
         /**
          * Date of role deletion, or null if the role is still active
@@ -540,8 +540,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun deletedAt(): Optional<OffsetDateTime> =
-            Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+        fun deletedAt(): Optional<OffsetDateTime> = deletedAt.getOptional("deleted_at")
 
         /**
          * Options for the view in the app
@@ -549,7 +548,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun options(): Optional<ViewOptions> = Optional.ofNullable(options.getNullable("options"))
+        fun options(): Optional<ViewOptions> = options.getOptional("options")
 
         /**
          * Identifies the user who created the view
@@ -557,7 +556,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
+        fun userId(): Optional<String> = userId.getOptional("user_id")
 
         /**
          * The view definition
@@ -565,7 +564,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun viewData(): Optional<ViewData> = Optional.ofNullable(viewData.getNullable("view_data"))
+        fun viewData(): Optional<ViewData> = viewData.getOptional("view_data")
 
         /**
          * Returns the raw JSON value of [name].

@@ -69,8 +69,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun authorEmail(): Optional<String> =
-        Optional.ofNullable(authorEmail.getNullable("author_email"))
+    fun authorEmail(): Optional<String> = authorEmail.getOptional("author_email")
 
     /**
      * Name of the author of the most recent commit
@@ -78,7 +77,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun authorName(): Optional<String> = Optional.ofNullable(authorName.getNullable("author_name"))
+    fun authorName(): Optional<String> = authorName.getOptional("author_name")
 
     /**
      * Name of the branch the most recent commit belongs to
@@ -86,7 +85,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
+    fun branch(): Optional<String> = branch.getOptional("branch")
 
     /**
      * SHA of most recent commit
@@ -94,7 +93,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun commit(): Optional<String> = Optional.ofNullable(commit.getNullable("commit"))
+    fun commit(): Optional<String> = commit.getOptional("commit")
 
     /**
      * Most recent commit message
@@ -102,8 +101,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun commitMessage(): Optional<String> =
-        Optional.ofNullable(commitMessage.getNullable("commit_message"))
+    fun commitMessage(): Optional<String> = commitMessage.getOptional("commit_message")
 
     /**
      * Time of the most recent commit
@@ -111,7 +109,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun commitTime(): Optional<String> = Optional.ofNullable(commitTime.getNullable("commit_time"))
+    fun commitTime(): Optional<String> = commitTime.getOptional("commit_time")
 
     /**
      * Whether or not the repo had uncommitted changes when snapshotted
@@ -119,7 +117,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun dirty(): Optional<Boolean> = Optional.ofNullable(dirty.getNullable("dirty"))
+    fun dirty(): Optional<Boolean> = dirty.getOptional("dirty")
 
     /**
      * If the repo was dirty when run, this includes the diff between the current state of the repo
@@ -128,7 +126,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun gitDiff(): Optional<String> = Optional.ofNullable(gitDiff.getNullable("git_diff"))
+    fun gitDiff(): Optional<String> = gitDiff.getOptional("git_diff")
 
     /**
      * Name of the tag on the most recent commit
@@ -136,7 +134,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tag(): Optional<String> = Optional.ofNullable(tag.getNullable("tag"))
+    fun tag(): Optional<String> = tag.getOptional("tag")
 
     /**
      * Returns the raw JSON value of [authorEmail].

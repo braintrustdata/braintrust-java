@@ -370,7 +370,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+        fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
          * Name of the AI secret
@@ -378,19 +378,19 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun secret(): Optional<String> = Optional.ofNullable(secret.getNullable("secret"))
+        fun secret(): Optional<String> = secret.getOptional("secret")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<String> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [metadata].

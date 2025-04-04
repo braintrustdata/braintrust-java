@@ -78,8 +78,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun applyToRootSpan(): Optional<Boolean> =
-        Optional.ofNullable(applyToRootSpan.getNullable("apply_to_root_span"))
+    fun applyToRootSpan(): Optional<Boolean> = applyToRootSpan.getOptional("apply_to_root_span")
 
     /**
      * Trigger online scoring on any spans with a name in this list
@@ -88,7 +87,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun applyToSpanNames(): Optional<List<String>> =
-        Optional.ofNullable(applyToSpanNames.getNullable("apply_to_span_names"))
+        applyToSpanNames.getOptional("apply_to_span_names")
 
     /**
      * Returns the raw JSON value of [samplingRate].

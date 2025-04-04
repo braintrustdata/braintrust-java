@@ -320,7 +320,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Project settings. Patch operations replace all settings, so make sure you include all
@@ -329,8 +329,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun settings(): Optional<ProjectSettings> =
-            Optional.ofNullable(settings.getNullable("settings"))
+        fun settings(): Optional<ProjectSettings> = settings.getOptional("settings")
 
         /**
          * Returns the raw JSON value of [name].

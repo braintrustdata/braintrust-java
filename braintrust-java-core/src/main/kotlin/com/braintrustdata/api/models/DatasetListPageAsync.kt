@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all datasets. The datasets are sorted by creation date, with the most recently-created
@@ -91,7 +92,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<Dataset>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<Dataset> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<Dataset> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<Dataset>>> = Optional.ofNullable(objects)
