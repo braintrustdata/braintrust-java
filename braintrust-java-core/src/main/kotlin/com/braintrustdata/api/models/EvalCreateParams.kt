@@ -2833,7 +2833,9 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            @JvmSynthetic internal fun validity(): Int = (data.asKnown().getOrNull()?.size ?: 0)
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (data.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
