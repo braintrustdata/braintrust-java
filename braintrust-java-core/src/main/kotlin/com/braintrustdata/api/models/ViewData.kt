@@ -32,7 +32,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun search(): Optional<ViewDataSearch> = Optional.ofNullable(search.getNullable("search"))
+    fun search(): Optional<ViewDataSearch> = search.getOptional("search")
 
     /**
      * Returns the raw JSON value of [search].

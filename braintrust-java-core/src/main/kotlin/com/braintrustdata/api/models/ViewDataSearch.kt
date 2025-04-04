@@ -43,25 +43,25 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun filter(): Optional<List<JsonValue?>> = Optional.ofNullable(filter.getNullable("filter"))
+    fun filter(): Optional<List<JsonValue?>> = filter.getOptional("filter")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun match(): Optional<List<JsonValue?>> = Optional.ofNullable(match.getNullable("match"))
+    fun match(): Optional<List<JsonValue?>> = match.getOptional("match")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun sort(): Optional<List<JsonValue?>> = Optional.ofNullable(sort.getNullable("sort"))
+    fun sort(): Optional<List<JsonValue?>> = sort.getOptional("sort")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tag(): Optional<List<JsonValue?>> = Optional.ofNullable(tag.getNullable("tag"))
+    fun tag(): Optional<List<JsonValue?>> = tag.getOptional("tag")
 
     /**
      * Returns the raw JSON value of [filter].

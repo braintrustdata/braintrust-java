@@ -50,19 +50,19 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
+    fun model(): Optional<String> = model.getOptional("model")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun params(): Optional<Params> = Optional.ofNullable(params.getNullable("params"))
+    fun params(): Optional<Params> = params.getOptional("params")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun position(): Optional<String> = Optional.ofNullable(position.getNullable("position"))
+    fun position(): Optional<String> = position.getOptional("position")
 
     /**
      * Returns the raw JSON value of [model].
@@ -558,14 +558,13 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun frequencyPenalty(): Optional<Double> =
-                Optional.ofNullable(frequencyPenalty.getNullable("frequency_penalty"))
+                frequencyPenalty.getOptional("frequency_penalty")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun functionCall(): Optional<FunctionCall> =
-                Optional.ofNullable(functionCall.getNullable("function_call"))
+            fun functionCall(): Optional<FunctionCall> = functionCall.getOptional("function_call")
 
             /**
              * The successor to max_tokens
@@ -574,74 +573,70 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun maxCompletionTokens(): Optional<Double> =
-                Optional.ofNullable(maxCompletionTokens.getNullable("max_completion_tokens"))
+                maxCompletionTokens.getOptional("max_completion_tokens")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun maxTokens(): Optional<Double> =
-                Optional.ofNullable(maxTokens.getNullable("max_tokens"))
+            fun maxTokens(): Optional<Double> = maxTokens.getOptional("max_tokens")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun n(): Optional<Double> = Optional.ofNullable(n.getNullable("n"))
+            fun n(): Optional<Double> = n.getOptional("n")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
             fun presencePenalty(): Optional<Double> =
-                Optional.ofNullable(presencePenalty.getNullable("presence_penalty"))
+                presencePenalty.getOptional("presence_penalty")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
             fun reasoningEffort(): Optional<ReasoningEffort> =
-                Optional.ofNullable(reasoningEffort.getNullable("reasoning_effort"))
+                reasoningEffort.getOptional("reasoning_effort")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
             fun responseFormat(): Optional<ResponseFormat> =
-                Optional.ofNullable(responseFormat.getNullable("response_format"))
+                responseFormat.getOptional("response_format")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun stop(): Optional<List<String>> = Optional.ofNullable(stop.getNullable("stop"))
+            fun stop(): Optional<List<String>> = stop.getOptional("stop")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun temperature(): Optional<Double> =
-                Optional.ofNullable(temperature.getNullable("temperature"))
+            fun temperature(): Optional<Double> = temperature.getOptional("temperature")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun toolChoice(): Optional<ToolChoice> =
-                Optional.ofNullable(toolChoice.getNullable("tool_choice"))
+            fun toolChoice(): Optional<ToolChoice> = toolChoice.getOptional("tool_choice")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun topP(): Optional<Double> = Optional.ofNullable(topP.getNullable("top_p"))
+            fun topP(): Optional<Double> = topP.getOptional("top_p")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun useCache(): Optional<Boolean> =
-                Optional.ofNullable(useCache.getNullable("use_cache"))
+            fun useCache(): Optional<Boolean> = useCache.getOptional("use_cache")
 
             /**
              * Returns the raw JSON value of [frequencyPenalty].
@@ -2488,24 +2483,21 @@ private constructor(
                          *   unexpected type (e.g. if the server responded with an unexpected
                          *   value).
                          */
-                        fun description(): Optional<String> =
-                            Optional.ofNullable(description.getNullable("description"))
+                        fun description(): Optional<String> = description.getOptional("description")
 
                         /**
                          * @throws BraintrustInvalidDataException if the JSON field has an
                          *   unexpected type (e.g. if the server responded with an unexpected
                          *   value).
                          */
-                        fun schema(): Optional<Schema> =
-                            Optional.ofNullable(schema.getNullable("schema"))
+                        fun schema(): Optional<Schema> = schema.getOptional("schema")
 
                         /**
                          * @throws BraintrustInvalidDataException if the JSON field has an
                          *   unexpected type (e.g. if the server responded with an unexpected
                          *   value).
                          */
-                        fun strict(): Optional<Boolean> =
-                            Optional.ofNullable(strict.getNullable("strict"))
+                        fun strict(): Optional<Boolean> = strict.getOptional("strict")
 
                         /**
                          * Returns the raw JSON value of [name].
@@ -4389,33 +4381,32 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun maxTokensToSample(): Optional<Double> =
-                Optional.ofNullable(maxTokensToSample.getNullable("max_tokens_to_sample"))
+                maxTokensToSample.getOptional("max_tokens_to_sample")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
             fun stopSequences(): Optional<List<String>> =
-                Optional.ofNullable(stopSequences.getNullable("stop_sequences"))
+                stopSequences.getOptional("stop_sequences")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun topK(): Optional<Double> = Optional.ofNullable(topK.getNullable("top_k"))
+            fun topK(): Optional<Double> = topK.getOptional("top_k")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun topP(): Optional<Double> = Optional.ofNullable(topP.getNullable("top_p"))
+            fun topP(): Optional<Double> = topP.getOptional("top_p")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun useCache(): Optional<Boolean> =
-                Optional.ofNullable(useCache.getNullable("use_cache"))
+            fun useCache(): Optional<Boolean> = useCache.getOptional("use_cache")
 
             /**
              * Returns the raw JSON value of [maxTokens].
@@ -4765,34 +4756,31 @@ private constructor(
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun maxOutputTokens(): Optional<Double> =
-                Optional.ofNullable(maxOutputTokens.getNullable("maxOutputTokens"))
+            fun maxOutputTokens(): Optional<Double> = maxOutputTokens.getOptional("maxOutputTokens")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun temperature(): Optional<Double> =
-                Optional.ofNullable(temperature.getNullable("temperature"))
+            fun temperature(): Optional<Double> = temperature.getOptional("temperature")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun topK(): Optional<Double> = Optional.ofNullable(topK.getNullable("topK"))
+            fun topK(): Optional<Double> = topK.getOptional("topK")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun topP(): Optional<Double> = Optional.ofNullable(topP.getNullable("topP"))
+            fun topP(): Optional<Double> = topP.getOptional("topP")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun useCache(): Optional<Boolean> =
-                Optional.ofNullable(useCache.getNullable("use_cache"))
+            fun useCache(): Optional<Boolean> = useCache.getOptional("use_cache")
 
             /**
              * Returns the raw JSON value of [maxOutputTokens].
@@ -5054,21 +5042,19 @@ private constructor(
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun temperature(): Optional<Double> =
-                Optional.ofNullable(temperature.getNullable("temperature"))
+            fun temperature(): Optional<Double> = temperature.getOptional("temperature")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun topK(): Optional<Double> = Optional.ofNullable(topK.getNullable("topK"))
+            fun topK(): Optional<Double> = topK.getOptional("topK")
 
             /**
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun useCache(): Optional<Boolean> =
-                Optional.ofNullable(useCache.getNullable("use_cache"))
+            fun useCache(): Optional<Boolean> = useCache.getOptional("use_cache")
 
             /**
              * Returns the raw JSON value of [temperature].
@@ -5272,8 +5258,7 @@ private constructor(
              * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun useCache(): Optional<Boolean> =
-                Optional.ofNullable(useCache.getNullable("use_cache"))
+            fun useCache(): Optional<Boolean> = useCache.getOptional("use_cache")
 
             /**
              * Returns the raw JSON value of [useCache].

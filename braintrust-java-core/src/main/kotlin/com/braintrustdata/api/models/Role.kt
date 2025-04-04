@@ -95,7 +95,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * Date of role deletion, or null if the role is still active
@@ -103,8 +103,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun deletedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+    fun deletedAt(): Optional<OffsetDateTime> = deletedAt.getOptional("deleted_at")
 
     /**
      * Textual description of the role
@@ -112,8 +111,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun description(): Optional<String> =
-        Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> = description.getOptional("description")
 
     /**
      * (permission, restrict_object_type) tuples which belong to this role
@@ -122,7 +120,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun memberPermissions(): Optional<List<MemberPermission>> =
-        Optional.ofNullable(memberPermissions.getNullable("member_permissions"))
+        memberPermissions.getOptional("member_permissions")
 
     /**
      * Ids of the roles this role inherits from
@@ -133,8 +131,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun memberRoles(): Optional<List<String>> =
-        Optional.ofNullable(memberRoles.getNullable("member_roles"))
+    fun memberRoles(): Optional<List<String>> = memberRoles.getOptional("member_roles")
 
     /**
      * Unique id for the organization that the role belongs under
@@ -147,7 +144,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun orgId(): Optional<String> = Optional.ofNullable(orgId.getNullable("org_id"))
+    fun orgId(): Optional<String> = orgId.getOptional("org_id")
 
     /**
      * Identifies the user who created the role
@@ -155,7 +152,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun userId(): Optional<String> = Optional.ofNullable(userId.getNullable("user_id"))
+    fun userId(): Optional<String> = userId.getOptional("user_id")
 
     /**
      * Returns the raw JSON value of [id].
@@ -573,7 +570,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun restrictObjectType(): Optional<AclObjectType> =
-            Optional.ofNullable(restrictObjectType.getNullable("restrict_object_type"))
+            restrictObjectType.getOptional("restrict_object_type")
 
         /**
          * Returns the raw JSON value of [permission].

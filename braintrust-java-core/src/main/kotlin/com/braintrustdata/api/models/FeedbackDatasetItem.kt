@@ -54,7 +54,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun comment(): Optional<String> = Optional.ofNullable(comment.getNullable("comment"))
+    fun comment(): Optional<String> = comment.getOptional("comment")
 
     /**
      * A dictionary with additional data about the feedback. If you have a `user_id`, you can log it
@@ -64,7 +64,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * The source of the feedback. Must be one of "external" (default), "app", or "api"
@@ -72,7 +72,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
+    fun source(): Optional<Source> = source.getOptional("source")
 
     /**
      * A list of tags to log
@@ -80,7 +80,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+    fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
     /**
      * Returns the raw JSON value of [id].

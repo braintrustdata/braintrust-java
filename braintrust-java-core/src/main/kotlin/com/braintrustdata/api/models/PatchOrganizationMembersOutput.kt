@@ -56,8 +56,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun sendEmailError(): Optional<String> =
-        Optional.ofNullable(sendEmailError.getNullable("send_email_error"))
+    fun sendEmailError(): Optional<String> = sendEmailError.getOptional("send_email_error")
 
     /**
      * Returns the raw JSON value of [orgId].

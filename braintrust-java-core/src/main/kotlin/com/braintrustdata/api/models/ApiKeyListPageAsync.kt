@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * List out all api_keys. The api_keys are sorted by creation date, with the most recently-created
@@ -88,7 +89,7 @@ private constructor(
             @JsonProperty("objects") objects: JsonField<List<ApiKey>> = JsonMissing.of()
         ) : this(objects, mutableMapOf())
 
-        fun objects(): List<ApiKey> = objects.getNullable("objects") ?: listOf()
+        fun objects(): List<ApiKey> = objects.getOptional("objects").getOrNull() ?: listOf()
 
         @JsonProperty("objects")
         fun _objects(): Optional<JsonField<List<ApiKey>>> = Optional.ofNullable(objects)

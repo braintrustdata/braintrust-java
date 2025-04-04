@@ -126,14 +126,13 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun categories(): Optional<Categories> =
-        Optional.ofNullable(categories.getNullable("categories"))
+    fun categories(): Optional<Categories> = categories.getOptional("categories")
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun config(): Optional<ProjectScoreConfig> = Optional.ofNullable(config.getNullable("config"))
+    fun config(): Optional<ProjectScoreConfig> = config.getOptional("config")
 
     /**
      * Date of project score creation
@@ -141,7 +140,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * Textual description of the project score
@@ -149,8 +148,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun description(): Optional<String> =
-        Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> = description.getOptional("description")
 
     /**
      * An optional LexoRank-based string that sets the sort position for the score in the UI
@@ -158,7 +156,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun position(): Optional<String> = Optional.ofNullable(position.getNullable("position"))
+    fun position(): Optional<String> = position.getOptional("position")
 
     /**
      * Returns the raw JSON value of [id].

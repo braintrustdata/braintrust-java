@@ -451,15 +451,13 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun functionData(): Optional<FunctionData> =
-            Optional.ofNullable(functionData.getNullable("function_data"))
+        fun functionData(): Optional<FunctionData> = functionData.getOptional("function_data")
 
         /**
          * Name of the prompt
@@ -467,7 +465,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * The prompt, model, and its parameters
@@ -475,8 +473,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun promptData(): Optional<PromptData> =
-            Optional.ofNullable(promptData.getNullable("prompt_data"))
+        fun promptData(): Optional<PromptData> = promptData.getOptional("prompt_data")
 
         /**
          * A list of tags for the prompt
@@ -484,7 +481,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+        fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
         /**
          * Returns the raw JSON value of [description].
@@ -1660,8 +1657,7 @@ private constructor(
                      * @throws BraintrustInvalidDataException if the JSON field has an unexpected
                      *   type (e.g. if the server responded with an unexpected value).
                      */
-                    fun preview(): Optional<String> =
-                        Optional.ofNullable(preview.getNullable("preview"))
+                    fun preview(): Optional<String> = preview.getOptional("preview")
 
                     /**
                      * @throws BraintrustInvalidDataException if the JSON field has an unexpected

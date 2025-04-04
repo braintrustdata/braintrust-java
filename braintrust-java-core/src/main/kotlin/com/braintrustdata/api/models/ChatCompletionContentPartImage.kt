@@ -213,7 +213,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun detail(): Optional<Detail> = Optional.ofNullable(detail.getNullable("detail"))
+        fun detail(): Optional<Detail> = detail.getOptional("detail")
 
         /**
          * Returns the raw JSON value of [url].

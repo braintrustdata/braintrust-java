@@ -404,7 +404,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+        fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
          * For nearly all users, this parameter should be unnecessary. But in the rare case that
@@ -414,7 +414,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun orgName(): Optional<String> = Optional.ofNullable(orgName.getNullable("org_name"))
+        fun orgName(): Optional<String> = orgName.getOptional("org_name")
 
         /**
          * Secret value. If omitted in a PUT request, the existing secret value will be left intact,
@@ -423,13 +423,13 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun secret(): Optional<String> = Optional.ofNullable(secret.getNullable("secret"))
+        fun secret(): Optional<String> = secret.getOptional("secret")
 
         /**
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<String> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [name].

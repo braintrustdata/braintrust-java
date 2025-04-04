@@ -92,7 +92,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): Optional<String> = id.getOptional("id")
 
     /**
      * The `_is_merge` field controls how the row is merged with any existing row with the same id
@@ -109,7 +109,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun _isMerge(): Optional<Boolean> = Optional.ofNullable(_isMerge.getNullable("_is_merge"))
+    fun _isMerge(): Optional<Boolean> = _isMerge.getOptional("_is_merge")
 
     /**
      * The `_merge_paths` field allows controlling the depth of the merge, when `_is_merge=true`.
@@ -127,8 +127,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun _mergePaths(): Optional<List<List<String>>> =
-        Optional.ofNullable(_mergePaths.getNullable("_merge_paths"))
+    fun _mergePaths(): Optional<List<List<String>>> = _mergePaths.getOptional("_merge_paths")
 
     /**
      * Pass `_object_delete=true` to mark the dataset event deleted. Deleted events will not show up
@@ -137,8 +136,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun _objectDelete(): Optional<Boolean> =
-        Optional.ofNullable(_objectDelete.getNullable("_object_delete"))
+    fun _objectDelete(): Optional<Boolean> = _objectDelete.getOptional("_object_delete")
 
     /**
      * DEPRECATED: The `_parent_id` field is deprecated and should not be used. Support for
@@ -161,7 +159,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun _parentId(): Optional<String> = Optional.ofNullable(_parentId.getNullable("_parent_id"))
+    fun _parentId(): Optional<String> = _parentId.getOptional("_parent_id")
 
     /**
      * The timestamp the dataset event was created
@@ -169,7 +167,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun created(): Optional<OffsetDateTime> = Optional.ofNullable(created.getNullable("created"))
+    fun created(): Optional<OffsetDateTime> = created.getOptional("created")
 
     /**
      * The output of your application, including post-processing (an arbitrary, JSON serializable
@@ -190,7 +188,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * Indicates the event was copied from another object.
@@ -198,7 +196,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun origin(): Optional<ObjectReference> = Optional.ofNullable(origin.getNullable("origin"))
+    fun origin(): Optional<ObjectReference> = origin.getOptional("origin")
 
     /**
      * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
@@ -219,7 +217,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun rootSpanId(): Optional<String> = Optional.ofNullable(rootSpanId.getNullable("root_span_id"))
+    fun rootSpanId(): Optional<String> = rootSpanId.getOptional("root_span_id")
 
     /**
      * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
@@ -240,7 +238,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun spanId(): Optional<String> = Optional.ofNullable(spanId.getNullable("span_id"))
+    fun spanId(): Optional<String> = spanId.getOptional("span_id")
 
     /**
      * Use `span_id`, `root_span_id`, and `span_parents` instead of `_parent_id`, which is now
@@ -261,8 +259,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun spanParents(): Optional<List<String>> =
-        Optional.ofNullable(spanParents.getNullable("span_parents"))
+    fun spanParents(): Optional<List<String>> = spanParents.getOptional("span_parents")
 
     /**
      * A list of tags to log
@@ -270,7 +267,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tags(): Optional<List<String>> = Optional.ofNullable(tags.getNullable("tags"))
+    fun tags(): Optional<List<String>> = tags.getOptional("tags")
 
     /**
      * Returns the raw JSON value of [id].
@@ -884,7 +881,7 @@ private constructor(
          * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun model(): Optional<String> = Optional.ofNullable(model.getNullable("model"))
+        fun model(): Optional<String> = model.getOptional("model")
 
         /**
          * Returns the raw JSON value of [model].

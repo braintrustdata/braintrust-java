@@ -72,7 +72,7 @@ private constructor(
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun preview(): Optional<String> = Optional.ofNullable(preview.getNullable("preview"))
+    fun preview(): Optional<String> = preview.getOptional("preview")
 
     /**
      * Returns the raw JSON value of [bundleId].
