@@ -445,6 +445,19 @@ JsonValue complexValue = JsonValue.from(Map.of(
 ));
 ```
 
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](braintrust-java-core/src/main/kotlin/com/braintrustdata/api/core/Values.kt):
+
+```java
+import com.braintrustdata.api.core.JsonMissing;
+import com.braintrustdata.api.models.ProjectCreateParams;
+
+ProjectCreateParams params = ProjectCreateParams.builder()
+    .name(JsonMissing.of())
+    .build();
+```
+
 ### Response properties
 
 To access undocumented response properties, call the `_additionalProperties()` method:
