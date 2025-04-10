@@ -198,11 +198,11 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
                                 }
                             }
                             .let {
-                                ProjectScoreListPageAsync.of(
-                                    ProjectScoreServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                ProjectScoreListPageAsync.builder()
+                                    .service(ProjectScoreServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

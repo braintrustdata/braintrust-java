@@ -198,11 +198,11 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
                                 }
                             }
                             .let {
-                                ProjectTagListPageAsync.of(
-                                    ProjectTagServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                ProjectTagListPageAsync.builder()
+                                    .service(ProjectTagServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

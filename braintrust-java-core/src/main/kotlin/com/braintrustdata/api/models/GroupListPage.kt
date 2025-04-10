@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.GroupService
 import java.util.Objects
 import java.util.Optional
@@ -9,19 +10,13 @@ import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all groups. The groups are sorted by creation date, with the most recently-created
- * groups coming first
- */
+/** @see [GroupService.list] */
 class GroupListPage
 private constructor(
-    private val groupsService: GroupService,
+    private val service: GroupService,
     private val params: GroupListParams,
     private val response: GroupListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): GroupListPageResponse = response
 
     /**
      * Delegates to [GroupListPageResponse], but gracefully handles missing data.
@@ -30,19 +25,6 @@ private constructor(
      */
     fun objects(): List<Group> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is GroupListPage && groupsService == other.groupsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "GroupListPage{groupsService=$groupsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -60,20 +42,75 @@ private constructor(
         )
     }
 
-    fun getNextPage(): Optional<GroupListPage> {
-        return getNextPageParams().map { groupsService.list(it) }
-    }
+    fun getNextPage(): Optional<GroupListPage> = getNextPageParams().map { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): GroupListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): GroupListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            groupsService: GroupService,
-            params: GroupListParams,
-            response: GroupListPageResponse,
-        ) = GroupListPage(groupsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [GroupListPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [GroupListPage]. */
+    class Builder internal constructor() {
+
+        private var service: GroupService? = null
+        private var params: GroupListParams? = null
+        private var response: GroupListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(groupListPage: GroupListPage) = apply {
+            service = groupListPage.service
+            params = groupListPage.params
+            response = groupListPage.response
+        }
+
+        fun service(service: GroupService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: GroupListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: GroupListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [GroupListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): GroupListPage =
+            GroupListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: GroupListPage) : Iterable<Group> {
@@ -94,4 +131,16 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is GroupListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() = "GroupListPage{service=$service, params=$params, response=$response}"
 }

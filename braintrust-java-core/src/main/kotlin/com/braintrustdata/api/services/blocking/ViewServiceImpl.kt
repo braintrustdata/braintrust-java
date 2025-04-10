@@ -166,7 +166,13 @@ class ViewServiceImpl internal constructor(private val clientOptions: ClientOpti
                             it.validate()
                         }
                     }
-                    .let { ViewListPage.of(ViewServiceImpl(clientOptions), params, it) }
+                    .let {
+                        ViewListPage.builder()
+                            .service(ViewServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

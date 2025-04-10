@@ -185,7 +185,13 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
                             it.validate()
                         }
                     }
-                    .let { ProjectTagListPage.of(ProjectTagServiceImpl(clientOptions), params, it) }
+                    .let {
+                        ProjectTagListPage.builder()
+                            .service(ProjectTagServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

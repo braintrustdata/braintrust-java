@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.FunctionService
 import java.util.Objects
 import java.util.Optional
@@ -9,19 +10,13 @@ import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all functions. The functions are sorted by creation date, with the most recently-created
- * functions coming first
- */
+/** @see [FunctionService.list] */
 class FunctionListPage
 private constructor(
-    private val functionsService: FunctionService,
+    private val service: FunctionService,
     private val params: FunctionListParams,
     private val response: FunctionListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): FunctionListPageResponse = response
 
     /**
      * Delegates to [FunctionListPageResponse], but gracefully handles missing data.
@@ -30,19 +25,6 @@ private constructor(
      */
     fun objects(): List<Function> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is FunctionListPage && functionsService == other.functionsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "FunctionListPage{functionsService=$functionsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -60,20 +42,75 @@ private constructor(
         )
     }
 
-    fun getNextPage(): Optional<FunctionListPage> {
-        return getNextPageParams().map { functionsService.list(it) }
-    }
+    fun getNextPage(): Optional<FunctionListPage> = getNextPageParams().map { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): FunctionListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): FunctionListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            functionsService: FunctionService,
-            params: FunctionListParams,
-            response: FunctionListPageResponse,
-        ) = FunctionListPage(functionsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [FunctionListPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [FunctionListPage]. */
+    class Builder internal constructor() {
+
+        private var service: FunctionService? = null
+        private var params: FunctionListParams? = null
+        private var response: FunctionListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(functionListPage: FunctionListPage) = apply {
+            service = functionListPage.service
+            params = functionListPage.params
+            response = functionListPage.response
+        }
+
+        fun service(service: FunctionService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: FunctionListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: FunctionListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [FunctionListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): FunctionListPage =
+            FunctionListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: FunctionListPage) : Iterable<Function> {
@@ -94,4 +131,17 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is FunctionListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "FunctionListPage{service=$service, params=$params, response=$response}"
 }

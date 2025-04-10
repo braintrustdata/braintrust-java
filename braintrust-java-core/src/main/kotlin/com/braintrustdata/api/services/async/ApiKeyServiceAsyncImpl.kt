@@ -153,11 +153,11 @@ class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: Cli
                                 }
                             }
                             .let {
-                                ApiKeyListPageAsync.of(
-                                    ApiKeyServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                ApiKeyListPageAsync.builder()
+                                    .service(ApiKeyServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

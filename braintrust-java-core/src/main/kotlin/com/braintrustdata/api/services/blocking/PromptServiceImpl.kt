@@ -167,7 +167,13 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                             it.validate()
                         }
                     }
-                    .let { PromptListPage.of(PromptServiceImpl(clientOptions), params, it) }
+                    .let {
+                        PromptListPage.builder()
+                            .service(PromptServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

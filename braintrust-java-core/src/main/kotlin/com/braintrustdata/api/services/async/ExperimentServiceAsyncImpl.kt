@@ -234,11 +234,11 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
                                 }
                             }
                             .let {
-                                ExperimentListPageAsync.of(
-                                    ExperimentServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                ExperimentListPageAsync.builder()
+                                    .service(ExperimentServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

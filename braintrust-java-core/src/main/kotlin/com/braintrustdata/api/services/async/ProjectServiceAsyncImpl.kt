@@ -202,11 +202,11 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                                 }
                             }
                             .let {
-                                ProjectListPageAsync.of(
-                                    ProjectServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                ProjectListPageAsync.builder()
+                                    .service(ProjectServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

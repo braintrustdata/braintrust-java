@@ -185,7 +185,13 @@ class SpanIframeServiceImpl internal constructor(private val clientOptions: Clie
                             it.validate()
                         }
                     }
-                    .let { SpanIframeListPage.of(SpanIframeServiceImpl(clientOptions), params, it) }
+                    .let {
+                        SpanIframeListPage.builder()
+                            .service(SpanIframeServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

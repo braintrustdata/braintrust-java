@@ -181,7 +181,13 @@ class AiSecretServiceImpl internal constructor(private val clientOptions: Client
                             it.validate()
                         }
                     }
-                    .let { AiSecretListPage.of(AiSecretServiceImpl(clientOptions), params, it) }
+                    .let {
+                        AiSecretListPage.builder()
+                            .service(AiSecretServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

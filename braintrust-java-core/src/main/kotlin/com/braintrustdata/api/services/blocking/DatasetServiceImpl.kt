@@ -206,7 +206,13 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
                             it.validate()
                         }
                     }
-                    .let { DatasetListPage.of(DatasetServiceImpl(clientOptions), params, it) }
+                    .let {
+                        DatasetListPage.builder()
+                            .service(DatasetServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

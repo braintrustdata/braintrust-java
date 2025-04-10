@@ -166,7 +166,13 @@ class RoleServiceImpl internal constructor(private val clientOptions: ClientOpti
                             it.validate()
                         }
                     }
-                    .let { RoleListPage.of(RoleServiceImpl(clientOptions), params, it) }
+                    .let {
+                        RoleListPage.builder()
+                            .service(RoleServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

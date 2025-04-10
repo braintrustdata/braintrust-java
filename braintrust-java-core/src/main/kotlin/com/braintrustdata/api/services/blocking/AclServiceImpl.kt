@@ -146,7 +146,13 @@ class AclServiceImpl internal constructor(private val clientOptions: ClientOptio
                             it.validate()
                         }
                     }
-                    .let { AclListPage.of(AclServiceImpl(clientOptions), params, it) }
+                    .let {
+                        AclListPage.builder()
+                            .service(AclServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 
