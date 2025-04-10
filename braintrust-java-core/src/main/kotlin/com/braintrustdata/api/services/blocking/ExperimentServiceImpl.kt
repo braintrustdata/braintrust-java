@@ -23,6 +23,7 @@ import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
 import com.braintrustdata.api.models.ExperimentInsertParams
 import com.braintrustdata.api.models.ExperimentListPage
+import com.braintrustdata.api.models.ExperimentListPageResponse
 import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
@@ -196,8 +197,8 @@ class ExperimentServiceImpl internal constructor(private val clientOptions: Clie
             }
         }
 
-        private val listHandler: Handler<ExperimentListPage.Response> =
-            jsonHandler<ExperimentListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ExperimentListPageResponse> =
+            jsonHandler<ExperimentListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

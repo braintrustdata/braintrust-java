@@ -20,6 +20,7 @@ import com.braintrustdata.api.models.AiSecretCreateParams
 import com.braintrustdata.api.models.AiSecretDeleteParams
 import com.braintrustdata.api.models.AiSecretFindAndDeleteParams
 import com.braintrustdata.api.models.AiSecretListPageAsync
+import com.braintrustdata.api.models.AiSecretListPageResponse
 import com.braintrustdata.api.models.AiSecretListParams
 import com.braintrustdata.api.models.AiSecretReplaceParams
 import com.braintrustdata.api.models.AiSecretRetrieveParams
@@ -178,8 +179,8 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
                 }
         }
 
-        private val listHandler: Handler<AiSecretListPageAsync.Response> =
-            jsonHandler<AiSecretListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<AiSecretListPageResponse> =
+            jsonHandler<AiSecretListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

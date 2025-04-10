@@ -18,6 +18,7 @@ import com.braintrustdata.api.core.prepareAsync
 import com.braintrustdata.api.models.Organization
 import com.braintrustdata.api.models.OrganizationDeleteParams
 import com.braintrustdata.api.models.OrganizationListPageAsync
+import com.braintrustdata.api.models.OrganizationListPageResponse
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
@@ -136,8 +137,8 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
                 }
         }
 
-        private val listHandler: Handler<OrganizationListPageAsync.Response> =
-            jsonHandler<OrganizationListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<OrganizationListPageResponse> =
+            jsonHandler<OrganizationListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

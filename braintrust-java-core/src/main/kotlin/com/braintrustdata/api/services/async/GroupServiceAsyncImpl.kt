@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.Group
 import com.braintrustdata.api.models.GroupCreateParams
 import com.braintrustdata.api.models.GroupDeleteParams
 import com.braintrustdata.api.models.GroupListPageAsync
+import com.braintrustdata.api.models.GroupListPageResponse
 import com.braintrustdata.api.models.GroupListParams
 import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
@@ -170,8 +171,8 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val listHandler: Handler<GroupListPageAsync.Response> =
-            jsonHandler<GroupListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<GroupListPageResponse> =
+            jsonHandler<GroupListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.Role
 import com.braintrustdata.api.models.RoleCreateParams
 import com.braintrustdata.api.models.RoleDeleteParams
 import com.braintrustdata.api.models.RoleListPage
+import com.braintrustdata.api.models.RoleListPageResponse
 import com.braintrustdata.api.models.RoleListParams
 import com.braintrustdata.api.models.RoleReplaceParams
 import com.braintrustdata.api.models.RoleRetrieveParams
@@ -141,8 +142,8 @@ class RoleServiceImpl internal constructor(private val clientOptions: ClientOpti
             }
         }
 
-        private val listHandler: Handler<RoleListPage.Response> =
-            jsonHandler<RoleListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<RoleListPageResponse> =
+            jsonHandler<RoleListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

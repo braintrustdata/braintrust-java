@@ -23,6 +23,7 @@ import com.braintrustdata.api.models.DatasetFetchParams
 import com.braintrustdata.api.models.DatasetFetchPostParams
 import com.braintrustdata.api.models.DatasetInsertParams
 import com.braintrustdata.api.models.DatasetListPage
+import com.braintrustdata.api.models.DatasetListPageResponse
 import com.braintrustdata.api.models.DatasetListParams
 import com.braintrustdata.api.models.DatasetRetrieveParams
 import com.braintrustdata.api.models.DatasetSummarizeParams
@@ -181,8 +182,8 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
             }
         }
 
-        private val listHandler: Handler<DatasetListPage.Response> =
-            jsonHandler<DatasetListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<DatasetListPageResponse> =
+            jsonHandler<DatasetListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

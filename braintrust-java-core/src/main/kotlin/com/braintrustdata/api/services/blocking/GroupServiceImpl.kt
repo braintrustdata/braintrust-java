@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.Group
 import com.braintrustdata.api.models.GroupCreateParams
 import com.braintrustdata.api.models.GroupDeleteParams
 import com.braintrustdata.api.models.GroupListPage
+import com.braintrustdata.api.models.GroupListPageResponse
 import com.braintrustdata.api.models.GroupListParams
 import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
@@ -142,8 +143,8 @@ class GroupServiceImpl internal constructor(private val clientOptions: ClientOpt
             }
         }
 
-        private val listHandler: Handler<GroupListPage.Response> =
-            jsonHandler<GroupListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<GroupListPageResponse> =
+            jsonHandler<GroupListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
