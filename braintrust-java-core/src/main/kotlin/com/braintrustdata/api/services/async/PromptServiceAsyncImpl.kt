@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.Prompt
 import com.braintrustdata.api.models.PromptCreateParams
 import com.braintrustdata.api.models.PromptDeleteParams
 import com.braintrustdata.api.models.PromptListPageAsync
+import com.braintrustdata.api.models.PromptListPageResponse
 import com.braintrustdata.api.models.PromptListParams
 import com.braintrustdata.api.models.PromptReplaceParams
 import com.braintrustdata.api.models.PromptRetrieveParams
@@ -170,8 +171,8 @@ class PromptServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
-        private val listHandler: Handler<PromptListPageAsync.Response> =
-            jsonHandler<PromptListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<PromptListPageResponse> =
+            jsonHandler<PromptListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

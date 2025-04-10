@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.ProjectScore
 import com.braintrustdata.api.models.ProjectScoreCreateParams
 import com.braintrustdata.api.models.ProjectScoreDeleteParams
 import com.braintrustdata.api.models.ProjectScoreListPageAsync
+import com.braintrustdata.api.models.ProjectScoreListPageResponse
 import com.braintrustdata.api.models.ProjectScoreListParams
 import com.braintrustdata.api.models.ProjectScoreReplaceParams
 import com.braintrustdata.api.models.ProjectScoreRetrieveParams
@@ -170,8 +171,8 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
                 }
         }
 
-        private val listHandler: Handler<ProjectScoreListPageAsync.Response> =
-            jsonHandler<ProjectScoreListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ProjectScoreListPageResponse> =
+            jsonHandler<ProjectScoreListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

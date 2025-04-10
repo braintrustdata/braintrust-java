@@ -2,17 +2,7 @@
 
 package com.braintrustdata.api.models
 
-import com.braintrustdata.api.core.ExcludeMissing
-import com.braintrustdata.api.core.JsonField
-import com.braintrustdata.api.core.JsonMissing
-import com.braintrustdata.api.core.JsonValue
-import com.braintrustdata.api.errors.BraintrustInvalidDataException
 import com.braintrustdata.api.services.async.GroupServiceAsync
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -28,12 +18,19 @@ class GroupListPageAsync
 private constructor(
     private val groupsService: GroupServiceAsync,
     private val params: GroupListParams,
-    private val response: Response,
+    private val response: GroupListPageResponse,
 ) {
 
-    fun response(): Response = response
+    /** Returns the response that this page was parsed from. */
+    fun response(): GroupListPageResponse = response
 
-    fun objects(): List<Group> = response().objects()
+    /**
+     * Delegates to [GroupListPageResponse], but gracefully handles missing data.
+     *
+     * @see [GroupListPageResponse.objects]
+     */
+    fun objects(): List<Group> =
+        response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -48,20 +45,20 @@ private constructor(
     override fun toString() =
         "GroupListPageAsync{groupsService=$groupsService, params=$params, response=$response}"
 
-    fun hasNextPage(): Boolean {
-        return !objects().isEmpty()
-    }
+    fun hasNextPage(): Boolean = objects().isNotEmpty()
 
     fun getNextPageParams(): Optional<GroupListParams> {
         if (!hasNextPage()) {
             return Optional.empty()
         }
 
-        return if (params.endingBefore().isPresent) {
-            Optional.of(params.toBuilder().endingBefore(objects().first().id()).build())
-        } else {
-            Optional.of(params.toBuilder().startingAfter(objects().last().id()).build())
-        }
+        return Optional.of(
+            if (params.endingBefore().isPresent) {
+                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
+            } else {
+                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
+            }
+        )
     }
 
     fun getNextPage(): CompletableFuture<Optional<GroupListPageAsync>> {
@@ -75,101 +72,11 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(groupsService: GroupServiceAsync, params: GroupListParams, response: Response) =
-            GroupListPageAsync(groupsService, params, response)
-    }
-
-    class Response(
-        private val objects: JsonField<List<Group>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("objects") objects: JsonField<List<Group>> = JsonMissing.of()
-        ) : this(objects, mutableMapOf())
-
-        fun objects(): List<Group> = objects.getOptional("objects").getOrNull() ?: listOf()
-
-        @JsonProperty("objects")
-        fun _objects(): Optional<JsonField<List<Group>>> = Optional.ofNullable(objects)
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            objects().map { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: BraintrustInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(objects, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{objects=$objects, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [GroupListPageAsync]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var objects: JsonField<List<Group>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.objects = page.objects
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun objects(objects: List<Group>) = objects(JsonField.of(objects))
-
-            fun objects(objects: JsonField<List<Group>>) = apply { this.objects = objects }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(objects, additionalProperties.toMutableMap())
-        }
+        fun of(
+            groupsService: GroupServiceAsync,
+            params: GroupListParams,
+            response: GroupListPageResponse,
+        ) = GroupListPageAsync(groupsService, params, response)
     }
 
     class AutoPager(private val firstPage: GroupListPageAsync) {

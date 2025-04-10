@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.ApiKey
 import com.braintrustdata.api.models.ApiKeyCreateParams
 import com.braintrustdata.api.models.ApiKeyDeleteParams
 import com.braintrustdata.api.models.ApiKeyListPageAsync
+import com.braintrustdata.api.models.ApiKeyListPageResponse
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
@@ -125,8 +126,8 @@ class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
-        private val listHandler: Handler<ApiKeyListPageAsync.Response> =
-            jsonHandler<ApiKeyListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ApiKeyListPageResponse> =
+            jsonHandler<ApiKeyListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

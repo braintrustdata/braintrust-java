@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.ProjectTag
 import com.braintrustdata.api.models.ProjectTagCreateParams
 import com.braintrustdata.api.models.ProjectTagDeleteParams
 import com.braintrustdata.api.models.ProjectTagListPage
+import com.braintrustdata.api.models.ProjectTagListPageResponse
 import com.braintrustdata.api.models.ProjectTagListParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
@@ -160,8 +161,8 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
             }
         }
 
-        private val listHandler: Handler<ProjectTagListPage.Response> =
-            jsonHandler<ProjectTagListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ProjectTagListPageResponse> =
+            jsonHandler<ProjectTagListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

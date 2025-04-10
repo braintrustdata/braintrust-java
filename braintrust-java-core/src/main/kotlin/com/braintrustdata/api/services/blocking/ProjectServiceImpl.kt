@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.Project
 import com.braintrustdata.api.models.ProjectCreateParams
 import com.braintrustdata.api.models.ProjectDeleteParams
 import com.braintrustdata.api.models.ProjectListPage
+import com.braintrustdata.api.models.ProjectListPageResponse
 import com.braintrustdata.api.models.ProjectListParams
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
@@ -149,8 +150,8 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
             }
         }
 
-        private val listHandler: Handler<ProjectListPage.Response> =
-            jsonHandler<ProjectListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ProjectListPageResponse> =
+            jsonHandler<ProjectListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

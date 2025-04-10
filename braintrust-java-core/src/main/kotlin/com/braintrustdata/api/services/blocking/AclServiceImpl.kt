@@ -22,6 +22,7 @@ import com.braintrustdata.api.models.AclCreateParams
 import com.braintrustdata.api.models.AclDeleteParams
 import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListPage
+import com.braintrustdata.api.models.AclListPageResponse
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
 
@@ -121,8 +122,8 @@ class AclServiceImpl internal constructor(private val clientOptions: ClientOptio
             }
         }
 
-        private val listHandler: Handler<AclListPage.Response> =
-            jsonHandler<AclListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<AclListPageResponse> =
+            jsonHandler<AclListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
