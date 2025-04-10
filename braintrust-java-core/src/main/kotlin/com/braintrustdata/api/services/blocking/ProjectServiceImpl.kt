@@ -174,7 +174,13 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
                             it.validate()
                         }
                     }
-                    .let { ProjectListPage.of(ProjectServiceImpl(clientOptions), params, it) }
+                    .let {
+                        ProjectListPage.builder()
+                            .service(ProjectServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

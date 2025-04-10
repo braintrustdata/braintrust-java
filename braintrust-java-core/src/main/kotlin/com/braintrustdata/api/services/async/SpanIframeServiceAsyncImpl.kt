@@ -198,11 +198,11 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
                                 }
                             }
                             .let {
-                                SpanIframeListPageAsync.of(
-                                    SpanIframeServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                SpanIframeListPageAsync.builder()
+                                    .service(SpanIframeServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

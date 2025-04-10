@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.ProjectScoreServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -10,19 +11,13 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all project_scores. The project_scores are sorted by creation date, with the most
- * recently-created project_scores coming first
- */
+/** @see [ProjectScoreServiceAsync.list] */
 class ProjectScoreListPageAsync
 private constructor(
-    private val projectScoresService: ProjectScoreServiceAsync,
+    private val service: ProjectScoreServiceAsync,
     private val params: ProjectScoreListParams,
     private val response: ProjectScoreListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): ProjectScoreListPageResponse = response
 
     /**
      * Delegates to [ProjectScoreListPageResponse], but gracefully handles missing data.
@@ -31,19 +26,6 @@ private constructor(
      */
     fun objects(): List<ProjectScore> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectScoreListPageAsync && projectScoresService == other.projectScoresService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectScoresService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "ProjectScoreListPageAsync{projectScoresService=$projectScoresService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -61,22 +43,78 @@ private constructor(
         )
     }
 
-    fun getNextPage(): CompletableFuture<Optional<ProjectScoreListPageAsync>> {
-        return getNextPageParams()
-            .map { projectScoresService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<ProjectScoreListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): ProjectScoreListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): ProjectScoreListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            projectScoresService: ProjectScoreServiceAsync,
-            params: ProjectScoreListParams,
-            response: ProjectScoreListPageResponse,
-        ) = ProjectScoreListPageAsync(projectScoresService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectScoreListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [ProjectScoreListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: ProjectScoreServiceAsync? = null
+        private var params: ProjectScoreListParams? = null
+        private var response: ProjectScoreListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(projectScoreListPageAsync: ProjectScoreListPageAsync) = apply {
+            service = projectScoreListPageAsync.service
+            params = projectScoreListPageAsync.params
+            response = projectScoreListPageAsync.response
+        }
+
+        fun service(service: ProjectScoreServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: ProjectScoreListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: ProjectScoreListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [ProjectScoreListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): ProjectScoreListPageAsync =
+            ProjectScoreListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: ProjectScoreListPageAsync) {
@@ -104,4 +142,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectScoreListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "ProjectScoreListPageAsync{service=$service, params=$params, response=$response}"
 }

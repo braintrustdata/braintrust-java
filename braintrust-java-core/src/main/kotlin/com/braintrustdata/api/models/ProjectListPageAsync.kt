@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.ProjectServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -10,19 +11,13 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all projects. The projects are sorted by creation date, with the most recently-created
- * projects coming first
- */
+/** @see [ProjectServiceAsync.list] */
 class ProjectListPageAsync
 private constructor(
-    private val projectsService: ProjectServiceAsync,
+    private val service: ProjectServiceAsync,
     private val params: ProjectListParams,
     private val response: ProjectListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): ProjectListPageResponse = response
 
     /**
      * Delegates to [ProjectListPageResponse], but gracefully handles missing data.
@@ -31,19 +26,6 @@ private constructor(
      */
     fun objects(): List<Project> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectListPageAsync && projectsService == other.projectsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "ProjectListPageAsync{projectsService=$projectsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -61,22 +43,78 @@ private constructor(
         )
     }
 
-    fun getNextPage(): CompletableFuture<Optional<ProjectListPageAsync>> {
-        return getNextPageParams()
-            .map { projectsService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<ProjectListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): ProjectListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): ProjectListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            projectsService: ProjectServiceAsync,
-            params: ProjectListParams,
-            response: ProjectListPageResponse,
-        ) = ProjectListPageAsync(projectsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [ProjectListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: ProjectServiceAsync? = null
+        private var params: ProjectListParams? = null
+        private var response: ProjectListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(projectListPageAsync: ProjectListPageAsync) = apply {
+            service = projectListPageAsync.service
+            params = projectListPageAsync.params
+            response = projectListPageAsync.response
+        }
+
+        fun service(service: ProjectServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: ProjectListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: ProjectListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [ProjectListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): ProjectListPageAsync =
+            ProjectListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: ProjectListPageAsync) {
@@ -104,4 +142,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "ProjectListPageAsync{service=$service, params=$params, response=$response}"
 }

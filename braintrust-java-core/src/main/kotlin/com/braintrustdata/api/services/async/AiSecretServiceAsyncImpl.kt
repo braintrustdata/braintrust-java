@@ -206,11 +206,11 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
                                 }
                             }
                             .let {
-                                AiSecretListPageAsync.of(
-                                    AiSecretServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                AiSecretListPageAsync.builder()
+                                    .service(AiSecretServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

@@ -169,7 +169,11 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
                                 }
                             }
                             .let {
-                                AclListPageAsync.of(AclServiceAsyncImpl(clientOptions), params, it)
+                                AclListPageAsync.builder()
+                                    .service(AclServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

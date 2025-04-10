@@ -198,11 +198,11 @@ class RoleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                                 }
                             }
                             .let {
-                                RoleListPageAsync.of(
-                                    RoleServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                RoleListPageAsync.builder()
+                                    .service(RoleServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

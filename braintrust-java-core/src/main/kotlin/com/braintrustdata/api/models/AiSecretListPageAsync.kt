@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.AiSecretServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -10,19 +11,13 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all ai_secrets. The ai_secrets are sorted by creation date, with the most
- * recently-created ai_secrets coming first
- */
+/** @see [AiSecretServiceAsync.list] */
 class AiSecretListPageAsync
 private constructor(
-    private val aiSecretsService: AiSecretServiceAsync,
+    private val service: AiSecretServiceAsync,
     private val params: AiSecretListParams,
     private val response: AiSecretListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): AiSecretListPageResponse = response
 
     /**
      * Delegates to [AiSecretListPageResponse], but gracefully handles missing data.
@@ -31,19 +26,6 @@ private constructor(
      */
     fun objects(): List<AISecret> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AiSecretListPageAsync && aiSecretsService == other.aiSecretsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "AiSecretListPageAsync{aiSecretsService=$aiSecretsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -61,22 +43,78 @@ private constructor(
         )
     }
 
-    fun getNextPage(): CompletableFuture<Optional<AiSecretListPageAsync>> {
-        return getNextPageParams()
-            .map { aiSecretsService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<AiSecretListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): AiSecretListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): AiSecretListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            aiSecretsService: AiSecretServiceAsync,
-            params: AiSecretListParams,
-            response: AiSecretListPageResponse,
-        ) = AiSecretListPageAsync(aiSecretsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [AiSecretListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [AiSecretListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: AiSecretServiceAsync? = null
+        private var params: AiSecretListParams? = null
+        private var response: AiSecretListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(aiSecretListPageAsync: AiSecretListPageAsync) = apply {
+            service = aiSecretListPageAsync.service
+            params = aiSecretListPageAsync.params
+            response = aiSecretListPageAsync.response
+        }
+
+        fun service(service: AiSecretServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: AiSecretListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: AiSecretListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [AiSecretListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): AiSecretListPageAsync =
+            AiSecretListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: AiSecretListPageAsync) {
@@ -104,4 +142,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AiSecretListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "AiSecretListPageAsync{service=$service, params=$params, response=$response}"
 }

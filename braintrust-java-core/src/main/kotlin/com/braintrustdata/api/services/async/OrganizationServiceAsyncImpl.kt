@@ -164,11 +164,11 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
                                 }
                             }
                             .let {
-                                OrganizationListPageAsync.of(
-                                    OrganizationServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                OrganizationListPageAsync.builder()
+                                    .service(OrganizationServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

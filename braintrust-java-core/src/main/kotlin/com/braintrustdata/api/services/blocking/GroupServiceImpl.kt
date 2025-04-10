@@ -167,7 +167,13 @@ class GroupServiceImpl internal constructor(private val clientOptions: ClientOpt
                             it.validate()
                         }
                     }
-                    .let { GroupListPage.of(GroupServiceImpl(clientOptions), params, it) }
+                    .let {
+                        GroupListPage.builder()
+                            .service(GroupServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

@@ -221,7 +221,13 @@ class ExperimentServiceImpl internal constructor(private val clientOptions: Clie
                             it.validate()
                         }
                     }
-                    .let { ExperimentListPage.of(ExperimentServiceImpl(clientOptions), params, it) }
+                    .let {
+                        ExperimentListPage.builder()
+                            .service(ExperimentServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 
