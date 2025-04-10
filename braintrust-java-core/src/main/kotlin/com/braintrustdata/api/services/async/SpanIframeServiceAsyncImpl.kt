@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.SpanIFrame
 import com.braintrustdata.api.models.SpanIframeCreateParams
 import com.braintrustdata.api.models.SpanIframeDeleteParams
 import com.braintrustdata.api.models.SpanIframeListPageAsync
+import com.braintrustdata.api.models.SpanIframeListPageResponse
 import com.braintrustdata.api.models.SpanIframeListParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
@@ -170,8 +171,8 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
                 }
         }
 
-        private val listHandler: Handler<SpanIframeListPageAsync.Response> =
-            jsonHandler<SpanIframeListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<SpanIframeListPageResponse> =
+            jsonHandler<SpanIframeListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

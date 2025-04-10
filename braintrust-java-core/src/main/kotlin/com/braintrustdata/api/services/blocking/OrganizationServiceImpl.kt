@@ -18,6 +18,7 @@ import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.models.Organization
 import com.braintrustdata.api.models.OrganizationDeleteParams
 import com.braintrustdata.api.models.OrganizationListPage
+import com.braintrustdata.api.models.OrganizationListPageResponse
 import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
@@ -129,8 +130,8 @@ class OrganizationServiceImpl internal constructor(private val clientOptions: Cl
             }
         }
 
-        private val listHandler: Handler<OrganizationListPage.Response> =
-            jsonHandler<OrganizationListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<OrganizationListPageResponse> =
+            jsonHandler<OrganizationListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

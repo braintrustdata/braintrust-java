@@ -1,0 +1,109 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.braintrustdata.api.models
+
+import com.braintrustdata.api.core.jsonMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import java.time.OffsetDateTime
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class ProjectListPageResponseTest {
+
+    @Test
+    fun create() {
+        val projectListPageResponse =
+            ProjectListPageResponse.builder()
+                .addObject(
+                    Project.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .name("name")
+                        .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .settings(
+                            ProjectSettings.builder()
+                                .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .comparisonKey("comparison_key")
+                                .addSpanFieldOrder(
+                                    ProjectSettings.SpanFieldOrder.builder()
+                                        .columnId("column_id")
+                                        .objectType("object_type")
+                                        .position("position")
+                                        .layout(ProjectSettings.SpanFieldOrder.Layout.FULL)
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
+                .build()
+
+        assertThat(projectListPageResponse.objects())
+            .containsExactly(
+                Project.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .name("name")
+                    .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .settings(
+                        ProjectSettings.builder()
+                            .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .comparisonKey("comparison_key")
+                            .addSpanFieldOrder(
+                                ProjectSettings.SpanFieldOrder.builder()
+                                    .columnId("column_id")
+                                    .objectType("object_type")
+                                    .position("position")
+                                    .layout(ProjectSettings.SpanFieldOrder.Layout.FULL)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val projectListPageResponse =
+            ProjectListPageResponse.builder()
+                .addObject(
+                    Project.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .name("name")
+                        .orgId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .created(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .deletedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .settings(
+                            ProjectSettings.builder()
+                                .baselineExperimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .comparisonKey("comparison_key")
+                                .addSpanFieldOrder(
+                                    ProjectSettings.SpanFieldOrder.builder()
+                                        .columnId("column_id")
+                                        .objectType("object_type")
+                                        .position("position")
+                                        .layout(ProjectSettings.SpanFieldOrder.Layout.FULL)
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
+                .build()
+
+        val roundtrippedProjectListPageResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(projectListPageResponse),
+                jacksonTypeRef<ProjectListPageResponse>(),
+            )
+
+        assertThat(roundtrippedProjectListPageResponse).isEqualTo(projectListPageResponse)
+    }
+}

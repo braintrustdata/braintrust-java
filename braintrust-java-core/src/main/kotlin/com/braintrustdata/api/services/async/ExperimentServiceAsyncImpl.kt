@@ -23,6 +23,7 @@ import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
 import com.braintrustdata.api.models.ExperimentInsertParams
 import com.braintrustdata.api.models.ExperimentListPageAsync
+import com.braintrustdata.api.models.ExperimentListPageResponse
 import com.braintrustdata.api.models.ExperimentListParams
 import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
@@ -206,8 +207,8 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
                 }
         }
 
-        private val listHandler: Handler<ExperimentListPageAsync.Response> =
-            jsonHandler<ExperimentListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ExperimentListPageResponse> =
+            jsonHandler<ExperimentListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

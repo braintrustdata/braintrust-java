@@ -19,6 +19,7 @@ import com.braintrustdata.api.models.View
 import com.braintrustdata.api.models.ViewCreateParams
 import com.braintrustdata.api.models.ViewDeleteParams
 import com.braintrustdata.api.models.ViewListPage
+import com.braintrustdata.api.models.ViewListPageResponse
 import com.braintrustdata.api.models.ViewListParams
 import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
@@ -141,8 +142,8 @@ class ViewServiceImpl internal constructor(private val clientOptions: ClientOpti
             }
         }
 
-        private val listHandler: Handler<ViewListPage.Response> =
-            jsonHandler<ViewListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<ViewListPageResponse> =
+            jsonHandler<ViewListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

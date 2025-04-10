@@ -21,6 +21,7 @@ import com.braintrustdata.api.models.FunctionDeleteParams
 import com.braintrustdata.api.models.FunctionInvokeParams
 import com.braintrustdata.api.models.FunctionInvokeResponse
 import com.braintrustdata.api.models.FunctionListPage
+import com.braintrustdata.api.models.FunctionListPageResponse
 import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
@@ -158,8 +159,8 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
             }
         }
 
-        private val listHandler: Handler<FunctionListPage.Response> =
-            jsonHandler<FunctionListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<FunctionListPageResponse> =
+            jsonHandler<FunctionListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

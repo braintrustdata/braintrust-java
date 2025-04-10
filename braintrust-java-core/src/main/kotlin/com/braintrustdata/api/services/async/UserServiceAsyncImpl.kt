@@ -16,6 +16,7 @@ import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepareAsync
 import com.braintrustdata.api.models.User
 import com.braintrustdata.api.models.UserListPageAsync
+import com.braintrustdata.api.models.UserListPageResponse
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 import java.util.concurrent.CompletableFuture
@@ -77,8 +78,8 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 }
         }
 
-        private val listHandler: Handler<UserListPageAsync.Response> =
-            jsonHandler<UserListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<UserListPageResponse> =
+            jsonHandler<UserListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
