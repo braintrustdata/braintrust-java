@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.AclServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -10,19 +11,13 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all acls. The acls are sorted by creation date, with the most recently-created acls
- * coming first
- */
+/** @see [AclServiceAsync.list] */
 class AclListPageAsync
 private constructor(
-    private val aclsService: AclServiceAsync,
+    private val service: AclServiceAsync,
     private val params: AclListParams,
     private val response: AclListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): AclListPageResponse = response
 
     /**
      * Delegates to [AclListPageResponse], but gracefully handles missing data.
@@ -30,19 +25,6 @@ private constructor(
      * @see [AclListPageResponse.objects]
      */
     fun objects(): List<Acl> = response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AclListPageAsync && aclsService == other.aclsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aclsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "AclListPageAsync{aclsService=$aclsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -60,19 +42,78 @@ private constructor(
         )
     }
 
-    fun getNextPage(): CompletableFuture<Optional<AclListPageAsync>> {
-        return getNextPageParams()
-            .map { aclsService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<AclListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): AclListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): AclListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(aclsService: AclServiceAsync, params: AclListParams, response: AclListPageResponse) =
-            AclListPageAsync(aclsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [AclListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [AclListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: AclServiceAsync? = null
+        private var params: AclListParams? = null
+        private var response: AclListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(aclListPageAsync: AclListPageAsync) = apply {
+            service = aclListPageAsync.service
+            params = aclListPageAsync.params
+            response = aclListPageAsync.response
+        }
+
+        fun service(service: AclServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: AclListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: AclListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [AclListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): AclListPageAsync =
+            AclListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: AclListPageAsync) {
@@ -100,4 +141,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AclListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "AclListPageAsync{service=$service, params=$params, response=$response}"
 }

@@ -155,7 +155,11 @@ class OrganizationServiceImpl internal constructor(private val clientOptions: Cl
                         }
                     }
                     .let {
-                        OrganizationListPage.of(OrganizationServiceImpl(clientOptions), params, it)
+                        OrganizationListPage.builder()
+                            .service(OrganizationServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

@@ -183,7 +183,13 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
                             it.validate()
                         }
                     }
-                    .let { FunctionListPage.of(FunctionServiceImpl(clientOptions), params, it) }
+                    .let {
+                        FunctionListPage.builder()
+                            .service(FunctionServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

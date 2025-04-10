@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.RoleServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -10,19 +11,13 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all roles. The roles are sorted by creation date, with the most recently-created roles
- * coming first
- */
+/** @see [RoleServiceAsync.list] */
 class RoleListPageAsync
 private constructor(
-    private val rolesService: RoleServiceAsync,
+    private val service: RoleServiceAsync,
     private val params: RoleListParams,
     private val response: RoleListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): RoleListPageResponse = response
 
     /**
      * Delegates to [RoleListPageResponse], but gracefully handles missing data.
@@ -31,19 +26,6 @@ private constructor(
      */
     fun objects(): List<Role> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is RoleListPageAsync && rolesService == other.rolesService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(rolesService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "RoleListPageAsync{rolesService=$rolesService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -61,22 +43,78 @@ private constructor(
         )
     }
 
-    fun getNextPage(): CompletableFuture<Optional<RoleListPageAsync>> {
-        return getNextPageParams()
-            .map { rolesService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<RoleListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): RoleListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): RoleListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            rolesService: RoleServiceAsync,
-            params: RoleListParams,
-            response: RoleListPageResponse,
-        ) = RoleListPageAsync(rolesService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [RoleListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [RoleListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: RoleServiceAsync? = null
+        private var params: RoleListParams? = null
+        private var response: RoleListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(roleListPageAsync: RoleListPageAsync) = apply {
+            service = roleListPageAsync.service
+            params = roleListPageAsync.params
+            response = roleListPageAsync.response
+        }
+
+        fun service(service: RoleServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: RoleListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: RoleListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [RoleListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): RoleListPageAsync =
+            RoleListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: RoleListPageAsync) {
@@ -104,4 +142,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is RoleListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "RoleListPageAsync{service=$service, params=$params, response=$response}"
 }

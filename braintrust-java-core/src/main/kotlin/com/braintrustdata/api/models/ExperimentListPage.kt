@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.ExperimentService
 import java.util.Objects
 import java.util.Optional
@@ -9,19 +10,13 @@ import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all experiments. The experiments are sorted by creation date, with the most
- * recently-created experiments coming first
- */
+/** @see [ExperimentService.list] */
 class ExperimentListPage
 private constructor(
-    private val experimentsService: ExperimentService,
+    private val service: ExperimentService,
     private val params: ExperimentListParams,
     private val response: ExperimentListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): ExperimentListPageResponse = response
 
     /**
      * Delegates to [ExperimentListPageResponse], but gracefully handles missing data.
@@ -30,19 +25,6 @@ private constructor(
      */
     fun objects(): List<Experiment> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ExperimentListPage && experimentsService == other.experimentsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "ExperimentListPage{experimentsService=$experimentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -60,20 +42,75 @@ private constructor(
         )
     }
 
-    fun getNextPage(): Optional<ExperimentListPage> {
-        return getNextPageParams().map { experimentsService.list(it) }
-    }
+    fun getNextPage(): Optional<ExperimentListPage> = getNextPageParams().map { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): ExperimentListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): ExperimentListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            experimentsService: ExperimentService,
-            params: ExperimentListParams,
-            response: ExperimentListPageResponse,
-        ) = ExperimentListPage(experimentsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [ExperimentListPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [ExperimentListPage]. */
+    class Builder internal constructor() {
+
+        private var service: ExperimentService? = null
+        private var params: ExperimentListParams? = null
+        private var response: ExperimentListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(experimentListPage: ExperimentListPage) = apply {
+            service = experimentListPage.service
+            params = experimentListPage.params
+            response = experimentListPage.response
+        }
+
+        fun service(service: ExperimentService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: ExperimentListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: ExperimentListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [ExperimentListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): ExperimentListPage =
+            ExperimentListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: ExperimentListPage) : Iterable<Experiment> {
@@ -94,4 +131,17 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ExperimentListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "ExperimentListPage{service=$service, params=$params, response=$response}"
 }

@@ -134,7 +134,13 @@ class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOp
                             it.validate()
                         }
                     }
-                    .let { ApiKeyListPage.of(ApiKeyServiceImpl(clientOptions), params, it) }
+                    .let {
+                        ApiKeyListPage.builder()
+                            .service(ApiKeyServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 

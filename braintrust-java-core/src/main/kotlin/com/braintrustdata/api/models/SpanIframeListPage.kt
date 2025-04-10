@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.SpanIframeService
 import java.util.Objects
 import java.util.Optional
@@ -9,19 +10,13 @@ import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all span_iframes. The span_iframes are sorted by creation date, with the most
- * recently-created span_iframes coming first
- */
+/** @see [SpanIframeService.list] */
 class SpanIframeListPage
 private constructor(
-    private val spanIframesService: SpanIframeService,
+    private val service: SpanIframeService,
     private val params: SpanIframeListParams,
     private val response: SpanIframeListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): SpanIframeListPageResponse = response
 
     /**
      * Delegates to [SpanIframeListPageResponse], but gracefully handles missing data.
@@ -30,19 +25,6 @@ private constructor(
      */
     fun objects(): List<SpanIFrame> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SpanIframeListPage && spanIframesService == other.spanIframesService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframesService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "SpanIframeListPage{spanIframesService=$spanIframesService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -60,20 +42,75 @@ private constructor(
         )
     }
 
-    fun getNextPage(): Optional<SpanIframeListPage> {
-        return getNextPageParams().map { spanIframesService.list(it) }
-    }
+    fun getNextPage(): Optional<SpanIframeListPage> = getNextPageParams().map { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): SpanIframeListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): SpanIframeListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            spanIframesService: SpanIframeService,
-            params: SpanIframeListParams,
-            response: SpanIframeListPageResponse,
-        ) = SpanIframeListPage(spanIframesService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [SpanIframeListPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [SpanIframeListPage]. */
+    class Builder internal constructor() {
+
+        private var service: SpanIframeService? = null
+        private var params: SpanIframeListParams? = null
+        private var response: SpanIframeListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(spanIframeListPage: SpanIframeListPage) = apply {
+            service = spanIframeListPage.service
+            params = spanIframeListPage.params
+            response = spanIframeListPage.response
+        }
+
+        fun service(service: SpanIframeService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: SpanIframeListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: SpanIframeListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [SpanIframeListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): SpanIframeListPage =
+            SpanIframeListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: SpanIframeListPage) : Iterable<SpanIFrame> {
@@ -94,4 +131,17 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SpanIframeListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "SpanIframeListPage{service=$service, params=$params, response=$response}"
 }

@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.ViewService
 import java.util.Objects
 import java.util.Optional
@@ -9,19 +10,13 @@ import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List out all views. The views are sorted by creation date, with the most recently-created views
- * coming first
- */
+/** @see [ViewService.list] */
 class ViewListPage
 private constructor(
-    private val viewsService: ViewService,
+    private val service: ViewService,
     private val params: ViewListParams,
     private val response: ViewListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): ViewListPageResponse = response
 
     /**
      * Delegates to [ViewListPageResponse], but gracefully handles missing data.
@@ -30,19 +25,6 @@ private constructor(
      */
     fun objects(): List<View> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ViewListPage && viewsService == other.viewsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "ViewListPage{viewsService=$viewsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean = objects().isNotEmpty()
 
@@ -60,17 +42,75 @@ private constructor(
         )
     }
 
-    fun getNextPage(): Optional<ViewListPage> {
-        return getNextPageParams().map { viewsService.list(it) }
-    }
+    fun getNextPage(): Optional<ViewListPage> = getNextPageParams().map { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): ViewListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): ViewListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(viewsService: ViewService, params: ViewListParams, response: ViewListPageResponse) =
-            ViewListPage(viewsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [ViewListPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [ViewListPage]. */
+    class Builder internal constructor() {
+
+        private var service: ViewService? = null
+        private var params: ViewListParams? = null
+        private var response: ViewListPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(viewListPage: ViewListPage) = apply {
+            service = viewListPage.service
+            params = viewListPage.params
+            response = viewListPage.response
+        }
+
+        fun service(service: ViewService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: ViewListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: ViewListPageResponse) = apply { this.response = response }
+
+        /**
+         * Returns an immutable instance of [ViewListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): ViewListPage =
+            ViewListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: ViewListPage) : Iterable<View> {
@@ -91,4 +131,16 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ViewListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() = "ViewListPage{service=$service, params=$params, response=$response}"
 }

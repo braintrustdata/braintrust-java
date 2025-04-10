@@ -91,7 +91,13 @@ class UserServiceImpl internal constructor(private val clientOptions: ClientOpti
                             it.validate()
                         }
                     }
-                    .let { UserListPage.of(UserServiceImpl(clientOptions), params, it) }
+                    .let {
+                        UserListPage.builder()
+                            .service(UserServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
     }

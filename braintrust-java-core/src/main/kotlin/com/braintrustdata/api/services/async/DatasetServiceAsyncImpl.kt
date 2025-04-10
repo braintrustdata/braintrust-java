@@ -234,11 +234,11 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
                                 }
                             }
                             .let {
-                                DatasetListPageAsync.of(
-                                    DatasetServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                DatasetListPageAsync.builder()
+                                    .service(DatasetServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

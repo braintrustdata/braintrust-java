@@ -186,7 +186,11 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
                         }
                     }
                     .let {
-                        ProjectScoreListPage.of(ProjectScoreServiceImpl(clientOptions), params, it)
+                        ProjectScoreListPage.builder()
+                            .service(ProjectScoreServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
