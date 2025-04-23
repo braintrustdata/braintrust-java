@@ -1,5 +1,88 @@
 # Changelog
 
+## 0.9.0 (2025-04-23)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/braintrustdata/braintrust-java/compare/v0.8.0...v0.9.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** refactor exception structure and methods ([#164](https://github.com/braintrustdata/braintrust-java/issues/164))
+* **client:** **Migration:** Previously you would access error JSON on an exception via `exception.error()._additionalProperties()`, which would return `Map<String, JsonValue>`. Now you would access this via `exception.body()`, which returns `JsonValue`. You should no longer assume that the returned error JSON is an object. You can check via `exception.body().asObject()`.
+
+### Features
+
+* **client:** add enum validation method ([7fe60b3](https://github.com/braintrustdata/braintrust-java/commit/7fe60b33c4097370f473c30564fccb8ce55e062a))
+* **client:** expose request body setter and getter ([#178](https://github.com/braintrustdata/braintrust-java/issues/178)) ([a36c0b6](https://github.com/braintrustdata/braintrust-java/commit/a36c0b633511abc41164b82429da85bd0810f732))
+* **client:** make datetime deserialization more lenient ([#177](https://github.com/braintrustdata/braintrust-java/issues/177)) ([a65987d](https://github.com/braintrustdata/braintrust-java/commit/a65987da85db749c526a110d7e624f38becf8fff))
+* **client:** make pagination robust to missing data ([445e30e](https://github.com/braintrustdata/braintrust-java/commit/445e30ebac1dd50e5cfc22aaf1ef9927fc13796f))
+* **client:** make union deserialization more robust ([#176](https://github.com/braintrustdata/braintrust-java/issues/176)) ([7fe60b3](https://github.com/braintrustdata/braintrust-java/commit/7fe60b33c4097370f473c30564fccb8ce55e062a))
+* **client:** support a lower jackson version ([#170](https://github.com/braintrustdata/braintrust-java/issues/170)) ([803e291](https://github.com/braintrustdata/braintrust-java/commit/803e2917444885e37e3148499f875ef59824f3c2))
+* **client:** support setting base URL via env var ([85b334a](https://github.com/braintrustdata/braintrust-java/commit/85b334ae4ce795835275970643f930468753d57a))
+* **client:** throw on incompatible jackson version ([803e291](https://github.com/braintrustdata/braintrust-java/commit/803e2917444885e37e3148499f875ef59824f3c2))
+
+
+### Bug Fixes
+
+* **client:** bump to better jackson version ([a2f69b5](https://github.com/braintrustdata/braintrust-java/commit/a2f69b5a6126c7c8ca17030bea1c0f660183f77f))
+* **client:** don't call `validate()` during deserialization if we don't have to ([#173](https://github.com/braintrustdata/braintrust-java/issues/173)) ([e71f053](https://github.com/braintrustdata/braintrust-java/commit/e71f0530ae5462de1089e41b3fefaaf18c140581))
+* **client:** limit json deserialization coercion ([#174](https://github.com/braintrustdata/braintrust-java/issues/174)) ([63e2b2c](https://github.com/braintrustdata/braintrust-java/commit/63e2b2ccb213bf215441d4c74dd4aa43f3697481))
+* **client:** map deserialization bug ([2a52b9f](https://github.com/braintrustdata/braintrust-java/commit/2a52b9fd35ea33391dad9f3e3098e5eb2afcca0d))
+* **client:** return `Optional&lt;T&gt;` instead of `Optional<? extends T>` ([#182](https://github.com/braintrustdata/braintrust-java/issues/182)) ([e3d5b19](https://github.com/braintrustdata/braintrust-java/commit/e3d5b190c14a9f398bfed2b8df461d01b411c1f3))
+* **client:** support kotlin 1.8 runtime ([#161](https://github.com/braintrustdata/braintrust-java/issues/161)) ([c9856ed](https://github.com/braintrustdata/braintrust-java/commit/c9856ed81fdfa4f17bdb96d66e45adc2751d4846))
+* pluralize `list` response variables ([#175](https://github.com/braintrustdata/braintrust-java/issues/175)) ([8d7b939](https://github.com/braintrustdata/braintrust-java/commit/8d7b939c590714e4344ea80d16b06414154cb691))
+
+
+### Performance Improvements
+
+* **client:** cached parsed type in `HttpResponseFor` ([#180](https://github.com/braintrustdata/braintrust-java/issues/180)) ([49c0c0a](https://github.com/braintrustdata/braintrust-java/commit/49c0c0af714e2770fe35456a046aff3a1d6759d8))
+* **internal:** improve compilation+test speed ([8efd75a](https://github.com/braintrustdata/braintrust-java/commit/8efd75a6d5b017099440e5dbb0b97d2b77d56c13))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([15222f8](https://github.com/braintrustdata/braintrust-java/commit/15222f8192f329d22b029a5839d56899d2fc8690))
+* **client:** refactor exception structure and methods ([#164](https://github.com/braintrustdata/braintrust-java/issues/164)) ([8463834](https://github.com/braintrustdata/braintrust-java/commit/8463834733a95f1afc905f3cfa74793b458e9a5a))
+* **client:** remove unnecessary json state from some query param classes ([7fe60b3](https://github.com/braintrustdata/braintrust-java/commit/7fe60b33c4097370f473c30564fccb8ce55e062a))
+* **internal:** add invalid json deserialization tests ([7fe60b3](https://github.com/braintrustdata/braintrust-java/commit/7fe60b33c4097370f473c30564fccb8ce55e062a))
+* **internal:** add json roundtripping tests ([7fe60b3](https://github.com/braintrustdata/braintrust-java/commit/7fe60b33c4097370f473c30564fccb8ce55e062a))
+* **internal:** codegen related update ([732dd76](https://github.com/braintrustdata/braintrust-java/commit/732dd768a9e4f048edf415d697e89c36551414d8))
+* **internal:** codegen related update ([#159](https://github.com/braintrustdata/braintrust-java/issues/159)) ([45cca50](https://github.com/braintrustdata/braintrust-java/commit/45cca506a7c0c1a165c0d4e54bf1950d4256d3a2))
+* **internal:** codegen related update ([#162](https://github.com/braintrustdata/braintrust-java/issues/162)) ([a490f5f](https://github.com/braintrustdata/braintrust-java/commit/a490f5fb5977d5347814c0d29a022468c8793e65))
+* **internal:** codegen related update ([#163](https://github.com/braintrustdata/braintrust-java/issues/163)) ([140986d](https://github.com/braintrustdata/braintrust-java/commit/140986d47b0e2f62d5ba3b84d459784e683fcda8))
+* **internal:** codegen related update ([#179](https://github.com/braintrustdata/braintrust-java/issues/179)) ([d32e7e5](https://github.com/braintrustdata/braintrust-java/commit/d32e7e5d3343041c4404178e0ebf48efd02ddc22))
+* **internal:** delete unused methods and annotations ([#171](https://github.com/braintrustdata/braintrust-java/issues/171)) ([2a52b9f](https://github.com/braintrustdata/braintrust-java/commit/2a52b9fd35ea33391dad9f3e3098e5eb2afcca0d))
+* **internal:** expand CI branch coverage ([6e596e4](https://github.com/braintrustdata/braintrust-java/commit/6e596e46185da32341ce8d186a96336f26b2cd56))
+* **internal:** fix example formatting ([#166](https://github.com/braintrustdata/braintrust-java/issues/166)) ([3ce1a02](https://github.com/braintrustdata/braintrust-java/commit/3ce1a023b3013ffeb9fa9651b42ef3ba5a11fc6e))
+* **internal:** generate more tests ([e7cdefc](https://github.com/braintrustdata/braintrust-java/commit/e7cdefcd06a55332f6e7ef6a6b729f33207a7834))
+* **internal:** make multipart assertions more robust ([6d40318](https://github.com/braintrustdata/braintrust-java/commit/6d403189bb05ab3934586907f2cb8f093e65c805))
+* **internal:** reduce CI branch coverage ([491a2ae](https://github.com/braintrustdata/braintrust-java/commit/491a2aeecc8b972efec17ec3e62e2848d1020158))
+* **internal:** reformat some tests ([#160](https://github.com/braintrustdata/braintrust-java/issues/160)) ([e7cdefc](https://github.com/braintrustdata/braintrust-java/commit/e7cdefcd06a55332f6e7ef6a6b729f33207a7834))
+* **internal:** remove unnecessary `assertNotNull` calls ([6d40318](https://github.com/braintrustdata/braintrust-java/commit/6d403189bb05ab3934586907f2cb8f093e65c805))
+* **internal:** remove unnecessary import ([#167](https://github.com/braintrustdata/braintrust-java/issues/167)) ([03d8ca9](https://github.com/braintrustdata/braintrust-java/commit/03d8ca931ab7599f98cef22d0b43a39b0d002f65))
+* **internal:** swap from `Builder().from(...)` to `toBuilder()` ([#172](https://github.com/braintrustdata/braintrust-java/issues/172)) ([d15ef50](https://github.com/braintrustdata/braintrust-java/commit/d15ef50ea2a826653c7b2ddebabefadc60b1864d))
+* **internal:** swap from `getNullable` to `getOptional` ([#181](https://github.com/braintrustdata/braintrust-java/issues/181)) ([2fca092](https://github.com/braintrustdata/braintrust-java/commit/2fca092faa8a4679ff792bfd746f9638a7187ba3))
+* **internal:** version bump ([#157](https://github.com/braintrustdata/braintrust-java/issues/157)) ([0492bdd](https://github.com/braintrustdata/braintrust-java/commit/0492bddf28ecfea9a5c901e78ff07918a265f6f6))
+
+
+### Documentation
+
+* add comments for page methods ([445e30e](https://github.com/braintrustdata/braintrust-java/commit/445e30ebac1dd50e5cfc22aaf1ef9927fc13796f))
+* add comments to `JsonField` classes ([e3d5b19](https://github.com/braintrustdata/braintrust-java/commit/e3d5b190c14a9f398bfed2b8df461d01b411c1f3))
+* **client:** update jackson compat error message ([6039ca5](https://github.com/braintrustdata/braintrust-java/commit/6039ca545cba51e71e02f4db3b26a0964f3bd522))
+* document how to forcibly omit required field ([e797de1](https://github.com/braintrustdata/braintrust-java/commit/e797de1a9185adb1dab8f9670fd2d8e4b03e2142))
+* explain http client customization ([1388be4](https://github.com/braintrustdata/braintrust-java/commit/1388be42ac426c5d1b934712302c6acecf20c885))
+* explain jackson compat in readme ([8fd288d](https://github.com/braintrustdata/braintrust-java/commit/8fd288d5ef4d5053f20b7db81bde980a465d996b))
+* minor readme tweak ([#169](https://github.com/braintrustdata/braintrust-java/issues/169)) ([4154acd](https://github.com/braintrustdata/braintrust-java/commit/4154acdf5be17f6b8c3ec26ccf5ca25b61c75404))
+* refine comments on multipart params ([#165](https://github.com/braintrustdata/braintrust-java/issues/165)) ([6d40318](https://github.com/braintrustdata/braintrust-java/commit/6d403189bb05ab3934586907f2cb8f093e65c805))
+* swap examples used in readme ([#183](https://github.com/braintrustdata/braintrust-java/issues/183)) ([e797de1](https://github.com/braintrustdata/braintrust-java/commit/e797de1a9185adb1dab8f9670fd2d8e4b03e2142))
+* update readme exception docs ([#168](https://github.com/braintrustdata/braintrust-java/issues/168)) ([39e01a6](https://github.com/braintrustdata/braintrust-java/commit/39e01a6fb2b29e1c8806ec27191cfef234b012d9))
+
+
+### Refactors
+
+* **client:** deduplicate page response classes ([445e30e](https://github.com/braintrustdata/braintrust-java/commit/445e30ebac1dd50e5cfc22aaf1ef9927fc13796f))
+* **client:** migrate pages to builder pattern ([b61888c](https://github.com/braintrustdata/braintrust-java/commit/b61888c0b3080b0ed42f8179a9fc772333cb0d9c))
+
 ## 0.8.0 (2025-03-18)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/braintrustdata/braintrust-java/compare/v0.7.0...v0.8.0)
