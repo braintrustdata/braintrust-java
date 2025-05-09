@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -25,6 +26,7 @@ import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class ViewServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ViewServiceAsync {
@@ -119,6 +121,9 @@ class ViewServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: ViewRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<View>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("viewId", params.viewId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -148,6 +153,9 @@ class ViewServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: ViewUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<View>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("viewId", params.viewId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -200,6 +208,7 @@ class ViewServiceAsyncImpl internal constructor(private val clientOptions: Clien
                             .let {
                                 ViewListPageAsync.builder()
                                     .service(ViewServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -215,6 +224,9 @@ class ViewServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: ViewDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<View>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("viewId", params.viewId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

@@ -2,22 +2,23 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPagerAsync
+import com.braintrustdata.api.core.PageAsync
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.OrganizationServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [OrganizationServiceAsync.list] */
 class OrganizationListPageAsync
 private constructor(
     private val service: OrganizationServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: OrganizationListParams,
     private val response: OrganizationListPageResponse,
-) {
+) : PageAsync<Organization> {
 
     /**
      * Delegates to [OrganizationListPageResponse], but gracefully handles missing data.
@@ -27,28 +28,21 @@ private constructor(
     fun objects(): List<Organization> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<Organization> = objects()
 
-    fun getNextPageParams(): Optional<OrganizationListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): OrganizationListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): CompletableFuture<OrganizationListPageAsync> =
+        service.list(nextPageParams())
 
-    fun getNextPage(): CompletableFuture<Optional<OrganizationListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<Organization> = AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): OrganizationListParams = params
@@ -66,6 +60,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -77,17 +72,23 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: OrganizationServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: OrganizationListParams? = null
         private var response: OrganizationListPageResponse? = null
 
         @JvmSynthetic
         internal fun from(organizationListPageAsync: OrganizationListPageAsync) = apply {
             service = organizationListPageAsync.service
+            streamHandlerExecutor = organizationListPageAsync.streamHandlerExecutor
             params = organizationListPageAsync.params
             response = organizationListPageAsync.response
         }
 
         fun service(service: OrganizationServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: OrganizationListParams) = apply { this.params = params }
@@ -103,6 +104,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -112,35 +114,10 @@ private constructor(
         fun build(): OrganizationListPageAsync =
             OrganizationListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: OrganizationListPageAsync) {
-
-        fun forEach(action: Predicate<Organization>, executor: Executor): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<OrganizationListPageAsync>>.forEach(
-                action: (Organization) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.objects().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<Organization>> {
-            val values = mutableListOf<Organization>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -148,11 +125,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is OrganizationListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is OrganizationListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, response) /* spotless:on */
 
     override fun toString() =
-        "OrganizationListPageAsync{service=$service, params=$params, response=$response}"
+        "OrganizationListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, response=$response}"
 }

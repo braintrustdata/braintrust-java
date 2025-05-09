@@ -36,8 +36,21 @@ interface RoleServiceAsync {
     ): CompletableFuture<Role>
 
     /** Get a role object by its id */
-    fun retrieve(params: RoleRetrieveParams): CompletableFuture<Role> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(roleId: String): CompletableFuture<Role> =
+        retrieve(roleId, RoleRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        roleId: String,
+        params: RoleRetrieveParams = RoleRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Role> = retrieve(params.toBuilder().roleId(roleId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        roleId: String,
+        params: RoleRetrieveParams = RoleRetrieveParams.none(),
+    ): CompletableFuture<Role> = retrieve(roleId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -45,19 +58,47 @@ interface RoleServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
 
+    /** @see [retrieve] */
+    fun retrieve(params: RoleRetrieveParams): CompletableFuture<Role> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(roleId: String, requestOptions: RequestOptions): CompletableFuture<Role> =
+        retrieve(roleId, RoleRetrieveParams.none(), requestOptions)
+
     /**
      * Partially update a role object. Specify the fields to update in the payload. Any object-type
      * fields will be deep-merged with existing content. Currently we do not support removing fields
      * or setting them to null.
      */
-    fun update(params: RoleUpdateParams): CompletableFuture<Role> =
-        update(params, RequestOptions.none())
+    fun update(roleId: String): CompletableFuture<Role> = update(roleId, RoleUpdateParams.none())
+
+    /** @see [update] */
+    fun update(
+        roleId: String,
+        params: RoleUpdateParams = RoleUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Role> = update(params.toBuilder().roleId(roleId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        roleId: String,
+        params: RoleUpdateParams = RoleUpdateParams.none(),
+    ): CompletableFuture<Role> = update(roleId, params, RequestOptions.none())
 
     /** @see [update] */
     fun update(
         params: RoleUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
+
+    /** @see [update] */
+    fun update(params: RoleUpdateParams): CompletableFuture<Role> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(roleId: String, requestOptions: RequestOptions): CompletableFuture<Role> =
+        update(roleId, RoleUpdateParams.none(), requestOptions)
 
     /**
      * List out all roles. The roles are sorted by creation date, with the most recently-created
@@ -80,14 +121,34 @@ interface RoleServiceAsync {
         list(RoleListParams.none(), requestOptions)
 
     /** Delete a role object by its id */
-    fun delete(params: RoleDeleteParams): CompletableFuture<Role> =
-        delete(params, RequestOptions.none())
+    fun delete(roleId: String): CompletableFuture<Role> = delete(roleId, RoleDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        roleId: String,
+        params: RoleDeleteParams = RoleDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Role> = delete(params.toBuilder().roleId(roleId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(
+        roleId: String,
+        params: RoleDeleteParams = RoleDeleteParams.none(),
+    ): CompletableFuture<Role> = delete(roleId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(
         params: RoleDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Role>
+
+    /** @see [delete] */
+    fun delete(params: RoleDeleteParams): CompletableFuture<Role> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(roleId: String, requestOptions: RequestOptions): CompletableFuture<Role> =
+        delete(roleId, RoleDeleteParams.none(), requestOptions)
 
     /**
      * Create or replace role. If there is an existing role with the same name as the one specified
@@ -125,8 +186,25 @@ interface RoleServiceAsync {
          * [RoleServiceAsync.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: RoleRetrieveParams): CompletableFuture<HttpResponseFor<Role>> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(roleId: String): CompletableFuture<HttpResponseFor<Role>> =
+            retrieve(roleId, RoleRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            roleId: String,
+            params: RoleRetrieveParams = RoleRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            retrieve(params.toBuilder().roleId(roleId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            roleId: String,
+            params: RoleRetrieveParams = RoleRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            retrieve(roleId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -135,13 +213,42 @@ interface RoleServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Role>>
 
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: RoleRetrieveParams): CompletableFuture<HttpResponseFor<Role>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            roleId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            retrieve(roleId, RoleRetrieveParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `patch /v1/role/{role_id}`, but is otherwise the same as
          * [RoleServiceAsync.update].
          */
         @MustBeClosed
-        fun update(params: RoleUpdateParams): CompletableFuture<HttpResponseFor<Role>> =
-            update(params, RequestOptions.none())
+        fun update(roleId: String): CompletableFuture<HttpResponseFor<Role>> =
+            update(roleId, RoleUpdateParams.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            roleId: String,
+            params: RoleUpdateParams = RoleUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            update(params.toBuilder().roleId(roleId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            roleId: String,
+            params: RoleUpdateParams = RoleUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<Role>> = update(roleId, params, RequestOptions.none())
 
         /** @see [update] */
         @MustBeClosed
@@ -149,6 +256,19 @@ interface RoleServiceAsync {
             params: RoleUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Role>>
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(params: RoleUpdateParams): CompletableFuture<HttpResponseFor<Role>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            roleId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            update(roleId, RoleUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/role`, but is otherwise the same as
@@ -184,8 +304,24 @@ interface RoleServiceAsync {
          * [RoleServiceAsync.delete].
          */
         @MustBeClosed
-        fun delete(params: RoleDeleteParams): CompletableFuture<HttpResponseFor<Role>> =
-            delete(params, RequestOptions.none())
+        fun delete(roleId: String): CompletableFuture<HttpResponseFor<Role>> =
+            delete(roleId, RoleDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            roleId: String,
+            params: RoleDeleteParams = RoleDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            delete(params.toBuilder().roleId(roleId).build(), requestOptions)
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            roleId: String,
+            params: RoleDeleteParams = RoleDeleteParams.none(),
+        ): CompletableFuture<HttpResponseFor<Role>> = delete(roleId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -193,6 +329,19 @@ interface RoleServiceAsync {
             params: RoleDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Role>>
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: RoleDeleteParams): CompletableFuture<HttpResponseFor<Role>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            roleId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Role>> =
+            delete(roleId, RoleDeleteParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /v1/role`, but is otherwise the same as

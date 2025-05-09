@@ -37,14 +37,34 @@ interface AclServiceAsync {
     ): CompletableFuture<Acl>
 
     /** Get an acl object by its id */
-    fun retrieve(params: AclRetrieveParams): CompletableFuture<Acl> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(aclId: String): CompletableFuture<Acl> = retrieve(aclId, AclRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        aclId: String,
+        params: AclRetrieveParams = AclRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Acl> = retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        aclId: String,
+        params: AclRetrieveParams = AclRetrieveParams.none(),
+    ): CompletableFuture<Acl> = retrieve(aclId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: AclRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
+
+    /** @see [retrieve] */
+    fun retrieve(params: AclRetrieveParams): CompletableFuture<Acl> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(aclId: String, requestOptions: RequestOptions): CompletableFuture<Acl> =
+        retrieve(aclId, AclRetrieveParams.none(), requestOptions)
 
     /**
      * List out all acls. The acls are sorted by creation date, with the most recently-created acls
@@ -60,14 +80,34 @@ interface AclServiceAsync {
     ): CompletableFuture<AclListPageAsync>
 
     /** Delete an acl object by its id */
-    fun delete(params: AclDeleteParams): CompletableFuture<Acl> =
-        delete(params, RequestOptions.none())
+    fun delete(aclId: String): CompletableFuture<Acl> = delete(aclId, AclDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        aclId: String,
+        params: AclDeleteParams = AclDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Acl> = delete(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(
+        aclId: String,
+        params: AclDeleteParams = AclDeleteParams.none(),
+    ): CompletableFuture<Acl> = delete(aclId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(
         params: AclDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
+
+    /** @see [delete] */
+    fun delete(params: AclDeleteParams): CompletableFuture<Acl> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(aclId: String, requestOptions: RequestOptions): CompletableFuture<Acl> =
+        delete(aclId, AclDeleteParams.none(), requestOptions)
 
     /**
      * Batch update acls. This operation is idempotent, so adding acls which already exist will have
@@ -124,8 +164,24 @@ interface AclServiceAsync {
          * [AclServiceAsync.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: AclRetrieveParams): CompletableFuture<HttpResponseFor<Acl>> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(aclId: String): CompletableFuture<HttpResponseFor<Acl>> =
+            retrieve(aclId, AclRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            aclId: String,
+            params: AclRetrieveParams = AclRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Acl>> =
+            retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            aclId: String,
+            params: AclRetrieveParams = AclRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<Acl>> = retrieve(aclId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -133,6 +189,19 @@ interface AclServiceAsync {
             params: AclRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: AclRetrieveParams): CompletableFuture<HttpResponseFor<Acl>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            aclId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Acl>> =
+            retrieve(aclId, AclRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/acl`, but is otherwise the same as
@@ -154,8 +223,24 @@ interface AclServiceAsync {
          * [AclServiceAsync.delete].
          */
         @MustBeClosed
-        fun delete(params: AclDeleteParams): CompletableFuture<HttpResponseFor<Acl>> =
-            delete(params, RequestOptions.none())
+        fun delete(aclId: String): CompletableFuture<HttpResponseFor<Acl>> =
+            delete(aclId, AclDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            aclId: String,
+            params: AclDeleteParams = AclDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Acl>> =
+            delete(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            aclId: String,
+            params: AclDeleteParams = AclDeleteParams.none(),
+        ): CompletableFuture<HttpResponseFor<Acl>> = delete(aclId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -163,6 +248,19 @@ interface AclServiceAsync {
             params: AclDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: AclDeleteParams): CompletableFuture<HttpResponseFor<Acl>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            aclId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Acl>> =
+            delete(aclId, AclDeleteParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /v1/acl/batch_update`, but is otherwise the same as

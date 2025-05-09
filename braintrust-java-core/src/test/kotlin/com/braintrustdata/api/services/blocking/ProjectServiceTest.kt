@@ -5,8 +5,6 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.ProjectCreateParams
-import com.braintrustdata.api.models.ProjectDeleteParams
-import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectSettings
 import com.braintrustdata.api.models.ProjectUpdateParams
 import org.junit.jupiter.api.Test
@@ -41,12 +39,7 @@ internal class ProjectServiceTest {
                 .build()
         val projectService = client.projects()
 
-        val project =
-            projectService.retrieve(
-                ProjectRetrieveParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val project = projectService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         project.validate()
     }
@@ -108,12 +101,7 @@ internal class ProjectServiceTest {
                 .build()
         val projectService = client.projects()
 
-        val project =
-            projectService.delete(
-                ProjectDeleteParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val project = projectService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         project.validate()
     }

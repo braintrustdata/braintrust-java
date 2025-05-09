@@ -3,21 +3,22 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get an acl object by its id */
 class AclRetrieveParams
 private constructor(
-    private val aclId: String,
+    private val aclId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Acl id */
-    fun aclId(): String = aclId
+    fun aclId(): Optional<String> = Optional.ofNullable(aclId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -27,14 +28,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [AclRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .aclId()
-         * ```
-         */
+        @JvmStatic fun none(): AclRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [AclRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +49,10 @@ private constructor(
         }
 
         /** Acl id */
-        fun aclId(aclId: String) = apply { this.aclId = aclId }
+        fun aclId(aclId: String?) = apply { this.aclId = aclId }
+
+        /** Alias for calling [Builder.aclId] with `aclId.orElse(null)`. */
+        fun aclId(aclId: Optional<String>) = aclId(aclId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,25 +156,14 @@ private constructor(
          * Returns an immutable instance of [AclRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .aclId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): AclRetrieveParams =
-            AclRetrieveParams(
-                checkRequired("aclId", aclId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            AclRetrieveParams(aclId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> aclId
+            0 -> aclId ?: ""
             else -> ""
         }
 

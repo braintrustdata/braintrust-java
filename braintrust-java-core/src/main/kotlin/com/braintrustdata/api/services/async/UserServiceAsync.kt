@@ -19,14 +19,35 @@ interface UserServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Get a user object by its id */
-    fun retrieve(params: UserRetrieveParams): CompletableFuture<User> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(userId: String): CompletableFuture<User> =
+        retrieve(userId, UserRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        userId: String,
+        params: UserRetrieveParams = UserRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<User> = retrieve(params.toBuilder().userId(userId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        userId: String,
+        params: UserRetrieveParams = UserRetrieveParams.none(),
+    ): CompletableFuture<User> = retrieve(userId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: UserRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<User>
+
+    /** @see [retrieve] */
+    fun retrieve(params: UserRetrieveParams): CompletableFuture<User> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(userId: String, requestOptions: RequestOptions): CompletableFuture<User> =
+        retrieve(userId, UserRetrieveParams.none(), requestOptions)
 
     /**
      * List out all users. The users are sorted by creation date, with the most recently-created
@@ -56,8 +77,25 @@ interface UserServiceAsync {
          * [UserServiceAsync.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: UserRetrieveParams): CompletableFuture<HttpResponseFor<User>> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(userId: String): CompletableFuture<HttpResponseFor<User>> =
+            retrieve(userId, UserRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            userId: String,
+            params: UserRetrieveParams = UserRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<User>> =
+            retrieve(params.toBuilder().userId(userId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            userId: String,
+            params: UserRetrieveParams = UserRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<User>> =
+            retrieve(userId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -65,6 +103,19 @@ interface UserServiceAsync {
             params: UserRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<User>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: UserRetrieveParams): CompletableFuture<HttpResponseFor<User>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            userId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<User>> =
+            retrieve(userId, UserRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as

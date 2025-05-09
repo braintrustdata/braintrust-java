@@ -3,7 +3,6 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
@@ -17,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ExperimentFetchParams
 private constructor(
-    private val experimentId: String,
+    private val experimentId: String?,
     private val limit: Long?,
     private val maxRootSpanId: String?,
     private val maxXactId: String?,
@@ -27,7 +26,7 @@ private constructor(
 ) : Params {
 
     /** Experiment id */
-    fun experimentId(): String = experimentId
+    fun experimentId(): Optional<String> = Optional.ofNullable(experimentId)
 
     /**
      * limit the number of traces fetched
@@ -89,14 +88,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ExperimentFetchParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         */
+        @JvmStatic fun none(): ExperimentFetchParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ExperimentFetchParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -123,7 +117,10 @@ private constructor(
         }
 
         /** Experiment id */
-        fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
+        fun experimentId(experimentId: String?) = apply { this.experimentId = experimentId }
+
+        /** Alias for calling [Builder.experimentId] with `experimentId.orElse(null)`. */
+        fun experimentId(experimentId: Optional<String>) = experimentId(experimentId.getOrNull())
 
         /**
          * limit the number of traces fetched
@@ -300,17 +297,10 @@ private constructor(
          * Returns an immutable instance of [ExperimentFetchParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ExperimentFetchParams =
             ExperimentFetchParams(
-                checkRequired("experimentId", experimentId),
+                experimentId,
                 limit,
                 maxRootSpanId,
                 maxXactId,
@@ -322,7 +312,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> experimentId
+            0 -> experimentId ?: ""
             else -> ""
         }
 

@@ -2,22 +2,23 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPagerAsync
+import com.braintrustdata.api.core.PageAsync
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.RoleServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [RoleServiceAsync.list] */
 class RoleListPageAsync
 private constructor(
     private val service: RoleServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: RoleListParams,
     private val response: RoleListPageResponse,
-) {
+) : PageAsync<Role> {
 
     /**
      * Delegates to [RoleListPageResponse], but gracefully handles missing data.
@@ -27,28 +28,20 @@ private constructor(
     fun objects(): List<Role> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<Role> = objects()
 
-    fun getNextPageParams(): Optional<RoleListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): RoleListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): CompletableFuture<RoleListPageAsync> = service.list(nextPageParams())
 
-    fun getNextPage(): CompletableFuture<Optional<RoleListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<Role> = AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): RoleListParams = params
@@ -66,6 +59,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -77,17 +71,23 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: RoleServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: RoleListParams? = null
         private var response: RoleListPageResponse? = null
 
         @JvmSynthetic
         internal fun from(roleListPageAsync: RoleListPageAsync) = apply {
             service = roleListPageAsync.service
+            streamHandlerExecutor = roleListPageAsync.streamHandlerExecutor
             params = roleListPageAsync.params
             response = roleListPageAsync.response
         }
 
         fun service(service: RoleServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: RoleListParams) = apply { this.params = params }
@@ -103,6 +103,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -112,35 +113,10 @@ private constructor(
         fun build(): RoleListPageAsync =
             RoleListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: RoleListPageAsync) {
-
-        fun forEach(action: Predicate<Role>, executor: Executor): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<RoleListPageAsync>>.forEach(
-                action: (Role) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.objects().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<Role>> {
-            val values = mutableListOf<Role>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -148,11 +124,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RoleListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is RoleListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, response) /* spotless:on */
 
     override fun toString() =
-        "RoleListPageAsync{service=$service, params=$params, response=$response}"
+        "RoleListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, response=$response}"
 }

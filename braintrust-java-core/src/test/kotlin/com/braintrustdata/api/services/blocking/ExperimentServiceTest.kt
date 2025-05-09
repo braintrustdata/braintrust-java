@@ -6,12 +6,10 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.ExperimentCreateParams
-import com.braintrustdata.api.models.ExperimentDeleteParams
 import com.braintrustdata.api.models.ExperimentFeedbackParams
 import com.braintrustdata.api.models.ExperimentFetchParams
 import com.braintrustdata.api.models.ExperimentFetchPostParams
 import com.braintrustdata.api.models.ExperimentInsertParams
-import com.braintrustdata.api.models.ExperimentRetrieveParams
 import com.braintrustdata.api.models.ExperimentSummarizeParams
 import com.braintrustdata.api.models.ExperimentUpdateParams
 import com.braintrustdata.api.models.FeedbackExperimentItem
@@ -80,12 +78,7 @@ internal class ExperimentServiceTest {
                 .build()
         val experimentService = client.experiments()
 
-        val experiment =
-            experimentService.retrieve(
-                ExperimentRetrieveParams.builder()
-                    .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val experiment = experimentService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         experiment.validate()
     }
@@ -156,12 +149,7 @@ internal class ExperimentServiceTest {
                 .build()
         val experimentService = client.experiments()
 
-        val experiment =
-            experimentService.delete(
-                ExperimentDeleteParams.builder()
-                    .experimentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val experiment = experimentService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         experiment.validate()
     }

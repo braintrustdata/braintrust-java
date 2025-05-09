@@ -2,22 +2,23 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPagerAsync
+import com.braintrustdata.api.core.PageAsync
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.async.PromptServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [PromptServiceAsync.list] */
 class PromptListPageAsync
 private constructor(
     private val service: PromptServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: PromptListParams,
     private val response: PromptListPageResponse,
-) {
+) : PageAsync<Prompt> {
 
     /**
      * Delegates to [PromptListPageResponse], but gracefully handles missing data.
@@ -27,28 +28,20 @@ private constructor(
     fun objects(): List<Prompt> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<Prompt> = objects()
 
-    fun getNextPageParams(): Optional<PromptListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): PromptListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): CompletableFuture<PromptListPageAsync> = service.list(nextPageParams())
 
-    fun getNextPage(): CompletableFuture<Optional<PromptListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<Prompt> = AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): PromptListParams = params
@@ -66,6 +59,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -77,17 +71,23 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: PromptServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: PromptListParams? = null
         private var response: PromptListPageResponse? = null
 
         @JvmSynthetic
         internal fun from(promptListPageAsync: PromptListPageAsync) = apply {
             service = promptListPageAsync.service
+            streamHandlerExecutor = promptListPageAsync.streamHandlerExecutor
             params = promptListPageAsync.params
             response = promptListPageAsync.response
         }
 
         fun service(service: PromptServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: PromptListParams) = apply { this.params = params }
@@ -103,6 +103,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -112,35 +113,10 @@ private constructor(
         fun build(): PromptListPageAsync =
             PromptListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: PromptListPageAsync) {
-
-        fun forEach(action: Predicate<Prompt>, executor: Executor): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<PromptListPageAsync>>.forEach(
-                action: (Prompt) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.objects().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<Prompt>> {
-            val values = mutableListOf<Prompt>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -148,11 +124,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is PromptListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, response) /* spotless:on */
 
     override fun toString() =
-        "PromptListPageAsync{service=$service, params=$params, response=$response}"
+        "PromptListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, response=$response}"
 }

@@ -5,9 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.SpanIframeCreateParams
-import com.braintrustdata.api.models.SpanIframeDeleteParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
-import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -47,12 +45,7 @@ internal class SpanIframeServiceTest {
                 .build()
         val spanIframeService = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.retrieve(
-                SpanIframeRetrieveParams.builder()
-                    .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val spanIFrame = spanIframeService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         spanIFrame.validate()
     }
@@ -103,12 +96,7 @@ internal class SpanIframeServiceTest {
                 .build()
         val spanIframeService = client.spanIframes()
 
-        val spanIFrame =
-            spanIframeService.delete(
-                SpanIframeDeleteParams.builder()
-                    .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val spanIFrame = spanIframeService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         spanIFrame.validate()
     }

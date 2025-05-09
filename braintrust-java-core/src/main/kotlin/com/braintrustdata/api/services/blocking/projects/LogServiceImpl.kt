@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking.projects
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -22,6 +23,7 @@ import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
+import kotlin.jvm.optionals.getOrNull
 
 class LogServiceImpl internal constructor(private val clientOptions: ClientOptions) : LogService {
 
@@ -72,6 +74,9 @@ class LogServiceImpl internal constructor(private val clientOptions: ClientOptio
             params: ProjectLogFeedbackParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<FeedbackResponseSchema> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -100,6 +105,9 @@ class LogServiceImpl internal constructor(private val clientOptions: ClientOptio
             params: ProjectLogFetchParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<FetchProjectLogsEventsResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -127,6 +135,9 @@ class LogServiceImpl internal constructor(private val clientOptions: ClientOptio
             params: ProjectLogFetchPostParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<FetchProjectLogsEventsResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -155,6 +166,9 @@ class LogServiceImpl internal constructor(private val clientOptions: ClientOptio
             params: ProjectLogInsertParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<InsertEventsResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

@@ -5,8 +5,6 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.ApiKeyCreateParams
-import com.braintrustdata.api.models.ApiKeyDeleteParams
-import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -40,12 +38,7 @@ internal class ApiKeyServiceAsyncTest {
                 .build()
         val apiKeyServiceAsync = client.apiKeys()
 
-        val apiKeyFuture =
-            apiKeyServiceAsync.retrieve(
-                ApiKeyRetrieveParams.builder()
-                    .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val apiKeyFuture = apiKeyServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val apiKey = apiKeyFuture.get()
         apiKey.validate()
@@ -75,12 +68,7 @@ internal class ApiKeyServiceAsyncTest {
                 .build()
         val apiKeyServiceAsync = client.apiKeys()
 
-        val apiKeyFuture =
-            apiKeyServiceAsync.delete(
-                ApiKeyDeleteParams.builder()
-                    .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val apiKeyFuture = apiKeyServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val apiKey = apiKeyFuture.get()
         apiKey.validate()

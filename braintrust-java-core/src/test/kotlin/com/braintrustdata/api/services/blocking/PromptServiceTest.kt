@@ -7,10 +7,8 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.PromptCreateParams
 import com.braintrustdata.api.models.PromptData
-import com.braintrustdata.api.models.PromptDeleteParams
 import com.braintrustdata.api.models.PromptOptions
 import com.braintrustdata.api.models.PromptReplaceParams
-import com.braintrustdata.api.models.PromptRetrieveParams
 import com.braintrustdata.api.models.PromptUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -133,12 +131,7 @@ internal class PromptServiceTest {
                 .build()
         val promptService = client.prompts()
 
-        val prompt =
-            promptService.retrieve(
-                PromptRetrieveParams.builder()
-                    .promptId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val prompt = promptService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         prompt.validate()
     }
@@ -271,12 +264,7 @@ internal class PromptServiceTest {
                 .build()
         val promptService = client.prompts()
 
-        val prompt =
-            promptService.delete(
-                PromptDeleteParams.builder()
-                    .promptId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val prompt = promptService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         prompt.validate()
     }
