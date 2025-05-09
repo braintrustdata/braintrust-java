@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -25,6 +26,7 @@ import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class OrganizationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     OrganizationServiceAsync {
@@ -85,6 +87,9 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             params: OrganizationRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Organization>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("organizationId", params.organizationId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -114,6 +119,9 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             params: OrganizationUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Organization>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("organizationId", params.organizationId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -181,6 +189,9 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             params: OrganizationDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Organization>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("organizationId", params.organizationId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

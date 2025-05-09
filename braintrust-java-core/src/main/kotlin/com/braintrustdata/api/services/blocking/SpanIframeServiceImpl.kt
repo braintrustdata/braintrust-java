@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -24,6 +25,7 @@ import com.braintrustdata.api.models.SpanIframeListParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
+import kotlin.jvm.optionals.getOrNull
 
 class SpanIframeServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     SpanIframeService {
@@ -115,6 +117,9 @@ class SpanIframeServiceImpl internal constructor(private val clientOptions: Clie
             params: SpanIframeRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<SpanIFrame> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("spanIframeId", params.spanIframeId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -141,6 +146,9 @@ class SpanIframeServiceImpl internal constructor(private val clientOptions: Clie
             params: SpanIframeUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<SpanIFrame> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("spanIframeId", params.spanIframeId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -202,6 +210,9 @@ class SpanIframeServiceImpl internal constructor(private val clientOptions: Clie
             params: SpanIframeDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<SpanIFrame> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("spanIframeId", params.spanIframeId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

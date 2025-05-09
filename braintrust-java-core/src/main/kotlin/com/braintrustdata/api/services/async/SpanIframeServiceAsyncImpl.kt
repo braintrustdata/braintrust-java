@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -25,6 +26,7 @@ import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     SpanIframeServiceAsync {
@@ -119,6 +121,9 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             params: SpanIframeRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("spanIframeId", params.spanIframeId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -148,6 +153,9 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             params: SpanIframeUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("spanIframeId", params.spanIframeId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -215,6 +223,9 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             params: SpanIframeDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("spanIframeId", params.spanIframeId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

@@ -4,24 +4,24 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a span_iframe object by its id */
 class SpanIframeDeleteParams
 private constructor(
-    private val spanIframeId: String,
+    private val spanIframeId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** SpanIframe id */
-    fun spanIframeId(): String = spanIframeId
+    fun spanIframeId(): Optional<String> = Optional.ofNullable(spanIframeId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -33,14 +33,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [SpanIframeDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .spanIframeId()
-         * ```
-         */
+        @JvmStatic fun none(): SpanIframeDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [SpanIframeDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -62,7 +57,10 @@ private constructor(
         }
 
         /** SpanIframe id */
-        fun spanIframeId(spanIframeId: String) = apply { this.spanIframeId = spanIframeId }
+        fun spanIframeId(spanIframeId: String?) = apply { this.spanIframeId = spanIframeId }
+
+        /** Alias for calling [Builder.spanIframeId] with `spanIframeId.orElse(null)`. */
+        fun spanIframeId(spanIframeId: Optional<String>) = spanIframeId(spanIframeId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -188,17 +186,10 @@ private constructor(
          * Returns an immutable instance of [SpanIframeDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .spanIframeId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SpanIframeDeleteParams =
             SpanIframeDeleteParams(
-                checkRequired("spanIframeId", spanIframeId),
+                spanIframeId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -210,7 +201,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> spanIframeId
+            0 -> spanIframeId ?: ""
             else -> ""
         }
 

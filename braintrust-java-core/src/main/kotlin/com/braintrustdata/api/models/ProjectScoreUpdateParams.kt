@@ -10,7 +10,6 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.allMaxBy
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -39,14 +38,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ProjectScoreUpdateParams
 private constructor(
-    private val projectScoreId: String,
+    private val projectScoreId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** ProjectScore id */
-    fun projectScoreId(): String = projectScoreId
+    fun projectScoreId(): Optional<String> = Optional.ofNullable(projectScoreId)
 
     /**
      * For categorical-type project scores, the list of all categories
@@ -131,14 +130,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectScoreUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectScoreUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectScoreUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -159,7 +153,11 @@ private constructor(
         }
 
         /** ProjectScore id */
-        fun projectScoreId(projectScoreId: String) = apply { this.projectScoreId = projectScoreId }
+        fun projectScoreId(projectScoreId: String?) = apply { this.projectScoreId = projectScoreId }
+
+        /** Alias for calling [Builder.projectScoreId] with `projectScoreId.orElse(null)`. */
+        fun projectScoreId(projectScoreId: Optional<String>) =
+            projectScoreId(projectScoreId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -380,17 +378,10 @@ private constructor(
          * Returns an immutable instance of [ProjectScoreUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectScoreUpdateParams =
             ProjectScoreUpdateParams(
-                checkRequired("projectScoreId", projectScoreId),
+                projectScoreId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -401,7 +392,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectScoreId
+            0 -> projectScoreId ?: ""
             else -> ""
         }
 

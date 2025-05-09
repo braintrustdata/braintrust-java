@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -24,6 +25,7 @@ import com.braintrustdata.api.models.EnvVarReplaceParams
 import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     EnvVarServiceAsync {
@@ -118,6 +120,9 @@ class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: Cli
             params: EnvVarRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<EnvVar>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("envVarId", params.envVarId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -147,6 +152,9 @@ class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: Cli
             params: EnvVarUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<EnvVar>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("envVarId", params.envVarId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -206,6 +214,9 @@ class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: Cli
             params: EnvVarDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<EnvVar>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("envVarId", params.envVarId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

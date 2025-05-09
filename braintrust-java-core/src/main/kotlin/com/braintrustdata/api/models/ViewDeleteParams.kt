@@ -17,19 +17,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Delete a view object by its id */
 class ViewDeleteParams
 private constructor(
-    private val viewId: String,
+    private val viewId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** View id */
-    fun viewId(): String = viewId
+    fun viewId(): Optional<String> = Optional.ofNullable(viewId)
 
     /**
      * The id of the object the view applies to
@@ -76,7 +77,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .viewId()
          * .objectId()
          * .objectType()
          * ```
@@ -101,7 +101,10 @@ private constructor(
         }
 
         /** View id */
-        fun viewId(viewId: String) = apply { this.viewId = viewId }
+        fun viewId(viewId: String?) = apply { this.viewId = viewId }
+
+        /** Alias for calling [Builder.viewId] with `viewId.orElse(null)`. */
+        fun viewId(viewId: Optional<String>) = viewId(viewId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -260,7 +263,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .viewId()
          * .objectId()
          * .objectType()
          * ```
@@ -269,7 +271,7 @@ private constructor(
          */
         fun build(): ViewDeleteParams =
             ViewDeleteParams(
-                checkRequired("viewId", viewId),
+                viewId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -280,7 +282,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> viewId
+            0 -> viewId ?: ""
             else -> ""
         }
 

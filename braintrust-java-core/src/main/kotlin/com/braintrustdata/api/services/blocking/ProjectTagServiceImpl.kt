@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -24,6 +25,7 @@ import com.braintrustdata.api.models.ProjectTagListParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectTagServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectTagService {
@@ -115,6 +117,9 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
             params: ProjectTagRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ProjectTag> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectTagId", params.projectTagId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -141,6 +146,9 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
             params: ProjectTagUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ProjectTag> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectTagId", params.projectTagId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -202,6 +210,9 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
             params: ProjectTagDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ProjectTag> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectTagId", params.projectTagId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

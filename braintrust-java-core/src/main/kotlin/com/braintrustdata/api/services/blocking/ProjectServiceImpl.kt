@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -25,6 +26,7 @@ import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.blocking.projects.LogService
 import com.braintrustdata.api.services.blocking.projects.LogServiceImpl
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectService {
@@ -104,6 +106,9 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
             params: ProjectRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Project> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -130,6 +135,9 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
             params: ProjectUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Project> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -191,6 +199,9 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
             params: ProjectDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Project> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

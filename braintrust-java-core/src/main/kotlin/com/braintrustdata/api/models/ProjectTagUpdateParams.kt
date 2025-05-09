@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
@@ -27,14 +26,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ProjectTagUpdateParams
 private constructor(
-    private val projectTagId: String,
+    private val projectTagId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** ProjectTag id */
-    fun projectTagId(): String = projectTagId
+    fun projectTagId(): Optional<String> = Optional.ofNullable(projectTagId)
 
     /**
      * Color of the tag for the UI
@@ -91,14 +90,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectTagUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectTagId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectTagUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectTagUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -119,7 +113,10 @@ private constructor(
         }
 
         /** ProjectTag id */
-        fun projectTagId(projectTagId: String) = apply { this.projectTagId = projectTagId }
+        fun projectTagId(projectTagId: String?) = apply { this.projectTagId = projectTagId }
+
+        /** Alias for calling [Builder.projectTagId] with `projectTagId.orElse(null)`. */
+        fun projectTagId(projectTagId: Optional<String>) = projectTagId(projectTagId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -296,17 +293,10 @@ private constructor(
          * Returns an immutable instance of [ProjectTagUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectTagId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectTagUpdateParams =
             ProjectTagUpdateParams(
-                checkRequired("projectTagId", projectTagId),
+                projectTagId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -317,7 +307,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectTagId
+            0 -> projectTagId ?: ""
             else -> ""
         }
 

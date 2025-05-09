@@ -37,8 +37,22 @@ interface ProjectScoreServiceAsync {
     ): CompletableFuture<ProjectScore>
 
     /** Get a project_score object by its id */
-    fun retrieve(params: ProjectScoreRetrieveParams): CompletableFuture<ProjectScore> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(projectScoreId: String): CompletableFuture<ProjectScore> =
+        retrieve(projectScoreId, ProjectScoreRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectScoreId: String,
+        params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ProjectScore> =
+        retrieve(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectScoreId: String,
+        params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
+    ): CompletableFuture<ProjectScore> = retrieve(projectScoreId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -46,19 +60,55 @@ interface ProjectScoreServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
+    /** @see [retrieve] */
+    fun retrieve(params: ProjectScoreRetrieveParams): CompletableFuture<ProjectScore> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectScoreId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ProjectScore> =
+        retrieve(projectScoreId, ProjectScoreRetrieveParams.none(), requestOptions)
+
     /**
      * Partially update a project_score object. Specify the fields to update in the payload. Any
      * object-type fields will be deep-merged with existing content. Currently we do not support
      * removing fields or setting them to null.
      */
-    fun update(params: ProjectScoreUpdateParams): CompletableFuture<ProjectScore> =
-        update(params, RequestOptions.none())
+    fun update(projectScoreId: String): CompletableFuture<ProjectScore> =
+        update(projectScoreId, ProjectScoreUpdateParams.none())
+
+    /** @see [update] */
+    fun update(
+        projectScoreId: String,
+        params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ProjectScore> =
+        update(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        projectScoreId: String,
+        params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
+    ): CompletableFuture<ProjectScore> = update(projectScoreId, params, RequestOptions.none())
 
     /** @see [update] */
     fun update(
         params: ProjectScoreUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
+
+    /** @see [update] */
+    fun update(params: ProjectScoreUpdateParams): CompletableFuture<ProjectScore> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        projectScoreId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ProjectScore> =
+        update(projectScoreId, ProjectScoreUpdateParams.none(), requestOptions)
 
     /**
      * List out all project_scores. The project_scores are sorted by creation date, with the most
@@ -82,14 +132,39 @@ interface ProjectScoreServiceAsync {
         list(ProjectScoreListParams.none(), requestOptions)
 
     /** Delete a project_score object by its id */
-    fun delete(params: ProjectScoreDeleteParams): CompletableFuture<ProjectScore> =
-        delete(params, RequestOptions.none())
+    fun delete(projectScoreId: String): CompletableFuture<ProjectScore> =
+        delete(projectScoreId, ProjectScoreDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        projectScoreId: String,
+        params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ProjectScore> =
+        delete(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(
+        projectScoreId: String,
+        params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
+    ): CompletableFuture<ProjectScore> = delete(projectScoreId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(
         params: ProjectScoreDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
+
+    /** @see [delete] */
+    fun delete(params: ProjectScoreDeleteParams): CompletableFuture<ProjectScore> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(
+        projectScoreId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ProjectScore> =
+        delete(projectScoreId, ProjectScoreDeleteParams.none(), requestOptions)
 
     /**
      * Create or replace project_score. If there is an existing project_score in the project with
@@ -132,10 +207,25 @@ interface ProjectScoreServiceAsync {
          * otherwise the same as [ProjectScoreServiceAsync.retrieve].
          */
         @MustBeClosed
+        fun retrieve(projectScoreId: String): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            retrieve(projectScoreId, ProjectScoreRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
         fun retrieve(
-            params: ProjectScoreRetrieveParams
+            projectScoreId: String,
+            params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
-            retrieve(params, RequestOptions.none())
+            retrieve(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectScoreId: String,
+            params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            retrieve(projectScoreId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -144,10 +234,54 @@ interface ProjectScoreServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>>
 
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: ProjectScoreRetrieveParams
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectScoreId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            retrieve(projectScoreId, ProjectScoreRetrieveParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `patch /v1/project_score/{project_score_id}`, but is
          * otherwise the same as [ProjectScoreServiceAsync.update].
          */
+        @MustBeClosed
+        fun update(projectScoreId: String): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            update(projectScoreId, ProjectScoreUpdateParams.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            projectScoreId: String,
+            params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            update(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            projectScoreId: String,
+            params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            update(projectScoreId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: ProjectScoreUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectScore>>
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: ProjectScoreUpdateParams
@@ -156,9 +290,10 @@ interface ProjectScoreServiceAsync {
         /** @see [update] */
         @MustBeClosed
         fun update(
-            params: ProjectScoreUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ProjectScore>>
+            projectScoreId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            update(projectScoreId, ProjectScoreUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/project_score`, but is otherwise the same as
@@ -194,9 +329,25 @@ interface ProjectScoreServiceAsync {
          * otherwise the same as [ProjectScoreServiceAsync.delete].
          */
         @MustBeClosed
+        fun delete(projectScoreId: String): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            delete(projectScoreId, ProjectScoreDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
         fun delete(
-            params: ProjectScoreDeleteParams
-        ): CompletableFuture<HttpResponseFor<ProjectScore>> = delete(params, RequestOptions.none())
+            projectScoreId: String,
+            params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            delete(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            projectScoreId: String,
+            params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            delete(projectScoreId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -204,6 +355,20 @@ interface ProjectScoreServiceAsync {
             params: ProjectScoreDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>>
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            params: ProjectScoreDeleteParams
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> = delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            projectScoreId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ProjectScore>> =
+            delete(projectScoreId, ProjectScoreDeleteParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /v1/project_score`, but is otherwise the same as

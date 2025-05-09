@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async.projects
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -23,6 +24,7 @@ import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class LogServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     LogServiceAsync {
@@ -74,6 +76,9 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
             params: ProjectLogFeedbackParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -105,6 +110,9 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
             params: ProjectLogFetchParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -135,6 +143,9 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
             params: ProjectLogFetchPostParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -166,6 +177,9 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
             params: ProjectLogInsertParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

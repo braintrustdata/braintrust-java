@@ -35,14 +35,36 @@ interface ApiKeyServiceAsync {
     ): CompletableFuture<CreateApiKeyOutput>
 
     /** Get an api_key object by its id */
-    fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<ApiKey> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(apiKeyId: String): CompletableFuture<ApiKey> =
+        retrieve(apiKeyId, ApiKeyRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        apiKeyId: String,
+        params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ApiKey> =
+        retrieve(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        apiKeyId: String,
+        params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
+    ): CompletableFuture<ApiKey> = retrieve(apiKeyId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: ApiKeyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKey>
+
+    /** @see [retrieve] */
+    fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<ApiKey> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(apiKeyId: String, requestOptions: RequestOptions): CompletableFuture<ApiKey> =
+        retrieve(apiKeyId, ApiKeyRetrieveParams.none(), requestOptions)
 
     /**
      * List out all api_keys. The api_keys are sorted by creation date, with the most
@@ -66,14 +88,36 @@ interface ApiKeyServiceAsync {
         list(ApiKeyListParams.none(), requestOptions)
 
     /** Delete an api_key object by its id */
-    fun delete(params: ApiKeyDeleteParams): CompletableFuture<ApiKey> =
-        delete(params, RequestOptions.none())
+    fun delete(apiKeyId: String): CompletableFuture<ApiKey> =
+        delete(apiKeyId, ApiKeyDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        apiKeyId: String,
+        params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ApiKey> =
+        delete(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(
+        apiKeyId: String,
+        params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
+    ): CompletableFuture<ApiKey> = delete(apiKeyId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(
         params: ApiKeyDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKey>
+
+    /** @see [delete] */
+    fun delete(params: ApiKeyDeleteParams): CompletableFuture<ApiKey> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(apiKeyId: String, requestOptions: RequestOptions): CompletableFuture<ApiKey> =
+        delete(apiKeyId, ApiKeyDeleteParams.none(), requestOptions)
 
     /**
      * A view of [ApiKeyServiceAsync] that provides access to raw HTTP responses for each method.
@@ -102,8 +146,25 @@ interface ApiKeyServiceAsync {
          * as [ApiKeyServiceAsync.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<HttpResponseFor<ApiKey>> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(apiKeyId: String): CompletableFuture<HttpResponseFor<ApiKey>> =
+            retrieve(apiKeyId, ApiKeyRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            apiKeyId: String,
+            params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ApiKey>> =
+            retrieve(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            apiKeyId: String,
+            params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<ApiKey>> =
+            retrieve(apiKeyId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -111,6 +172,19 @@ interface ApiKeyServiceAsync {
             params: ApiKeyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<HttpResponseFor<ApiKey>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            apiKeyId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ApiKey>> =
+            retrieve(apiKeyId, ApiKeyRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/api_key`, but is otherwise the same as
@@ -146,8 +220,25 @@ interface ApiKeyServiceAsync {
          * same as [ApiKeyServiceAsync.delete].
          */
         @MustBeClosed
-        fun delete(params: ApiKeyDeleteParams): CompletableFuture<HttpResponseFor<ApiKey>> =
-            delete(params, RequestOptions.none())
+        fun delete(apiKeyId: String): CompletableFuture<HttpResponseFor<ApiKey>> =
+            delete(apiKeyId, ApiKeyDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            apiKeyId: String,
+            params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ApiKey>> =
+            delete(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            apiKeyId: String,
+            params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
+        ): CompletableFuture<HttpResponseFor<ApiKey>> =
+            delete(apiKeyId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -155,5 +246,18 @@ interface ApiKeyServiceAsync {
             params: ApiKeyDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>>
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: ApiKeyDeleteParams): CompletableFuture<HttpResponseFor<ApiKey>> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            apiKeyId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ApiKey>> =
+            delete(apiKeyId, ApiKeyDeleteParams.none(), requestOptions)
     }
 }

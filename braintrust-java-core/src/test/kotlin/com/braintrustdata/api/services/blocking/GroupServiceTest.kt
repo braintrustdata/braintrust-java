@@ -5,9 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.GroupCreateParams
-import com.braintrustdata.api.models.GroupDeleteParams
 import com.braintrustdata.api.models.GroupReplaceParams
-import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -47,12 +45,7 @@ internal class GroupServiceTest {
                 .build()
         val groupService = client.groups()
 
-        val group =
-            groupService.retrieve(
-                GroupRetrieveParams.builder()
-                    .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val group = groupService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         group.validate()
     }
@@ -105,10 +98,7 @@ internal class GroupServiceTest {
                 .build()
         val groupService = client.groups()
 
-        val group =
-            groupService.delete(
-                GroupDeleteParams.builder().groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val group = groupService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         group.validate()
     }
