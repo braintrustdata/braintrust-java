@@ -244,6 +244,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 ExperimentListPageAsync.builder()
                                     .service(ExperimentServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

@@ -216,6 +216,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
                             .let {
                                 AiSecretListPageAsync.builder()
                                     .service(AiSecretServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

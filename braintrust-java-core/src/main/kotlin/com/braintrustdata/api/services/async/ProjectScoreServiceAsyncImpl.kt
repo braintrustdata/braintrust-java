@@ -208,6 +208,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
                             .let {
                                 ProjectScoreListPageAsync.builder()
                                     .service(ProjectScoreServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

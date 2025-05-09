@@ -244,6 +244,7 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 DatasetListPageAsync.builder()
                                     .service(DatasetServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

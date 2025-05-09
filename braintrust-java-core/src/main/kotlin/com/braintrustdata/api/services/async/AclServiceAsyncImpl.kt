@@ -176,6 +176,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
                             .let {
                                 AclListPageAsync.builder()
                                     .service(AclServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

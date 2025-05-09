@@ -174,6 +174,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
                             .let {
                                 OrganizationListPageAsync.builder()
                                     .service(OrganizationServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
