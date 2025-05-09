@@ -29,14 +29,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class RoleUpdateParams
 private constructor(
-    private val roleId: String,
+    private val roleId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Role id */
-    fun roleId(): String = roleId
+    fun roleId(): Optional<String> = Optional.ofNullable(roleId)
 
     /**
      * A list of permissions to add to the role
@@ -143,14 +143,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [RoleUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .roleId()
-         * ```
-         */
+        @JvmStatic fun none(): RoleUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [RoleUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -171,7 +166,10 @@ private constructor(
         }
 
         /** Role id */
-        fun roleId(roleId: String) = apply { this.roleId = roleId }
+        fun roleId(roleId: String?) = apply { this.roleId = roleId }
+
+        /** Alias for calling [Builder.roleId] with `roleId.orElse(null)`. */
+        fun roleId(roleId: Optional<String>) = roleId(roleId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -460,17 +458,10 @@ private constructor(
          * Returns an immutable instance of [RoleUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .roleId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): RoleUpdateParams =
             RoleUpdateParams(
-                checkRequired("roleId", roleId),
+                roleId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -481,7 +472,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> roleId
+            0 -> roleId ?: ""
             else -> ""
         }
 

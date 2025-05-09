@@ -34,6 +34,17 @@ interface ViewService {
     ): View
 
     /** Get a view object by its id */
+    fun retrieve(viewId: String, params: ViewRetrieveParams): View =
+        retrieve(viewId, params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        viewId: String,
+        params: ViewRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): View = retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+    /** @see [retrieve] */
     fun retrieve(params: ViewRetrieveParams): View = retrieve(params, RequestOptions.none())
 
     /** @see [retrieve] */
@@ -47,6 +58,17 @@ interface ViewService {
      * fields will be deep-merged with existing content. Currently we do not support removing fields
      * or setting them to null.
      */
+    fun update(viewId: String, params: ViewUpdateParams): View =
+        update(viewId, params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        viewId: String,
+        params: ViewUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): View = update(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+    /** @see [update] */
     fun update(params: ViewUpdateParams): View = update(params, RequestOptions.none())
 
     /** @see [update] */
@@ -68,6 +90,17 @@ interface ViewService {
     ): ViewListPage
 
     /** Delete a view object by its id */
+    fun delete(viewId: String, params: ViewDeleteParams): View =
+        delete(viewId, params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(
+        viewId: String,
+        params: ViewDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): View = delete(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+    /** @see [delete] */
     fun delete(params: ViewDeleteParams): View = delete(params, RequestOptions.none())
 
     /** @see [delete] */
@@ -111,6 +144,20 @@ interface ViewService {
          * [ViewService.retrieve].
          */
         @MustBeClosed
+        fun retrieve(viewId: String, params: ViewRetrieveParams): HttpResponseFor<View> =
+            retrieve(viewId, params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            viewId: String,
+            params: ViewRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View> =
+            retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
         fun retrieve(params: ViewRetrieveParams): HttpResponseFor<View> =
             retrieve(params, RequestOptions.none())
 
@@ -125,6 +172,19 @@ interface ViewService {
          * Returns a raw HTTP response for `patch /v1/view/{view_id}`, but is otherwise the same as
          * [ViewService.update].
          */
+        @MustBeClosed
+        fun update(viewId: String, params: ViewUpdateParams): HttpResponseFor<View> =
+            update(viewId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            viewId: String,
+            params: ViewUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View> = update(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+        /** @see [update] */
         @MustBeClosed
         fun update(params: ViewUpdateParams): HttpResponseFor<View> =
             update(params, RequestOptions.none())
@@ -155,6 +215,19 @@ interface ViewService {
          * Returns a raw HTTP response for `delete /v1/view/{view_id}`, but is otherwise the same as
          * [ViewService.delete].
          */
+        @MustBeClosed
+        fun delete(viewId: String, params: ViewDeleteParams): HttpResponseFor<View> =
+            delete(viewId, params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            viewId: String,
+            params: ViewDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View> = delete(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+        /** @see [delete] */
         @MustBeClosed
         fun delete(params: ViewDeleteParams): HttpResponseFor<View> =
             delete(params, RequestOptions.none())

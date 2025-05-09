@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -33,6 +34,7 @@ import com.braintrustdata.api.models.FetchDatasetEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeDatasetResponse
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class DatasetServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     DatasetServiceAsync {
@@ -155,6 +157,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Dataset>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -184,6 +189,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Dataset>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -251,6 +259,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Dataset>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
@@ -282,6 +293,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetFeedbackParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -313,6 +327,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetFetchParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -343,6 +360,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetFetchPostParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -374,6 +394,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetInsertParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -405,6 +428,9 @@ class DatasetServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: DatasetSummarizeParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SummarizeDatasetResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("datasetId", params.datasetId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

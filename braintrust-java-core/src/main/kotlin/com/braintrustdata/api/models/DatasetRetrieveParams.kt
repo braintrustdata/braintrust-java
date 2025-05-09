@@ -3,21 +3,22 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get a dataset object by its id */
 class DatasetRetrieveParams
 private constructor(
-    private val datasetId: String,
+    private val datasetId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Dataset id */
-    fun datasetId(): String = datasetId
+    fun datasetId(): Optional<String> = Optional.ofNullable(datasetId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -27,14 +28,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [DatasetRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .datasetId()
-         * ```
-         */
+        @JvmStatic fun none(): DatasetRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [DatasetRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +49,10 @@ private constructor(
         }
 
         /** Dataset id */
-        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+        fun datasetId(datasetId: String?) = apply { this.datasetId = datasetId }
+
+        /** Alias for calling [Builder.datasetId] with `datasetId.orElse(null)`. */
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,17 +156,10 @@ private constructor(
          * Returns an immutable instance of [DatasetRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .datasetId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): DatasetRetrieveParams =
             DatasetRetrieveParams(
-                checkRequired("datasetId", datasetId),
+                datasetId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +167,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> datasetId
+            0 -> datasetId ?: ""
             else -> ""
         }
 

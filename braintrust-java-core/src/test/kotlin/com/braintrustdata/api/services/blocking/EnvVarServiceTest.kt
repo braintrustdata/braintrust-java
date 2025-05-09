@@ -5,11 +5,9 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.EnvVarCreateParams
-import com.braintrustdata.api.models.EnvVarDeleteParams
 import com.braintrustdata.api.models.EnvVarListParams
 import com.braintrustdata.api.models.EnvVarObjectType
 import com.braintrustdata.api.models.EnvVarReplaceParams
-import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -48,12 +46,7 @@ internal class EnvVarServiceTest {
                 .build()
         val envVarService = client.envVars()
 
-        val envVar =
-            envVarService.retrieve(
-                EnvVarRetrieveParams.builder()
-                    .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val envVar = envVarService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         envVar.validate()
     }
@@ -111,12 +104,7 @@ internal class EnvVarServiceTest {
                 .build()
         val envVarService = client.envVars()
 
-        val envVar =
-            envVarService.delete(
-                EnvVarDeleteParams.builder()
-                    .envVarId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val envVar = envVarService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         envVar.validate()
     }
