@@ -208,6 +208,7 @@ class RoleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                             .let {
                                 RoleListPageAsync.builder()
                                     .service(RoleServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

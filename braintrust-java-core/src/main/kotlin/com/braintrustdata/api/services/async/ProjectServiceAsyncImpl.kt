@@ -212,6 +212,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 ProjectListPageAsync.builder()
                                     .service(ProjectServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

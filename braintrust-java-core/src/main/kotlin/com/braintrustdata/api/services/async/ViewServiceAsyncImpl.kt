@@ -208,6 +208,7 @@ class ViewServiceAsyncImpl internal constructor(private val clientOptions: Clien
                             .let {
                                 ViewListPageAsync.builder()
                                     .service(ViewServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
