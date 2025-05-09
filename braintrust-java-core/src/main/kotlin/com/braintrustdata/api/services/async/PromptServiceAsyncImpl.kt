@@ -208,6 +208,7 @@ class PromptServiceAsyncImpl internal constructor(private val clientOptions: Cli
                             .let {
                                 PromptListPageAsync.builder()
                                     .service(PromptServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

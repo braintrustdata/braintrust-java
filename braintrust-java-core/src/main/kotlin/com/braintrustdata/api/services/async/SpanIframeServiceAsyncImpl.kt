@@ -208,6 +208,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 SpanIframeListPageAsync.builder()
                                     .service(SpanIframeServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

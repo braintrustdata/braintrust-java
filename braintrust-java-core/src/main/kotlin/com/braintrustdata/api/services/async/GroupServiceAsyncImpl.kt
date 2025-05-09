@@ -208,6 +208,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                             .let {
                                 GroupListPageAsync.builder()
                                     .service(GroupServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

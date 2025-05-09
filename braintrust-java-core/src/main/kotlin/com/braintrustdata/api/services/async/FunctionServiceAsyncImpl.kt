@@ -218,6 +218,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
                             .let {
                                 FunctionListPageAsync.builder()
                                     .service(FunctionServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

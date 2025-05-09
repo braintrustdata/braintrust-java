@@ -160,6 +160,7 @@ class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: Cli
                             .let {
                                 ApiKeyListPageAsync.builder()
                                     .service(ApiKeyServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

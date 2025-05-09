@@ -208,6 +208,7 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 ProjectTagListPageAsync.builder()
                                     .service(ProjectTagServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
