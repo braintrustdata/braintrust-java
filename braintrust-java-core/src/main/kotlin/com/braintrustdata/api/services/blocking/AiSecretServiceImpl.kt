@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -25,6 +26,7 @@ import com.braintrustdata.api.models.AiSecretListParams
 import com.braintrustdata.api.models.AiSecretReplaceParams
 import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
+import kotlin.jvm.optionals.getOrNull
 
 class AiSecretServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     AiSecretService {
@@ -111,6 +113,9 @@ class AiSecretServiceImpl internal constructor(private val clientOptions: Client
             params: AiSecretRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<AISecret> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aiSecretId", params.aiSecretId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -137,6 +142,9 @@ class AiSecretServiceImpl internal constructor(private val clientOptions: Client
             params: AiSecretUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<AISecret> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aiSecretId", params.aiSecretId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -198,6 +206,9 @@ class AiSecretServiceImpl internal constructor(private val clientOptions: Client
             params: AiSecretDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<AISecret> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aiSecretId", params.aiSecretId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

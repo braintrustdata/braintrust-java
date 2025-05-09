@@ -41,14 +41,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class FunctionUpdateParams
 private constructor(
-    private val functionId: String,
+    private val functionId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Function id */
-    fun functionId(): String = functionId
+    fun functionId(): Optional<String> = Optional.ofNullable(functionId)
 
     /**
      * Textual description of the prompt
@@ -133,14 +133,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [FunctionUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .functionId()
-         * ```
-         */
+        @JvmStatic fun none(): FunctionUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [FunctionUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -161,7 +156,10 @@ private constructor(
         }
 
         /** Function id */
-        fun functionId(functionId: String) = apply { this.functionId = functionId }
+        fun functionId(functionId: String?) = apply { this.functionId = functionId }
+
+        /** Alias for calling [Builder.functionId] with `functionId.orElse(null)`. */
+        fun functionId(functionId: Optional<String>) = functionId(functionId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -390,17 +388,10 @@ private constructor(
          * Returns an immutable instance of [FunctionUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .functionId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): FunctionUpdateParams =
             FunctionUpdateParams(
-                checkRequired("functionId", functionId),
+                functionId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -411,7 +402,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> functionId
+            0 -> functionId ?: ""
             else -> ""
         }
 

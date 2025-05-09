@@ -8,9 +8,7 @@ import com.braintrustdata.api.models.OnlineScoreConfig
 import com.braintrustdata.api.models.ProjectScoreCategory
 import com.braintrustdata.api.models.ProjectScoreConfig
 import com.braintrustdata.api.models.ProjectScoreCreateParams
-import com.braintrustdata.api.models.ProjectScoreDeleteParams
 import com.braintrustdata.api.models.ProjectScoreReplaceParams
-import com.braintrustdata.api.models.ProjectScoreRetrieveParams
 import com.braintrustdata.api.models.ProjectScoreType
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
 import org.junit.jupiter.api.Test
@@ -72,12 +70,7 @@ internal class ProjectScoreServiceTest {
                 .build()
         val projectScoreService = client.projectScores()
 
-        val projectScore =
-            projectScoreService.retrieve(
-                ProjectScoreRetrieveParams.builder()
-                    .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val projectScore = projectScoreService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         projectScore.validate()
     }
@@ -149,12 +142,7 @@ internal class ProjectScoreServiceTest {
                 .build()
         val projectScoreService = client.projectScores()
 
-        val projectScore =
-            projectScoreService.delete(
-                ProjectScoreDeleteParams.builder()
-                    .projectScoreId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val projectScore = projectScoreService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         projectScore.validate()
     }

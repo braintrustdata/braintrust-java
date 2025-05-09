@@ -4,7 +4,6 @@ package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
-import com.braintrustdata.api.models.UserRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,10 +19,7 @@ internal class UserServiceAsyncTest {
                 .build()
         val userServiceAsync = client.users()
 
-        val userFuture =
-            userServiceAsync.retrieve(
-                UserRetrieveParams.builder().userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val userFuture = userServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val user = userFuture.get()
         user.validate()

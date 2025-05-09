@@ -19,19 +19,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Log feedback for a set of project logs events */
 class ProjectLogFeedbackParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Project id */
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /**
      * A list of project logs feedback items
@@ -63,7 +64,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .projectId()
          * .feedback()
          * ```
          */
@@ -87,7 +87,10 @@ private constructor(
         }
 
         /** Project id */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -243,7 +246,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .projectId()
          * .feedback()
          * ```
          *
@@ -251,7 +253,7 @@ private constructor(
          */
         fun build(): ProjectLogFeedbackParams =
             ProjectLogFeedbackParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -262,7 +264,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 

@@ -4,24 +4,24 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a project_score object by its id */
 class ProjectScoreDeleteParams
 private constructor(
-    private val projectScoreId: String,
+    private val projectScoreId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** ProjectScore id */
-    fun projectScoreId(): String = projectScoreId
+    fun projectScoreId(): Optional<String> = Optional.ofNullable(projectScoreId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -33,14 +33,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectScoreDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectScoreDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectScoreDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -62,7 +57,11 @@ private constructor(
         }
 
         /** ProjectScore id */
-        fun projectScoreId(projectScoreId: String) = apply { this.projectScoreId = projectScoreId }
+        fun projectScoreId(projectScoreId: String?) = apply { this.projectScoreId = projectScoreId }
+
+        /** Alias for calling [Builder.projectScoreId] with `projectScoreId.orElse(null)`. */
+        fun projectScoreId(projectScoreId: Optional<String>) =
+            projectScoreId(projectScoreId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -188,17 +187,10 @@ private constructor(
          * Returns an immutable instance of [ProjectScoreDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectScoreDeleteParams =
             ProjectScoreDeleteParams(
-                checkRequired("projectScoreId", projectScoreId),
+                projectScoreId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -210,7 +202,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectScoreId
+            0 -> projectScoreId ?: ""
             else -> ""
         }
 

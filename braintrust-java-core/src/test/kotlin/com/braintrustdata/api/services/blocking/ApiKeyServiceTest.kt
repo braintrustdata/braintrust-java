@@ -5,8 +5,6 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.ApiKeyCreateParams
-import com.braintrustdata.api.models.ApiKeyDeleteParams
-import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -39,12 +37,7 @@ internal class ApiKeyServiceTest {
                 .build()
         val apiKeyService = client.apiKeys()
 
-        val apiKey =
-            apiKeyService.retrieve(
-                ApiKeyRetrieveParams.builder()
-                    .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val apiKey = apiKeyService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         apiKey.validate()
     }
@@ -72,12 +65,7 @@ internal class ApiKeyServiceTest {
                 .build()
         val apiKeyService = client.apiKeys()
 
-        val apiKey =
-            apiKeyService.delete(
-                ApiKeyDeleteParams.builder()
-                    .apiKeyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val apiKey = apiKeyService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         apiKey.validate()
     }
