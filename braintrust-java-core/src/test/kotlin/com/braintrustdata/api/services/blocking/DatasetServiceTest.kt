@@ -6,12 +6,10 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.DatasetCreateParams
-import com.braintrustdata.api.models.DatasetDeleteParams
 import com.braintrustdata.api.models.DatasetFeedbackParams
 import com.braintrustdata.api.models.DatasetFetchParams
 import com.braintrustdata.api.models.DatasetFetchPostParams
 import com.braintrustdata.api.models.DatasetInsertParams
-import com.braintrustdata.api.models.DatasetRetrieveParams
 import com.braintrustdata.api.models.DatasetSummarizeParams
 import com.braintrustdata.api.models.DatasetUpdateParams
 import com.braintrustdata.api.models.FeedbackDatasetItem
@@ -59,12 +57,7 @@ internal class DatasetServiceTest {
                 .build()
         val datasetService = client.datasets()
 
-        val dataset =
-            datasetService.retrieve(
-                DatasetRetrieveParams.builder()
-                    .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val dataset = datasetService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         dataset.validate()
     }
@@ -118,12 +111,7 @@ internal class DatasetServiceTest {
                 .build()
         val datasetService = client.datasets()
 
-        val dataset =
-            datasetService.delete(
-                DatasetDeleteParams.builder()
-                    .datasetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val dataset = datasetService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         dataset.validate()
     }

@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.10.0 (2025-05-22)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/braintrustdata/braintrust-java/compare/v0.9.0...v0.10.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - `AutoPagerAsync` now has different usage. You can call `.subscribe(...)` on the returned object instead to get called back each page item. You can also call `onCompleteFuture()` to get a future that completes when all items have been processed. Finally, you can call `.close()` on the returned object to stop auto-paginating early
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-optional types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* **client:** allow providing some params positionally ([decbdbc](https://github.com/braintrustdata/braintrust-java/commit/decbdbcb64f695324a84e992c1c5abec39d01061))
+* **client:** extract auto pagination to shared classes ([e9248c0](https://github.com/braintrustdata/braintrust-java/commit/e9248c0543f113372cafa9518da4afa861154ec8))
+
+
+### Chores
+
+* **ci:** only use depot for staging repos ([fc25618](https://github.com/braintrustdata/braintrust-java/commit/fc25618f693dd09f1de17b6c53a479fac1863b03))
+* **docs:** grammar improvements ([f8dd702](https://github.com/braintrustdata/braintrust-java/commit/f8dd702521b2400d82bacafeba88cc85cb7e94f2))
+* **internal:** codegen related update ([ee51402](https://github.com/braintrustdata/braintrust-java/commit/ee51402c535e190bc5800086e02f7c184f1d7d9b))
+* **internal:** java 17 -&gt; 21 on ci ([fc13394](https://github.com/braintrustdata/braintrust-java/commit/fc13394a9cf52b353036f153e2cf5a0f53343750))
+* **internal:** remove flaky `-Xbackend-threads=0` option ([96fdae2](https://github.com/braintrustdata/braintrust-java/commit/96fdae2700801166f887a8195e36029ee15d4aa3))
+* **internal:** update java toolchain ([7c8e53c](https://github.com/braintrustdata/braintrust-java/commit/7c8e53c86b4733074c59ca9de3d8a7fb63070350))
+
 ## 0.9.0 (2025-04-23)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/braintrustdata/braintrust-java/compare/v0.8.0...v0.9.0)

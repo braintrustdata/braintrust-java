@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
@@ -28,14 +27,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ExperimentUpdateParams
 private constructor(
-    private val experimentId: String,
+    private val experimentId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Experiment id */
-    fun experimentId(): String = experimentId
+    fun experimentId(): Optional<String> = Optional.ofNullable(experimentId)
 
     /**
      * Id of default base experiment to compare against when viewing this experiment
@@ -169,14 +168,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ExperimentUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         */
+        @JvmStatic fun none(): ExperimentUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ExperimentUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -197,7 +191,10 @@ private constructor(
         }
 
         /** Experiment id */
-        fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
+        fun experimentId(experimentId: String?) = apply { this.experimentId = experimentId }
+
+        /** Alias for calling [Builder.experimentId] with `experimentId.orElse(null)`. */
+        fun experimentId(experimentId: Optional<String>) = experimentId(experimentId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -470,17 +467,10 @@ private constructor(
          * Returns an immutable instance of [ExperimentUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ExperimentUpdateParams =
             ExperimentUpdateParams(
-                checkRequired("experimentId", experimentId),
+                experimentId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -491,7 +481,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> experimentId
+            0 -> experimentId ?: ""
             else -> ""
         }
 

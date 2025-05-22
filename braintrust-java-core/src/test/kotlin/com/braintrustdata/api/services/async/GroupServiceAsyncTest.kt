@@ -5,9 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.GroupCreateParams
-import com.braintrustdata.api.models.GroupDeleteParams
 import com.braintrustdata.api.models.GroupReplaceParams
-import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -48,12 +46,7 @@ internal class GroupServiceAsyncTest {
                 .build()
         val groupServiceAsync = client.groups()
 
-        val groupFuture =
-            groupServiceAsync.retrieve(
-                GroupRetrieveParams.builder()
-                    .groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val groupFuture = groupServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val group = groupFuture.get()
         group.validate()
@@ -109,10 +102,7 @@ internal class GroupServiceAsyncTest {
                 .build()
         val groupServiceAsync = client.groups()
 
-        val groupFuture =
-            groupServiceAsync.delete(
-                GroupDeleteParams.builder().groupId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val groupFuture = groupServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val group = groupFuture.get()
         group.validate()

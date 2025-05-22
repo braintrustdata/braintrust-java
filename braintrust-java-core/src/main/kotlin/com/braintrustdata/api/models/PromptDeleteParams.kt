@@ -4,24 +4,24 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a prompt object by its id */
 class PromptDeleteParams
 private constructor(
-    private val promptId: String,
+    private val promptId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** Prompt id */
-    fun promptId(): String = promptId
+    fun promptId(): Optional<String> = Optional.ofNullable(promptId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -33,14 +33,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [PromptDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .promptId()
-         * ```
-         */
+        @JvmStatic fun none(): PromptDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [PromptDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -61,7 +56,10 @@ private constructor(
         }
 
         /** Prompt id */
-        fun promptId(promptId: String) = apply { this.promptId = promptId }
+        fun promptId(promptId: String?) = apply { this.promptId = promptId }
+
+        /** Alias for calling [Builder.promptId] with `promptId.orElse(null)`. */
+        fun promptId(promptId: Optional<String>) = promptId(promptId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -187,17 +185,10 @@ private constructor(
          * Returns an immutable instance of [PromptDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .promptId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PromptDeleteParams =
             PromptDeleteParams(
-                checkRequired("promptId", promptId),
+                promptId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -209,7 +200,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> promptId
+            0 -> promptId ?: ""
             else -> ""
         }
 

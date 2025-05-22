@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -26,6 +27,7 @@ import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import com.braintrustdata.api.services.async.projects.LogServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectServiceAsync {
@@ -123,6 +125,9 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: ProjectRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Project>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -152,6 +157,9 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: ProjectUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Project>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -204,6 +212,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 ProjectListPageAsync.builder()
                                     .service(ProjectServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -219,6 +228,9 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: ProjectDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Project>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

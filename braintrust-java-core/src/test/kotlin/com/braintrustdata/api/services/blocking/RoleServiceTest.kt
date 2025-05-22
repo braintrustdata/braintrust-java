@@ -7,9 +7,7 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.AclObjectType
 import com.braintrustdata.api.models.Permission
 import com.braintrustdata.api.models.RoleCreateParams
-import com.braintrustdata.api.models.RoleDeleteParams
 import com.braintrustdata.api.models.RoleReplaceParams
-import com.braintrustdata.api.models.RoleRetrieveParams
 import com.braintrustdata.api.models.RoleUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -54,10 +52,7 @@ internal class RoleServiceTest {
                 .build()
         val roleService = client.roles()
 
-        val role =
-            roleService.retrieve(
-                RoleRetrieveParams.builder().roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val role = roleService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         role.validate()
     }
@@ -120,10 +115,7 @@ internal class RoleServiceTest {
                 .build()
         val roleService = client.roles()
 
-        val role =
-            roleService.delete(
-                RoleDeleteParams.builder().roleId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val role = roleService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         role.validate()
     }

@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -27,6 +28,7 @@ import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class FunctionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     FunctionService {
@@ -113,6 +115,9 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
             params: FunctionRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Function> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("functionId", params.functionId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -139,6 +144,9 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
             params: FunctionUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Function> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("functionId", params.functionId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -200,6 +208,9 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
             params: FunctionDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Function> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("functionId", params.functionId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
@@ -228,6 +239,9 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
             params: FunctionInvokeParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Optional<FunctionInvokeResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("functionId", params.functionId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

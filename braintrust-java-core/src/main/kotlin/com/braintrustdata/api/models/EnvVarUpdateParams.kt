@@ -27,14 +27,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class EnvVarUpdateParams
 private constructor(
-    private val envVarId: String,
+    private val envVarId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** EnvVar id */
-    fun envVarId(): String = envVarId
+    fun envVarId(): Optional<String> = Optional.ofNullable(envVarId)
 
     /**
      * The name of the environment variable
@@ -81,7 +81,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .envVarId()
          * .name()
          * ```
          */
@@ -105,7 +104,10 @@ private constructor(
         }
 
         /** EnvVar id */
-        fun envVarId(envVarId: String) = apply { this.envVarId = envVarId }
+        fun envVarId(envVarId: String?) = apply { this.envVarId = envVarId }
+
+        /** Alias for calling [Builder.envVarId] with `envVarId.orElse(null)`. */
+        fun envVarId(envVarId: Optional<String>) = envVarId(envVarId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -266,7 +268,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .envVarId()
          * .name()
          * ```
          *
@@ -274,7 +275,7 @@ private constructor(
          */
         fun build(): EnvVarUpdateParams =
             EnvVarUpdateParams(
-                checkRequired("envVarId", envVarId),
+                envVarId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -285,7 +286,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> envVarId
+            0 -> envVarId ?: ""
             else -> ""
         }
 

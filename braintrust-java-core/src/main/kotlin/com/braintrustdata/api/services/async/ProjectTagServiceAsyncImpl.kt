@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -25,6 +26,7 @@ import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectTagServiceAsync {
@@ -119,6 +121,9 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
             params: ProjectTagRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ProjectTag>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectTagId", params.projectTagId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -148,6 +153,9 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
             params: ProjectTagUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ProjectTag>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectTagId", params.projectTagId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -200,6 +208,7 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 ProjectTagListPageAsync.builder()
                                     .service(ProjectTagServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -215,6 +224,9 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
             params: ProjectTagDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ProjectTag>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectTagId", params.projectTagId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

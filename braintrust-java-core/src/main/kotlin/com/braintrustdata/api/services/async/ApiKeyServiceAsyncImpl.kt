@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -24,6 +25,7 @@ import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ApiKeyServiceAsync {
@@ -104,6 +106,9 @@ class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: Cli
             params: ApiKeyRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ApiKey>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("apiKeyId", params.apiKeyId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -155,6 +160,7 @@ class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: Cli
                             .let {
                                 ApiKeyListPageAsync.builder()
                                     .service(ApiKeyServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -170,6 +176,9 @@ class ApiKeyServiceAsyncImpl internal constructor(private val clientOptions: Cli
             params: ApiKeyDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ApiKey>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("apiKeyId", params.apiKeyId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

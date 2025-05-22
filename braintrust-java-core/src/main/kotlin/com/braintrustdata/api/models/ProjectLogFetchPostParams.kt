@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
@@ -27,14 +26,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ProjectLogFetchPostParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Project id */
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /**
      * An opaque string to be used as a cursor for the next page of results, in order from latest to
@@ -156,13 +155,10 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): ProjectLogFetchPostParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [ProjectLogFetchPostParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -184,7 +180,10 @@ private constructor(
         }
 
         /** Project id */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -450,17 +449,10 @@ private constructor(
          * Returns an immutable instance of [ProjectLogFetchPostParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectLogFetchPostParams =
             ProjectLogFetchPostParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -471,7 +463,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 

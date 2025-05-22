@@ -5,6 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
 import com.braintrustdata.api.core.handlers.withErrorHandler
@@ -23,6 +24,7 @@ import com.braintrustdata.api.models.ApiKeyListPageResponse
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
+import kotlin.jvm.optionals.getOrNull
 
 class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ApiKeyService {
@@ -91,6 +93,9 @@ class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOp
             params: ApiKeyRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ApiKey> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("apiKeyId", params.apiKeyId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -151,6 +156,9 @@ class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOp
             params: ApiKeyDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ApiKey> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("apiKeyId", params.apiKeyId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
