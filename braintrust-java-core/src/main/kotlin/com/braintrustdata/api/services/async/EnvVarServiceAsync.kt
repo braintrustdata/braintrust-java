@@ -12,7 +12,6 @@ import com.braintrustdata.api.models.EnvVarListResponse
 import com.braintrustdata.api.models.EnvVarReplaceParams
 import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface EnvVarServiceAsync {
@@ -168,12 +167,10 @@ interface EnvVarServiceAsync {
          * Returns a raw HTTP response for `post /v1/env_var`, but is otherwise the same as
          * [EnvVarServiceAsync.create].
          */
-        @MustBeClosed
         fun create(params: EnvVarCreateParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: EnvVarCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -183,12 +180,10 @@ interface EnvVarServiceAsync {
          * Returns a raw HTTP response for `get /v1/env_var/{env_var_id}`, but is otherwise the same
          * as [EnvVarServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(envVarId: String): CompletableFuture<HttpResponseFor<EnvVar>> =
             retrieve(envVarId, EnvVarRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             envVarId: String,
             params: EnvVarRetrieveParams = EnvVarRetrieveParams.none(),
@@ -197,7 +192,6 @@ interface EnvVarServiceAsync {
             retrieve(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             envVarId: String,
             params: EnvVarRetrieveParams = EnvVarRetrieveParams.none(),
@@ -205,19 +199,16 @@ interface EnvVarServiceAsync {
             retrieve(envVarId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: EnvVarRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EnvVar>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: EnvVarRetrieveParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             envVarId: String,
             requestOptions: RequestOptions,
@@ -228,7 +219,6 @@ interface EnvVarServiceAsync {
          * Returns a raw HTTP response for `patch /v1/env_var/{env_var_id}`, but is otherwise the
          * same as [EnvVarServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             envVarId: String,
             params: EnvVarUpdateParams,
@@ -236,7 +226,6 @@ interface EnvVarServiceAsync {
             update(envVarId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             envVarId: String,
             params: EnvVarUpdateParams,
@@ -245,12 +234,10 @@ interface EnvVarServiceAsync {
             update(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(params: EnvVarUpdateParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: EnvVarUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -260,26 +247,22 @@ interface EnvVarServiceAsync {
          * Returns a raw HTTP response for `get /v1/env_var`, but is otherwise the same as
          * [EnvVarServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<EnvVarListResponse>> =
             list(EnvVarListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: EnvVarListParams = EnvVarListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EnvVarListResponse>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: EnvVarListParams = EnvVarListParams.none()
         ): CompletableFuture<HttpResponseFor<EnvVarListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<EnvVarListResponse>> =
@@ -289,12 +272,10 @@ interface EnvVarServiceAsync {
          * Returns a raw HTTP response for `delete /v1/env_var/{env_var_id}`, but is otherwise the
          * same as [EnvVarServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(envVarId: String): CompletableFuture<HttpResponseFor<EnvVar>> =
             delete(envVarId, EnvVarDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             envVarId: String,
             params: EnvVarDeleteParams = EnvVarDeleteParams.none(),
@@ -303,7 +284,6 @@ interface EnvVarServiceAsync {
             delete(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             envVarId: String,
             params: EnvVarDeleteParams = EnvVarDeleteParams.none(),
@@ -311,19 +291,16 @@ interface EnvVarServiceAsync {
             delete(envVarId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: EnvVarDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EnvVar>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: EnvVarDeleteParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             envVarId: String,
             requestOptions: RequestOptions,
@@ -334,12 +311,10 @@ interface EnvVarServiceAsync {
          * Returns a raw HTTP response for `put /v1/env_var`, but is otherwise the same as
          * [EnvVarServiceAsync.replace].
          */
-        @MustBeClosed
         fun replace(params: EnvVarReplaceParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             replace(params, RequestOptions.none())
 
         /** @see [replace] */
-        @MustBeClosed
         fun replace(
             params: EnvVarReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

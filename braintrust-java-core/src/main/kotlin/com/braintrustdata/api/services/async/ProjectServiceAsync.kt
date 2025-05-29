@@ -12,7 +12,6 @@ import com.braintrustdata.api.models.ProjectListParams
 import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ProjectServiceAsync {
@@ -169,12 +168,10 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `post /v1/project`, but is otherwise the same as
          * [ProjectServiceAsync.create].
          */
-        @MustBeClosed
         fun create(params: ProjectCreateParams): CompletableFuture<HttpResponseFor<Project>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: ProjectCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -184,12 +181,10 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `get /v1/project/{project_id}`, but is otherwise the same
          * as [ProjectServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(projectId: String): CompletableFuture<HttpResponseFor<Project>> =
             retrieve(projectId, ProjectRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectId: String,
             params: ProjectRetrieveParams = ProjectRetrieveParams.none(),
@@ -198,7 +193,6 @@ interface ProjectServiceAsync {
             retrieve(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectId: String,
             params: ProjectRetrieveParams = ProjectRetrieveParams.none(),
@@ -206,19 +200,16 @@ interface ProjectServiceAsync {
             retrieve(projectId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ProjectRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Project>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: ProjectRetrieveParams): CompletableFuture<HttpResponseFor<Project>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectId: String,
             requestOptions: RequestOptions,
@@ -229,12 +220,10 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `patch /v1/project/{project_id}`, but is otherwise the
          * same as [ProjectServiceAsync.update].
          */
-        @MustBeClosed
         fun update(projectId: String): CompletableFuture<HttpResponseFor<Project>> =
             update(projectId, ProjectUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectId: String,
             params: ProjectUpdateParams = ProjectUpdateParams.none(),
@@ -243,7 +232,6 @@ interface ProjectServiceAsync {
             update(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectId: String,
             params: ProjectUpdateParams = ProjectUpdateParams.none(),
@@ -251,19 +239,16 @@ interface ProjectServiceAsync {
             update(projectId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: ProjectUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Project>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(params: ProjectUpdateParams): CompletableFuture<HttpResponseFor<Project>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectId: String,
             requestOptions: RequestOptions,
@@ -274,26 +259,22 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `get /v1/project`, but is otherwise the same as
          * [ProjectServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
             list(ProjectListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none()
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
@@ -303,12 +284,10 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `delete /v1/project/{project_id}`, but is otherwise the
          * same as [ProjectServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(projectId: String): CompletableFuture<HttpResponseFor<Project>> =
             delete(projectId, ProjectDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             projectId: String,
             params: ProjectDeleteParams = ProjectDeleteParams.none(),
@@ -317,7 +296,6 @@ interface ProjectServiceAsync {
             delete(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             projectId: String,
             params: ProjectDeleteParams = ProjectDeleteParams.none(),
@@ -325,19 +303,16 @@ interface ProjectServiceAsync {
             delete(projectId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: ProjectDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Project>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: ProjectDeleteParams): CompletableFuture<HttpResponseFor<Project>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             projectId: String,
             requestOptions: RequestOptions,

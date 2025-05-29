@@ -11,7 +11,6 @@ import com.braintrustdata.api.models.ApiKeyListPageAsync
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ApiKeyServiceAsync {
@@ -128,14 +127,12 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `post /v1/api_key`, but is otherwise the same as
          * [ApiKeyServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: ApiKeyCreateParams
         ): CompletableFuture<HttpResponseFor<CreateApiKeyOutput>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: ApiKeyCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -145,12 +142,10 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `get /v1/api_key/{api_key_id}`, but is otherwise the same
          * as [ApiKeyServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(apiKeyId: String): CompletableFuture<HttpResponseFor<ApiKey>> =
             retrieve(apiKeyId, ApiKeyRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             apiKeyId: String,
             params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
@@ -159,7 +154,6 @@ interface ApiKeyServiceAsync {
             retrieve(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             apiKeyId: String,
             params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
@@ -167,19 +161,16 @@ interface ApiKeyServiceAsync {
             retrieve(apiKeyId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ApiKeyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<HttpResponseFor<ApiKey>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             apiKeyId: String,
             requestOptions: RequestOptions,
@@ -190,26 +181,22 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `get /v1/api_key`, but is otherwise the same as
          * [ApiKeyServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
             list(ApiKeyListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ApiKeyListParams = ApiKeyListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ApiKeyListParams = ApiKeyListParams.none()
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
@@ -219,12 +206,10 @@ interface ApiKeyServiceAsync {
          * Returns a raw HTTP response for `delete /v1/api_key/{api_key_id}`, but is otherwise the
          * same as [ApiKeyServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(apiKeyId: String): CompletableFuture<HttpResponseFor<ApiKey>> =
             delete(apiKeyId, ApiKeyDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             apiKeyId: String,
             params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
@@ -233,7 +218,6 @@ interface ApiKeyServiceAsync {
             delete(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             apiKeyId: String,
             params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
@@ -241,19 +225,16 @@ interface ApiKeyServiceAsync {
             delete(apiKeyId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: ApiKeyDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: ApiKeyDeleteParams): CompletableFuture<HttpResponseFor<ApiKey>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             apiKeyId: String,
             requestOptions: RequestOptions,

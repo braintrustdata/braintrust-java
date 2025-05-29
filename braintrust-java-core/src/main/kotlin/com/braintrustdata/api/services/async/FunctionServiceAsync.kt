@@ -14,7 +14,6 @@ import com.braintrustdata.api.models.FunctionListParams
 import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
@@ -218,12 +217,10 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `post /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.create].
          */
-        @MustBeClosed
         fun create(params: FunctionCreateParams): CompletableFuture<HttpResponseFor<Function>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: FunctionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -233,12 +230,10 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `get /v1/function/{function_id}`, but is otherwise the
          * same as [FunctionServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(functionId: String): CompletableFuture<HttpResponseFor<Function>> =
             retrieve(functionId, FunctionRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             functionId: String,
             params: FunctionRetrieveParams = FunctionRetrieveParams.none(),
@@ -247,7 +242,6 @@ interface FunctionServiceAsync {
             retrieve(params.toBuilder().functionId(functionId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             functionId: String,
             params: FunctionRetrieveParams = FunctionRetrieveParams.none(),
@@ -255,19 +249,16 @@ interface FunctionServiceAsync {
             retrieve(functionId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: FunctionRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Function>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: FunctionRetrieveParams): CompletableFuture<HttpResponseFor<Function>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             functionId: String,
             requestOptions: RequestOptions,
@@ -278,12 +269,10 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `patch /v1/function/{function_id}`, but is otherwise the
          * same as [FunctionServiceAsync.update].
          */
-        @MustBeClosed
         fun update(functionId: String): CompletableFuture<HttpResponseFor<Function>> =
             update(functionId, FunctionUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             functionId: String,
             params: FunctionUpdateParams = FunctionUpdateParams.none(),
@@ -292,7 +281,6 @@ interface FunctionServiceAsync {
             update(params.toBuilder().functionId(functionId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             functionId: String,
             params: FunctionUpdateParams = FunctionUpdateParams.none(),
@@ -300,19 +288,16 @@ interface FunctionServiceAsync {
             update(functionId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: FunctionUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Function>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(params: FunctionUpdateParams): CompletableFuture<HttpResponseFor<Function>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             functionId: String,
             requestOptions: RequestOptions,
@@ -323,26 +308,22 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `get /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
             list(FunctionListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: FunctionListParams = FunctionListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: FunctionListParams = FunctionListParams.none()
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
@@ -352,12 +333,10 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `delete /v1/function/{function_id}`, but is otherwise the
          * same as [FunctionServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(functionId: String): CompletableFuture<HttpResponseFor<Function>> =
             delete(functionId, FunctionDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             functionId: String,
             params: FunctionDeleteParams = FunctionDeleteParams.none(),
@@ -366,7 +345,6 @@ interface FunctionServiceAsync {
             delete(params.toBuilder().functionId(functionId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             functionId: String,
             params: FunctionDeleteParams = FunctionDeleteParams.none(),
@@ -374,19 +352,16 @@ interface FunctionServiceAsync {
             delete(functionId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: FunctionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Function>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: FunctionDeleteParams): CompletableFuture<HttpResponseFor<Function>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             functionId: String,
             requestOptions: RequestOptions,
@@ -397,14 +372,12 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `post /v1/function/{function_id}/invoke`, but is
          * otherwise the same as [FunctionServiceAsync.invoke].
          */
-        @MustBeClosed
         fun invoke(
             functionId: String
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
             invoke(functionId, FunctionInvokeParams.none())
 
         /** @see [invoke] */
-        @MustBeClosed
         fun invoke(
             functionId: String,
             params: FunctionInvokeParams = FunctionInvokeParams.none(),
@@ -413,7 +386,6 @@ interface FunctionServiceAsync {
             invoke(params.toBuilder().functionId(functionId).build(), requestOptions)
 
         /** @see [invoke] */
-        @MustBeClosed
         fun invoke(
             functionId: String,
             params: FunctionInvokeParams = FunctionInvokeParams.none(),
@@ -421,21 +393,18 @@ interface FunctionServiceAsync {
             invoke(functionId, params, RequestOptions.none())
 
         /** @see [invoke] */
-        @MustBeClosed
         fun invoke(
             params: FunctionInvokeParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>>
 
         /** @see [invoke] */
-        @MustBeClosed
         fun invoke(
             params: FunctionInvokeParams
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
             invoke(params, RequestOptions.none())
 
         /** @see [invoke] */
-        @MustBeClosed
         fun invoke(
             functionId: String,
             requestOptions: RequestOptions,
@@ -446,12 +415,10 @@ interface FunctionServiceAsync {
          * Returns a raw HTTP response for `put /v1/function`, but is otherwise the same as
          * [FunctionServiceAsync.replace].
          */
-        @MustBeClosed
         fun replace(params: FunctionReplaceParams): CompletableFuture<HttpResponseFor<Function>> =
             replace(params, RequestOptions.none())
 
         /** @see [replace] */
-        @MustBeClosed
         fun replace(
             params: FunctionReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),
