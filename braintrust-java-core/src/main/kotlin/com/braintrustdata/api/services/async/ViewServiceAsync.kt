@@ -12,7 +12,6 @@ import com.braintrustdata.api.models.ViewListParams
 import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ViewServiceAsync {
@@ -135,12 +134,10 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `post /v1/view`, but is otherwise the same as
          * [ViewServiceAsync.create].
          */
-        @MustBeClosed
         fun create(params: ViewCreateParams): CompletableFuture<HttpResponseFor<View>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: ViewCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -150,7 +147,6 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `get /v1/view/{view_id}`, but is otherwise the same as
          * [ViewServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(
             viewId: String,
             params: ViewRetrieveParams,
@@ -158,7 +154,6 @@ interface ViewServiceAsync {
             retrieve(viewId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             viewId: String,
             params: ViewRetrieveParams,
@@ -167,12 +162,10 @@ interface ViewServiceAsync {
             retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: ViewRetrieveParams): CompletableFuture<HttpResponseFor<View>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ViewRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -182,14 +175,12 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `patch /v1/view/{view_id}`, but is otherwise the same as
          * [ViewServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             viewId: String,
             params: ViewUpdateParams,
         ): CompletableFuture<HttpResponseFor<View>> = update(viewId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             viewId: String,
             params: ViewUpdateParams,
@@ -198,12 +189,10 @@ interface ViewServiceAsync {
             update(params.toBuilder().viewId(viewId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(params: ViewUpdateParams): CompletableFuture<HttpResponseFor<View>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: ViewUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -213,12 +202,10 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `get /v1/view`, but is otherwise the same as
          * [ViewServiceAsync.list].
          */
-        @MustBeClosed
         fun list(params: ViewListParams): CompletableFuture<HttpResponseFor<ViewListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ViewListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -228,14 +215,12 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `delete /v1/view/{view_id}`, but is otherwise the same as
          * [ViewServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(
             viewId: String,
             params: ViewDeleteParams,
         ): CompletableFuture<HttpResponseFor<View>> = delete(viewId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             viewId: String,
             params: ViewDeleteParams,
@@ -244,12 +229,10 @@ interface ViewServiceAsync {
             delete(params.toBuilder().viewId(viewId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: ViewDeleteParams): CompletableFuture<HttpResponseFor<View>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: ViewDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -259,12 +242,10 @@ interface ViewServiceAsync {
          * Returns a raw HTTP response for `put /v1/view`, but is otherwise the same as
          * [ViewServiceAsync.replace].
          */
-        @MustBeClosed
         fun replace(params: ViewReplaceParams): CompletableFuture<HttpResponseFor<View>> =
             replace(params, RequestOptions.none())
 
         /** @see [replace] */
-        @MustBeClosed
         fun replace(
             params: ViewReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

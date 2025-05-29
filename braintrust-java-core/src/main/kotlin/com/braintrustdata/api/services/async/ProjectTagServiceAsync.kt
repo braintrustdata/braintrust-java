@@ -12,7 +12,6 @@ import com.braintrustdata.api.models.ProjectTagListParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface ProjectTagServiceAsync {
@@ -189,12 +188,10 @@ interface ProjectTagServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_tag`, but is otherwise the same as
          * [ProjectTagServiceAsync.create].
          */
-        @MustBeClosed
         fun create(params: ProjectTagCreateParams): CompletableFuture<HttpResponseFor<ProjectTag>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: ProjectTagCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -204,12 +201,10 @@ interface ProjectTagServiceAsync {
          * Returns a raw HTTP response for `get /v1/project_tag/{project_tag_id}`, but is otherwise
          * the same as [ProjectTagServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(projectTagId: String): CompletableFuture<HttpResponseFor<ProjectTag>> =
             retrieve(projectTagId, ProjectTagRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectTagId: String,
             params: ProjectTagRetrieveParams = ProjectTagRetrieveParams.none(),
@@ -218,7 +213,6 @@ interface ProjectTagServiceAsync {
             retrieve(params.toBuilder().projectTagId(projectTagId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectTagId: String,
             params: ProjectTagRetrieveParams = ProjectTagRetrieveParams.none(),
@@ -226,20 +220,17 @@ interface ProjectTagServiceAsync {
             retrieve(projectTagId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ProjectTagRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectTag>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ProjectTagRetrieveParams
         ): CompletableFuture<HttpResponseFor<ProjectTag>> = retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectTagId: String,
             requestOptions: RequestOptions,
@@ -250,12 +241,10 @@ interface ProjectTagServiceAsync {
          * Returns a raw HTTP response for `patch /v1/project_tag/{project_tag_id}`, but is
          * otherwise the same as [ProjectTagServiceAsync.update].
          */
-        @MustBeClosed
         fun update(projectTagId: String): CompletableFuture<HttpResponseFor<ProjectTag>> =
             update(projectTagId, ProjectTagUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectTagId: String,
             params: ProjectTagUpdateParams = ProjectTagUpdateParams.none(),
@@ -264,7 +253,6 @@ interface ProjectTagServiceAsync {
             update(params.toBuilder().projectTagId(projectTagId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectTagId: String,
             params: ProjectTagUpdateParams = ProjectTagUpdateParams.none(),
@@ -272,19 +260,16 @@ interface ProjectTagServiceAsync {
             update(projectTagId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: ProjectTagUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectTag>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(params: ProjectTagUpdateParams): CompletableFuture<HttpResponseFor<ProjectTag>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectTagId: String,
             requestOptions: RequestOptions,
@@ -295,26 +280,22 @@ interface ProjectTagServiceAsync {
          * Returns a raw HTTP response for `get /v1/project_tag`, but is otherwise the same as
          * [ProjectTagServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<ProjectTagListPageAsync>> =
             list(ProjectTagListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProjectTagListParams = ProjectTagListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectTagListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProjectTagListParams = ProjectTagListParams.none()
         ): CompletableFuture<HttpResponseFor<ProjectTagListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectTagListPageAsync>> =
@@ -324,12 +305,10 @@ interface ProjectTagServiceAsync {
          * Returns a raw HTTP response for `delete /v1/project_tag/{project_tag_id}`, but is
          * otherwise the same as [ProjectTagServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(projectTagId: String): CompletableFuture<HttpResponseFor<ProjectTag>> =
             delete(projectTagId, ProjectTagDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             projectTagId: String,
             params: ProjectTagDeleteParams = ProjectTagDeleteParams.none(),
@@ -338,7 +317,6 @@ interface ProjectTagServiceAsync {
             delete(params.toBuilder().projectTagId(projectTagId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             projectTagId: String,
             params: ProjectTagDeleteParams = ProjectTagDeleteParams.none(),
@@ -346,19 +324,16 @@ interface ProjectTagServiceAsync {
             delete(projectTagId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: ProjectTagDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectTag>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: ProjectTagDeleteParams): CompletableFuture<HttpResponseFor<ProjectTag>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             projectTagId: String,
             requestOptions: RequestOptions,
@@ -369,13 +344,11 @@ interface ProjectTagServiceAsync {
          * Returns a raw HTTP response for `put /v1/project_tag`, but is otherwise the same as
          * [ProjectTagServiceAsync.replace].
          */
-        @MustBeClosed
         fun replace(
             params: ProjectTagReplaceParams
         ): CompletableFuture<HttpResponseFor<ProjectTag>> = replace(params, RequestOptions.none())
 
         /** @see [replace] */
-        @MustBeClosed
         fun replace(
             params: ProjectTagReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

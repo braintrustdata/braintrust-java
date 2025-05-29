@@ -6,7 +6,6 @@ import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.SummarizeExperimentResponse
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface EvalServiceAsync {
@@ -39,14 +38,12 @@ interface EvalServiceAsync {
          * Returns a raw HTTP response for `post /v1/eval`, but is otherwise the same as
          * [EvalServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: EvalCreateParams
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: EvalCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

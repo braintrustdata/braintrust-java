@@ -6,7 +6,6 @@ import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
 import com.braintrustdata.api.models.PatchOrganizationMembersOutput
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface MemberServiceAsync {
@@ -44,26 +43,22 @@ interface MemberServiceAsync {
          * Returns a raw HTTP response for `patch /v1/organization/members`, but is otherwise the
          * same as [MemberServiceAsync.update].
          */
-        @MustBeClosed
         fun update(): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
             update(OrganizationMemberUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =

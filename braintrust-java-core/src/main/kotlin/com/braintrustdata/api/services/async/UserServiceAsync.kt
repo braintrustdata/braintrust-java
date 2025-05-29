@@ -8,7 +8,6 @@ import com.braintrustdata.api.models.User
 import com.braintrustdata.api.models.UserListPageAsync
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface UserServiceAsync {
@@ -76,12 +75,10 @@ interface UserServiceAsync {
          * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the same as
          * [UserServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(userId: String): CompletableFuture<HttpResponseFor<User>> =
             retrieve(userId, UserRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             userId: String,
             params: UserRetrieveParams = UserRetrieveParams.none(),
@@ -90,7 +87,6 @@ interface UserServiceAsync {
             retrieve(params.toBuilder().userId(userId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             userId: String,
             params: UserRetrieveParams = UserRetrieveParams.none(),
@@ -98,19 +94,16 @@ interface UserServiceAsync {
             retrieve(userId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: UserRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<User>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: UserRetrieveParams): CompletableFuture<HttpResponseFor<User>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             userId: String,
             requestOptions: RequestOptions,
@@ -121,26 +114,22 @@ interface UserServiceAsync {
          * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
          * [UserServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<UserListPageAsync>> =
             list(UserListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: UserListParams = UserListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<UserListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: UserListParams = UserListParams.none()
         ): CompletableFuture<HttpResponseFor<UserListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<UserListPageAsync>> =

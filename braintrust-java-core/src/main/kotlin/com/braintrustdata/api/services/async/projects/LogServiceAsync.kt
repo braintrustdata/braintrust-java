@@ -11,7 +11,6 @@ import com.braintrustdata.api.models.ProjectLogFeedbackParams
 import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface LogServiceAsync {
@@ -158,7 +157,6 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/feedback`, but is
          * otherwise the same as [LogServiceAsync.feedback].
          */
-        @MustBeClosed
         fun feedback(
             projectId: String,
             params: ProjectLogFeedbackParams,
@@ -166,7 +164,6 @@ interface LogServiceAsync {
             feedback(projectId, params, RequestOptions.none())
 
         /** @see [feedback] */
-        @MustBeClosed
         fun feedback(
             projectId: String,
             params: ProjectLogFeedbackParams,
@@ -175,14 +172,12 @@ interface LogServiceAsync {
             feedback(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [feedback] */
-        @MustBeClosed
         fun feedback(
             params: ProjectLogFeedbackParams
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params, RequestOptions.none())
 
         /** @see [feedback] */
-        @MustBeClosed
         fun feedback(
             params: ProjectLogFeedbackParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -192,14 +187,12 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `get /v1/project_logs/{project_id}/fetch`, but is
          * otherwise the same as [LogServiceAsync.fetch].
          */
-        @MustBeClosed
         fun fetch(
             projectId: String
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetch(projectId, ProjectLogFetchParams.none())
 
         /** @see [fetch] */
-        @MustBeClosed
         fun fetch(
             projectId: String,
             params: ProjectLogFetchParams = ProjectLogFetchParams.none(),
@@ -208,7 +201,6 @@ interface LogServiceAsync {
             fetch(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [fetch] */
-        @MustBeClosed
         fun fetch(
             projectId: String,
             params: ProjectLogFetchParams = ProjectLogFetchParams.none(),
@@ -216,21 +208,18 @@ interface LogServiceAsync {
             fetch(projectId, params, RequestOptions.none())
 
         /** @see [fetch] */
-        @MustBeClosed
         fun fetch(
             params: ProjectLogFetchParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>>
 
         /** @see [fetch] */
-        @MustBeClosed
         fun fetch(
             params: ProjectLogFetchParams
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetch(params, RequestOptions.none())
 
         /** @see [fetch] */
-        @MustBeClosed
         fun fetch(
             projectId: String,
             requestOptions: RequestOptions,
@@ -241,14 +230,12 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/fetch`, but is
          * otherwise the same as [LogServiceAsync.fetchPost].
          */
-        @MustBeClosed
         fun fetchPost(
             projectId: String
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetchPost(projectId, ProjectLogFetchPostParams.none())
 
         /** @see [fetchPost] */
-        @MustBeClosed
         fun fetchPost(
             projectId: String,
             params: ProjectLogFetchPostParams = ProjectLogFetchPostParams.none(),
@@ -257,7 +244,6 @@ interface LogServiceAsync {
             fetchPost(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [fetchPost] */
-        @MustBeClosed
         fun fetchPost(
             projectId: String,
             params: ProjectLogFetchPostParams = ProjectLogFetchPostParams.none(),
@@ -265,21 +251,18 @@ interface LogServiceAsync {
             fetchPost(projectId, params, RequestOptions.none())
 
         /** @see [fetchPost] */
-        @MustBeClosed
         fun fetchPost(
             params: ProjectLogFetchPostParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>>
 
         /** @see [fetchPost] */
-        @MustBeClosed
         fun fetchPost(
             params: ProjectLogFetchPostParams
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetchPost(params, RequestOptions.none())
 
         /** @see [fetchPost] */
-        @MustBeClosed
         fun fetchPost(
             projectId: String,
             requestOptions: RequestOptions,
@@ -290,7 +273,6 @@ interface LogServiceAsync {
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/insert`, but is
          * otherwise the same as [LogServiceAsync.insert].
          */
-        @MustBeClosed
         fun insert(
             projectId: String,
             params: ProjectLogInsertParams,
@@ -298,7 +280,6 @@ interface LogServiceAsync {
             insert(projectId, params, RequestOptions.none())
 
         /** @see [insert] */
-        @MustBeClosed
         fun insert(
             projectId: String,
             params: ProjectLogInsertParams,
@@ -307,14 +288,12 @@ interface LogServiceAsync {
             insert(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [insert] */
-        @MustBeClosed
         fun insert(
             params: ProjectLogInsertParams
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params, RequestOptions.none())
 
         /** @see [insert] */
-        @MustBeClosed
         fun insert(
             params: ProjectLogInsertParams,
             requestOptions: RequestOptions = RequestOptions.none(),
