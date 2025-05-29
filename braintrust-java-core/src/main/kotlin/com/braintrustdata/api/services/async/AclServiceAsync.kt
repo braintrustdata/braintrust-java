@@ -13,7 +13,6 @@ import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListPageAsync
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface AclServiceAsync {
@@ -148,12 +147,10 @@ interface AclServiceAsync {
          * Returns a raw HTTP response for `post /v1/acl`, but is otherwise the same as
          * [AclServiceAsync.create].
          */
-        @MustBeClosed
         fun create(params: AclCreateParams): CompletableFuture<HttpResponseFor<Acl>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: AclCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -163,12 +160,10 @@ interface AclServiceAsync {
          * Returns a raw HTTP response for `get /v1/acl/{acl_id}`, but is otherwise the same as
          * [AclServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(aclId: String): CompletableFuture<HttpResponseFor<Acl>> =
             retrieve(aclId, AclRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             aclId: String,
             params: AclRetrieveParams = AclRetrieveParams.none(),
@@ -177,26 +172,22 @@ interface AclServiceAsync {
             retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             aclId: String,
             params: AclRetrieveParams = AclRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Acl>> = retrieve(aclId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: AclRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(params: AclRetrieveParams): CompletableFuture<HttpResponseFor<Acl>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             aclId: String,
             requestOptions: RequestOptions,
@@ -207,12 +198,10 @@ interface AclServiceAsync {
          * Returns a raw HTTP response for `get /v1/acl`, but is otherwise the same as
          * [AclServiceAsync.list].
          */
-        @MustBeClosed
         fun list(params: AclListParams): CompletableFuture<HttpResponseFor<AclListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: AclListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -222,12 +211,10 @@ interface AclServiceAsync {
          * Returns a raw HTTP response for `delete /v1/acl/{acl_id}`, but is otherwise the same as
          * [AclServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(aclId: String): CompletableFuture<HttpResponseFor<Acl>> =
             delete(aclId, AclDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             aclId: String,
             params: AclDeleteParams = AclDeleteParams.none(),
@@ -236,26 +223,22 @@ interface AclServiceAsync {
             delete(params.toBuilder().aclId(aclId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             aclId: String,
             params: AclDeleteParams = AclDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Acl>> = delete(aclId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: AclDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: AclDeleteParams): CompletableFuture<HttpResponseFor<Acl>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             aclId: String,
             requestOptions: RequestOptions,
@@ -266,26 +249,22 @@ interface AclServiceAsync {
          * Returns a raw HTTP response for `post /v1/acl/batch_update`, but is otherwise the same as
          * [AclServiceAsync.batchUpdate].
          */
-        @MustBeClosed
         fun batchUpdate(): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
             batchUpdate(AclBatchUpdateParams.none())
 
         /** @see [batchUpdate] */
-        @MustBeClosed
         fun batchUpdate(
             params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>>
 
         /** @see [batchUpdate] */
-        @MustBeClosed
         fun batchUpdate(
             params: AclBatchUpdateParams = AclBatchUpdateParams.none()
         ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
             batchUpdate(params, RequestOptions.none())
 
         /** @see [batchUpdate] */
-        @MustBeClosed
         fun batchUpdate(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
@@ -295,12 +274,10 @@ interface AclServiceAsync {
          * Returns a raw HTTP response for `delete /v1/acl`, but is otherwise the same as
          * [AclServiceAsync.findAndDelete].
          */
-        @MustBeClosed
         fun findAndDelete(params: AclFindAndDeleteParams): CompletableFuture<HttpResponseFor<Acl>> =
             findAndDelete(params, RequestOptions.none())
 
         /** @see [findAndDelete] */
-        @MustBeClosed
         fun findAndDelete(
             params: AclFindAndDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),

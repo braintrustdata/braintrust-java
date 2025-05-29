@@ -5,7 +5,6 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.TopLevelHelloWorldParams
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface TopLevelServiceAsync {
@@ -42,25 +41,21 @@ interface TopLevelServiceAsync {
          * Returns a raw HTTP response for `get /v1`, but is otherwise the same as
          * [TopLevelServiceAsync.helloWorld].
          */
-        @MustBeClosed
         fun helloWorld(): CompletableFuture<HttpResponseFor<String>> =
             helloWorld(TopLevelHelloWorldParams.none())
 
         /** @see [helloWorld] */
-        @MustBeClosed
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<String>>
 
         /** @see [helloWorld] */
-        @MustBeClosed
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
         ): CompletableFuture<HttpResponseFor<String>> = helloWorld(params, RequestOptions.none())
 
         /** @see [helloWorld] */
-        @MustBeClosed
         fun helloWorld(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<String>> =
             helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
     }

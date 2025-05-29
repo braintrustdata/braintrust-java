@@ -11,7 +11,6 @@ import com.braintrustdata.api.models.OrganizationListParams
 import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 
 interface OrganizationServiceAsync {
@@ -165,12 +164,10 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `get /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(organizationId: String): CompletableFuture<HttpResponseFor<Organization>> =
             retrieve(organizationId, OrganizationRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             organizationId: String,
             params: OrganizationRetrieveParams = OrganizationRetrieveParams.none(),
@@ -179,7 +176,6 @@ interface OrganizationServiceAsync {
             retrieve(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             organizationId: String,
             params: OrganizationRetrieveParams = OrganizationRetrieveParams.none(),
@@ -187,21 +183,18 @@ interface OrganizationServiceAsync {
             retrieve(organizationId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: OrganizationRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Organization>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: OrganizationRetrieveParams
         ): CompletableFuture<HttpResponseFor<Organization>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             organizationId: String,
             requestOptions: RequestOptions,
@@ -212,12 +205,10 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `patch /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationServiceAsync.update].
          */
-        @MustBeClosed
         fun update(organizationId: String): CompletableFuture<HttpResponseFor<Organization>> =
             update(organizationId, OrganizationUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             organizationId: String,
             params: OrganizationUpdateParams = OrganizationUpdateParams.none(),
@@ -226,7 +217,6 @@ interface OrganizationServiceAsync {
             update(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             organizationId: String,
             params: OrganizationUpdateParams = OrganizationUpdateParams.none(),
@@ -234,20 +224,17 @@ interface OrganizationServiceAsync {
             update(organizationId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: OrganizationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Organization>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: OrganizationUpdateParams
         ): CompletableFuture<HttpResponseFor<Organization>> = update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             organizationId: String,
             requestOptions: RequestOptions,
@@ -258,26 +245,22 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `get /v1/organization`, but is otherwise the same as
          * [OrganizationServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
             list(OrganizationListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: OrganizationListParams = OrganizationListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: OrganizationListParams = OrganizationListParams.none()
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
@@ -287,12 +270,10 @@ interface OrganizationServiceAsync {
          * Returns a raw HTTP response for `delete /v1/organization/{organization_id}`, but is
          * otherwise the same as [OrganizationServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(organizationId: String): CompletableFuture<HttpResponseFor<Organization>> =
             delete(organizationId, OrganizationDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             organizationId: String,
             params: OrganizationDeleteParams = OrganizationDeleteParams.none(),
@@ -301,7 +282,6 @@ interface OrganizationServiceAsync {
             delete(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             organizationId: String,
             params: OrganizationDeleteParams = OrganizationDeleteParams.none(),
@@ -309,20 +289,17 @@ interface OrganizationServiceAsync {
             delete(organizationId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: OrganizationDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Organization>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: OrganizationDeleteParams
         ): CompletableFuture<HttpResponseFor<Organization>> = delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             organizationId: String,
             requestOptions: RequestOptions,
