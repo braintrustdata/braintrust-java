@@ -50,6 +50,7 @@ class MemberServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "organization", "members")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
