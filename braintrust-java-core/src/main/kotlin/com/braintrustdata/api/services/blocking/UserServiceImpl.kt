@@ -56,6 +56,7 @@ class UserServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "user", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -83,6 +84,7 @@ class UserServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "user")
                     .build()
                     .prepare(clientOptions, params)

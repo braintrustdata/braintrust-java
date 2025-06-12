@@ -94,6 +94,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -127,6 +128,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -159,6 +161,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -190,6 +193,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -230,6 +234,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -260,6 +265,7 @@ class ProjectScoreServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -47,6 +47,7 @@ class TopLevelServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1")
                     .build()
                     .prepare(clientOptions, params)
