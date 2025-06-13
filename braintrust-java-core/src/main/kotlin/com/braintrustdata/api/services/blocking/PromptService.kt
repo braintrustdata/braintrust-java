@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Prompt
@@ -13,6 +14,7 @@ import com.braintrustdata.api.models.PromptReplaceParams
 import com.braintrustdata.api.models.PromptRetrieveParams
 import com.braintrustdata.api.models.PromptUpdateParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface PromptService {
 
@@ -20,6 +22,13 @@ interface PromptService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): PromptService
 
     /**
      * Create a new prompt. If there is an existing prompt in the project with the same slug as the
@@ -154,6 +163,13 @@ interface PromptService {
 
     /** A view of [PromptService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): PromptService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/prompt`, but is otherwise the same as

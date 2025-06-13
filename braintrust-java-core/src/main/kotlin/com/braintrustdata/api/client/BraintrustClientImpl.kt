@@ -42,6 +42,7 @@ import com.braintrustdata.api.services.blocking.UserService
 import com.braintrustdata.api.services.blocking.UserServiceImpl
 import com.braintrustdata.api.services.blocking.ViewService
 import com.braintrustdata.api.services.blocking.ViewServiceImpl
+import java.util.function.Consumer
 
 class BraintrustClientImpl(private val clientOptions: ClientOptions) : BraintrustClient {
 
@@ -117,6 +118,9 @@ class BraintrustClientImpl(private val clientOptions: ClientOptions) : Braintrus
     override fun async(): BraintrustClientAsync = async
 
     override fun withRawResponse(): BraintrustClient.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): BraintrustClient =
+        BraintrustClientImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun topLevel(): TopLevelService = topLevel
 
@@ -236,6 +240,13 @@ class BraintrustClientImpl(private val clientOptions: ClientOptions) : Braintrus
         private val evals: EvalService.WithRawResponse by lazy {
             EvalServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): BraintrustClient.WithRawResponse =
+            BraintrustClientImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun topLevel(): TopLevelService.WithRawResponse = topLevel
 

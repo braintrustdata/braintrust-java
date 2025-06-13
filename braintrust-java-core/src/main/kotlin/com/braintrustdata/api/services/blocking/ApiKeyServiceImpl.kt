@@ -24,6 +24,7 @@ import com.braintrustdata.api.models.ApiKeyListPageResponse
 import com.braintrustdata.api.models.ApiKeyListParams
 import com.braintrustdata.api.models.ApiKeyRetrieveParams
 import com.braintrustdata.api.models.CreateApiKeyOutput
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): ApiKeyService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ApiKeyService =
+        ApiKeyServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ApiKeyCreateParams,
@@ -58,6 +62,13 @@ class ApiKeyServiceImpl internal constructor(private val clientOptions: ClientOp
         ApiKeyService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ApiKeyService.WithRawResponse =
+            ApiKeyServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<CreateApiKeyOutput> =
             jsonHandler<CreateApiKeyOutput>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

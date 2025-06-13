@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.RoleListParams
 import com.braintrustdata.api.models.RoleReplaceParams
 import com.braintrustdata.api.models.RoleRetrieveParams
 import com.braintrustdata.api.models.RoleUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class RoleServiceImpl internal constructor(private val clientOptions: ClientOptions) : RoleService {
@@ -34,6 +35,9 @@ class RoleServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     override fun withRawResponse(): RoleService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): RoleService =
+        RoleServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: RoleCreateParams, requestOptions: RequestOptions): Role =
         // post /v1/role
@@ -63,6 +67,13 @@ class RoleServiceImpl internal constructor(private val clientOptions: ClientOpti
         RoleService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): RoleService.WithRawResponse =
+            RoleServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Role> =
             jsonHandler<Role>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

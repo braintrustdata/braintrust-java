@@ -26,6 +26,7 @@ import com.braintrustdata.api.models.PromptReplaceParams
 import com.braintrustdata.api.models.PromptRetrieveParams
 import com.braintrustdata.api.models.PromptUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class PromptServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class PromptServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): PromptServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PromptServiceAsync =
+        PromptServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: PromptCreateParams,
@@ -83,6 +87,13 @@ class PromptServiceAsyncImpl internal constructor(private val clientOptions: Cli
         PromptServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PromptServiceAsync.WithRawResponse =
+            PromptServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Prompt> =
             jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

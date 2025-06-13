@@ -34,6 +34,7 @@ import com.braintrustdata.api.models.FetchExperimentEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ExperimentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -44,6 +45,9 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
     }
 
     override fun withRawResponse(): ExperimentServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ExperimentServiceAsync =
+        ExperimentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ExperimentCreateParams,
@@ -119,6 +123,13 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
         ExperimentServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ExperimentServiceAsync.WithRawResponse =
+            ExperimentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Experiment> =
             jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

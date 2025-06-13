@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking.projects
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.FeedbackResponseSchema
@@ -12,6 +13,7 @@ import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface LogService {
 
@@ -19,6 +21,13 @@ interface LogService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): LogService
 
     /** Log feedback for a set of project logs events */
     fun feedback(projectId: String, params: ProjectLogFeedbackParams): FeedbackResponseSchema =
@@ -141,6 +150,13 @@ interface LogService {
 
     /** A view of [LogService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): LogService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/project_logs/{project_id}/feedback`, but is

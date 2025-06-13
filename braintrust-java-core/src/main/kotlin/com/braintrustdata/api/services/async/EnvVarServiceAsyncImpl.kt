@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.EnvVarReplaceParams
 import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): EnvVarServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EnvVarServiceAsync =
+        EnvVarServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: EnvVarCreateParams,
@@ -82,6 +86,13 @@ class EnvVarServiceAsyncImpl internal constructor(private val clientOptions: Cli
         EnvVarServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EnvVarServiceAsync.WithRawResponse =
+            EnvVarServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<EnvVar> =
             jsonHandler<EnvVar>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

@@ -16,6 +16,7 @@ import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepareAsync
 import com.braintrustdata.api.models.TopLevelHelloWorldParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class TopLevelServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     TopLevelServiceAsync {
@@ -25,6 +26,9 @@ class TopLevelServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): TopLevelServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TopLevelServiceAsync =
+        TopLevelServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun helloWorld(
         params: TopLevelHelloWorldParams,
@@ -37,6 +41,13 @@ class TopLevelServiceAsyncImpl internal constructor(private val clientOptions: C
         TopLevelServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): TopLevelServiceAsync.WithRawResponse =
+            TopLevelServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val helloWorldHandler: Handler<String> =
             stringHandler().withErrorHandler(errorHandler)

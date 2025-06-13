@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.ProjectTagListParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectTagServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): ProjectTagService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectTagService =
+        ProjectTagServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ProjectTagCreateParams,
@@ -82,6 +86,13 @@ class ProjectTagServiceImpl internal constructor(private val clientOptions: Clie
         ProjectTagService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectTagService.WithRawResponse =
+            ProjectTagServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<ProjectTag> =
             jsonHandler<ProjectTag>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

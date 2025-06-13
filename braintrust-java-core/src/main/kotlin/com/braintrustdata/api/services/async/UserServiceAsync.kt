@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.async
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.User
@@ -9,6 +10,7 @@ import com.braintrustdata.api.models.UserListPageAsync
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface UserServiceAsync {
 
@@ -16,6 +18,13 @@ interface UserServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): UserServiceAsync
 
     /** Get a user object by its id */
     fun retrieve(userId: String): CompletableFuture<User> =
@@ -70,6 +79,13 @@ interface UserServiceAsync {
 
     /** A view of [UserServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): UserServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the same as

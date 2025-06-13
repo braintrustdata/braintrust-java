@@ -26,6 +26,7 @@ import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class GroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): GroupServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): GroupServiceAsync =
+        GroupServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: GroupCreateParams,
@@ -83,6 +87,13 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
         GroupServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): GroupServiceAsync.WithRawResponse =
+            GroupServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Group> =
             jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

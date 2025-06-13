@@ -42,6 +42,7 @@ import com.braintrustdata.api.services.async.UserServiceAsync
 import com.braintrustdata.api.services.async.UserServiceAsyncImpl
 import com.braintrustdata.api.services.async.ViewServiceAsync
 import com.braintrustdata.api.services.async.ViewServiceAsyncImpl
+import java.util.function.Consumer
 
 class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : BraintrustClientAsync {
 
@@ -129,6 +130,9 @@ class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : Brai
     override fun sync(): BraintrustClient = sync
 
     override fun withRawResponse(): BraintrustClientAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): BraintrustClientAsync =
+        BraintrustClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun topLevel(): TopLevelServiceAsync = topLevel
 
@@ -248,6 +252,13 @@ class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : Brai
         private val evals: EvalServiceAsync.WithRawResponse by lazy {
             EvalServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): BraintrustClientAsync.WithRawResponse =
+            BraintrustClientAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun topLevel(): TopLevelServiceAsync.WithRawResponse = topLevel
 

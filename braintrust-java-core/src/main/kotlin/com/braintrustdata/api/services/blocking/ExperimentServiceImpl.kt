@@ -33,6 +33,7 @@ import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchExperimentEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ExperimentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -43,6 +44,9 @@ class ExperimentServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): ExperimentService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ExperimentService =
+        ExperimentServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ExperimentCreateParams,
@@ -118,6 +122,13 @@ class ExperimentServiceImpl internal constructor(private val clientOptions: Clie
         ExperimentService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ExperimentService.WithRawResponse =
+            ExperimentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Experiment> =
             jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

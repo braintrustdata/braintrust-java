@@ -27,6 +27,7 @@ import com.braintrustdata.api.models.AclListPageResponse
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class AclServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -37,6 +38,9 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): AclServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AclServiceAsync =
+        AclServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: AclCreateParams,
@@ -84,6 +88,13 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
         AclServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AclServiceAsync.WithRawResponse =
+            AclServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Acl> =
             jsonHandler<Acl>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

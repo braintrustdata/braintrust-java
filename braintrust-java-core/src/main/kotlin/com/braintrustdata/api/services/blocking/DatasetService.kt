@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Dataset
@@ -21,6 +22,7 @@ import com.braintrustdata.api.models.FetchDatasetEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeDatasetResponse
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface DatasetService {
 
@@ -28,6 +30,13 @@ interface DatasetService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): DatasetService
 
     /**
      * Create a new dataset. If there is an existing dataset in the project with the same name as
@@ -302,6 +311,13 @@ interface DatasetService {
 
     /** A view of [DatasetService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): DatasetService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/dataset`, but is otherwise the same as

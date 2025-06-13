@@ -33,6 +33,7 @@ import com.braintrustdata.api.models.FeedbackResponseSchema
 import com.braintrustdata.api.models.FetchDatasetEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeDatasetResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class DatasetServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -43,6 +44,9 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): DatasetService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DatasetService =
+        DatasetServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: DatasetCreateParams, requestOptions: RequestOptions): Dataset =
         // post /v1/dataset
@@ -103,6 +107,13 @@ class DatasetServiceImpl internal constructor(private val clientOptions: ClientO
         DatasetService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DatasetService.WithRawResponse =
+            DatasetServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Dataset> =
             jsonHandler<Dataset>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

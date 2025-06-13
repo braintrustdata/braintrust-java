@@ -24,6 +24,7 @@ import com.braintrustdata.api.models.EnvVarListResponse
 import com.braintrustdata.api.models.EnvVarReplaceParams
 import com.braintrustdata.api.models.EnvVarRetrieveParams
 import com.braintrustdata.api.models.EnvVarUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class EnvVarServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class EnvVarServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): EnvVarService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EnvVarService =
+        EnvVarServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: EnvVarCreateParams, requestOptions: RequestOptions): EnvVar =
         // post /v1/env_var
@@ -66,6 +70,13 @@ class EnvVarServiceImpl internal constructor(private val clientOptions: ClientOp
         EnvVarService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EnvVarService.WithRawResponse =
+            EnvVarServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<EnvVar> =
             jsonHandler<EnvVar>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

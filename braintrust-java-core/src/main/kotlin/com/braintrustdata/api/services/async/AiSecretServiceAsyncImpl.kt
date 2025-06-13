@@ -27,6 +27,7 @@ import com.braintrustdata.api.models.AiSecretReplaceParams
 import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -37,6 +38,9 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): AiSecretServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AiSecretServiceAsync =
+        AiSecretServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: AiSecretCreateParams,
@@ -91,6 +95,13 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
         AiSecretServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AiSecretServiceAsync.WithRawResponse =
+            AiSecretServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<AISecret> =
             jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

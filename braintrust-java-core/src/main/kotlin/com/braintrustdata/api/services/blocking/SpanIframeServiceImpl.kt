@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.SpanIframeListParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class SpanIframeServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class SpanIframeServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): SpanIframeService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SpanIframeService =
+        SpanIframeServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: SpanIframeCreateParams,
@@ -82,6 +86,13 @@ class SpanIframeServiceImpl internal constructor(private val clientOptions: Clie
         SpanIframeService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): SpanIframeService.WithRawResponse =
+            SpanIframeServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<SpanIFrame> =
             jsonHandler<SpanIFrame>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
