@@ -26,6 +26,7 @@ import com.braintrustdata.api.models.AiSecretListParams
 import com.braintrustdata.api.models.AiSecretReplaceParams
 import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class AiSecretServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class AiSecretServiceImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): AiSecretService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AiSecretService =
+        AiSecretServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: AiSecretCreateParams, requestOptions: RequestOptions): AISecret =
         // post /v1/ai_secret
@@ -78,6 +82,13 @@ class AiSecretServiceImpl internal constructor(private val clientOptions: Client
         AiSecretService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AiSecretService.WithRawResponse =
+            AiSecretServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<AISecret> =
             jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

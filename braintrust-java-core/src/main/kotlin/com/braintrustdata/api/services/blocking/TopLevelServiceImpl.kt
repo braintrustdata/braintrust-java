@@ -15,6 +15,7 @@ import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.models.TopLevelHelloWorldParams
+import java.util.function.Consumer
 
 class TopLevelServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     TopLevelService {
@@ -24,6 +25,9 @@ class TopLevelServiceImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): TopLevelService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TopLevelService =
+        TopLevelServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun helloWorld(
         params: TopLevelHelloWorldParams,
@@ -36,6 +40,13 @@ class TopLevelServiceImpl internal constructor(private val clientOptions: Client
         TopLevelService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): TopLevelService.WithRawResponse =
+            TopLevelServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val helloWorldHandler: Handler<String> =
             stringHandler().withErrorHandler(errorHandler)

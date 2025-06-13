@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Organization
@@ -12,6 +13,7 @@ import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.blocking.organizations.MemberService
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface OrganizationService {
 
@@ -19,6 +21,13 @@ interface OrganizationService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): OrganizationService
 
     fun members(): MemberService
 
@@ -146,6 +155,15 @@ interface OrganizationService {
      * A view of [OrganizationService] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OrganizationService.WithRawResponse
 
         fun members(): MemberService.WithRawResponse
 

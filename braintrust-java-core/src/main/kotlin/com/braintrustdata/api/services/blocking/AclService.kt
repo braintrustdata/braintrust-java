@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Acl
@@ -14,6 +15,7 @@ import com.braintrustdata.api.models.AclListPage
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface AclService {
 
@@ -21,6 +23,13 @@ interface AclService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): AclService
 
     /**
      * Create a new acl. If there is an existing acl with the same contents as the one specified in
@@ -127,6 +136,13 @@ interface AclService {
 
     /** A view of [AclService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): AclService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/acl`, but is otherwise the same as

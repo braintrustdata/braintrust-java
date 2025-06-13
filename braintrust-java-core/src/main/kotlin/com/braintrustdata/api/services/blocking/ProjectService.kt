@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Project
@@ -13,6 +14,7 @@ import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.blocking.projects.LogService
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface ProjectService {
 
@@ -20,6 +22,13 @@ interface ProjectService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectService
 
     fun logs(): LogService
 
@@ -148,6 +157,13 @@ interface ProjectService {
 
     /** A view of [ProjectService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectService.WithRawResponse
 
         fun logs(): LogService.WithRawResponse
 

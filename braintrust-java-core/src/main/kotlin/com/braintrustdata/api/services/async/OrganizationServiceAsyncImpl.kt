@@ -26,6 +26,7 @@ import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class OrganizationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -38,6 +39,9 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
     private val members: MemberServiceAsync by lazy { MemberServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): OrganizationServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): OrganizationServiceAsync =
+        OrganizationServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun members(): MemberServiceAsync = members
 
@@ -77,6 +81,13 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
         private val members: MemberServiceAsync.WithRawResponse by lazy {
             MemberServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OrganizationServiceAsync.WithRawResponse =
+            OrganizationServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun members(): MemberServiceAsync.WithRawResponse = members
 

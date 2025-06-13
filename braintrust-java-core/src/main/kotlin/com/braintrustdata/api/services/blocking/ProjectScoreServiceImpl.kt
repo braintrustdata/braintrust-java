@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.ProjectScoreListParams
 import com.braintrustdata.api.models.ProjectScoreReplaceParams
 import com.braintrustdata.api.models.ProjectScoreRetrieveParams
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectScoreServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): ProjectScoreService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectScoreService =
+        ProjectScoreServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ProjectScoreCreateParams,
@@ -82,6 +86,13 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
         ProjectScoreService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectScoreService.WithRawResponse =
+            ProjectScoreServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<ProjectScore> =
             jsonHandler<ProjectScore>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

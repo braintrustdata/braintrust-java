@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.SpanIFrame
@@ -13,6 +14,7 @@ import com.braintrustdata.api.models.SpanIframeReplaceParams
 import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface SpanIframeService {
 
@@ -20,6 +22,13 @@ interface SpanIframeService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): SpanIframeService
 
     /**
      * Create a new span_iframe. If there is an existing span_iframe with the same name as the one
@@ -163,6 +172,15 @@ interface SpanIframeService {
 
     /** A view of [SpanIframeService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): SpanIframeService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/span_iframe`, but is otherwise the same as

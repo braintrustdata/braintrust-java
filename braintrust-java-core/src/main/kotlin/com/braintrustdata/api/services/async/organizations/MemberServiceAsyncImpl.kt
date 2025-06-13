@@ -18,6 +18,7 @@ import com.braintrustdata.api.core.prepareAsync
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
 import com.braintrustdata.api.models.PatchOrganizationMembersOutput
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class MemberServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     MemberServiceAsync {
@@ -27,6 +28,9 @@ class MemberServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): MemberServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): MemberServiceAsync =
+        MemberServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: OrganizationMemberUpdateParams,
@@ -39,6 +43,13 @@ class MemberServiceAsyncImpl internal constructor(private val clientOptions: Cli
         MemberServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): MemberServiceAsync.WithRawResponse =
+            MemberServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<PatchOrganizationMembersOutput> =
             jsonHandler<PatchOrganizationMembersOutput>(clientOptions.jsonMapper)

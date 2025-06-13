@@ -27,6 +27,7 @@ import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import com.braintrustdata.api.services.async.projects.LogServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -39,6 +40,9 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
     private val logs: LogServiceAsync by lazy { LogServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ProjectServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectServiceAsync =
+        ProjectServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun logs(): LogServiceAsync = logs
 
@@ -85,6 +89,13 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val logs: LogServiceAsync.WithRawResponse by lazy {
             LogServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectServiceAsync.WithRawResponse =
+            ProjectServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun logs(): LogServiceAsync.WithRawResponse = logs
 

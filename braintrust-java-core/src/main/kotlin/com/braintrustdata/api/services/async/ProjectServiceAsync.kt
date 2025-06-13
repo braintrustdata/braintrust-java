@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.async
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Project
@@ -13,6 +14,7 @@ import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface ProjectServiceAsync {
 
@@ -20,6 +22,13 @@ interface ProjectServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectServiceAsync
 
     fun logs(): LogServiceAsync
 
@@ -161,6 +170,15 @@ interface ProjectServiceAsync {
      * A view of [ProjectServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectServiceAsync.WithRawResponse
 
         fun logs(): LogServiceAsync.WithRawResponse
 

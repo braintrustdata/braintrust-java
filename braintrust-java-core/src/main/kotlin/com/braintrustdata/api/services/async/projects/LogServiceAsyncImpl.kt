@@ -24,6 +24,7 @@ import com.braintrustdata.api.models.ProjectLogFetchParams
 import com.braintrustdata.api.models.ProjectLogFetchPostParams
 import com.braintrustdata.api.models.ProjectLogInsertParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class LogServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): LogServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): LogServiceAsync =
+        LogServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun feedback(
         params: ProjectLogFeedbackParams,
@@ -67,6 +71,13 @@ class LogServiceAsyncImpl internal constructor(private val clientOptions: Client
         LogServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): LogServiceAsync.WithRawResponse =
+            LogServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val feedbackHandler: Handler<FeedbackResponseSchema> =
             jsonHandler<FeedbackResponseSchema>(clientOptions.jsonMapper)

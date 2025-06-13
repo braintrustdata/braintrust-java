@@ -29,6 +29,7 @@ import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class FunctionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -39,6 +40,9 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): FunctionServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FunctionServiceAsync =
+        FunctionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: FunctionCreateParams,
@@ -93,6 +97,13 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
         FunctionServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FunctionServiceAsync.WithRawResponse =
+            FunctionServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Function> =
             jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

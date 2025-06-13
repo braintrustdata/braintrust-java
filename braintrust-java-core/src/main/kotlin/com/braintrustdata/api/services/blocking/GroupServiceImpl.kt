@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.GroupListParams
 import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class GroupServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class GroupServiceImpl internal constructor(private val clientOptions: ClientOpt
     }
 
     override fun withRawResponse(): GroupService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): GroupService =
+        GroupServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: GroupCreateParams, requestOptions: RequestOptions): Group =
         // post /v1/group
@@ -64,6 +68,13 @@ class GroupServiceImpl internal constructor(private val clientOptions: ClientOpt
         GroupService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): GroupService.WithRawResponse =
+            GroupServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Group> =
             jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
