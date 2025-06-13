@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.ViewListParams
 import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ViewServiceImpl internal constructor(private val clientOptions: ClientOptions) : ViewService {
@@ -34,6 +35,9 @@ class ViewServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     override fun withRawResponse(): ViewService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewService =
+        ViewServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: ViewCreateParams, requestOptions: RequestOptions): View =
         // post /v1/view
@@ -63,6 +67,13 @@ class ViewServiceImpl internal constructor(private val clientOptions: ClientOpti
         ViewService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ViewService.WithRawResponse =
+            ViewServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<View> =
             jsonHandler<View>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

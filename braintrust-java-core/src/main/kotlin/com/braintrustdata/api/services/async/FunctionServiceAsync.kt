@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.async
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Function
@@ -16,6 +17,7 @@ import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface FunctionServiceAsync {
 
@@ -23,6 +25,13 @@ interface FunctionServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): FunctionServiceAsync
 
     /**
      * Create a new function. If there is an existing function in the project with the same slug as
@@ -212,6 +221,15 @@ interface FunctionServiceAsync {
      * A view of [FunctionServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FunctionServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/function`, but is otherwise the same as

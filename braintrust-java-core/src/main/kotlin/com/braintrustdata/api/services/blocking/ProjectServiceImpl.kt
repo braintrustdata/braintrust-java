@@ -26,6 +26,7 @@ import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.blocking.projects.LogService
 import com.braintrustdata.api.services.blocking.projects.LogServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -38,6 +39,9 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
     private val logs: LogService by lazy { LogServiceImpl(clientOptions) }
 
     override fun withRawResponse(): ProjectService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectService =
+        ProjectServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun logs(): LogService = logs
 
@@ -69,6 +73,13 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
         private val logs: LogService.WithRawResponse by lazy {
             LogServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectService.WithRawResponse =
+            ProjectServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun logs(): LogService.WithRawResponse = logs
 

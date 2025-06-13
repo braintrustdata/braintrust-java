@@ -17,6 +17,7 @@ import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.SummarizeExperimentResponse
+import java.util.function.Consumer
 
 class EvalServiceImpl internal constructor(private val clientOptions: ClientOptions) : EvalService {
 
@@ -25,6 +26,9 @@ class EvalServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     override fun withRawResponse(): EvalService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EvalService =
+        EvalServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: EvalCreateParams,
@@ -37,6 +41,13 @@ class EvalServiceImpl internal constructor(private val clientOptions: ClientOpti
         EvalService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EvalService.WithRawResponse =
+            EvalServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<SummarizeExperimentResponse> =
             jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper)

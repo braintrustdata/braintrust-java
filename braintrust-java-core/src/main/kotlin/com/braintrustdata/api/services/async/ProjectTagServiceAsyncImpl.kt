@@ -26,6 +26,7 @@ import com.braintrustdata.api.models.ProjectTagReplaceParams
 import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
     }
 
     override fun withRawResponse(): ProjectTagServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectTagServiceAsync =
+        ProjectTagServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ProjectTagCreateParams,
@@ -83,6 +87,13 @@ class ProjectTagServiceAsyncImpl internal constructor(private val clientOptions:
         ProjectTagServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectTagServiceAsync.WithRawResponse =
+            ProjectTagServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<ProjectTag> =
             jsonHandler<ProjectTag>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

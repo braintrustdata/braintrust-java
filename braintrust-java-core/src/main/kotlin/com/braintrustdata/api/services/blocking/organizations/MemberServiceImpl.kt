@@ -17,6 +17,7 @@ import com.braintrustdata.api.core.http.parseable
 import com.braintrustdata.api.core.prepare
 import com.braintrustdata.api.models.OrganizationMemberUpdateParams
 import com.braintrustdata.api.models.PatchOrganizationMembersOutput
+import java.util.function.Consumer
 
 class MemberServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     MemberService {
@@ -26,6 +27,9 @@ class MemberServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): MemberService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): MemberService =
+        MemberServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: OrganizationMemberUpdateParams,
@@ -38,6 +42,13 @@ class MemberServiceImpl internal constructor(private val clientOptions: ClientOp
         MemberService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): MemberService.WithRawResponse =
+            MemberServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<PatchOrganizationMembersOutput> =
             jsonHandler<PatchOrganizationMembersOutput>(clientOptions.jsonMapper)

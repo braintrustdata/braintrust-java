@@ -28,6 +28,7 @@ import com.braintrustdata.api.models.FunctionReplaceParams
 import com.braintrustdata.api.models.FunctionRetrieveParams
 import com.braintrustdata.api.models.FunctionUpdateParams
 import java.util.Optional
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class FunctionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -38,6 +39,9 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): FunctionService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FunctionService =
+        FunctionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: FunctionCreateParams, requestOptions: RequestOptions): Function =
         // post /v1/function
@@ -80,6 +84,13 @@ class FunctionServiceImpl internal constructor(private val clientOptions: Client
         FunctionService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FunctionService.WithRawResponse =
+            FunctionServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Function> =
             jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

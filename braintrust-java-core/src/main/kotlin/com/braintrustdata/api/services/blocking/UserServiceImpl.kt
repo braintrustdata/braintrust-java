@@ -20,6 +20,7 @@ import com.braintrustdata.api.models.UserListPage
 import com.braintrustdata.api.models.UserListPageResponse
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class UserServiceImpl internal constructor(private val clientOptions: ClientOptions) : UserService {
@@ -29,6 +30,9 @@ class UserServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     override fun withRawResponse(): UserService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): UserService =
+        UserServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(params: UserRetrieveParams, requestOptions: RequestOptions): User =
         // get /v1/user/{user_id}
@@ -42,6 +46,13 @@ class UserServiceImpl internal constructor(private val clientOptions: ClientOpti
         UserService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): UserService.WithRawResponse =
+            UserServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val retrieveHandler: Handler<User> =
             jsonHandler<User>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

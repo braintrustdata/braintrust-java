@@ -18,6 +18,7 @@ import com.braintrustdata.api.core.prepareAsync
 import com.braintrustdata.api.models.EvalCreateParams
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class EvalServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     EvalServiceAsync {
@@ -27,6 +28,9 @@ class EvalServiceAsyncImpl internal constructor(private val clientOptions: Clien
     }
 
     override fun withRawResponse(): EvalServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EvalServiceAsync =
+        EvalServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: EvalCreateParams,
@@ -39,6 +43,13 @@ class EvalServiceAsyncImpl internal constructor(private val clientOptions: Clien
         EvalServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EvalServiceAsync.WithRawResponse =
+            EvalServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<SummarizeExperimentResponse> =
             jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper)

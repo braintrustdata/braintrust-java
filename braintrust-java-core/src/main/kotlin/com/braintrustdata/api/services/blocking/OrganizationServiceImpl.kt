@@ -25,6 +25,7 @@ import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.blocking.organizations.MemberService
 import com.braintrustdata.api.services.blocking.organizations.MemberServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class OrganizationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -37,6 +38,9 @@ class OrganizationServiceImpl internal constructor(private val clientOptions: Cl
     private val members: MemberService by lazy { MemberServiceImpl(clientOptions) }
 
     override fun withRawResponse(): OrganizationService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): OrganizationService =
+        OrganizationServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun members(): MemberService = members
 
@@ -76,6 +80,13 @@ class OrganizationServiceImpl internal constructor(private val clientOptions: Cl
         private val members: MemberService.WithRawResponse by lazy {
             MemberServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OrganizationService.WithRawResponse =
+            OrganizationServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun members(): MemberService.WithRawResponse = members
 
