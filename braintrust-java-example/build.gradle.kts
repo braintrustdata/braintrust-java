@@ -17,5 +17,12 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 application {
-    mainClass = "com.braintrustdata.api.example.Main"
+    // Use `./gradlew :braintrust-java-example:run` to run `Main`
+    // Use `./gradlew :braintrust-java-example:run -Dexample=Something` to run `SomethingExample`
+    mainClass = "com.braintrustdata.api.example.${
+        if (project.hasProperty("example"))
+            "${project.property("example")}Example"
+        else
+            "Main"
+    }"
 }
