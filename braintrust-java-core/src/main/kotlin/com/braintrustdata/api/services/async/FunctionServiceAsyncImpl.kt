@@ -3,14 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -96,7 +96,8 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         FunctionServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -106,7 +107,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             )
 
         private val createHandler: Handler<Function> =
-            jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Function>(clientOptions.jsonMapper)
 
         override fun create(
             params: FunctionCreateParams,
@@ -124,7 +125,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -137,7 +138,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val retrieveHandler: Handler<Function> =
-            jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Function>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: FunctionRetrieveParams,
@@ -157,7 +158,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -170,7 +171,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val updateHandler: Handler<Function> =
-            jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Function>(clientOptions.jsonMapper)
 
         override fun update(
             params: FunctionUpdateParams,
@@ -191,7 +192,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -205,7 +206,6 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val listHandler: Handler<FunctionListPageResponse> =
             jsonHandler<FunctionListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: FunctionListParams,
@@ -222,7 +222,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -243,7 +243,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val deleteHandler: Handler<Function> =
-            jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Function>(clientOptions.jsonMapper)
 
         override fun delete(
             params: FunctionDeleteParams,
@@ -264,7 +264,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
@@ -278,7 +278,6 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val invokeHandler: Handler<Optional<FunctionInvokeResponse>> =
             jsonHandler<Optional<FunctionInvokeResponse>>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun invoke(
             params: FunctionInvokeParams,
@@ -299,7 +298,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { invokeHandler.handle(it) }
                             .also {
@@ -312,7 +311,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val replaceHandler: Handler<Function> =
-            jsonHandler<Function>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Function>(clientOptions.jsonMapper)
 
         override fun replace(
             params: FunctionReplaceParams,
@@ -330,7 +329,7 @@ class FunctionServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { replaceHandler.handle(it) }
                             .also {
