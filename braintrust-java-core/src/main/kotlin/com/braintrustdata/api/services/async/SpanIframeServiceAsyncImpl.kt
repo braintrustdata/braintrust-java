@@ -3,14 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -86,7 +86,8 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         SpanIframeServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -96,7 +97,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             )
 
         private val createHandler: Handler<SpanIFrame> =
-            jsonHandler<SpanIFrame>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<SpanIFrame>(clientOptions.jsonMapper)
 
         override fun create(
             params: SpanIframeCreateParams,
@@ -114,7 +115,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -127,7 +128,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val retrieveHandler: Handler<SpanIFrame> =
-            jsonHandler<SpanIFrame>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<SpanIFrame>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: SpanIframeRetrieveParams,
@@ -147,7 +148,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -160,7 +161,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val updateHandler: Handler<SpanIFrame> =
-            jsonHandler<SpanIFrame>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<SpanIFrame>(clientOptions.jsonMapper)
 
         override fun update(
             params: SpanIframeUpdateParams,
@@ -181,7 +182,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -195,7 +196,6 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val listHandler: Handler<SpanIframeListPageResponse> =
             jsonHandler<SpanIframeListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: SpanIframeListParams,
@@ -212,7 +212,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -233,7 +233,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val deleteHandler: Handler<SpanIFrame> =
-            jsonHandler<SpanIFrame>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<SpanIFrame>(clientOptions.jsonMapper)
 
         override fun delete(
             params: SpanIframeDeleteParams,
@@ -254,7 +254,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
@@ -267,7 +267,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val replaceHandler: Handler<SpanIFrame> =
-            jsonHandler<SpanIFrame>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<SpanIFrame>(clientOptions.jsonMapper)
 
         override fun replace(
             params: SpanIframeReplaceParams,
@@ -285,7 +285,7 @@ class SpanIframeServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { replaceHandler.handle(it) }
                             .also {

@@ -81,8 +81,52 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun projectsCreate400WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<BadRequestException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(400)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun projectsCreate401() {
         val projectService = client.projects()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnauthorizedException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(401)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun projectsCreate401WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -125,8 +169,52 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun projectsCreate403WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<PermissionDeniedException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(403)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun projectsCreate404() {
         val projectService = client.projects()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<NotFoundException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(404)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun projectsCreate404WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -169,8 +257,52 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun projectsCreate422WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnprocessableEntityException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(422)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun projectsCreate429() {
         val projectService = client.projects()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<RateLimitException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(429)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun projectsCreate429WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -213,8 +345,52 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun projectsCreate500WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<InternalServerException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(500)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun projectsCreate999() {
         val projectService = client.projects()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnexpectedStatusCodeException> {
+                projectService.create(
+                    ProjectCreateParams.builder().name("x").orgName("org_name").build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(999)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun projectsCreate999WithRawResponse() {
+        val projectService = client.projects().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(

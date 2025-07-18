@@ -3,14 +3,14 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -67,7 +67,8 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PromptService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -76,8 +77,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val createHandler: Handler<Prompt> =
-            jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<Prompt> = jsonHandler<Prompt>(clientOptions.jsonMapper)
 
         override fun create(
             params: PromptCreateParams,
@@ -93,7 +93,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {
@@ -104,8 +104,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val retrieveHandler: Handler<Prompt> =
-            jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Prompt> = jsonHandler<Prompt>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: PromptRetrieveParams,
@@ -123,7 +122,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {
@@ -134,8 +133,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val updateHandler: Handler<Prompt> =
-            jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<Prompt> = jsonHandler<Prompt>(clientOptions.jsonMapper)
 
         override fun update(
             params: PromptUpdateParams,
@@ -154,7 +152,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { updateHandler.handle(it) }
                     .also {
@@ -167,7 +165,6 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
 
         private val listHandler: Handler<PromptListPageResponse> =
             jsonHandler<PromptListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: PromptListParams,
@@ -182,7 +179,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {
@@ -200,8 +197,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val deleteHandler: Handler<Prompt> =
-            jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Prompt> = jsonHandler<Prompt>(clientOptions.jsonMapper)
 
         override fun delete(
             params: PromptDeleteParams,
@@ -220,7 +216,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { deleteHandler.handle(it) }
                     .also {
@@ -231,8 +227,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val replaceHandler: Handler<Prompt> =
-            jsonHandler<Prompt>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val replaceHandler: Handler<Prompt> = jsonHandler<Prompt>(clientOptions.jsonMapper)
 
         override fun replace(
             params: PromptReplaceParams,
@@ -248,7 +243,7 @@ class PromptServiceImpl internal constructor(private val clientOptions: ClientOp
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { replaceHandler.handle(it) }
                     .also {
