@@ -2,6 +2,14 @@
 
 package com.braintrustdata.api.core.http
 
+import com.braintrustdata.api.core.JsonArray
+import com.braintrustdata.api.core.JsonBoolean
+import com.braintrustdata.api.core.JsonMissing
+import com.braintrustdata.api.core.JsonNull
+import com.braintrustdata.api.core.JsonNumber
+import com.braintrustdata.api.core.JsonObject
+import com.braintrustdata.api.core.JsonString
+import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.toImmutable
 
 class QueryParams
@@ -27,6 +35,39 @@ private constructor(
 
         private val map: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var size: Int = 0
+
+        fun put(key: String, value: JsonValue): Builder = apply {
+            when (value) {
+                is JsonMissing,
+                is JsonNull -> {}
+                is JsonBoolean -> put(key, value.value.toString())
+                is JsonNumber -> put(key, value.value.toString())
+                is JsonString -> put(key, value.value)
+                is JsonArray ->
+                    put(
+                        key,
+                        value.values
+                            .asSequence()
+                            .mapNotNull {
+                                when (it) {
+                                    is JsonMissing,
+                                    is JsonNull -> null
+                                    is JsonBoolean -> it.value.toString()
+                                    is JsonNumber -> it.value.toString()
+                                    is JsonString -> it.value
+                                    is JsonArray,
+                                    is JsonObject ->
+                                        throw IllegalArgumentException(
+                                            "Cannot comma separate non-primitives in query params"
+                                        )
+                                }
+                            }
+                            .joinToString(","),
+                    )
+                is JsonObject ->
+                    value.values.forEach { (nestedKey, value) -> put("$key[$nestedKey]", value) }
+            }
+        }
 
         fun put(key: String, value: String) = apply {
             map.getOrPut(key) { mutableListOf() }.add(value)
