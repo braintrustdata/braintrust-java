@@ -235,8 +235,11 @@ private constructor(
         fun timeout(): Timeout = timeout
 
         fun fromEnv() = apply {
-            System.getenv("BRAINTRUST_BASE_URL")?.let { baseUrl(it) }
-            System.getenv("BRAINTRUST_API_KEY")?.let { apiKey(it) }
+            (System.getProperty("braintrust.baseUrl") ?: System.getenv("BRAINTRUST_BASE_URL"))
+                ?.let { baseUrl(it) }
+            (System.getProperty("braintrust.apiKey") ?: System.getenv("BRAINTRUST_API_KEY"))?.let {
+                apiKey(it)
+            }
         }
 
         /**
