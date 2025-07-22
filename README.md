@@ -55,7 +55,8 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClient client = BraintrustOkHttpClient.fromEnv();
 
 ProjectCreateParams params = ProjectCreateParams.builder()
@@ -66,13 +67,14 @@ Project project = client.projects().create(params);
 
 ## Client configuration
 
-Configure the client using environment variables:
+Configure the client using system properties or environment variables:
 
 ```java
 import com.braintrustdata.api.client.BraintrustClient;
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClient client = BraintrustOkHttpClient.fromEnv();
 ```
 
@@ -94,7 +96,8 @@ import com.braintrustdata.api.client.BraintrustClient;
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 
 BraintrustClient client = BraintrustOkHttpClient.builder()
-    // Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+    // Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+    Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
     .fromEnv()
     .apiKey("My API Key")
     .build();
@@ -102,10 +105,12 @@ BraintrustClient client = BraintrustOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter    | Environment variable  | Required | Default value                  |
-| --------- | --------------------- | -------- | ------------------------------ |
-| `apiKey`  | `BRAINTRUST_API_KEY`  | false    | -                              |
-| `baseUrl` | `BRAINTRUST_BASE_URL` | true     | `"https://api.braintrust.dev"` |
+| Setter    | System property      | Environment variable  | Required | Default value                  |
+| --------- | -------------------- | --------------------- | -------- | ------------------------------ |
+| `apiKey`  | `braintrust.apiKey`  | `BRAINTRUST_API_KEY`  | false    | -                              |
+| `baseUrl` | `braintrust.baseUrl` | `BRAINTRUST_BASE_URL` | true     | `"https://api.braintrust.dev"` |
+
+System properties take precedence over environment variables.
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -151,7 +156,8 @@ import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClient client = BraintrustOkHttpClient.fromEnv();
 
 ProjectCreateParams params = ProjectCreateParams.builder()
@@ -169,7 +175,8 @@ import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClientAsync client = BraintrustOkHttpClientAsync.fromEnv();
 
 ProjectCreateParams params = ProjectCreateParams.builder()
