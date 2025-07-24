@@ -1919,7 +1919,8 @@ private constructor(
                     @JvmStatic fun ofText(text: String) = Content(text = text)
 
                     @JvmStatic
-                    fun ofArray(array: List<ChatCompletionContentPart>) = Content(array = array)
+                    fun ofArray(array: List<ChatCompletionContentPart>) =
+                        Content(array = array.toImmutable())
                 }
 
                 /**

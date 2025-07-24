@@ -6,6 +6,7 @@ import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -419,7 +420,7 @@ private constructor(
 
             @JvmStatic fun ofString(string: String) = Ids(string = string)
 
-            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
+            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings.toImmutable())
         }
 
         /** An interface that defines how to map each variant of [Ids] to a value of type [T]. */
@@ -488,7 +489,7 @@ private constructor(
             /** The type of the configured score */
             @JvmStatic
             fun ofProjectScoreTypes(projectScoreTypes: List<ProjectScoreType>) =
-                ScoreType(projectScoreTypes = projectScoreTypes)
+                ScoreType(projectScoreTypes = projectScoreTypes.toImmutable())
         }
 
         /**
