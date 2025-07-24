@@ -2821,7 +2821,7 @@ private constructor(
 
                             @JvmStatic
                             fun ofArray(array: List<ChatCompletionContentPart>) =
-                                Content(array = array)
+                                Content(array = array.toImmutable())
                         }
 
                         /**
