@@ -915,13 +915,14 @@ private constructor(
             /** For categorical-type project scores, the list of all categories */
             @JvmStatic
             fun ofCategorical(categorical: List<ProjectScoreCategory>) =
-                Categories(categorical = categorical)
+                Categories(categorical = categorical.toImmutable())
 
             /** For weighted-type project scores, the weights of each score */
             @JvmStatic fun ofWeighted(weighted: Weighted) = Categories(weighted = weighted)
 
             /** For minimum-type project scores, the list of included scores */
-            @JvmStatic fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum)
+            @JvmStatic
+            fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum.toImmutable())
         }
 
         /**
