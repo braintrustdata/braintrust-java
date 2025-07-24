@@ -97,7 +97,7 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 
 BraintrustClient client = BraintrustOkHttpClient.builder()
     // Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
-    Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+    // Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
     .fromEnv()
     .apiKey("My API Key")
     .build();
