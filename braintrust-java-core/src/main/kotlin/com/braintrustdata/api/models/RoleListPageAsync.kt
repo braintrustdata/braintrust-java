@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [RoleServiceAsync.list] */
+/** @see RoleServiceAsync.list */
 class RoleListPageAsync
 private constructor(
     private val service: RoleServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [RoleListPageResponse], but gracefully handles missing data.
      *
-     * @see [RoleListPageResponse.objects]
+     * @see RoleListPageResponse.objects
      */
     fun objects(): List<Role> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

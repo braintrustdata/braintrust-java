@@ -34,7 +34,7 @@ interface EvalServiceAsync {
     fun create(params: EvalCreateParams): CompletableFuture<SummarizeExperimentResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: EvalCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -59,7 +59,7 @@ interface EvalServiceAsync {
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: EvalCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

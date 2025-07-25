@@ -38,7 +38,7 @@ interface ProjectScoreServiceAsync {
     fun create(params: ProjectScoreCreateParams): CompletableFuture<ProjectScore> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ProjectScoreCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,7 +48,7 @@ interface ProjectScoreServiceAsync {
     fun retrieve(projectScoreId: String): CompletableFuture<ProjectScore> =
         retrieve(projectScoreId, ProjectScoreRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectScoreId: String,
         params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
@@ -56,23 +56,23 @@ interface ProjectScoreServiceAsync {
     ): CompletableFuture<ProjectScore> =
         retrieve(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectScoreId: String,
         params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
     ): CompletableFuture<ProjectScore> = retrieve(projectScoreId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ProjectScoreRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ProjectScoreRetrieveParams): CompletableFuture<ProjectScore> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectScoreId: String,
         requestOptions: RequestOptions,
@@ -87,7 +87,7 @@ interface ProjectScoreServiceAsync {
     fun update(projectScoreId: String): CompletableFuture<ProjectScore> =
         update(projectScoreId, ProjectScoreUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectScoreId: String,
         params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
@@ -95,23 +95,23 @@ interface ProjectScoreServiceAsync {
     ): CompletableFuture<ProjectScore> =
         update(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectScoreId: String,
         params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
     ): CompletableFuture<ProjectScore> = update(projectScoreId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: ProjectScoreUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: ProjectScoreUpdateParams): CompletableFuture<ProjectScore> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectScoreId: String,
         requestOptions: RequestOptions,
@@ -124,18 +124,18 @@ interface ProjectScoreServiceAsync {
      */
     fun list(): CompletableFuture<ProjectScoreListPageAsync> = list(ProjectScoreListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectScoreListParams = ProjectScoreListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScoreListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectScoreListParams = ProjectScoreListParams.none()
     ): CompletableFuture<ProjectScoreListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProjectScoreListPageAsync> =
         list(ProjectScoreListParams.none(), requestOptions)
 
@@ -143,7 +143,7 @@ interface ProjectScoreServiceAsync {
     fun delete(projectScoreId: String): CompletableFuture<ProjectScore> =
         delete(projectScoreId, ProjectScoreDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectScoreId: String,
         params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
@@ -151,23 +151,23 @@ interface ProjectScoreServiceAsync {
     ): CompletableFuture<ProjectScore> =
         delete(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectScoreId: String,
         params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
     ): CompletableFuture<ProjectScore> = delete(projectScoreId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ProjectScoreDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectScore>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ProjectScoreDeleteParams): CompletableFuture<ProjectScore> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectScoreId: String,
         requestOptions: RequestOptions,
@@ -182,7 +182,7 @@ interface ProjectScoreServiceAsync {
     fun replace(params: ProjectScoreReplaceParams): CompletableFuture<ProjectScore> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: ProjectScoreReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -211,7 +211,7 @@ interface ProjectScoreServiceAsync {
             params: ProjectScoreCreateParams
         ): CompletableFuture<HttpResponseFor<ProjectScore>> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: ProjectScoreCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -224,7 +224,7 @@ interface ProjectScoreServiceAsync {
         fun retrieve(projectScoreId: String): CompletableFuture<HttpResponseFor<ProjectScore>> =
             retrieve(projectScoreId, ProjectScoreRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectScoreId: String,
             params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
@@ -232,26 +232,26 @@ interface ProjectScoreServiceAsync {
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             retrieve(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectScoreId: String,
             params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             retrieve(projectScoreId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ProjectScoreRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ProjectScoreRetrieveParams
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectScoreId: String,
             requestOptions: RequestOptions,
@@ -265,7 +265,7 @@ interface ProjectScoreServiceAsync {
         fun update(projectScoreId: String): CompletableFuture<HttpResponseFor<ProjectScore>> =
             update(projectScoreId, ProjectScoreUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             projectScoreId: String,
             params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
@@ -273,25 +273,25 @@ interface ProjectScoreServiceAsync {
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             update(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             projectScoreId: String,
             params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             update(projectScoreId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: ProjectScoreUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: ProjectScoreUpdateParams
         ): CompletableFuture<HttpResponseFor<ProjectScore>> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             projectScoreId: String,
             requestOptions: RequestOptions,
@@ -305,19 +305,19 @@ interface ProjectScoreServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<ProjectScoreListPageAsync>> =
             list(ProjectScoreListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProjectScoreListParams = ProjectScoreListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScoreListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProjectScoreListParams = ProjectScoreListParams.none()
         ): CompletableFuture<HttpResponseFor<ProjectScoreListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectScoreListPageAsync>> =
@@ -330,7 +330,7 @@ interface ProjectScoreServiceAsync {
         fun delete(projectScoreId: String): CompletableFuture<HttpResponseFor<ProjectScore>> =
             delete(projectScoreId, ProjectScoreDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             projectScoreId: String,
             params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
@@ -338,25 +338,25 @@ interface ProjectScoreServiceAsync {
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             delete(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             projectScoreId: String,
             params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>> =
             delete(projectScoreId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: ProjectScoreDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectScore>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: ProjectScoreDeleteParams
         ): CompletableFuture<HttpResponseFor<ProjectScore>> = delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             projectScoreId: String,
             requestOptions: RequestOptions,
@@ -371,7 +371,7 @@ interface ProjectScoreServiceAsync {
             params: ProjectScoreReplaceParams
         ): CompletableFuture<HttpResponseFor<ProjectScore>> = replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: ProjectScoreReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -37,7 +37,7 @@ interface ViewServiceAsync {
     fun create(params: ViewCreateParams): CompletableFuture<View> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ViewCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,18 +47,18 @@ interface ViewServiceAsync {
     fun retrieve(viewId: String, params: ViewRetrieveParams): CompletableFuture<View> =
         retrieve(viewId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         viewId: String,
         params: ViewRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View> = retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ViewRetrieveParams): CompletableFuture<View> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ViewRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -72,18 +72,18 @@ interface ViewServiceAsync {
     fun update(viewId: String, params: ViewUpdateParams): CompletableFuture<View> =
         update(viewId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         viewId: String,
         params: ViewUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View> = update(params.toBuilder().viewId(viewId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: ViewUpdateParams): CompletableFuture<View> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: ViewUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -96,7 +96,7 @@ interface ViewServiceAsync {
     fun list(params: ViewListParams): CompletableFuture<ViewListPageAsync> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ViewListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -106,18 +106,18 @@ interface ViewServiceAsync {
     fun delete(viewId: String, params: ViewDeleteParams): CompletableFuture<View> =
         delete(viewId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         viewId: String,
         params: ViewDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<View> = delete(params.toBuilder().viewId(viewId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ViewDeleteParams): CompletableFuture<View> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ViewDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -130,7 +130,7 @@ interface ViewServiceAsync {
     fun replace(params: ViewReplaceParams): CompletableFuture<View> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: ViewReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -153,7 +153,7 @@ interface ViewServiceAsync {
         fun create(params: ViewCreateParams): CompletableFuture<HttpResponseFor<View>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: ViewCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -169,7 +169,7 @@ interface ViewServiceAsync {
         ): CompletableFuture<HttpResponseFor<View>> =
             retrieve(viewId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             viewId: String,
             params: ViewRetrieveParams,
@@ -177,11 +177,11 @@ interface ViewServiceAsync {
         ): CompletableFuture<HttpResponseFor<View>> =
             retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: ViewRetrieveParams): CompletableFuture<HttpResponseFor<View>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ViewRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -196,7 +196,7 @@ interface ViewServiceAsync {
             params: ViewUpdateParams,
         ): CompletableFuture<HttpResponseFor<View>> = update(viewId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             viewId: String,
             params: ViewUpdateParams,
@@ -204,11 +204,11 @@ interface ViewServiceAsync {
         ): CompletableFuture<HttpResponseFor<View>> =
             update(params.toBuilder().viewId(viewId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: ViewUpdateParams): CompletableFuture<HttpResponseFor<View>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: ViewUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -221,7 +221,7 @@ interface ViewServiceAsync {
         fun list(params: ViewListParams): CompletableFuture<HttpResponseFor<ViewListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ViewListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -236,7 +236,7 @@ interface ViewServiceAsync {
             params: ViewDeleteParams,
         ): CompletableFuture<HttpResponseFor<View>> = delete(viewId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             viewId: String,
             params: ViewDeleteParams,
@@ -244,11 +244,11 @@ interface ViewServiceAsync {
         ): CompletableFuture<HttpResponseFor<View>> =
             delete(params.toBuilder().viewId(viewId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: ViewDeleteParams): CompletableFuture<HttpResponseFor<View>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: ViewDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -261,7 +261,7 @@ interface ViewServiceAsync {
         fun replace(params: ViewReplaceParams): CompletableFuture<HttpResponseFor<View>> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: ViewReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

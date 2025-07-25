@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ApiKeyServiceAsync.list] */
+/** @see ApiKeyServiceAsync.list */
 class ApiKeyListPageAsync
 private constructor(
     private val service: ApiKeyServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [ApiKeyListPageResponse], but gracefully handles missing data.
      *
-     * @see [ApiKeyListPageResponse.objects]
+     * @see ApiKeyListPageResponse.objects
      */
     fun objects(): List<ApiKey> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

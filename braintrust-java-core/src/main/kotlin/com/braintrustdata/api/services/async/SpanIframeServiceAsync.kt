@@ -37,7 +37,7 @@ interface SpanIframeServiceAsync {
     fun create(params: SpanIframeCreateParams): CompletableFuture<SpanIFrame> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SpanIframeCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,7 +47,7 @@ interface SpanIframeServiceAsync {
     fun retrieve(spanIframeId: String): CompletableFuture<SpanIFrame> =
         retrieve(spanIframeId, SpanIframeRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         spanIframeId: String,
         params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
@@ -55,23 +55,23 @@ interface SpanIframeServiceAsync {
     ): CompletableFuture<SpanIFrame> =
         retrieve(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         spanIframeId: String,
         params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
     ): CompletableFuture<SpanIFrame> = retrieve(spanIframeId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: SpanIframeRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: SpanIframeRetrieveParams): CompletableFuture<SpanIFrame> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         spanIframeId: String,
         requestOptions: RequestOptions,
@@ -86,7 +86,7 @@ interface SpanIframeServiceAsync {
     fun update(spanIframeId: String): CompletableFuture<SpanIFrame> =
         update(spanIframeId, SpanIframeUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         spanIframeId: String,
         params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
@@ -94,23 +94,23 @@ interface SpanIframeServiceAsync {
     ): CompletableFuture<SpanIFrame> =
         update(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         spanIframeId: String,
         params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
     ): CompletableFuture<SpanIFrame> = update(spanIframeId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SpanIframeUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: SpanIframeUpdateParams): CompletableFuture<SpanIFrame> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         spanIframeId: String,
         requestOptions: RequestOptions,
@@ -123,18 +123,18 @@ interface SpanIframeServiceAsync {
      */
     fun list(): CompletableFuture<SpanIframeListPageAsync> = list(SpanIframeListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: SpanIframeListParams = SpanIframeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIframeListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: SpanIframeListParams = SpanIframeListParams.none()
     ): CompletableFuture<SpanIframeListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<SpanIframeListPageAsync> =
         list(SpanIframeListParams.none(), requestOptions)
 
@@ -142,7 +142,7 @@ interface SpanIframeServiceAsync {
     fun delete(spanIframeId: String): CompletableFuture<SpanIFrame> =
         delete(spanIframeId, SpanIframeDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         spanIframeId: String,
         params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
@@ -150,23 +150,23 @@ interface SpanIframeServiceAsync {
     ): CompletableFuture<SpanIFrame> =
         delete(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         spanIframeId: String,
         params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
     ): CompletableFuture<SpanIFrame> = delete(spanIframeId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: SpanIframeDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SpanIFrame>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: SpanIframeDeleteParams): CompletableFuture<SpanIFrame> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         spanIframeId: String,
         requestOptions: RequestOptions,
@@ -180,7 +180,7 @@ interface SpanIframeServiceAsync {
     fun replace(params: SpanIframeReplaceParams): CompletableFuture<SpanIFrame> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: SpanIframeReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -208,7 +208,7 @@ interface SpanIframeServiceAsync {
         fun create(params: SpanIframeCreateParams): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: SpanIframeCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -221,7 +221,7 @@ interface SpanIframeServiceAsync {
         fun retrieve(spanIframeId: String): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             retrieve(spanIframeId, SpanIframeRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             spanIframeId: String,
             params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
@@ -229,25 +229,25 @@ interface SpanIframeServiceAsync {
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             retrieve(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             spanIframeId: String,
             params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             retrieve(spanIframeId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: SpanIframeRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SpanIFrame>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: SpanIframeRetrieveParams
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> = retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             spanIframeId: String,
             requestOptions: RequestOptions,
@@ -261,7 +261,7 @@ interface SpanIframeServiceAsync {
         fun update(spanIframeId: String): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             update(spanIframeId, SpanIframeUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             spanIframeId: String,
             params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
@@ -269,24 +269,24 @@ interface SpanIframeServiceAsync {
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             update(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             spanIframeId: String,
             params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             update(spanIframeId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SpanIframeUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SpanIFrame>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: SpanIframeUpdateParams): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             spanIframeId: String,
             requestOptions: RequestOptions,
@@ -300,19 +300,19 @@ interface SpanIframeServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>> =
             list(SpanIframeListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: SpanIframeListParams = SpanIframeListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: SpanIframeListParams = SpanIframeListParams.none()
         ): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<SpanIframeListPageAsync>> =
@@ -325,7 +325,7 @@ interface SpanIframeServiceAsync {
         fun delete(spanIframeId: String): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             delete(spanIframeId, SpanIframeDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             spanIframeId: String,
             params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
@@ -333,24 +333,24 @@ interface SpanIframeServiceAsync {
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             delete(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             spanIframeId: String,
             params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             delete(spanIframeId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: SpanIframeDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SpanIFrame>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: SpanIframeDeleteParams): CompletableFuture<HttpResponseFor<SpanIFrame>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             spanIframeId: String,
             requestOptions: RequestOptions,
@@ -365,7 +365,7 @@ interface SpanIframeServiceAsync {
             params: SpanIframeReplaceParams
         ): CompletableFuture<HttpResponseFor<SpanIFrame>> = replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: SpanIframeReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

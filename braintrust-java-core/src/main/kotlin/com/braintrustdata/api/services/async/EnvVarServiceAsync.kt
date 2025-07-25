@@ -37,7 +37,7 @@ interface EnvVarServiceAsync {
     fun create(params: EnvVarCreateParams): CompletableFuture<EnvVar> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: EnvVarCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,7 +47,7 @@ interface EnvVarServiceAsync {
     fun retrieve(envVarId: String): CompletableFuture<EnvVar> =
         retrieve(envVarId, EnvVarRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         envVarId: String,
         params: EnvVarRetrieveParams = EnvVarRetrieveParams.none(),
@@ -55,23 +55,23 @@ interface EnvVarServiceAsync {
     ): CompletableFuture<EnvVar> =
         retrieve(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         envVarId: String,
         params: EnvVarRetrieveParams = EnvVarRetrieveParams.none(),
     ): CompletableFuture<EnvVar> = retrieve(envVarId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: EnvVarRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: EnvVarRetrieveParams): CompletableFuture<EnvVar> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(envVarId: String, requestOptions: RequestOptions): CompletableFuture<EnvVar> =
         retrieve(envVarId, EnvVarRetrieveParams.none(), requestOptions)
 
@@ -83,7 +83,7 @@ interface EnvVarServiceAsync {
     fun update(envVarId: String, params: EnvVarUpdateParams): CompletableFuture<EnvVar> =
         update(envVarId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         envVarId: String,
         params: EnvVarUpdateParams,
@@ -91,11 +91,11 @@ interface EnvVarServiceAsync {
     ): CompletableFuture<EnvVar> =
         update(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: EnvVarUpdateParams): CompletableFuture<EnvVar> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: EnvVarUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -107,18 +107,18 @@ interface EnvVarServiceAsync {
      */
     fun list(): CompletableFuture<EnvVarListResponse> = list(EnvVarListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: EnvVarListParams = EnvVarListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVarListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: EnvVarListParams = EnvVarListParams.none()
     ): CompletableFuture<EnvVarListResponse> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<EnvVarListResponse> =
         list(EnvVarListParams.none(), requestOptions)
 
@@ -126,7 +126,7 @@ interface EnvVarServiceAsync {
     fun delete(envVarId: String): CompletableFuture<EnvVar> =
         delete(envVarId, EnvVarDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         envVarId: String,
         params: EnvVarDeleteParams = EnvVarDeleteParams.none(),
@@ -134,23 +134,23 @@ interface EnvVarServiceAsync {
     ): CompletableFuture<EnvVar> =
         delete(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         envVarId: String,
         params: EnvVarDeleteParams = EnvVarDeleteParams.none(),
     ): CompletableFuture<EnvVar> = delete(envVarId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: EnvVarDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<EnvVar>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: EnvVarDeleteParams): CompletableFuture<EnvVar> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(envVarId: String, requestOptions: RequestOptions): CompletableFuture<EnvVar> =
         delete(envVarId, EnvVarDeleteParams.none(), requestOptions)
 
@@ -161,7 +161,7 @@ interface EnvVarServiceAsync {
     fun replace(params: EnvVarReplaceParams): CompletableFuture<EnvVar> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: EnvVarReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -188,7 +188,7 @@ interface EnvVarServiceAsync {
         fun create(params: EnvVarCreateParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: EnvVarCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -201,7 +201,7 @@ interface EnvVarServiceAsync {
         fun retrieve(envVarId: String): CompletableFuture<HttpResponseFor<EnvVar>> =
             retrieve(envVarId, EnvVarRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             envVarId: String,
             params: EnvVarRetrieveParams = EnvVarRetrieveParams.none(),
@@ -209,24 +209,24 @@ interface EnvVarServiceAsync {
         ): CompletableFuture<HttpResponseFor<EnvVar>> =
             retrieve(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             envVarId: String,
             params: EnvVarRetrieveParams = EnvVarRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<EnvVar>> =
             retrieve(envVarId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: EnvVarRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EnvVar>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: EnvVarRetrieveParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             envVarId: String,
             requestOptions: RequestOptions,
@@ -243,7 +243,7 @@ interface EnvVarServiceAsync {
         ): CompletableFuture<HttpResponseFor<EnvVar>> =
             update(envVarId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             envVarId: String,
             params: EnvVarUpdateParams,
@@ -251,11 +251,11 @@ interface EnvVarServiceAsync {
         ): CompletableFuture<HttpResponseFor<EnvVar>> =
             update(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: EnvVarUpdateParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: EnvVarUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -268,19 +268,19 @@ interface EnvVarServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<EnvVarListResponse>> =
             list(EnvVarListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: EnvVarListParams = EnvVarListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EnvVarListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: EnvVarListParams = EnvVarListParams.none()
         ): CompletableFuture<HttpResponseFor<EnvVarListResponse>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<EnvVarListResponse>> =
@@ -293,7 +293,7 @@ interface EnvVarServiceAsync {
         fun delete(envVarId: String): CompletableFuture<HttpResponseFor<EnvVar>> =
             delete(envVarId, EnvVarDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             envVarId: String,
             params: EnvVarDeleteParams = EnvVarDeleteParams.none(),
@@ -301,24 +301,24 @@ interface EnvVarServiceAsync {
         ): CompletableFuture<HttpResponseFor<EnvVar>> =
             delete(params.toBuilder().envVarId(envVarId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             envVarId: String,
             params: EnvVarDeleteParams = EnvVarDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<EnvVar>> =
             delete(envVarId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: EnvVarDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EnvVar>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: EnvVarDeleteParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             envVarId: String,
             requestOptions: RequestOptions,
@@ -332,7 +332,7 @@ interface EnvVarServiceAsync {
         fun replace(params: EnvVarReplaceParams): CompletableFuture<HttpResponseFor<EnvVar>> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: EnvVarReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

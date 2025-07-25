@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ProjectTagServiceAsync.list] */
+/** @see ProjectTagServiceAsync.list */
 class ProjectTagListPageAsync
 private constructor(
     private val service: ProjectTagServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [ProjectTagListPageResponse], but gracefully handles missing data.
      *
-     * @see [ProjectTagListPageResponse.objects]
+     * @see ProjectTagListPageResponse.objects
      */
     fun objects(): List<ProjectTag> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

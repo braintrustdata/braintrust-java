@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.UserService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [UserService.list] */
+/** @see UserService.list */
 class UserListPage
 private constructor(
     private val service: UserService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [UserListPageResponse], but gracefully handles missing data.
      *
-     * @see [UserListPageResponse.objects]
+     * @see UserListPageResponse.objects
      */
     fun objects(): List<User> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

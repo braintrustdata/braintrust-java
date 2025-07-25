@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [AclServiceAsync.list] */
+/** @see AclServiceAsync.list */
 class AclListPageAsync
 private constructor(
     private val service: AclServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [AclListPageResponse], but gracefully handles missing data.
      *
-     * @see [AclListPageResponse.objects]
+     * @see AclListPageResponse.objects
      */
     fun objects(): List<Acl> = response._objects().getOptional("objects").getOrNull() ?: emptyList()
 

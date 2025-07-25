@@ -45,7 +45,7 @@ interface ExperimentServiceAsync {
     fun create(params: ExperimentCreateParams): CompletableFuture<Experiment> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ExperimentCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -55,7 +55,7 @@ interface ExperimentServiceAsync {
     fun retrieve(experimentId: String): CompletableFuture<Experiment> =
         retrieve(experimentId, ExperimentRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         experimentId: String,
         params: ExperimentRetrieveParams = ExperimentRetrieveParams.none(),
@@ -63,23 +63,23 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<Experiment> =
         retrieve(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         experimentId: String,
         params: ExperimentRetrieveParams = ExperimentRetrieveParams.none(),
     ): CompletableFuture<Experiment> = retrieve(experimentId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ExperimentRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ExperimentRetrieveParams): CompletableFuture<Experiment> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         experimentId: String,
         requestOptions: RequestOptions,
@@ -94,7 +94,7 @@ interface ExperimentServiceAsync {
     fun update(experimentId: String): CompletableFuture<Experiment> =
         update(experimentId, ExperimentUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         experimentId: String,
         params: ExperimentUpdateParams = ExperimentUpdateParams.none(),
@@ -102,23 +102,23 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<Experiment> =
         update(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         experimentId: String,
         params: ExperimentUpdateParams = ExperimentUpdateParams.none(),
     ): CompletableFuture<Experiment> = update(experimentId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: ExperimentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: ExperimentUpdateParams): CompletableFuture<Experiment> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         experimentId: String,
         requestOptions: RequestOptions,
@@ -131,18 +131,18 @@ interface ExperimentServiceAsync {
      */
     fun list(): CompletableFuture<ExperimentListPageAsync> = list(ExperimentListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ExperimentListParams = ExperimentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ExperimentListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ExperimentListParams = ExperimentListParams.none()
     ): CompletableFuture<ExperimentListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ExperimentListPageAsync> =
         list(ExperimentListParams.none(), requestOptions)
 
@@ -150,7 +150,7 @@ interface ExperimentServiceAsync {
     fun delete(experimentId: String): CompletableFuture<Experiment> =
         delete(experimentId, ExperimentDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         experimentId: String,
         params: ExperimentDeleteParams = ExperimentDeleteParams.none(),
@@ -158,23 +158,23 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<Experiment> =
         delete(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         experimentId: String,
         params: ExperimentDeleteParams = ExperimentDeleteParams.none(),
     ): CompletableFuture<Experiment> = delete(experimentId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ExperimentDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Experiment>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ExperimentDeleteParams): CompletableFuture<Experiment> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         experimentId: String,
         requestOptions: RequestOptions,
@@ -188,7 +188,7 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<FeedbackResponseSchema> =
         feedback(experimentId, params, RequestOptions.none())
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(
         experimentId: String,
         params: ExperimentFeedbackParams,
@@ -196,11 +196,11 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<FeedbackResponseSchema> =
         feedback(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(params: ExperimentFeedbackParams): CompletableFuture<FeedbackResponseSchema> =
         feedback(params, RequestOptions.none())
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(
         params: ExperimentFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -214,7 +214,7 @@ interface ExperimentServiceAsync {
     fun fetch(experimentId: String): CompletableFuture<FetchExperimentEventsResponse> =
         fetch(experimentId, ExperimentFetchParams.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         experimentId: String,
         params: ExperimentFetchParams = ExperimentFetchParams.none(),
@@ -222,24 +222,24 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<FetchExperimentEventsResponse> =
         fetch(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         experimentId: String,
         params: ExperimentFetchParams = ExperimentFetchParams.none(),
     ): CompletableFuture<FetchExperimentEventsResponse> =
         fetch(experimentId, params, RequestOptions.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         params: ExperimentFetchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchExperimentEventsResponse>
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(params: ExperimentFetchParams): CompletableFuture<FetchExperimentEventsResponse> =
         fetch(params, RequestOptions.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         experimentId: String,
         requestOptions: RequestOptions,
@@ -254,7 +254,7 @@ interface ExperimentServiceAsync {
     fun fetchPost(experimentId: String): CompletableFuture<FetchExperimentEventsResponse> =
         fetchPost(experimentId, ExperimentFetchPostParams.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         experimentId: String,
         params: ExperimentFetchPostParams = ExperimentFetchPostParams.none(),
@@ -262,25 +262,25 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<FetchExperimentEventsResponse> =
         fetchPost(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         experimentId: String,
         params: ExperimentFetchPostParams = ExperimentFetchPostParams.none(),
     ): CompletableFuture<FetchExperimentEventsResponse> =
         fetchPost(experimentId, params, RequestOptions.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         params: ExperimentFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchExperimentEventsResponse>
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         params: ExperimentFetchPostParams
     ): CompletableFuture<FetchExperimentEventsResponse> = fetchPost(params, RequestOptions.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         experimentId: String,
         requestOptions: RequestOptions,
@@ -293,7 +293,7 @@ interface ExperimentServiceAsync {
         params: ExperimentInsertParams,
     ): CompletableFuture<InsertEventsResponse> = insert(experimentId, params, RequestOptions.none())
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(
         experimentId: String,
         params: ExperimentInsertParams,
@@ -301,11 +301,11 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<InsertEventsResponse> =
         insert(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(params: ExperimentInsertParams): CompletableFuture<InsertEventsResponse> =
         insert(params, RequestOptions.none())
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(
         params: ExperimentInsertParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -315,7 +315,7 @@ interface ExperimentServiceAsync {
     fun summarize(experimentId: String): CompletableFuture<SummarizeExperimentResponse> =
         summarize(experimentId, ExperimentSummarizeParams.none())
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         experimentId: String,
         params: ExperimentSummarizeParams = ExperimentSummarizeParams.none(),
@@ -323,25 +323,25 @@ interface ExperimentServiceAsync {
     ): CompletableFuture<SummarizeExperimentResponse> =
         summarize(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         experimentId: String,
         params: ExperimentSummarizeParams = ExperimentSummarizeParams.none(),
     ): CompletableFuture<SummarizeExperimentResponse> =
         summarize(experimentId, params, RequestOptions.none())
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         params: ExperimentSummarizeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SummarizeExperimentResponse>
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         params: ExperimentSummarizeParams
     ): CompletableFuture<SummarizeExperimentResponse> = summarize(params, RequestOptions.none())
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         experimentId: String,
         requestOptions: RequestOptions,
@@ -370,7 +370,7 @@ interface ExperimentServiceAsync {
         fun create(params: ExperimentCreateParams): CompletableFuture<HttpResponseFor<Experiment>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: ExperimentCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -383,7 +383,7 @@ interface ExperimentServiceAsync {
         fun retrieve(experimentId: String): CompletableFuture<HttpResponseFor<Experiment>> =
             retrieve(experimentId, ExperimentRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             experimentId: String,
             params: ExperimentRetrieveParams = ExperimentRetrieveParams.none(),
@@ -391,25 +391,25 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<Experiment>> =
             retrieve(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             experimentId: String,
             params: ExperimentRetrieveParams = ExperimentRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Experiment>> =
             retrieve(experimentId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ExperimentRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Experiment>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ExperimentRetrieveParams
         ): CompletableFuture<HttpResponseFor<Experiment>> = retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             experimentId: String,
             requestOptions: RequestOptions,
@@ -423,7 +423,7 @@ interface ExperimentServiceAsync {
         fun update(experimentId: String): CompletableFuture<HttpResponseFor<Experiment>> =
             update(experimentId, ExperimentUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             experimentId: String,
             params: ExperimentUpdateParams = ExperimentUpdateParams.none(),
@@ -431,24 +431,24 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<Experiment>> =
             update(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             experimentId: String,
             params: ExperimentUpdateParams = ExperimentUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Experiment>> =
             update(experimentId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: ExperimentUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Experiment>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: ExperimentUpdateParams): CompletableFuture<HttpResponseFor<Experiment>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             experimentId: String,
             requestOptions: RequestOptions,
@@ -462,19 +462,19 @@ interface ExperimentServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>> =
             list(ExperimentListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ExperimentListParams = ExperimentListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ExperimentListParams = ExperimentListParams.none()
         ): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ExperimentListPageAsync>> =
@@ -487,7 +487,7 @@ interface ExperimentServiceAsync {
         fun delete(experimentId: String): CompletableFuture<HttpResponseFor<Experiment>> =
             delete(experimentId, ExperimentDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             experimentId: String,
             params: ExperimentDeleteParams = ExperimentDeleteParams.none(),
@@ -495,24 +495,24 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<Experiment>> =
             delete(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             experimentId: String,
             params: ExperimentDeleteParams = ExperimentDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Experiment>> =
             delete(experimentId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: ExperimentDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Experiment>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: ExperimentDeleteParams): CompletableFuture<HttpResponseFor<Experiment>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             experimentId: String,
             requestOptions: RequestOptions,
@@ -529,7 +529,7 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(experimentId, params, RequestOptions.none())
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             experimentId: String,
             params: ExperimentFeedbackParams,
@@ -537,13 +537,13 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             params: ExperimentFeedbackParams
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params, RequestOptions.none())
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             params: ExperimentFeedbackParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -558,7 +558,7 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetch(experimentId, ExperimentFetchParams.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             experimentId: String,
             params: ExperimentFetchParams = ExperimentFetchParams.none(),
@@ -566,26 +566,26 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetch(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             experimentId: String,
             params: ExperimentFetchParams = ExperimentFetchParams.none(),
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetch(experimentId, params, RequestOptions.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             params: ExperimentFetchParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>>
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             params: ExperimentFetchParams
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetch(params, RequestOptions.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             experimentId: String,
             requestOptions: RequestOptions,
@@ -601,7 +601,7 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetchPost(experimentId, ExperimentFetchPostParams.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             experimentId: String,
             params: ExperimentFetchPostParams = ExperimentFetchPostParams.none(),
@@ -609,26 +609,26 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetchPost(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             experimentId: String,
             params: ExperimentFetchPostParams = ExperimentFetchPostParams.none(),
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetchPost(experimentId, params, RequestOptions.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             params: ExperimentFetchPostParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>>
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             params: ExperimentFetchPostParams
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> =
             fetchPost(params, RequestOptions.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             experimentId: String,
             requestOptions: RequestOptions,
@@ -645,7 +645,7 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(experimentId, params, RequestOptions.none())
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             experimentId: String,
             params: ExperimentInsertParams,
@@ -653,13 +653,13 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             params: ExperimentInsertParams
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params, RequestOptions.none())
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             params: ExperimentInsertParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -674,7 +674,7 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
             summarize(experimentId, ExperimentSummarizeParams.none())
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             experimentId: String,
             params: ExperimentSummarizeParams = ExperimentSummarizeParams.none(),
@@ -682,26 +682,26 @@ interface ExperimentServiceAsync {
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
             summarize(params.toBuilder().experimentId(experimentId).build(), requestOptions)
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             experimentId: String,
             params: ExperimentSummarizeParams = ExperimentSummarizeParams.none(),
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
             summarize(experimentId, params, RequestOptions.none())
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             params: ExperimentSummarizeParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>>
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             params: ExperimentSummarizeParams
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> =
             summarize(params, RequestOptions.none())
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             experimentId: String,
             requestOptions: RequestOptions,

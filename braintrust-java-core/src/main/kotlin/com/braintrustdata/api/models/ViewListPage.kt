@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.ViewService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ViewService.list] */
+/** @see ViewService.list */
 class ViewListPage
 private constructor(
     private val service: ViewService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [ViewListPageResponse], but gracefully handles missing data.
      *
-     * @see [ViewListPageResponse.objects]
+     * @see ViewListPageResponse.objects
      */
     fun objects(): List<View> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

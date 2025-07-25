@@ -26,18 +26,18 @@ interface TopLevelServiceAsync {
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
     fun helloWorld(): CompletableFuture<String> = helloWorld(TopLevelHelloWorldParams.none())
 
-    /** @see [helloWorld] */
+    /** @see helloWorld */
     fun helloWorld(
         params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<String>
 
-    /** @see [helloWorld] */
+    /** @see helloWorld */
     fun helloWorld(
         params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
     ): CompletableFuture<String> = helloWorld(params, RequestOptions.none())
 
-    /** @see [helloWorld] */
+    /** @see helloWorld */
     fun helloWorld(requestOptions: RequestOptions): CompletableFuture<String> =
         helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 
@@ -62,18 +62,18 @@ interface TopLevelServiceAsync {
         fun helloWorld(): CompletableFuture<HttpResponseFor<String>> =
             helloWorld(TopLevelHelloWorldParams.none())
 
-        /** @see [helloWorld] */
+        /** @see helloWorld */
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<String>>
 
-        /** @see [helloWorld] */
+        /** @see helloWorld */
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
         ): CompletableFuture<HttpResponseFor<String>> = helloWorld(params, RequestOptions.none())
 
-        /** @see [helloWorld] */
+        /** @see helloWorld */
         fun helloWorld(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<String>> =
             helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
     }
