@@ -37,7 +37,7 @@ interface PromptServiceAsync {
     fun create(params: PromptCreateParams): CompletableFuture<Prompt> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: PromptCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,7 +47,7 @@ interface PromptServiceAsync {
     fun retrieve(promptId: String): CompletableFuture<Prompt> =
         retrieve(promptId, PromptRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         promptId: String,
         params: PromptRetrieveParams = PromptRetrieveParams.none(),
@@ -55,23 +55,23 @@ interface PromptServiceAsync {
     ): CompletableFuture<Prompt> =
         retrieve(params.toBuilder().promptId(promptId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         promptId: String,
         params: PromptRetrieveParams = PromptRetrieveParams.none(),
     ): CompletableFuture<Prompt> = retrieve(promptId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: PromptRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: PromptRetrieveParams): CompletableFuture<Prompt> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(promptId: String, requestOptions: RequestOptions): CompletableFuture<Prompt> =
         retrieve(promptId, PromptRetrieveParams.none(), requestOptions)
 
@@ -83,7 +83,7 @@ interface PromptServiceAsync {
     fun update(promptId: String): CompletableFuture<Prompt> =
         update(promptId, PromptUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         promptId: String,
         params: PromptUpdateParams = PromptUpdateParams.none(),
@@ -91,23 +91,23 @@ interface PromptServiceAsync {
     ): CompletableFuture<Prompt> =
         update(params.toBuilder().promptId(promptId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         promptId: String,
         params: PromptUpdateParams = PromptUpdateParams.none(),
     ): CompletableFuture<Prompt> = update(promptId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: PromptUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: PromptUpdateParams): CompletableFuture<Prompt> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(promptId: String, requestOptions: RequestOptions): CompletableFuture<Prompt> =
         update(promptId, PromptUpdateParams.none(), requestOptions)
 
@@ -117,18 +117,18 @@ interface PromptServiceAsync {
      */
     fun list(): CompletableFuture<PromptListPageAsync> = list(PromptListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: PromptListParams = PromptListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PromptListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: PromptListParams = PromptListParams.none()
     ): CompletableFuture<PromptListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<PromptListPageAsync> =
         list(PromptListParams.none(), requestOptions)
 
@@ -136,7 +136,7 @@ interface PromptServiceAsync {
     fun delete(promptId: String): CompletableFuture<Prompt> =
         delete(promptId, PromptDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         promptId: String,
         params: PromptDeleteParams = PromptDeleteParams.none(),
@@ -144,23 +144,23 @@ interface PromptServiceAsync {
     ): CompletableFuture<Prompt> =
         delete(params.toBuilder().promptId(promptId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         promptId: String,
         params: PromptDeleteParams = PromptDeleteParams.none(),
     ): CompletableFuture<Prompt> = delete(promptId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: PromptDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Prompt>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: PromptDeleteParams): CompletableFuture<Prompt> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(promptId: String, requestOptions: RequestOptions): CompletableFuture<Prompt> =
         delete(promptId, PromptDeleteParams.none(), requestOptions)
 
@@ -171,7 +171,7 @@ interface PromptServiceAsync {
     fun replace(params: PromptReplaceParams): CompletableFuture<Prompt> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: PromptReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -198,7 +198,7 @@ interface PromptServiceAsync {
         fun create(params: PromptCreateParams): CompletableFuture<HttpResponseFor<Prompt>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: PromptCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -211,7 +211,7 @@ interface PromptServiceAsync {
         fun retrieve(promptId: String): CompletableFuture<HttpResponseFor<Prompt>> =
             retrieve(promptId, PromptRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             promptId: String,
             params: PromptRetrieveParams = PromptRetrieveParams.none(),
@@ -219,24 +219,24 @@ interface PromptServiceAsync {
         ): CompletableFuture<HttpResponseFor<Prompt>> =
             retrieve(params.toBuilder().promptId(promptId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             promptId: String,
             params: PromptRetrieveParams = PromptRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Prompt>> =
             retrieve(promptId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: PromptRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Prompt>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: PromptRetrieveParams): CompletableFuture<HttpResponseFor<Prompt>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             promptId: String,
             requestOptions: RequestOptions,
@@ -250,7 +250,7 @@ interface PromptServiceAsync {
         fun update(promptId: String): CompletableFuture<HttpResponseFor<Prompt>> =
             update(promptId, PromptUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             promptId: String,
             params: PromptUpdateParams = PromptUpdateParams.none(),
@@ -258,24 +258,24 @@ interface PromptServiceAsync {
         ): CompletableFuture<HttpResponseFor<Prompt>> =
             update(params.toBuilder().promptId(promptId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             promptId: String,
             params: PromptUpdateParams = PromptUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Prompt>> =
             update(promptId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: PromptUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Prompt>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: PromptUpdateParams): CompletableFuture<HttpResponseFor<Prompt>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             promptId: String,
             requestOptions: RequestOptions,
@@ -289,19 +289,19 @@ interface PromptServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<PromptListPageAsync>> =
             list(PromptListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: PromptListParams = PromptListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PromptListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: PromptListParams = PromptListParams.none()
         ): CompletableFuture<HttpResponseFor<PromptListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<PromptListPageAsync>> =
@@ -314,7 +314,7 @@ interface PromptServiceAsync {
         fun delete(promptId: String): CompletableFuture<HttpResponseFor<Prompt>> =
             delete(promptId, PromptDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             promptId: String,
             params: PromptDeleteParams = PromptDeleteParams.none(),
@@ -322,24 +322,24 @@ interface PromptServiceAsync {
         ): CompletableFuture<HttpResponseFor<Prompt>> =
             delete(params.toBuilder().promptId(promptId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             promptId: String,
             params: PromptDeleteParams = PromptDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Prompt>> =
             delete(promptId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: PromptDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Prompt>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: PromptDeleteParams): CompletableFuture<HttpResponseFor<Prompt>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             promptId: String,
             requestOptions: RequestOptions,
@@ -353,7 +353,7 @@ interface PromptServiceAsync {
         fun replace(params: PromptReplaceParams): CompletableFuture<HttpResponseFor<Prompt>> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: PromptReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

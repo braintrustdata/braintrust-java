@@ -36,7 +36,7 @@ interface SpanIframeService {
      */
     fun create(params: SpanIframeCreateParams): SpanIFrame = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SpanIframeCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,30 +46,30 @@ interface SpanIframeService {
     fun retrieve(spanIframeId: String): SpanIFrame =
         retrieve(spanIframeId, SpanIframeRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         spanIframeId: String,
         params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame = retrieve(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         spanIframeId: String,
         params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
     ): SpanIFrame = retrieve(spanIframeId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: SpanIframeRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: SpanIframeRetrieveParams): SpanIFrame =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(spanIframeId: String, requestOptions: RequestOptions): SpanIFrame =
         retrieve(spanIframeId, SpanIframeRetrieveParams.none(), requestOptions)
 
@@ -81,29 +81,29 @@ interface SpanIframeService {
     fun update(spanIframeId: String): SpanIFrame =
         update(spanIframeId, SpanIframeUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         spanIframeId: String,
         params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame = update(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         spanIframeId: String,
         params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
     ): SpanIFrame = update(spanIframeId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SpanIframeUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: SpanIframeUpdateParams): SpanIFrame = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(spanIframeId: String, requestOptions: RequestOptions): SpanIFrame =
         update(spanIframeId, SpanIframeUpdateParams.none(), requestOptions)
 
@@ -113,17 +113,17 @@ interface SpanIframeService {
      */
     fun list(): SpanIframeListPage = list(SpanIframeListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: SpanIframeListParams = SpanIframeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIframeListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: SpanIframeListParams = SpanIframeListParams.none()): SpanIframeListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): SpanIframeListPage =
         list(SpanIframeListParams.none(), requestOptions)
 
@@ -131,29 +131,29 @@ interface SpanIframeService {
     fun delete(spanIframeId: String): SpanIFrame =
         delete(spanIframeId, SpanIframeDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         spanIframeId: String,
         params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame = delete(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         spanIframeId: String,
         params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
     ): SpanIFrame = delete(spanIframeId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: SpanIframeDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SpanIFrame
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: SpanIframeDeleteParams): SpanIFrame = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(spanIframeId: String, requestOptions: RequestOptions): SpanIFrame =
         delete(spanIframeId, SpanIframeDeleteParams.none(), requestOptions)
 
@@ -164,7 +164,7 @@ interface SpanIframeService {
     fun replace(params: SpanIframeReplaceParams): SpanIFrame =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: SpanIframeReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -190,7 +190,7 @@ interface SpanIframeService {
         fun create(params: SpanIframeCreateParams): HttpResponseFor<SpanIFrame> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SpanIframeCreateParams,
@@ -205,7 +205,7 @@ interface SpanIframeService {
         fun retrieve(spanIframeId: String): HttpResponseFor<SpanIFrame> =
             retrieve(spanIframeId, SpanIframeRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             spanIframeId: String,
@@ -214,26 +214,26 @@ interface SpanIframeService {
         ): HttpResponseFor<SpanIFrame> =
             retrieve(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             spanIframeId: String,
             params: SpanIframeRetrieveParams = SpanIframeRetrieveParams.none(),
         ): HttpResponseFor<SpanIFrame> = retrieve(spanIframeId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: SpanIframeRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SpanIFrame>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: SpanIframeRetrieveParams): HttpResponseFor<SpanIFrame> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             spanIframeId: String,
@@ -249,7 +249,7 @@ interface SpanIframeService {
         fun update(spanIframeId: String): HttpResponseFor<SpanIFrame> =
             update(spanIframeId, SpanIframeUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             spanIframeId: String,
@@ -258,26 +258,26 @@ interface SpanIframeService {
         ): HttpResponseFor<SpanIFrame> =
             update(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             spanIframeId: String,
             params: SpanIframeUpdateParams = SpanIframeUpdateParams.none(),
         ): HttpResponseFor<SpanIFrame> = update(spanIframeId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SpanIframeUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SpanIFrame>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(params: SpanIframeUpdateParams): HttpResponseFor<SpanIFrame> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             spanIframeId: String,
@@ -292,20 +292,20 @@ interface SpanIframeService {
         @MustBeClosed
         fun list(): HttpResponseFor<SpanIframeListPage> = list(SpanIframeListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: SpanIframeListParams = SpanIframeListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SpanIframeListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: SpanIframeListParams = SpanIframeListParams.none()
         ): HttpResponseFor<SpanIframeListPage> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<SpanIframeListPage> =
             list(SpanIframeListParams.none(), requestOptions)
@@ -318,7 +318,7 @@ interface SpanIframeService {
         fun delete(spanIframeId: String): HttpResponseFor<SpanIFrame> =
             delete(spanIframeId, SpanIframeDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             spanIframeId: String,
@@ -327,26 +327,26 @@ interface SpanIframeService {
         ): HttpResponseFor<SpanIFrame> =
             delete(params.toBuilder().spanIframeId(spanIframeId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             spanIframeId: String,
             params: SpanIframeDeleteParams = SpanIframeDeleteParams.none(),
         ): HttpResponseFor<SpanIFrame> = delete(spanIframeId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: SpanIframeDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SpanIFrame>
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(params: SpanIframeDeleteParams): HttpResponseFor<SpanIFrame> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             spanIframeId: String,
@@ -362,7 +362,7 @@ interface SpanIframeService {
         fun replace(params: SpanIframeReplaceParams): HttpResponseFor<SpanIFrame> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         @MustBeClosed
         fun replace(
             params: SpanIframeReplaceParams,

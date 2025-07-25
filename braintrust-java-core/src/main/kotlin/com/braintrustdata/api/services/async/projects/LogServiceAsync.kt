@@ -36,7 +36,7 @@ interface LogServiceAsync {
     ): CompletableFuture<FeedbackResponseSchema> =
         feedback(projectId, params, RequestOptions.none())
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(
         projectId: String,
         params: ProjectLogFeedbackParams,
@@ -44,11 +44,11 @@ interface LogServiceAsync {
     ): CompletableFuture<FeedbackResponseSchema> =
         feedback(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(params: ProjectLogFeedbackParams): CompletableFuture<FeedbackResponseSchema> =
         feedback(params, RequestOptions.none())
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(
         params: ProjectLogFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -62,7 +62,7 @@ interface LogServiceAsync {
     fun fetch(projectId: String): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetch(projectId, ProjectLogFetchParams.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         projectId: String,
         params: ProjectLogFetchParams = ProjectLogFetchParams.none(),
@@ -70,24 +70,24 @@ interface LogServiceAsync {
     ): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetch(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         projectId: String,
         params: ProjectLogFetchParams = ProjectLogFetchParams.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetch(projectId, params, RequestOptions.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         params: ProjectLogFetchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse>
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(params: ProjectLogFetchParams): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetch(params, RequestOptions.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         projectId: String,
         requestOptions: RequestOptions,
@@ -102,7 +102,7 @@ interface LogServiceAsync {
     fun fetchPost(projectId: String): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetchPost(projectId, ProjectLogFetchPostParams.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         projectId: String,
         params: ProjectLogFetchPostParams = ProjectLogFetchPostParams.none(),
@@ -110,25 +110,25 @@ interface LogServiceAsync {
     ): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetchPost(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         projectId: String,
         params: ProjectLogFetchPostParams = ProjectLogFetchPostParams.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse> =
         fetchPost(projectId, params, RequestOptions.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         params: ProjectLogFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchProjectLogsEventsResponse>
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         params: ProjectLogFetchPostParams
     ): CompletableFuture<FetchProjectLogsEventsResponse> = fetchPost(params, RequestOptions.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         projectId: String,
         requestOptions: RequestOptions,
@@ -141,7 +141,7 @@ interface LogServiceAsync {
         params: ProjectLogInsertParams,
     ): CompletableFuture<InsertEventsResponse> = insert(projectId, params, RequestOptions.none())
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(
         projectId: String,
         params: ProjectLogInsertParams,
@@ -149,11 +149,11 @@ interface LogServiceAsync {
     ): CompletableFuture<InsertEventsResponse> =
         insert(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(params: ProjectLogInsertParams): CompletableFuture<InsertEventsResponse> =
         insert(params, RequestOptions.none())
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(
         params: ProjectLogInsertParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -179,7 +179,7 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(projectId, params, RequestOptions.none())
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             projectId: String,
             params: ProjectLogFeedbackParams,
@@ -187,13 +187,13 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             params: ProjectLogFeedbackParams
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params, RequestOptions.none())
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             params: ProjectLogFeedbackParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -208,7 +208,7 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetch(projectId, ProjectLogFetchParams.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             projectId: String,
             params: ProjectLogFetchParams = ProjectLogFetchParams.none(),
@@ -216,26 +216,26 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetch(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             projectId: String,
             params: ProjectLogFetchParams = ProjectLogFetchParams.none(),
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetch(projectId, params, RequestOptions.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             params: ProjectLogFetchParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>>
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             params: ProjectLogFetchParams
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetch(params, RequestOptions.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             projectId: String,
             requestOptions: RequestOptions,
@@ -251,7 +251,7 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetchPost(projectId, ProjectLogFetchPostParams.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             projectId: String,
             params: ProjectLogFetchPostParams = ProjectLogFetchPostParams.none(),
@@ -259,26 +259,26 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetchPost(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             projectId: String,
             params: ProjectLogFetchPostParams = ProjectLogFetchPostParams.none(),
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetchPost(projectId, params, RequestOptions.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             params: ProjectLogFetchPostParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>>
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             params: ProjectLogFetchPostParams
         ): CompletableFuture<HttpResponseFor<FetchProjectLogsEventsResponse>> =
             fetchPost(params, RequestOptions.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             projectId: String,
             requestOptions: RequestOptions,
@@ -295,7 +295,7 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(projectId, params, RequestOptions.none())
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             projectId: String,
             params: ProjectLogInsertParams,
@@ -303,13 +303,13 @@ interface LogServiceAsync {
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             params: ProjectLogInsertParams
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params, RequestOptions.none())
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             params: ProjectLogInsertParams,
             requestOptions: RequestOptions = RequestOptions.none(),

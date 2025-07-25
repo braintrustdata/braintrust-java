@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.AclService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [AclService.list] */
+/** @see AclService.list */
 class AclListPage
 private constructor(
     private val service: AclService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [AclListPageResponse], but gracefully handles missing data.
      *
-     * @see [AclListPageResponse.objects]
+     * @see AclListPageResponse.objects
      */
     fun objects(): List<Acl> = response._objects().getOptional("objects").getOrNull() ?: emptyList()
 

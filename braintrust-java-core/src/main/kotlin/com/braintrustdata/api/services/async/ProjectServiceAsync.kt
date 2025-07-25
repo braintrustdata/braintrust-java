@@ -39,7 +39,7 @@ interface ProjectServiceAsync {
     fun create(params: ProjectCreateParams): CompletableFuture<Project> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -49,7 +49,7 @@ interface ProjectServiceAsync {
     fun retrieve(projectId: String): CompletableFuture<Project> =
         retrieve(projectId, ProjectRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectId: String,
         params: ProjectRetrieveParams = ProjectRetrieveParams.none(),
@@ -57,23 +57,23 @@ interface ProjectServiceAsync {
     ): CompletableFuture<Project> =
         retrieve(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectId: String,
         params: ProjectRetrieveParams = ProjectRetrieveParams.none(),
     ): CompletableFuture<Project> = retrieve(projectId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ProjectRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ProjectRetrieveParams): CompletableFuture<Project> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(projectId: String, requestOptions: RequestOptions): CompletableFuture<Project> =
         retrieve(projectId, ProjectRetrieveParams.none(), requestOptions)
 
@@ -85,7 +85,7 @@ interface ProjectServiceAsync {
     fun update(projectId: String): CompletableFuture<Project> =
         update(projectId, ProjectUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectId: String,
         params: ProjectUpdateParams = ProjectUpdateParams.none(),
@@ -93,23 +93,23 @@ interface ProjectServiceAsync {
     ): CompletableFuture<Project> =
         update(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectId: String,
         params: ProjectUpdateParams = ProjectUpdateParams.none(),
     ): CompletableFuture<Project> = update(projectId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: ProjectUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: ProjectUpdateParams): CompletableFuture<Project> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(projectId: String, requestOptions: RequestOptions): CompletableFuture<Project> =
         update(projectId, ProjectUpdateParams.none(), requestOptions)
 
@@ -119,18 +119,18 @@ interface ProjectServiceAsync {
      */
     fun list(): CompletableFuture<ProjectListPageAsync> = list(ProjectListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectListParams = ProjectListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectListParams = ProjectListParams.none()
     ): CompletableFuture<ProjectListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProjectListPageAsync> =
         list(ProjectListParams.none(), requestOptions)
 
@@ -138,7 +138,7 @@ interface ProjectServiceAsync {
     fun delete(projectId: String): CompletableFuture<Project> =
         delete(projectId, ProjectDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectId: String,
         params: ProjectDeleteParams = ProjectDeleteParams.none(),
@@ -146,23 +146,23 @@ interface ProjectServiceAsync {
     ): CompletableFuture<Project> =
         delete(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectId: String,
         params: ProjectDeleteParams = ProjectDeleteParams.none(),
     ): CompletableFuture<Project> = delete(projectId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ProjectDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Project>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ProjectDeleteParams): CompletableFuture<Project> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(projectId: String, requestOptions: RequestOptions): CompletableFuture<Project> =
         delete(projectId, ProjectDeleteParams.none(), requestOptions)
 
@@ -189,7 +189,7 @@ interface ProjectServiceAsync {
         fun create(params: ProjectCreateParams): CompletableFuture<HttpResponseFor<Project>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: ProjectCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -202,7 +202,7 @@ interface ProjectServiceAsync {
         fun retrieve(projectId: String): CompletableFuture<HttpResponseFor<Project>> =
             retrieve(projectId, ProjectRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectId: String,
             params: ProjectRetrieveParams = ProjectRetrieveParams.none(),
@@ -210,24 +210,24 @@ interface ProjectServiceAsync {
         ): CompletableFuture<HttpResponseFor<Project>> =
             retrieve(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectId: String,
             params: ProjectRetrieveParams = ProjectRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Project>> =
             retrieve(projectId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ProjectRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Project>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: ProjectRetrieveParams): CompletableFuture<HttpResponseFor<Project>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectId: String,
             requestOptions: RequestOptions,
@@ -241,7 +241,7 @@ interface ProjectServiceAsync {
         fun update(projectId: String): CompletableFuture<HttpResponseFor<Project>> =
             update(projectId, ProjectUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             projectId: String,
             params: ProjectUpdateParams = ProjectUpdateParams.none(),
@@ -249,24 +249,24 @@ interface ProjectServiceAsync {
         ): CompletableFuture<HttpResponseFor<Project>> =
             update(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             projectId: String,
             params: ProjectUpdateParams = ProjectUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Project>> =
             update(projectId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: ProjectUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Project>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: ProjectUpdateParams): CompletableFuture<HttpResponseFor<Project>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             projectId: String,
             requestOptions: RequestOptions,
@@ -280,19 +280,19 @@ interface ProjectServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
             list(ProjectListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProjectListParams = ProjectListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProjectListParams = ProjectListParams.none()
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectListPageAsync>> =
@@ -305,7 +305,7 @@ interface ProjectServiceAsync {
         fun delete(projectId: String): CompletableFuture<HttpResponseFor<Project>> =
             delete(projectId, ProjectDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             projectId: String,
             params: ProjectDeleteParams = ProjectDeleteParams.none(),
@@ -313,24 +313,24 @@ interface ProjectServiceAsync {
         ): CompletableFuture<HttpResponseFor<Project>> =
             delete(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             projectId: String,
             params: ProjectDeleteParams = ProjectDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Project>> =
             delete(projectId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: ProjectDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Project>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: ProjectDeleteParams): CompletableFuture<HttpResponseFor<Project>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             projectId: String,
             requestOptions: RequestOptions,

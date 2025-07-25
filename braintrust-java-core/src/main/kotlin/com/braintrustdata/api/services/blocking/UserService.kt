@@ -29,27 +29,27 @@ interface UserService {
     /** Get a user object by its id */
     fun retrieve(userId: String): User = retrieve(userId, UserRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         userId: String,
         params: UserRetrieveParams = UserRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): User = retrieve(params.toBuilder().userId(userId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(userId: String, params: UserRetrieveParams = UserRetrieveParams.none()): User =
         retrieve(userId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: UserRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): User
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: UserRetrieveParams): User = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(userId: String, requestOptions: RequestOptions): User =
         retrieve(userId, UserRetrieveParams.none(), requestOptions)
 
@@ -59,17 +59,17 @@ interface UserService {
      */
     fun list(): UserListPage = list(UserListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: UserListParams = UserListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UserListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: UserListParams = UserListParams.none()): UserListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): UserListPage =
         list(UserListParams.none(), requestOptions)
 
@@ -91,7 +91,7 @@ interface UserService {
         fun retrieve(userId: String): HttpResponseFor<User> =
             retrieve(userId, UserRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             userId: String,
@@ -100,26 +100,26 @@ interface UserService {
         ): HttpResponseFor<User> =
             retrieve(params.toBuilder().userId(userId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             userId: String,
             params: UserRetrieveParams = UserRetrieveParams.none(),
         ): HttpResponseFor<User> = retrieve(userId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: UserRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<User>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: UserRetrieveParams): HttpResponseFor<User> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(userId: String, requestOptions: RequestOptions): HttpResponseFor<User> =
             retrieve(userId, UserRetrieveParams.none(), requestOptions)
@@ -130,19 +130,19 @@ interface UserService {
          */
         @MustBeClosed fun list(): HttpResponseFor<UserListPage> = list(UserListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: UserListParams = UserListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UserListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: UserListParams = UserListParams.none()): HttpResponseFor<UserListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<UserListPage> =
             list(UserListParams.none(), requestOptions)

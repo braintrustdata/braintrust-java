@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [DatasetServiceAsync.list] */
+/** @see DatasetServiceAsync.list */
 class DatasetListPageAsync
 private constructor(
     private val service: DatasetServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [DatasetListPageResponse], but gracefully handles missing data.
      *
-     * @see [DatasetListPageResponse.objects]
+     * @see DatasetListPageResponse.objects
      */
     fun objects(): List<Dataset> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

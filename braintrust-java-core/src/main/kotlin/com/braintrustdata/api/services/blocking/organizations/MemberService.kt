@@ -27,18 +27,18 @@ interface MemberService {
     /** Modify organization membership */
     fun update(): PatchOrganizationMembersOutput = update(OrganizationMemberUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PatchOrganizationMembersOutput
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
     ): PatchOrganizationMembersOutput = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(requestOptions: RequestOptions): PatchOrganizationMembersOutput =
         update(OrganizationMemberUpdateParams.none(), requestOptions)
 
@@ -60,20 +60,20 @@ interface MemberService {
         fun update(): HttpResponseFor<PatchOrganizationMembersOutput> =
             update(OrganizationMemberUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PatchOrganizationMembersOutput>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
         ): HttpResponseFor<PatchOrganizationMembersOutput> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             requestOptions: RequestOptions

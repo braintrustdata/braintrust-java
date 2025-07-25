@@ -37,7 +37,7 @@ interface GroupServiceAsync {
     fun create(params: GroupCreateParams): CompletableFuture<Group> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: GroupCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,7 +47,7 @@ interface GroupServiceAsync {
     fun retrieve(groupId: String): CompletableFuture<Group> =
         retrieve(groupId, GroupRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         groupId: String,
         params: GroupRetrieveParams = GroupRetrieveParams.none(),
@@ -55,23 +55,23 @@ interface GroupServiceAsync {
     ): CompletableFuture<Group> =
         retrieve(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         groupId: String,
         params: GroupRetrieveParams = GroupRetrieveParams.none(),
     ): CompletableFuture<Group> = retrieve(groupId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: GroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: GroupRetrieveParams): CompletableFuture<Group> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(groupId: String, requestOptions: RequestOptions): CompletableFuture<Group> =
         retrieve(groupId, GroupRetrieveParams.none(), requestOptions)
 
@@ -83,7 +83,7 @@ interface GroupServiceAsync {
     fun update(groupId: String): CompletableFuture<Group> =
         update(groupId, GroupUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         groupId: String,
         params: GroupUpdateParams = GroupUpdateParams.none(),
@@ -91,23 +91,23 @@ interface GroupServiceAsync {
     ): CompletableFuture<Group> =
         update(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         groupId: String,
         params: GroupUpdateParams = GroupUpdateParams.none(),
     ): CompletableFuture<Group> = update(groupId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: GroupUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: GroupUpdateParams): CompletableFuture<Group> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(groupId: String, requestOptions: RequestOptions): CompletableFuture<Group> =
         update(groupId, GroupUpdateParams.none(), requestOptions)
 
@@ -117,18 +117,18 @@ interface GroupServiceAsync {
      */
     fun list(): CompletableFuture<GroupListPageAsync> = list(GroupListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: GroupListParams = GroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<GroupListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: GroupListParams = GroupListParams.none()
     ): CompletableFuture<GroupListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<GroupListPageAsync> =
         list(GroupListParams.none(), requestOptions)
 
@@ -136,7 +136,7 @@ interface GroupServiceAsync {
     fun delete(groupId: String): CompletableFuture<Group> =
         delete(groupId, GroupDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         groupId: String,
         params: GroupDeleteParams = GroupDeleteParams.none(),
@@ -144,23 +144,23 @@ interface GroupServiceAsync {
     ): CompletableFuture<Group> =
         delete(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         groupId: String,
         params: GroupDeleteParams = GroupDeleteParams.none(),
     ): CompletableFuture<Group> = delete(groupId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: GroupDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Group>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: GroupDeleteParams): CompletableFuture<Group> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(groupId: String, requestOptions: RequestOptions): CompletableFuture<Group> =
         delete(groupId, GroupDeleteParams.none(), requestOptions)
 
@@ -171,7 +171,7 @@ interface GroupServiceAsync {
     fun replace(params: GroupReplaceParams): CompletableFuture<Group> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: GroupReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -196,7 +196,7 @@ interface GroupServiceAsync {
         fun create(params: GroupCreateParams): CompletableFuture<HttpResponseFor<Group>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: GroupCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -209,7 +209,7 @@ interface GroupServiceAsync {
         fun retrieve(groupId: String): CompletableFuture<HttpResponseFor<Group>> =
             retrieve(groupId, GroupRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             groupId: String,
             params: GroupRetrieveParams = GroupRetrieveParams.none(),
@@ -217,24 +217,24 @@ interface GroupServiceAsync {
         ): CompletableFuture<HttpResponseFor<Group>> =
             retrieve(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             groupId: String,
             params: GroupRetrieveParams = GroupRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Group>> =
             retrieve(groupId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: GroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Group>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: GroupRetrieveParams): CompletableFuture<HttpResponseFor<Group>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             groupId: String,
             requestOptions: RequestOptions,
@@ -248,7 +248,7 @@ interface GroupServiceAsync {
         fun update(groupId: String): CompletableFuture<HttpResponseFor<Group>> =
             update(groupId, GroupUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             groupId: String,
             params: GroupUpdateParams = GroupUpdateParams.none(),
@@ -256,24 +256,24 @@ interface GroupServiceAsync {
         ): CompletableFuture<HttpResponseFor<Group>> =
             update(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             groupId: String,
             params: GroupUpdateParams = GroupUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Group>> =
             update(groupId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: GroupUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Group>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: GroupUpdateParams): CompletableFuture<HttpResponseFor<Group>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             groupId: String,
             requestOptions: RequestOptions,
@@ -287,19 +287,19 @@ interface GroupServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<GroupListPageAsync>> =
             list(GroupListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: GroupListParams = GroupListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<GroupListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: GroupListParams = GroupListParams.none()
         ): CompletableFuture<HttpResponseFor<GroupListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<GroupListPageAsync>> =
@@ -312,7 +312,7 @@ interface GroupServiceAsync {
         fun delete(groupId: String): CompletableFuture<HttpResponseFor<Group>> =
             delete(groupId, GroupDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             groupId: String,
             params: GroupDeleteParams = GroupDeleteParams.none(),
@@ -320,24 +320,24 @@ interface GroupServiceAsync {
         ): CompletableFuture<HttpResponseFor<Group>> =
             delete(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             groupId: String,
             params: GroupDeleteParams = GroupDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Group>> =
             delete(groupId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: GroupDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Group>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: GroupDeleteParams): CompletableFuture<HttpResponseFor<Group>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             groupId: String,
             requestOptions: RequestOptions,
@@ -351,7 +351,7 @@ interface GroupServiceAsync {
         fun replace(params: GroupReplaceParams): CompletableFuture<HttpResponseFor<Group>> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: GroupReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

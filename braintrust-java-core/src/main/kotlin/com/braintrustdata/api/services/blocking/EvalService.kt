@@ -34,7 +34,7 @@ interface EvalService {
     fun create(params: EvalCreateParams): SummarizeExperimentResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: EvalCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,7 +58,7 @@ interface EvalService {
         fun create(params: EvalCreateParams): HttpResponseFor<SummarizeExperimentResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: EvalCreateParams,

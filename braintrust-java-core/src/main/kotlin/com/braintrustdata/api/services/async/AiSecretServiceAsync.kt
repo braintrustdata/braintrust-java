@@ -38,7 +38,7 @@ interface AiSecretServiceAsync {
     fun create(params: AiSecretCreateParams): CompletableFuture<AISecret> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: AiSecretCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,7 +48,7 @@ interface AiSecretServiceAsync {
     fun retrieve(aiSecretId: String): CompletableFuture<AISecret> =
         retrieve(aiSecretId, AiSecretRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         aiSecretId: String,
         params: AiSecretRetrieveParams = AiSecretRetrieveParams.none(),
@@ -56,23 +56,23 @@ interface AiSecretServiceAsync {
     ): CompletableFuture<AISecret> =
         retrieve(params.toBuilder().aiSecretId(aiSecretId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         aiSecretId: String,
         params: AiSecretRetrieveParams = AiSecretRetrieveParams.none(),
     ): CompletableFuture<AISecret> = retrieve(aiSecretId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: AiSecretRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: AiSecretRetrieveParams): CompletableFuture<AISecret> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(aiSecretId: String, requestOptions: RequestOptions): CompletableFuture<AISecret> =
         retrieve(aiSecretId, AiSecretRetrieveParams.none(), requestOptions)
 
@@ -84,7 +84,7 @@ interface AiSecretServiceAsync {
     fun update(aiSecretId: String): CompletableFuture<AISecret> =
         update(aiSecretId, AiSecretUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         aiSecretId: String,
         params: AiSecretUpdateParams = AiSecretUpdateParams.none(),
@@ -92,23 +92,23 @@ interface AiSecretServiceAsync {
     ): CompletableFuture<AISecret> =
         update(params.toBuilder().aiSecretId(aiSecretId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         aiSecretId: String,
         params: AiSecretUpdateParams = AiSecretUpdateParams.none(),
     ): CompletableFuture<AISecret> = update(aiSecretId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: AiSecretUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: AiSecretUpdateParams): CompletableFuture<AISecret> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(aiSecretId: String, requestOptions: RequestOptions): CompletableFuture<AISecret> =
         update(aiSecretId, AiSecretUpdateParams.none(), requestOptions)
 
@@ -118,18 +118,18 @@ interface AiSecretServiceAsync {
      */
     fun list(): CompletableFuture<AiSecretListPageAsync> = list(AiSecretListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: AiSecretListParams = AiSecretListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AiSecretListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: AiSecretListParams = AiSecretListParams.none()
     ): CompletableFuture<AiSecretListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<AiSecretListPageAsync> =
         list(AiSecretListParams.none(), requestOptions)
 
@@ -137,7 +137,7 @@ interface AiSecretServiceAsync {
     fun delete(aiSecretId: String): CompletableFuture<AISecret> =
         delete(aiSecretId, AiSecretDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         aiSecretId: String,
         params: AiSecretDeleteParams = AiSecretDeleteParams.none(),
@@ -145,23 +145,23 @@ interface AiSecretServiceAsync {
     ): CompletableFuture<AISecret> =
         delete(params.toBuilder().aiSecretId(aiSecretId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         aiSecretId: String,
         params: AiSecretDeleteParams = AiSecretDeleteParams.none(),
     ): CompletableFuture<AISecret> = delete(aiSecretId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: AiSecretDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AISecret>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: AiSecretDeleteParams): CompletableFuture<AISecret> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(aiSecretId: String, requestOptions: RequestOptions): CompletableFuture<AISecret> =
         delete(aiSecretId, AiSecretDeleteParams.none(), requestOptions)
 
@@ -169,7 +169,7 @@ interface AiSecretServiceAsync {
     fun findAndDelete(params: AiSecretFindAndDeleteParams): CompletableFuture<AISecret> =
         findAndDelete(params, RequestOptions.none())
 
-    /** @see [findAndDelete] */
+    /** @see findAndDelete */
     fun findAndDelete(
         params: AiSecretFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -182,7 +182,7 @@ interface AiSecretServiceAsync {
     fun replace(params: AiSecretReplaceParams): CompletableFuture<AISecret> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: AiSecretReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -209,7 +209,7 @@ interface AiSecretServiceAsync {
         fun create(params: AiSecretCreateParams): CompletableFuture<HttpResponseFor<AISecret>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: AiSecretCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -222,7 +222,7 @@ interface AiSecretServiceAsync {
         fun retrieve(aiSecretId: String): CompletableFuture<HttpResponseFor<AISecret>> =
             retrieve(aiSecretId, AiSecretRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             aiSecretId: String,
             params: AiSecretRetrieveParams = AiSecretRetrieveParams.none(),
@@ -230,24 +230,24 @@ interface AiSecretServiceAsync {
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             retrieve(params.toBuilder().aiSecretId(aiSecretId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             aiSecretId: String,
             params: AiSecretRetrieveParams = AiSecretRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             retrieve(aiSecretId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: AiSecretRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AISecret>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: AiSecretRetrieveParams): CompletableFuture<HttpResponseFor<AISecret>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             aiSecretId: String,
             requestOptions: RequestOptions,
@@ -261,7 +261,7 @@ interface AiSecretServiceAsync {
         fun update(aiSecretId: String): CompletableFuture<HttpResponseFor<AISecret>> =
             update(aiSecretId, AiSecretUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             aiSecretId: String,
             params: AiSecretUpdateParams = AiSecretUpdateParams.none(),
@@ -269,24 +269,24 @@ interface AiSecretServiceAsync {
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             update(params.toBuilder().aiSecretId(aiSecretId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             aiSecretId: String,
             params: AiSecretUpdateParams = AiSecretUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             update(aiSecretId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: AiSecretUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AISecret>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: AiSecretUpdateParams): CompletableFuture<HttpResponseFor<AISecret>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             aiSecretId: String,
             requestOptions: RequestOptions,
@@ -300,19 +300,19 @@ interface AiSecretServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>> =
             list(AiSecretListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: AiSecretListParams = AiSecretListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: AiSecretListParams = AiSecretListParams.none()
         ): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AiSecretListPageAsync>> =
@@ -325,7 +325,7 @@ interface AiSecretServiceAsync {
         fun delete(aiSecretId: String): CompletableFuture<HttpResponseFor<AISecret>> =
             delete(aiSecretId, AiSecretDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             aiSecretId: String,
             params: AiSecretDeleteParams = AiSecretDeleteParams.none(),
@@ -333,24 +333,24 @@ interface AiSecretServiceAsync {
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             delete(params.toBuilder().aiSecretId(aiSecretId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             aiSecretId: String,
             params: AiSecretDeleteParams = AiSecretDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             delete(aiSecretId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: AiSecretDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AISecret>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: AiSecretDeleteParams): CompletableFuture<HttpResponseFor<AISecret>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             aiSecretId: String,
             requestOptions: RequestOptions,
@@ -366,7 +366,7 @@ interface AiSecretServiceAsync {
         ): CompletableFuture<HttpResponseFor<AISecret>> =
             findAndDelete(params, RequestOptions.none())
 
-        /** @see [findAndDelete] */
+        /** @see findAndDelete */
         fun findAndDelete(
             params: AiSecretFindAndDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -379,7 +379,7 @@ interface AiSecretServiceAsync {
         fun replace(params: AiSecretReplaceParams): CompletableFuture<HttpResponseFor<AISecret>> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: AiSecretReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

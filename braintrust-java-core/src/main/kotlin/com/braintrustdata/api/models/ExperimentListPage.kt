@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.ExperimentService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ExperimentService.list] */
+/** @see ExperimentService.list */
 class ExperimentListPage
 private constructor(
     private val service: ExperimentService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [ExperimentListPageResponse], but gracefully handles missing data.
      *
-     * @see [ExperimentListPageResponse.objects]
+     * @see ExperimentListPageResponse.objects
      */
     fun objects(): List<Experiment> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
