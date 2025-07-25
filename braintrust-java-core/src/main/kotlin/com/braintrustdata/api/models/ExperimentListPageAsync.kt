@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ExperimentServiceAsync.list] */
+/** @see ExperimentServiceAsync.list */
 class ExperimentListPageAsync
 private constructor(
     private val service: ExperimentServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [ExperimentListPageResponse], but gracefully handles missing data.
      *
-     * @see [ExperimentListPageResponse.objects]
+     * @see ExperimentListPageResponse.objects
      */
     fun objects(): List<Experiment> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

@@ -40,7 +40,7 @@ interface FunctionServiceAsync {
     fun create(params: FunctionCreateParams): CompletableFuture<Function> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: FunctionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -50,7 +50,7 @@ interface FunctionServiceAsync {
     fun retrieve(functionId: String): CompletableFuture<Function> =
         retrieve(functionId, FunctionRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         functionId: String,
         params: FunctionRetrieveParams = FunctionRetrieveParams.none(),
@@ -58,23 +58,23 @@ interface FunctionServiceAsync {
     ): CompletableFuture<Function> =
         retrieve(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         functionId: String,
         params: FunctionRetrieveParams = FunctionRetrieveParams.none(),
     ): CompletableFuture<Function> = retrieve(functionId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: FunctionRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: FunctionRetrieveParams): CompletableFuture<Function> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(functionId: String, requestOptions: RequestOptions): CompletableFuture<Function> =
         retrieve(functionId, FunctionRetrieveParams.none(), requestOptions)
 
@@ -86,7 +86,7 @@ interface FunctionServiceAsync {
     fun update(functionId: String): CompletableFuture<Function> =
         update(functionId, FunctionUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         functionId: String,
         params: FunctionUpdateParams = FunctionUpdateParams.none(),
@@ -94,23 +94,23 @@ interface FunctionServiceAsync {
     ): CompletableFuture<Function> =
         update(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         functionId: String,
         params: FunctionUpdateParams = FunctionUpdateParams.none(),
     ): CompletableFuture<Function> = update(functionId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: FunctionUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: FunctionUpdateParams): CompletableFuture<Function> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(functionId: String, requestOptions: RequestOptions): CompletableFuture<Function> =
         update(functionId, FunctionUpdateParams.none(), requestOptions)
 
@@ -120,18 +120,18 @@ interface FunctionServiceAsync {
      */
     fun list(): CompletableFuture<FunctionListPageAsync> = list(FunctionListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: FunctionListParams = FunctionListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FunctionListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: FunctionListParams = FunctionListParams.none()
     ): CompletableFuture<FunctionListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<FunctionListPageAsync> =
         list(FunctionListParams.none(), requestOptions)
 
@@ -139,7 +139,7 @@ interface FunctionServiceAsync {
     fun delete(functionId: String): CompletableFuture<Function> =
         delete(functionId, FunctionDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         functionId: String,
         params: FunctionDeleteParams = FunctionDeleteParams.none(),
@@ -147,23 +147,23 @@ interface FunctionServiceAsync {
     ): CompletableFuture<Function> =
         delete(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         functionId: String,
         params: FunctionDeleteParams = FunctionDeleteParams.none(),
     ): CompletableFuture<Function> = delete(functionId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: FunctionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Function>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: FunctionDeleteParams): CompletableFuture<Function> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(functionId: String, requestOptions: RequestOptions): CompletableFuture<Function> =
         delete(functionId, FunctionDeleteParams.none(), requestOptions)
 
@@ -171,7 +171,7 @@ interface FunctionServiceAsync {
     fun invoke(functionId: String): CompletableFuture<Optional<FunctionInvokeResponse>> =
         invoke(functionId, FunctionInvokeParams.none())
 
-    /** @see [invoke] */
+    /** @see invoke */
     fun invoke(
         functionId: String,
         params: FunctionInvokeParams = FunctionInvokeParams.none(),
@@ -179,24 +179,24 @@ interface FunctionServiceAsync {
     ): CompletableFuture<Optional<FunctionInvokeResponse>> =
         invoke(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-    /** @see [invoke] */
+    /** @see invoke */
     fun invoke(
         functionId: String,
         params: FunctionInvokeParams = FunctionInvokeParams.none(),
     ): CompletableFuture<Optional<FunctionInvokeResponse>> =
         invoke(functionId, params, RequestOptions.none())
 
-    /** @see [invoke] */
+    /** @see invoke */
     fun invoke(
         params: FunctionInvokeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Optional<FunctionInvokeResponse>>
 
-    /** @see [invoke] */
+    /** @see invoke */
     fun invoke(params: FunctionInvokeParams): CompletableFuture<Optional<FunctionInvokeResponse>> =
         invoke(params, RequestOptions.none())
 
-    /** @see [invoke] */
+    /** @see invoke */
     fun invoke(
         functionId: String,
         requestOptions: RequestOptions,
@@ -211,7 +211,7 @@ interface FunctionServiceAsync {
     fun replace(params: FunctionReplaceParams): CompletableFuture<Function> =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: FunctionReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -238,7 +238,7 @@ interface FunctionServiceAsync {
         fun create(params: FunctionCreateParams): CompletableFuture<HttpResponseFor<Function>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: FunctionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -251,7 +251,7 @@ interface FunctionServiceAsync {
         fun retrieve(functionId: String): CompletableFuture<HttpResponseFor<Function>> =
             retrieve(functionId, FunctionRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             functionId: String,
             params: FunctionRetrieveParams = FunctionRetrieveParams.none(),
@@ -259,24 +259,24 @@ interface FunctionServiceAsync {
         ): CompletableFuture<HttpResponseFor<Function>> =
             retrieve(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             functionId: String,
             params: FunctionRetrieveParams = FunctionRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Function>> =
             retrieve(functionId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: FunctionRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Function>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: FunctionRetrieveParams): CompletableFuture<HttpResponseFor<Function>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             functionId: String,
             requestOptions: RequestOptions,
@@ -290,7 +290,7 @@ interface FunctionServiceAsync {
         fun update(functionId: String): CompletableFuture<HttpResponseFor<Function>> =
             update(functionId, FunctionUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             functionId: String,
             params: FunctionUpdateParams = FunctionUpdateParams.none(),
@@ -298,24 +298,24 @@ interface FunctionServiceAsync {
         ): CompletableFuture<HttpResponseFor<Function>> =
             update(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             functionId: String,
             params: FunctionUpdateParams = FunctionUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Function>> =
             update(functionId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: FunctionUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Function>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: FunctionUpdateParams): CompletableFuture<HttpResponseFor<Function>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             functionId: String,
             requestOptions: RequestOptions,
@@ -329,19 +329,19 @@ interface FunctionServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
             list(FunctionListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: FunctionListParams = FunctionListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: FunctionListParams = FunctionListParams.none()
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<FunctionListPageAsync>> =
@@ -354,7 +354,7 @@ interface FunctionServiceAsync {
         fun delete(functionId: String): CompletableFuture<HttpResponseFor<Function>> =
             delete(functionId, FunctionDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             functionId: String,
             params: FunctionDeleteParams = FunctionDeleteParams.none(),
@@ -362,24 +362,24 @@ interface FunctionServiceAsync {
         ): CompletableFuture<HttpResponseFor<Function>> =
             delete(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             functionId: String,
             params: FunctionDeleteParams = FunctionDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Function>> =
             delete(functionId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: FunctionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Function>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: FunctionDeleteParams): CompletableFuture<HttpResponseFor<Function>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             functionId: String,
             requestOptions: RequestOptions,
@@ -395,7 +395,7 @@ interface FunctionServiceAsync {
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
             invoke(functionId, FunctionInvokeParams.none())
 
-        /** @see [invoke] */
+        /** @see invoke */
         fun invoke(
             functionId: String,
             params: FunctionInvokeParams = FunctionInvokeParams.none(),
@@ -403,26 +403,26 @@ interface FunctionServiceAsync {
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
             invoke(params.toBuilder().functionId(functionId).build(), requestOptions)
 
-        /** @see [invoke] */
+        /** @see invoke */
         fun invoke(
             functionId: String,
             params: FunctionInvokeParams = FunctionInvokeParams.none(),
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
             invoke(functionId, params, RequestOptions.none())
 
-        /** @see [invoke] */
+        /** @see invoke */
         fun invoke(
             params: FunctionInvokeParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>>
 
-        /** @see [invoke] */
+        /** @see invoke */
         fun invoke(
             params: FunctionInvokeParams
         ): CompletableFuture<HttpResponseFor<Optional<FunctionInvokeResponse>>> =
             invoke(params, RequestOptions.none())
 
-        /** @see [invoke] */
+        /** @see invoke */
         fun invoke(
             functionId: String,
             requestOptions: RequestOptions,
@@ -436,7 +436,7 @@ interface FunctionServiceAsync {
         fun replace(params: FunctionReplaceParams): CompletableFuture<HttpResponseFor<Function>> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         fun replace(
             params: FunctionReplaceParams,
             requestOptions: RequestOptions = RequestOptions.none(),

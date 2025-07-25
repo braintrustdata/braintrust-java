@@ -38,7 +38,7 @@ interface AclServiceAsync {
     fun create(params: AclCreateParams): CompletableFuture<Acl> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: AclCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,30 +47,30 @@ interface AclServiceAsync {
     /** Get an acl object by its id */
     fun retrieve(aclId: String): CompletableFuture<Acl> = retrieve(aclId, AclRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         aclId: String,
         params: AclRetrieveParams = AclRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl> = retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         aclId: String,
         params: AclRetrieveParams = AclRetrieveParams.none(),
     ): CompletableFuture<Acl> = retrieve(aclId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: AclRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: AclRetrieveParams): CompletableFuture<Acl> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(aclId: String, requestOptions: RequestOptions): CompletableFuture<Acl> =
         retrieve(aclId, AclRetrieveParams.none(), requestOptions)
 
@@ -81,7 +81,7 @@ interface AclServiceAsync {
     fun list(params: AclListParams): CompletableFuture<AclListPageAsync> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: AclListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -90,30 +90,30 @@ interface AclServiceAsync {
     /** Delete an acl object by its id */
     fun delete(aclId: String): CompletableFuture<Acl> = delete(aclId, AclDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         aclId: String,
         params: AclDeleteParams = AclDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl> = delete(params.toBuilder().aclId(aclId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         aclId: String,
         params: AclDeleteParams = AclDeleteParams.none(),
     ): CompletableFuture<Acl> = delete(aclId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: AclDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Acl>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: AclDeleteParams): CompletableFuture<Acl> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(aclId: String, requestOptions: RequestOptions): CompletableFuture<Acl> =
         delete(aclId, AclDeleteParams.none(), requestOptions)
 
@@ -124,18 +124,18 @@ interface AclServiceAsync {
     fun batchUpdate(): CompletableFuture<AclBatchUpdateResponse> =
         batchUpdate(AclBatchUpdateParams.none())
 
-    /** @see [batchUpdate] */
+    /** @see batchUpdate */
     fun batchUpdate(
         params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AclBatchUpdateResponse>
 
-    /** @see [batchUpdate] */
+    /** @see batchUpdate */
     fun batchUpdate(
         params: AclBatchUpdateParams = AclBatchUpdateParams.none()
     ): CompletableFuture<AclBatchUpdateResponse> = batchUpdate(params, RequestOptions.none())
 
-    /** @see [batchUpdate] */
+    /** @see batchUpdate */
     fun batchUpdate(requestOptions: RequestOptions): CompletableFuture<AclBatchUpdateResponse> =
         batchUpdate(AclBatchUpdateParams.none(), requestOptions)
 
@@ -143,7 +143,7 @@ interface AclServiceAsync {
     fun findAndDelete(params: AclFindAndDeleteParams): CompletableFuture<Acl> =
         findAndDelete(params, RequestOptions.none())
 
-    /** @see [findAndDelete] */
+    /** @see findAndDelete */
     fun findAndDelete(
         params: AclFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -166,7 +166,7 @@ interface AclServiceAsync {
         fun create(params: AclCreateParams): CompletableFuture<HttpResponseFor<Acl>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: AclCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -179,7 +179,7 @@ interface AclServiceAsync {
         fun retrieve(aclId: String): CompletableFuture<HttpResponseFor<Acl>> =
             retrieve(aclId, AclRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             aclId: String,
             params: AclRetrieveParams = AclRetrieveParams.none(),
@@ -187,23 +187,23 @@ interface AclServiceAsync {
         ): CompletableFuture<HttpResponseFor<Acl>> =
             retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             aclId: String,
             params: AclRetrieveParams = AclRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Acl>> = retrieve(aclId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: AclRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: AclRetrieveParams): CompletableFuture<HttpResponseFor<Acl>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             aclId: String,
             requestOptions: RequestOptions,
@@ -217,7 +217,7 @@ interface AclServiceAsync {
         fun list(params: AclListParams): CompletableFuture<HttpResponseFor<AclListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: AclListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -230,7 +230,7 @@ interface AclServiceAsync {
         fun delete(aclId: String): CompletableFuture<HttpResponseFor<Acl>> =
             delete(aclId, AclDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             aclId: String,
             params: AclDeleteParams = AclDeleteParams.none(),
@@ -238,23 +238,23 @@ interface AclServiceAsync {
         ): CompletableFuture<HttpResponseFor<Acl>> =
             delete(params.toBuilder().aclId(aclId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             aclId: String,
             params: AclDeleteParams = AclDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Acl>> = delete(aclId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: AclDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Acl>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: AclDeleteParams): CompletableFuture<HttpResponseFor<Acl>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             aclId: String,
             requestOptions: RequestOptions,
@@ -268,19 +268,19 @@ interface AclServiceAsync {
         fun batchUpdate(): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
             batchUpdate(AclBatchUpdateParams.none())
 
-        /** @see [batchUpdate] */
+        /** @see batchUpdate */
         fun batchUpdate(
             params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>>
 
-        /** @see [batchUpdate] */
+        /** @see batchUpdate */
         fun batchUpdate(
             params: AclBatchUpdateParams = AclBatchUpdateParams.none()
         ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
             batchUpdate(params, RequestOptions.none())
 
-        /** @see [batchUpdate] */
+        /** @see batchUpdate */
         fun batchUpdate(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AclBatchUpdateResponse>> =
@@ -293,7 +293,7 @@ interface AclServiceAsync {
         fun findAndDelete(params: AclFindAndDeleteParams): CompletableFuture<HttpResponseFor<Acl>> =
             findAndDelete(params, RequestOptions.none())
 
-        /** @see [findAndDelete] */
+        /** @see findAndDelete */
         fun findAndDelete(
             params: AclFindAndDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),

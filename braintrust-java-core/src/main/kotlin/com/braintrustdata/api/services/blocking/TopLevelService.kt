@@ -26,17 +26,17 @@ interface TopLevelService {
     /** Default endpoint. Simply replies with 'Hello, World!'. Authorization is not required */
     fun helloWorld(): String = helloWorld(TopLevelHelloWorldParams.none())
 
-    /** @see [helloWorld] */
+    /** @see helloWorld */
     fun helloWorld(
         params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
 
-    /** @see [helloWorld] */
+    /** @see helloWorld */
     fun helloWorld(params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()): String =
         helloWorld(params, RequestOptions.none())
 
-    /** @see [helloWorld] */
+    /** @see helloWorld */
     fun helloWorld(requestOptions: RequestOptions): String =
         helloWorld(TopLevelHelloWorldParams.none(), requestOptions)
 
@@ -57,20 +57,20 @@ interface TopLevelService {
         @MustBeClosed
         fun helloWorld(): HttpResponseFor<String> = helloWorld(TopLevelHelloWorldParams.none())
 
-        /** @see [helloWorld] */
+        /** @see helloWorld */
         @MustBeClosed
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String>
 
-        /** @see [helloWorld] */
+        /** @see helloWorld */
         @MustBeClosed
         fun helloWorld(
             params: TopLevelHelloWorldParams = TopLevelHelloWorldParams.none()
         ): HttpResponseFor<String> = helloWorld(params, RequestOptions.none())
 
-        /** @see [helloWorld] */
+        /** @see helloWorld */
         @MustBeClosed
         fun helloWorld(requestOptions: RequestOptions): HttpResponseFor<String> =
             helloWorld(TopLevelHelloWorldParams.none(), requestOptions)

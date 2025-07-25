@@ -28,18 +28,18 @@ interface MemberServiceAsync {
     fun update(): CompletableFuture<PatchOrganizationMembersOutput> =
         update(OrganizationMemberUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PatchOrganizationMembersOutput>
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
     ): CompletableFuture<PatchOrganizationMembersOutput> = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(requestOptions: RequestOptions): CompletableFuture<PatchOrganizationMembersOutput> =
         update(OrganizationMemberUpdateParams.none(), requestOptions)
 
@@ -64,19 +64,19 @@ interface MemberServiceAsync {
         fun update(): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
             update(OrganizationMemberUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: OrganizationMemberUpdateParams = OrganizationMemberUpdateParams.none()
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<PatchOrganizationMembersOutput>> =

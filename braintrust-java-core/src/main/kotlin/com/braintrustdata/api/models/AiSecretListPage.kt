@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.AiSecretService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [AiSecretService.list] */
+/** @see AiSecretService.list */
 class AiSecretListPage
 private constructor(
     private val service: AiSecretService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [AiSecretListPageResponse], but gracefully handles missing data.
      *
-     * @see [AiSecretListPageResponse.objects]
+     * @see AiSecretListPageResponse.objects
      */
     fun objects(): List<AISecret> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

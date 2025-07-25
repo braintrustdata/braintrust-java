@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.ProjectService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ProjectService.list] */
+/** @see ProjectService.list */
 class ProjectListPage
 private constructor(
     private val service: ProjectService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [ProjectListPageResponse], but gracefully handles missing data.
      *
-     * @see [ProjectListPageResponse.objects]
+     * @see ProjectListPageResponse.objects
      */
     fun objects(): List<Project> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

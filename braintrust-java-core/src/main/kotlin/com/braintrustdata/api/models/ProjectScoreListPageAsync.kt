@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [ProjectScoreServiceAsync.list] */
+/** @see ProjectScoreServiceAsync.list */
 class ProjectScoreListPageAsync
 private constructor(
     private val service: ProjectScoreServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [ProjectScoreListPageResponse], but gracefully handles missing data.
      *
-     * @see [ProjectScoreListPageResponse.objects]
+     * @see ProjectScoreListPageResponse.objects
      */
     fun objects(): List<ProjectScore> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

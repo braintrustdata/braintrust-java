@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [PromptServiceAsync.list] */
+/** @see PromptServiceAsync.list */
 class PromptListPageAsync
 private constructor(
     private val service: PromptServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [PromptListPageResponse], but gracefully handles missing data.
      *
-     * @see [PromptListPageResponse.objects]
+     * @see PromptListPageResponse.objects
      */
     fun objects(): List<Prompt> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

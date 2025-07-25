@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [OrganizationServiceAsync.list] */
+/** @see OrganizationServiceAsync.list */
 class OrganizationListPageAsync
 private constructor(
     private val service: OrganizationServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [OrganizationListPageResponse], but gracefully handles missing data.
      *
-     * @see [OrganizationListPageResponse.objects]
+     * @see OrganizationListPageResponse.objects
      */
     fun objects(): List<Organization> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

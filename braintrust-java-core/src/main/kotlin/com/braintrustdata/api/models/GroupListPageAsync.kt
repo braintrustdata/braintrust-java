@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [GroupServiceAsync.list] */
+/** @see GroupServiceAsync.list */
 class GroupListPageAsync
 private constructor(
     private val service: GroupServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [GroupListPageResponse], but gracefully handles missing data.
      *
-     * @see [GroupListPageResponse.objects]
+     * @see GroupListPageResponse.objects
      */
     fun objects(): List<Group> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

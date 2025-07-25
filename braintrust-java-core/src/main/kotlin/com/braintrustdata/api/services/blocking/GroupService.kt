@@ -36,7 +36,7 @@ interface GroupService {
      */
     fun create(params: GroupCreateParams): Group = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: GroupCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -45,27 +45,27 @@ interface GroupService {
     /** Get a group object by its id */
     fun retrieve(groupId: String): Group = retrieve(groupId, GroupRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         groupId: String,
         params: GroupRetrieveParams = GroupRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group = retrieve(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(groupId: String, params: GroupRetrieveParams = GroupRetrieveParams.none()): Group =
         retrieve(groupId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: GroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: GroupRetrieveParams): Group = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(groupId: String, requestOptions: RequestOptions): Group =
         retrieve(groupId, GroupRetrieveParams.none(), requestOptions)
 
@@ -76,27 +76,27 @@ interface GroupService {
      */
     fun update(groupId: String): Group = update(groupId, GroupUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         groupId: String,
         params: GroupUpdateParams = GroupUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group = update(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(groupId: String, params: GroupUpdateParams = GroupUpdateParams.none()): Group =
         update(groupId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: GroupUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: GroupUpdateParams): Group = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(groupId: String, requestOptions: RequestOptions): Group =
         update(groupId, GroupUpdateParams.none(), requestOptions)
 
@@ -106,44 +106,44 @@ interface GroupService {
      */
     fun list(): GroupListPage = list(GroupListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: GroupListParams = GroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): GroupListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: GroupListParams = GroupListParams.none()): GroupListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): GroupListPage =
         list(GroupListParams.none(), requestOptions)
 
     /** Delete a group object by its id */
     fun delete(groupId: String): Group = delete(groupId, GroupDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         groupId: String,
         params: GroupDeleteParams = GroupDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group = delete(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(groupId: String, params: GroupDeleteParams = GroupDeleteParams.none()): Group =
         delete(groupId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: GroupDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Group
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: GroupDeleteParams): Group = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(groupId: String, requestOptions: RequestOptions): Group =
         delete(groupId, GroupDeleteParams.none(), requestOptions)
 
@@ -153,7 +153,7 @@ interface GroupService {
      */
     fun replace(params: GroupReplaceParams): Group = replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: GroupReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -177,7 +177,7 @@ interface GroupService {
         fun create(params: GroupCreateParams): HttpResponseFor<Group> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: GroupCreateParams,
@@ -192,7 +192,7 @@ interface GroupService {
         fun retrieve(groupId: String): HttpResponseFor<Group> =
             retrieve(groupId, GroupRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             groupId: String,
@@ -201,26 +201,26 @@ interface GroupService {
         ): HttpResponseFor<Group> =
             retrieve(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             groupId: String,
             params: GroupRetrieveParams = GroupRetrieveParams.none(),
         ): HttpResponseFor<Group> = retrieve(groupId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: GroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Group>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: GroupRetrieveParams): HttpResponseFor<Group> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(groupId: String, requestOptions: RequestOptions): HttpResponseFor<Group> =
             retrieve(groupId, GroupRetrieveParams.none(), requestOptions)
@@ -233,7 +233,7 @@ interface GroupService {
         fun update(groupId: String): HttpResponseFor<Group> =
             update(groupId, GroupUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             groupId: String,
@@ -242,26 +242,26 @@ interface GroupService {
         ): HttpResponseFor<Group> =
             update(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             groupId: String,
             params: GroupUpdateParams = GroupUpdateParams.none(),
         ): HttpResponseFor<Group> = update(groupId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: GroupUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Group>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(params: GroupUpdateParams): HttpResponseFor<Group> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(groupId: String, requestOptions: RequestOptions): HttpResponseFor<Group> =
             update(groupId, GroupUpdateParams.none(), requestOptions)
@@ -272,19 +272,19 @@ interface GroupService {
          */
         @MustBeClosed fun list(): HttpResponseFor<GroupListPage> = list(GroupListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: GroupListParams = GroupListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<GroupListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: GroupListParams = GroupListParams.none()): HttpResponseFor<GroupListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<GroupListPage> =
             list(GroupListParams.none(), requestOptions)
@@ -297,7 +297,7 @@ interface GroupService {
         fun delete(groupId: String): HttpResponseFor<Group> =
             delete(groupId, GroupDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             groupId: String,
@@ -306,26 +306,26 @@ interface GroupService {
         ): HttpResponseFor<Group> =
             delete(params.toBuilder().groupId(groupId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             groupId: String,
             params: GroupDeleteParams = GroupDeleteParams.none(),
         ): HttpResponseFor<Group> = delete(groupId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: GroupDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Group>
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(params: GroupDeleteParams): HttpResponseFor<Group> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(groupId: String, requestOptions: RequestOptions): HttpResponseFor<Group> =
             delete(groupId, GroupDeleteParams.none(), requestOptions)
@@ -338,7 +338,7 @@ interface GroupService {
         fun replace(params: GroupReplaceParams): HttpResponseFor<Group> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         @MustBeClosed
         fun replace(
             params: GroupReplaceParams,

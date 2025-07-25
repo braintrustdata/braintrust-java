@@ -45,7 +45,7 @@ interface DatasetServiceAsync {
     fun create(params: DatasetCreateParams): CompletableFuture<Dataset> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: DatasetCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -55,7 +55,7 @@ interface DatasetServiceAsync {
     fun retrieve(datasetId: String): CompletableFuture<Dataset> =
         retrieve(datasetId, DatasetRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         datasetId: String,
         params: DatasetRetrieveParams = DatasetRetrieveParams.none(),
@@ -63,23 +63,23 @@ interface DatasetServiceAsync {
     ): CompletableFuture<Dataset> =
         retrieve(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         datasetId: String,
         params: DatasetRetrieveParams = DatasetRetrieveParams.none(),
     ): CompletableFuture<Dataset> = retrieve(datasetId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: DatasetRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: DatasetRetrieveParams): CompletableFuture<Dataset> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(datasetId: String, requestOptions: RequestOptions): CompletableFuture<Dataset> =
         retrieve(datasetId, DatasetRetrieveParams.none(), requestOptions)
 
@@ -91,7 +91,7 @@ interface DatasetServiceAsync {
     fun update(datasetId: String): CompletableFuture<Dataset> =
         update(datasetId, DatasetUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         datasetId: String,
         params: DatasetUpdateParams = DatasetUpdateParams.none(),
@@ -99,23 +99,23 @@ interface DatasetServiceAsync {
     ): CompletableFuture<Dataset> =
         update(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         datasetId: String,
         params: DatasetUpdateParams = DatasetUpdateParams.none(),
     ): CompletableFuture<Dataset> = update(datasetId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: DatasetUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: DatasetUpdateParams): CompletableFuture<Dataset> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(datasetId: String, requestOptions: RequestOptions): CompletableFuture<Dataset> =
         update(datasetId, DatasetUpdateParams.none(), requestOptions)
 
@@ -125,18 +125,18 @@ interface DatasetServiceAsync {
      */
     fun list(): CompletableFuture<DatasetListPageAsync> = list(DatasetListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: DatasetListParams = DatasetListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DatasetListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: DatasetListParams = DatasetListParams.none()
     ): CompletableFuture<DatasetListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<DatasetListPageAsync> =
         list(DatasetListParams.none(), requestOptions)
 
@@ -144,7 +144,7 @@ interface DatasetServiceAsync {
     fun delete(datasetId: String): CompletableFuture<Dataset> =
         delete(datasetId, DatasetDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         datasetId: String,
         params: DatasetDeleteParams = DatasetDeleteParams.none(),
@@ -152,23 +152,23 @@ interface DatasetServiceAsync {
     ): CompletableFuture<Dataset> =
         delete(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         datasetId: String,
         params: DatasetDeleteParams = DatasetDeleteParams.none(),
     ): CompletableFuture<Dataset> = delete(datasetId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: DatasetDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Dataset>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: DatasetDeleteParams): CompletableFuture<Dataset> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(datasetId: String, requestOptions: RequestOptions): CompletableFuture<Dataset> =
         delete(datasetId, DatasetDeleteParams.none(), requestOptions)
 
@@ -179,7 +179,7 @@ interface DatasetServiceAsync {
     ): CompletableFuture<FeedbackResponseSchema> =
         feedback(datasetId, params, RequestOptions.none())
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(
         datasetId: String,
         params: DatasetFeedbackParams,
@@ -187,11 +187,11 @@ interface DatasetServiceAsync {
     ): CompletableFuture<FeedbackResponseSchema> =
         feedback(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(params: DatasetFeedbackParams): CompletableFuture<FeedbackResponseSchema> =
         feedback(params, RequestOptions.none())
 
-    /** @see [feedback] */
+    /** @see feedback */
     fun feedback(
         params: DatasetFeedbackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -205,7 +205,7 @@ interface DatasetServiceAsync {
     fun fetch(datasetId: String): CompletableFuture<FetchDatasetEventsResponse> =
         fetch(datasetId, DatasetFetchParams.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         datasetId: String,
         params: DatasetFetchParams = DatasetFetchParams.none(),
@@ -213,24 +213,24 @@ interface DatasetServiceAsync {
     ): CompletableFuture<FetchDatasetEventsResponse> =
         fetch(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         datasetId: String,
         params: DatasetFetchParams = DatasetFetchParams.none(),
     ): CompletableFuture<FetchDatasetEventsResponse> =
         fetch(datasetId, params, RequestOptions.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         params: DatasetFetchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchDatasetEventsResponse>
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(params: DatasetFetchParams): CompletableFuture<FetchDatasetEventsResponse> =
         fetch(params, RequestOptions.none())
 
-    /** @see [fetch] */
+    /** @see fetch */
     fun fetch(
         datasetId: String,
         requestOptions: RequestOptions,
@@ -245,7 +245,7 @@ interface DatasetServiceAsync {
     fun fetchPost(datasetId: String): CompletableFuture<FetchDatasetEventsResponse> =
         fetchPost(datasetId, DatasetFetchPostParams.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         datasetId: String,
         params: DatasetFetchPostParams = DatasetFetchPostParams.none(),
@@ -253,24 +253,24 @@ interface DatasetServiceAsync {
     ): CompletableFuture<FetchDatasetEventsResponse> =
         fetchPost(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         datasetId: String,
         params: DatasetFetchPostParams = DatasetFetchPostParams.none(),
     ): CompletableFuture<FetchDatasetEventsResponse> =
         fetchPost(datasetId, params, RequestOptions.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         params: DatasetFetchPostParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FetchDatasetEventsResponse>
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(params: DatasetFetchPostParams): CompletableFuture<FetchDatasetEventsResponse> =
         fetchPost(params, RequestOptions.none())
 
-    /** @see [fetchPost] */
+    /** @see fetchPost */
     fun fetchPost(
         datasetId: String,
         requestOptions: RequestOptions,
@@ -283,7 +283,7 @@ interface DatasetServiceAsync {
         params: DatasetInsertParams,
     ): CompletableFuture<InsertEventsResponse> = insert(datasetId, params, RequestOptions.none())
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(
         datasetId: String,
         params: DatasetInsertParams,
@@ -291,11 +291,11 @@ interface DatasetServiceAsync {
     ): CompletableFuture<InsertEventsResponse> =
         insert(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(params: DatasetInsertParams): CompletableFuture<InsertEventsResponse> =
         insert(params, RequestOptions.none())
 
-    /** @see [insert] */
+    /** @see insert */
     fun insert(
         params: DatasetInsertParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -305,7 +305,7 @@ interface DatasetServiceAsync {
     fun summarize(datasetId: String): CompletableFuture<SummarizeDatasetResponse> =
         summarize(datasetId, DatasetSummarizeParams.none())
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         datasetId: String,
         params: DatasetSummarizeParams = DatasetSummarizeParams.none(),
@@ -313,24 +313,24 @@ interface DatasetServiceAsync {
     ): CompletableFuture<SummarizeDatasetResponse> =
         summarize(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         datasetId: String,
         params: DatasetSummarizeParams = DatasetSummarizeParams.none(),
     ): CompletableFuture<SummarizeDatasetResponse> =
         summarize(datasetId, params, RequestOptions.none())
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         params: DatasetSummarizeParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SummarizeDatasetResponse>
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(params: DatasetSummarizeParams): CompletableFuture<SummarizeDatasetResponse> =
         summarize(params, RequestOptions.none())
 
-    /** @see [summarize] */
+    /** @see summarize */
     fun summarize(
         datasetId: String,
         requestOptions: RequestOptions,
@@ -358,7 +358,7 @@ interface DatasetServiceAsync {
         fun create(params: DatasetCreateParams): CompletableFuture<HttpResponseFor<Dataset>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: DatasetCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -371,7 +371,7 @@ interface DatasetServiceAsync {
         fun retrieve(datasetId: String): CompletableFuture<HttpResponseFor<Dataset>> =
             retrieve(datasetId, DatasetRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             datasetId: String,
             params: DatasetRetrieveParams = DatasetRetrieveParams.none(),
@@ -379,24 +379,24 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<Dataset>> =
             retrieve(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             datasetId: String,
             params: DatasetRetrieveParams = DatasetRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Dataset>> =
             retrieve(datasetId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: DatasetRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Dataset>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: DatasetRetrieveParams): CompletableFuture<HttpResponseFor<Dataset>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             datasetId: String,
             requestOptions: RequestOptions,
@@ -410,7 +410,7 @@ interface DatasetServiceAsync {
         fun update(datasetId: String): CompletableFuture<HttpResponseFor<Dataset>> =
             update(datasetId, DatasetUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             datasetId: String,
             params: DatasetUpdateParams = DatasetUpdateParams.none(),
@@ -418,24 +418,24 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<Dataset>> =
             update(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             datasetId: String,
             params: DatasetUpdateParams = DatasetUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Dataset>> =
             update(datasetId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: DatasetUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Dataset>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: DatasetUpdateParams): CompletableFuture<HttpResponseFor<Dataset>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             datasetId: String,
             requestOptions: RequestOptions,
@@ -449,19 +449,19 @@ interface DatasetServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<DatasetListPageAsync>> =
             list(DatasetListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: DatasetListParams = DatasetListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DatasetListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: DatasetListParams = DatasetListParams.none()
         ): CompletableFuture<HttpResponseFor<DatasetListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<DatasetListPageAsync>> =
@@ -474,7 +474,7 @@ interface DatasetServiceAsync {
         fun delete(datasetId: String): CompletableFuture<HttpResponseFor<Dataset>> =
             delete(datasetId, DatasetDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             datasetId: String,
             params: DatasetDeleteParams = DatasetDeleteParams.none(),
@@ -482,24 +482,24 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<Dataset>> =
             delete(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             datasetId: String,
             params: DatasetDeleteParams = DatasetDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Dataset>> =
             delete(datasetId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: DatasetDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Dataset>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: DatasetDeleteParams): CompletableFuture<HttpResponseFor<Dataset>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             datasetId: String,
             requestOptions: RequestOptions,
@@ -516,7 +516,7 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(datasetId, params, RequestOptions.none())
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             datasetId: String,
             params: DatasetFeedbackParams,
@@ -524,13 +524,13 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             params: DatasetFeedbackParams
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> =
             feedback(params, RequestOptions.none())
 
-        /** @see [feedback] */
+        /** @see feedback */
         fun feedback(
             params: DatasetFeedbackParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -545,7 +545,7 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetch(datasetId, DatasetFetchParams.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             datasetId: String,
             params: DatasetFetchParams = DatasetFetchParams.none(),
@@ -553,26 +553,26 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetch(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             datasetId: String,
             params: DatasetFetchParams = DatasetFetchParams.none(),
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetch(datasetId, params, RequestOptions.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             params: DatasetFetchParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>>
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             params: DatasetFetchParams
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetch(params, RequestOptions.none())
 
-        /** @see [fetch] */
+        /** @see fetch */
         fun fetch(
             datasetId: String,
             requestOptions: RequestOptions,
@@ -588,7 +588,7 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetchPost(datasetId, DatasetFetchPostParams.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             datasetId: String,
             params: DatasetFetchPostParams = DatasetFetchPostParams.none(),
@@ -596,26 +596,26 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetchPost(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             datasetId: String,
             params: DatasetFetchPostParams = DatasetFetchPostParams.none(),
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetchPost(datasetId, params, RequestOptions.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             params: DatasetFetchPostParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>>
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             params: DatasetFetchPostParams
         ): CompletableFuture<HttpResponseFor<FetchDatasetEventsResponse>> =
             fetchPost(params, RequestOptions.none())
 
-        /** @see [fetchPost] */
+        /** @see fetchPost */
         fun fetchPost(
             datasetId: String,
             requestOptions: RequestOptions,
@@ -632,7 +632,7 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(datasetId, params, RequestOptions.none())
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             datasetId: String,
             params: DatasetInsertParams,
@@ -640,13 +640,13 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             params: DatasetInsertParams
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> =
             insert(params, RequestOptions.none())
 
-        /** @see [insert] */
+        /** @see insert */
         fun insert(
             params: DatasetInsertParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -661,7 +661,7 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<SummarizeDatasetResponse>> =
             summarize(datasetId, DatasetSummarizeParams.none())
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             datasetId: String,
             params: DatasetSummarizeParams = DatasetSummarizeParams.none(),
@@ -669,26 +669,26 @@ interface DatasetServiceAsync {
         ): CompletableFuture<HttpResponseFor<SummarizeDatasetResponse>> =
             summarize(params.toBuilder().datasetId(datasetId).build(), requestOptions)
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             datasetId: String,
             params: DatasetSummarizeParams = DatasetSummarizeParams.none(),
         ): CompletableFuture<HttpResponseFor<SummarizeDatasetResponse>> =
             summarize(datasetId, params, RequestOptions.none())
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             params: DatasetSummarizeParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SummarizeDatasetResponse>>
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             params: DatasetSummarizeParams
         ): CompletableFuture<HttpResponseFor<SummarizeDatasetResponse>> =
             summarize(params, RequestOptions.none())
 
-        /** @see [summarize] */
+        /** @see summarize */
         fun summarize(
             datasetId: String,
             requestOptions: RequestOptions,

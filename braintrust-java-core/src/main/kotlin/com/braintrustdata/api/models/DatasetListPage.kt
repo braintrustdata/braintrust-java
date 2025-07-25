@@ -9,7 +9,7 @@ import com.braintrustdata.api.services.blocking.DatasetService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [DatasetService.list] */
+/** @see DatasetService.list */
 class DatasetListPage
 private constructor(
     private val service: DatasetService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [DatasetListPageResponse], but gracefully handles missing data.
      *
-     * @see [DatasetListPageResponse.objects]
+     * @see DatasetListPageResponse.objects
      */
     fun objects(): List<Dataset> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()

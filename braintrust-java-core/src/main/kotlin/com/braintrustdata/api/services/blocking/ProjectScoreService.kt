@@ -38,7 +38,7 @@ interface ProjectScoreService {
     fun create(params: ProjectScoreCreateParams): ProjectScore =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ProjectScoreCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,7 +48,7 @@ interface ProjectScoreService {
     fun retrieve(projectScoreId: String): ProjectScore =
         retrieve(projectScoreId, ProjectScoreRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectScoreId: String,
         params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
@@ -56,23 +56,23 @@ interface ProjectScoreService {
     ): ProjectScore =
         retrieve(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectScoreId: String,
         params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
     ): ProjectScore = retrieve(projectScoreId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ProjectScoreRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ProjectScoreRetrieveParams): ProjectScore =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(projectScoreId: String, requestOptions: RequestOptions): ProjectScore =
         retrieve(projectScoreId, ProjectScoreRetrieveParams.none(), requestOptions)
 
@@ -84,7 +84,7 @@ interface ProjectScoreService {
     fun update(projectScoreId: String): ProjectScore =
         update(projectScoreId, ProjectScoreUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectScoreId: String,
         params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
@@ -92,23 +92,23 @@ interface ProjectScoreService {
     ): ProjectScore =
         update(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectScoreId: String,
         params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
     ): ProjectScore = update(projectScoreId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: ProjectScoreUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: ProjectScoreUpdateParams): ProjectScore =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(projectScoreId: String, requestOptions: RequestOptions): ProjectScore =
         update(projectScoreId, ProjectScoreUpdateParams.none(), requestOptions)
 
@@ -118,17 +118,17 @@ interface ProjectScoreService {
      */
     fun list(): ProjectScoreListPage = list(ProjectScoreListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectScoreListParams = ProjectScoreListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScoreListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: ProjectScoreListParams = ProjectScoreListParams.none()): ProjectScoreListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): ProjectScoreListPage =
         list(ProjectScoreListParams.none(), requestOptions)
 
@@ -136,7 +136,7 @@ interface ProjectScoreService {
     fun delete(projectScoreId: String): ProjectScore =
         delete(projectScoreId, ProjectScoreDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectScoreId: String,
         params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
@@ -144,23 +144,23 @@ interface ProjectScoreService {
     ): ProjectScore =
         delete(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         projectScoreId: String,
         params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
     ): ProjectScore = delete(projectScoreId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ProjectScoreDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectScore
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ProjectScoreDeleteParams): ProjectScore =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(projectScoreId: String, requestOptions: RequestOptions): ProjectScore =
         delete(projectScoreId, ProjectScoreDeleteParams.none(), requestOptions)
 
@@ -172,7 +172,7 @@ interface ProjectScoreService {
     fun replace(params: ProjectScoreReplaceParams): ProjectScore =
         replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: ProjectScoreReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -200,7 +200,7 @@ interface ProjectScoreService {
         fun create(params: ProjectScoreCreateParams): HttpResponseFor<ProjectScore> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: ProjectScoreCreateParams,
@@ -215,7 +215,7 @@ interface ProjectScoreService {
         fun retrieve(projectScoreId: String): HttpResponseFor<ProjectScore> =
             retrieve(projectScoreId, ProjectScoreRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             projectScoreId: String,
@@ -224,26 +224,26 @@ interface ProjectScoreService {
         ): HttpResponseFor<ProjectScore> =
             retrieve(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             projectScoreId: String,
             params: ProjectScoreRetrieveParams = ProjectScoreRetrieveParams.none(),
         ): HttpResponseFor<ProjectScore> = retrieve(projectScoreId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: ProjectScoreRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProjectScore>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: ProjectScoreRetrieveParams): HttpResponseFor<ProjectScore> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             projectScoreId: String,
@@ -259,7 +259,7 @@ interface ProjectScoreService {
         fun update(projectScoreId: String): HttpResponseFor<ProjectScore> =
             update(projectScoreId, ProjectScoreUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             projectScoreId: String,
@@ -268,26 +268,26 @@ interface ProjectScoreService {
         ): HttpResponseFor<ProjectScore> =
             update(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             projectScoreId: String,
             params: ProjectScoreUpdateParams = ProjectScoreUpdateParams.none(),
         ): HttpResponseFor<ProjectScore> = update(projectScoreId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: ProjectScoreUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProjectScore>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(params: ProjectScoreUpdateParams): HttpResponseFor<ProjectScore> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             projectScoreId: String,
@@ -302,20 +302,20 @@ interface ProjectScoreService {
         @MustBeClosed
         fun list(): HttpResponseFor<ProjectScoreListPage> = list(ProjectScoreListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ProjectScoreListParams = ProjectScoreListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProjectScoreListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ProjectScoreListParams = ProjectScoreListParams.none()
         ): HttpResponseFor<ProjectScoreListPage> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProjectScoreListPage> =
             list(ProjectScoreListParams.none(), requestOptions)
@@ -328,7 +328,7 @@ interface ProjectScoreService {
         fun delete(projectScoreId: String): HttpResponseFor<ProjectScore> =
             delete(projectScoreId, ProjectScoreDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             projectScoreId: String,
@@ -337,26 +337,26 @@ interface ProjectScoreService {
         ): HttpResponseFor<ProjectScore> =
             delete(params.toBuilder().projectScoreId(projectScoreId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             projectScoreId: String,
             params: ProjectScoreDeleteParams = ProjectScoreDeleteParams.none(),
         ): HttpResponseFor<ProjectScore> = delete(projectScoreId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: ProjectScoreDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProjectScore>
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(params: ProjectScoreDeleteParams): HttpResponseFor<ProjectScore> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             projectScoreId: String,
@@ -372,7 +372,7 @@ interface ProjectScoreService {
         fun replace(params: ProjectScoreReplaceParams): HttpResponseFor<ProjectScore> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         @MustBeClosed
         fun replace(
             params: ProjectScoreReplaceParams,

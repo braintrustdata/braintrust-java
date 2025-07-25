@@ -36,7 +36,7 @@ interface ApiKeyServiceAsync {
     fun create(params: ApiKeyCreateParams): CompletableFuture<CreateApiKeyOutput> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ApiKeyCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +46,7 @@ interface ApiKeyServiceAsync {
     fun retrieve(apiKeyId: String): CompletableFuture<ApiKey> =
         retrieve(apiKeyId, ApiKeyRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         apiKeyId: String,
         params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
@@ -54,23 +54,23 @@ interface ApiKeyServiceAsync {
     ): CompletableFuture<ApiKey> =
         retrieve(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         apiKeyId: String,
         params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
     ): CompletableFuture<ApiKey> = retrieve(apiKeyId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ApiKeyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKey>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<ApiKey> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(apiKeyId: String, requestOptions: RequestOptions): CompletableFuture<ApiKey> =
         retrieve(apiKeyId, ApiKeyRetrieveParams.none(), requestOptions)
 
@@ -80,18 +80,18 @@ interface ApiKeyServiceAsync {
      */
     fun list(): CompletableFuture<ApiKeyListPageAsync> = list(ApiKeyListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ApiKeyListParams = ApiKeyListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKeyListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ApiKeyListParams = ApiKeyListParams.none()
     ): CompletableFuture<ApiKeyListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ApiKeyListPageAsync> =
         list(ApiKeyListParams.none(), requestOptions)
 
@@ -99,7 +99,7 @@ interface ApiKeyServiceAsync {
     fun delete(apiKeyId: String): CompletableFuture<ApiKey> =
         delete(apiKeyId, ApiKeyDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         apiKeyId: String,
         params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
@@ -107,23 +107,23 @@ interface ApiKeyServiceAsync {
     ): CompletableFuture<ApiKey> =
         delete(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         apiKeyId: String,
         params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
     ): CompletableFuture<ApiKey> = delete(apiKeyId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ApiKeyDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ApiKey>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ApiKeyDeleteParams): CompletableFuture<ApiKey> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(apiKeyId: String, requestOptions: RequestOptions): CompletableFuture<ApiKey> =
         delete(apiKeyId, ApiKeyDeleteParams.none(), requestOptions)
 
@@ -150,7 +150,7 @@ interface ApiKeyServiceAsync {
         ): CompletableFuture<HttpResponseFor<CreateApiKeyOutput>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: ApiKeyCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -163,7 +163,7 @@ interface ApiKeyServiceAsync {
         fun retrieve(apiKeyId: String): CompletableFuture<HttpResponseFor<ApiKey>> =
             retrieve(apiKeyId, ApiKeyRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             apiKeyId: String,
             params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
@@ -171,24 +171,24 @@ interface ApiKeyServiceAsync {
         ): CompletableFuture<HttpResponseFor<ApiKey>> =
             retrieve(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             apiKeyId: String,
             params: ApiKeyRetrieveParams = ApiKeyRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>> =
             retrieve(apiKeyId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: ApiKeyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: ApiKeyRetrieveParams): CompletableFuture<HttpResponseFor<ApiKey>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             apiKeyId: String,
             requestOptions: RequestOptions,
@@ -202,19 +202,19 @@ interface ApiKeyServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
             list(ApiKeyListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ApiKeyListParams = ApiKeyListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ApiKeyListParams = ApiKeyListParams.none()
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ApiKeyListPageAsync>> =
@@ -227,7 +227,7 @@ interface ApiKeyServiceAsync {
         fun delete(apiKeyId: String): CompletableFuture<HttpResponseFor<ApiKey>> =
             delete(apiKeyId, ApiKeyDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             apiKeyId: String,
             params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
@@ -235,24 +235,24 @@ interface ApiKeyServiceAsync {
         ): CompletableFuture<HttpResponseFor<ApiKey>> =
             delete(params.toBuilder().apiKeyId(apiKeyId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             apiKeyId: String,
             params: ApiKeyDeleteParams = ApiKeyDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>> =
             delete(apiKeyId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: ApiKeyDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ApiKey>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(params: ApiKeyDeleteParams): CompletableFuture<HttpResponseFor<ApiKey>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             apiKeyId: String,
             requestOptions: RequestOptions,

@@ -35,7 +35,7 @@ interface OrganizationServiceAsync {
     fun retrieve(organizationId: String): CompletableFuture<Organization> =
         retrieve(organizationId, OrganizationRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         organizationId: String,
         params: OrganizationRetrieveParams = OrganizationRetrieveParams.none(),
@@ -43,23 +43,23 @@ interface OrganizationServiceAsync {
     ): CompletableFuture<Organization> =
         retrieve(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         organizationId: String,
         params: OrganizationRetrieveParams = OrganizationRetrieveParams.none(),
     ): CompletableFuture<Organization> = retrieve(organizationId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: OrganizationRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Organization>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: OrganizationRetrieveParams): CompletableFuture<Organization> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         organizationId: String,
         requestOptions: RequestOptions,
@@ -74,7 +74,7 @@ interface OrganizationServiceAsync {
     fun update(organizationId: String): CompletableFuture<Organization> =
         update(organizationId, OrganizationUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         organizationId: String,
         params: OrganizationUpdateParams = OrganizationUpdateParams.none(),
@@ -82,23 +82,23 @@ interface OrganizationServiceAsync {
     ): CompletableFuture<Organization> =
         update(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         organizationId: String,
         params: OrganizationUpdateParams = OrganizationUpdateParams.none(),
     ): CompletableFuture<Organization> = update(organizationId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: OrganizationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Organization>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: OrganizationUpdateParams): CompletableFuture<Organization> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         organizationId: String,
         requestOptions: RequestOptions,
@@ -111,18 +111,18 @@ interface OrganizationServiceAsync {
      */
     fun list(): CompletableFuture<OrganizationListPageAsync> = list(OrganizationListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: OrganizationListParams = OrganizationListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<OrganizationListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: OrganizationListParams = OrganizationListParams.none()
     ): CompletableFuture<OrganizationListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<OrganizationListPageAsync> =
         list(OrganizationListParams.none(), requestOptions)
 
@@ -130,7 +130,7 @@ interface OrganizationServiceAsync {
     fun delete(organizationId: String): CompletableFuture<Organization> =
         delete(organizationId, OrganizationDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         organizationId: String,
         params: OrganizationDeleteParams = OrganizationDeleteParams.none(),
@@ -138,23 +138,23 @@ interface OrganizationServiceAsync {
     ): CompletableFuture<Organization> =
         delete(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         organizationId: String,
         params: OrganizationDeleteParams = OrganizationDeleteParams.none(),
     ): CompletableFuture<Organization> = delete(organizationId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: OrganizationDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Organization>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: OrganizationDeleteParams): CompletableFuture<Organization> =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         organizationId: String,
         requestOptions: RequestOptions,
@@ -185,7 +185,7 @@ interface OrganizationServiceAsync {
         fun retrieve(organizationId: String): CompletableFuture<HttpResponseFor<Organization>> =
             retrieve(organizationId, OrganizationRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             organizationId: String,
             params: OrganizationRetrieveParams = OrganizationRetrieveParams.none(),
@@ -193,26 +193,26 @@ interface OrganizationServiceAsync {
         ): CompletableFuture<HttpResponseFor<Organization>> =
             retrieve(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             organizationId: String,
             params: OrganizationRetrieveParams = OrganizationRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Organization>> =
             retrieve(organizationId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: OrganizationRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Organization>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: OrganizationRetrieveParams
         ): CompletableFuture<HttpResponseFor<Organization>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             organizationId: String,
             requestOptions: RequestOptions,
@@ -226,7 +226,7 @@ interface OrganizationServiceAsync {
         fun update(organizationId: String): CompletableFuture<HttpResponseFor<Organization>> =
             update(organizationId, OrganizationUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             organizationId: String,
             params: OrganizationUpdateParams = OrganizationUpdateParams.none(),
@@ -234,25 +234,25 @@ interface OrganizationServiceAsync {
         ): CompletableFuture<HttpResponseFor<Organization>> =
             update(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             organizationId: String,
             params: OrganizationUpdateParams = OrganizationUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Organization>> =
             update(organizationId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: OrganizationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Organization>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: OrganizationUpdateParams
         ): CompletableFuture<HttpResponseFor<Organization>> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             organizationId: String,
             requestOptions: RequestOptions,
@@ -266,19 +266,19 @@ interface OrganizationServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
             list(OrganizationListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: OrganizationListParams = OrganizationListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: OrganizationListParams = OrganizationListParams.none()
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<OrganizationListPageAsync>> =
@@ -291,7 +291,7 @@ interface OrganizationServiceAsync {
         fun delete(organizationId: String): CompletableFuture<HttpResponseFor<Organization>> =
             delete(organizationId, OrganizationDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             organizationId: String,
             params: OrganizationDeleteParams = OrganizationDeleteParams.none(),
@@ -299,25 +299,25 @@ interface OrganizationServiceAsync {
         ): CompletableFuture<HttpResponseFor<Organization>> =
             delete(params.toBuilder().organizationId(organizationId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             organizationId: String,
             params: OrganizationDeleteParams = OrganizationDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Organization>> =
             delete(organizationId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: OrganizationDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Organization>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: OrganizationDeleteParams
         ): CompletableFuture<HttpResponseFor<Organization>> = delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             organizationId: String,
             requestOptions: RequestOptions,

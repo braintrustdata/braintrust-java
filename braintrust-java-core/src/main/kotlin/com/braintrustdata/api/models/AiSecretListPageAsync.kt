@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [AiSecretServiceAsync.list] */
+/** @see AiSecretServiceAsync.list */
 class AiSecretListPageAsync
 private constructor(
     private val service: AiSecretServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [AiSecretListPageResponse], but gracefully handles missing data.
      *
-     * @see [AiSecretListPageResponse.objects]
+     * @see AiSecretListPageResponse.objects
      */
     fun objects(): List<AISecret> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
