@@ -24,8 +24,10 @@ private constructor(
     /** Whether to summarize the data. If false (or omitted), only the metadata will be returned. */
     fun summarizeData(): Optional<Boolean> = Optional.ofNullable(summarizeData)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)

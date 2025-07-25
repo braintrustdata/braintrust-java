@@ -20,8 +20,10 @@ private constructor(
     /** EnvVar id */
     fun envVarId(): Optional<String> = Optional.ofNullable(envVarId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
