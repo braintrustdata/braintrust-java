@@ -3,6 +3,7 @@ package com.braintrustdata.api.core.http
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.errors.BraintrustIoException
+import com.braintrustdata.api.errors.BraintrustRetryableException
 import java.io.IOException
 import java.time.Clock
 import java.time.Duration
@@ -176,9 +177,10 @@ private constructor(
     }
 
     private fun shouldRetry(throwable: Throwable): Boolean =
-        // Only retry IOException and BraintrustIoException, other exceptions are not intended to be
-        // retried.
-        throwable is IOException || throwable is BraintrustIoException
+        // Only retry known retryable exceptions, other exceptions are not intended to be retried.
+        throwable is IOException ||
+            throwable is BraintrustIoException ||
+            throwable is BraintrustRetryableException
 
     private fun getRetryBackoffDuration(retries: Int, response: HttpResponse?): Duration {
         // About the Retry-After header:
