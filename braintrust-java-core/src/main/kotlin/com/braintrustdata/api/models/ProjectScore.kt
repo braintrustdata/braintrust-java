@@ -629,10 +629,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Categories && categorical == other.categorical && weighted == other.weighted && minimum == other.minimum /* spotless:on */
+            return other is Categories &&
+                categorical == other.categorical &&
+                weighted == other.weighted &&
+                minimum == other.minimum
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(categorical, weighted, minimum) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(categorical, weighted, minimum)
 
         override fun toString(): String =
             when {
@@ -829,12 +832,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Weighted && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Weighted && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -847,12 +848,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScore && id == other.id && name == other.name && projectId == other.projectId && scoreType == other.scoreType && userId == other.userId && categories == other.categories && config == other.config && created == other.created && description == other.description && position == other.position && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ProjectScore &&
+            id == other.id &&
+            name == other.name &&
+            projectId == other.projectId &&
+            scoreType == other.scoreType &&
+            userId == other.userId &&
+            categories == other.categories &&
+            config == other.config &&
+            created == other.created &&
+            description == other.description &&
+            position == other.position &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, projectId, scoreType, userId, categories, config, created, description, position, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            projectId,
+            scoreType,
+            userId,
+            categories,
+            config,
+            created,
+            description,
+            position,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

@@ -553,12 +553,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Acl && id == other.id && _objectOrgId == other._objectOrgId && objectId == other.objectId && objectType == other.objectType && created == other.created && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Acl &&
+            id == other.id &&
+            _objectOrgId == other._objectOrgId &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            created == other.created &&
+            groupId == other.groupId &&
+            permission == other.permission &&
+            restrictObjectType == other.restrictObjectType &&
+            roleId == other.roleId &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _objectOrgId, objectId, objectType, created, groupId, permission, restrictObjectType, roleId, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            _objectOrgId,
+            objectId,
+            objectType,
+            created,
+            groupId,
+            permission,
+            restrictObjectType,
+            roleId,
+            userId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

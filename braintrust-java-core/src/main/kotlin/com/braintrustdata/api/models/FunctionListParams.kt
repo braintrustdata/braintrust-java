@@ -406,10 +406,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
+            return other is Ids && string == other.string && strings == other.strings
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(string, strings)
 
         override fun toString(): String =
             when {
@@ -439,10 +439,36 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FunctionListParams && endingBefore == other.endingBefore && functionName == other.functionName && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && slug == other.slug && startingAfter == other.startingAfter && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is FunctionListParams &&
+            endingBefore == other.endingBefore &&
+            functionName == other.functionName &&
+            ids == other.ids &&
+            limit == other.limit &&
+            orgName == other.orgName &&
+            projectId == other.projectId &&
+            projectName == other.projectName &&
+            slug == other.slug &&
+            startingAfter == other.startingAfter &&
+            version == other.version &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, functionName, ids, limit, orgName, projectId, projectName, slug, startingAfter, version, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            endingBefore,
+            functionName,
+            ids,
+            limit,
+            orgName,
+            projectId,
+            projectName,
+            slug,
+            startingAfter,
+            version,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "FunctionListParams{endingBefore=$endingBefore, functionName=$functionName, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, slug=$slug, startingAfter=$startingAfter, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -487,12 +487,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIFrame && id == other.id && name == other.name && projectId == other.projectId && url == other.url && created == other.created && deletedAt == other.deletedAt && description == other.description && postMessage == other.postMessage && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is SpanIFrame &&
+            id == other.id &&
+            name == other.name &&
+            projectId == other.projectId &&
+            url == other.url &&
+            created == other.created &&
+            deletedAt == other.deletedAt &&
+            description == other.description &&
+            postMessage == other.postMessage &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, projectId, url, created, deletedAt, description, postMessage, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            projectId,
+            url,
+            created,
+            deletedAt,
+            description,
+            postMessage,
+            userId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

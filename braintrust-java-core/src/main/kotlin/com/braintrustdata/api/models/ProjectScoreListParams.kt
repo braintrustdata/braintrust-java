@@ -406,10 +406,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
+            return other is Ids && string == other.string && strings == other.strings
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(string, strings)
 
         override fun toString(): String =
             when {
@@ -471,10 +471,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ScoreType && project == other.project && projectScoreTypes == other.projectScoreTypes /* spotless:on */
+            return other is ScoreType &&
+                project == other.project &&
+                projectScoreTypes == other.projectScoreTypes
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(project, projectScoreTypes) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(project, projectScoreTypes)
 
         override fun toString(): String =
             when {
@@ -512,10 +514,34 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && projectScoreName == other.projectScoreName && scoreType == other.scoreType && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectScoreListParams &&
+            endingBefore == other.endingBefore &&
+            ids == other.ids &&
+            limit == other.limit &&
+            orgName == other.orgName &&
+            projectId == other.projectId &&
+            projectName == other.projectName &&
+            projectScoreName == other.projectScoreName &&
+            scoreType == other.scoreType &&
+            startingAfter == other.startingAfter &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, projectId, projectName, projectScoreName, scoreType, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            endingBefore,
+            ids,
+            limit,
+            orgName,
+            projectId,
+            projectName,
+            projectScoreName,
+            scoreType,
+            startingAfter,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "ProjectScoreListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, projectScoreName=$projectScoreName, scoreType=$scoreType, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

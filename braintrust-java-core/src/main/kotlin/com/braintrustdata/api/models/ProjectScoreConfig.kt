@@ -231,12 +231,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreConfig && destination == other.destination && multiSelect == other.multiSelect && online == other.online && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ProjectScoreConfig &&
+            destination == other.destination &&
+            multiSelect == other.multiSelect &&
+            online == other.online &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(destination, multiSelect, online, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(destination, multiSelect, online, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

@@ -224,10 +224,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewRetrieveParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ViewRetrieveParams &&
+            viewId == other.viewId &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ViewRetrieveParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

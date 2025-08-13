@@ -437,12 +437,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && events == other.events && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                events == other.events &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(events, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -454,10 +454,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetInsertParams && datasetId == other.datasetId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetInsertParams &&
+            datasetId == other.datasetId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetInsertParams{datasetId=$datasetId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

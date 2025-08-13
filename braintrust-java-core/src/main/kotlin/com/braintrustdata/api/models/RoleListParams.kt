@@ -340,10 +340,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
+            return other is Ids && string == other.string && strings == other.strings
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(string, strings)
 
         override fun toString(): String =
             when {
@@ -373,10 +373,28 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RoleListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && roleName == other.roleName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is RoleListParams &&
+            endingBefore == other.endingBefore &&
+            ids == other.ids &&
+            limit == other.limit &&
+            orgName == other.orgName &&
+            roleName == other.roleName &&
+            startingAfter == other.startingAfter &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, roleName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            endingBefore,
+            ids,
+            limit,
+            orgName,
+            roleName,
+            startingAfter,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "RoleListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, roleName=$roleName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

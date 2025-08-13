@@ -211,10 +211,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetSummarizeParams && datasetId == other.datasetId && summarizeData == other.summarizeData && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetSummarizeParams &&
+            datasetId == other.datasetId &&
+            summarizeData == other.summarizeData &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, summarizeData, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(datasetId, summarizeData, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetSummarizeParams{datasetId=$datasetId, summarizeData=$summarizeData, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

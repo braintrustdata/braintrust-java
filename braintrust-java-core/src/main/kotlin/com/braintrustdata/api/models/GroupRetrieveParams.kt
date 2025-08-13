@@ -178,10 +178,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupRetrieveParams && groupId == other.groupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is GroupRetrieveParams &&
+            groupId == other.groupId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(groupId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "GroupRetrieveParams{groupId=$groupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

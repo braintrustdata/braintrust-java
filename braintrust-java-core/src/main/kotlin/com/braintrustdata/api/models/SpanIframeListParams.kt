@@ -341,10 +341,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
+            return other is Ids && string == other.string && strings == other.strings
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(string, strings)
 
         override fun toString(): String =
             when {
@@ -374,10 +374,28 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeListParams && endingBefore == other.endingBefore && ids == other.ids && limit == other.limit && orgName == other.orgName && spanIframeName == other.spanIframeName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SpanIframeListParams &&
+            endingBefore == other.endingBefore &&
+            ids == other.ids &&
+            limit == other.limit &&
+            orgName == other.orgName &&
+            spanIframeName == other.spanIframeName &&
+            startingAfter == other.startingAfter &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, ids, limit, orgName, spanIframeName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            endingBefore,
+            ids,
+            limit,
+            orgName,
+            spanIframeName,
+            startingAfter,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "SpanIframeListParams{endingBefore=$endingBefore, ids=$ids, limit=$limit, orgName=$orgName, spanIframeName=$spanIframeName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -178,10 +178,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ApiKeyRetrieveParams && apiKeyId == other.apiKeyId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ApiKeyRetrieveParams &&
+            apiKeyId == other.apiKeyId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(apiKeyId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(apiKeyId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ApiKeyRetrieveParams{apiKeyId=$apiKeyId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -507,12 +507,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -524,12 +522,31 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AISecret && id == other.id && name == other.name && orgId == other.orgId && created == other.created && metadata == other.metadata && previewSecret == other.previewSecret && type == other.type && updatedAt == other.updatedAt && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is AISecret &&
+            id == other.id &&
+            name == other.name &&
+            orgId == other.orgId &&
+            created == other.created &&
+            metadata == other.metadata &&
+            previewSecret == other.previewSecret &&
+            type == other.type &&
+            updatedAt == other.updatedAt &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, orgId, created, metadata, previewSecret, type, updatedAt, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            orgId,
+            created,
+            metadata,
+            previewSecret,
+            type,
+            updatedAt,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
