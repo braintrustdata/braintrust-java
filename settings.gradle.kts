@@ -1,7 +1,14 @@
 rootProject.name = "braintrust-java-root"
 
-include("braintrust-java")
-include("braintrust-java-client-okhttp")
-include("braintrust-java-core")
-include("braintrust-java-proguard-test")
-include("braintrust-java-example")
+val projectNames = rootDir.listFiles()
+    ?.asSequence()
+    .orEmpty()
+    .filter { file ->
+        file.isDirectory &&
+        file.name.startsWith("braintrust-java") &&
+        file.listFiles()?.asSequence().orEmpty().any { it.name == "build.gradle.kts" }
+    }
+    .map { it.name }
+    .toList()
+println("projects: $projectNames")
+projectNames.forEach { include(it) }
