@@ -473,7 +473,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+            return other is ObjectType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -486,12 +486,19 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVar && id == other.id && name == other.name && objectId == other.objectId && objectType == other.objectType && created == other.created && used == other.used && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is EnvVar &&
+            id == other.id &&
+            name == other.name &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            created == other.created &&
+            used == other.used &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, objectId, objectType, created, used, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, name, objectId, objectType, created, used, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

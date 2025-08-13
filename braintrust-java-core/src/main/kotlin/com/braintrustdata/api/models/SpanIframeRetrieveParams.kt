@@ -182,10 +182,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeRetrieveParams && spanIframeId == other.spanIframeId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SpanIframeRetrieveParams &&
+            spanIframeId == other.spanIframeId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(spanIframeId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SpanIframeRetrieveParams{spanIframeId=$spanIframeId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

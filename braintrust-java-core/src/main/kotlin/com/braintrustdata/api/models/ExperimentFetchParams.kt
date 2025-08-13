@@ -336,10 +336,26 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentFetchParams && experimentId == other.experimentId && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentFetchParams &&
+            experimentId == other.experimentId &&
+            limit == other.limit &&
+            maxRootSpanId == other.maxRootSpanId &&
+            maxXactId == other.maxXactId &&
+            version == other.version &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            experimentId,
+            limit,
+            maxRootSpanId,
+            maxXactId,
+            version,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "ExperimentFetchParams{experimentId=$experimentId, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

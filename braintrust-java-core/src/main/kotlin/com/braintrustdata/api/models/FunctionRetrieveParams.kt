@@ -182,10 +182,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FunctionRetrieveParams && functionId == other.functionId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is FunctionRetrieveParams &&
+            functionId == other.functionId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(functionId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "FunctionRetrieveParams{functionId=$functionId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

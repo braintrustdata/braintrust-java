@@ -336,10 +336,26 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectLogFetchParams && projectId == other.projectId && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectLogFetchParams &&
+            projectId == other.projectId &&
+            limit == other.limit &&
+            maxRootSpanId == other.maxRootSpanId &&
+            maxXactId == other.maxXactId &&
+            version == other.version &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            projectId,
+            limit,
+            maxRootSpanId,
+            maxXactId,
+            version,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "ProjectLogFetchParams{projectId=$projectId, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

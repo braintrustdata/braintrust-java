@@ -507,12 +507,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metrics && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metrics && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -609,12 +607,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Scores && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Scores && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -626,12 +622,29 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SummarizeExperimentResponse && experimentName == other.experimentName && experimentUrl == other.experimentUrl && projectName == other.projectName && projectUrl == other.projectUrl && comparisonExperimentName == other.comparisonExperimentName && metrics == other.metrics && scores == other.scores && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is SummarizeExperimentResponse &&
+            experimentName == other.experimentName &&
+            experimentUrl == other.experimentUrl &&
+            projectName == other.projectName &&
+            projectUrl == other.projectUrl &&
+            comparisonExperimentName == other.comparisonExperimentName &&
+            metrics == other.metrics &&
+            scores == other.scores &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(experimentName, experimentUrl, projectName, projectUrl, comparisonExperimentName, metrics, scores, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            experimentName,
+            experimentUrl,
+            projectName,
+            projectUrl,
+            comparisonExperimentName,
+            metrics,
+            scores,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

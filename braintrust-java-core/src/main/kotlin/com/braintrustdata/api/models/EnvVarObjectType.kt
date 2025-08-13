@@ -132,7 +132,7 @@ class EnvVarObjectType @JsonCreator private constructor(private val value: JsonF
             return true
         }
 
-        return /* spotless:off */ other is EnvVarObjectType && value == other.value /* spotless:on */
+        return other is EnvVarObjectType && value == other.value
     }
 
     override fun hashCode() = value.hashCode()

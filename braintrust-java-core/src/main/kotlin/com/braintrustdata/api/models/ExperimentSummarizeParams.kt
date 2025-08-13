@@ -248,10 +248,22 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentSummarizeParams && experimentId == other.experimentId && comparisonExperimentId == other.comparisonExperimentId && summarizeScores == other.summarizeScores && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentSummarizeParams &&
+            experimentId == other.experimentId &&
+            comparisonExperimentId == other.comparisonExperimentId &&
+            summarizeScores == other.summarizeScores &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, comparisonExperimentId, summarizeScores, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            experimentId,
+            comparisonExperimentId,
+            summarizeScores,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "ExperimentSummarizeParams{experimentId=$experimentId, comparisonExperimentId=$comparisonExperimentId, summarizeScores=$summarizeScores, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

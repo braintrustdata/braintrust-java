@@ -994,12 +994,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && model == other.model && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata &&
+                model == other.model &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(model, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1012,12 +1012,43 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InsertDatasetEvent && id == other.id && _isMerge == other._isMerge && _mergePaths == other._mergePaths && _objectDelete == other._objectDelete && _parentId == other._parentId && created == other.created && expected == other.expected && input == other.input && metadata == other.metadata && origin == other.origin && rootSpanId == other.rootSpanId && spanId == other.spanId && spanParents == other.spanParents && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is InsertDatasetEvent &&
+            id == other.id &&
+            _isMerge == other._isMerge &&
+            _mergePaths == other._mergePaths &&
+            _objectDelete == other._objectDelete &&
+            _parentId == other._parentId &&
+            created == other.created &&
+            expected == other.expected &&
+            input == other.input &&
+            metadata == other.metadata &&
+            origin == other.origin &&
+            rootSpanId == other.rootSpanId &&
+            spanId == other.spanId &&
+            spanParents == other.spanParents &&
+            tags == other.tags &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _isMerge, _mergePaths, _objectDelete, _parentId, created, expected, input, metadata, origin, rootSpanId, spanId, spanParents, tags, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            _isMerge,
+            _mergePaths,
+            _objectDelete,
+            _parentId,
+            created,
+            expected,
+            input,
+            metadata,
+            origin,
+            rootSpanId,
+            spanId,
+            spanParents,
+            tags,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

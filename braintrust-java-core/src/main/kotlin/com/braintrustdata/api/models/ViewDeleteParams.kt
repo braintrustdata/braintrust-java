@@ -483,12 +483,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && objectId == other.objectId && objectType == other.objectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                objectId == other.objectId &&
+                objectType == other.objectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(objectId, objectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(objectId, objectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -501,10 +504,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewDeleteParams && viewId == other.viewId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ViewDeleteParams &&
+            viewId == other.viewId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(viewId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ViewDeleteParams{viewId=$viewId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

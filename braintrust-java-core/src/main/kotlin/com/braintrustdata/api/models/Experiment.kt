@@ -767,12 +767,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -784,12 +782,43 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Experiment && id == other.id && name == other.name && projectId == other.projectId && public_ == other.public_ && baseExpId == other.baseExpId && commit == other.commit && created == other.created && datasetId == other.datasetId && datasetVersion == other.datasetVersion && deletedAt == other.deletedAt && description == other.description && metadata == other.metadata && repoInfo == other.repoInfo && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Experiment &&
+            id == other.id &&
+            name == other.name &&
+            projectId == other.projectId &&
+            public_ == other.public_ &&
+            baseExpId == other.baseExpId &&
+            commit == other.commit &&
+            created == other.created &&
+            datasetId == other.datasetId &&
+            datasetVersion == other.datasetVersion &&
+            deletedAt == other.deletedAt &&
+            description == other.description &&
+            metadata == other.metadata &&
+            repoInfo == other.repoInfo &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, projectId, public_, baseExpId, commit, created, datasetId, datasetVersion, deletedAt, description, metadata, repoInfo, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            projectId,
+            public_,
+            baseExpId,
+            commit,
+            created,
+            datasetId,
+            datasetVersion,
+            deletedAt,
+            description,
+            metadata,
+            repoInfo,
+            userId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
