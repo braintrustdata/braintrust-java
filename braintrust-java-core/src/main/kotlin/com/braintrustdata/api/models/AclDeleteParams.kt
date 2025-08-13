@@ -216,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclDeleteParams && aclId == other.aclId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is AclDeleteParams &&
+            aclId == other.aclId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aclId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(aclId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "AclDeleteParams{aclId=$aclId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

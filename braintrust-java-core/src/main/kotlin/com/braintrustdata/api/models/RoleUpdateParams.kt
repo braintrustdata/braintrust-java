@@ -920,12 +920,27 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && addMemberPermissions == other.addMemberPermissions && addMemberRoles == other.addMemberRoles && description == other.description && name == other.name && removeMemberPermissions == other.removeMemberPermissions && removeMemberRoles == other.removeMemberRoles && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                addMemberPermissions == other.addMemberPermissions &&
+                addMemberRoles == other.addMemberRoles &&
+                description == other.description &&
+                name == other.name &&
+                removeMemberPermissions == other.removeMemberPermissions &&
+                removeMemberRoles == other.removeMemberRoles &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(addMemberPermissions, addMemberRoles, description, name, removeMemberPermissions, removeMemberRoles, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                addMemberPermissions,
+                addMemberRoles,
+                description,
+                name,
+                removeMemberPermissions,
+                removeMemberRoles,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1143,12 +1158,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AddMemberPermission && permission == other.permission && restrictObjectType == other.restrictObjectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is AddMemberPermission &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(permission, restrictObjectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(permission, restrictObjectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1366,12 +1384,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveMemberPermission && permission == other.permission && restrictObjectType == other.restrictObjectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is RemoveMemberPermission &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(permission, restrictObjectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(permission, restrictObjectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1384,10 +1405,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RoleUpdateParams && roleId == other.roleId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is RoleUpdateParams &&
+            roleId == other.roleId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(roleId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(roleId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "RoleUpdateParams{roleId=$roleId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

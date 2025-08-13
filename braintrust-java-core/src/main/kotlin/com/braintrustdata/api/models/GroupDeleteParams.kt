@@ -216,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupDeleteParams && groupId == other.groupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is GroupDeleteParams &&
+            groupId == other.groupId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(groupId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "GroupDeleteParams{groupId=$groupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

@@ -178,10 +178,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UserRetrieveParams && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is UserRetrieveParams &&
+            userId == other.userId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(userId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(userId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "UserRetrieveParams{userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

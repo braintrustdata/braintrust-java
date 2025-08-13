@@ -156,7 +156,7 @@ class ProjectScoreType @JsonCreator private constructor(private val value: JsonF
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreType && value == other.value /* spotless:on */
+        return other is ProjectScoreType && value == other.value
     }
 
     override fun hashCode() = value.hashCode()

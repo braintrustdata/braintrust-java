@@ -390,12 +390,29 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Organization && id == other.id && name == other.name && apiUrl == other.apiUrl && created == other.created && isUniversalApi == other.isUniversalApi && proxyUrl == other.proxyUrl && realtimeUrl == other.realtimeUrl && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Organization &&
+            id == other.id &&
+            name == other.name &&
+            apiUrl == other.apiUrl &&
+            created == other.created &&
+            isUniversalApi == other.isUniversalApi &&
+            proxyUrl == other.proxyUrl &&
+            realtimeUrl == other.realtimeUrl &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, apiUrl, created, isUniversalApi, proxyUrl, realtimeUrl, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            apiUrl,
+            created,
+            isUniversalApi,
+            proxyUrl,
+            realtimeUrl,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

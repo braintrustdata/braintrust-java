@@ -216,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FunctionDeleteParams && functionId == other.functionId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is FunctionDeleteParams &&
+            functionId == other.functionId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(functionId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "FunctionDeleteParams{functionId=$functionId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

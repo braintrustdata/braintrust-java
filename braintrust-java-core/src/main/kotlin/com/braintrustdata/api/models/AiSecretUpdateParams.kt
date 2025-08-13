@@ -573,12 +573,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && metadata == other.metadata && name == other.name && secret == other.secret && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                metadata == other.metadata &&
+                name == other.name &&
+                secret == other.secret &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(metadata, name, secret, type, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(metadata, name, secret, type, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -675,12 +680,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -692,10 +695,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AiSecretUpdateParams && aiSecretId == other.aiSecretId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is AiSecretUpdateParams &&
+            aiSecretId == other.aiSecretId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(aiSecretId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "AiSecretUpdateParams{aiSecretId=$aiSecretId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

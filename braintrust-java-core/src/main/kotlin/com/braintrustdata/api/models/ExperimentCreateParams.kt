@@ -1104,12 +1104,35 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && projectId == other.projectId && baseExpId == other.baseExpId && datasetId == other.datasetId && datasetVersion == other.datasetVersion && description == other.description && ensureNew == other.ensureNew && metadata == other.metadata && name == other.name && public_ == other.public_ && repoInfo == other.repoInfo && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                projectId == other.projectId &&
+                baseExpId == other.baseExpId &&
+                datasetId == other.datasetId &&
+                datasetVersion == other.datasetVersion &&
+                description == other.description &&
+                ensureNew == other.ensureNew &&
+                metadata == other.metadata &&
+                name == other.name &&
+                public_ == other.public_ &&
+                repoInfo == other.repoInfo &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(projectId, baseExpId, datasetId, datasetVersion, description, ensureNew, metadata, name, public_, repoInfo, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                projectId,
+                baseExpId,
+                datasetId,
+                datasetVersion,
+                description,
+                ensureNew,
+                metadata,
+                name,
+                public_,
+                repoInfo,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1207,12 +1230,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1224,10 +1245,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ExperimentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

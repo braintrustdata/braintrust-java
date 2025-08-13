@@ -761,12 +761,25 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && name == other.name && description == other.description && memberGroups == other.memberGroups && memberUsers == other.memberUsers && orgName == other.orgName && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                name == other.name &&
+                description == other.description &&
+                memberGroups == other.memberGroups &&
+                memberUsers == other.memberUsers &&
+                orgName == other.orgName &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(name, description, memberGroups, memberUsers, orgName, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                name,
+                description,
+                memberGroups,
+                memberUsers,
+                orgName,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -779,10 +792,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupReplaceParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is GroupReplaceParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "GroupReplaceParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

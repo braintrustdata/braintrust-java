@@ -182,10 +182,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetRetrieveParams && datasetId == other.datasetId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetRetrieveParams &&
+            datasetId == other.datasetId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(datasetId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetRetrieveParams{datasetId=$datasetId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

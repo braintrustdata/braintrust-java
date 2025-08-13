@@ -623,12 +623,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && description == other.description && name == other.name && postMessage == other.postMessage && url == other.url && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                description == other.description &&
+                name == other.name &&
+                postMessage == other.postMessage &&
+                url == other.url &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, name, postMessage, url, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(description, name, postMessage, url, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -641,10 +646,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeUpdateParams && spanIframeId == other.spanIframeId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SpanIframeUpdateParams &&
+            spanIframeId == other.spanIframeId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(spanIframeId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SpanIframeUpdateParams{spanIframeId=$spanIframeId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -858,12 +858,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                cursor == other.cursor &&
+                limit == other.limit &&
+                maxRootSpanId == other.maxRootSpanId &&
+                maxXactId == other.maxXactId &&
+                version == other.version &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(cursor, limit, maxRootSpanId, maxXactId, version, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(cursor, limit, maxRootSpanId, maxXactId, version, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -876,10 +882,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetFetchPostParams && datasetId == other.datasetId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetFetchPostParams &&
+            datasetId == other.datasetId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetFetchPostParams{datasetId=$datasetId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

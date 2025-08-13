@@ -753,12 +753,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && model == other.model && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata &&
+                model == other.model &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(model, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -771,12 +771,41 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetEvent && id == other.id && _xactId == other._xactId && created == other.created && datasetId == other.datasetId && projectId == other.projectId && rootSpanId == other.rootSpanId && spanId == other.spanId && expected == other.expected && input == other.input && isRoot == other.isRoot && metadata == other.metadata && origin == other.origin && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is DatasetEvent &&
+            id == other.id &&
+            _xactId == other._xactId &&
+            created == other.created &&
+            datasetId == other.datasetId &&
+            projectId == other.projectId &&
+            rootSpanId == other.rootSpanId &&
+            spanId == other.spanId &&
+            expected == other.expected &&
+            input == other.input &&
+            isRoot == other.isRoot &&
+            metadata == other.metadata &&
+            origin == other.origin &&
+            tags == other.tags &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _xactId, created, datasetId, projectId, rootSpanId, spanId, expected, input, isRoot, metadata, origin, tags, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            _xactId,
+            created,
+            datasetId,
+            projectId,
+            rootSpanId,
+            spanId,
+            expected,
+            input,
+            isRoot,
+            metadata,
+            origin,
+            tags,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

@@ -185,10 +185,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreRetrieveParams && projectScoreId == other.projectScoreId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectScoreRetrieveParams &&
+            projectScoreId == other.projectScoreId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectScoreId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(projectScoreId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectScoreRetrieveParams{projectScoreId=$projectScoreId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

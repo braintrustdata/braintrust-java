@@ -893,12 +893,31 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && name == other.name && objectId == other.objectId && objectType == other.objectType && viewType == other.viewType && deletedAt == other.deletedAt && options == other.options && userId == other.userId && viewData == other.viewData && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                name == other.name &&
+                objectId == other.objectId &&
+                objectType == other.objectType &&
+                viewType == other.viewType &&
+                deletedAt == other.deletedAt &&
+                options == other.options &&
+                userId == other.userId &&
+                viewData == other.viewData &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(name, objectId, objectType, viewType, deletedAt, options, userId, viewData, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                name,
+                objectId,
+                objectType,
+                viewType,
+                deletedAt,
+                options,
+                userId,
+                viewData,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1080,7 +1099,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
+            return other is ViewType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1093,10 +1112,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ViewCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ViewCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

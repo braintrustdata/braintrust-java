@@ -178,10 +178,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptRetrieveParams && promptId == other.promptId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is PromptRetrieveParams &&
+            promptId == other.promptId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(promptId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(promptId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "PromptRetrieveParams{promptId=$promptId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

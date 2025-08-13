@@ -308,12 +308,18 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ScoreSummary && improvements == other.improvements && name == other.name && regressions == other.regressions && score == other.score && diff == other.diff && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ScoreSummary &&
+            improvements == other.improvements &&
+            name == other.name &&
+            regressions == other.regressions &&
+            score == other.score &&
+            diff == other.diff &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(improvements, name, regressions, score, diff, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(improvements, name, regressions, score, diff, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 
