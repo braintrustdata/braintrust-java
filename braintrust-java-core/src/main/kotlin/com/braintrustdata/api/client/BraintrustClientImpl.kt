@@ -160,7 +160,7 @@ class BraintrustClientImpl(private val clientOptions: ClientOptions) : Braintrus
 
     override fun evals(): EvalService = evals
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         BraintrustClient.WithRawResponse {
