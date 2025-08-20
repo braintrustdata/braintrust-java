@@ -172,7 +172,7 @@ class BraintrustClientAsyncImpl(private val clientOptions: ClientOptions) : Brai
 
     override fun evals(): EvalServiceAsync = evals
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         BraintrustClientAsync.WithRawResponse {
