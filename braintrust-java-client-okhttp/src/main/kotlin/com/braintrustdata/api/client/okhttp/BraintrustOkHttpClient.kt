@@ -5,6 +5,7 @@ package com.braintrustdata.api.client.okhttp
 import com.braintrustdata.api.client.BraintrustClient
 import com.braintrustdata.api.client.BraintrustClientImpl
 import com.braintrustdata.api.core.ClientOptions
+import com.braintrustdata.api.core.Sleeper
 import com.braintrustdata.api.core.Timeout
 import com.braintrustdata.api.core.http.AsyncStreamResponse
 import com.braintrustdata.api.core.http.Headers
@@ -132,6 +133,17 @@ class BraintrustOkHttpClient private constructor() {
         fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
             clientOptions.streamHandlerExecutor(streamHandlerExecutor)
         }
+
+        /**
+         * The interface to use for delaying execution, like during retries.
+         *
+         * This is primarily useful for using fake delays in tests.
+         *
+         * Defaults to real execution delays.
+         *
+         * This class takes ownership of the sleeper and closes it when closed.
+         */
+        fun sleeper(sleeper: Sleeper) = apply { clientOptions.sleeper(sleeper) }
 
         /**
          * The clock to use for operations that require timing, like retries.
