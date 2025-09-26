@@ -18,6 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Metadata about the state of the repo when the experiment was created */
 class RepoInfo
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val authorEmail: JsonField<String>,
     private val authorName: JsonField<String>,

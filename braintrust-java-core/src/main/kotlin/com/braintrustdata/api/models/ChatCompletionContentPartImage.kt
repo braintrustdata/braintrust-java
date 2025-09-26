@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ChatCompletionContentPartImage
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val imageUrl: JsonField<ImageUrl>,
     private val type: JsonField<Type>,
@@ -191,6 +192,7 @@ private constructor(
             (type.asKnown().getOrNull()?.validity() ?: 0)
 
     class ImageUrl
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val url: JsonField<String>,
         private val detail: JsonField<Detail>,

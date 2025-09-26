@@ -32,6 +32,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** A project score is a user-configured score, which can be manually-labeled through the UI */
 class ProjectScore
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,

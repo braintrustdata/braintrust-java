@@ -17,6 +17,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectScoreConfig
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val destination: JsonField<String>,
     private val multiSelect: JsonField<Boolean>,

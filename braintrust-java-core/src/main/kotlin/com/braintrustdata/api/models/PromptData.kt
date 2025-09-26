@@ -33,6 +33,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** The prompt, model, and its parameters */
 class PromptData
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val options: JsonField<PromptOptions>,
     private val origin: JsonField<Origin>,
@@ -329,6 +330,7 @@ private constructor(
             (toolFunctions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Origin
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val projectId: JsonField<String>,
         private val promptId: JsonField<String>,
@@ -544,6 +546,7 @@ private constructor(
     }
 
     class Parser
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val choiceScores: JsonField<ChoiceScores>,
         private val type: JsonField<Type>,
@@ -1171,6 +1174,7 @@ private constructor(
         }
 
         class Completion
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val content: JsonField<String>,
             private val type: JsonField<Type>,
@@ -1493,6 +1497,7 @@ private constructor(
         }
 
         class Chat
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val messages: JsonField<List<Message>>,
             private val type: JsonField<Type>,
@@ -2015,6 +2020,7 @@ private constructor(
                 }
 
                 class System
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val role: JsonField<Role>,
                     private val content: JsonField<String>,
@@ -2383,6 +2389,7 @@ private constructor(
                 }
 
                 class User
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val role: JsonField<Role>,
                     private val content: JsonField<Content>,
@@ -3175,6 +3182,7 @@ private constructor(
                 }
 
                 class Assistant
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val role: JsonField<Role>,
                     private val content: JsonField<String>,
@@ -3635,6 +3643,7 @@ private constructor(
                     }
 
                     class FunctionCall
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val arguments: JsonField<String>,
                         private val name: JsonField<String>,
@@ -3878,6 +3887,7 @@ private constructor(
                 }
 
                 class Tool
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val role: JsonField<Role>,
                     private val content: JsonField<String>,
@@ -4250,6 +4260,7 @@ private constructor(
                 }
 
                 class Function
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val name: JsonField<String>,
                     private val role: JsonField<Role>,
@@ -4621,6 +4632,7 @@ private constructor(
                 }
 
                 class Fallback
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val role: JsonField<Role>,
                     private val content: JsonField<String>,
@@ -5278,6 +5290,7 @@ private constructor(
         }
 
         class Function
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val type: JsonField<Type>,
@@ -5598,6 +5611,7 @@ private constructor(
         }
 
         class Global
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val type: JsonField<Type>,

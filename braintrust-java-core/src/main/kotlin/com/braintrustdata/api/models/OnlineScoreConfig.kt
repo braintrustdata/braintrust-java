@@ -32,6 +32,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class OnlineScoreConfig
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val samplingRate: JsonField<Double>,
     private val scorers: JsonField<List<Scorer>>,
@@ -518,6 +519,7 @@ private constructor(
         }
 
         class Function
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val type: JsonField<Type>,
@@ -838,6 +840,7 @@ private constructor(
         }
 
         class Global
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val type: JsonField<Type>,

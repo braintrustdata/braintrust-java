@@ -17,6 +17,7 @@ import java.util.Objects
 
 /** For categorical-type project scores, defines a single category */
 class ProjectScoreCategory
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val name: JsonField<String>,
     private val value: JsonField<Double>,

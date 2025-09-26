@@ -18,6 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** The view definition */
 class ViewData
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val search: JsonField<ViewDataSearch>,
     private val additionalProperties: MutableMap<String, JsonValue>,

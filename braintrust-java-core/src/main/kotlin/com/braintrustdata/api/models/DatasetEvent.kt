@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class DatasetEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val _xactId: JsonField<String>,
@@ -624,6 +625,7 @@ private constructor(
      * must be strings
      */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val model: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

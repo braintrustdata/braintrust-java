@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class PatchOrganizationMembersOutput
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val orgId: JsonField<String>,
     private val status: JsonField<Status>,

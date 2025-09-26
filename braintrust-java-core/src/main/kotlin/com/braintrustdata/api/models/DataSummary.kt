@@ -17,6 +17,7 @@ import java.util.Objects
 
 /** Summary of a dataset's data */
 class DataSummary
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val totalRecords: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,

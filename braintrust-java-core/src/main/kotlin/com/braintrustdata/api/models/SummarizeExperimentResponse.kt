@@ -20,6 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Summary of an experiment */
 class SummarizeExperimentResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val experimentName: JsonField<String>,
     private val experimentUrl: JsonField<String>,
