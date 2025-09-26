@@ -468,6 +468,7 @@ private constructor(
 
     /** The request to invoke a function */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val expected: JsonValue,
         private val input: JsonValue,
@@ -1162,6 +1163,7 @@ private constructor(
         }
 
         class System
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val role: JsonField<Role>,
             private val content: JsonField<String>,
@@ -1515,6 +1517,7 @@ private constructor(
         }
 
         class User
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val role: JsonField<Role>,
             private val content: JsonField<Content>,
@@ -2258,6 +2261,7 @@ private constructor(
         }
 
         class Assistant
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val role: JsonField<Role>,
             private val content: JsonField<String>,
@@ -2694,6 +2698,7 @@ private constructor(
             }
 
             class FunctionCall
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val arguments: JsonField<String>,
                 private val name: JsonField<String>,
@@ -2924,6 +2929,7 @@ private constructor(
         }
 
         class Tool
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val role: JsonField<Role>,
             private val content: JsonField<String>,
@@ -3284,6 +3290,7 @@ private constructor(
         }
 
         class Function
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val role: JsonField<Role>,
@@ -3640,6 +3647,7 @@ private constructor(
         }
 
         class Fallback
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val role: JsonField<Role>,
             private val content: JsonField<String>,
@@ -4374,6 +4382,7 @@ private constructor(
 
         /** Span parent properties */
         class SpanParentStruct
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val objectId: JsonField<String>,
             private val objectType: JsonField<ObjectType>,
@@ -4901,6 +4910,7 @@ private constructor(
 
             /** Identifiers for the row to to log a subspan under */
             class RowIds
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val id: JsonField<String>,
                 private val rootSpanId: JsonField<String>,

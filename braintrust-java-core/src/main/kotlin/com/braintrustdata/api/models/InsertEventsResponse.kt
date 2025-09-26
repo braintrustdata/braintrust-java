@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class InsertEventsResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val rowIds: JsonField<List<String>>,
     private val additionalProperties: MutableMap<String, JsonValue>,

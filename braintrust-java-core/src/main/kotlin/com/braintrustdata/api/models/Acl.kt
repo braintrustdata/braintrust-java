@@ -29,6 +29,7 @@ import kotlin.jvm.optionals.getOrNull
  * ACL, as part of a direct permission grant or as part of a role.
  */
 class Acl
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val _objectOrgId: JsonField<String>,

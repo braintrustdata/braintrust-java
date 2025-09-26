@@ -320,6 +320,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val addAcls: JsonField<List<AddAcl>>,
         private val removeAcls: JsonField<List<RemoveAcl>>,
@@ -589,6 +590,7 @@ private constructor(
      * ACL, as part of a direct permission grant or as part of a role.
      */
     class AddAcl
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val objectId: JsonField<String>,
         private val objectType: JsonField<AclObjectType>,
@@ -1050,6 +1052,7 @@ private constructor(
      * ACL, as part of a direct permission grant or as part of a role.
      */
     class RemoveAcl
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val objectId: JsonField<String>,
         private val objectType: JsonField<AclObjectType>,

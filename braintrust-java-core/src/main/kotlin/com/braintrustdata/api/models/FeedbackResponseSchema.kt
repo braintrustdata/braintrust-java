@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class FeedbackResponseSchema
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val status: JsonField<Status>,
     private val additionalProperties: MutableMap<String, JsonValue>,

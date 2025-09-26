@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ViewDataSearch
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val filter: JsonField<List<JsonValue?>>,
     private val match: JsonField<List<JsonValue?>>,

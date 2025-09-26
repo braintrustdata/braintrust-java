@@ -18,6 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Human-identifying attributes of the span, such as name, type, etc. */
 class SpanAttributes
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val name: JsonField<String>,
     private val type: JsonField<SpanType>,

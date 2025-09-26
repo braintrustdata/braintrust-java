@@ -21,6 +21,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** A dataset event */
 class InsertDatasetEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val _isMerge: JsonField<Boolean>,
@@ -865,6 +866,7 @@ private constructor(
      * must be strings
      */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val model: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

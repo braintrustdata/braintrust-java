@@ -455,6 +455,7 @@ private constructor(
      * ACL, as part of a direct permission grant or as part of a role.
      */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val objectId: JsonField<String>,
         private val objectType: JsonField<AclObjectType>,

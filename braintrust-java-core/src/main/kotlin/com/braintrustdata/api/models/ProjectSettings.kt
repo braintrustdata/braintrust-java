@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectSettings
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val baselineExperimentId: JsonField<String>,
     private val comparisonKey: JsonField<String>,
@@ -267,6 +268,7 @@ private constructor(
             (spanFieldOrder.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class SpanFieldOrder
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val columnId: JsonField<String>,
         private val objectType: JsonField<String>,

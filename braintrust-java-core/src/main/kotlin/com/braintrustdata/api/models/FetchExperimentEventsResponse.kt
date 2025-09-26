@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class FetchExperimentEventsResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val events: JsonField<List<ExperimentEvent>>,
     private val cursor: JsonField<String>,

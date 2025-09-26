@@ -422,6 +422,7 @@ private constructor(
 
     /** A project score is a user-configured score, which can be manually-labeled through the UI */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val projectId: JsonField<String>,

@@ -474,6 +474,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val cursor: JsonField<String>,
         private val limit: JsonField<Long>,

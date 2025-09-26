@@ -26,6 +26,7 @@ import kotlin.jvm.optionals.getOrNull
  * Roles can consist of individual permissions, as well as a set of roles they inherit from
  */
 class Role
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
@@ -537,6 +538,7 @@ private constructor(
             (if (userId.asKnown().isPresent) 1 else 0)
 
     class MemberPermission
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val permission: JsonField<Permission>,
         private val restrictObjectType: JsonField<AclObjectType>,
