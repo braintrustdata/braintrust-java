@@ -1,5 +1,7 @@
 # Braintrust Java API Library
 
+NOTE: This repo is a java client for the Braintrust REST api. If you wish to trace and write evals in java, see the [Braintrust Java SDK](https://github.com/braintrustdata/braintrust-sdk-java)
+
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.9.0)
