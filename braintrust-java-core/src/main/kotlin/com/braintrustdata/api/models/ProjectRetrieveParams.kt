@@ -3,38 +3,36 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get a project object by its id */
 class ProjectRetrieveParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Project id */
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +51,10 @@ private constructor(
         }
 
         /** Project id */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,17 +158,10 @@ private constructor(
          * Returns an immutable instance of [ProjectRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectRetrieveParams =
             ProjectRetrieveParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +169,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 
@@ -188,10 +182,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectRetrieveParams && projectId == other.projectId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectRetrieveParams &&
+            projectId == other.projectId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(projectId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectRetrieveParams{projectId=$projectId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

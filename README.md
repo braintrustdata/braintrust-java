@@ -4,8 +4,8 @@ NOTE: This repo is a Java client for the Braintrust REST API. If you wish to tra
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.9.0)
-[![javadoc](https://javadoc.io/badge2/com.braintrustdata.api/braintrust-java/0.9.0/javadoc.svg)](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.9.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.braintrustdata.api/braintrust-java)](https://central.sonatype.com/artifact/com.braintrustdata.api/braintrust-java/0.10.0)
+[![javadoc](https://javadoc.io/badge2/com.braintrustdata.api/braintrust-java/0.10.0/javadoc.svg)](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.10.0)
 
 <!-- x-release-please-end -->
 
@@ -17,7 +17,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.9.0).
+The REST API documentation can be found on [www.braintrustdata.com](https://www.braintrustdata.com/docs/api/spec). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.braintrustdata.api/braintrust-java/0.10.0).
 
 <!-- x-release-please-end -->
 
@@ -28,7 +28,7 @@ The REST API documentation can be found on [www.braintrustdata.com](https://www.
 ### Gradle
 
 ```kotlin
-implementation("com.braintrustdata.api:braintrust-java:0.9.0")
+implementation("com.braintrustdata.api:braintrust-java:0.10.0")
 ```
 
 ### Maven
@@ -37,7 +37,7 @@ implementation("com.braintrustdata.api:braintrust-java:0.9.0")
 <dependency>
   <groupId>com.braintrustdata.api</groupId>
   <artifactId>braintrust-java</artifactId>
-  <version>0.9.0</version>
+  <version>0.10.0</version>
 </dependency>
 ```
 
@@ -55,7 +55,8 @@ import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClient client = BraintrustOkHttpClient.fromEnv();
 
 ProjectCreateParams params = ProjectCreateParams.builder()
@@ -66,13 +67,14 @@ Project project = client.projects().create(params);
 
 ## Client configuration
 
-Configure the client using environment variables:
+Configure the client using system properties or environment variables:
 
 ```java
 import com.braintrustdata.api.client.BraintrustClient;
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClient client = BraintrustOkHttpClient.fromEnv();
 ```
 
@@ -94,7 +96,8 @@ import com.braintrustdata.api.client.BraintrustClient;
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
 
 BraintrustClient client = BraintrustOkHttpClient.builder()
-    // Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+    // Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+    // Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
     .fromEnv()
     .apiKey("My API Key")
     .build();
@@ -102,14 +105,31 @@ BraintrustClient client = BraintrustOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter    | Environment variable  | Required | Default value                  |
-| --------- | --------------------- | -------- | ------------------------------ |
-| `apiKey`  | `BRAINTRUST_API_KEY`  | false    | -                              |
-| `baseUrl` | `BRAINTRUST_BASE_URL` | true     | `"https://api.braintrust.dev"` |
+| Setter    | System property      | Environment variable  | Required | Default value                  |
+| --------- | -------------------- | --------------------- | -------- | ------------------------------ |
+| `apiKey`  | `braintrust.apiKey`  | `BRAINTRUST_API_KEY`  | false    | -                              |
+| `baseUrl` | `braintrust.baseUrl` | `BRAINTRUST_BASE_URL` | true     | `"https://api.braintrust.dev"` |
+
+System properties take precedence over environment variables.
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
 > thread pools, which are more efficient to share between requests.
+
+### Modifying configuration
+
+To temporarily use a modified client configuration, while reusing the same connection and thread pools, call `withOptions()` on any client or service:
+
+```java
+import com.braintrustdata.api.client.BraintrustClient;
+
+BraintrustClient clientWithOptions = client.withOptions(optionsBuilder -> {
+    optionsBuilder.baseUrl("https://example.com");
+    optionsBuilder.maxRetries(42);
+});
+```
+
+The `withOptions()` method does not affect the original client or service.
 
 ## Requests and responses
 
@@ -136,7 +156,8 @@ import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClient client = BraintrustOkHttpClient.fromEnv();
 
 ProjectCreateParams params = ProjectCreateParams.builder()
@@ -154,7 +175,8 @@ import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectCreateParams;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
+// Configures using the `braintrust.apiKey` and `braintrust.baseUrl` system properties
+// Or configures using the `BRAINTRUST_API_KEY` and `BRAINTRUST_BASE_URL` environment variables
 BraintrustClientAsync client = BraintrustOkHttpClientAsync.fromEnv();
 
 ProjectCreateParams params = ProjectCreateParams.builder()
@@ -213,59 +235,109 @@ The SDK throws custom unchecked exception types:
 
 - [`BraintrustIoException`](braintrust-java-core/src/main/kotlin/com/braintrustdata/api/errors/BraintrustIoException.kt): I/O networking errors.
 
+- [`BraintrustRetryableException`](braintrust-java-core/src/main/kotlin/com/braintrustdata/api/errors/BraintrustRetryableException.kt): Generic error indicating a failure that could be retried by the client.
+
 - [`BraintrustInvalidDataException`](braintrust-java-core/src/main/kotlin/com/braintrustdata/api/errors/BraintrustInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - [`BraintrustException`](braintrust-java-core/src/main/kotlin/com/braintrustdata/api/errors/BraintrustException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
 ## Pagination
 
-For methods that return a paginated list of results, this library provides convenient ways access the results either one page at a time, or item-by-item across all pages.
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
 
 ### Auto-pagination
 
-To iterate through all results across all pages, you can use `autoPager`, which automatically handles fetching more pages for you:
+To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
 
-### Synchronous
+When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
 
 ```java
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectListPage;
 
-// As an Iterable:
-ProjectListPage page = client.projects().list(params);
+ProjectListPage page = client.projects().list();
+
+// Process as an Iterable
 for (Project project : page.autoPager()) {
     System.out.println(project);
-};
+}
 
-// As a Stream:
-client.projects().list(params).autoPager().stream()
+// Process as a Stream
+page.autoPager()
+    .stream()
     .limit(50)
     .forEach(project -> System.out.println(project));
 ```
 
-### Asynchronous
+When using the asynchronous client, the method returns an [`AsyncStreamResponse`](braintrust-java-core/src/main/kotlin/com/braintrustdata/api/core/http/AsyncStreamResponse.kt):
 
 ```java
-// Using forEach, which returns CompletableFuture<Void>:
-asyncClient.projects().list(params).autoPager()
-    .forEach(project -> System.out.println(project), executor);
+import com.braintrustdata.api.core.http.AsyncStreamResponse;
+import com.braintrustdata.api.models.Project;
+import com.braintrustdata.api.models.ProjectListPageAsync;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+CompletableFuture<ProjectListPageAsync> pageFuture = client.async().projects().list();
+
+pageFuture.thenRun(page -> page.autoPager().subscribe(project -> {
+    System.out.println(project);
+}));
+
+// If you need to handle errors or completion of the stream
+pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Handler<>() {
+    @Override
+    public void onNext(Project project) {
+        System.out.println(project);
+    }
+
+    @Override
+    public void onComplete(Optional<Throwable> error) {
+        if (error.isPresent()) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error.get());
+        } else {
+            System.out.println("No more!");
+        }
+    }
+}));
+
+// Or use futures
+pageFuture.thenRun(page -> page.autoPager()
+    .subscribe(project -> {
+        System.out.println(project);
+    })
+    .onCompleteFuture()
+    .whenComplete((unused, error) -> {
+        if (error != null) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error);
+        } else {
+            System.out.println("No more!");
+        }
+    }));
 ```
 
 ### Manual pagination
 
-If none of the above helpers meet your needs, you can also manually request pages one-by-one. A page of results has a `data()` method to fetch the list of objects, as well as top-level `response` and other methods to fetch top-level data about the page. It also has methods `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
+To access individual page items and manually request the next page, use the `items()`,
+`hasNextPage()`, and `nextPage()` methods:
 
 ```java
 import com.braintrustdata.api.models.Project;
 import com.braintrustdata.api.models.ProjectListPage;
 
-ProjectListPage page = client.projects().list(params);
-while (page != null) {
-    for (Project project : page.objects()) {
+ProjectListPage page = client.projects().list();
+while (true) {
+    for (Project project : page.items()) {
         System.out.println(project);
     }
 
-    page = page.getNextPage().orElse(null);
+    if (!page.hasNextPage()) {
+        break;
+    }
+
+    page = page.nextPage();
 }
 ```
 
@@ -276,14 +348,20 @@ The SDK uses the standard [OkHttp logging interceptor](https://github.com/square
 Enable logging by setting the `BRAINTRUST_LOG` environment variable to `info`:
 
 ```sh
-$ export BRAINTRUST_LOG=info
+export BRAINTRUST_LOG=info
 ```
 
 Or to `debug` for more verbose logging:
 
 ```sh
-$ export BRAINTRUST_LOG=debug
+export BRAINTRUST_LOG=debug
 ```
+
+## ProGuard and R8
+
+Although the SDK uses reflection, it is still usable with [ProGuard](https://github.com/Guardsquare/proguard) and [R8](https://developer.android.com/topic/performance/app-optimization/enable-app-optimization) because `braintrust-java-core` is published with a [configuration file](braintrust-java-core/src/main/resources/META-INF/proguard/braintrust-java-core.pro) containing [keep rules](https://www.guardsquare.com/manual/configuration/usage).
+
+ProGuard and R8 should automatically detect and use the published rules, but you can also manually copy the keep rules if necessary.
 
 ## Jackson
 
@@ -300,7 +378,7 @@ If the SDK threw an exception, but you're _certain_ the version is compatible, t
 
 ### Retries
 
-The SDK automatically retries 2 times by default, with a short exponential backoff.
+The SDK automatically retries 2 times by default, with a short exponential backoff between requests.
 
 Only the following error types are retried:
 
@@ -310,7 +388,7 @@ Only the following error types are retried:
 - 429 Rate Limit
 - 5xx Internal
 
-The API may also explicitly instruct the SDK to retry or not retry a response.
+The API may also explicitly instruct the SDK to retry or not retry a request.
 
 To set a custom number of retries, configure the client using the `maxRetries` method:
 
@@ -332,7 +410,6 @@ To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
 import com.braintrustdata.api.models.Project;
-import com.braintrustdata.api.models.ProjectCreateParams;
 
 Project project = client.projects().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -369,6 +446,27 @@ BraintrustClient client = BraintrustOkHttpClient.builder()
         "https://example.com", 8080
       )
     ))
+    .build();
+```
+
+### HTTPS
+
+> [!NOTE]
+> Most applications should not call these methods, and instead use the system defaults. The defaults include
+> special optimizations that can be lost if the implementations are modified.
+
+To configure how HTTPS connections are secured, configure the client using the `sslSocketFactory`, `trustManager`, and `hostnameVerifier` methods:
+
+```java
+import com.braintrustdata.api.client.BraintrustClient;
+import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient;
+
+BraintrustClient client = BraintrustOkHttpClient.builder()
+    .fromEnv()
+    // If `sslSocketFactory` is set, then `trustManager` must be set, and vice versa.
+    .sslSocketFactory(yourSSLSocketFactory)
+    .trustManager(yourTrustManager)
+    .hostnameVerifier(yourHostnameVerifier)
     .build();
 ```
 
@@ -580,7 +678,6 @@ Or configure the method call to validate the response using the `responseValidat
 
 ```java
 import com.braintrustdata.api.models.Project;
-import com.braintrustdata.api.models.ProjectCreateParams;
 
 Project project = client.projects().create(
   params, RequestOptions.builder().responseValidation(true).build()

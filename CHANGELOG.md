@@ -1,5 +1,103 @@
 # Changelog
 
+## 0.10.0 (2025-12-03)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/braintrustdata/braintrust-java/compare/v0.9.0...v0.10.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - `AutoPagerAsync` now has different usage. You can call `.subscribe(...)` on the returned object instead to get called back each page item. You can also call `onCompleteFuture()` to get a future that completes when all items have been processed. Finally, you can call `.close()` on the returned object to stop auto-paginating early
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-optional types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* add retryable exception ([ad8114f](https://github.com/braintrustdata/braintrust-java/commit/ad8114f1410bdf0b8de7d97803ee1567256beb11))
+* **client:** add `{QueryParams,Headers}#put(String, JsonValue)` methods ([0d82daf](https://github.com/braintrustdata/braintrust-java/commit/0d82dafca840d9bab25d431f90bf624161f657d5))
+* **client:** add a `withOptions` method ([1da1cfa](https://github.com/braintrustdata/braintrust-java/commit/1da1cfac2d57ac0c4619888357cad8bd8ad8b55a))
+* **client:** add https config options ([0ae6f5d](https://github.com/braintrustdata/braintrust-java/commit/0ae6f5d5c5d0236d95f801afe0f648021c9f4c27))
+* **client:** allow configuring env via system properties ([bbca12c](https://github.com/braintrustdata/braintrust-java/commit/bbca12cb7c4c9a3b4914c31c1e3767ee944c9f6b))
+* **client:** allow providing some params positionally ([5d14bd0](https://github.com/braintrustdata/braintrust-java/commit/5d14bd085513672de3d1c064e2db919b5f0bffa2))
+* **client:** ensure compat with proguard ([cf76b62](https://github.com/braintrustdata/braintrust-java/commit/cf76b62a5d08699560aada21ebbe26d809a2a87e))
+* **client:** expose sleeper option ([0cf2fec](https://github.com/braintrustdata/braintrust-java/commit/0cf2fec7e371018483fa266379d854fc0a461c05))
+* **client:** extract auto pagination to shared classes ([42ec597](https://github.com/braintrustdata/braintrust-java/commit/42ec597072a9392a0a8fadf99bdf228960a66e37))
+* **client:** implement per-endpoint base URL support ([4610a9c](https://github.com/braintrustdata/braintrust-java/commit/4610a9cfca70a2b0567c952044434739beb591cd))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([755910d](https://github.com/braintrustdata/braintrust-java/commit/755910da108b3010293d0d84bfc0e2696796448a))
+* **ci:** use java-version 21 for publish step ([f69d0fe](https://github.com/braintrustdata/braintrust-java/commit/f69d0fed4cf2ae0119e0bcf84503782208de89a0))
+* **client:** accidental mutability of some classes ([641c2dc](https://github.com/braintrustdata/braintrust-java/commit/641c2dc41ddbc04b225e944033fedb5f2efa7d02))
+* **client:** bump max requests per host to max requests (5 -&gt; 64) ([e817e93](https://github.com/braintrustdata/braintrust-java/commit/e817e93b721d4bdbc4fcbf50c5e6dd019e1d6d1d))
+* **client:** cancel okhttp call when future cancelled ([4e9004a](https://github.com/braintrustdata/braintrust-java/commit/4e9004a568ad7c4309f30995df9bb7514d12ded7))
+* **client:** deserialization of empty objects ([599e59c](https://github.com/braintrustdata/braintrust-java/commit/599e59c37526f17fb2813776f35bf10ed7d176f9))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([76d0366](https://github.com/braintrustdata/braintrust-java/commit/76d0366cca717ebf63a425cd6674b933b31519c9))
+* **client:** ensure error handling always occurs ([7f3b3e0](https://github.com/braintrustdata/braintrust-java/commit/7f3b3e052acb0e5053e3d470b9a67e226252e488))
+* **client:** ensure single timer is created per client ([0cf2fec](https://github.com/braintrustdata/braintrust-java/commit/0cf2fec7e371018483fa266379d854fc0a461c05))
+* **client:** incorrect `getPackageVersion` impl ([48913a4](https://github.com/braintrustdata/braintrust-java/commit/48913a4f26fae541609b186470f5e4d21a5892b3))
+* **client:** multi-value header serialization ([84f72e2](https://github.com/braintrustdata/braintrust-java/commit/84f72e20dea2803431834f698337574545c1ab29))
+* **client:** r8 support ([4796a86](https://github.com/braintrustdata/braintrust-java/commit/4796a86bef99bc10c8db95c0f8eae469542dbdcb))
+* **client:** remove `@MustBeClosed` for future returning methods ([fd77b27](https://github.com/braintrustdata/braintrust-java/commit/fd77b2799b7c290451a1fdc2cb3bde9970c8ccc8))
+* fix casing issue ([89a22c7](https://github.com/braintrustdata/braintrust-java/commit/89a22c7ada67d638f3c3a95b9b5dc83a57d6436c))
+* update singularization rules ([ed3c3b2](https://github.com/braintrustdata/braintrust-java/commit/ed3c3b22c536f4fdc470eca6ed3129af7e4176c7))
+
+
+### Performance Improvements
+
+* **internal:** make formatting faster ([12585ed](https://github.com/braintrustdata/braintrust-java/commit/12585ed0aa09ac429ba618d7efb82d18c556bdc0))
+
+
+### Chores
+
+* **ci:** add build job ([72ca2fc](https://github.com/braintrustdata/braintrust-java/commit/72ca2fc6ecb8aeca739eb3c7e2c8364bf9b13431))
+* **ci:** bump `actions/setup-java` to v4 ([a5b0e85](https://github.com/braintrustdata/braintrust-java/commit/a5b0e85efaf25619a2f027bc6ba26fded780c78d))
+* **ci:** enable for pull requests ([40d994c](https://github.com/braintrustdata/braintrust-java/commit/40d994c4a4deb433bb789f085a77a3e98bab9357))
+* **ci:** ensure docs generation always succeeds ([067e7c8](https://github.com/braintrustdata/braintrust-java/commit/067e7c85b66f03fe03432bd8f56f5b9f752568d4))
+* **ci:** only run for pushes and fork pull requests ([ed7f8d9](https://github.com/braintrustdata/braintrust-java/commit/ed7f8d9b135466d13af8d2a504446d9116e87df4))
+* **ci:** only use depot for staging repos ([e4dbfbc](https://github.com/braintrustdata/braintrust-java/commit/e4dbfbc0c747acdef7625c3a9f5c8a90411ad8c5))
+* **ci:** reduce log noise ([57adf59](https://github.com/braintrustdata/braintrust-java/commit/57adf598e9d61a5d2358cedb6153fdeb1cc4d1ff))
+* **client:** refactor closing / shutdown ([d72b3c9](https://github.com/braintrustdata/braintrust-java/commit/d72b3c9e7b16775bfad37b6041b1fc2ba8fc4de7))
+* **docs:** grammar improvements ([bac039c](https://github.com/braintrustdata/braintrust-java/commit/bac039cbe2257071de867bd0111c9c1979dedc25))
+* **example:** fix run example comment ([3f434c4](https://github.com/braintrustdata/braintrust-java/commit/3f434c47346d6a3eeee86bc55fa516d9f4e73d49))
+* improve formatter performance ([7e03e85](https://github.com/braintrustdata/braintrust-java/commit/7e03e8533c820200ddfe9d4d39ba0d9bc533f4b8))
+* improve formatter performance ([b6e41d0](https://github.com/braintrustdata/braintrust-java/commit/b6e41d05764a88105cee99bd26d17eb60f80352b))
+* increase max gradle JVM heap to 8GB ([e88d096](https://github.com/braintrustdata/braintrust-java/commit/e88d096c45bf5a8b192aa25290bcefa1b98105c6))
+* **internal:** add async lock helper ([62dce85](https://github.com/braintrustdata/braintrust-java/commit/62dce854fa19a3c1a53f881e95f4d625f7cbaa54))
+* **internal:** allow running specific example from cli ([ff998ed](https://github.com/braintrustdata/braintrust-java/commit/ff998ed099c02f1340558bd274685a7d6273873c))
+* **internal:** bump ci test timeout ([c823880](https://github.com/braintrustdata/braintrust-java/commit/c8238804faed172d1a6ab5678287e840631b4bd2))
+* **internal:** codegen related update ([cd321c9](https://github.com/braintrustdata/braintrust-java/commit/cd321c953fd40a9ad9b4acd2c6394ed08afc78eb))
+* **internal:** codegen related update ([2ed652b](https://github.com/braintrustdata/braintrust-java/commit/2ed652b7ce471d4a551e391a14c97bf5a10e4a2b))
+* **internal:** codegen related update ([1e2fa56](https://github.com/braintrustdata/braintrust-java/commit/1e2fa560ec11e9e31e2d2328cd8dffa027c20f4a))
+* **internal:** codegen related update ([f28bc60](https://github.com/braintrustdata/braintrust-java/commit/f28bc603c8009ea98477ede33c8a87ea12b8bb93))
+* **internal:** dynamically determine included projects ([9fcff68](https://github.com/braintrustdata/braintrust-java/commit/9fcff686b6ca947d06f80eeaff88174ac4aa6bda))
+* **internal:** java 17 -&gt; 21 on ci ([ce64b45](https://github.com/braintrustdata/braintrust-java/commit/ce64b45664323ae4d427aadae817c2178be94b5a))
+* **internal:** reduce proguard ci logging ([4d23bb8](https://github.com/braintrustdata/braintrust-java/commit/4d23bb89a38926be3620b70f048526ce30a05742))
+* **internal:** refactor delegating from client to options ([8b05411](https://github.com/braintrustdata/braintrust-java/commit/8b054110bd40910f22f52ec943cedc2e6dc5ecb8))
+* **internal:** remove flaky `-Xbackend-threads=0` option ([3b5c63c](https://github.com/braintrustdata/braintrust-java/commit/3b5c63c53cf8b742f151bbb8429322b36ac84a6a))
+* **internal:** remove unnecessary `[...]` in `[@see](https://github.com/see)` ([bbd6ab6](https://github.com/braintrustdata/braintrust-java/commit/bbd6ab68df9cdce2607548f7c8b2e6a288ed94a8))
+* **internal:** support passing arguments to test script ([26ca502](https://github.com/braintrustdata/braintrust-java/commit/26ca502a788e989316c314a8a204a9d5531d7942))
+* **internal:** support running formatters directly ([1bfd53a](https://github.com/braintrustdata/braintrust-java/commit/1bfd53a5fe245df0acb8ebc0b39b88ff146e8961))
+* **internal:** update comment in script ([fb33197](https://github.com/braintrustdata/braintrust-java/commit/fb331975009e27f40c13e448d90ec23b0f090669))
+* **internal:** update java toolchain ([f9f4254](https://github.com/braintrustdata/braintrust-java/commit/f9f4254689cae85a734c79c0cf25f283163b6382))
+* remove memory upper bound from publishing step ([d8ca7a9](https://github.com/braintrustdata/braintrust-java/commit/d8ca7a9e64d50078c399d9d7552a3d2c14df8a40))
+* update @stainless-api/prism-cli to v5.15.0 ([7138c31](https://github.com/braintrustdata/braintrust-java/commit/7138c31970ba385cf1548e63af3746c61872a256))
+
+
+### Documentation
+
+* fix missing readme comment ([d1346c2](https://github.com/braintrustdata/braintrust-java/commit/d1346c2f1c8be9157d5e77d7db8a20b746b933e3))
+* more code comments ([cba7926](https://github.com/braintrustdata/braintrust-java/commit/cba79267f1c5e2a82b728fec6e44709d9387bd92))
+* remove `$` for better copy-pasteabality ([c162005](https://github.com/braintrustdata/braintrust-java/commit/c162005e4957239975573760d8e07cdb0e0b851f))
+
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([1dc2b4d](https://github.com/braintrustdata/braintrust-java/commit/1dc2b4d4f57bab9408f18407c877569540a6e7f0))
+
 ## 0.9.0 (2025-04-23)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/braintrustdata/braintrust-java/compare/v0.8.0...v0.9.0)

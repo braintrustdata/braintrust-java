@@ -3,38 +3,36 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get a user object by its id */
 class UserRetrieveParams
 private constructor(
-    private val userId: String,
+    private val userId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** User id */
-    fun userId(): String = userId
+    fun userId(): Optional<String> = Optional.ofNullable(userId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [UserRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .userId()
-         * ```
-         */
+        @JvmStatic fun none(): UserRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [UserRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +51,10 @@ private constructor(
         }
 
         /** User id */
-        fun userId(userId: String) = apply { this.userId = userId }
+        fun userId(userId: String?) = apply { this.userId = userId }
+
+        /** Alias for calling [Builder.userId] with `userId.orElse(null)`. */
+        fun userId(userId: Optional<String>) = userId(userId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,25 +158,14 @@ private constructor(
          * Returns an immutable instance of [UserRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .userId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): UserRetrieveParams =
-            UserRetrieveParams(
-                checkRequired("userId", userId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            UserRetrieveParams(userId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> userId
+            0 -> userId ?: ""
             else -> ""
         }
 
@@ -188,10 +178,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UserRetrieveParams && userId == other.userId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is UserRetrieveParams &&
+            userId == other.userId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(userId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(userId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "UserRetrieveParams{userId=$userId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

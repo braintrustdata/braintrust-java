@@ -19,19 +19,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Log feedback for a set of dataset events */
 class DatasetFeedbackParams
 private constructor(
-    private val datasetId: String,
+    private val datasetId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Dataset id */
-    fun datasetId(): String = datasetId
+    fun datasetId(): Optional<String> = Optional.ofNullable(datasetId)
 
     /**
      * A list of dataset feedback items
@@ -50,8 +51,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -63,7 +66,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .datasetId()
          * .feedback()
          * ```
          */
@@ -87,7 +89,10 @@ private constructor(
         }
 
         /** Dataset id */
-        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+        fun datasetId(datasetId: String?) = apply { this.datasetId = datasetId }
+
+        /** Alias for calling [Builder.datasetId] with `datasetId.orElse(null)`. */
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -243,7 +248,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .datasetId()
          * .feedback()
          * ```
          *
@@ -251,7 +255,7 @@ private constructor(
          */
         fun build(): DatasetFeedbackParams =
             DatasetFeedbackParams(
-                checkRequired("datasetId", datasetId),
+                datasetId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -262,7 +266,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> datasetId
+            0 -> datasetId ?: ""
             else -> ""
         }
 
@@ -271,6 +275,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val feedback: JsonField<List<FeedbackDatasetItem>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -435,12 +440,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && feedback == other.feedback && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                feedback == other.feedback &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(feedback, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -453,10 +458,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetFeedbackParams && datasetId == other.datasetId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetFeedbackParams &&
+            datasetId == other.datasetId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetFeedbackParams{datasetId=$datasetId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

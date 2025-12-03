@@ -8,7 +8,6 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkKnown
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
@@ -29,14 +28,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class GroupUpdateParams
 private constructor(
-    private val groupId: String,
+    private val groupId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Group id */
-    fun groupId(): String = groupId
+    fun groupId(): Optional<String> = Optional.ofNullable(groupId)
 
     /**
      * A list of group IDs to add to the group's inheriting-from set
@@ -132,22 +131,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [GroupUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .groupId()
-         * ```
-         */
+        @JvmStatic fun none(): GroupUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [GroupUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -168,7 +164,10 @@ private constructor(
         }
 
         /** Group id */
-        fun groupId(groupId: String) = apply { this.groupId = groupId }
+        fun groupId(groupId: String?) = apply { this.groupId = groupId }
+
+        /** Alias for calling [Builder.groupId] with `groupId.orElse(null)`. */
+        fun groupId(groupId: Optional<String>) = groupId(groupId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -450,17 +449,10 @@ private constructor(
          * Returns an immutable instance of [GroupUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .groupId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): GroupUpdateParams =
             GroupUpdateParams(
-                checkRequired("groupId", groupId),
+                groupId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -471,7 +463,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> groupId
+            0 -> groupId ?: ""
             else -> ""
         }
 
@@ -480,6 +472,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val addMemberGroups: JsonField<List<String>>,
         private val addMemberUsers: JsonField<List<String>>,
@@ -907,12 +900,27 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && addMemberGroups == other.addMemberGroups && addMemberUsers == other.addMemberUsers && description == other.description && name == other.name && removeMemberGroups == other.removeMemberGroups && removeMemberUsers == other.removeMemberUsers && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                addMemberGroups == other.addMemberGroups &&
+                addMemberUsers == other.addMemberUsers &&
+                description == other.description &&
+                name == other.name &&
+                removeMemberGroups == other.removeMemberGroups &&
+                removeMemberUsers == other.removeMemberUsers &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(addMemberGroups, addMemberUsers, description, name, removeMemberGroups, removeMemberUsers, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                addMemberGroups,
+                addMemberUsers,
+                description,
+                name,
+                removeMemberGroups,
+                removeMemberUsers,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -925,10 +933,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupUpdateParams && groupId == other.groupId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is GroupUpdateParams &&
+            groupId == other.groupId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(groupId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "GroupUpdateParams{groupId=$groupId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

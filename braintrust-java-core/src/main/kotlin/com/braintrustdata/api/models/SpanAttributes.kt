@@ -18,6 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Human-identifying attributes of the span, such as name, type, etc. */
 class SpanAttributes
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val name: JsonField<String>,
     private val type: JsonField<SpanType>,
@@ -182,12 +183,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanAttributes && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is SpanAttributes &&
+            name == other.name &&
+            type == other.type &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(name, type, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

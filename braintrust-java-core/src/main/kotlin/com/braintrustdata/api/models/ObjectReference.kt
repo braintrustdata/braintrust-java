@@ -20,6 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Indicates the event was copied from another object. */
 class ObjectReference
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val _xactId: JsonField<String>,
@@ -451,7 +452,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ObjectType && value == other.value /* spotless:on */
+            return other is ObjectType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -464,12 +465,18 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ObjectReference && id == other.id && _xactId == other._xactId && objectId == other.objectId && objectType == other.objectType && created == other.created && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ObjectReference &&
+            id == other.id &&
+            _xactId == other._xactId &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            created == other.created &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _xactId, objectId, objectType, created, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, _xactId, objectId, objectType, created, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

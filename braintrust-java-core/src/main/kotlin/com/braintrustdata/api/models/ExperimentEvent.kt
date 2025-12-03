@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ExperimentEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val _xactId: JsonField<String>,
@@ -923,6 +924,7 @@ private constructor(
      * location in code which produced the experiment event
      */
     class Context
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val callerFilename: JsonField<String>,
         private val callerFunctionname: JsonField<String>,
@@ -1168,12 +1170,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Context && callerFilename == other.callerFilename && callerFunctionname == other.callerFunctionname && callerLineno == other.callerLineno && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Context &&
+                callerFilename == other.callerFilename &&
+                callerFunctionname == other.callerFunctionname &&
+                callerLineno == other.callerLineno &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(callerFilename, callerFunctionname, callerLineno, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(callerFilename, callerFunctionname, callerLineno, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1189,6 +1195,7 @@ private constructor(
      * must be strings
      */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val model: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1318,12 +1325,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && model == other.model && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata &&
+                model == other.model &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(model, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1337,6 +1344,7 @@ private constructor(
      * event was produced
      */
     class Metrics
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val callerFilename: JsonValue,
         private val callerFunctionname: JsonValue,
@@ -1747,12 +1755,31 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metrics && callerFilename == other.callerFilename && callerFunctionname == other.callerFunctionname && callerLineno == other.callerLineno && completionTokens == other.completionTokens && end == other.end && promptTokens == other.promptTokens && start == other.start && tokens == other.tokens && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metrics &&
+                callerFilename == other.callerFilename &&
+                callerFunctionname == other.callerFunctionname &&
+                callerLineno == other.callerLineno &&
+                completionTokens == other.completionTokens &&
+                end == other.end &&
+                promptTokens == other.promptTokens &&
+                start == other.start &&
+                tokens == other.tokens &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(callerFilename, callerFunctionname, callerLineno, completionTokens, end, promptTokens, start, tokens, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                callerFilename,
+                callerFunctionname,
+                callerLineno,
+                completionTokens,
+                end,
+                promptTokens,
+                start,
+                tokens,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1858,12 +1885,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Scores && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Scores && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1875,12 +1900,55 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentEvent && id == other.id && _xactId == other._xactId && created == other.created && experimentId == other.experimentId && projectId == other.projectId && rootSpanId == other.rootSpanId && spanId == other.spanId && context == other.context && error == other.error && expected == other.expected && input == other.input && isRoot == other.isRoot && metadata == other.metadata && metrics == other.metrics && origin == other.origin && output == other.output && scores == other.scores && spanAttributes == other.spanAttributes && spanParents == other.spanParents && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ExperimentEvent &&
+            id == other.id &&
+            _xactId == other._xactId &&
+            created == other.created &&
+            experimentId == other.experimentId &&
+            projectId == other.projectId &&
+            rootSpanId == other.rootSpanId &&
+            spanId == other.spanId &&
+            context == other.context &&
+            error == other.error &&
+            expected == other.expected &&
+            input == other.input &&
+            isRoot == other.isRoot &&
+            metadata == other.metadata &&
+            metrics == other.metrics &&
+            origin == other.origin &&
+            output == other.output &&
+            scores == other.scores &&
+            spanAttributes == other.spanAttributes &&
+            spanParents == other.spanParents &&
+            tags == other.tags &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, _xactId, created, experimentId, projectId, rootSpanId, spanId, context, error, expected, input, isRoot, metadata, metrics, origin, output, scores, spanAttributes, spanParents, tags, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            _xactId,
+            created,
+            experimentId,
+            projectId,
+            rootSpanId,
+            spanId,
+            context,
+            error,
+            expected,
+            input,
+            isRoot,
+            metadata,
+            metrics,
+            origin,
+            output,
+            scores,
+            spanAttributes,
+            spanParents,
+            tags,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

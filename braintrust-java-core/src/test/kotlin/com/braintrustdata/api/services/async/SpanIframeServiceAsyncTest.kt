@@ -5,9 +5,7 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.SpanIframeCreateParams
-import com.braintrustdata.api.models.SpanIframeDeleteParams
 import com.braintrustdata.api.models.SpanIframeReplaceParams
-import com.braintrustdata.api.models.SpanIframeRetrieveParams
 import com.braintrustdata.api.models.SpanIframeUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -49,11 +47,7 @@ internal class SpanIframeServiceAsyncTest {
         val spanIframeServiceAsync = client.spanIframes()
 
         val spanIFrameFuture =
-            spanIframeServiceAsync.retrieve(
-                SpanIframeRetrieveParams.builder()
-                    .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+            spanIframeServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()
@@ -107,12 +101,7 @@ internal class SpanIframeServiceAsyncTest {
                 .build()
         val spanIframeServiceAsync = client.spanIframes()
 
-        val spanIFrameFuture =
-            spanIframeServiceAsync.delete(
-                SpanIframeDeleteParams.builder()
-                    .spanIframeId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val spanIFrameFuture = spanIframeServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val spanIFrame = spanIFrameFuture.get()
         spanIFrame.validate()

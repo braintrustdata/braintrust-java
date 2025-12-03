@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class ExperimentListPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val objects: JsonField<List<Experiment>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -180,12 +181,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentListPageResponse && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ExperimentListPageResponse &&
+            objects == other.objects &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(objects, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

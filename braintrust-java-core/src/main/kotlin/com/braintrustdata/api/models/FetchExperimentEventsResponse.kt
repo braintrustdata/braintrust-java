@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class FetchExperimentEventsResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val events: JsonField<List<ExperimentEvent>>,
     private val cursor: JsonField<String>,
@@ -226,12 +227,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FetchExperimentEventsResponse && events == other.events && cursor == other.cursor && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is FetchExperimentEventsResponse &&
+            events == other.events &&
+            cursor == other.cursor &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(events, cursor, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

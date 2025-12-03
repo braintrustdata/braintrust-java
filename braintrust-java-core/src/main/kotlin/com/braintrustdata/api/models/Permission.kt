@@ -163,7 +163,7 @@ class Permission @JsonCreator private constructor(private val value: JsonField<S
             return true
         }
 
-        return /* spotless:off */ other is Permission && value == other.value /* spotless:on */
+        return other is Permission && value == other.value
     }
 
     override fun hashCode() = value.hashCode()

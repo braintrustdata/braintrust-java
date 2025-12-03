@@ -26,6 +26,7 @@ import kotlin.jvm.optionals.getOrNull
  * Groups can consist of individual users, as well as a set of groups they inherit from
  */
 class Group
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
@@ -532,12 +533,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Group && id == other.id && name == other.name && orgId == other.orgId && created == other.created && deletedAt == other.deletedAt && description == other.description && memberGroups == other.memberGroups && memberUsers == other.memberUsers && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Group &&
+            id == other.id &&
+            name == other.name &&
+            orgId == other.orgId &&
+            created == other.created &&
+            deletedAt == other.deletedAt &&
+            description == other.description &&
+            memberGroups == other.memberGroups &&
+            memberUsers == other.memberUsers &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, orgId, created, deletedAt, description, memberGroups, memberUsers, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            orgId,
+            created,
+            deletedAt,
+            description,
+            memberGroups,
+            memberUsers,
+            userId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

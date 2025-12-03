@@ -6,11 +6,9 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.AclBatchUpdateParams
 import com.braintrustdata.api.models.AclCreateParams
-import com.braintrustdata.api.models.AclDeleteParams
 import com.braintrustdata.api.models.AclFindAndDeleteParams
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclObjectType
-import com.braintrustdata.api.models.AclRetrieveParams
 import com.braintrustdata.api.models.Permission
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -53,10 +51,7 @@ internal class AclServiceAsyncTest {
                 .build()
         val aclServiceAsync = client.acls()
 
-        val aclFuture =
-            aclServiceAsync.retrieve(
-                AclRetrieveParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val aclFuture = aclServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val acl = aclFuture.get()
         acl.validate()
@@ -92,10 +87,7 @@ internal class AclServiceAsyncTest {
                 .build()
         val aclServiceAsync = client.acls()
 
-        val aclFuture =
-            aclServiceAsync.delete(
-                AclDeleteParams.builder().aclId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val aclFuture = aclServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val acl = aclFuture.get()
         acl.validate()

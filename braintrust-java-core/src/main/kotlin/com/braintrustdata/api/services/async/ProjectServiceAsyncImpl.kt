@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -26,6 +27,8 @@ import com.braintrustdata.api.models.ProjectUpdateParams
 import com.braintrustdata.api.services.async.projects.LogServiceAsync
 import com.braintrustdata.api.services.async.projects.LogServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectServiceAsync {
@@ -37,6 +40,9 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
     private val logs: LogServiceAsync by lazy { LogServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ProjectServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectServiceAsync =
+        ProjectServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun logs(): LogServiceAsync = logs
 
@@ -78,16 +84,23 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProjectServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val logs: LogServiceAsync.WithRawResponse by lazy {
             LogServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectServiceAsync.WithRawResponse =
+            ProjectServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun logs(): LogServiceAsync.WithRawResponse = logs
 
-        private val createHandler: Handler<Project> =
-            jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<Project> = jsonHandler<Project>(clientOptions.jsonMapper)
 
         override fun create(
             params: ProjectCreateParams,
@@ -96,6 +109,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -104,7 +118,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -117,15 +131,19 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
         }
 
         private val retrieveHandler: Handler<Project> =
-            jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Project>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: ProjectRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Project>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -133,7 +151,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -145,16 +163,19 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 }
         }
 
-        private val updateHandler: Handler<Project> =
-            jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<Project> = jsonHandler<Project>(clientOptions.jsonMapper)
 
         override fun update(
             params: ProjectUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Project>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -163,7 +184,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -177,7 +198,6 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val listHandler: Handler<ProjectListPageResponse> =
             jsonHandler<ProjectListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: ProjectListParams,
@@ -186,6 +206,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -193,7 +214,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -204,6 +225,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 ProjectListPageAsync.builder()
                                     .service(ProjectServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -212,16 +234,19 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 }
         }
 
-        private val deleteHandler: Handler<Project> =
-            jsonHandler<Project>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Project> = jsonHandler<Project>(clientOptions.jsonMapper)
 
         override fun delete(
             params: ProjectDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Project>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -230,7 +255,7 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {

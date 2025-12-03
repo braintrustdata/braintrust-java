@@ -6,6 +6,7 @@ import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -43,8 +44,10 @@ private constructor(
     /** The type of the object the environment variable is scoped for */
     fun objectType(): Optional<EnvVarObjectType> = Optional.ofNullable(objectType)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -298,10 +301,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
+            return other is Ids && string == other.string && strings == other.strings
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(string, strings)
 
         override fun toString(): String =
             when {
@@ -314,7 +317,7 @@ private constructor(
 
             @JvmStatic fun ofString(string: String) = Ids(string = string)
 
-            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
+            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings.toImmutable())
         }
 
         /** An interface that defines how to map each variant of [Ids] to a value of type [T]. */
@@ -331,10 +334,26 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVarListParams && envVarName == other.envVarName && ids == other.ids && limit == other.limit && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is EnvVarListParams &&
+            envVarName == other.envVarName &&
+            ids == other.ids &&
+            limit == other.limit &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarName, ids, limit, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            envVarName,
+            ids,
+            limit,
+            objectId,
+            objectType,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "EnvVarListParams{envVarName=$envVarName, ids=$ids, limit=$limit, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

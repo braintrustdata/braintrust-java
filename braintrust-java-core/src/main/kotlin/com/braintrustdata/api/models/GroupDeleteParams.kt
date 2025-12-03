@@ -4,43 +4,41 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a group object by its id */
 class GroupDeleteParams
 private constructor(
-    private val groupId: String,
+    private val groupId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** Group id */
-    fun groupId(): String = groupId
+    fun groupId(): Optional<String> = Optional.ofNullable(groupId)
 
+    /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [GroupDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .groupId()
-         * ```
-         */
+        @JvmStatic fun none(): GroupDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [GroupDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -61,7 +59,10 @@ private constructor(
         }
 
         /** Group id */
-        fun groupId(groupId: String) = apply { this.groupId = groupId }
+        fun groupId(groupId: String?) = apply { this.groupId = groupId }
+
+        /** Alias for calling [Builder.groupId] with `groupId.orElse(null)`. */
+        fun groupId(groupId: Optional<String>) = groupId(groupId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -187,17 +188,10 @@ private constructor(
          * Returns an immutable instance of [GroupDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .groupId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): GroupDeleteParams =
             GroupDeleteParams(
-                checkRequired("groupId", groupId),
+                groupId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -209,7 +203,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> groupId
+            0 -> groupId ?: ""
             else -> ""
         }
 
@@ -222,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is GroupDeleteParams && groupId == other.groupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is GroupDeleteParams &&
+            groupId == other.groupId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(groupId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(groupId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "GroupDeleteParams{groupId=$groupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

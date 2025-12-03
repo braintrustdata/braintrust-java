@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class User
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val avatarUrl: JsonField<String>,
@@ -351,12 +352,19 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is User && id == other.id && avatarUrl == other.avatarUrl && created == other.created && email == other.email && familyName == other.familyName && givenName == other.givenName && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is User &&
+            id == other.id &&
+            avatarUrl == other.avatarUrl &&
+            created == other.created &&
+            email == other.email &&
+            familyName == other.familyName &&
+            givenName == other.givenName &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, avatarUrl, created, email, familyName, givenName, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, avatarUrl, created, email, familyName, givenName, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectSettings
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val baselineExperimentId: JsonField<String>,
     private val comparisonKey: JsonField<String>,
@@ -267,6 +268,7 @@ private constructor(
             (spanFieldOrder.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class SpanFieldOrder
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val columnId: JsonField<String>,
         private val objectType: JsonField<String>,
@@ -634,7 +636,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Layout && value == other.value /* spotless:on */
+                return other is Layout && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -647,12 +649,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SpanFieldOrder && columnId == other.columnId && objectType == other.objectType && position == other.position && layout == other.layout && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is SpanFieldOrder &&
+                columnId == other.columnId &&
+                objectType == other.objectType &&
+                position == other.position &&
+                layout == other.layout &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(columnId, objectType, position, layout, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(columnId, objectType, position, layout, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -665,12 +672,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectSettings && baselineExperimentId == other.baselineExperimentId && comparisonKey == other.comparisonKey && spanFieldOrder == other.spanFieldOrder && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ProjectSettings &&
+            baselineExperimentId == other.baselineExperimentId &&
+            comparisonKey == other.comparisonKey &&
+            spanFieldOrder == other.spanFieldOrder &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(baselineExperimentId, comparisonKey, spanFieldOrder, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(baselineExperimentId, comparisonKey, spanFieldOrder, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

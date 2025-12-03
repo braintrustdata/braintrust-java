@@ -3,38 +3,36 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get an api_key object by its id */
 class ApiKeyRetrieveParams
 private constructor(
-    private val apiKeyId: String,
+    private val apiKeyId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** ApiKey id */
-    fun apiKeyId(): String = apiKeyId
+    fun apiKeyId(): Optional<String> = Optional.ofNullable(apiKeyId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ApiKeyRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .apiKeyId()
-         * ```
-         */
+        @JvmStatic fun none(): ApiKeyRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ApiKeyRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +51,10 @@ private constructor(
         }
 
         /** ApiKey id */
-        fun apiKeyId(apiKeyId: String) = apply { this.apiKeyId = apiKeyId }
+        fun apiKeyId(apiKeyId: String?) = apply { this.apiKeyId = apiKeyId }
+
+        /** Alias for calling [Builder.apiKeyId] with `apiKeyId.orElse(null)`. */
+        fun apiKeyId(apiKeyId: Optional<String>) = apiKeyId(apiKeyId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,25 +158,14 @@ private constructor(
          * Returns an immutable instance of [ApiKeyRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .apiKeyId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ApiKeyRetrieveParams =
-            ApiKeyRetrieveParams(
-                checkRequired("apiKeyId", apiKeyId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            ApiKeyRetrieveParams(apiKeyId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> apiKeyId
+            0 -> apiKeyId ?: ""
             else -> ""
         }
 
@@ -188,10 +178,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ApiKeyRetrieveParams && apiKeyId == other.apiKeyId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ApiKeyRetrieveParams &&
+            apiKeyId == other.apiKeyId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(apiKeyId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(apiKeyId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ApiKeyRetrieveParams{apiKeyId=$apiKeyId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -6,6 +6,7 @@ import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
+import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -67,8 +68,10 @@ private constructor(
      */
     fun startingAfter(): Optional<String> = Optional.ofNullable(startingAfter)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -366,10 +369,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ids && string == other.string && strings == other.strings /* spotless:on */
+            return other is Ids && string == other.string && strings == other.strings
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, strings) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(string, strings)
 
         override fun toString(): String =
             when {
@@ -382,7 +385,7 @@ private constructor(
 
             @JvmStatic fun ofString(string: String) = Ids(string = string)
 
-            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings)
+            @JvmStatic fun ofStrings(strings: List<String>) = Ids(strings = strings.toImmutable())
         }
 
         /** An interface that defines how to map each variant of [Ids] to a value of type [T]. */
@@ -399,10 +402,32 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentListParams && endingBefore == other.endingBefore && experimentName == other.experimentName && ids == other.ids && limit == other.limit && orgName == other.orgName && projectId == other.projectId && projectName == other.projectName && startingAfter == other.startingAfter && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentListParams &&
+            endingBefore == other.endingBefore &&
+            experimentName == other.experimentName &&
+            ids == other.ids &&
+            limit == other.limit &&
+            orgName == other.orgName &&
+            projectId == other.projectId &&
+            projectName == other.projectName &&
+            startingAfter == other.startingAfter &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endingBefore, experimentName, ids, limit, orgName, projectId, projectName, startingAfter, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            endingBefore,
+            experimentName,
+            ids,
+            limit,
+            orgName,
+            projectId,
+            projectName,
+            startingAfter,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "ExperimentListParams{endingBefore=$endingBefore, experimentName=$experimentName, ids=$ids, limit=$limit, orgName=$orgName, projectId=$projectId, projectName=$projectName, startingAfter=$startingAfter, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

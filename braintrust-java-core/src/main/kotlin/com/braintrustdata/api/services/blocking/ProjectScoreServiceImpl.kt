@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -24,6 +25,8 @@ import com.braintrustdata.api.models.ProjectScoreListParams
 import com.braintrustdata.api.models.ProjectScoreReplaceParams
 import com.braintrustdata.api.models.ProjectScoreRetrieveParams
 import com.braintrustdata.api.models.ProjectScoreUpdateParams
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectScoreServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectScoreService {
@@ -33,6 +36,9 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): ProjectScoreService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectScoreService =
+        ProjectScoreServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ProjectScoreCreateParams,
@@ -79,10 +85,18 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProjectScoreService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectScoreService.WithRawResponse =
+            ProjectScoreServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<ProjectScore> =
-            jsonHandler<ProjectScore>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ProjectScore>(clientOptions.jsonMapper)
 
         override fun create(
             params: ProjectScoreCreateParams,
@@ -91,13 +105,14 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {
@@ -109,21 +124,25 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
         }
 
         private val retrieveHandler: Handler<ProjectScore> =
-            jsonHandler<ProjectScore>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ProjectScore>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: ProjectScoreRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ProjectScore> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectScoreId", params.projectScoreId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {
@@ -135,22 +154,26 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
         }
 
         private val updateHandler: Handler<ProjectScore> =
-            jsonHandler<ProjectScore>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ProjectScore>(clientOptions.jsonMapper)
 
         override fun update(
             params: ProjectScoreUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ProjectScore> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectScoreId", params.projectScoreId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { updateHandler.handle(it) }
                     .also {
@@ -163,7 +186,6 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
 
         private val listHandler: Handler<ProjectScoreListPageResponse> =
             jsonHandler<ProjectScoreListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: ProjectScoreListParams,
@@ -172,12 +194,13 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {
@@ -196,22 +219,26 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
         }
 
         private val deleteHandler: Handler<ProjectScore> =
-            jsonHandler<ProjectScore>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ProjectScore>(clientOptions.jsonMapper)
 
         override fun delete(
             params: ProjectScoreDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ProjectScore> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectScoreId", params.projectScoreId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { deleteHandler.handle(it) }
                     .also {
@@ -223,7 +250,7 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
         }
 
         private val replaceHandler: Handler<ProjectScore> =
-            jsonHandler<ProjectScore>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ProjectScore>(clientOptions.jsonMapper)
 
         override fun replace(
             params: ProjectScoreReplaceParams,
@@ -232,13 +259,14 @@ class ProjectScoreServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "project_score")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { replaceHandler.handle(it) }
                     .also {

@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.View
@@ -13,6 +14,7 @@ import com.braintrustdata.api.models.ViewReplaceParams
 import com.braintrustdata.api.models.ViewRetrieveParams
 import com.braintrustdata.api.models.ViewUpdateParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface ViewService {
 
@@ -22,21 +24,39 @@ interface ViewService {
     fun withRawResponse(): WithRawResponse
 
     /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewService
+
+    /**
      * Create a new view. If there is an existing view with the same name as the one specified in
      * the request, will return the existing view unmodified
      */
     fun create(params: ViewCreateParams): View = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ViewCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): View
 
     /** Get a view object by its id */
+    fun retrieve(viewId: String, params: ViewRetrieveParams): View =
+        retrieve(viewId, params, RequestOptions.none())
+
+    /** @see retrieve */
+    fun retrieve(
+        viewId: String,
+        params: ViewRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): View = retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+    /** @see retrieve */
     fun retrieve(params: ViewRetrieveParams): View = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ViewRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,9 +67,20 @@ interface ViewService {
      * fields will be deep-merged with existing content. Currently we do not support removing fields
      * or setting them to null.
      */
+    fun update(viewId: String, params: ViewUpdateParams): View =
+        update(viewId, params, RequestOptions.none())
+
+    /** @see update */
+    fun update(
+        viewId: String,
+        params: ViewUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): View = update(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+    /** @see update */
     fun update(params: ViewUpdateParams): View = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: ViewUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -61,16 +92,27 @@ interface ViewService {
      */
     fun list(params: ViewListParams): ViewListPage = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ViewListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ViewListPage
 
     /** Delete a view object by its id */
+    fun delete(viewId: String, params: ViewDeleteParams): View =
+        delete(viewId, params, RequestOptions.none())
+
+    /** @see delete */
+    fun delete(
+        viewId: String,
+        params: ViewDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): View = delete(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+    /** @see delete */
     fun delete(params: ViewDeleteParams): View = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: ViewDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -82,7 +124,7 @@ interface ViewService {
      */
     fun replace(params: ViewReplaceParams): View = replace(params, RequestOptions.none())
 
-    /** @see [replace] */
+    /** @see replace */
     fun replace(
         params: ViewReplaceParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -92,6 +134,13 @@ interface ViewService {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewService.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `post /v1/view`, but is otherwise the same as
          * [ViewService.create].
          */
@@ -99,7 +148,7 @@ interface ViewService {
         fun create(params: ViewCreateParams): HttpResponseFor<View> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: ViewCreateParams,
@@ -111,10 +160,24 @@ interface ViewService {
          * [ViewService.retrieve].
          */
         @MustBeClosed
+        fun retrieve(viewId: String, params: ViewRetrieveParams): HttpResponseFor<View> =
+            retrieve(viewId, params, RequestOptions.none())
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(
+            viewId: String,
+            params: ViewRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View> =
+            retrieve(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+        /** @see retrieve */
+        @MustBeClosed
         fun retrieve(params: ViewRetrieveParams): HttpResponseFor<View> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: ViewRetrieveParams,
@@ -126,10 +189,23 @@ interface ViewService {
          * [ViewService.update].
          */
         @MustBeClosed
+        fun update(viewId: String, params: ViewUpdateParams): HttpResponseFor<View> =
+            update(viewId, params, RequestOptions.none())
+
+        /** @see update */
+        @MustBeClosed
+        fun update(
+            viewId: String,
+            params: ViewUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View> = update(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+        /** @see update */
+        @MustBeClosed
         fun update(params: ViewUpdateParams): HttpResponseFor<View> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: ViewUpdateParams,
@@ -144,7 +220,7 @@ interface ViewService {
         fun list(params: ViewListParams): HttpResponseFor<ViewListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ViewListParams,
@@ -156,10 +232,23 @@ interface ViewService {
          * [ViewService.delete].
          */
         @MustBeClosed
+        fun delete(viewId: String, params: ViewDeleteParams): HttpResponseFor<View> =
+            delete(viewId, params, RequestOptions.none())
+
+        /** @see delete */
+        @MustBeClosed
+        fun delete(
+            viewId: String,
+            params: ViewDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<View> = delete(params.toBuilder().viewId(viewId).build(), requestOptions)
+
+        /** @see delete */
+        @MustBeClosed
         fun delete(params: ViewDeleteParams): HttpResponseFor<View> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: ViewDeleteParams,
@@ -174,7 +263,7 @@ interface ViewService {
         fun replace(params: ViewReplaceParams): HttpResponseFor<View> =
             replace(params, RequestOptions.none())
 
-        /** @see [replace] */
+        /** @see replace */
         @MustBeClosed
         fun replace(
             params: ViewReplaceParams,

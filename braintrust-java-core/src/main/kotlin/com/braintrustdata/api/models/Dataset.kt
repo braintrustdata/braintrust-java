@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class Dataset
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
@@ -512,12 +513,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -529,12 +528,31 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Dataset && id == other.id && name == other.name && projectId == other.projectId && created == other.created && deletedAt == other.deletedAt && description == other.description && metadata == other.metadata && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Dataset &&
+            id == other.id &&
+            name == other.name &&
+            projectId == other.projectId &&
+            created == other.created &&
+            deletedAt == other.deletedAt &&
+            description == other.description &&
+            metadata == other.metadata &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, projectId, created, deletedAt, description, metadata, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            projectId,
+            created,
+            deletedAt,
+            description,
+            metadata,
+            userId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

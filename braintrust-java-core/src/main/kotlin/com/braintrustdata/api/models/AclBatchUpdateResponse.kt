@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class AclBatchUpdateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val addedAcls: JsonField<List<Acl>>,
     private val removedAcls: JsonField<List<Acl>>,
@@ -266,12 +267,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclBatchUpdateResponse && addedAcls == other.addedAcls && removedAcls == other.removedAcls && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is AclBatchUpdateResponse &&
+            addedAcls == other.addedAcls &&
+            removedAcls == other.removedAcls &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(addedAcls, removedAcls, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

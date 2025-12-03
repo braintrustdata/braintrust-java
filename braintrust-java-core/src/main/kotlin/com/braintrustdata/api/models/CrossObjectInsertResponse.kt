@@ -18,6 +18,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class CrossObjectInsertResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val dataset: JsonField<Dataset>,
     private val experiment: JsonField<Experiment>,
@@ -322,12 +323,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Dataset && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Dataset && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -424,12 +423,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Experiment && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Experiment && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -526,12 +523,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectLogs && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ProjectLogs && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -543,12 +538,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CrossObjectInsertResponse && dataset == other.dataset && experiment == other.experiment && projectLogs == other.projectLogs && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is CrossObjectInsertResponse &&
+            dataset == other.dataset &&
+            experiment == other.experiment &&
+            projectLogs == other.projectLogs &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(dataset, experiment, projectLogs, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(dataset, experiment, projectLogs, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

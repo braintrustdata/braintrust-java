@@ -18,6 +18,7 @@ import java.util.Optional
 
 /** Summary of a metric's performance */
 class MetricSummary
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val improvements: JsonField<Long>,
     private val metric: JsonField<Double>,
@@ -343,12 +344,19 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is MetricSummary && improvements == other.improvements && metric == other.metric && name == other.name && regressions == other.regressions && unit == other.unit && diff == other.diff && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is MetricSummary &&
+            improvements == other.improvements &&
+            metric == other.metric &&
+            name == other.name &&
+            regressions == other.regressions &&
+            unit == other.unit &&
+            diff == other.diff &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(improvements, metric, name, regressions, unit, diff, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(improvements, metric, name, regressions, unit, diff, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

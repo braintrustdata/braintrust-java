@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ChatCompletionContentPartText
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val type: JsonField<Type>,
     private val text: JsonField<String>,
@@ -298,7 +299,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -311,12 +312,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ChatCompletionContentPartText && type == other.type && text == other.text && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ChatCompletionContentPartText &&
+            type == other.type &&
+            text == other.text &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(type, text, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

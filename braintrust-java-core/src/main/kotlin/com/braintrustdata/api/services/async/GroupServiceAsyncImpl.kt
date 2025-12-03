@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -25,6 +26,8 @@ import com.braintrustdata.api.models.GroupReplaceParams
 import com.braintrustdata.api.models.GroupRetrieveParams
 import com.braintrustdata.api.models.GroupUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class GroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     GroupServiceAsync {
@@ -34,6 +37,9 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): GroupServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): GroupServiceAsync =
+        GroupServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: GroupCreateParams,
@@ -80,10 +86,17 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         GroupServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
-        private val createHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): GroupServiceAsync.WithRawResponse =
+            GroupServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
+        private val createHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper)
 
         override fun create(
             params: GroupCreateParams,
@@ -92,6 +105,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "group")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -100,7 +114,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -112,16 +126,19 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val retrieveHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: GroupRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Group>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("groupId", params.groupId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "group", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -129,7 +146,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -141,16 +158,19 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val updateHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper)
 
         override fun update(
             params: GroupUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Group>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("groupId", params.groupId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "group", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -159,7 +179,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -173,7 +193,6 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val listHandler: Handler<GroupListPageResponse> =
             jsonHandler<GroupListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: GroupListParams,
@@ -182,6 +201,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "group")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -189,7 +209,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -200,6 +220,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                             .let {
                                 GroupListPageAsync.builder()
                                     .service(GroupServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -208,16 +229,19 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val deleteHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper)
 
         override fun delete(
             params: GroupDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Group>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("groupId", params.groupId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "group", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -226,7 +250,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
@@ -238,8 +262,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val replaceHandler: Handler<Group> =
-            jsonHandler<Group>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val replaceHandler: Handler<Group> = jsonHandler<Group>(clientOptions.jsonMapper)
 
         override fun replace(
             params: GroupReplaceParams,
@@ -248,6 +271,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "group")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -256,7 +280,7 @@ class GroupServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { replaceHandler.handle(it) }
                             .also {

@@ -4,43 +4,41 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete an env_var object by its id */
 class EnvVarDeleteParams
 private constructor(
-    private val envVarId: String,
+    private val envVarId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** EnvVar id */
-    fun envVarId(): String = envVarId
+    fun envVarId(): Optional<String> = Optional.ofNullable(envVarId)
 
+    /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [EnvVarDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .envVarId()
-         * ```
-         */
+        @JvmStatic fun none(): EnvVarDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [EnvVarDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -61,7 +59,10 @@ private constructor(
         }
 
         /** EnvVar id */
-        fun envVarId(envVarId: String) = apply { this.envVarId = envVarId }
+        fun envVarId(envVarId: String?) = apply { this.envVarId = envVarId }
+
+        /** Alias for calling [Builder.envVarId] with `envVarId.orElse(null)`. */
+        fun envVarId(envVarId: Optional<String>) = envVarId(envVarId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -187,17 +188,10 @@ private constructor(
          * Returns an immutable instance of [EnvVarDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .envVarId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): EnvVarDeleteParams =
             EnvVarDeleteParams(
-                checkRequired("envVarId", envVarId),
+                envVarId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -209,7 +203,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> envVarId
+            0 -> envVarId ?: ""
             else -> ""
         }
 
@@ -222,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVarDeleteParams && envVarId == other.envVarId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is EnvVarDeleteParams &&
+            envVarId == other.envVarId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(envVarId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "EnvVarDeleteParams{envVarId=$envVarId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

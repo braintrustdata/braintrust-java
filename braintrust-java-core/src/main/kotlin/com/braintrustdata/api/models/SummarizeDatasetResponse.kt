@@ -19,6 +19,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Summary of a dataset */
 class SummarizeDatasetResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val datasetName: JsonField<String>,
     private val datasetUrl: JsonField<String>,
@@ -327,12 +328,25 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SummarizeDatasetResponse && datasetName == other.datasetName && datasetUrl == other.datasetUrl && projectName == other.projectName && projectUrl == other.projectUrl && dataSummary == other.dataSummary && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is SummarizeDatasetResponse &&
+            datasetName == other.datasetName &&
+            datasetUrl == other.datasetUrl &&
+            projectName == other.projectName &&
+            projectUrl == other.projectUrl &&
+            dataSummary == other.dataSummary &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(datasetName, datasetUrl, projectName, projectUrl, dataSummary, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            datasetName,
+            datasetUrl,
+            projectName,
+            projectUrl,
+            dataSummary,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

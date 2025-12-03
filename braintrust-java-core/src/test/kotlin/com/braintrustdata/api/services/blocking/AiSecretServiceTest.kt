@@ -6,10 +6,8 @@ import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.models.AiSecretCreateParams
-import com.braintrustdata.api.models.AiSecretDeleteParams
 import com.braintrustdata.api.models.AiSecretFindAndDeleteParams
 import com.braintrustdata.api.models.AiSecretReplaceParams
-import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -53,12 +51,7 @@ internal class AiSecretServiceTest {
                 .build()
         val aiSecretService = client.aiSecrets()
 
-        val aISecret =
-            aiSecretService.retrieve(
-                AiSecretRetrieveParams.builder()
-                    .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val aISecret = aiSecretService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         aISecret.validate()
     }
@@ -113,12 +106,7 @@ internal class AiSecretServiceTest {
                 .build()
         val aiSecretService = client.aiSecrets()
 
-        val aISecret =
-            aiSecretService.delete(
-                AiSecretDeleteParams.builder()
-                    .aiSecretId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val aISecret = aiSecretService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         aISecret.validate()
     }

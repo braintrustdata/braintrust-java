@@ -10,7 +10,6 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.allMaxBy
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.getOrThrow
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
@@ -39,14 +38,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ProjectScoreUpdateParams
 private constructor(
-    private val projectScoreId: String,
+    private val projectScoreId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** ProjectScore id */
-    fun projectScoreId(): String = projectScoreId
+    fun projectScoreId(): Optional<String> = Optional.ofNullable(projectScoreId)
 
     /**
      * For categorical-type project scores, the list of all categories
@@ -123,22 +122,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectScoreUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectScoreUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectScoreUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -159,7 +155,11 @@ private constructor(
         }
 
         /** ProjectScore id */
-        fun projectScoreId(projectScoreId: String) = apply { this.projectScoreId = projectScoreId }
+        fun projectScoreId(projectScoreId: String?) = apply { this.projectScoreId = projectScoreId }
+
+        /** Alias for calling [Builder.projectScoreId] with `projectScoreId.orElse(null)`. */
+        fun projectScoreId(projectScoreId: Optional<String>) =
+            projectScoreId(projectScoreId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -380,17 +380,10 @@ private constructor(
          * Returns an immutable instance of [ProjectScoreUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectScoreUpdateParams =
             ProjectScoreUpdateParams(
-                checkRequired("projectScoreId", projectScoreId),
+                projectScoreId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -401,7 +394,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectScoreId
+            0 -> projectScoreId ?: ""
             else -> ""
         }
 
@@ -411,6 +404,7 @@ private constructor(
 
     /** A project score is a user-configured score, which can be manually-labeled through the UI */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val categories: JsonField<Categories>,
         private val config: JsonField<ProjectScoreConfig>,
@@ -725,12 +719,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && categories == other.categories && config == other.config && description == other.description && name == other.name && scoreType == other.scoreType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                categories == other.categories &&
+                config == other.config &&
+                description == other.description &&
+                name == other.name &&
+                scoreType == other.scoreType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(categories, config, description, name, scoreType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(categories, config, description, name, scoreType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -840,10 +840,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Categories && categorical == other.categorical && weighted == other.weighted && minimum == other.minimum /* spotless:on */
+            return other is Categories &&
+                categorical == other.categorical &&
+                weighted == other.weighted &&
+                minimum == other.minimum
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(categorical, weighted, minimum) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(categorical, weighted, minimum)
 
         override fun toString(): String =
             when {
@@ -859,13 +862,14 @@ private constructor(
             /** For categorical-type project scores, the list of all categories */
             @JvmStatic
             fun ofCategorical(categorical: List<ProjectScoreCategory>) =
-                Categories(categorical = categorical)
+                Categories(categorical = categorical.toImmutable())
 
             /** For weighted-type project scores, the weights of each score */
             @JvmStatic fun ofWeighted(weighted: Weighted) = Categories(weighted = weighted)
 
             /** For minimum-type project scores, the list of included scores */
-            @JvmStatic fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum)
+            @JvmStatic
+            fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum.toImmutable())
         }
 
         /**
@@ -1039,12 +1043,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Weighted && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Weighted && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1057,10 +1059,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreUpdateParams && projectScoreId == other.projectScoreId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectScoreUpdateParams &&
+            projectScoreId == other.projectScoreId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectScoreId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(projectScoreId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectScoreUpdateParams{projectScoreId=$projectScoreId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

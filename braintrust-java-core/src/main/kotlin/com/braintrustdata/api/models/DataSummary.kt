@@ -17,6 +17,7 @@ import java.util.Objects
 
 /** Summary of a dataset's data */
 class DataSummary
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val totalRecords: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -164,12 +165,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DataSummary && totalRecords == other.totalRecords && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is DataSummary &&
+            totalRecords == other.totalRecords &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(totalRecords, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

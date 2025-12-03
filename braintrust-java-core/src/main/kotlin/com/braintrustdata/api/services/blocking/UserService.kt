@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.User
@@ -9,6 +10,7 @@ import com.braintrustdata.api.models.UserListPage
 import com.braintrustdata.api.models.UserListParams
 import com.braintrustdata.api.models.UserRetrieveParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface UserService {
 
@@ -17,14 +19,39 @@ interface UserService {
      */
     fun withRawResponse(): WithRawResponse
 
-    /** Get a user object by its id */
-    fun retrieve(params: UserRetrieveParams): User = retrieve(params, RequestOptions.none())
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): UserService
 
-    /** @see [retrieve] */
+    /** Get a user object by its id */
+    fun retrieve(userId: String): User = retrieve(userId, UserRetrieveParams.none())
+
+    /** @see retrieve */
+    fun retrieve(
+        userId: String,
+        params: UserRetrieveParams = UserRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): User = retrieve(params.toBuilder().userId(userId).build(), requestOptions)
+
+    /** @see retrieve */
+    fun retrieve(userId: String, params: UserRetrieveParams = UserRetrieveParams.none()): User =
+        retrieve(userId, params, RequestOptions.none())
+
+    /** @see retrieve */
     fun retrieve(
         params: UserRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): User
+
+    /** @see retrieve */
+    fun retrieve(params: UserRetrieveParams): User = retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
+    fun retrieve(userId: String, requestOptions: RequestOptions): User =
+        retrieve(userId, UserRetrieveParams.none(), requestOptions)
 
     /**
      * List out all users. The users are sorted by creation date, with the most recently-created
@@ -32,17 +59,17 @@ interface UserService {
      */
     fun list(): UserListPage = list(UserListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: UserListParams = UserListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UserListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: UserListParams = UserListParams.none()): UserListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): UserListPage =
         list(UserListParams.none(), requestOptions)
 
@@ -50,19 +77,52 @@ interface UserService {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): UserService.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `get /v1/user/{user_id}`, but is otherwise the same as
          * [UserService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: UserRetrieveParams): HttpResponseFor<User> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(userId: String): HttpResponseFor<User> =
+            retrieve(userId, UserRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(
+            userId: String,
+            params: UserRetrieveParams = UserRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<User> =
+            retrieve(params.toBuilder().userId(userId).build(), requestOptions)
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(
+            userId: String,
+            params: UserRetrieveParams = UserRetrieveParams.none(),
+        ): HttpResponseFor<User> = retrieve(userId, params, RequestOptions.none())
+
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: UserRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<User>
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(params: UserRetrieveParams): HttpResponseFor<User> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(userId: String, requestOptions: RequestOptions): HttpResponseFor<User> =
+            retrieve(userId, UserRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/user`, but is otherwise the same as
@@ -70,19 +130,19 @@ interface UserService {
          */
         @MustBeClosed fun list(): HttpResponseFor<UserListPage> = list(UserListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: UserListParams = UserListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UserListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: UserListParams = UserListParams.none()): HttpResponseFor<UserListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<UserListPage> =
             list(UserListParams.none(), requestOptions)

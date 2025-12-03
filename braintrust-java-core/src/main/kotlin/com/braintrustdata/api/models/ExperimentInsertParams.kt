@@ -19,19 +19,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Insert a set of events into the experiment */
 class ExperimentInsertParams
 private constructor(
-    private val experimentId: String,
+    private val experimentId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Experiment id */
-    fun experimentId(): String = experimentId
+    fun experimentId(): Optional<String> = Optional.ofNullable(experimentId)
 
     /**
      * A list of experiment events to insert
@@ -50,8 +51,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -63,7 +66,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .experimentId()
          * .events()
          * ```
          */
@@ -87,7 +89,10 @@ private constructor(
         }
 
         /** Experiment id */
-        fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
+        fun experimentId(experimentId: String?) = apply { this.experimentId = experimentId }
+
+        /** Alias for calling [Builder.experimentId] with `experimentId.orElse(null)`. */
+        fun experimentId(experimentId: Optional<String>) = experimentId(experimentId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -241,7 +246,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .experimentId()
          * .events()
          * ```
          *
@@ -249,7 +253,7 @@ private constructor(
          */
         fun build(): ExperimentInsertParams =
             ExperimentInsertParams(
-                checkRequired("experimentId", experimentId),
+                experimentId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -260,7 +264,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> experimentId
+            0 -> experimentId ?: ""
             else -> ""
         }
 
@@ -269,6 +273,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val events: JsonField<List<InsertExperimentEvent>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -433,12 +438,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && events == other.events && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                events == other.events &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(events, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -450,10 +455,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentInsertParams && experimentId == other.experimentId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentInsertParams &&
+            experimentId == other.experimentId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ExperimentInsertParams{experimentId=$experimentId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

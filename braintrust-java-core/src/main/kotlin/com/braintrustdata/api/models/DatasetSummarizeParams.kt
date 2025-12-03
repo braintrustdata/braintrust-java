@@ -3,7 +3,6 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
@@ -13,34 +12,31 @@ import kotlin.jvm.optionals.getOrNull
 /** Summarize dataset */
 class DatasetSummarizeParams
 private constructor(
-    private val datasetId: String,
+    private val datasetId: String?,
     private val summarizeData: Boolean?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Dataset id */
-    fun datasetId(): String = datasetId
+    fun datasetId(): Optional<String> = Optional.ofNullable(datasetId)
 
     /** Whether to summarize the data. If false (or omitted), only the metadata will be returned. */
     fun summarizeData(): Optional<Boolean> = Optional.ofNullable(summarizeData)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [DatasetSummarizeParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .datasetId()
-         * ```
-         */
+        @JvmStatic fun none(): DatasetSummarizeParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [DatasetSummarizeParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -61,7 +57,10 @@ private constructor(
         }
 
         /** Dataset id */
-        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+        fun datasetId(datasetId: String?) = apply { this.datasetId = datasetId }
+
+        /** Alias for calling [Builder.datasetId] with `datasetId.orElse(null)`. */
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
         /**
          * Whether to summarize the data. If false (or omitted), only the metadata will be returned.
@@ -181,17 +180,10 @@ private constructor(
          * Returns an immutable instance of [DatasetSummarizeParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .datasetId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): DatasetSummarizeParams =
             DatasetSummarizeParams(
-                checkRequired("datasetId", datasetId),
+                datasetId,
                 summarizeData,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -200,7 +192,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> datasetId
+            0 -> datasetId ?: ""
             else -> ""
         }
 
@@ -219,10 +211,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetSummarizeParams && datasetId == other.datasetId && summarizeData == other.summarizeData && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetSummarizeParams &&
+            datasetId == other.datasetId &&
+            summarizeData == other.summarizeData &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, summarizeData, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(datasetId, summarizeData, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetSummarizeParams{datasetId=$datasetId, summarizeData=$summarizeData, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

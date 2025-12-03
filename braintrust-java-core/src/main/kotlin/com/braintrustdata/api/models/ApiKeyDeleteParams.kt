@@ -4,43 +4,41 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete an api_key object by its id */
 class ApiKeyDeleteParams
 private constructor(
-    private val apiKeyId: String,
+    private val apiKeyId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** ApiKey id */
-    fun apiKeyId(): String = apiKeyId
+    fun apiKeyId(): Optional<String> = Optional.ofNullable(apiKeyId)
 
+    /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ApiKeyDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .apiKeyId()
-         * ```
-         */
+        @JvmStatic fun none(): ApiKeyDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ApiKeyDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -61,7 +59,10 @@ private constructor(
         }
 
         /** ApiKey id */
-        fun apiKeyId(apiKeyId: String) = apply { this.apiKeyId = apiKeyId }
+        fun apiKeyId(apiKeyId: String?) = apply { this.apiKeyId = apiKeyId }
+
+        /** Alias for calling [Builder.apiKeyId] with `apiKeyId.orElse(null)`. */
+        fun apiKeyId(apiKeyId: Optional<String>) = apiKeyId(apiKeyId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -187,17 +188,10 @@ private constructor(
          * Returns an immutable instance of [ApiKeyDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .apiKeyId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ApiKeyDeleteParams =
             ApiKeyDeleteParams(
-                checkRequired("apiKeyId", apiKeyId),
+                apiKeyId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -209,7 +203,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> apiKeyId
+            0 -> apiKeyId ?: ""
             else -> ""
         }
 
@@ -222,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ApiKeyDeleteParams && apiKeyId == other.apiKeyId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is ApiKeyDeleteParams &&
+            apiKeyId == other.apiKeyId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(apiKeyId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(apiKeyId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "ApiKeyDeleteParams{apiKeyId=$apiKeyId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

@@ -79,8 +79,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -318,6 +320,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val addAcls: JsonField<List<AddAcl>>,
         private val removeAcls: JsonField<List<RemoveAcl>>,
@@ -560,12 +563,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && addAcls == other.addAcls && removeAcls == other.removeAcls && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                addAcls == other.addAcls &&
+                removeAcls == other.removeAcls &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(addAcls, removeAcls, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(addAcls, removeAcls, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -584,6 +590,7 @@ private constructor(
      * ACL, as part of a direct permission grant or as part of a role.
      */
     class AddAcl
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val objectId: JsonField<String>,
         private val objectType: JsonField<AclObjectType>,
@@ -1004,12 +1011,29 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AddAcl && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is AddAcl &&
+                objectId == other.objectId &&
+                objectType == other.objectType &&
+                groupId == other.groupId &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                roleId == other.roleId &&
+                userId == other.userId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                objectId,
+                objectType,
+                groupId,
+                permission,
+                restrictObjectType,
+                roleId,
+                userId,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1028,6 +1052,7 @@ private constructor(
      * ACL, as part of a direct permission grant or as part of a role.
      */
     class RemoveAcl
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val objectId: JsonField<String>,
         private val objectType: JsonField<AclObjectType>,
@@ -1448,12 +1473,29 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveAcl && objectId == other.objectId && objectType == other.objectType && groupId == other.groupId && permission == other.permission && restrictObjectType == other.restrictObjectType && roleId == other.roleId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is RemoveAcl &&
+                objectId == other.objectId &&
+                objectType == other.objectType &&
+                groupId == other.groupId &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                roleId == other.roleId &&
+                userId == other.userId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(objectId, objectType, groupId, permission, restrictObjectType, roleId, userId, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                objectId,
+                objectType,
+                groupId,
+                permission,
+                restrictObjectType,
+                roleId,
+                userId,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1466,10 +1508,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AclBatchUpdateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is AclBatchUpdateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "AclBatchUpdateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -27,14 +27,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class EnvVarUpdateParams
 private constructor(
-    private val envVarId: String,
+    private val envVarId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** EnvVar id */
-    fun envVarId(): String = envVarId
+    fun envVarId(): Optional<String> = Optional.ofNullable(envVarId)
 
     /**
      * The name of the environment variable
@@ -68,8 +68,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -81,7 +83,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .envVarId()
          * .name()
          * ```
          */
@@ -105,7 +106,10 @@ private constructor(
         }
 
         /** EnvVar id */
-        fun envVarId(envVarId: String) = apply { this.envVarId = envVarId }
+        fun envVarId(envVarId: String?) = apply { this.envVarId = envVarId }
+
+        /** Alias for calling [Builder.envVarId] with `envVarId.orElse(null)`. */
+        fun envVarId(envVarId: Optional<String>) = envVarId(envVarId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -266,7 +270,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .envVarId()
          * .name()
          * ```
          *
@@ -274,7 +277,7 @@ private constructor(
          */
         fun build(): EnvVarUpdateParams =
             EnvVarUpdateParams(
-                checkRequired("envVarId", envVarId),
+                envVarId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -285,7 +288,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> envVarId
+            0 -> envVarId ?: ""
             else -> ""
         }
 
@@ -294,6 +297,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val value: JsonField<String>,
@@ -472,12 +476,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                name == other.name &&
+                value == other.value &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -490,10 +495,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnvVarUpdateParams && envVarId == other.envVarId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is EnvVarUpdateParams &&
+            envVarId == other.envVarId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(envVarId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(envVarId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "EnvVarUpdateParams{envVarId=$envVarId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

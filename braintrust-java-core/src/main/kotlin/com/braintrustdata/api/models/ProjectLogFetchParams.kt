@@ -3,7 +3,6 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
@@ -17,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ProjectLogFetchParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val limit: Long?,
     private val maxRootSpanId: String?,
     private val maxXactId: String?,
@@ -27,7 +26,7 @@ private constructor(
 ) : Params {
 
     /** Project id */
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /**
      * limit the number of traces fetched
@@ -81,22 +80,19 @@ private constructor(
      */
     fun version(): Optional<String> = Optional.ofNullable(version)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectLogFetchParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectLogFetchParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectLogFetchParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -123,7 +119,10 @@ private constructor(
         }
 
         /** Project id */
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /**
          * limit the number of traces fetched
@@ -300,17 +299,10 @@ private constructor(
          * Returns an immutable instance of [ProjectLogFetchParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectLogFetchParams =
             ProjectLogFetchParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 limit,
                 maxRootSpanId,
                 maxXactId,
@@ -322,7 +314,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 
@@ -344,10 +336,26 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectLogFetchParams && projectId == other.projectId && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectLogFetchParams &&
+            projectId == other.projectId &&
+            limit == other.limit &&
+            maxRootSpanId == other.maxRootSpanId &&
+            maxXactId == other.maxXactId &&
+            version == other.version &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, limit, maxRootSpanId, maxXactId, version, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            projectId,
+            limit,
+            maxRootSpanId,
+            maxXactId,
+            version,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "ProjectLogFetchParams{projectId=$projectId, limit=$limit, maxRootSpanId=$maxRootSpanId, maxXactId=$maxXactId, version=$version, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

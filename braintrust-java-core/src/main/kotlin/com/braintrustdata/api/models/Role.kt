@@ -26,6 +26,7 @@ import kotlin.jvm.optionals.getOrNull
  * Roles can consist of individual permissions, as well as a set of roles they inherit from
  */
 class Role
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
@@ -537,6 +538,7 @@ private constructor(
             (if (userId.asKnown().isPresent) 1 else 0)
 
     class MemberPermission
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val permission: JsonField<Permission>,
         private val restrictObjectType: JsonField<AclObjectType>,
@@ -746,12 +748,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is MemberPermission && permission == other.permission && restrictObjectType == other.restrictObjectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is MemberPermission &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(permission, restrictObjectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(permission, restrictObjectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -764,12 +769,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Role && id == other.id && name == other.name && created == other.created && deletedAt == other.deletedAt && description == other.description && memberPermissions == other.memberPermissions && memberRoles == other.memberRoles && orgId == other.orgId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Role &&
+            id == other.id &&
+            name == other.name &&
+            created == other.created &&
+            deletedAt == other.deletedAt &&
+            description == other.description &&
+            memberPermissions == other.memberPermissions &&
+            memberRoles == other.memberRoles &&
+            orgId == other.orgId &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, created, deletedAt, description, memberPermissions, memberRoles, orgId, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            created,
+            deletedAt,
+            description,
+            memberPermissions,
+            memberRoles,
+            orgId,
+            userId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

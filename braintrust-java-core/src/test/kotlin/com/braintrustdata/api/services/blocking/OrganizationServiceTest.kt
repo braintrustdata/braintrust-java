@@ -4,8 +4,6 @@ package com.braintrustdata.api.services.blocking
 
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
-import com.braintrustdata.api.models.OrganizationDeleteParams
-import com.braintrustdata.api.models.OrganizationRetrieveParams
 import com.braintrustdata.api.models.OrganizationUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -22,12 +20,7 @@ internal class OrganizationServiceTest {
                 .build()
         val organizationService = client.organizations()
 
-        val organization =
-            organizationService.retrieve(
-                OrganizationRetrieveParams.builder()
-                    .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val organization = organizationService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         organization.validate()
     }
@@ -79,12 +72,7 @@ internal class OrganizationServiceTest {
                 .build()
         val organizationService = client.organizations()
 
-        val organization =
-            organizationService.delete(
-                OrganizationDeleteParams.builder()
-                    .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val organization = organizationService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         organization.validate()
     }

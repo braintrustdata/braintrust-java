@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class CreateApiKeyOutput
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val key: JsonField<String>,
@@ -381,12 +382,20 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CreateApiKeyOutput && id == other.id && key == other.key && name == other.name && previewName == other.previewName && created == other.created && orgId == other.orgId && userId == other.userId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is CreateApiKeyOutput &&
+            id == other.id &&
+            key == other.key &&
+            name == other.name &&
+            previewName == other.previewName &&
+            created == other.created &&
+            orgId == other.orgId &&
+            userId == other.userId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, key, name, previewName, created, orgId, userId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, key, name, previewName, created, orgId, userId, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

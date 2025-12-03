@@ -42,14 +42,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class FunctionUpdateParams
 private constructor(
-    private val functionId: String,
+    private val functionId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Function id */
-    fun functionId(): String = functionId
+    fun functionId(): Optional<String> = Optional.ofNullable(functionId)
 
     /**
      * Textual description of the prompt
@@ -126,22 +126,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [FunctionUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .functionId()
-         * ```
-         */
+        @JvmStatic fun none(): FunctionUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [FunctionUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -162,7 +159,10 @@ private constructor(
         }
 
         /** Function id */
-        fun functionId(functionId: String) = apply { this.functionId = functionId }
+        fun functionId(functionId: String?) = apply { this.functionId = functionId }
+
+        /** Alias for calling [Builder.functionId] with `functionId.orElse(null)`. */
+        fun functionId(functionId: Optional<String>) = functionId(functionId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -391,17 +391,10 @@ private constructor(
          * Returns an immutable instance of [FunctionUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .functionId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): FunctionUpdateParams =
             FunctionUpdateParams(
-                checkRequired("functionId", functionId),
+                functionId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -412,7 +405,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> functionId
+            0 -> functionId ?: ""
             else -> ""
         }
 
@@ -421,6 +414,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val description: JsonField<String>,
         private val functionData: JsonField<FunctionData>,
@@ -745,12 +739,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && description == other.description && functionData == other.functionData && name == other.name && promptData == other.promptData && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                description == other.description &&
+                functionData == other.functionData &&
+                name == other.name &&
+                promptData == other.promptData &&
+                tags == other.tags &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, functionData, name, promptData, tags, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(description, functionData, name, promptData, tags, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -854,10 +854,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is FunctionData && prompt == other.prompt && code == other.code && global == other.global /* spotless:on */
+            return other is FunctionData &&
+                prompt == other.prompt &&
+                code == other.code &&
+                global == other.global
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(prompt, code, global) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(prompt, code, global)
 
         override fun toString(): String =
             when {
@@ -955,6 +958,7 @@ private constructor(
         }
 
         class Prompt
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val type: JsonField<Type>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1209,7 +1213,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1222,12 +1226,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Prompt && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Prompt &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1236,6 +1240,7 @@ private constructor(
         }
 
         class Code
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<Data>,
             private val type: JsonField<Type>,
@@ -1500,10 +1505,10 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Data && bundle == other.bundle && inline == other.inline /* spotless:on */
+                    return other is Data && bundle == other.bundle && inline == other.inline
                 }
 
-                override fun hashCode(): Int = /* spotless:off */ Objects.hash(bundle, inline) /* spotless:on */
+                override fun hashCode(): Int = Objects.hash(bundle, inline)
 
                 override fun toString(): String =
                     when {
@@ -1593,6 +1598,7 @@ private constructor(
                 }
 
                 class Bundle
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val bundleId: JsonField<String>,
                     private val location: JsonField<CodeBundle.Location>,
@@ -2051,7 +2057,7 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                            return other is Type && value == other.value
                         }
 
                         override fun hashCode() = value.hashCode()
@@ -2064,12 +2070,25 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is Bundle && bundleId == other.bundleId && location == other.location && runtimeContext == other.runtimeContext && preview == other.preview && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                        return other is Bundle &&
+                            bundleId == other.bundleId &&
+                            location == other.location &&
+                            runtimeContext == other.runtimeContext &&
+                            preview == other.preview &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
                     }
 
-                    /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(bundleId, location, runtimeContext, preview, type, additionalProperties) }
-                    /* spotless:on */
+                    private val hashCode: Int by lazy {
+                        Objects.hash(
+                            bundleId,
+                            location,
+                            runtimeContext,
+                            preview,
+                            type,
+                            additionalProperties,
+                        )
+                    }
 
                     override fun hashCode(): Int = hashCode
 
@@ -2078,6 +2097,7 @@ private constructor(
                 }
 
                 class Inline
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val code: JsonField<String>,
                     private val runtimeContext: JsonField<RuntimeContext>,
@@ -2305,6 +2325,7 @@ private constructor(
                             (type.asKnown().getOrNull()?.validity() ?: 0)
 
                     class RuntimeContext
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val runtime: JsonField<Runtime>,
                         private val version: JsonField<String>,
@@ -2631,7 +2652,7 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is Runtime && value == other.value /* spotless:on */
+                                return other is Runtime && value == other.value
                             }
 
                             override fun hashCode() = value.hashCode()
@@ -2644,12 +2665,15 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is RuntimeContext && runtime == other.runtime && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+                            return other is RuntimeContext &&
+                                runtime == other.runtime &&
+                                version == other.version &&
+                                additionalProperties == other.additionalProperties
                         }
 
-                        /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(runtime, version, additionalProperties) }
-                        /* spotless:on */
+                        private val hashCode: Int by lazy {
+                            Objects.hash(runtime, version, additionalProperties)
+                        }
 
                         override fun hashCode(): Int = hashCode
 
@@ -2778,7 +2802,7 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                            return other is Type && value == other.value
                         }
 
                         override fun hashCode() = value.hashCode()
@@ -2791,12 +2815,16 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is Inline && code == other.code && runtimeContext == other.runtimeContext && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                        return other is Inline &&
+                            code == other.code &&
+                            runtimeContext == other.runtimeContext &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
                     }
 
-                    /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(code, runtimeContext, type, additionalProperties) }
-                    /* spotless:on */
+                    private val hashCode: Int by lazy {
+                        Objects.hash(code, runtimeContext, type, additionalProperties)
+                    }
 
                     override fun hashCode(): Int = hashCode
 
@@ -2921,7 +2949,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -2934,12 +2962,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Code && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Code &&
+                    data == other.data &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -2948,6 +2977,7 @@ private constructor(
         }
 
         class Global
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val type: JsonField<Type>,
@@ -3240,7 +3270,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -3253,12 +3283,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Global && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Global &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(name, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -3272,10 +3303,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FunctionUpdateParams && functionId == other.functionId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is FunctionUpdateParams &&
+            functionId == other.functionId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(functionId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "FunctionUpdateParams{functionId=$functionId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

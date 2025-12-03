@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class View
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
@@ -686,7 +687,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ViewType && value == other.value /* spotless:on */
+            return other is ViewType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -699,12 +700,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is View && id == other.id && name == other.name && objectId == other.objectId && objectType == other.objectType && viewType == other.viewType && created == other.created && deletedAt == other.deletedAt && options == other.options && userId == other.userId && viewData == other.viewData && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is View &&
+            id == other.id &&
+            name == other.name &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            viewType == other.viewType &&
+            created == other.created &&
+            deletedAt == other.deletedAt &&
+            options == other.options &&
+            userId == other.userId &&
+            viewData == other.viewData &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, objectId, objectType, viewType, created, deletedAt, options, userId, viewData, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            name,
+            objectId,
+            objectType,
+            viewType,
+            created,
+            deletedAt,
+            options,
+            userId,
+            viewData,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

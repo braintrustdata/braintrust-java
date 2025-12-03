@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
@@ -28,14 +27,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class AiSecretUpdateParams
 private constructor(
-    private val aiSecretId: String,
+    private val aiSecretId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** AiSecret id */
-    fun aiSecretId(): String = aiSecretId
+    fun aiSecretId(): Optional<String> = Optional.ofNullable(aiSecretId)
 
     /**
      * @throws BraintrustInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -93,22 +92,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [AiSecretUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .aiSecretId()
-         * ```
-         */
+        @JvmStatic fun none(): AiSecretUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [AiSecretUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -129,7 +125,10 @@ private constructor(
         }
 
         /** AiSecret id */
-        fun aiSecretId(aiSecretId: String) = apply { this.aiSecretId = aiSecretId }
+        fun aiSecretId(aiSecretId: String?) = apply { this.aiSecretId = aiSecretId }
+
+        /** Alias for calling [Builder.aiSecretId] with `aiSecretId.orElse(null)`. */
+        fun aiSecretId(aiSecretId: Optional<String>) = aiSecretId(aiSecretId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -318,17 +317,10 @@ private constructor(
          * Returns an immutable instance of [AiSecretUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .aiSecretId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): AiSecretUpdateParams =
             AiSecretUpdateParams(
-                checkRequired("aiSecretId", aiSecretId),
+                aiSecretId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -339,7 +331,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> aiSecretId
+            0 -> aiSecretId ?: ""
             else -> ""
         }
 
@@ -348,6 +340,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val metadata: JsonField<Metadata>,
         private val name: JsonField<String>,
@@ -581,12 +574,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && metadata == other.metadata && name == other.name && secret == other.secret && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                metadata == other.metadata &&
+                name == other.name &&
+                secret == other.secret &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(metadata, name, secret, type, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(metadata, name, secret, type, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -683,12 +681,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -700,10 +696,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AiSecretUpdateParams && aiSecretId == other.aiSecretId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is AiSecretUpdateParams &&
+            aiSecretId == other.aiSecretId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(aiSecretId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "AiSecretUpdateParams{aiSecretId=$aiSecretId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

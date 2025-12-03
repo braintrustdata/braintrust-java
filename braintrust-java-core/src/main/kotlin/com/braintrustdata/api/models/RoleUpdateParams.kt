@@ -29,14 +29,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class RoleUpdateParams
 private constructor(
-    private val roleId: String,
+    private val roleId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Role id */
-    fun roleId(): String = roleId
+    fun roleId(): Optional<String> = Optional.ofNullable(roleId)
 
     /**
      * A list of permissions to add to the role
@@ -135,22 +135,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [RoleUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .roleId()
-         * ```
-         */
+        @JvmStatic fun none(): RoleUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [RoleUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -171,7 +168,10 @@ private constructor(
         }
 
         /** Role id */
-        fun roleId(roleId: String) = apply { this.roleId = roleId }
+        fun roleId(roleId: String?) = apply { this.roleId = roleId }
+
+        /** Alias for calling [Builder.roleId] with `roleId.orElse(null)`. */
+        fun roleId(roleId: Optional<String>) = roleId(roleId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -460,17 +460,10 @@ private constructor(
          * Returns an immutable instance of [RoleUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .roleId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): RoleUpdateParams =
             RoleUpdateParams(
-                checkRequired("roleId", roleId),
+                roleId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -481,7 +474,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> roleId
+            0 -> roleId ?: ""
             else -> ""
         }
 
@@ -490,6 +483,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val addMemberPermissions: JsonField<List<AddMemberPermission>>,
         private val addMemberRoles: JsonField<List<String>>,
@@ -927,12 +921,27 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && addMemberPermissions == other.addMemberPermissions && addMemberRoles == other.addMemberRoles && description == other.description && name == other.name && removeMemberPermissions == other.removeMemberPermissions && removeMemberRoles == other.removeMemberRoles && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                addMemberPermissions == other.addMemberPermissions &&
+                addMemberRoles == other.addMemberRoles &&
+                description == other.description &&
+                name == other.name &&
+                removeMemberPermissions == other.removeMemberPermissions &&
+                removeMemberRoles == other.removeMemberRoles &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(addMemberPermissions, addMemberRoles, description, name, removeMemberPermissions, removeMemberRoles, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                addMemberPermissions,
+                addMemberRoles,
+                description,
+                name,
+                removeMemberPermissions,
+                removeMemberRoles,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -941,6 +950,7 @@ private constructor(
     }
 
     class AddMemberPermission
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val permission: JsonField<Permission>,
         private val restrictObjectType: JsonField<AclObjectType>,
@@ -1150,12 +1160,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AddMemberPermission && permission == other.permission && restrictObjectType == other.restrictObjectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is AddMemberPermission &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(permission, restrictObjectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(permission, restrictObjectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1164,6 +1177,7 @@ private constructor(
     }
 
     class RemoveMemberPermission
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val permission: JsonField<Permission>,
         private val restrictObjectType: JsonField<AclObjectType>,
@@ -1373,12 +1387,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveMemberPermission && permission == other.permission && restrictObjectType == other.restrictObjectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is RemoveMemberPermission &&
+                permission == other.permission &&
+                restrictObjectType == other.restrictObjectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(permission, restrictObjectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(permission, restrictObjectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1391,10 +1408,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RoleUpdateParams && roleId == other.roleId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is RoleUpdateParams &&
+            roleId == other.roleId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(roleId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(roleId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "RoleUpdateParams{roleId=$roleId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

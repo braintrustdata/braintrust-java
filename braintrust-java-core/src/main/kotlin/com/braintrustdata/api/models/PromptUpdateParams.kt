@@ -8,7 +8,6 @@ import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
 import com.braintrustdata.api.core.checkKnown
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
@@ -29,14 +28,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class PromptUpdateParams
 private constructor(
-    private val promptId: String,
+    private val promptId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Prompt id */
-    fun promptId(): String = promptId
+    fun promptId(): Optional<String> = Optional.ofNullable(promptId)
 
     /**
      * Textual description of the prompt
@@ -115,22 +114,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [PromptUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .promptId()
-         * ```
-         */
+        @JvmStatic fun none(): PromptUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [PromptUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -151,7 +147,10 @@ private constructor(
         }
 
         /** Prompt id */
-        fun promptId(promptId: String) = apply { this.promptId = promptId }
+        fun promptId(promptId: String?) = apply { this.promptId = promptId }
+
+        /** Alias for calling [Builder.promptId] with `promptId.orElse(null)`. */
+        fun promptId(promptId: Optional<String>) = promptId(promptId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -368,17 +367,10 @@ private constructor(
          * Returns an immutable instance of [PromptUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .promptId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PromptUpdateParams =
             PromptUpdateParams(
-                checkRequired("promptId", promptId),
+                promptId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -389,7 +381,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> promptId
+            0 -> promptId ?: ""
             else -> ""
         }
 
@@ -398,6 +390,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val description: JsonField<String>,
         private val name: JsonField<String>,
@@ -705,12 +698,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && description == other.description && name == other.name && promptData == other.promptData && slug == other.slug && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                description == other.description &&
+                name == other.name &&
+                promptData == other.promptData &&
+                slug == other.slug &&
+                tags == other.tags &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, name, promptData, slug, tags, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(description, name, promptData, slug, tags, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -723,10 +722,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptUpdateParams && promptId == other.promptId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is PromptUpdateParams &&
+            promptId == other.promptId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(promptId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(promptId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "PromptUpdateParams{promptId=$promptId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

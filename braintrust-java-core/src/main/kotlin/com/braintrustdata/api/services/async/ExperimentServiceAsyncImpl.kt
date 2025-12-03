@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -33,6 +34,8 @@ import com.braintrustdata.api.models.FetchExperimentEventsResponse
 import com.braintrustdata.api.models.InsertEventsResponse
 import com.braintrustdata.api.models.SummarizeExperimentResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class ExperimentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ExperimentServiceAsync {
@@ -42,6 +45,9 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
     }
 
     override fun withRawResponse(): ExperimentServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ExperimentServiceAsync =
+        ExperimentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: ExperimentCreateParams,
@@ -116,10 +122,18 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ExperimentServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ExperimentServiceAsync.WithRawResponse =
+            ExperimentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Experiment>(clientOptions.jsonMapper)
 
         override fun create(
             params: ExperimentCreateParams,
@@ -128,6 +142,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -136,7 +151,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -149,15 +164,19 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val retrieveHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Experiment>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: ExperimentRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Experiment>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -165,7 +184,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -178,15 +197,19 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val updateHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Experiment>(clientOptions.jsonMapper)
 
         override fun update(
             params: ExperimentUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Experiment>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -195,7 +218,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -209,7 +232,6 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val listHandler: Handler<ExperimentListPageResponse> =
             jsonHandler<ExperimentListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: ExperimentListParams,
@@ -218,6 +240,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -225,7 +248,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -236,6 +259,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 ExperimentListPageAsync.builder()
                                     .service(ExperimentServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -245,15 +269,19 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
         }
 
         private val deleteHandler: Handler<Experiment> =
-            jsonHandler<Experiment>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Experiment>(clientOptions.jsonMapper)
 
         override fun delete(
             params: ExperimentDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Experiment>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -262,7 +290,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
@@ -276,15 +304,18 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val feedbackHandler: Handler<FeedbackResponseSchema> =
             jsonHandler<FeedbackResponseSchema>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun feedback(
             params: ExperimentFeedbackParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FeedbackResponseSchema>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0), "feedback")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -293,7 +324,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { feedbackHandler.handle(it) }
                             .also {
@@ -307,15 +338,18 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val fetchHandler: Handler<FetchExperimentEventsResponse> =
             jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun fetch(
             params: ExperimentFetchParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0), "fetch")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -323,7 +357,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { fetchHandler.handle(it) }
                             .also {
@@ -337,15 +371,18 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val fetchPostHandler: Handler<FetchExperimentEventsResponse> =
             jsonHandler<FetchExperimentEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun fetchPost(
             params: ExperimentFetchPostParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FetchExperimentEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0), "fetch")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -354,7 +391,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { fetchPostHandler.handle(it) }
                             .also {
@@ -368,15 +405,18 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val insertHandler: Handler<InsertEventsResponse> =
             jsonHandler<InsertEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun insert(
             params: ExperimentInsertParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<InsertEventsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0), "insert")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -385,7 +425,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { insertHandler.handle(it) }
                             .also {
@@ -399,15 +439,18 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val summarizeHandler: Handler<SummarizeExperimentResponse> =
             jsonHandler<SummarizeExperimentResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun summarize(
             params: ExperimentSummarizeParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SummarizeExperimentResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("experimentId", params.experimentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "experiment", params._pathParam(0), "summarize")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -415,7 +458,7 @@ class ExperimentServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { summarizeHandler.handle(it) }
                             .also {

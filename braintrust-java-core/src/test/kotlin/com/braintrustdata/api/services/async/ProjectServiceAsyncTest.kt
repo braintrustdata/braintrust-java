@@ -5,8 +5,6 @@ package com.braintrustdata.api.services.async
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClientAsync
 import com.braintrustdata.api.models.ProjectCreateParams
-import com.braintrustdata.api.models.ProjectDeleteParams
-import com.braintrustdata.api.models.ProjectRetrieveParams
 import com.braintrustdata.api.models.ProjectSettings
 import com.braintrustdata.api.models.ProjectUpdateParams
 import org.junit.jupiter.api.Test
@@ -42,12 +40,7 @@ internal class ProjectServiceAsyncTest {
                 .build()
         val projectServiceAsync = client.projects()
 
-        val projectFuture =
-            projectServiceAsync.retrieve(
-                ProjectRetrieveParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val projectFuture = projectServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val project = projectFuture.get()
         project.validate()
@@ -112,12 +105,7 @@ internal class ProjectServiceAsyncTest {
                 .build()
         val projectServiceAsync = client.projects()
 
-        val projectFuture =
-            projectServiceAsync.delete(
-                ProjectDeleteParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val projectFuture = projectServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val project = projectFuture.get()
         project.validate()

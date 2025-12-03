@@ -17,19 +17,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Delete a view object by its id */
 class ViewDeleteParams
 private constructor(
-    private val viewId: String,
+    private val viewId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** View id */
-    fun viewId(): String = viewId
+    fun viewId(): Optional<String> = Optional.ofNullable(viewId)
 
     /**
      * The id of the object the view applies to
@@ -63,8 +64,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -76,7 +79,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .viewId()
          * .objectId()
          * .objectType()
          * ```
@@ -101,7 +103,10 @@ private constructor(
         }
 
         /** View id */
-        fun viewId(viewId: String) = apply { this.viewId = viewId }
+        fun viewId(viewId: String?) = apply { this.viewId = viewId }
+
+        /** Alias for calling [Builder.viewId] with `viewId.orElse(null)`. */
+        fun viewId(viewId: Optional<String>) = viewId(viewId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -260,7 +265,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .viewId()
          * .objectId()
          * .objectType()
          * ```
@@ -269,7 +273,7 @@ private constructor(
          */
         fun build(): ViewDeleteParams =
             ViewDeleteParams(
-                checkRequired("viewId", viewId),
+                viewId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -280,7 +284,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> viewId
+            0 -> viewId ?: ""
             else -> ""
         }
 
@@ -289,6 +293,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val objectId: JsonField<String>,
         private val objectType: JsonField<AclObjectType>,
@@ -479,12 +484,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && objectId == other.objectId && objectType == other.objectType && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                objectId == other.objectId &&
+                objectType == other.objectType &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(objectId, objectType, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(objectId, objectType, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -497,10 +505,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewDeleteParams && viewId == other.viewId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ViewDeleteParams &&
+            viewId == other.viewId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(viewId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ViewDeleteParams{viewId=$viewId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

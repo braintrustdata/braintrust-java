@@ -3,38 +3,36 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get a project_tag object by its id */
 class ProjectTagRetrieveParams
 private constructor(
-    private val projectTagId: String,
+    private val projectTagId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** ProjectTag id */
-    fun projectTagId(): String = projectTagId
+    fun projectTagId(): Optional<String> = Optional.ofNullable(projectTagId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectTagRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectTagId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectTagRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectTagRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +51,10 @@ private constructor(
         }
 
         /** ProjectTag id */
-        fun projectTagId(projectTagId: String) = apply { this.projectTagId = projectTagId }
+        fun projectTagId(projectTagId: String?) = apply { this.projectTagId = projectTagId }
+
+        /** Alias for calling [Builder.projectTagId] with `projectTagId.orElse(null)`. */
+        fun projectTagId(projectTagId: Optional<String>) = projectTagId(projectTagId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,17 +158,10 @@ private constructor(
          * Returns an immutable instance of [ProjectTagRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectTagId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectTagRetrieveParams =
             ProjectTagRetrieveParams(
-                checkRequired("projectTagId", projectTagId),
+                projectTagId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +169,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectTagId
+            0 -> projectTagId ?: ""
             else -> ""
         }
 
@@ -188,10 +182,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectTagRetrieveParams && projectTagId == other.projectTagId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectTagRetrieveParams &&
+            projectTagId == other.projectTagId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectTagId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(projectTagId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectTagRetrieveParams{projectTagId=$projectTagId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

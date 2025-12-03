@@ -2,49 +2,43 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPager
+import com.braintrustdata.api.core.Page
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.AiSecretService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [AiSecretService.list] */
+/** @see AiSecretService.list */
 class AiSecretListPage
 private constructor(
     private val service: AiSecretService,
     private val params: AiSecretListParams,
     private val response: AiSecretListPageResponse,
-) {
+) : Page<AISecret> {
 
     /**
      * Delegates to [AiSecretListPageResponse], but gracefully handles missing data.
      *
-     * @see [AiSecretListPageResponse.objects]
+     * @see AiSecretListPageResponse.objects
      */
     fun objects(): List<AISecret> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<AISecret> = objects()
 
-    fun getNextPageParams(): Optional<AiSecretListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): AiSecretListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): AiSecretListPage = service.list(nextPageParams())
 
-    fun getNextPage(): Optional<AiSecretListPage> = getNextPageParams().map { service.list(it) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<AISecret> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): AiSecretListParams = params
@@ -113,34 +107,18 @@ private constructor(
             )
     }
 
-    class AutoPager(private val firstPage: AiSecretListPage) : Iterable<AISecret> {
-
-        override fun iterator(): Iterator<AISecret> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.objects().size) {
-                    yield(page.objects()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<AISecret> {
-            return StreamSupport.stream(spliterator(), false)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is AiSecretListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return other is AiSecretListPage &&
+            service == other.service &&
+            params == other.params &&
+            response == other.response
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, response)
 
     override fun toString() =
         "AiSecretListPage{service=$service, params=$params, response=$response}"

@@ -18,6 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Metadata about the state of the repo when the experiment was created */
 class RepoInfo
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val authorEmail: JsonField<String>,
     private val authorName: JsonField<String>,
@@ -481,12 +482,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RepoInfo && authorEmail == other.authorEmail && authorName == other.authorName && branch == other.branch && commit == other.commit && commitMessage == other.commitMessage && commitTime == other.commitTime && dirty == other.dirty && gitDiff == other.gitDiff && tag == other.tag && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is RepoInfo &&
+            authorEmail == other.authorEmail &&
+            authorName == other.authorName &&
+            branch == other.branch &&
+            commit == other.commit &&
+            commitMessage == other.commitMessage &&
+            commitTime == other.commitTime &&
+            dirty == other.dirty &&
+            gitDiff == other.gitDiff &&
+            tag == other.tag &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(authorEmail, authorName, branch, commit, commitMessage, commitTime, dirty, gitDiff, tag, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            authorEmail,
+            authorName,
+            branch,
+            commit,
+            commitMessage,
+            commitTime,
+            dirty,
+            gitDiff,
+            tag,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

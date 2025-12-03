@@ -4,43 +4,41 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a project_score object by its id */
 class ProjectScoreDeleteParams
 private constructor(
-    private val projectScoreId: String,
+    private val projectScoreId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** ProjectScore id */
-    fun projectScoreId(): String = projectScoreId
+    fun projectScoreId(): Optional<String> = Optional.ofNullable(projectScoreId)
 
+    /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectScoreDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectScoreDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectScoreDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -62,7 +60,11 @@ private constructor(
         }
 
         /** ProjectScore id */
-        fun projectScoreId(projectScoreId: String) = apply { this.projectScoreId = projectScoreId }
+        fun projectScoreId(projectScoreId: String?) = apply { this.projectScoreId = projectScoreId }
+
+        /** Alias for calling [Builder.projectScoreId] with `projectScoreId.orElse(null)`. */
+        fun projectScoreId(projectScoreId: Optional<String>) =
+            projectScoreId(projectScoreId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -188,17 +190,10 @@ private constructor(
          * Returns an immutable instance of [ProjectScoreDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectScoreId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectScoreDeleteParams =
             ProjectScoreDeleteParams(
-                checkRequired("projectScoreId", projectScoreId),
+                projectScoreId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -210,7 +205,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectScoreId
+            0 -> projectScoreId ?: ""
             else -> ""
         }
 
@@ -223,10 +218,20 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreDeleteParams && projectScoreId == other.projectScoreId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is ProjectScoreDeleteParams &&
+            projectScoreId == other.projectScoreId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectScoreId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            projectScoreId,
+            additionalHeaders,
+            additionalQueryParams,
+            additionalBodyProperties,
+        )
 
     override fun toString() =
         "ProjectScoreDeleteParams{projectScoreId=$projectScoreId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

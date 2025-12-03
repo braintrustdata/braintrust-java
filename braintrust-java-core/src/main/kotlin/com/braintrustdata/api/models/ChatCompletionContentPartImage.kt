@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ChatCompletionContentPartImage
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val imageUrl: JsonField<ImageUrl>,
     private val type: JsonField<Type>,
@@ -191,6 +192,7 @@ private constructor(
             (type.asKnown().getOrNull()?.validity() ?: 0)
 
     class ImageUrl
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val url: JsonField<String>,
         private val detail: JsonField<Detail>,
@@ -483,7 +485,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Detail && value == other.value /* spotless:on */
+                return other is Detail && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -496,12 +498,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ImageUrl && url == other.url && detail == other.detail && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ImageUrl &&
+                url == other.url &&
+                detail == other.detail &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(url, detail, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -622,7 +625,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -635,12 +638,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ChatCompletionContentPartImage && imageUrl == other.imageUrl && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ChatCompletionContentPartImage &&
+            imageUrl == other.imageUrl &&
+            type == other.type &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(imageUrl, type, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

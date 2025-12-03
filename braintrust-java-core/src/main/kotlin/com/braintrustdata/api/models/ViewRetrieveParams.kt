@@ -7,11 +7,13 @@ import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get a view object by its id */
 class ViewRetrieveParams
 private constructor(
-    private val viewId: String,
+    private val viewId: String?,
     private val objectId: String,
     private val objectType: AclObjectType,
     private val additionalHeaders: Headers,
@@ -19,7 +21,7 @@ private constructor(
 ) : Params {
 
     /** View id */
-    fun viewId(): String = viewId
+    fun viewId(): Optional<String> = Optional.ofNullable(viewId)
 
     /** The id of the object the ACL applies to */
     fun objectId(): String = objectId
@@ -27,8 +29,10 @@ private constructor(
     /** The object type that the ACL applies to */
     fun objectType(): AclObjectType = objectType
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -40,7 +44,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .viewId()
          * .objectId()
          * .objectType()
          * ```
@@ -67,7 +70,10 @@ private constructor(
         }
 
         /** View id */
-        fun viewId(viewId: String) = apply { this.viewId = viewId }
+        fun viewId(viewId: String?) = apply { this.viewId = viewId }
+
+        /** Alias for calling [Builder.viewId] with `viewId.orElse(null)`. */
+        fun viewId(viewId: Optional<String>) = viewId(viewId.getOrNull())
 
         /** The id of the object the ACL applies to */
         fun objectId(objectId: String) = apply { this.objectId = objectId }
@@ -180,7 +186,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .viewId()
          * .objectId()
          * .objectType()
          * ```
@@ -189,7 +194,7 @@ private constructor(
          */
         fun build(): ViewRetrieveParams =
             ViewRetrieveParams(
-                checkRequired("viewId", viewId),
+                viewId,
                 checkRequired("objectId", objectId),
                 checkRequired("objectType", objectType),
                 additionalHeaders.build(),
@@ -199,7 +204,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> viewId
+            0 -> viewId ?: ""
             else -> ""
         }
 
@@ -219,10 +224,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewRetrieveParams && viewId == other.viewId && objectId == other.objectId && objectType == other.objectType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ViewRetrieveParams &&
+            viewId == other.viewId &&
+            objectId == other.objectId &&
+            objectType == other.objectType &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(viewId, objectId, objectType, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ViewRetrieveParams{viewId=$viewId, objectId=$objectId, objectType=$objectType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

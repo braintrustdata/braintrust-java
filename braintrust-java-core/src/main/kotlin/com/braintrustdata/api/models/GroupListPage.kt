@@ -2,49 +2,43 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPager
+import com.braintrustdata.api.core.Page
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.GroupService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [GroupService.list] */
+/** @see GroupService.list */
 class GroupListPage
 private constructor(
     private val service: GroupService,
     private val params: GroupListParams,
     private val response: GroupListPageResponse,
-) {
+) : Page<Group> {
 
     /**
      * Delegates to [GroupListPageResponse], but gracefully handles missing data.
      *
-     * @see [GroupListPageResponse.objects]
+     * @see GroupListPageResponse.objects
      */
     fun objects(): List<Group> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<Group> = objects()
 
-    fun getNextPageParams(): Optional<GroupListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): GroupListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): GroupListPage = service.list(nextPageParams())
 
-    fun getNextPage(): Optional<GroupListPage> = getNextPageParams().map { service.list(it) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<Group> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): GroupListParams = params
@@ -113,34 +107,18 @@ private constructor(
             )
     }
 
-    class AutoPager(private val firstPage: GroupListPage) : Iterable<Group> {
-
-        override fun iterator(): Iterator<Group> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.objects().size) {
-                    yield(page.objects()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<Group> {
-            return StreamSupport.stream(spliterator(), false)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is GroupListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return other is GroupListPage &&
+            service == other.service &&
+            params == other.params &&
+            response == other.response
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, response)
 
     override fun toString() = "GroupListPage{service=$service, params=$params, response=$response}"
 }

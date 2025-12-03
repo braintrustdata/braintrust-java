@@ -133,8 +133,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -419,6 +421,7 @@ private constructor(
 
     /** A project score is a user-configured score, which can be manually-labeled through the UI */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val projectId: JsonField<String>,
@@ -781,12 +784,27 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && name == other.name && projectId == other.projectId && scoreType == other.scoreType && categories == other.categories && config == other.config && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                name == other.name &&
+                projectId == other.projectId &&
+                scoreType == other.scoreType &&
+                categories == other.categories &&
+                config == other.config &&
+                description == other.description &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(name, projectId, scoreType, categories, config, description, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                name,
+                projectId,
+                scoreType,
+                categories,
+                config,
+                description,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -896,10 +914,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Categories && categorical == other.categorical && weighted == other.weighted && minimum == other.minimum /* spotless:on */
+            return other is Categories &&
+                categorical == other.categorical &&
+                weighted == other.weighted &&
+                minimum == other.minimum
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(categorical, weighted, minimum) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(categorical, weighted, minimum)
 
         override fun toString(): String =
             when {
@@ -915,13 +936,14 @@ private constructor(
             /** For categorical-type project scores, the list of all categories */
             @JvmStatic
             fun ofCategorical(categorical: List<ProjectScoreCategory>) =
-                Categories(categorical = categorical)
+                Categories(categorical = categorical.toImmutable())
 
             /** For weighted-type project scores, the weights of each score */
             @JvmStatic fun ofWeighted(weighted: Weighted) = Categories(weighted = weighted)
 
             /** For minimum-type project scores, the list of included scores */
-            @JvmStatic fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum)
+            @JvmStatic
+            fun ofMinimum(minimum: List<String>) = Categories(minimum = minimum.toImmutable())
         }
 
         /**
@@ -1095,12 +1117,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Weighted && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Weighted && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1113,10 +1133,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectScoreCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectScoreCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

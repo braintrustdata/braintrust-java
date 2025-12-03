@@ -2,49 +2,43 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPager
+import com.braintrustdata.api.core.Page
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.RoleService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [RoleService.list] */
+/** @see RoleService.list */
 class RoleListPage
 private constructor(
     private val service: RoleService,
     private val params: RoleListParams,
     private val response: RoleListPageResponse,
-) {
+) : Page<Role> {
 
     /**
      * Delegates to [RoleListPageResponse], but gracefully handles missing data.
      *
-     * @see [RoleListPageResponse.objects]
+     * @see RoleListPageResponse.objects
      */
     fun objects(): List<Role> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<Role> = objects()
 
-    fun getNextPageParams(): Optional<RoleListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): RoleListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): RoleListPage = service.list(nextPageParams())
 
-    fun getNextPage(): Optional<RoleListPage> = getNextPageParams().map { service.list(it) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<Role> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): RoleListParams = params
@@ -113,34 +107,18 @@ private constructor(
             )
     }
 
-    class AutoPager(private val firstPage: RoleListPage) : Iterable<Role> {
-
-        override fun iterator(): Iterator<Role> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.objects().size) {
-                    yield(page.objects()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<Role> {
-            return StreamSupport.stream(spliterator(), false)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is RoleListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return other is RoleListPage &&
+            service == other.service &&
+            params == other.params &&
+            response == other.response
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, response)
 
     override fun toString() = "RoleListPage{service=$service, params=$params, response=$response}"
 }

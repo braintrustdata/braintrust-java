@@ -95,8 +95,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -345,6 +347,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val inviteUsers: JsonField<InviteUsers>,
         private val orgId: JsonField<String>,
@@ -615,12 +618,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && inviteUsers == other.inviteUsers && orgId == other.orgId && orgName == other.orgName && removeUsers == other.removeUsers && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                inviteUsers == other.inviteUsers &&
+                orgId == other.orgId &&
+                orgName == other.orgName &&
+                removeUsers == other.removeUsers &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(inviteUsers, orgId, orgName, removeUsers, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -630,6 +638,7 @@ private constructor(
 
     /** Users to invite to the organization */
     class InviteUsers
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val emails: JsonField<List<String>>,
         private val groupId: JsonField<String>,
@@ -1081,12 +1090,29 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InviteUsers && emails == other.emails && groupId == other.groupId && groupIds == other.groupIds && groupName == other.groupName && groupNames == other.groupNames && ids == other.ids && sendInviteEmails == other.sendInviteEmails && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is InviteUsers &&
+                emails == other.emails &&
+                groupId == other.groupId &&
+                groupIds == other.groupIds &&
+                groupName == other.groupName &&
+                groupNames == other.groupNames &&
+                ids == other.ids &&
+                sendInviteEmails == other.sendInviteEmails &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(emails, groupId, groupIds, groupName, groupNames, ids, sendInviteEmails, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                emails,
+                groupId,
+                groupIds,
+                groupName,
+                groupNames,
+                ids,
+                sendInviteEmails,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1096,6 +1122,7 @@ private constructor(
 
     /** Users to remove from the organization */
     class RemoveUsers
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val emails: JsonField<List<String>>,
         private val ids: JsonField<List<String>>,
@@ -1294,12 +1321,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RemoveUsers && emails == other.emails && ids == other.ids && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is RemoveUsers &&
+                emails == other.emails &&
+                ids == other.ids &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(emails, ids, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1312,10 +1340,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is OrganizationMemberUpdateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is OrganizationMemberUpdateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "OrganizationMemberUpdateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

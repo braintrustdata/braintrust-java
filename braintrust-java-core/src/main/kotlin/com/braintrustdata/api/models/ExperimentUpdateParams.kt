@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
@@ -28,14 +27,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ExperimentUpdateParams
 private constructor(
-    private val experimentId: String,
+    private val experimentId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Experiment id */
-    fun experimentId(): String = experimentId
+    fun experimentId(): Optional<String> = Optional.ofNullable(experimentId)
 
     /**
      * Id of default base experiment to compare against when viewing this experiment
@@ -161,22 +160,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ExperimentUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         */
+        @JvmStatic fun none(): ExperimentUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ExperimentUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -197,7 +193,10 @@ private constructor(
         }
 
         /** Experiment id */
-        fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
+        fun experimentId(experimentId: String?) = apply { this.experimentId = experimentId }
+
+        /** Alias for calling [Builder.experimentId] with `experimentId.orElse(null)`. */
+        fun experimentId(experimentId: Optional<String>) = experimentId(experimentId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -470,17 +469,10 @@ private constructor(
          * Returns an immutable instance of [ExperimentUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ExperimentUpdateParams =
             ExperimentUpdateParams(
-                checkRequired("experimentId", experimentId),
+                experimentId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -491,7 +483,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> experimentId
+            0 -> experimentId ?: ""
             else -> ""
         }
 
@@ -500,6 +492,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val baseExpId: JsonField<String>,
         private val datasetId: JsonField<String>,
@@ -945,12 +938,31 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && baseExpId == other.baseExpId && datasetId == other.datasetId && datasetVersion == other.datasetVersion && description == other.description && metadata == other.metadata && name == other.name && public_ == other.public_ && repoInfo == other.repoInfo && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                baseExpId == other.baseExpId &&
+                datasetId == other.datasetId &&
+                datasetVersion == other.datasetVersion &&
+                description == other.description &&
+                metadata == other.metadata &&
+                name == other.name &&
+                public_ == other.public_ &&
+                repoInfo == other.repoInfo &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(baseExpId, datasetId, datasetVersion, description, metadata, name, public_, repoInfo, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                baseExpId,
+                datasetId,
+                datasetVersion,
+                description,
+                metadata,
+                name,
+                public_,
+                repoInfo,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1048,12 +1060,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1065,10 +1075,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentUpdateParams && experimentId == other.experimentId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentUpdateParams &&
+            experimentId == other.experimentId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ExperimentUpdateParams{experimentId=$experimentId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

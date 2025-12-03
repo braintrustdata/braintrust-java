@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
@@ -28,14 +27,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class DatasetUpdateParams
 private constructor(
-    private val datasetId: String,
+    private val datasetId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Dataset id */
-    fun datasetId(): String = datasetId
+    fun datasetId(): Optional<String> = Optional.ofNullable(datasetId)
 
     /**
      * Textual description of the dataset
@@ -84,22 +83,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [DatasetUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .datasetId()
-         * ```
-         */
+        @JvmStatic fun none(): DatasetUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [DatasetUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -120,7 +116,10 @@ private constructor(
         }
 
         /** Dataset id */
-        fun datasetId(datasetId: String) = apply { this.datasetId = datasetId }
+        fun datasetId(datasetId: String?) = apply { this.datasetId = datasetId }
+
+        /** Alias for calling [Builder.datasetId] with `datasetId.orElse(null)`. */
+        fun datasetId(datasetId: Optional<String>) = datasetId(datasetId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -298,17 +297,10 @@ private constructor(
          * Returns an immutable instance of [DatasetUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .datasetId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): DatasetUpdateParams =
             DatasetUpdateParams(
-                checkRequired("datasetId", datasetId),
+                datasetId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -319,7 +311,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> datasetId
+            0 -> datasetId ?: ""
             else -> ""
         }
 
@@ -328,6 +320,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val description: JsonField<String>,
         private val metadata: JsonField<Metadata>,
@@ -540,12 +533,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && description == other.description && metadata == other.metadata && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                description == other.description &&
+                metadata == other.metadata &&
+                name == other.name &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, metadata, name, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(description, metadata, name, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -643,12 +640,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -660,10 +655,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DatasetUpdateParams && datasetId == other.datasetId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DatasetUpdateParams &&
+            datasetId == other.datasetId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(datasetId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DatasetUpdateParams{datasetId=$datasetId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

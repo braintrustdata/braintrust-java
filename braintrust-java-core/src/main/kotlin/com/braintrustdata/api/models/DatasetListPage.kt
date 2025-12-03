@@ -2,49 +2,43 @@
 
 package com.braintrustdata.api.models
 
+import com.braintrustdata.api.core.AutoPager
+import com.braintrustdata.api.core.Page
 import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.services.blocking.DatasetService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [DatasetService.list] */
+/** @see DatasetService.list */
 class DatasetListPage
 private constructor(
     private val service: DatasetService,
     private val params: DatasetListParams,
     private val response: DatasetListPageResponse,
-) {
+) : Page<Dataset> {
 
     /**
      * Delegates to [DatasetListPageResponse], but gracefully handles missing data.
      *
-     * @see [DatasetListPageResponse.objects]
+     * @see DatasetListPageResponse.objects
      */
     fun objects(): List<Dataset> =
         response._objects().getOptional("objects").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = objects().isNotEmpty()
+    override fun items(): List<Dataset> = objects()
 
-    fun getNextPageParams(): Optional<DatasetListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
+
+    fun nextPageParams(): DatasetListParams =
+        if (params.endingBefore().isPresent) {
+            params.toBuilder().endingBefore(items().first()._id().getOptional("id")).build()
+        } else {
+            params.toBuilder().startingAfter(items().last()._id().getOptional("id")).build()
         }
 
-        return Optional.of(
-            if (params.endingBefore().isPresent) {
-                params.toBuilder().endingBefore(objects().first()._id().getOptional("id")).build()
-            } else {
-                params.toBuilder().startingAfter(objects().last()._id().getOptional("id")).build()
-            }
-        )
-    }
+    override fun nextPage(): DatasetListPage = service.list(nextPageParams())
 
-    fun getNextPage(): Optional<DatasetListPage> = getNextPageParams().map { service.list(it) }
-
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<Dataset> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): DatasetListParams = params
@@ -113,34 +107,18 @@ private constructor(
             )
     }
 
-    class AutoPager(private val firstPage: DatasetListPage) : Iterable<Dataset> {
-
-        override fun iterator(): Iterator<Dataset> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.objects().size) {
-                    yield(page.objects()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<Dataset> {
-            return StreamSupport.stream(spliterator(), false)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is DatasetListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return other is DatasetListPage &&
+            service == other.service &&
+            params == other.params &&
+            response == other.response
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, response)
 
     override fun toString() =
         "DatasetListPage{service=$service, params=$params, response=$response}"

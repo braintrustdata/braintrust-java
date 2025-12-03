@@ -23,6 +23,7 @@ import kotlin.jvm.optionals.getOrNull
  * other data
  */
 class ProjectTag
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
@@ -384,12 +385,20 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectTag && id == other.id && name == other.name && projectId == other.projectId && userId == other.userId && color == other.color && created == other.created && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ProjectTag &&
+            id == other.id &&
+            name == other.name &&
+            projectId == other.projectId &&
+            userId == other.userId &&
+            color == other.color &&
+            created == other.created &&
+            description == other.description &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, projectId, userId, color, created, description, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, name, projectId, userId, color, created, description, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

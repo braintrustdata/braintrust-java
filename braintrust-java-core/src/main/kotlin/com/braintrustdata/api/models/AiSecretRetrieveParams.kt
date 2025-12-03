@@ -3,38 +3,36 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get an ai_secret object by its id */
 class AiSecretRetrieveParams
 private constructor(
-    private val aiSecretId: String,
+    private val aiSecretId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** AiSecret id */
-    fun aiSecretId(): String = aiSecretId
+    fun aiSecretId(): Optional<String> = Optional.ofNullable(aiSecretId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [AiSecretRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .aiSecretId()
-         * ```
-         */
+        @JvmStatic fun none(): AiSecretRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [AiSecretRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +51,10 @@ private constructor(
         }
 
         /** AiSecret id */
-        fun aiSecretId(aiSecretId: String) = apply { this.aiSecretId = aiSecretId }
+        fun aiSecretId(aiSecretId: String?) = apply { this.aiSecretId = aiSecretId }
+
+        /** Alias for calling [Builder.aiSecretId] with `aiSecretId.orElse(null)`. */
+        fun aiSecretId(aiSecretId: Optional<String>) = aiSecretId(aiSecretId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,17 +158,10 @@ private constructor(
          * Returns an immutable instance of [AiSecretRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .aiSecretId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): AiSecretRetrieveParams =
             AiSecretRetrieveParams(
-                checkRequired("aiSecretId", aiSecretId),
+                aiSecretId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +169,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> aiSecretId
+            0 -> aiSecretId ?: ""
             else -> ""
         }
 
@@ -188,10 +182,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AiSecretRetrieveParams && aiSecretId == other.aiSecretId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is AiSecretRetrieveParams &&
+            aiSecretId == other.aiSecretId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aiSecretId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(aiSecretId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "AiSecretRetrieveParams{aiSecretId=$aiSecretId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

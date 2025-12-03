@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class FeedbackDatasetItem
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val comment: JsonField<String>,
@@ -421,12 +422,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -559,7 +558,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Source && value == other.value /* spotless:on */
+            return other is Source && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -572,12 +571,18 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FeedbackDatasetItem && id == other.id && comment == other.comment && metadata == other.metadata && source == other.source && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is FeedbackDatasetItem &&
+            id == other.id &&
+            comment == other.comment &&
+            metadata == other.metadata &&
+            source == other.source &&
+            tags == other.tags &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, comment, metadata, source, tags, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, comment, metadata, source, tags, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

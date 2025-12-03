@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -25,6 +26,8 @@ import com.braintrustdata.api.models.OrganizationUpdateParams
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsync
 import com.braintrustdata.api.services.async.organizations.MemberServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class OrganizationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     OrganizationServiceAsync {
@@ -36,6 +39,9 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
     private val members: MemberServiceAsync by lazy { MemberServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): OrganizationServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): OrganizationServiceAsync =
+        OrganizationServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun members(): MemberServiceAsync = members
 
@@ -70,24 +76,36 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         OrganizationServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val members: MemberServiceAsync.WithRawResponse by lazy {
             MemberServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OrganizationServiceAsync.WithRawResponse =
+            OrganizationServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun members(): MemberServiceAsync.WithRawResponse = members
 
         private val retrieveHandler: Handler<Organization> =
-            jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Organization>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: OrganizationRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Organization>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("organizationId", params.organizationId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "organization", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -95,7 +113,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -108,15 +126,19 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
         }
 
         private val updateHandler: Handler<Organization> =
-            jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Organization>(clientOptions.jsonMapper)
 
         override fun update(
             params: OrganizationUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Organization>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("organizationId", params.organizationId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "organization", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -125,7 +147,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -139,7 +161,6 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
 
         private val listHandler: Handler<OrganizationListPageResponse> =
             jsonHandler<OrganizationListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: OrganizationListParams,
@@ -148,6 +169,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "organization")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -155,7 +177,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -166,6 +188,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
                             .let {
                                 OrganizationListPageAsync.builder()
                                     .service(OrganizationServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -175,15 +198,19 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
         }
 
         private val deleteHandler: Handler<Organization> =
-            jsonHandler<Organization>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Organization>(clientOptions.jsonMapper)
 
         override fun delete(
             params: OrganizationDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Organization>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("organizationId", params.organizationId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "organization", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -192,7 +219,7 @@ class OrganizationServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {

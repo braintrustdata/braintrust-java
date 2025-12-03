@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectListPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val objects: JsonField<List<Project>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -180,12 +181,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectListPageResponse && objects == other.objects && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ProjectListPageResponse &&
+            objects == other.objects &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(objects, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

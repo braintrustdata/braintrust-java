@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
@@ -27,14 +26,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class SpanIframeUpdateParams
 private constructor(
-    private val spanIframeId: String,
+    private val spanIframeId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** SpanIframe id */
-    fun spanIframeId(): String = spanIframeId
+    fun spanIframeId(): Optional<String> = Optional.ofNullable(spanIframeId)
 
     /**
      * Textual description of the span iframe
@@ -99,22 +98,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [SpanIframeUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .spanIframeId()
-         * ```
-         */
+        @JvmStatic fun none(): SpanIframeUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [SpanIframeUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -135,7 +131,10 @@ private constructor(
         }
 
         /** SpanIframe id */
-        fun spanIframeId(spanIframeId: String) = apply { this.spanIframeId = spanIframeId }
+        fun spanIframeId(spanIframeId: String?) = apply { this.spanIframeId = spanIframeId }
+
+        /** Alias for calling [Builder.spanIframeId] with `spanIframeId.orElse(null)`. */
+        fun spanIframeId(spanIframeId: Optional<String>) = spanIframeId(spanIframeId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -338,17 +337,10 @@ private constructor(
          * Returns an immutable instance of [SpanIframeUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .spanIframeId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SpanIframeUpdateParams =
             SpanIframeUpdateParams(
-                checkRequired("spanIframeId", spanIframeId),
+                spanIframeId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -359,7 +351,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> spanIframeId
+            0 -> spanIframeId ?: ""
             else -> ""
         }
 
@@ -368,6 +360,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val description: JsonField<String>,
         private val name: JsonField<String>,
@@ -631,12 +624,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && description == other.description && name == other.name && postMessage == other.postMessage && url == other.url && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                description == other.description &&
+                name == other.name &&
+                postMessage == other.postMessage &&
+                url == other.url &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, name, postMessage, url, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(description, name, postMessage, url, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -649,10 +647,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SpanIframeUpdateParams && spanIframeId == other.spanIframeId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SpanIframeUpdateParams &&
+            spanIframeId == other.spanIframeId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(spanIframeId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(spanIframeId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SpanIframeUpdateParams{spanIframeId=$spanIframeId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

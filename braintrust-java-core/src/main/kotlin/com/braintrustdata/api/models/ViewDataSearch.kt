@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ViewDataSearch
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val filter: JsonField<List<JsonValue?>>,
     private val match: JsonField<List<JsonValue?>>,
@@ -310,12 +311,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewDataSearch && filter == other.filter && match == other.match && sort == other.sort && tag == other.tag && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ViewDataSearch &&
+            filter == other.filter &&
+            match == other.match &&
+            sort == other.sort &&
+            tag == other.tag &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(filter, match, sort, tag, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(filter, match, sort, tag, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

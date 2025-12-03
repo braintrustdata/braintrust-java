@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
@@ -27,14 +26,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ProjectTagUpdateParams
 private constructor(
-    private val projectTagId: String,
+    private val projectTagId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** ProjectTag id */
-    fun projectTagId(): String = projectTagId
+    fun projectTagId(): Optional<String> = Optional.ofNullable(projectTagId)
 
     /**
      * Color of the tag for the UI
@@ -83,22 +82,19 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ProjectTagUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectTagId()
-         * ```
-         */
+        @JvmStatic fun none(): ProjectTagUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ProjectTagUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -119,7 +115,10 @@ private constructor(
         }
 
         /** ProjectTag id */
-        fun projectTagId(projectTagId: String) = apply { this.projectTagId = projectTagId }
+        fun projectTagId(projectTagId: String?) = apply { this.projectTagId = projectTagId }
+
+        /** Alias for calling [Builder.projectTagId] with `projectTagId.orElse(null)`. */
+        fun projectTagId(projectTagId: Optional<String>) = projectTagId(projectTagId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -296,17 +295,10 @@ private constructor(
          * Returns an immutable instance of [ProjectTagUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectTagId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ProjectTagUpdateParams =
             ProjectTagUpdateParams(
-                checkRequired("projectTagId", projectTagId),
+                projectTagId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -317,7 +309,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectTagId
+            0 -> projectTagId ?: ""
             else -> ""
         }
 
@@ -326,6 +318,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val color: JsonField<String>,
         private val description: JsonField<String>,
@@ -535,12 +528,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && color == other.color && description == other.description && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                color == other.color &&
+                description == other.description &&
+                name == other.name &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(color, description, name, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(color, description, name, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -553,10 +550,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectTagUpdateParams && projectTagId == other.projectTagId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectTagUpdateParams &&
+            projectTagId == other.projectTagId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectTagId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(projectTagId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectTagUpdateParams{projectTagId=$projectTagId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

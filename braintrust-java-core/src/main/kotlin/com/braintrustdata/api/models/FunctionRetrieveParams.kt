@@ -3,38 +3,36 @@
 package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get a function object by its id */
 class FunctionRetrieveParams
 private constructor(
-    private val functionId: String,
+    private val functionId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Function id */
-    fun functionId(): String = functionId
+    fun functionId(): Optional<String> = Optional.ofNullable(functionId)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [FunctionRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .functionId()
-         * ```
-         */
+        @JvmStatic fun none(): FunctionRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [FunctionRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -53,7 +51,10 @@ private constructor(
         }
 
         /** Function id */
-        fun functionId(functionId: String) = apply { this.functionId = functionId }
+        fun functionId(functionId: String?) = apply { this.functionId = functionId }
+
+        /** Alias for calling [Builder.functionId] with `functionId.orElse(null)`. */
+        fun functionId(functionId: Optional<String>) = functionId(functionId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,17 +158,10 @@ private constructor(
          * Returns an immutable instance of [FunctionRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .functionId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): FunctionRetrieveParams =
             FunctionRetrieveParams(
-                checkRequired("functionId", functionId),
+                functionId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +169,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> functionId
+            0 -> functionId ?: ""
             else -> ""
         }
 
@@ -188,10 +182,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FunctionRetrieveParams && functionId == other.functionId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is FunctionRetrieveParams &&
+            functionId == other.functionId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(functionId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(functionId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "FunctionRetrieveParams{functionId=$functionId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

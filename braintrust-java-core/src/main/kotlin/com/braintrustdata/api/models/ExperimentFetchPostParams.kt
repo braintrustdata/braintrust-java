@@ -7,7 +7,6 @@ import com.braintrustdata.api.core.JsonField
 import com.braintrustdata.api.core.JsonMissing
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.errors.BraintrustInvalidDataException
@@ -27,14 +26,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ExperimentFetchPostParams
 private constructor(
-    private val experimentId: String,
+    private val experimentId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** Experiment id */
-    fun experimentId(): String = experimentId
+    fun experimentId(): Optional<String> = Optional.ofNullable(experimentId)
 
     /**
      * An opaque string to be used as a cursor for the next page of results, in order from latest to
@@ -148,21 +147,20 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        @JvmStatic fun none(): ExperimentFetchPostParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [ExperimentFetchPostParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -184,7 +182,10 @@ private constructor(
         }
 
         /** Experiment id */
-        fun experimentId(experimentId: String) = apply { this.experimentId = experimentId }
+        fun experimentId(experimentId: String?) = apply { this.experimentId = experimentId }
+
+        /** Alias for calling [Builder.experimentId] with `experimentId.orElse(null)`. */
+        fun experimentId(experimentId: Optional<String>) = experimentId(experimentId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -450,17 +451,10 @@ private constructor(
          * Returns an immutable instance of [ExperimentFetchPostParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .experimentId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ExperimentFetchPostParams =
             ExperimentFetchPostParams(
-                checkRequired("experimentId", experimentId),
+                experimentId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -471,7 +465,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> experimentId
+            0 -> experimentId ?: ""
             else -> ""
         }
 
@@ -480,6 +474,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val cursor: JsonField<String>,
         private val limit: JsonField<Long>,
@@ -866,12 +861,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && cursor == other.cursor && limit == other.limit && maxRootSpanId == other.maxRootSpanId && maxXactId == other.maxXactId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                cursor == other.cursor &&
+                limit == other.limit &&
+                maxRootSpanId == other.maxRootSpanId &&
+                maxXactId == other.maxXactId &&
+                version == other.version &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(cursor, limit, maxRootSpanId, maxXactId, version, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(cursor, limit, maxRootSpanId, maxXactId, version, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -884,10 +885,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ExperimentFetchPostParams && experimentId == other.experimentId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ExperimentFetchPostParams &&
+            experimentId == other.experimentId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(experimentId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ExperimentFetchPostParams{experimentId=$experimentId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -2,6 +2,7 @@
 
 package com.braintrustdata.api.services.blocking
 
+import com.braintrustdata.api.core.ClientOptions
 import com.braintrustdata.api.core.RequestOptions
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.models.Acl
@@ -14,6 +15,7 @@ import com.braintrustdata.api.models.AclListPage
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
 
 interface AclService {
 
@@ -23,22 +25,47 @@ interface AclService {
     fun withRawResponse(): WithRawResponse
 
     /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): AclService
+
+    /**
      * Create a new acl. If there is an existing acl with the same contents as the one specified in
      * the request, will return the existing acl unmodified
      */
     fun create(params: AclCreateParams): Acl = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(params: AclCreateParams, requestOptions: RequestOptions = RequestOptions.none()): Acl
 
     /** Get an acl object by its id */
-    fun retrieve(params: AclRetrieveParams): Acl = retrieve(params, RequestOptions.none())
+    fun retrieve(aclId: String): Acl = retrieve(aclId, AclRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
+    fun retrieve(
+        aclId: String,
+        params: AclRetrieveParams = AclRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Acl = retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+    /** @see retrieve */
+    fun retrieve(aclId: String, params: AclRetrieveParams = AclRetrieveParams.none()): Acl =
+        retrieve(aclId, params, RequestOptions.none())
+
+    /** @see retrieve */
     fun retrieve(
         params: AclRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Acl
+
+    /** @see retrieve */
+    fun retrieve(params: AclRetrieveParams): Acl = retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
+    fun retrieve(aclId: String, requestOptions: RequestOptions): Acl =
+        retrieve(aclId, AclRetrieveParams.none(), requestOptions)
 
     /**
      * List out all acls. The acls are sorted by creation date, with the most recently-created acls
@@ -46,17 +73,35 @@ interface AclService {
      */
     fun list(params: AclListParams): AclListPage = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: AclListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AclListPage
 
     /** Delete an acl object by its id */
+    fun delete(aclId: String): Acl = delete(aclId, AclDeleteParams.none())
+
+    /** @see delete */
+    fun delete(
+        aclId: String,
+        params: AclDeleteParams = AclDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Acl = delete(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+    /** @see delete */
+    fun delete(aclId: String, params: AclDeleteParams = AclDeleteParams.none()): Acl =
+        delete(aclId, params, RequestOptions.none())
+
+    /** @see delete */
+    fun delete(params: AclDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): Acl
+
+    /** @see delete */
     fun delete(params: AclDeleteParams): Acl = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
-    fun delete(params: AclDeleteParams, requestOptions: RequestOptions = RequestOptions.none()): Acl
+    /** @see delete */
+    fun delete(aclId: String, requestOptions: RequestOptions): Acl =
+        delete(aclId, AclDeleteParams.none(), requestOptions)
 
     /**
      * Batch update acls. This operation is idempotent, so adding acls which already exist will have
@@ -64,18 +109,18 @@ interface AclService {
      */
     fun batchUpdate(): AclBatchUpdateResponse = batchUpdate(AclBatchUpdateParams.none())
 
-    /** @see [batchUpdate] */
+    /** @see batchUpdate */
     fun batchUpdate(
         params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AclBatchUpdateResponse
 
-    /** @see [batchUpdate] */
+    /** @see batchUpdate */
     fun batchUpdate(
         params: AclBatchUpdateParams = AclBatchUpdateParams.none()
     ): AclBatchUpdateResponse = batchUpdate(params, RequestOptions.none())
 
-    /** @see [batchUpdate] */
+    /** @see batchUpdate */
     fun batchUpdate(requestOptions: RequestOptions): AclBatchUpdateResponse =
         batchUpdate(AclBatchUpdateParams.none(), requestOptions)
 
@@ -83,7 +128,7 @@ interface AclService {
     fun findAndDelete(params: AclFindAndDeleteParams): Acl =
         findAndDelete(params, RequestOptions.none())
 
-    /** @see [findAndDelete] */
+    /** @see findAndDelete */
     fun findAndDelete(
         params: AclFindAndDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -93,6 +138,13 @@ interface AclService {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): AclService.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `post /v1/acl`, but is otherwise the same as
          * [AclService.create].
          */
@@ -100,7 +152,7 @@ interface AclService {
         fun create(params: AclCreateParams): HttpResponseFor<Acl> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: AclCreateParams,
@@ -112,15 +164,40 @@ interface AclService {
          * [AclService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: AclRetrieveParams): HttpResponseFor<Acl> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(aclId: String): HttpResponseFor<Acl> =
+            retrieve(aclId, AclRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(
+            aclId: String,
+            params: AclRetrieveParams = AclRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Acl> = retrieve(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(
+            aclId: String,
+            params: AclRetrieveParams = AclRetrieveParams.none(),
+        ): HttpResponseFor<Acl> = retrieve(aclId, params, RequestOptions.none())
+
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: AclRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Acl>
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(params: AclRetrieveParams): HttpResponseFor<Acl> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(aclId: String, requestOptions: RequestOptions): HttpResponseFor<Acl> =
+            retrieve(aclId, AclRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /v1/acl`, but is otherwise the same as
@@ -130,7 +207,7 @@ interface AclService {
         fun list(params: AclListParams): HttpResponseFor<AclListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: AclListParams,
@@ -142,15 +219,39 @@ interface AclService {
          * [AclService.delete].
          */
         @MustBeClosed
-        fun delete(params: AclDeleteParams): HttpResponseFor<Acl> =
-            delete(params, RequestOptions.none())
+        fun delete(aclId: String): HttpResponseFor<Acl> = delete(aclId, AclDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
+        @MustBeClosed
+        fun delete(
+            aclId: String,
+            params: AclDeleteParams = AclDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Acl> = delete(params.toBuilder().aclId(aclId).build(), requestOptions)
+
+        /** @see delete */
+        @MustBeClosed
+        fun delete(
+            aclId: String,
+            params: AclDeleteParams = AclDeleteParams.none(),
+        ): HttpResponseFor<Acl> = delete(aclId, params, RequestOptions.none())
+
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: AclDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Acl>
+
+        /** @see delete */
+        @MustBeClosed
+        fun delete(params: AclDeleteParams): HttpResponseFor<Acl> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
+        @MustBeClosed
+        fun delete(aclId: String, requestOptions: RequestOptions): HttpResponseFor<Acl> =
+            delete(aclId, AclDeleteParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /v1/acl/batch_update`, but is otherwise the same as
@@ -160,20 +261,20 @@ interface AclService {
         fun batchUpdate(): HttpResponseFor<AclBatchUpdateResponse> =
             batchUpdate(AclBatchUpdateParams.none())
 
-        /** @see [batchUpdate] */
+        /** @see batchUpdate */
         @MustBeClosed
         fun batchUpdate(
             params: AclBatchUpdateParams = AclBatchUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AclBatchUpdateResponse>
 
-        /** @see [batchUpdate] */
+        /** @see batchUpdate */
         @MustBeClosed
         fun batchUpdate(
             params: AclBatchUpdateParams = AclBatchUpdateParams.none()
         ): HttpResponseFor<AclBatchUpdateResponse> = batchUpdate(params, RequestOptions.none())
 
-        /** @see [batchUpdate] */
+        /** @see batchUpdate */
         @MustBeClosed
         fun batchUpdate(requestOptions: RequestOptions): HttpResponseFor<AclBatchUpdateResponse> =
             batchUpdate(AclBatchUpdateParams.none(), requestOptions)
@@ -186,7 +287,7 @@ interface AclService {
         fun findAndDelete(params: AclFindAndDeleteParams): HttpResponseFor<Acl> =
             findAndDelete(params, RequestOptions.none())
 
-        /** @see [findAndDelete] */
+        /** @see findAndDelete */
         @MustBeClosed
         fun findAndDelete(
             params: AclFindAndDeleteParams,

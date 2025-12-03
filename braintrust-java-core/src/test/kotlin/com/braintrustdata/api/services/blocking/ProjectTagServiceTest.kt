@@ -5,9 +5,7 @@ package com.braintrustdata.api.services.blocking
 import com.braintrustdata.api.TestServerExtension
 import com.braintrustdata.api.client.okhttp.BraintrustOkHttpClient
 import com.braintrustdata.api.models.ProjectTagCreateParams
-import com.braintrustdata.api.models.ProjectTagDeleteParams
 import com.braintrustdata.api.models.ProjectTagReplaceParams
-import com.braintrustdata.api.models.ProjectTagRetrieveParams
 import com.braintrustdata.api.models.ProjectTagUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,12 +44,7 @@ internal class ProjectTagServiceTest {
                 .build()
         val projectTagService = client.projectTags()
 
-        val projectTag =
-            projectTagService.retrieve(
-                ProjectTagRetrieveParams.builder()
-                    .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val projectTag = projectTagService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         projectTag.validate()
     }
@@ -101,12 +94,7 @@ internal class ProjectTagServiceTest {
                 .build()
         val projectTagService = client.projectTags()
 
-        val projectTag =
-            projectTagService.delete(
-                ProjectTagDeleteParams.builder()
-                    .projectTagId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val projectTag = projectTagService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         projectTag.validate()
     }

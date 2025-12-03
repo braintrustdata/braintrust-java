@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class InsertEventsResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val rowIds: JsonField<List<String>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -179,12 +180,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InsertEventsResponse && rowIds == other.rowIds && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is InsertEventsResponse &&
+            rowIds == other.rowIds &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(rowIds, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

@@ -17,6 +17,7 @@ import java.util.Objects
 
 /** For categorical-type project scores, defines a single category */
 class ProjectScoreCategory
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val name: JsonField<String>,
     private val value: JsonField<Double>,
@@ -195,12 +196,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectScoreCategory && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ProjectScoreCategory &&
+            name == other.name &&
+            value == other.value &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

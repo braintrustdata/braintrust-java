@@ -18,6 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** The view definition */
 class ViewData
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val search: JsonField<ViewDataSearch>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -143,12 +144,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewData && search == other.search && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ViewData &&
+            search == other.search &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(search, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

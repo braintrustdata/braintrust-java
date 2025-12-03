@@ -32,6 +32,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class OnlineScoreConfig
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val samplingRate: JsonField<Double>,
     private val scorers: JsonField<List<Scorer>>,
@@ -429,10 +430,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Scorer && function == other.function && global == other.global /* spotless:on */
+            return other is Scorer && function == other.function && global == other.global
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(function, global) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(function, global)
 
         override fun toString(): String =
             when {
@@ -518,6 +519,7 @@ private constructor(
         }
 
         class Function
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val type: JsonField<Type>,
@@ -810,7 +812,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -823,12 +825,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Function && id == other.id && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Function &&
+                    id == other.id &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(id, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -837,6 +840,7 @@ private constructor(
         }
 
         class Global
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val type: JsonField<Type>,
@@ -1129,7 +1133,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1142,12 +1146,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Global && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Global &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(name, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1161,12 +1166,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is OnlineScoreConfig && samplingRate == other.samplingRate && scorers == other.scorers && applyToRootSpan == other.applyToRootSpan && applyToSpanNames == other.applyToSpanNames && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is OnlineScoreConfig &&
+            samplingRate == other.samplingRate &&
+            scorers == other.scorers &&
+            applyToRootSpan == other.applyToRootSpan &&
+            applyToSpanNames == other.applyToSpanNames &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(samplingRate, scorers, applyToRootSpan, applyToSpanNames, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(samplingRate, scorers, applyToRootSpan, applyToSpanNames, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

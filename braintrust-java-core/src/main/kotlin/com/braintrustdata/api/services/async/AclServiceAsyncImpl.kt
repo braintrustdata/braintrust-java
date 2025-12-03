@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -26,6 +27,8 @@ import com.braintrustdata.api.models.AclListPageResponse
 import com.braintrustdata.api.models.AclListParams
 import com.braintrustdata.api.models.AclRetrieveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class AclServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AclServiceAsync {
@@ -35,6 +38,9 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): AclServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AclServiceAsync =
+        AclServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: AclCreateParams,
@@ -81,10 +87,17 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AclServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
-        private val createHandler: Handler<Acl> =
-            jsonHandler<Acl>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AclServiceAsync.WithRawResponse =
+            AclServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
+        private val createHandler: Handler<Acl> = jsonHandler<Acl>(clientOptions.jsonMapper)
 
         override fun create(
             params: AclCreateParams,
@@ -93,6 +106,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "acl")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -101,7 +115,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -113,16 +127,19 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
                 }
         }
 
-        private val retrieveHandler: Handler<Acl> =
-            jsonHandler<Acl>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Acl> = jsonHandler<Acl>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: AclRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Acl>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aclId", params.aclId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "acl", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -130,7 +147,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -144,7 +161,6 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
 
         private val listHandler: Handler<AclListPageResponse> =
             jsonHandler<AclListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: AclListParams,
@@ -153,6 +169,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "acl")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -160,7 +177,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -171,6 +188,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
                             .let {
                                 AclListPageAsync.builder()
                                     .service(AclServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -179,16 +197,19 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
                 }
         }
 
-        private val deleteHandler: Handler<Acl> =
-            jsonHandler<Acl>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Acl> = jsonHandler<Acl>(clientOptions.jsonMapper)
 
         override fun delete(
             params: AclDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<Acl>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aclId", params.aclId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "acl", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -197,7 +218,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
@@ -211,7 +232,6 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
 
         private val batchUpdateHandler: Handler<AclBatchUpdateResponse> =
             jsonHandler<AclBatchUpdateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun batchUpdate(
             params: AclBatchUpdateParams,
@@ -220,6 +240,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "acl", "batch_update")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -228,7 +249,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { batchUpdateHandler.handle(it) }
                             .also {
@@ -240,8 +261,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
                 }
         }
 
-        private val findAndDeleteHandler: Handler<Acl> =
-            jsonHandler<Acl>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val findAndDeleteHandler: Handler<Acl> = jsonHandler<Acl>(clientOptions.jsonMapper)
 
         override fun findAndDelete(
             params: AclFindAndDeleteParams,
@@ -250,6 +270,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "acl")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -258,7 +279,7 @@ class AclServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { findAndDeleteHandler.handle(it) }
                             .also {

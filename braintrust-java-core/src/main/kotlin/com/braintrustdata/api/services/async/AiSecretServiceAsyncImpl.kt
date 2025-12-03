@@ -3,13 +3,14 @@
 package com.braintrustdata.api.services.async
 
 import com.braintrustdata.api.core.ClientOptions
-import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.RequestOptions
+import com.braintrustdata.api.core.checkRequired
+import com.braintrustdata.api.core.handlers.errorBodyHandler
 import com.braintrustdata.api.core.handlers.errorHandler
 import com.braintrustdata.api.core.handlers.jsonHandler
-import com.braintrustdata.api.core.handlers.withErrorHandler
 import com.braintrustdata.api.core.http.HttpMethod
 import com.braintrustdata.api.core.http.HttpRequest
+import com.braintrustdata.api.core.http.HttpResponse
 import com.braintrustdata.api.core.http.HttpResponse.Handler
 import com.braintrustdata.api.core.http.HttpResponseFor
 import com.braintrustdata.api.core.http.json
@@ -26,6 +27,8 @@ import com.braintrustdata.api.models.AiSecretReplaceParams
 import com.braintrustdata.api.models.AiSecretRetrieveParams
 import com.braintrustdata.api.models.AiSecretUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AiSecretServiceAsync {
@@ -35,6 +38,9 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): AiSecretServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AiSecretServiceAsync =
+        AiSecretServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: AiSecretCreateParams,
@@ -88,10 +94,18 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AiSecretServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AiSecretServiceAsync.WithRawResponse =
+            AiSecretServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<AISecret> =
-            jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AISecret>(clientOptions.jsonMapper)
 
         override fun create(
             params: AiSecretCreateParams,
@@ -100,6 +114,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -108,7 +123,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -121,15 +136,19 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val retrieveHandler: Handler<AISecret> =
-            jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AISecret>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: AiSecretRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<AISecret>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aiSecretId", params.aiSecretId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -137,7 +156,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -150,15 +169,19 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val updateHandler: Handler<AISecret> =
-            jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AISecret>(clientOptions.jsonMapper)
 
         override fun update(
             params: AiSecretUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<AISecret>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aiSecretId", params.aiSecretId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -167,7 +190,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -181,7 +204,6 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val listHandler: Handler<AiSecretListPageResponse> =
             jsonHandler<AiSecretListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: AiSecretListParams,
@@ -190,6 +212,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -197,7 +220,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -208,6 +231,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
                             .let {
                                 AiSecretListPageAsync.builder()
                                     .service(AiSecretServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -217,15 +241,19 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val deleteHandler: Handler<AISecret> =
-            jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AISecret>(clientOptions.jsonMapper)
 
         override fun delete(
             params: AiSecretDeleteParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<AISecret>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("aiSecretId", params.aiSecretId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -234,7 +262,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
@@ -247,7 +275,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val findAndDeleteHandler: Handler<AISecret> =
-            jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AISecret>(clientOptions.jsonMapper)
 
         override fun findAndDelete(
             params: AiSecretFindAndDeleteParams,
@@ -256,6 +284,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -264,7 +293,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { findAndDeleteHandler.handle(it) }
                             .also {
@@ -277,7 +306,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
         }
 
         private val replaceHandler: Handler<AISecret> =
-            jsonHandler<AISecret>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AISecret>(clientOptions.jsonMapper)
 
         override fun replace(
             params: AiSecretReplaceParams,
@@ -286,6 +315,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v1", "ai_secret")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -294,7 +324,7 @@ class AiSecretServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { replaceHandler.handle(it) }
                             .also {

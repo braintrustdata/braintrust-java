@@ -20,6 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 
 /** Options for the view in the app */
 class ViewOptions
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val columnOrder: JsonField<List<String>>,
     private val columnSizing: JsonField<ColumnSizing>,
@@ -447,12 +448,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ColumnSizing && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ColumnSizing && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -548,12 +547,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ColumnVisibility && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ColumnVisibility && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -565,12 +562,27 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ViewOptions && columnOrder == other.columnOrder && columnSizing == other.columnSizing && columnVisibility == other.columnVisibility && grouping == other.grouping && layout == other.layout && rowHeight == other.rowHeight && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ViewOptions &&
+            columnOrder == other.columnOrder &&
+            columnSizing == other.columnSizing &&
+            columnVisibility == other.columnVisibility &&
+            grouping == other.grouping &&
+            layout == other.layout &&
+            rowHeight == other.rowHeight &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(columnOrder, columnSizing, columnVisibility, grouping, layout, rowHeight, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            columnOrder,
+            columnSizing,
+            columnVisibility,
+            grouping,
+            layout,
+            rowHeight,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

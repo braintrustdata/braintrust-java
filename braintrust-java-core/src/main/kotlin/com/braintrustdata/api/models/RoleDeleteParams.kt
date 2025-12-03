@@ -4,43 +4,41 @@ package com.braintrustdata.api.models
 
 import com.braintrustdata.api.core.JsonValue
 import com.braintrustdata.api.core.Params
-import com.braintrustdata.api.core.checkRequired
 import com.braintrustdata.api.core.http.Headers
 import com.braintrustdata.api.core.http.QueryParams
 import com.braintrustdata.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete a role object by its id */
 class RoleDeleteParams
 private constructor(
-    private val roleId: String,
+    private val roleId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     /** Role id */
-    fun roleId(): String = roleId
+    fun roleId(): Optional<String> = Optional.ofNullable(roleId)
 
+    /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [RoleDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .roleId()
-         * ```
-         */
+        @JvmStatic fun none(): RoleDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [RoleDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -61,7 +59,10 @@ private constructor(
         }
 
         /** Role id */
-        fun roleId(roleId: String) = apply { this.roleId = roleId }
+        fun roleId(roleId: String?) = apply { this.roleId = roleId }
+
+        /** Alias for calling [Builder.roleId] with `roleId.orElse(null)`. */
+        fun roleId(roleId: Optional<String>) = roleId(roleId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -187,17 +188,10 @@ private constructor(
          * Returns an immutable instance of [RoleDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .roleId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): RoleDeleteParams =
             RoleDeleteParams(
-                checkRequired("roleId", roleId),
+                roleId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -209,7 +203,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> roleId
+            0 -> roleId ?: ""
             else -> ""
         }
 
@@ -222,10 +216,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RoleDeleteParams && roleId == other.roleId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is RoleDeleteParams &&
+            roleId == other.roleId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(roleId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(roleId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "RoleDeleteParams{roleId=$roleId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
