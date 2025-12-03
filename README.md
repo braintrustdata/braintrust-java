@@ -346,13 +346,13 @@ The SDK uses the standard [OkHttp logging interceptor](https://github.com/square
 Enable logging by setting the `BRAINTRUST_LOG` environment variable to `info`:
 
 ```sh
-$ export BRAINTRUST_LOG=info
+export BRAINTRUST_LOG=info
 ```
 
 Or to `debug` for more verbose logging:
 
 ```sh
-$ export BRAINTRUST_LOG=debug
+export BRAINTRUST_LOG=debug
 ```
 
 ## ProGuard and R8
